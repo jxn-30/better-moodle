@@ -16,7 +16,7 @@
 // @grant           GM_setValue
 // ==/UserScript==
 
-/* global M */
+/* global M, require */
 
 // use full width instead of maximum 830px
 GM_addStyle(`
@@ -48,22 +48,27 @@ const ready = callback => {
     }
 };
 
-// add a right sidebar with timeline and upcoming events on Dashboard
-if (window.location.pathname === '/my/') {
-    const prefix = str => `${PREFIX('dashboard-sidebar-right')}-${str}`;
+/**
+ * @param {string} id
+ * @param {'left' | 'right'} position
+ * @param {string} icon
+ * @param {(content: HTMLDivElement) => void} callback
+ */
+const createSidebar = (id, position, icon, callback) => {
+    const prefix = str => `${PREFIX(id)}-sidebar-${str}`;
     const storage = prefix('open');
 
     const sidebar = document.createElement('div');
-    sidebar.id = 'theme_boost-drawers-blocks';
+    sidebar.id = PREFIX(id);
     sidebar.classList.add(
         'drawer',
-        'drawer-right',
+        `drawer-${position}`,
         'd-print-none',
         'not-initialized'
     );
     sidebar.dataset.region = 'fixed-drawer';
     sidebar.dataset.preference = crypto.randomUUID();
-    sidebar.dataset.state = 'show-drawer-right';
+    sidebar.dataset.state = `show-drawer-${position}`;
     sidebar.dataset.forceopen = '';
     sidebar.dataset.closeOnResize = '1';
     if (GM_getValue(storage, true)) sidebar.classList.add('show');
@@ -76,7 +81,7 @@ if (window.location.pathname === '/my/') {
     closeBtn.dataset.action = 'closedrawer';
     closeBtn.dataset.target = sidebar.id;
     closeBtn.dataset.toggle = 'tooltip';
-    closeBtn.dataset.placement = 'left';
+    closeBtn.dataset.placement = position === 'left' ? 'right' : 'left'; // Yeah, moodle. IDK what that means and why
     closeBtn.title = 'Blockleiste schließen';
     const closeIcon = document.createElement('i');
     closeIcon.classList.add('icon', 'fa', 'fa-times', 'fa-fw');
@@ -93,7 +98,7 @@ if (window.location.pathname === '/my/') {
     const toggleBtn = document.createElement('div');
     toggleBtn.classList.add(
         'drawer-toggler',
-        'drawer-right-toggle',
+        `drawer-${position}-toggle`,
         'ml-auto',
         'd-print-none'
     );
@@ -111,7 +116,7 @@ if (window.location.pathname === '/my/') {
     toggleBtnSRSpan.textContent = toggleBtnInner.title;
     const toggleBtnIconSpan = document.createElement('span');
     const toggleBtnIcon = document.createElement('i');
-    toggleBtnIcon.classList.add('icon', 'fa', 'fa-calendar', 'fa-fw');
+    toggleBtnIcon.classList.add('icon', 'fa', `fa-${icon}`, 'fa-fw');
     toggleBtnIcon.setAttribute('aria-hidden', 'true');
     toggleBtnIconSpan.appendChild(toggleBtnIcon);
     toggleBtnInner.append(toggleBtnSRSpan, toggleBtnIcon);
@@ -130,11 +135,168 @@ if (window.location.pathname === '/my/') {
 
         // append sidebar
         document.getElementById('page')?.before(sidebar);
-        // move blocks into sidbar
-        content.append(document.querySelector('.block_timeline'));
-        content.append(document.querySelector('.block_calendar_upcoming'));
 
         // append the toggle button
         document.querySelector('#page .drawer-toggles')?.append(toggleBtn);
+
+        callback(content);
+    });
+};
+
+// add a right sidebar with timeline and upcoming events on Dashboard
+if (window.location.pathname === '/my/') {
+    createSidebar('dashboard-right', 'right', 'calendar', content => {
+        // move blocks into sidebar
+        content.append(document.querySelector('.block_timeline'));
+        content.append(document.querySelector('.block_calendar_upcoming'));
     });
 }
+
+// add a left sidebar with the users courses. Also manipulate my courses link to be a dropdown
+ready(() => {
+    /** @type {HTMLDivElement} */
+    let dropdownMenu;
+    /** @type {HTMLDivElement} */
+    let mobileDropdownMenu;
+
+    /** @type {HTMLDivElement} */
+    let sidebarContent;
+
+    const addDropdownItem = (href, text) => {
+        if (dropdownMenu) {
+            const anchor = document.createElement('a');
+            anchor.classList.add('dropdown-item');
+            anchor.href = href;
+            anchor.textContent = text;
+            dropdownMenu.append(anchor);
+        }
+        if (mobileDropdownMenu) {
+            const anchor = document.createElement('a');
+            anchor.classList.add(
+                'pl-5',
+                'bg-light',
+                'list-group-item',
+                'list-group-item-action'
+            );
+            anchor.href = href;
+            anchor.textContent = text;
+            mobileDropdownMenu.append(anchor);
+        }
+    };
+
+    const addSidebarItem = course => {
+        if (!sidebarContent) return;
+        const card = document.createElement('div');
+        card.classList.add('card', 'block', 'mb-3');
+        const cardBody = document.createElement('div');
+        cardBody.classList.add('card-body', 'p-3');
+
+        const anchor = document.createElement('a');
+        anchor.href = course.viewurl;
+        anchor.textContent = course.fullname;
+
+        cardBody.append(anchor);
+        card.append(cardBody);
+        sidebarContent.append(card);
+    };
+
+    // convert the "my courses" link into a dropdown
+    /** @type {HTMLLIElement | null} */
+    const myCoursesLi = document.querySelector(
+        '.primary-navigation .nav-item[data-key="mycourses"]'
+    );
+    /** @type {HTMLAnchorElement | null} */
+    const myCoursesA = myCoursesLi?.querySelector('a');
+    if (myCoursesLi && myCoursesA) {
+        myCoursesLi.classList.add('dropdown');
+
+        const myCoursesLink = myCoursesA.href;
+
+        myCoursesA.classList.add('dropdown-toggle');
+        myCoursesA.dataset.toggle = 'dropdown';
+        myCoursesA.href = '#';
+
+        dropdownMenu = document.createElement('div');
+        dropdownMenu.classList.add('dropdown-menu');
+
+        addDropdownItem(myCoursesLink, '[Meine Kurse]');
+
+        myCoursesA.after(dropdownMenu);
+
+        // mobile menu
+        const mobileA = document.querySelector(
+            `#theme_boost-drawers-primary .list-group-item[href="${myCoursesLink}"]`
+        );
+        if (mobileA) {
+            mobileA.classList.add(
+                'icons-collapse-expand',
+                'collapsed',
+                'd-flex'
+            );
+            mobileA.dataset.toggle = 'collapse';
+            mobileA.href = '#';
+
+            mobileDropdownMenu = document.createElement('div');
+            mobileDropdownMenu.classList.add(
+                'collapse',
+                'list-group-item',
+                'p-0',
+                'border-0'
+            );
+            mobileDropdownMenu.id = crypto.randomUUID();
+            mobileA.dataset.target = `#${mobileDropdownMenu.id}`;
+
+            const caretDown = document.createElement('span');
+            caretDown.classList.add(
+                'ml-auto',
+                'expanded-icon',
+                'icon-no-margin',
+                'mx-2'
+            );
+            const caretDownIcon = document.createElement('i');
+            caretDownIcon.classList.add('icon', 'fa', 'fa-caret-down', 'fa-fw');
+            caretDown.append(caretDownIcon);
+            const caretRight = document.createElement('span');
+            caretRight.classList.add(
+                'ml-auto',
+                'collapsed-icon',
+                'icon-no-margin',
+                'mx-2'
+            );
+            const caretRightIcon = document.createElement('i');
+            caretRightIcon.classList.add(
+                'icon',
+                'fa',
+                'fa-caret-right',
+                'fa-fw'
+            );
+            caretRight.append(caretRightIcon);
+
+            mobileA.append(caretDown, caretRight);
+            mobileA.after(mobileDropdownMenu);
+        }
+    }
+
+    // add a left sidebar
+    if (window.location.pathname === '/my/') {
+        createSidebar('dashboard-left', 'left', 'graduation-cap', content => {
+            sidebarContent = content;
+        });
+    }
+
+    // fetch the courses
+    require(['core_course/repository'], ({
+        getEnrolledCoursesByTimelineClassification,
+    }) =>
+        getEnrolledCoursesByTimelineClassification(
+            'all',
+            0,
+            0,
+            'fullname'
+        ).then(({ courses }) =>
+            courses.forEach(course => {
+                addDropdownItem(course.viewurl, course.fullname);
+                addSidebarItem(course);
+            })
+        ));
+});
