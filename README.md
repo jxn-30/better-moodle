@@ -27,4 +27,4 @@ Your Userscript-Manager _should_ regulary check for updates. You may always upda
 
 -   increase boxes per row from 3 to 4 for desktop screens
 
-[installation]: https://github.com/jxn-30/better-moodle/redesign.user.js
+[installation]: https://github.com/jxn-30/better-moodle/raw/main/redesign.user.js
