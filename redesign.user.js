@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            🎓️ UzL: Better Moodle
 // @namespace       https://uni-luebeck.de
-// @version         1.1.1
+// @version         1.1.2
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
@@ -154,6 +154,8 @@ if (window.location.pathname === '/my/') {
 
 // add a left sidebar with the users courses. Also manipulate my courses link to be a dropdown
 ready(() => {
+    if (window.location.pathname.startsWith('/login/')) return;
+
     /** @type {HTMLDivElement} */
     let dropdownMenu;
     /** @type {HTMLDivElement} */
