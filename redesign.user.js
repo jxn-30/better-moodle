@@ -16,7 +16,7 @@
 
 GM_addStyle(`
 /* Use full width */
-#topofscroll {
+#topofscroll, .header-maxwidth {
     max-width: unset !important;
 }
     `);
