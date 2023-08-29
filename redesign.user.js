@@ -168,6 +168,9 @@ ready(() => {
             anchor.classList.add('dropdown-item');
             anchor.href = href;
             anchor.textContent = text;
+            anchor.title = text;
+            anchor.style.setProperty('overflow', 'hidden');
+            anchor.style.setProperty('text-overflow', 'ellipsis');
             dropdownMenu.append(anchor);
         }
         if (mobileDropdownMenu) {
@@ -184,7 +187,7 @@ ready(() => {
         }
     };
 
-    const addSidebarItem = course => {
+    const addSidebarItem = (href, text) => {
         if (!sidebarContent) return;
         const card = document.createElement('div');
         card.classList.add('card', 'block', 'mb-3');
@@ -192,8 +195,8 @@ ready(() => {
         cardBody.classList.add('card-body', 'p-3');
 
         const anchor = document.createElement('a');
-        anchor.href = course.viewurl;
-        anchor.textContent = course.fullname;
+        anchor.href = href;
+        anchor.textContent = text;
 
         cardBody.append(anchor);
         card.append(cardBody);
@@ -218,6 +221,7 @@ ready(() => {
 
         dropdownMenu = document.createElement('div');
         dropdownMenu.classList.add('dropdown-menu');
+        dropdownMenu.style.setProperty('max-width', '500px');
 
         addDropdownItem(myCoursesLink, '[Meine Kurse]');
 
@@ -281,6 +285,8 @@ ready(() => {
     if (window.location.pathname === '/my/') {
         createSidebar('dashboard-left', 'left', 'graduation-cap', content => {
             sidebarContent = content;
+
+            addSidebarItem('/my/courses.php', '[Meine Kurse]');
         });
     }
 
@@ -296,7 +302,7 @@ ready(() => {
         ).then(({ courses }) =>
             courses.forEach(course => {
                 addDropdownItem(course.viewurl, course.fullname);
-                addSidebarItem(course);
+                addSidebarItem(course.viewurl, course.fullname);
             })
         ));
 });
