@@ -24,6 +24,16 @@ GM_addStyle(`
 #topofscroll, .header-maxwidth {
     max-width: unset !important;
 }
+
+/* 4 boxes per row in the "my courses" view, instead of 3 plus increase margin a little */
+@media (min-width: 840px) {
+  .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
+    --margin: max(4px, min(10px, calc(100vw / 192)));
+    width: calc(25% - var(--margin) * 2);
+    margin-left: var(--margin);
+    margin-right: var(--margin);
+  }
+}
     `);
 
 const PREFIX = str => `better-moodle-${str}`;
