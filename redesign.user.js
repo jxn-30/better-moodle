@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            🎓️ UzL: Better Moodle
 // @namespace       https://uni-luebeck.de
-// @version         1.1.2
+// @version         1.1.3
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
@@ -249,7 +249,7 @@ ready(() => {
                 'p-0',
                 'border-0'
             );
-            mobileDropdownMenu.id = crypto.randomUUID();
+            mobileDropdownMenu.id = `dropdown-${crypto.randomUUID()}`;
             mobileA.dataset.target = `#${mobileDropdownMenu.id}`;
 
             const caretDown = document.createElement('span');
