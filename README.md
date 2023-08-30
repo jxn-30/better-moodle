@@ -13,6 +13,10 @@ Your Userscript-Manager _should_ regulary check for updates. You may always upda
 
 ## Features
 
+### Darkmode
+
+is not provided by this userscript. We recommend using the [Dark Reader](https://darkreader.org/) browser extension.
+
 ### General and everywhere
 
 -   modify the "Meine Kurse" link in navigation menu to be a dropdown for quick access to all personal non-hidden courses.
