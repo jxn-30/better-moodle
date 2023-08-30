@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            🎓️ UzL: Better Moodle
 // @namespace       https://uni-luebeck.de
-// @version         1.1.3
+// @version         1.2.0
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
@@ -33,6 +33,15 @@ GM_addStyle(`
     margin-left: var(--margin);
     margin-right: var(--margin);
   }
+}
+
+/* disable the weird scroll behaviour on login page (background image shall not be moved) */
+#page-login-index {
+    overflow: hidden;
+}
+
+#page-login-index #page-wrapper {
+    overflow: auto;
 }
     `);
 
