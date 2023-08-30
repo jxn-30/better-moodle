@@ -1,7 +1,7 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "assignees": ["jxn-30"],
-    "baseBranches": ["master"],
+    "baseBranches": ["main"],
     "dependencyDashboard": true,
     "dependencyDashboardFooter": "PRs will be created on weekdays before 3am (CEST) for any dependencies.",
     "dependencyDashboardHeader": "# ℹ️ Renovate Dependency-Dashboard ℹ\nScheduled and currently open dependency updates are listed here\n",
