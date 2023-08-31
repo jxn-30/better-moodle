@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            🎓️ UzL: Better Moodle
 // @namespace       https://uni-luebeck.de
-// @version         1.2.0
+// @version         1.2.1
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
@@ -173,13 +173,20 @@ ready(() => {
     /** @type {HTMLDivElement} */
     let sidebarContent;
 
-    const addDropdownItem = (href, text) => {
+    const addDropdownItem = course => {
         if (dropdownMenu) {
             const anchor = document.createElement('a');
             anchor.classList.add('dropdown-item');
-            anchor.href = href;
-            anchor.textContent = text;
-            anchor.title = text;
+            anchor.href = course.viewUrl;
+            const shortName = document.createElement('strong');
+            shortName.textContent = course.shortname;
+            const fullName = document.createElement('small');
+            fullName.textContent = course.fullname;
+            anchor.append(
+                ...(course.shortname ? [shortName, '\u00a0'] : []),
+                fullName
+            );
+            anchor.title = anchor.textContent;
             anchor.style.setProperty('overflow', 'hidden');
             anchor.style.setProperty('text-overflow', 'ellipsis');
             dropdownMenu.append(anchor);
@@ -192,13 +199,21 @@ ready(() => {
                 'list-group-item',
                 'list-group-item-action'
             );
-            anchor.href = href;
-            anchor.textContent = text;
+            anchor.href = course.viewUrl;
+            const shortName = document.createElement('strong');
+            shortName.textContent = course.shortname;
+            const fullName = document.createElement('small');
+            fullName.textContent = course.fullname;
+            anchor.append(
+                ...(course.shortname ? [shortName, '\u00a0'] : []),
+                fullName
+            );
+            anchor.title = anchor.textContent;
             mobileDropdownMenu.append(anchor);
         }
     };
 
-    const addSidebarItem = (href, text) => {
+    const addSidebarItem = course => {
         if (!sidebarContent) return;
         const card = document.createElement('div');
         card.classList.add('card', 'block', 'mb-3');
@@ -206,8 +221,19 @@ ready(() => {
         cardBody.classList.add('card-body', 'p-3');
 
         const anchor = document.createElement('a');
-        anchor.href = href;
-        anchor.textContent = text;
+        anchor.href = course.viewUrl;
+        const shortName = document.createElement('strong');
+        shortName.textContent = course.shortname;
+        const fullName = document.createElement('small');
+        fullName.textContent = course.fullname;
+        anchor.append(
+            ...(course.shortname
+                ? [shortName, document.createElement('br')]
+                : []),
+            fullName
+        );
+        anchor.title = anchor.textContent;
+        anchor.title = anchor.textContent;
 
         cardBody.append(anchor);
         card.append(cardBody);
@@ -233,8 +259,6 @@ ready(() => {
         dropdownMenu = document.createElement('div');
         dropdownMenu.classList.add('dropdown-menu');
         dropdownMenu.style.setProperty('max-width', '500px');
-
-        addDropdownItem(myCoursesLink, '[Meine Kurse]');
 
         myCoursesA.after(dropdownMenu);
 
@@ -290,6 +314,12 @@ ready(() => {
             mobileA.append(caretDown, caretRight);
             mobileA.after(mobileDropdownMenu);
         }
+
+        addDropdownItem({
+            fullname: '[Meine Kurse]',
+            shortname: '',
+            viewUrl: myCoursesLink,
+        });
     }
 
     // add a left sidebar
@@ -297,7 +327,11 @@ ready(() => {
         createSidebar('dashboard-left', 'left', 'graduation-cap', content => {
             sidebarContent = content;
 
-            addSidebarItem('/my/courses.php', '[Meine Kurse]');
+            addSidebarItem({
+                fullname: '[Meine Kurse]',
+                shortname: '',
+                viewUrl: '/my/courses.php',
+            });
         });
     }
 
@@ -309,11 +343,11 @@ ready(() => {
             'all',
             0,
             0,
-            'fullname'
+            'shortname'
         ).then(({ courses }) =>
             courses.forEach(course => {
-                addDropdownItem(course.viewurl, course.fullname);
-                addSidebarItem(course.viewurl, course.fullname);
+                addDropdownItem(course);
+                addSidebarItem(course);
             })
         ));
 });
