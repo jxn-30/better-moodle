@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            🎓️ UzL: Better Moodle
 // @namespace       https://uni-luebeck.de
-// @version         1.2.1
+// @version         1.2.2
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
@@ -61,7 +61,7 @@ const ready = callback => {
  * @param {string} id
  * @param {'left' | 'right'} position
  * @param {string} icon
- * @param {(content: HTMLDivElement) => void} callback
+ * @param {(content: HTMLDivElement, header: HTMLDivElement) => void} callback
  */
 const createSidebar = (id, position, icon, callback) => {
     const prefix = str => `${PREFIX(id)}-sidebar-${str}`;
@@ -104,32 +104,32 @@ const createSidebar = (id, position, icon, callback) => {
 
     sidebar.append(header, content);
 
-    const toggleBtn = document.createElement('div');
-    toggleBtn.classList.add(
+    const toggleBtnWrapper = document.createElement('div');
+    toggleBtnWrapper.classList.add(
         'drawer-toggler',
         `drawer-${position}-toggle`,
         'ml-auto',
         'd-print-none'
     );
-    const toggleBtnInner = document.createElement('button');
-    toggleBtnInner.classList.add('btn', 'icon-no-margin');
-    toggleBtnInner.dataset.toggler = 'drawers';
-    toggleBtnInner.dataset.action = 'toggle';
-    toggleBtnInner.dataset.target = sidebar.id;
-    toggleBtnInner.dataset.toggle = 'tooltip';
-    toggleBtnInner.dataset.toggle = 'tooltip';
-    toggleBtnInner.title = 'Blockleiste öffnen';
-    toggleBtnInner.dataset.originalTitle = toggleBtnInner.title;
+    const toggleBtn = document.createElement('button');
+    toggleBtn.classList.add('btn', 'icon-no-margin');
+    toggleBtn.dataset.toggler = 'drawers';
+    toggleBtn.dataset.action = 'toggle';
+    toggleBtn.dataset.target = sidebar.id;
+    toggleBtn.dataset.toggle = 'tooltip';
+    toggleBtn.dataset.toggle = 'tooltip';
+    toggleBtn.title = 'Blockleiste öffnen';
+    toggleBtn.dataset.originalTitle = toggleBtn.title;
     const toggleBtnSRSpan = document.createElement('span');
     toggleBtnSRSpan.classList.add('sr-only');
-    toggleBtnSRSpan.textContent = toggleBtnInner.title;
+    toggleBtnSRSpan.textContent = toggleBtn.title;
     const toggleBtnIconSpan = document.createElement('span');
     const toggleBtnIcon = document.createElement('i');
     toggleBtnIcon.classList.add('icon', 'fa', `fa-${icon}`, 'fa-fw');
     toggleBtnIcon.setAttribute('aria-hidden', 'true');
     toggleBtnIconSpan.appendChild(toggleBtnIcon);
-    toggleBtnInner.append(toggleBtnSRSpan, toggleBtnIcon);
-    toggleBtn.appendChild(toggleBtnInner);
+    toggleBtn.append(toggleBtnSRSpan, toggleBtnIcon);
+    toggleBtnWrapper.appendChild(toggleBtn);
 
     ready(() => {
         // override setting the preference
@@ -146,9 +146,11 @@ const createSidebar = (id, position, icon, callback) => {
         document.getElementById('page')?.before(sidebar);
 
         // append the toggle button
-        document.querySelector('#page .drawer-toggles')?.append(toggleBtn);
+        document
+            .querySelector('#page .drawer-toggles')
+            ?.append(toggleBtnWrapper);
 
-        callback(content);
+        callback(content, header);
     });
 };
 
@@ -177,7 +179,7 @@ ready(() => {
         if (dropdownMenu) {
             const anchor = document.createElement('a');
             anchor.classList.add('dropdown-item');
-            anchor.href = course.viewUrl;
+            anchor.href = course.viewurl;
             const shortName = document.createElement('strong');
             shortName.textContent = course.shortname;
             const fullName = document.createElement('small');
@@ -199,7 +201,7 @@ ready(() => {
                 'list-group-item',
                 'list-group-item-action'
             );
-            anchor.href = course.viewUrl;
+            anchor.href = course.viewurl;
             const shortName = document.createElement('strong');
             shortName.textContent = course.shortname;
             const fullName = document.createElement('small');
@@ -221,7 +223,7 @@ ready(() => {
         cardBody.classList.add('card-body', 'p-3');
 
         const anchor = document.createElement('a');
-        anchor.href = course.viewUrl;
+        anchor.href = course.viewurl;
         const shortName = document.createElement('strong');
         shortName.textContent = course.shortname;
         const fullName = document.createElement('small');
@@ -318,21 +320,27 @@ ready(() => {
         addDropdownItem({
             fullname: '[Meine Kurse]',
             shortname: '',
-            viewUrl: myCoursesLink,
+            viewurl: myCoursesLink,
         });
     }
 
     // add a left sidebar
     if (window.location.pathname === '/my/') {
-        createSidebar('dashboard-left', 'left', 'graduation-cap', content => {
-            sidebarContent = content;
+        createSidebar(
+            'dashboard-left',
+            'left',
+            'graduation-cap',
+            (content, header) => {
+                sidebarContent = content;
 
-            addSidebarItem({
-                fullname: '[Meine Kurse]',
-                shortname: '',
-                viewUrl: '/my/courses.php',
-            });
-        });
+                // add the my-courses link as a sidebar header
+                const myCoursesLink = document.createElement('a');
+                myCoursesLink.textContent = 'Meine Kurse';
+                myCoursesLink.href = '/my/courses.php';
+                myCoursesLink.classList.add('w-100', 'text-center');
+                header.append(myCoursesLink);
+            }
+        );
     }
 
     // fetch the courses
