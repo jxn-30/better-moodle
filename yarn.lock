@@ -106,10 +106,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/tampermonkey@npm:4.20.1":
-  version: 4.20.1
-  resolution: "@types/tampermonkey@npm:4.20.1"
-  checksum: 7b6596a542df3404d53870d6a9f87d21c8583a107bf0d066ac79d86a997172989fefdd1f1cd3bdd8ec53a8262ef5c916357c059c087d302a7b97a3ce4767c3e2
+"@types/tampermonkey@npm:4.20.2":
+  version: 4.20.2
+  resolution: "@types/tampermonkey@npm:4.20.2"
+  checksum: 29f6a463e1c025623bb80d6f6aff79547e2a7481cbdd6394f368149ef8234ef2641b446a8b510b04bbe4e7b127a7fc47aa36db783dbf526061ddfcaa59bf0530
   languageName: node
   linkType: hard
 
@@ -177,7 +177,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "better-moodle@workspace:."
   dependencies:
-    "@types/tampermonkey": 4.20.1
+    "@types/tampermonkey": 4.20.2
     eslint: 8.48.0
     eslint-config-prettier: 9.0.0
     eslint-plugin-userscripts: 0.4.0
