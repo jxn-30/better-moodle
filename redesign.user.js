@@ -264,6 +264,17 @@ ready(() => {
 
         myCoursesA.after(dropdownMenu);
 
+        // open my courses if clicked when dropdown is open and not already on my courses page
+        myCoursesA.addEventListener('click', e => {
+            if (
+                myCoursesLi.classList.contains('show') &&
+                !window.location.toString().includes(myCoursesLink)
+            ) {
+                e.preventDefault();
+                window.location.replace(myCoursesLink);
+            }
+        });
+
         // mobile menu
         const mobileA = document.querySelector(
             `#theme_boost-drawers-primary .list-group-item[href="${myCoursesLink}"]`
