@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            🎓️ UzL: Better Moodle
 // @namespace       https://uni-luebeck.de
-// @version         1.2.4
+// @version         1.2.5
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
@@ -173,6 +173,17 @@ ready(() => {
             target.target = '_blank';
         }
     });
+});
+
+// add a title attribute to texts that are too long
+// that is especially useful for the course content sidebar
+document.addEventListener('mouseover', e => {
+    const target = e.target;
+    if (!(target instanceof HTMLElement) && !(target instanceof SVGElement)) {
+        return;
+    }
+    if (target.title || !target.classList.contains('text-truncate')) return;
+    target.title = target.textContent.trim();
 });
 
 // add a left sidebar with the users courses. Also manipulate my courses link to be a dropdown
