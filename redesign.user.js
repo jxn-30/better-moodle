@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            🎓️ UzL: Better Moodle
 // @namespace       https://uni-luebeck.de
-// @version         1.2.6
+// @version         1.2.7
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
@@ -186,7 +186,7 @@ document.addEventListener('mouseover', e => {
 
 // add a link to Bewertungen on each course-sidebar
 ready(() => {
-    if (M.cfg.courseId && M.cfg.courseId !== 1) return;
+    if (!M.cfg.courseId || M.cfg.courseId === 1) return;
     const header = document.querySelector(
         '#theme_boost-drawers-courseindex .drawerheader'
     );
