@@ -186,7 +186,7 @@ document.addEventListener('mouseover', e => {
 
 // add a link to Bewertungen on each course-sidebar
 ready(() => {
-    if (!document.getElementById('course-header')) return;
+    if (M.cfg.courseId && M.cfg.courseId !== 1) return;
     const header = document.querySelector(
         '#theme_boost-drawers-courseindex .drawerheader'
     );
