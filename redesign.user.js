@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            🎓️ UzL: Better Moodle
 // @namespace       https://uni-luebeck.de
-// @version         1.2.5
+// @version         1.2.6
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
@@ -164,15 +164,13 @@ if (window.location.pathname === '/my/') {
 }
 
 // add target="_blank" to all external links
-ready(() => {
-    document.addEventListener('click', e => {
-        const target = e.target;
-        if (!(target instanceof HTMLAnchorElement) || target.target) return;
-        const origin = new URL(target.href, window.location).origin;
-        if (origin && origin !== window.location.origin) {
-            target.target = '_blank';
-        }
-    });
+document.addEventListener('click', e => {
+    const target = e.target;
+    if (!(target instanceof HTMLAnchorElement) || target.target) return;
+    const origin = new URL(target.href, window.location).origin;
+    if (origin && origin !== window.location.origin) {
+        target.target = '_blank';
+    }
 });
 
 // add a title attribute to texts that are too long
@@ -184,6 +182,25 @@ document.addEventListener('mouseover', e => {
     }
     if (target.title || !target.classList.contains('text-truncate')) return;
     target.title = target.textContent.trim();
+});
+
+// add a link to Bewertungen on each course-sidebar
+ready(() => {
+    if (!document.getElementById('course-header')) return;
+    const header = document.querySelector(
+        '#theme_boost-drawers-courseindex .drawerheader'
+    );
+    if (!header) return;
+
+    const link = document.createElement('a');
+    const calcItem = document.createElement('i');
+    calcItem.classList.add('icon', 'fa', 'fa-calculator', 'fa-fw');
+    link.target = '_blank';
+    link.href = `/grade/report/user/index.php?id=${M.cfg.courseId}`;
+    link.classList.add('w-100', 'text-center');
+    link.append(calcItem, ' Bewertungen');
+
+    header.append(link);
 });
 
 // add a left sidebar with the users courses. Also manipulate my courses link to be a dropdown
