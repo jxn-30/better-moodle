@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            🎓️ UzL: Better Moodle
 // @namespace       https://uni-luebeck.de
-// @version         1.2.8
+// @version         1.2.9
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
@@ -196,7 +196,6 @@ ready(() => {
         const link = document.createElement('a');
         const calcItem = document.createElement('i');
         calcItem.classList.add('icon', 'fa', 'fa-calculator', 'fa-fw');
-        link.target = '_blank';
         link.href = `/grade/report/user/index.php?id=${M.cfg.courseId}`;
         link.classList.add('w-100', 'text-center');
         link.append(calcItem, ' Bewertungen');
