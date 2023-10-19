@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            🎓️ UzL: Better Moodle
 // @namespace       https://uni-luebeck.de
-// @version         1.2.7
+// @version         1.2.8
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
@@ -184,23 +184,53 @@ document.addEventListener('mouseover', e => {
     target.title = target.textContent.trim();
 });
 
-// add a link to Bewertungen on each course-sidebar
 ready(() => {
     if (!M.cfg.courseId || M.cfg.courseId === 1) return;
-    const header = document.querySelector(
-        '#theme_boost-drawers-courseindex .drawerheader'
-    );
-    if (!header) return;
 
-    const link = document.createElement('a');
-    const calcItem = document.createElement('i');
-    calcItem.classList.add('icon', 'fa', 'fa-calculator', 'fa-fw');
-    link.target = '_blank';
-    link.href = `/grade/report/user/index.php?id=${M.cfg.courseId}`;
-    link.classList.add('w-100', 'text-center');
-    link.append(calcItem, ' Bewertungen');
+    const drawer = document.getElementById('theme_boost-drawers-courseindex');
+    if (!drawer) return;
 
-    header.append(link);
+    // add a link to Bewertungen on each course-sidebar
+    const header = drawer?.querySelector('.drawerheader');
+    if (header) {
+        const link = document.createElement('a');
+        const calcItem = document.createElement('i');
+        calcItem.classList.add('icon', 'fa', 'fa-calculator', 'fa-fw');
+        link.target = '_blank';
+        link.href = `/grade/report/user/index.php?id=${M.cfg.courseId}`;
+        link.classList.add('w-100', 'text-center');
+        link.append(calcItem, ' Bewertungen');
+
+        header.append(link);
+    }
+
+    // collapse / un-collapse all sections on double-click on a section header
+    drawer?.addEventListener('dblclick', e => {
+        const target = e.target;
+        if (
+            !(target instanceof HTMLElement) &&
+            !(target instanceof SVGElement)
+        ) {
+            return;
+        }
+        const collapseIcon = target.closest(
+            '.courseindex-section-title .icons-collapse-expand'
+        );
+        if (!collapseIcon) return;
+
+        e.preventDefault();
+
+        drawer
+            .querySelectorAll(
+                `.courseindex-section-title .icons-collapse-expand${
+                    collapseIcon.classList.contains('collapsed')
+                        ? ':not(.collapsed)'
+                        : '.collapsed'
+                }`
+            )
+            .forEach(collapseIcon => collapseIcon.click());
+        collapseIcon.focus();
+    });
 });
 
 // add a left sidebar with the users courses. Also manipulate my courses link to be a dropdown
