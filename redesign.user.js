@@ -43,6 +43,11 @@ GM_addStyle(`
 #page-login-index #page-wrapper {
     overflow: auto;
 }
+
+/* Use a pointer cursor on toggle buttons */
+.custom-control.custom-switch .custom-control-label {
+    cursor: pointer;
+}
     `);
 
 const PREFIX = str => `better-moodle-${str}`;
@@ -50,6 +55,7 @@ const PREFIX = str => `better-moodle-${str}`;
 const SETTINGS = [
     'Allgemeine Einstellungen',
     {
+        id: 'general.fullwidth',
         name: 'Volle Breite',
         description:
             'Entfernt den seltsamen weißen Rand und sorgt dafür, dass die Seiten die volle Breite nutzen.',
@@ -57,6 +63,7 @@ const SETTINGS = [
         default: true,
     },
     {
+        id: 'general.externalLinks',
         name: 'Externe Links',
         description:
             'Sorgt dafür, dass externe Links immer automatisch in einem neuen Tab geöffnet werden.',
@@ -64,6 +71,7 @@ const SETTINGS = [
         default: true,
     },
     {
+        id: 'general.truncatedTexts',
         name: 'Abgeschnittene Texte',
         description:
             'Fügt ein Title-Attribut bei potentiell abgeschnittenen Texten hinzu, damit man per Maus-Hover den vollen Text lesen kann.',
@@ -71,8 +79,62 @@ const SETTINGS = [
         default: true,
     },
     'Dashboard',
+    // {Layout anpassen}
+    {
+        id: 'dashboard.~layoutPlaceholder',
+        name: 'Layout',
+        description:
+            'Hier sollst du mal das Layout anpassen können. Das ist aber leider noch nicht fertig. Bitte habe noch ein bisschen Geduld hiermit :)',
+        type: String,
+        default: 'Coming soon...',
+        disabled: () => true,
+    },
     'Meine Kurse',
+    {
+        id: 'myCourses.boxesPerRow',
+        name: 'Kacheln pro Zeile',
+        description:
+            'Zahl der Kacheln pro Zeile auf der "Meine Kurse"-Seite, wenn die Ansicht auf "Kacheln" gestellt ist.',
+        type: Number,
+        default: 4,
+        attributes: {
+            min: 1,
+            max: 10,
+        },
+    },
+    {
+        id: 'myCourses.navbarDropdown',
+        name: 'Dropdown in der Navigationsleiste',
+        description:
+            'Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.',
+        type: Boolean,
+        default: true,
+    },
     'Kurse',
+    {
+        id: 'courses.grades',
+        name: 'Link zu Bewertungen in der Sidebar',
+        description:
+            'Zeigt einen Link zu den Bewertungen des Kurses in der linken Seitenleiste an.',
+        type: Boolean,
+        default: true,
+    },
+    {
+        id: 'courses.gradesNewTab',
+        name: 'Bewertungen in neuem Tab öffnen',
+        description: 'Öffnet die Bewertungen standardmäßig einem neuen Tab.',
+        type: Boolean,
+        default: false,
+        disabled: settings => !settings['courses.grades'],
+    },
+    {
+        id: 'courses.collapseAll',
+        name: 'Seitenleiste vollständig ein-/ausklappen',
+        description:
+            'Klappt alle Abschnitte in der Seitenleiste ein oder aus, wenn doppelt auf einen der Pfeile in der Seitenleiste geklickt wird.',
+        type: Boolean,
+        default: true,
+    },
 ];
 
 /**
@@ -586,13 +648,15 @@ ready(() => {
         fieldsetCounter++;
     };
 
-    SETTINGS.forEach(setting => {
+    SETTINGS.forEach((setting, index) => {
         // if setting is a string, use this as a heading / fieldset
         if (typeof setting === 'string') {
             createFieldset(setting);
         }
         // otherwise, add the settings inputs
         else {
+            const SETTINGS_KEY = PREFIX(`settings.${setting.id}`);
+
             if (!currentFieldset) createFieldset('');
 
             const settingRow = document.createElement('div');
@@ -600,15 +664,15 @@ ready(() => {
 
             const labelWrapper = document.createElement('div');
             labelWrapper.classList.add(
-                'col-md-3',
+                'col-md-4',
                 'col-form-label',
+                'd-flex',
                 'pb-0',
                 'pt-0'
             );
             const label = document.createElement('label');
             label.classList.add('d-inline', 'word-break');
             label.textContent = setting.name;
-            labelWrapper.append(label);
 
             const descWrapper = document.createElement('div');
             descWrapper.classList.add(
@@ -622,8 +686,7 @@ ready(() => {
             descBtn.dataset.container = 'body';
             descBtn.dataset.toggle = 'popover';
             descBtn.dataset.placement = 'right';
-            descBtn.dataset.content = `<div class="no-overflow"><p>${setting.description}</p></div>`;
-            descBtn.dataset.html = 'true';
+            descBtn.dataset.content = setting.description;
             descBtn.dataset.trigger = 'focus';
             descBtn.dataset.originalTitle = '';
             descBtn.title = '';
@@ -638,13 +701,47 @@ ready(() => {
             );
             descBtn.append(descIcon);
             descWrapper.append(descBtn);
+            labelWrapper.append(label, descWrapper);
+
+            const inputWrapper = document.createElement('div');
+            inputWrapper.classList.add(
+                'col-md-8',
+                'form-inline',
+                'align-items-start',
+                'felement'
+            );
+
+            const value = GM_getValue(SETTINGS_KEY, setting.default);
+
+            /** @type{HTMLInputElement} */
+            let input;
+            /** @type{HTMLElement} */
+            let formControl;
 
             switch (setting.type) {
-                case Boolean:
-                // const checkbox = document.createElement('input');
+                case Boolean: {
+                    formControl = document.createElement('div');
+                    formControl.classList.add(
+                        'custom-control',
+                        'custom-switch'
+                    );
+                    input = document.createElement('input');
+                    input.classList.add('custom-control-input');
+                    input.type = 'checkbox';
+                    input.id = PREFIX(`settings-input-${index}`);
+                    input.checked = value;
+                    const switchLabel = document.createElement('label');
+                    switchLabel.setAttribute('for', input.id);
+                    switchLabel.classList.add('custom-control-label');
+                    switchLabel.textContent = ' ';
+                    formControl.append(input, switchLabel);
+                }
             }
 
-            settingRow.append(labelWrapper, descWrapper);
+            if (input?.id) label.setAttribute('for', input.id);
+
+            if (formControl) inputWrapper.append(formControl);
+            settingRow.append(labelWrapper, inputWrapper);
             currentFieldset.querySelector('.fcontainer')?.append(settingRow);
         }
     });
@@ -652,7 +749,7 @@ ready(() => {
     document
         .querySelector('#usernavigation .usermenu-container')
         ?.before(settingsBtnWrapper);
-    require(['core/modal_factory'], ({ create, types }) => {
+    require(['core/modal_factory'], ({ create, types }) =>
         create(
             {
                 type: types.SAVE_CANCEL,
@@ -663,6 +760,5 @@ ready(() => {
             },
             // needs a jQuery Element as trigger element
             $(settingsBtnWrapper)
-        );
-    });
+        ).then(console.log));
 });
