@@ -16,7 +16,7 @@
 // @grant           GM_setValue
 // ==/UserScript==
 
-/* global M, require */
+/* global M, require, $ */
 
 // use full width instead of maximum 830px
 GM_addStyle(`
@@ -46,6 +46,34 @@ GM_addStyle(`
     `);
 
 const PREFIX = str => `better-moodle-${str}`;
+
+const SETTINGS = [
+    'Allgemeine Einstellungen',
+    {
+        name: 'Volle Breite',
+        description:
+            'Entfernt den seltsamen weißen Rand und sorgt dafür, dass die Seiten die volle Breite nutzen.',
+        type: Boolean,
+        default: true,
+    },
+    {
+        name: 'Externe Links',
+        description:
+            'Sorgt dafür, dass externe Links immer automatisch in einem neuen Tab geöffnet werden.',
+        type: Boolean,
+        default: true,
+    },
+    {
+        name: 'Abgeschnittene Texte',
+        description:
+            'Fügt ein Title-Attribut bei potentiell abgeschnittenen Texten hinzu, damit man per Maus-Hover den vollen Text lesen kann.',
+        type: Boolean,
+        default: true,
+    },
+    'Dashboard',
+    'Meine Kurse',
+    'Kurse',
+];
 
 /**
  * @param {() => void} callback
@@ -438,4 +466,203 @@ ready(() => {
                 addSidebarItem(course);
             })
         ));
+});
+
+// A settings modal
+ready(() => {
+    const settingsBtnWrapper = document.createElement('div');
+    const settingsBtn = document.createElement('a');
+    settingsBtn.classList.add(
+        'nav-link',
+        'position-relative',
+        'icon-no-margin'
+    );
+    settingsBtn.href = '#';
+    settingsBtn.role = 'button';
+    const settingsIcon = document.createElement('i');
+    settingsIcon.classList.add('icon', 'fa', 'fa-gears', 'fa-fw');
+    settingsIcon.title = settingsBtn.ariaLabel =
+        'Einstellungen von Better Moodle';
+    settingsIcon.role = 'img';
+    settingsBtn.append(settingsIcon);
+
+    const srSpan = document.createElement('span');
+    srSpan.classList.add('sr-only', 'sr-only-focusable');
+    srSpan.dataset.region = 'jumpto';
+    srSpan.tabIndex = -1;
+
+    settingsBtnWrapper.append(settingsBtn, srSpan);
+
+    const form = document.createElement('form');
+    form.classList.add('mform');
+
+    let fieldsetCounter = 0;
+    let currentFieldset;
+
+    /**
+     * @param {string} name
+     */
+    const createFieldset = name => {
+        const fieldset = (currentFieldset = document.createElement('fieldset'));
+        form.append(fieldset);
+
+        const legend = document.createElement('legend');
+        legend.classList.add('sr-only');
+        legend.textContent = name;
+
+        const headerRow = document.createElement('div');
+        headerRow.classList.add('d-flex', 'align-items-center', 'mb-2');
+        const headerWrapper = document.createElement('div');
+        headerWrapper.classList.add(
+            'position-relative',
+            'd-flex',
+            'ftoggler',
+            'align-items-center',
+            'position-relative',
+            'mr-1'
+        );
+        const collapseBtn = document.createElement('a');
+        collapseBtn.classList.add(
+            'btn',
+            'btn-icon',
+            'mr-1',
+            'icons-collapse-expand',
+            'stretched-link',
+            'fheader'
+        );
+        collapseBtn.dataset.toggle = 'collapse';
+        collapseBtn.id = PREFIX(`settings-collapseElement-${fieldsetCounter}`);
+        const expandedSpan = document.createElement('span');
+        expandedSpan.classList.add('expanded-icon', 'icon-no-margin', 'p-2');
+        expandedSpan.title = 'Einklappen';
+        const expandedIcon = document.createElement('i');
+        expandedIcon.classList.add('icon', 'fa', 'fa-chevron-down', 'fa-fw');
+        expandedSpan.append(expandedIcon);
+        const collapsedSpan = document.createElement('span');
+        collapsedSpan.classList.add('collapsed-icon', 'icon-no-margin', 'p-2');
+        collapsedSpan.title = 'Ausklappen';
+        const collapsedLTRIcon = document.createElement('i');
+        collapsedLTRIcon.classList.add(
+            'icon',
+            'fa',
+            'fa-chevron-right',
+            'fa-fw',
+            'dir-ltr-hide'
+        );
+        const collapsedRTLIcon = document.createElement('i');
+        collapsedRTLIcon.classList.add(
+            'icon',
+            'fa',
+            'fa-chevron-right',
+            'fa-fw',
+            'dir-rtl-hide'
+        );
+        collapsedSpan.append(collapsedLTRIcon, collapsedRTLIcon);
+        collapseBtn.append(expandedSpan, collapsedSpan);
+
+        const heading = document.createElement('h3');
+        heading.classList.add(
+            'd-flex',
+            'align-self-stretch',
+            'align-items-center',
+            'mb-0'
+        );
+        heading.textContent = name;
+
+        headerWrapper.append(collapseBtn, heading);
+        headerRow.append(headerWrapper);
+
+        const container = document.createElement('div');
+        container.classList.add(
+            'fcontainer',
+            'collapseable',
+            'collapse',
+            'show'
+        );
+        container.id = PREFIX(`settings-containerElement-${fieldsetCounter}`);
+        collapseBtn.href = `#${container.id}`;
+
+        fieldset.append(legend, headerRow, container);
+        fieldsetCounter++;
+    };
+
+    SETTINGS.forEach(setting => {
+        // if setting is a string, use this as a heading / fieldset
+        if (typeof setting === 'string') {
+            createFieldset(setting);
+        }
+        // otherwise, add the settings inputs
+        else {
+            if (!currentFieldset) createFieldset('');
+
+            const settingRow = document.createElement('div');
+            settingRow.classList.add('form-group', 'row', 'fitem');
+
+            const labelWrapper = document.createElement('div');
+            labelWrapper.classList.add(
+                'col-md-3',
+                'col-form-label',
+                'pb-0',
+                'pt-0'
+            );
+            const label = document.createElement('label');
+            label.classList.add('d-inline', 'word-break');
+            label.textContent = setting.name;
+            labelWrapper.append(label);
+
+            const descWrapper = document.createElement('div');
+            descWrapper.classList.add(
+                'form-label-addon',
+                'd-flex',
+                'align-items-center',
+                'align-self-start'
+            );
+            const descBtn = document.createElement('a');
+            descBtn.classList.add('btn', 'btn-link', 'p-0');
+            descBtn.dataset.container = 'body';
+            descBtn.dataset.toggle = 'popover';
+            descBtn.dataset.placement = 'right';
+            descBtn.dataset.content = `<div class="no-overflow"><p>${setting.description}</p></div>`;
+            descBtn.dataset.html = 'true';
+            descBtn.dataset.trigger = 'focus';
+            descBtn.dataset.originalTitle = '';
+            descBtn.title = '';
+            descBtn.tabIndex = 0;
+            const descIcon = document.createElement('i');
+            descIcon.classList.add(
+                'icon',
+                'fa',
+                'fa-question-circle',
+                'text-info',
+                'fa-fw'
+            );
+            descBtn.append(descIcon);
+            descWrapper.append(descBtn);
+
+            switch (setting.type) {
+                case Boolean:
+                // const checkbox = document.createElement('input');
+            }
+
+            settingRow.append(labelWrapper, descWrapper);
+            currentFieldset.querySelector('.fcontainer')?.append(settingRow);
+        }
+    });
+
+    document
+        .querySelector('#usernavigation .usermenu-container')
+        ?.before(settingsBtnWrapper);
+    require(['core/modal_factory'], ({ create, types }) => {
+        create(
+            {
+                type: types.SAVE_CANCEL,
+                large: true,
+                scrollable: true,
+                title: 'Better Moodle: Einstellungen',
+                body: form,
+            },
+            // needs a jQuery Element as trigger element
+            $(settingsBtnWrapper)
+        );
+    });
 });
