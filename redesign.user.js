@@ -784,6 +784,8 @@ ready(() => {
                         }
                     );
                 }
+            } else {
+                label.classList.add('text-muted');
             }
 
             if (formControl) inputWrapper.append(formControl);
