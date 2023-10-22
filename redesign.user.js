@@ -794,6 +794,42 @@ ready(() => {
         }
     });
 
+    const getFormValue = () => {
+        const formValue = {};
+        SETTINGS.forEach(({ id, type }) => {
+            if (!id) return;
+
+            switch (type) {
+                case Boolean:
+                    formValue[id] = form[id]?.checked;
+                    break;
+                default:
+                    formValue[id] = form[id]?.value;
+            }
+
+            if (typeof formValue[id] === 'undefined') delete formValue[id];
+        });
+        return formValue;
+    };
+
+    const updateDisabledStates = () => {
+        const settings = getFormValue();
+        SETTINGS.forEach(({ id, disabled }) => {
+            if (!id || !disabled || !form[id]) return;
+
+            const isDisabled = disabled(settings);
+            const classMethod = isDisabled ? 'add' : 'remove';
+            form[id].disabled = isDisabled;
+            form[id].classList[classMethod]('disabled');
+            form.querySelectorAll(`label[for="${form[id].id}"]`).forEach(
+                label => label.classList[classMethod]('text-muted')
+            );
+        });
+    };
+
+    updateDisabledStates();
+    form.addEventListener('change', updateDisabledStates);
+
     document
         .querySelector('#usernavigation .usermenu-container')
         ?.before(settingsBtnWrapper);
@@ -808,7 +844,7 @@ ready(() => {
             title: 'Better Moodle: Einstellungen',
             body: form,
         }).then(modal => {
-            console.log(modal, ModalEvents);
+            // console.log(modal, ModalEvents);
 
             // open the modal on click onto the settings button
             settingsBtnWrapper.addEventListener('click', () => modal.show());
@@ -831,23 +867,9 @@ ready(() => {
 
             // handle the save button
             modal.getRoot().on(ModalEvents.save, () => {
-                SETTINGS.forEach(({ id, type }) => {
-                    if (!id) return;
-
-                    let value;
-
-                    switch (type) {
-                        case Boolean:
-                            value = form[id]?.checked;
-                            break;
-                        default:
-                            value = form[id]?.value;
-                    }
-
-                    if (typeof value !== 'undefined') {
-                        GM_setValue(getSettingKey(id), value);
-                    }
-                });
+                Object.entries(getFormValue()).forEach(([setting, value]) =>
+                    GM_setValue(getSettingKey(setting), value)
+                );
 
                 window.location.reload();
             });
