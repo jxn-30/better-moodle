@@ -16,7 +16,7 @@
 // @grant           GM_setValue
 // ==/UserScript==
 
-/* global M, require, $ */
+/* global M, require */
 
 // use full width instead of maximum 830px
 GM_addStyle(`
@@ -635,18 +635,19 @@ ready(() => {
         headerRow.append(headerWrapper);
 
         const container = document.createElement('div');
-        container.classList.add(
-            'fcontainer',
-            'collapseable',
-            'collapse',
-            'show'
-        );
+        container.classList.add('fcontainer', 'collapseable', 'collapse');
         container.id = PREFIX(`settings-containerElement-${fieldsetCounter}`);
         collapseBtn.href = `#${container.id}`;
+
+        // all fieldsets are collapsed by default except the first one
+        if (fieldsetCounter) collapseBtn.classList.add('collapsed');
+        else container.classList.add('show');
 
         fieldset.append(legend, headerRow, container);
         fieldsetCounter++;
     };
+
+    const getSettingKey = setting => PREFIX(`settings.${setting.id}`);
 
     SETTINGS.forEach((setting, index) => {
         // if setting is a string, use this as a heading / fieldset
@@ -655,7 +656,7 @@ ready(() => {
         }
         // otherwise, add the settings inputs
         else {
-            const SETTINGS_KEY = PREFIX(`settings.${setting.id}`);
+            const SETTING_KEY = getSettingKey(setting);
 
             if (!currentFieldset) createFieldset('');
 
@@ -711,7 +712,7 @@ ready(() => {
                 'felement'
             );
 
-            const value = GM_getValue(SETTINGS_KEY, setting.default);
+            const value = GM_getValue(SETTING_KEY, setting.default);
 
             /** @type{HTMLInputElement} */
             let input;
@@ -738,6 +739,8 @@ ready(() => {
                 }
             }
 
+            if (input) input.name = setting.id;
+
             if (input?.id) label.setAttribute('for', input.id);
 
             if (formControl) inputWrapper.append(formControl);
@@ -749,16 +752,82 @@ ready(() => {
     document
         .querySelector('#usernavigation .usermenu-container')
         ?.before(settingsBtnWrapper);
-    require(['core/modal_factory'], ({ create, types }) =>
-        create(
-            {
-                type: types.SAVE_CANCEL,
-                large: true,
-                scrollable: true,
-                title: 'Better Moodle: Einstellungen',
-                body: form,
-            },
-            // needs a jQuery Element as trigger element
-            $(settingsBtnWrapper)
-        ).then(console.log));
+    require(['core/modal_factory', 'core/modal_events'], (
+        { create, types },
+        ModalEvents
+    ) =>
+        create({
+            type: types.SAVE_CANCEL,
+            large: true,
+            scrollable: true,
+            title: 'Better Moodle: Einstellungen',
+            body: form,
+        }).then(modal => {
+            console.log(modal, ModalEvents);
+
+            // open the modal on click onto the settings button
+            settingsBtnWrapper.addEventListener('click', () => modal.show());
+
+            // add a link to moodle settings
+            const moodleSettingsLink = document.createElement('a');
+            moodleSettingsLink.href = '/user/preferences.php';
+            moodleSettingsLink.target = '_blank';
+            moodleSettingsLink.textContent = 'Zu den Moodle-Einstellungen';
+            moodleSettingsLink.style.setProperty('padding', '1rem 1rem');
+            moodleSettingsLink.style.setProperty(
+                'margin',
+                '-.8rem -.8rem -.8rem auto'
+            );
+            moodleSettingsLink.style.setProperty('font-size', 'small');
+            modal.getTitle()[0].after(moodleSettingsLink);
+            modal.header[0]
+                .querySelector('button.close')
+                ?.style.setProperty('margin-left', '0');
+
+            // handle the save button
+            modal.getRoot().on(ModalEvents.save, () => {
+                SETTINGS.forEach(({ id, type }) => {
+                    if (!id) return;
+
+                    let value;
+
+                    switch (type) {
+                        case Boolean:
+                            value = form[id]?.checked;
+                            break;
+                        default:
+                            value = form[id]?.value;
+                    }
+
+                    if (typeof value !== 'undefined') {
+                        GM_setValue(getSettingKey({ id }), value);
+                    }
+                });
+
+                window.location.reload();
+            });
+
+            modal.getRoot().on(ModalEvents.cancel, () =>
+                SETTINGS.forEach(setting => {
+                    if (!setting.id) return;
+
+                    const input = form[setting.id];
+                    if (!input) return;
+
+                    switch (setting.type) {
+                        case Boolean:
+                            input.checked = GM_getValue(
+                                getSettingKey(setting),
+                                setting.default
+                            );
+                            break;
+                        default:
+                            input.value = GM_getValue(
+                                getSettingKey(setting),
+                                setting.default
+                            );
+                    }
+                })
+            );
+        }));
 });
