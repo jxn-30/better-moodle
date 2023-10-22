@@ -18,23 +18,8 @@
 
 /* global M, require */
 
-// use full width instead of maximum 830px
+// some general style
 GM_addStyle(`
-/* Use full width */
-#topofscroll, .header-maxwidth {
-    max-width: unset !important;
-}
-
-/* 4 boxes per row in the "my courses" view, instead of 3 plus increase margin a little */
-@media (min-width: 840px) {
-  .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
-    --margin: max(4px, min(10px, calc(100vw / 192)));
-    width: calc(25% - var(--margin) * 2);
-    margin-left: var(--margin);
-    margin-right: var(--margin);
-  }
-}
-
 /* disable the weird scroll behaviour on login page (background image shall not be moved) */
 #page-login-index {
     overflow: hidden;
@@ -51,6 +36,10 @@ GM_addStyle(`
     `);
 
 const PREFIX = str => `better-moodle-${str}`;
+const getSettingKey = id => PREFIX(`settings.${id}`);
+
+const getSetting = id =>
+    GM_getValue(getSettingKey(id), SETTINGS.find(s => s.id === id)?.default);
 
 const SETTINGS = [
     'Allgemeine Einstellungen',
@@ -136,6 +125,28 @@ const SETTINGS = [
         default: true,
     },
 ];
+
+// use full width if enabled
+if (getSetting('general.fullwidth')) {
+    GM_addStyle(`
+/* Use full width */
+#topofscroll, .header-maxwidth {
+    max-width: unset !important;
+}
+    `);
+}
+
+const myCoursesBoxesPerRow = getSetting('myCourses.boxesPerRow');
+GM_addStyle(`
+/* ${myCoursesBoxesPerRow} boxes per row in the "my courses" view, instead of 3 plus increase margin a little */
+@media (min-width: 840px) {
+  .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
+    --margin: max(4px, min(10px, calc(100vw / 192)));
+    width: calc((100% / ${myCoursesBoxesPerRow}) - var(--margin) * 2);
+    margin-left: var(--margin);
+    margin-right: var(--margin);
+  }
+}`);
 
 /**
  * @param {() => void} callback
@@ -254,25 +265,32 @@ if (window.location.pathname === '/my/') {
 }
 
 // add target="_blank" to all external links
-document.addEventListener('click', e => {
-    const target = e.target;
-    if (!(target instanceof HTMLAnchorElement) || target.target) return;
-    const origin = new URL(target.href, window.location).origin;
-    if (origin && origin !== window.location.origin) {
-        target.target = '_blank';
-    }
-});
+if (getSetting('general.externalLinks')) {
+    document.addEventListener('click', e => {
+        const target = e.target;
+        if (!(target instanceof HTMLAnchorElement) || target.target) return;
+        const origin = new URL(target.href, window.location).origin;
+        if (origin && origin !== window.location.origin) {
+            target.target = '_blank';
+        }
+    });
+}
 
 // add a title attribute to texts that are too long
 // that is especially useful for the course content sidebar
-document.addEventListener('mouseover', e => {
-    const target = e.target;
-    if (!(target instanceof HTMLElement) && !(target instanceof SVGElement)) {
-        return;
-    }
-    if (target.title || !target.classList.contains('text-truncate')) return;
-    target.title = target.textContent.trim();
-});
+if (getSetting('general.truncatedTexts')) {
+    document.addEventListener('mouseover', e => {
+        const target = e.target;
+        if (
+            !(target instanceof HTMLElement) &&
+            !(target instanceof SVGElement)
+        ) {
+            return;
+        }
+        if (target.title || !target.classList.contains('text-truncate')) return;
+        target.title = target.textContent.trim();
+    });
+}
 
 ready(() => {
     if (!M.cfg.courseId || M.cfg.courseId === 1) return;
@@ -282,7 +300,7 @@ ready(() => {
 
     // add a link to Bewertungen on each course-sidebar
     const header = drawer?.querySelector('.drawerheader');
-    if (header) {
+    if (header && getSetting('courses.grades')) {
         const link = document.createElement('a');
         const calcItem = document.createElement('i');
         calcItem.classList.add('icon', 'fa', 'fa-calculator', 'fa-fw');
@@ -290,36 +308,40 @@ ready(() => {
         link.classList.add('w-100', 'text-center');
         link.append(calcItem, ' Bewertungen');
 
+        if (getSetting('courses.gradesNewTab')) link.target = '_blank';
+
         header.append(link);
     }
 
     // collapse / un-collapse all sections on double-click on a section header
-    drawer?.addEventListener('dblclick', e => {
-        const target = e.target;
-        if (
-            !(target instanceof HTMLElement) &&
-            !(target instanceof SVGElement)
-        ) {
-            return;
-        }
-        const collapseIcon = target.closest(
-            '.courseindex-section-title .icons-collapse-expand'
-        );
-        if (!collapseIcon) return;
+    if (getSetting('courses.collapseAll')) {
+        drawer?.addEventListener('dblclick', e => {
+            const target = e.target;
+            if (
+                !(target instanceof HTMLElement) &&
+                !(target instanceof SVGElement)
+            ) {
+                return;
+            }
+            const collapseIcon = target.closest(
+                '.courseindex-section-title .icons-collapse-expand'
+            );
+            if (!collapseIcon) return;
 
-        e.preventDefault();
+            e.preventDefault();
 
-        drawer
-            .querySelectorAll(
-                `.courseindex-section-title .icons-collapse-expand${
-                    collapseIcon.classList.contains('collapsed')
-                        ? ':not(.collapsed)'
-                        : '.collapsed'
-                }`
-            )
-            .forEach(collapseIcon => collapseIcon.click());
-        collapseIcon.focus();
-    });
+            drawer
+                .querySelectorAll(
+                    `.courseindex-section-title .icons-collapse-expand${
+                        collapseIcon.classList.contains('collapsed')
+                            ? ':not(.collapsed)'
+                            : '.collapsed'
+                    }`
+                )
+                .forEach(collapseIcon => collapseIcon.click());
+            collapseIcon.focus();
+        });
+    }
 });
 
 // add a left sidebar with the users courses. Also manipulate my courses link to be a dropdown
@@ -413,26 +435,28 @@ ready(() => {
 
         const myCoursesLink = myCoursesA.href;
 
-        myCoursesA.classList.add('dropdown-toggle');
-        myCoursesA.dataset.toggle = 'dropdown';
-        myCoursesA.href = '#';
+        if (getSetting('myCourses.navbarDropdown')) {
+            myCoursesA.classList.add('dropdown-toggle');
+            myCoursesA.dataset.toggle = 'dropdown';
+            myCoursesA.href = '#';
 
-        dropdownMenu = document.createElement('div');
-        dropdownMenu.classList.add('dropdown-menu');
-        dropdownMenu.style.setProperty('max-width', '500px');
+            dropdownMenu = document.createElement('div');
+            dropdownMenu.classList.add('dropdown-menu');
+            dropdownMenu.style.setProperty('max-width', '500px');
 
-        myCoursesA.after(dropdownMenu);
+            myCoursesA.after(dropdownMenu);
 
-        // open my courses if clicked when dropdown is open and not already on my courses page
-        myCoursesA.addEventListener('click', e => {
-            if (
-                myCoursesLi.classList.contains('show') &&
-                !window.location.toString().includes(myCoursesLink)
-            ) {
-                e.preventDefault();
-                window.location.replace(myCoursesLink);
-            }
-        });
+            // open my courses if clicked when dropdown is open and not already on my courses page
+            myCoursesA.addEventListener('click', e => {
+                if (
+                    myCoursesLi.classList.contains('show') &&
+                    !window.location.toString().includes(myCoursesLink)
+                ) {
+                    e.preventDefault();
+                    window.location.replace(myCoursesLink);
+                }
+            });
+        }
 
         // mobile menu
         const mobileA = document.querySelector(
@@ -647,8 +671,6 @@ ready(() => {
         fieldsetCounter++;
     };
 
-    const getSettingKey = setting => PREFIX(`settings.${setting.id}`);
-
     SETTINGS.forEach((setting, index) => {
         // if setting is a string, use this as a heading / fieldset
         if (typeof setting === 'string') {
@@ -656,7 +678,7 @@ ready(() => {
         }
         // otherwise, add the settings inputs
         else {
-            const SETTING_KEY = getSettingKey(setting);
+            const SETTING_KEY = getSettingKey(setting.id);
 
             if (!currentFieldset) createFieldset('');
 
@@ -715,9 +737,13 @@ ready(() => {
             const value = GM_getValue(SETTING_KEY, setting.default);
 
             /** @type{HTMLInputElement} */
-            let input;
+            const input = document.createElement('input');
             /** @type{HTMLElement} */
             let formControl;
+
+            input.id = PREFIX(`settings-input-${index}`);
+
+            let showInput = true;
 
             switch (setting.type) {
                 case Boolean: {
@@ -726,24 +752,43 @@ ready(() => {
                         'custom-control',
                         'custom-switch'
                     );
-                    input = document.createElement('input');
                     input.classList.add('custom-control-input');
                     input.type = 'checkbox';
-                    input.id = PREFIX(`settings-input-${index}`);
                     input.checked = value;
                     const switchLabel = document.createElement('label');
                     switchLabel.setAttribute('for', input.id);
                     switchLabel.classList.add('custom-control-label');
                     switchLabel.textContent = ' ';
                     formControl.append(input, switchLabel);
+                    break;
+                }
+                case Number: {
+                    input.classList.add('form-control');
+                    input.type = 'number';
+                    input.value = value;
+                    break;
+                }
+                default: {
+                    showInput = false;
                 }
             }
 
-            if (input) input.name = setting.id;
+            if (showInput) {
+                label.setAttribute('for', input.id);
+                input.name = setting.id;
 
-            if (input?.id) label.setAttribute('for', input.id);
+                if (setting.attributes) {
+                    Object.entries(setting.attributes).forEach(
+                        ([key, value]) => {
+                            input.setAttribute(key, value);
+                        }
+                    );
+                }
+            }
 
             if (formControl) inputWrapper.append(formControl);
+            else if (showInput) inputWrapper.append(input);
+
             settingRow.append(labelWrapper, inputWrapper);
             currentFieldset.querySelector('.fcontainer')?.append(settingRow);
         }
@@ -800,7 +845,7 @@ ready(() => {
                     }
 
                     if (typeof value !== 'undefined') {
-                        GM_setValue(getSettingKey({ id }), value);
+                        GM_setValue(getSettingKey(id), value);
                     }
                 });
 
@@ -814,18 +859,14 @@ ready(() => {
                     const input = form[setting.id];
                     if (!input) return;
 
+                    const value = getSetting(setting.id);
+
                     switch (setting.type) {
                         case Boolean:
-                            input.checked = GM_getValue(
-                                getSettingKey(setting),
-                                setting.default
-                            );
+                            input.checked = value;
                             break;
                         default:
-                            input.value = GM_getValue(
-                                getSettingKey(setting),
-                                setting.default
-                            );
+                            input.value = value;
                     }
                 })
             );
