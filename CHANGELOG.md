@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/jxn-30/better-moodle/compare/v1.3.0...v1.4.0) (2023-10-23)
+
+
+### Features
+
+* add an optional countdown to christmas [#14](https://github.com/jxn-30/better-moodle/issues/14) ([#23](https://github.com/jxn-30/better-moodle/issues/23)) ([1730258](https://github.com/jxn-30/better-moodle/commit/1730258347f2b0a3d2b03745d11f55468905de64))
+
 ## [1.3.0](https://github.com/jxn-30/better-moodle/compare/v1.2.9...v1.3.0) (2023-10-23)
 
 
