@@ -67,6 +67,14 @@ const SETTINGS = [
         type: Boolean,
         default: true,
     },
+    {
+        id: 'general.christmasCountdown',
+        name: 'Countdown bis Heiligabend 🎄',
+        description:
+            'Zeigt einen Countdown bis Heiligabend in der Navigationsleiste an.\nHierbei handelt es sich um eine kleine Hommage an den Mathe-Vorkurs.',
+        type: Boolean,
+        default: false,
+    },
     'Dashboard',
     // {Layout anpassen}
     {
@@ -290,6 +298,57 @@ if (getSetting('general.truncatedTexts')) {
         if (target.title || !target.classList.contains('text-truncate')) return;
         target.title = target.textContent.trim();
     });
+}
+
+// add the Christmas countdown
+if (getSetting('general.christmasCountdown')) {
+    const getDayOfYear = date => {
+        const start = new Date(date.getFullYear(), 0, 0);
+        const diff =
+            date -
+            start +
+            (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
+        const oneDay = 1000 * 60 * 60 * 24;
+        return Math.floor(diff / oneDay);
+    };
+
+    const now = new Date();
+    const thisYearChristmas = new Date(now.getFullYear(), 11, 24); // 24.12. of this year
+    const firstChristmasDay = new Date(thisYearChristmas);
+    firstChristmasDay.setDate(thisYearChristmas.getDate() + 1);
+    const thisYearLastDay = new Date(now.getFullYear(), 11, 31); // 31.12. of this year
+    const nextYearChristmas = new Date(thisYearChristmas);
+    nextYearChristmas.setFullYear(now.getFullYear() + 1);
+
+    const navItem = document.createElement('div');
+    const navLink = document.createElement('a');
+    navLink.classList.add('nav-link', 'position-relative');
+
+    const updateCountdown = () => {
+        const todayDayOfYear = getDayOfYear(now);
+        const daysToChristmas =
+            now < firstChristmasDay
+                ? getDayOfYear(thisYearChristmas) - todayDayOfYear
+                : getDayOfYear(thisYearLastDay) -
+                  todayDayOfYear +
+                  getDayOfYear(nextYearChristmas);
+
+        navLink.innerHTML = daysToChristmas
+            ? `Noch&nbsp;<b>${daysToChristmas}</b>&nbsp;Tag${
+                  daysToChristmas > 1 ? 'e' : ''
+              } bis Heiligabend.`
+            : '🎄 Heute ist Heiligabend. Frohe Weihnachten! 🎄';
+
+        const nextUpdate = new Date();
+        nextUpdate.setDate(now.getDate() + 1);
+        nextUpdate.setHours(0, 0, 0, 0);
+        setTimeout(updateCountdown, nextUpdate - now);
+    };
+
+    updateCountdown();
+
+    navItem.append(navLink);
+    ready(() => document.getElementById('usernavigation')?.prepend(navItem));
 }
 
 ready(() => {
