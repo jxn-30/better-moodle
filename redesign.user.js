@@ -1,7 +1,9 @@
 // ==UserScript==
 // @name            🎓️ UzL: Better Moodle
 // @namespace       https://uni-luebeck.de
+// @                x-release-please-start-version
 // @version         1.3.0
+// @                x-release-please-start-end
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
