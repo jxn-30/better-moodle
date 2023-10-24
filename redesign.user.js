@@ -20,6 +20,7 @@
 
 /* global M, require */
 
+// region Global styles
 // some general style
 GM_addStyle(`
 /* disable the weird scroll behaviour on login page (background image shall not be moved) */
@@ -36,129 +37,16 @@ GM_addStyle(`
     cursor: pointer;
 }
     `);
+// endregion
 
+// region Helper functions
 const PREFIX = str => `better-moodle-${str}`;
 const getSettingKey = id => PREFIX(`settings.${id}`);
-
 const getSetting = id =>
     GM_getValue(getSettingKey(id), SETTINGS.find(s => s.id === id)?.default);
 
-const SETTINGS = [
-    'Allgemeine Einstellungen',
-    {
-        id: 'general.fullwidth',
-        name: 'Volle Breite',
-        description:
-            'Entfernt den seltsamen weißen Rand und sorgt dafür, dass die Seiten die volle Breite nutzen.',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'general.externalLinks',
-        name: 'Externe Links',
-        description:
-            'Sorgt dafür, dass externe Links immer automatisch in einem neuen Tab geöffnet werden.',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'general.truncatedTexts',
-        name: 'Abgeschnittene Texte',
-        description:
-            'Fügt ein Title-Attribut bei potentiell abgeschnittenen Texten hinzu, damit man per Maus-Hover den vollen Text lesen kann.',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'general.christmasCountdown',
-        name: 'Countdown bis Heiligabend 🎄',
-        description:
-            'Zeigt einen Countdown bis Heiligabend in der Navigationsleiste an.\nHierbei handelt es sich um eine kleine Hommage an den Mathe-Vorkurs.',
-        type: Boolean,
-        default: false,
-    },
-    'Dashboard',
-    // {Layout anpassen}
-    {
-        id: 'dashboard.~layoutPlaceholder',
-        name: 'Layout',
-        description:
-            'Hier sollst du mal das Layout anpassen können. Das ist aber leider noch nicht fertig. Bitte habe noch ein bisschen Geduld hiermit :)',
-        type: String,
-        default: 'Coming soon...',
-        disabled: () => true,
-    },
-    'Meine Kurse',
-    {
-        id: 'myCourses.boxesPerRow',
-        name: 'Kacheln pro Zeile',
-        description:
-            'Zahl der Kacheln pro Zeile auf der "Meine Kurse"-Seite, wenn die Ansicht auf "Kacheln" gestellt ist.',
-        type: Number,
-        default: 4,
-        attributes: {
-            min: 1,
-            max: 10,
-        },
-    },
-    {
-        id: 'myCourses.navbarDropdown',
-        name: 'Dropdown in der Navigationsleiste',
-        description:
-            'Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.',
-        type: Boolean,
-        default: true,
-    },
-    'Kurse',
-    {
-        id: 'courses.grades',
-        name: 'Link zu Bewertungen in der Sidebar',
-        description:
-            'Zeigt einen Link zu den Bewertungen des Kurses in der linken Seitenleiste an.',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'courses.gradesNewTab',
-        name: 'Bewertungen in neuem Tab öffnen',
-        description: 'Öffnet die Bewertungen standardmäßig einem neuen Tab.',
-        type: Boolean,
-        default: false,
-        disabled: settings => !settings['courses.grades'],
-    },
-    {
-        id: 'courses.collapseAll',
-        name: 'Seitenleiste vollständig ein-/ausklappen',
-        description:
-            'Klappt alle Abschnitte in der Seitenleiste ein oder aus, wenn doppelt auf einen der Pfeile in der Seitenleiste geklickt wird.',
-        type: Boolean,
-        default: true,
-    },
-];
-
-// use full width if enabled
-if (getSetting('general.fullwidth')) {
-    GM_addStyle(`
-/* Use full width */
-#topofscroll, .header-maxwidth {
-    max-width: unset !important;
-}
-    `);
-}
-
-const myCoursesBoxesPerRow = getSetting('myCourses.boxesPerRow');
-GM_addStyle(`
-/* ${myCoursesBoxesPerRow} boxes per row in the "my courses" view, instead of 3 plus increase margin a little */
-@media (min-width: 840px) {
-  .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
-    --margin: max(4px, min(10px, calc(100vw / 192)));
-    width: calc((100% / ${myCoursesBoxesPerRow}) - var(--margin) * 2);
-    margin-left: var(--margin);
-    margin-right: var(--margin);
-  }
-}`);
-
 /**
+ * Awaits the DOM to be ready and then calls the callback.
  * @param {() => void} callback
  */
 const ready = callback => {
@@ -169,6 +57,7 @@ const ready = callback => {
 };
 
 /**
+ * creates a sidebar in moodle style
  * @param {string} id
  * @param {'left' | 'right'} position
  * @param {string} icon
@@ -264,16 +153,116 @@ const createSidebar = (id, position, icon, callback) => {
         callback(content, header);
     });
 };
+// endregion
 
-// add a right sidebar with timeline and upcoming events on Dashboard
-if (window.location.pathname === '/my/') {
-    createSidebar('dashboard-right', 'right', 'calendar', content => {
-        // move blocks into sidebar
-        content.append(document.querySelector('.block_timeline'));
-        content.append(document.querySelector('.block_calendar_upcoming'));
-    });
+// region Settings
+const SETTINGS = [
+    'Allgemeine Einstellungen',
+    {
+        id: 'general.fullwidth',
+        name: 'Volle Breite',
+        description:
+            'Entfernt den seltsamen weißen Rand und sorgt dafür, dass die Seiten die volle Breite nutzen.',
+        type: Boolean,
+        default: true,
+    },
+    {
+        id: 'general.externalLinks',
+        name: 'Externe Links',
+        description:
+            'Sorgt dafür, dass externe Links immer automatisch in einem neuen Tab geöffnet werden.',
+        type: Boolean,
+        default: true,
+    },
+    {
+        id: 'general.truncatedTexts',
+        name: 'Abgeschnittene Texte',
+        description:
+            'Fügt ein Title-Attribut bei potentiell abgeschnittenen Texten hinzu, damit man per Maus-Hover den vollen Text lesen kann.',
+        type: Boolean,
+        default: true,
+    },
+    {
+        id: 'general.christmasCountdown',
+        name: 'Countdown bis Heiligabend 🎄',
+        description:
+            'Zeigt einen Countdown bis Heiligabend in der Navigationsleiste an.\nHierbei handelt es sich um eine kleine Hommage an den Mathe-Vorkurs.',
+        type: Boolean,
+        default: false,
+    },
+    'Dashboard',
+    // {Layout anpassen}
+    {
+        id: 'dashboard.~layoutPlaceholder',
+        name: 'Layout',
+        description:
+            'Hier sollst du mal das Layout anpassen können. Das ist aber leider noch nicht fertig. Bitte habe noch ein bisschen Geduld hiermit :)',
+        type: String,
+        default: 'Coming soon...',
+        disabled: () => true,
+    },
+    'Meine Kurse',
+    {
+        id: 'myCourses.boxesPerRow',
+        name: 'Kacheln pro Zeile',
+        description:
+            'Zahl der Kacheln pro Zeile auf der "Meine Kurse"-Seite, wenn die Ansicht auf "Kacheln" gestellt ist.',
+        type: Number,
+        default: 4,
+        attributes: {
+            min: 1,
+            max: 10,
+        },
+    },
+    {
+        id: 'myCourses.navbarDropdown',
+        name: 'Dropdown in der Navigationsleiste',
+        description:
+            'Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.',
+        type: Boolean,
+        default: true,
+    },
+    'Kurse',
+    {
+        id: 'courses.grades',
+        name: 'Link zu Bewertungen in der Sidebar',
+        description:
+            'Zeigt einen Link zu den Bewertungen des Kurses in der linken Seitenleiste an.',
+        type: Boolean,
+        default: true,
+    },
+    {
+        id: 'courses.gradesNewTab',
+        name: 'Bewertungen in neuem Tab öffnen',
+        description: 'Öffnet die Bewertungen standardmäßig einem neuen Tab.',
+        type: Boolean,
+        default: false,
+        disabled: settings => !settings['courses.grades'],
+    },
+    {
+        id: 'courses.collapseAll',
+        name: 'Seitenleiste vollständig ein-/ausklappen',
+        description:
+            'Klappt alle Abschnitte in der Seitenleiste ein oder aus, wenn doppelt auf einen der Pfeile in der Seitenleiste geklickt wird.',
+        type: Boolean,
+        default: true,
+    },
+];
+// endregion
+
+// region Feature: general.fullwidth
+// use full width if enabled
+if (getSetting('general.fullwidth')) {
+    GM_addStyle(`
+/* Use full width */
+#topofscroll, .header-maxwidth {
+    max-width: unset !important;
 }
+    `);
+}
+// endregion
 
+// region Feature: general.externalLinks
 // add target="_blank" to all external links
 if (getSetting('general.externalLinks')) {
     document.addEventListener('click', e => {
@@ -285,7 +274,9 @@ if (getSetting('general.externalLinks')) {
         }
     });
 }
+// endregion
 
+// region Feature: general.truncatedTexts
 // add a title attribute to texts that are too long
 // that is especially useful for the course content sidebar
 if (getSetting('general.truncatedTexts')) {
@@ -301,7 +292,9 @@ if (getSetting('general.truncatedTexts')) {
         target.title = target.textContent.trim();
     });
 }
+// endregion
 
+// region Feature: general.christmasCountdown
 // add the Christmas countdown
 if (getSetting('general.christmasCountdown')) {
     const getDayOfYear = date => {
@@ -352,13 +345,41 @@ if (getSetting('general.christmasCountdown')) {
     navItem.append(navLink);
     ready(() => document.getElementById('usernavigation')?.prepend(navItem));
 }
+// endregion
 
+// region Feature: Dashboard right sidebar
+// add a right sidebar with timeline and upcoming events on Dashboard
+if (window.location.pathname === '/my/') {
+    createSidebar('dashboard-right', 'right', 'calendar', content => {
+        // move blocks into sidebar
+        content.append(document.querySelector('.block_timeline'));
+        content.append(document.querySelector('.block_calendar_upcoming'));
+    });
+}
+// endregion
+
+// region Feature: myCourses.boxesPerRow
+const myCoursesBoxesPerRow = getSetting('myCourses.boxesPerRow');
+GM_addStyle(`
+/* ${myCoursesBoxesPerRow} boxes per row in the "my courses" view, instead of 3 plus increase margin a little */
+@media (min-width: 840px) {
+  .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
+    --margin: max(4px, min(10px, calc(100vw / 192)));
+    width: calc((100% / ${myCoursesBoxesPerRow}) - var(--margin) * 2);
+    margin-left: var(--margin);
+    margin-right: var(--margin);
+  }
+}`);
+// endregion
+
+// region Features: courses.grades, courses.gradesNewTab, courses.collapseAll
 ready(() => {
     if (!M.cfg.courseId || M.cfg.courseId === 1) return;
 
     const drawer = document.getElementById('theme_boost-drawers-courseindex');
     if (!drawer) return;
 
+    // region Features: courses.grades, courses.gradesNewTab
     // add a link to Bewertungen on each course-sidebar
     const header = drawer?.querySelector('.drawerheader');
     if (header && getSetting('courses.grades')) {
@@ -373,7 +394,9 @@ ready(() => {
 
         header.append(link);
     }
+    // endregion
 
+    // region Feature: courses.collapseAll
     // collapse / un-collapse all sections on double-click on a section header
     if (getSetting('courses.collapseAll')) {
         drawer?.addEventListener('dblclick', e => {
@@ -403,8 +426,11 @@ ready(() => {
             collapseIcon.focus();
         });
     }
+    // endregion
 });
+// endregion
 
+// region Features: myCourses.navbarDropdown, Dashboard left sidebar
 // add a left sidebar with the users courses. Also manipulate my courses link to be a dropdown
 ready(() => {
     if (window.location.pathname.startsWith('/login/')) return;
@@ -614,7 +640,9 @@ ready(() => {
             })
         ));
 });
+// endregion
 
+// region Settings modal
 // A settings modal
 ready(() => {
     const settingsBtnWrapper = document.createElement('div');
@@ -957,3 +985,4 @@ ready(() => {
             );
         }));
 });
+// endregion
