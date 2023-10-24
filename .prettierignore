@@ -2,3 +2,5 @@
 .eslintcache
 .yarn/
 node_modules/
+
+CHANGELOG.md
