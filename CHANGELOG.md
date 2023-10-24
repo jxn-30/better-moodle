@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/jxn-30/better-moodle/compare/v1.4.0...v1.4.1) (2023-10-24)
+
+
+### Bug Fixes
+
+* **christmas-countdown:** use marquee effect on small screen width instead of hidden overflow ([1e93a71](https://github.com/jxn-30/better-moodle/commit/1e93a71490e15438c94af8d60a84982353d047f5))
+
 ## [1.4.0](https://github.com/jxn-30/better-moodle/compare/v1.3.0...v1.4.0) (2023-10-23)
 
 
