@@ -36,6 +36,11 @@ GM_addStyle(`
 .custom-control.custom-switch .custom-control-label {
     cursor: pointer;
 }
+
+/* avoid overflow of #usernavigation navigation bar */
+#usernavigation {
+    max-width: calc(100% - 1rem); /* 1rem is the padding of the navbar */
+}
     `);
 // endregion
 
@@ -315,9 +320,47 @@ if (getSetting('general.christmasCountdown')) {
     const nextYearChristmas = new Date(thisYearChristmas);
     nextYearChristmas.setFullYear(now.getFullYear() + 1);
 
+    const SCROLL_SPEED_MS_PER_PX = 100;
+    const durationForPx = px => px * SCROLL_SPEED_MS_PER_PX;
+
     const navItem = document.createElement('div');
+    navItem.classList.add('flex-shrink-1');
+    navItem.style.setProperty('overflow', 'hidden');
     const navLink = document.createElement('a');
     navLink.classList.add('nav-link', 'position-relative');
+    navLink.id = PREFIX('christmas-countdown-wrapper');
+    const textSpan = document.createElement('span');
+    const textSpanClass = PREFIX('christmas-countdown');
+    textSpan.classList.add(textSpanClass);
+    const textSpanClone = document.createElement('span');
+    textSpanClone.classList.add(textSpanClass);
+    const keyFrames = `${textSpanClass}-keyframes`;
+    const scrollStartVar = '--christmas-countdown-scroll-start';
+    const scrollEndVar = '--christmas-countdown-scroll-end';
+    const scrollDurationVar = '--christmas-countdown-scroll-duration';
+
+    GM_addStyle(`
+#${navLink.id} {
+    ${scrollStartVar}: 100%;
+    ${scrollEndVar}: 100%;
+    ${scrollDurationVar}: 10s;
+}
+#${navLink.id}.animated {
+    animation: ${keyFrames} var(${scrollDurationVar}) linear infinite;
+}
+#${navLink.id}:not(.animated) > .${textSpanClass}:nth-child(2) {
+    display: none;
+}
+
+@keyframes ${keyFrames} {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(var(${scrollEndVar}));
+    }
+}
+`);
 
     const updateCountdown = () => {
         const todayDayOfYear = getDayOfYear(now);
@@ -328,11 +371,15 @@ if (getSetting('general.christmasCountdown')) {
                   todayDayOfYear +
                   getDayOfYear(nextYearChristmas);
 
-        navLink.innerHTML = daysToChristmas
-            ? `Noch&nbsp;<b>${daysToChristmas}</b>&nbsp;Tag${
-                  daysToChristmas > 1 ? 'e' : ''
-              } bis Heiligabend.`
-            : '🎄 Heute ist Heiligabend. Frohe Weihnachten! 🎄';
+        textSpanClone.innerHTML = textSpan.innerHTML =
+            (daysToChristmas
+                ? `Noch&nbsp;<b>${daysToChristmas}</b>&nbsp;Tag${
+                      daysToChristmas > 1 ? 'e' : ''
+                  } bis Heiligabend.`
+                : '🎄 Heute ist Heiligabend. Frohe Weihnachten! 🎄') +
+            '\xa0'.repeat(5);
+
+        updateScrollWidth();
 
         const nextUpdate = new Date();
         nextUpdate.setDate(now.getDate() + 1);
@@ -340,10 +387,34 @@ if (getSetting('general.christmasCountdown')) {
         setTimeout(updateCountdown, nextUpdate - now);
     };
 
+    const updateScrollWidth = () => {
+        const navLinkWidth = Math.floor(navLink.getBoundingClientRect().width);
+        const textSpanWidth = Math.floor(
+            textSpan.getBoundingClientRect().width
+        );
+        if (textSpanWidth <= navLinkWidth) {
+            navLink.classList.remove('animated');
+        } else {
+            navLink.classList.add('animated');
+
+            navLink.style.setProperty(scrollEndVar, `-${textSpanWidth}px`);
+            navLink.style.setProperty(
+                scrollDurationVar,
+                `${durationForPx(textSpanWidth)}ms`
+            );
+        }
+    };
+
     updateCountdown();
 
+    new ResizeObserver(updateScrollWidth).observe(navLink);
+
+    navLink.append(textSpan, textSpanClone);
     navItem.append(navLink);
-    ready(() => document.getElementById('usernavigation')?.prepend(navItem));
+    ready(() => {
+        document.getElementById('usernavigation')?.prepend(navItem);
+        updateScrollWidth();
+    });
 }
 // endregion
 
