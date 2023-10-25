@@ -1225,7 +1225,7 @@ ready(() => {
                     title: 'Better Moodle: Changelog',
                     body: fetch(
                         `https://raw.githubusercontent.com/jxn-30/better-moodle/main/CHANGELOG.md?_=${
-                            Date.now() / (1000 * 60 * 5) // Cache for 5 minutes
+                            Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
                         }`
                     )
                         .then(res => res.text())
