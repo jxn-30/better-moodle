@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/jxn-30/better-moodle/compare/v1.5.0...v1.6.0) (2023-10-25)
+
+
+### Features
+
+* add changelog modal in settings ([#12](https://github.com/jxn-30/better-moodle/issues/12)) ([89b6d9d](https://github.com/jxn-30/better-moodle/commit/89b6d9d504527e3ba53c6424b6f27726a6adf3e3))
+
 ## [1.5.0](https://github.com/jxn-30/better-moodle/compare/v1.4.1...v1.5.0) (2023-10-25)
 
 
