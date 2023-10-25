@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/jxn-30/better-moodle/compare/v1.4.1...v1.5.0) (2023-10-25)
+
+
+### Features
+
+* optional update notification ([#13](https://github.com/jxn-30/better-moodle/issues/13)) ([2d6b0e3](https://github.com/jxn-30/better-moodle/commit/2d6b0e370531d033fde475b6a79609e0c5541641))
+
 ## [1.4.1](https://github.com/jxn-30/better-moodle/compare/v1.4.0...v1.4.1) (2023-10-24)
 
 
