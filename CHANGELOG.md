@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.0](https://github.com/jxn-30/better-moodle/compare/v1.6.1...v1.7.0) (2023-10-25)
+
+
+### Features
+
+* add links to github repo in settings & changelog modal ([e3d6a92](https://github.com/jxn-30/better-moodle/commit/e3d6a925f094e0f36e6985c0fdb3713cb27457fa))
+
+
+### Bug Fixes
+
+* **changelog:** fix cache query param ([4888f1e](https://github.com/jxn-30/better-moodle/commit/4888f1ea8745f1e939a3c973b04ec7b9e81f6ea3))
+* **changelog:** prevent cache longer than 5 minutes ([8b6dcea](https://github.com/jxn-30/better-moodle/commit/8b6dceabc4aa700daaca5c2f985ac49ac73c41a7))
+* **settings:** update description text of updateNotification setting ([1de6908](https://github.com/jxn-30/better-moodle/commit/1de690844e6be3e5aa6727f3584baf6b1c353edb))
+
 ## [1.6.1](https://github.com/jxn-30/better-moodle/compare/v1.6.0...v1.6.1) (2023-10-25)
 
 
