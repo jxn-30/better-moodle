@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/jxn-30/better-moodle/compare/v1.6.0...v1.6.1) (2023-10-25)
+
+
+### Bug Fixes
+
+* **external-links:** handle javascript-links correctly ([c46dff8](https://github.com/jxn-30/better-moodle/commit/c46dff8f18201a73b56d4f5d334f579b4eb4fac3))
+
 ## [1.6.0](https://github.com/jxn-30/better-moodle/compare/v1.5.0...v1.6.0) (2023-10-25)
 
 
