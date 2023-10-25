@@ -288,7 +288,7 @@ const SETTINGS = [
         id: 'general.updateNotification',
         name: 'Benachrichtigung bei better-moodle Updates',
         description:
-            'Zeigt eine Benachrichtigung an, wenn es ein Update für better-moodle gibt.',
+            'Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für better-moodle gibt.',
         type: Boolean,
         default: true,
     },
