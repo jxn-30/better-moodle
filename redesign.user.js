@@ -1222,18 +1222,19 @@ ready(() => {
                 if (!available) return;
                 const updateBtn = document.createElement('a');
                 updateBtn.classList.add('btn-primary', 'btn-sm', 'ml-2');
-                updateBtn.href = GM_info.script.updateURL;
-                updateBtn.target = '_blank';
+                updateBtn.href = '#';
                 updateBtn.textContent = 'Update installieren';
                 versionSpan.append(updateBtn);
 
-                updateBtn.addEventListener('click', () =>
+                updateBtn.addEventListener('click', e => {
+                    e.preventDefault();
                     create({
                         type: types.ALERT,
                         title: 'Better Moodle aktualisieren',
                         body: 'Den Anweisungen zum Aktualisieren im Script-Manager (z.&nbsp;B. Tampermonkey) folgen und anschließend Moodle neu laden.',
-                    }).then(modal => modal.show())
-                );
+                    }).then(modal => modal.show());
+                    open(GM_info.script.updateURL, '_self');
+                });
             });
 
             modal
