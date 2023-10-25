@@ -16,6 +16,7 @@
 // @grant           GM_addStyle
 // @grant           GM_getValue
 // @grant           GM_setValue
+// @grant           GM_info
 // ==/UserScript==
 
 /* global M, require */
@@ -158,11 +159,57 @@ const createSidebar = (id, position, icon, callback) => {
         callback(content, header);
     });
 };
+
+/** @type {[number, number, number]} */
+const currentScriptVersion = [];
+/** @type {[number, number, number]} */
+const latestScriptVersion = [];
+/** @type {Promise<boolean>} */
+const updateAvailable = fetch(
+    'https://api.github.com/repos/jxn-30/better-moodle/releases/latest'
+)
+    .then(res => res.json())
+    .then(({ tag_name }) =>
+        tag_name
+            .replace(/^v/, '')
+            .split('.')
+            .map(e => Number(e))
+    )
+    .then(([latestMajor, latestMinor, latestPatch]) => {
+        const [currentMajor, currentMinor, currentPatch] =
+            GM_info.script.version.split('.').map(e => Number(e));
+
+        latestScriptVersion.splice(0, 3, latestMajor, latestMinor, latestPatch);
+        Object.freeze(latestScriptVersion);
+
+        currentScriptVersion.splice(
+            0,
+            3,
+            currentMajor,
+            currentMinor,
+            currentPatch
+        );
+        Object.freeze(currentScriptVersion);
+
+        return (
+            latestMajor > currentMajor || // major update
+            latestMinor > currentMinor || // minor update
+            latestPatch > currentPatch // patch update
+        );
+    });
 // endregion
 
 // region Settings
 const SETTINGS = [
     'Allgemeine Einstellungen',
+    {
+        id: 'general.updateNotification',
+        name: 'Benachrichtigung bei better-moodle Updates',
+        description:
+            'Zeigt eine Benachrichtigung an, wenn es ein Update für better-moodle gibt.',
+        type: Boolean,
+        default: true,
+    },
     {
         id: 'general.fullwidth',
         name: 'Volle Breite',
@@ -732,6 +779,17 @@ ready(() => {
     settingsIcon.role = 'img';
     settingsBtn.append(settingsIcon);
 
+    // region Feature: general.updateNotification
+    if (getSetting('general.updateNotification')) {
+        updateAvailable.then(available => {
+            if (!available) return;
+            const updateBadge = document.createElement('div');
+            updateBadge.classList.add('count-container');
+            settingsBtn.append(updateBadge);
+        });
+    }
+    // endregion
+
     const srSpan = document.createElement('span');
     srSpan.classList.add('sr-only', 'sr-only-focusable');
     srSpan.dataset.region = 'jumpto';
@@ -893,6 +951,7 @@ ready(() => {
                 'align-items-start',
                 'felement'
             );
+            inputWrapper.dataset.setting = setting.id;
 
             const value = GM_getValue(SETTING_KEY, setting.default);
 
@@ -1006,8 +1065,6 @@ ready(() => {
             title: 'Better Moodle: Einstellungen',
             body: form,
         }).then(modal => {
-            // console.log(modal, ModalEvents);
-
             // open the modal on click onto the settings button
             settingsBtnWrapper.addEventListener('click', () => modal.show());
 
@@ -1027,7 +1084,7 @@ ready(() => {
                 .querySelector('button.close')
                 ?.style.setProperty('margin-left', '0');
 
-            // handle the save button
+            // handle the save & cancel buttons
             modal.getRoot().on(ModalEvents.save, () => {
                 Object.entries(getFormValue()).forEach(([setting, value]) =>
                     GM_setValue(getSettingKey(setting), value)
@@ -1035,7 +1092,6 @@ ready(() => {
 
                 window.location.reload();
             });
-
             modal.getRoot().on(ModalEvents.cancel, () =>
                 SETTINGS.forEach(setting => {
                     if (!setting.id) return;
@@ -1054,6 +1110,40 @@ ready(() => {
                     }
                 })
             );
+
+            // add a small note about current and latest script version
+            const versionSpan = document.createElement('span');
+            versionSpan.classList.add('small', 'ml-auto');
+
+            const currentCode = document.createElement('code');
+            currentCode.textContent = currentScriptVersion.join('.');
+            const latestCode = document.createElement('code');
+            latestCode.textContent = latestScriptVersion.join('.');
+
+            versionSpan.append(
+                'installierte Version:\xa0',
+                currentCode,
+                ' ',
+                'aktuellste Version:\xa0',
+                latestCode
+            );
+
+            updateAvailable.then(available => {
+                if (!available) return;
+                const updateBtn = document.createElement('a');
+                updateBtn.classList.add('btn-primary', 'btn-sm', 'ml-2');
+                updateBtn.href = GM_info.script.updateURL;
+                updateBtn.target = '_blank';
+                updateBtn.textContent = 'Update installieren';
+                versionSpan.append(updateBtn);
+            });
+
+            modal
+                .getBody()[0]
+                .querySelector(
+                    '.felement[data-setting="general.updateNotification"]'
+                )
+                ?.append(versionSpan);
         }));
 });
 // endregion
