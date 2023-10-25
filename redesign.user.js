@@ -197,6 +197,64 @@ const updateAvailable = fetch(
             latestPatch > currentPatch // patch update
         );
     });
+
+// this is adopted from https://github.com/p01/mmd.js
+/**
+ * converts a Markdown text into HTML
+ * @param {string} md
+ * @param {number} [headingStart]
+ */
+const mdToHtml = (md, headingStart = 1) => {
+    let html = '';
+
+    const escape = string => new Option(string).innerHTML;
+    const inlineEscape = string =>
+        escape(string)
+            .replace(/!\[([^\]]*)]\(([^(]+)\)/g, '<img alt="$1" src="$2">') // image
+            .replace(/\[([^\]]+)]\(([^(]+?)\)/g, '<a href="$2">$1</a>') // link
+            .replace(/`([^`]+)`/g, '<code>$1</code>') // code
+            .replace(
+                /(\*\*|__)(?=\S)([^\r]*?\S[*_]*)\1/g,
+                '<strong>$2</strong>'
+            ) // bold
+            .replace(/([*_])(?=\S)([^\r]*?\S)\1/g, '<em>$2</em>'); // italic
+
+    const replacements = {
+        '*': [/\n\* /, '<ul><li>', '</li></ul>'],
+        '1': [/\n[1-9]\d*\.? /, '<ol><li>', '</li></ol>'],
+        ' ': [/\n {4}/, '<pre><code>', '</code></pre>', '\n'],
+        '>': [/\n> /, '<blockquote>', '</blockquote>', '\n'],
+    };
+
+    md.replace(/^\s+|\r|\s+$/g, '')
+        .replace(/\t/g, '    ')
+        .split(/\n\n+/)
+        .forEach(b => {
+            const firstChar = b[0];
+            const replacement = replacements[firstChar];
+            let i;
+            html += replacement
+                ? replacement[1] +
+                  `\n${b}`
+                      .split(replacement[0])
+                      .slice(1)
+                      .map(replacement[3] ? escape : inlineEscape)
+                      .join(replacement[3] || '</li>\n<li>') +
+                  replacement[2]
+                : firstChar === '#'
+                ? `<h${(i =
+                      b.indexOf(' ') + (headingStart - 1))}>${inlineEscape(
+                      b.slice(i + 1 - (headingStart - 1))
+                  )}</h${i}>`
+                : firstChar === '<'
+                ? b
+                : b.startsWith('---')
+                ? '<hr />'
+                : `<p>${inlineEscape(b)}</p>`;
+        });
+
+    return html;
+};
 // endregion
 
 // region Settings
@@ -1068,6 +1126,7 @@ ready(() => {
             // open the modal on click onto the settings button
             settingsBtnWrapper.addEventListener('click', () => modal.show());
 
+            // region link to moodle settings
             // add a link to moodle settings
             const moodleSettingsLink = document.createElement('a');
             moodleSettingsLink.href = '/user/preferences.php';
@@ -1083,7 +1142,9 @@ ready(() => {
             modal.header[0]
                 .querySelector('button.close')
                 ?.style.setProperty('margin-left', '0');
+            // endregion
 
+            // region save & cancel
             // handle the save & cancel buttons
             modal.getRoot().on(ModalEvents.save, () => {
                 Object.entries(getFormValue()).forEach(([setting, value]) =>
@@ -1110,7 +1171,9 @@ ready(() => {
                     }
                 })
             );
+            // endregion
 
+            // region version span & update btn
             // add a small note about current and latest script version
             const versionSpan = document.createElement('span');
             versionSpan.classList.add('small', 'ml-auto');
@@ -1144,6 +1207,35 @@ ready(() => {
                     '.felement[data-setting="general.updateNotification"]'
                 )
                 ?.append(versionSpan);
+            // endregion
+
+            // region changelog
+            const changelogBtn = document.createElement('button');
+            changelogBtn.classList.add('btn', 'btn-link', 'mr-auto');
+            const changelogIcon = document.createElement('i');
+            changelogIcon.classList.add('fa', 'fa-history');
+            changelogBtn.append(changelogIcon, ' Changelog');
+
+            changelogBtn.addEventListener('click', () =>
+                create({
+                    type: types.ALERT,
+                    large: true,
+                    scrollable: true,
+                    title: 'Better Moodle: Changelog',
+                    body: fetch(
+                        'https://raw.githubusercontent.com/jxn-30/better-moodle/main/CHANGELOG.md'
+                    )
+                        .then(res => res.text())
+                        .then(md =>
+                            md
+                                .replace(/^#\s.*/g, '')
+                                .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n')
+                        )
+                        .then(md => mdToHtml(md, 3)),
+                }).then(modal => modal.show())
+            );
+            modal.getFooter()[0].prepend(changelogBtn);
+            // endregion
         }));
 });
 // endregion
