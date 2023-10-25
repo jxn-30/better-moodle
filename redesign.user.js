@@ -378,7 +378,8 @@ if (getSetting('general.externalLinks')) {
     document.addEventListener('click', e => {
         const target = e.target;
         if (!(target instanceof HTMLAnchorElement) || target.target) return;
-        const origin = new URL(target.href, window.location).origin;
+        const { origin, protocol } = new URL(target.href, window.location);
+        if (protocol === 'javascript:') return;
         if (origin && origin !== window.location.origin) {
             target.target = '_blank';
         }
