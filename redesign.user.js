@@ -21,30 +21,6 @@
 
 /* global M, require */
 
-// region Global styles
-// some general style
-GM_addStyle(`
-/* disable the weird scroll behaviour on login page (background image shall not be moved) */
-#page-login-index {
-    overflow: hidden;
-}
-
-#page-login-index #page-wrapper {
-    overflow: auto;
-}
-
-/* Use a pointer cursor on toggle buttons */
-.custom-control.custom-switch .custom-control-label {
-    cursor: pointer;
-}
-
-/* avoid overflow of #usernavigation navigation bar */
-#usernavigation {
-    max-width: calc(100% - 1rem); /* 1rem is the padding of the navbar */
-}
-    `);
-// endregion
-
 // region Helper functions
 const PREFIX = str => `better-moodle-${str}`;
 const getSettingKey = id => PREFIX(`settings.${id}`);
@@ -255,6 +231,54 @@ const mdToHtml = (md, headingStart = 1) => {
 
     return html;
 };
+
+const githubLink = (path, icon = true, iconAndExternalIcon = false) => {
+    const link = document.createElement('a');
+    link.href = `https://github.com/jxn-30/better-moodle${path}`;
+    link.target = '_blank';
+
+    if (icon) {
+        const icon = document.createElement('i');
+        icon.classList.add('fa', 'fa-github', 'fa-fw');
+        link.appendChild(icon);
+
+        if (!iconAndExternalIcon) {
+            link.classList.add(PREFIX('no-external-icon'));
+        }
+    }
+
+    return link;
+};
+// endregion
+
+// region Global styles
+// some general style
+GM_addStyle(`
+/* disable the weird scroll behaviour on login page (background image shall not be moved) */
+#page-login-index {
+    overflow: hidden;
+}
+
+#page-login-index #page-wrapper {
+    overflow: auto;
+}
+
+/* Use a pointer cursor on toggle buttons */
+.custom-control.custom-switch .custom-control-label {
+    cursor: pointer;
+}
+
+/* avoid overflow of #usernavigation navigation bar */
+#usernavigation {
+    max-width: calc(100% - 1rem); /* 1rem is the padding of the navbar */
+}
+
+/* remove "external link" icon for specific classes (discouraged but sometimes it doesn't look good) */
+body.dir-ltr a.${PREFIX('no-external-icon')}::after,
+body.dir-rtl a.${PREFIX('no-external-icon')}::before {
+    display: none !important;
+}
+    `);
 // endregion
 
 // region Settings
@@ -1121,7 +1145,9 @@ ready(() => {
             type: types.SAVE_CANCEL,
             large: true,
             scrollable: true,
-            title: 'Better Moodle: Einstellungen',
+            title: `${
+                githubLink('').outerHTML
+            }&nbsp;Better Moodle: Einstellungen`,
             body: form,
         }).then(modal => {
             // open the modal on click onto the settings button
@@ -1222,7 +1248,9 @@ ready(() => {
                     type: types.ALERT,
                     large: true,
                     scrollable: true,
-                    title: 'Better Moodle: Changelog',
+                    title: `${
+                        githubLink('/blob/main/CHANGELOG.md').outerHTML
+                    }&nbsp;Better Moodle: Changelog`,
                     body: fetch(
                         `https://raw.githubusercontent.com/jxn-30/better-moodle/main/CHANGELOG.md?_=${
                             Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
