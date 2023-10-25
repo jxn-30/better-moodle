@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.0](https://github.com/jxn-30/better-moodle/compare/v1.7.0...v1.8.0) (2023-10-25)
+
+
+### Features
+
+* **updater:** add update instructions on btn click ([b1db106](https://github.com/jxn-30/better-moodle/commit/b1db106c59ee2ae5853dfa4e6aa92c8f6c886dfa))
+
+
+### Bug Fixes
+
+* **my-courses:** clarify description of boxesPerRow setting ([c003282](https://github.com/jxn-30/better-moodle/commit/c0032825334efab20253443618c2711a12d088e3))
+* **updater:** do not open a blank tab on updating ([f118170](https://github.com/jxn-30/better-moodle/commit/f118170489bb052d2f055ea3b56976aebfbc1fbc))
+
 ## [1.7.0](https://github.com/jxn-30/better-moodle/compare/v1.6.1...v1.7.0) (2023-10-25)
 
 
