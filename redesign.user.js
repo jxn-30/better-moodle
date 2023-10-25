@@ -340,7 +340,7 @@ const SETTINGS = [
         id: 'myCourses.boxesPerRow',
         name: 'Kacheln pro Zeile',
         description:
-            'Zahl der Kacheln pro Zeile auf der "Meine Kurse"-Seite, wenn die Ansicht auf "Kacheln" gestellt ist.',
+            'Zahl der Kacheln pro Zeile auf der "Meine Kurse"-Seite, wenn die Ansicht auf "Kacheln" gestellt ist. (Ist bis zu einer Fenster-/Bildschirmbreite bis 840px aktiv)',
         type: Number,
         default: 4,
         attributes: {
