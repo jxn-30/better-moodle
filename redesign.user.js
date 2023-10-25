@@ -1226,6 +1226,14 @@ ready(() => {
                 updateBtn.target = '_blank';
                 updateBtn.textContent = 'Update installieren';
                 versionSpan.append(updateBtn);
+
+                updateBtn.addEventListener('click', () =>
+                    create({
+                        type: types.ALERT,
+                        title: 'Better Moodle aktualisieren',
+                        body: 'Den Anweisungen zum Aktualisieren im Script-Manager (z.&nbsp;B. Tampermonkey) folgen und anschließend Moodle neu laden.',
+                    }).then(modal => modal.show())
+                );
             });
 
             modal
