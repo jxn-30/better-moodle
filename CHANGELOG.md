@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/jxn-30/better-moodle/compare/v1.8.0...v1.8.1) (2023-10-27)
+
+
+### Bug Fixes
+
+* **christmas-countdown:** fix right whitespace in not-animated mode ([46839ae](https://github.com/jxn-30/better-moodle/commit/46839ae1704f8a868ed56bdd2b6ad6bdd1d456f0))
+
 ## [1.8.0](https://github.com/jxn-30/better-moodle/compare/v1.7.0...v1.8.0) (2023-10-25)
 
 
