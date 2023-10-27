@@ -519,13 +519,19 @@ if (getSetting('general.christmasCountdown')) {
 
     const updateScrollWidth = () => {
         const navLinkWidth = Math.floor(navLink.getBoundingClientRect().width);
-        const textSpanWidth = Math.floor(
-            textSpan.getBoundingClientRect().width
-        );
+        let textSpanWidth = Math.floor(textSpan.getBoundingClientRect().width);
         if (textSpanWidth <= navLinkWidth) {
             navLink.classList.remove('animated');
+            textSpan.innerHTML = textSpan.innerHTML.replace(/(&nbsp;)+$/g, '');
         } else {
             navLink.classList.add('animated');
+
+            textSpan.innerHTML = textSpan.innerHTML.replace(
+                /(&nbsp;)*$/g,
+                '\xa0'.repeat(5)
+            );
+
+            textSpanWidth = Math.floor(textSpan.getBoundingClientRect().width);
 
             navLink.style.setProperty(scrollEndVar, `-${textSpanWidth}px`);
             navLink.style.setProperty(
