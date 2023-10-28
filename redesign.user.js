@@ -593,6 +593,11 @@ if (getSetting('general.moveSidebarButtons')) {
 
         let moved = false;
 
+        document.documentElement.style.setProperty(
+            'overflow-behavior',
+            'contain'
+        );
+
         const move = e => {
             e.preventDefault();
 
@@ -617,6 +622,8 @@ if (getSetting('general.moveSidebarButtons')) {
             document.removeEventListener('mouseup', endMove);
             document.removeEventListener('touchend', endMove);
             document.removeEventListener('touchcancel', endMove);
+
+            document.documentElement.style.removeProperty('overflow-behavior');
 
             if (moved) {
                 const btnTarget = btn.dataset.target;
