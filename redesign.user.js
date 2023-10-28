@@ -592,6 +592,7 @@ if (getSetting('general.moveSidebarButtons')) {
             : 'left';
 
         let moved = false;
+        let lastPosition = positionY(e);
 
         document.documentElement.style.setProperty(
             'overflow-behavior',
@@ -601,9 +602,10 @@ if (getSetting('general.moveSidebarButtons')) {
         const move = e => {
             e.preventDefault();
 
-            moved = true;
+            moved = moved || Math.abs(lastPosition - positionY(e)) > 10;
 
-            const newPosition = positionY(e) - diffToTop;
+            lastPosition = positionY(e);
+            const newPosition = lastPosition - diffToTop;
 
             drawerToggle.style.setProperty(
                 'top',
@@ -641,7 +643,7 @@ if (getSetting('general.moveSidebarButtons')) {
 
         document.addEventListener('mouseup', endMove, { once: true });
         document.addEventListener('touchend', endMove, { once: true });
-        // document.addEventListener('touchcancel', endMove, { once: true });
+        document.addEventListener('touchcancel', endMove, { once: true });
     };
 
     ready(() => {
