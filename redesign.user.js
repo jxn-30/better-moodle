@@ -324,6 +324,14 @@ const SETTINGS = [
         type: Boolean,
         default: false,
     },
+    {
+        id: 'general.moveSidebarButtons',
+        name: 'Sidebar-Buttons verschieben',
+        description:
+            'Ermöglicht es, die Buttons zum Öffnen der Sidebars beliebig in der Höhe zu verschieben. Es empfiehlt sich, diese Einstellung nach dem Anpassen zu deaktivieren, um ein versehentliches Verschieben zu verhindern.',
+        type: Boolean,
+        default: false,
+    },
     'Dashboard',
     // {Layout anpassen}
     {
@@ -552,6 +560,99 @@ if (getSetting('general.christmasCountdown')) {
         updateScrollWidth();
     });
 }
+// endregion
+
+// region Feature: general.moveSidebarButtons
+const sidebarButtonPositionStorageKey = PREFIX('move-sidebar-buttons-position');
+const sidebarButtonPosition = GM_getValue(sidebarButtonPositionStorageKey, {
+    right: 0,
+    left: 0,
+});
+if (getSetting('general.moveSidebarButtons')) {
+    const downListener = e => {
+        const target = e.target;
+        if (
+            !(target instanceof HTMLElement) &&
+            !(target instanceof SVGElement)
+        ) {
+            return;
+        }
+        const drawerToggle = target.closest('.drawer-toggler');
+        const btn = drawerToggle.querySelector(':scope > button');
+        if (!drawerToggle || !btn) return;
+
+        const positionY = e => e.clientY ?? e.changedTouches[0]?.screenY ?? 0;
+
+        const drawerToggleRect = drawerToggle.getBoundingClientRect();
+        const diffToTop = positionY(e) - drawerToggleRect.top;
+        const drawerToggleHeight = drawerToggleRect.height;
+
+        const side = drawerToggle.classList.contains('drawer-right-toggle')
+            ? 'right'
+            : 'left';
+
+        let moved = false;
+
+        const move = e => {
+            moved = true;
+
+            const newPosition = positionY(e) - diffToTop;
+
+            drawerToggle.style.setProperty(
+                'top',
+                `min(max(calc(60px + 0.7rem), ${newPosition}px), calc(100% - 0.7rem - ${drawerToggleHeight}px))` // 60px + 0.7rem is default top value
+            );
+        };
+
+        document.addEventListener('mousemove', move);
+        document.addEventListener('touchmove', move);
+
+        const endMove = e => {
+            e.preventDefault();
+            document.removeEventListener('mousemove', move);
+            document.removeEventListener('touchmove', move);
+
+            document.removeEventListener('mouseup', endMove);
+            document.removeEventListener('touchend', endMove);
+            document.removeEventListener('touchcancel', endMove);
+
+            if (moved) {
+                const btnTarget = btn.dataset.target;
+                delete btn.dataset.target;
+                setTimeout(() => (btn.dataset.target = btnTarget), 100);
+
+                sidebarButtonPosition[side] = positionY(e) - diffToTop;
+
+                GM_setValue(
+                    sidebarButtonPositionStorageKey,
+                    sidebarButtonPosition
+                );
+            }
+        };
+
+        document.addEventListener('mouseup', endMove, { once: true });
+        document.addEventListener('touchend', endMove, { once: true });
+        // document.addEventListener('touchcancel', endMove, { once: true });
+    };
+
+    ready(() => {
+        const wrapper = document.querySelector('.drawer-toggles');
+
+        if (!wrapper) return;
+        wrapper.addEventListener('mousedown', downListener);
+        wrapper.addEventListener('touchstart', downListener);
+    });
+}
+GM_addStyle(`
+/* position the drawer toggles */
+/* 60px + 0.7 rem is default position on desktop screens */
+/* also don't allow it to be below the screen (default height of the button seems to be 56.6px) */
+.drawer-toggles .drawer-toggler.drawer-right-toggle {
+    top: min(max(60px + 0.7rem, ${sidebarButtonPosition.right}px), 100% - 56.5px - 0.7rem);
+}
+.drawer-toggles .drawer-toggler.drawer-left-toggle {
+    top: min(max(60px + 0.7rem, ${sidebarButtonPosition.left}px), 100% - 56.5px - 0.7rem);
+}`);
 // endregion
 
 // region Feature: Dashboard right sidebar
