@@ -594,6 +594,8 @@ if (getSetting('general.moveSidebarButtons')) {
         let moved = false;
 
         const move = e => {
+            e.preventDefault();
+
             moved = true;
 
             const newPosition = positionY(e) - diffToTop;
