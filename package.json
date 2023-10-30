@@ -10,7 +10,7 @@
         "prettier:write": "prettier --write --cache --cache-strategy content ."
     },
     "devDependencies": {
-        "@types/tampermonkey": "4.20.4",
+        "@types/tampermonkey": "5.0.0",
         "eslint": "8.52.0",
         "eslint-config-prettier": "9.0.0",
         "eslint-plugin-userscripts": "0.4.0",
