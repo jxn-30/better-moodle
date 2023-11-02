@@ -570,88 +570,124 @@ const sidebarButtonPosition = GM_getValue(sidebarButtonPositionStorageKey, {
 });
 if (getSetting('general.moveSidebarButtons')) {
     const downListener = e => {
-        const target = e.target;
-        if (
-            !(target instanceof HTMLElement) &&
-            !(target instanceof SVGElement)
-        ) {
-            return;
-        }
-        const drawerToggle = target.closest('.drawer-toggler');
-        const btn = drawerToggle.querySelector(':scope > button');
-        if (!drawerToggle || !btn) return;
-
-        const positionY = e => e.clientY ?? e.changedTouches[0]?.screenY ?? 0;
-
-        const drawerToggleRect = drawerToggle.getBoundingClientRect();
-        const diffToTop = positionY(e) - drawerToggleRect.top;
-        const drawerToggleHeight = drawerToggleRect.height;
-
-        const side = drawerToggle.classList.contains('drawer-right-toggle')
-            ? 'right'
-            : 'left';
-
-        let moved = false;
-        let lastPosition = positionY(e);
-
-        document.documentElement.style.setProperty(
-            'overflow-behavior',
-            'contain'
-        );
-
-        const move = e => {
-            e.preventDefault();
-
-            moved = moved || Math.abs(lastPosition - positionY(e)) > 10;
-
-            lastPosition = positionY(e);
-            const newPosition = lastPosition - diffToTop;
-
-            drawerToggle.style.setProperty(
-                'top',
-                `min(max(calc(60px + 0.7rem), ${newPosition}px), calc(100% - 0.7rem - ${drawerToggleHeight}px))` // 60px + 0.7rem is default top value
-            );
-        };
-
-        document.addEventListener('mousemove', move);
-        document.addEventListener('touchmove', move);
-
-        const endMove = e => {
-            e.preventDefault();
-            document.removeEventListener('mousemove', move);
-            document.removeEventListener('touchmove', move);
-
-            document.removeEventListener('mouseup', endMove);
-            document.removeEventListener('touchend', endMove);
-            document.removeEventListener('touchcancel', endMove);
-
-            document.documentElement.style.removeProperty('overflow-behavior');
-
-            if (moved) {
-                const btnTarget = btn.dataset.target;
-                delete btn.dataset.target;
-                setTimeout(() => (btn.dataset.target = btnTarget), 100);
-
-                sidebarButtonPosition[side] = positionY(e) - diffToTop;
-
-                GM_setValue(
-                    sidebarButtonPositionStorageKey,
-                    sidebarButtonPosition
-                );
-            }
-        };
-
-        document.addEventListener('mouseup', endMove, { once: true });
-        document.addEventListener('touchend', endMove, { once: true });
-        document.addEventListener('touchcancel', endMove, { once: true });
+        console.log(e);
+        // const target = e.target;
+        // if (
+        //     !(target instanceof HTMLElement) &&
+        //     !(target instanceof SVGElement)
+        // ) {
+        //     return;
+        // }
+        // const drawerToggle = target.closest('.drawer-toggler');
+        // const btn = drawerToggle.querySelector(':scope > button');
+        // if (!drawerToggle || !btn) return;
+        //
+        // const positionY = e => e.clientY ?? e.changedTouches[0]?.screenY ?? 0;
+        //
+        // const drawerToggleRect = drawerToggle.getBoundingClientRect();
+        // const diffToTop = positionY(e) - drawerToggleRect.top;
+        // const drawerToggleHeight = drawerToggleRect.height;
+        //
+        // const side = drawerToggle.classList.contains('drawer-right-toggle')
+        //     ? 'right'
+        //     : 'left';
+        //
+        // let moved = false;
+        // let lastPosition = positionY(e);
+        //
+        // document.documentElement.style.setProperty(
+        //     'overflow-behavior',
+        //     'contain'
+        // );
+        //
+        // const move = e => {
+        //     e.preventDefault();
+        //
+        //     moved = moved || Math.abs(lastPosition - positionY(e)) > 10;
+        //
+        //     lastPosition = positionY(e);
+        //     const newPosition = lastPosition - diffToTop;
+        //
+        //     drawerToggle.style.setProperty(
+        //         'top',
+        //         `min(max(calc(60px + 0.7rem), ${newPosition}px), calc(100% - 0.7rem - ${drawerToggleHeight}px))` // 60px + 0.7rem is default top value
+        //     );
+        // };
+        //
+        // document.addEventListener('mousemove', move);
+        // document.addEventListener('touchmove', move);
+        //
+        // const endMove = e => {
+        //     e.preventDefault();
+        //     document.removeEventListener('mousemove', move);
+        //     document.removeEventListener('touchmove', move);
+        //
+        //     document.removeEventListener('mouseup', endMove);
+        //     document.removeEventListener('touchend', endMove);
+        //     document.removeEventListener('touchcancel', endMove);
+        //
+        //     document.documentElement.style.removeProperty('overflow-behavior');
+        //
+        //     if (moved) {
+        //         const btnTarget = btn.dataset.target;
+        //         delete btn.dataset.target;
+        //         setTimeout(() => (btn.dataset.target = btnTarget), 100);
+        //
+        //         sidebarButtonPosition[side] = positionY(e) - diffToTop;
+        //
+        //         GM_setValue(
+        //             sidebarButtonPositionStorageKey,
+        //             sidebarButtonPosition
+        //         );
+        //     }
+        // };
+        //
+        // document.addEventListener('mouseup', endMove, { once: true });
+        // document.addEventListener('touchend', endMove, { once: true });
+        // document.addEventListener('touchcancel', endMove, { once: true });
     };
 
     ready(() => {
         const wrapper = document.querySelector('.drawer-toggles');
 
+        console.log(wrapper);
+
         if (!wrapper) return;
-        wrapper.addEventListener('mousedown', downListener);
-        wrapper.addEventListener('touchstart', downListener);
+
+        const makeSidebarTogglerDraggable = toggler => {
+            if (!getSetting('general.moveSidebarButtons')) return;
+
+            toggler.setAttribute('draggable', 'true');
+
+            // toggler.addEventListener('dragstart', console.log);
+        };
+
+        wrapper
+            .querySelectorAll(
+                ':scope > .drawer-toggler > button[data-action="toggle"]'
+            )
+            .forEach(makeSidebarTogglerDraggable);
+
+        wrapper.addEventListener('dragstart', e => console.log('wrapper', e));
+
+        new MutationObserver(mutations =>
+            mutations
+                .flatMap(mutation => Array.from(mutation.addedNodes))
+                .filter(node => node instanceof HTMLElement)
+                .map(el =>
+                    el.querySelector(':scope > button[data-action="toggle"]')
+                )
+                .forEach(makeSidebarTogglerDraggable)
+        ).observe(wrapper, {
+            childList: true,
+        });
+
+        // wrapper.addEventListener('dragstart', e => {
+        //     console.log(e);
+        // });
+
+        // wrapper.addEventListener('mousedown', downListener);
+        // wrapper.addEventListener('touchstart', downListener);
     });
 }
 GM_addStyle(`
