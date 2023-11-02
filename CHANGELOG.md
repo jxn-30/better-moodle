@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.0](https://github.com/jxn-30/better-moodle/compare/v1.8.1...v1.9.0) (2023-11-02)
+
+
+### Features
+
+* **courses:** add setting to prevent images having more than 100% width [#38](https://github.com/jxn-30/better-moodle/issues/38) ([42d93e5](https://github.com/jxn-30/better-moodle/commit/42d93e54ded143ce745f7499ab204979d4748e4c))
+* **courses:** add setting to zoom images in on click [#38](https://github.com/jxn-30/better-moodle/issues/38) ([3fa9bdd](https://github.com/jxn-30/better-moodle/commit/3fa9bdd9d42bf5c187e4c10606776ca15a6cf7c9))
+
 ## [1.8.1](https://github.com/jxn-30/better-moodle/compare/v1.8.0...v1.8.1) (2023-10-27)
 
 
