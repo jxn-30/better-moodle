@@ -388,7 +388,15 @@ const SETTINGS = [
             'Verhindert, dass Bilder in den Kursen mehr als die komplette Breite einnehmen und damit ein horizontales Scrollen der Seite verursachen.',
         type: Boolean,
         default: true,
-    }
+    },
+    {
+        id: 'courses.imageZoom',
+        name: 'Bilder zoomen',
+        description:
+            'Zoomt ein Bild heran, wenn es angeklickt wird. So lassen sich kleine Bilder einfach per Knopfdruck vergrößert anzeigen.',
+        type: Boolean,
+        default: true,
+    },
 ];
 // endregion
 
@@ -659,7 +667,7 @@ ready(() => {
     let sidebarContent;
 
     const addDropdownItem = course => {
-         const createAnchor = () => {
+        const createAnchor = () => {
             const anchor = document.createElement('a');
             anchor.classList.add('dropdown-item');
             anchor.href = course.viewurl;
@@ -673,7 +681,7 @@ ready(() => {
             );
             anchor.title = anchor.textContent;
             return anchor;
-         }
+        };
 
         if (dropdownMenu) {
             const anchor = createAnchor();
@@ -861,6 +869,86 @@ if (getSetting('courses.imgMaxWidth')) {
     max-width: 100%;
 }
     `);
+}
+// endregion
+
+// region Feature: courses.imageZoom
+if (getSetting('courses.imageZoom')) {
+    const overlay = document.createElement('div');
+    overlay.id = PREFIX('image-zoom-overlay');
+
+    let copyImage;
+
+    GM_addStyle(`
+#page-content .course-content img {
+    cursor: zoom-in;
+}
+
+/* background for image zooming */
+#${overlay.id} {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2000;
+    opacity: 0;
+    
+    background: rgba(0, 0, 0, 0.75);
+    
+    cursor: zoom-out;
+    
+    transition: opacity 0.2s ease-in-out;
+    will-change: opacity;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* image zooming */
+#${overlay.id} > img {
+    cursor: zoom-out;
+    transition: transform 0.2s ease-in-out;
+    will-change: transform;
+}`);
+
+    overlay.addEventListener('click', () => {
+        overlay.remove();
+        copyImage.remove();
+
+        overlay.style.removeProperty('opacity');
+    });
+
+    const zoomImage = e => {
+        const target = e.target;
+        if (!(target instanceof HTMLImageElement)) return;
+
+        e.preventDefault();
+
+        copyImage = target.cloneNode(true);
+        copyImage.addEventListener('load', () => {
+            const { naturalWidth: width, naturalHeight: height } = copyImage;
+
+            const maxWidth = window.innerWidth * 0.9;
+            const maxHeight = window.innerHeight * 0.9;
+
+            const scale = Math.min(maxWidth / width, maxHeight / height);
+
+            copyImage.style.setProperty('transform', `scale(${scale})`);
+        });
+
+        overlay.append(copyImage);
+        document.body.append(overlay);
+
+        overlay.style.setProperty('opacity', '1');
+    };
+
+    ready(() =>
+        document
+            .querySelector('#page-content .course-content')
+            ?.addEventListener('click', zoomImage)
+    );
 }
 // endregion
 
