@@ -32,42 +32,42 @@ The Dark-mode screenshots on this page are using a brightness of 100 % and a co
 
 ### General and everywhere
 
-- make pages use the full width of the screen and not only some few hundred pixels in the middle. 
-- always open external links in a new tab
-- add a title-attribute to texts that are truncated to allow seeing the full text when hovering with the mouse over the text for a short time
-    - this is especially useful for the sidebars
-    - this does not work on mobile devices as there is no mouse to hover with. Solution ideas are welcome
-- add a countdown to Christmas Eve in the navigation bar
-- modify the "Meine Kurse" link in navigation menu to be a dropdown for quick access to all personal non-hidden courses.
+-   make pages use the full width of the screen and not only some few hundred pixels in the middle.
+-   always open external links in a new tab
+-   add a title-attribute to texts that are truncated to allow seeing the full text when hovering with the mouse over the text for a short time
+    -   this is especially useful for the sidebars
+    -   this does not work on mobile devices as there is no mouse to hover with. Solution ideas are welcome
+-   add a countdown to Christmas Eve in the navigation bar
+-   modify the "Meine Kurse" link in navigation menu to be a dropdown for quick access to all personal non-hidden courses.
 
 |                     Default Design                      |                    Userscript (Light mode)                     |                    Userscript (Dark mode)                    |
-|:-------------------------------------------------------:|:--------------------------------------------------------------:|:------------------------------------------------------------:|
+| :-----------------------------------------------------: | :------------------------------------------------------------: | :----------------------------------------------------------: |
 | ![Default Design](./img/general/my_courses/default.png) | ![Userscript (Light mode)](./img/general/my_courses/light.png) | ![Userscript (Dark mode)](./img/general/my_courses/dark.png) |
 
 ### Dashboard
 
 -   move "Zeitleiste" and "Aktuelle Termine" into a **right** sidebar
 -   add a **left** sidebar listing all personal non-hidden courses
-- custom layout configuration is planned but not yet implemented
+-   custom layout configuration is planned but not yet implemented
 
 |                 Default Design                 |                   Userscript (Light mode)                    |                   Userscript (Dark mode)                   |
-|:----------------------------------------------:|:------------------------------------------------------------:|:----------------------------------------------------------:|
+| :--------------------------------------------: | :----------------------------------------------------------: | :--------------------------------------------------------: |
 | ![Default Design](./img/dashboard/default.png) |    ![Userscript (Light mode)](./img/dashboard/light.png)     |    ![Userscript (Dark mode)](./img/dashboard/dark.png)     |
 |                                                | ![Userscript (Light mode)](./img/dashboard/light_closed.png) | ![Userscript (Dark mode)](./img/dashboard/dark_closed.png) |
 
 ### My Courses / "Meine Kurse"
 
 -   allow changing the amount of boxes per row on desktop screens if the "Kacheln" view is enabled
-    - moodle default is 3, better-moodle allows values from 1 to 10 (each inclusive)  
+    -   moodle default is 3, better-moodle allows values from 1 to 10 (each inclusive)
 
 |                 Default Design                  |                Userscript (Light mode)                 |                Userscript (Dark mode)                |
-|:-----------------------------------------------:|:------------------------------------------------------:|:----------------------------------------------------:|
+| :---------------------------------------------: | :----------------------------------------------------: | :--------------------------------------------------: |
 | ![Default Design](./img/my_courses/default.png) | ![Userscript (Light mode)](./img/my_courses/light.png) | ![Userscript (Dark mode)](./img/my_courses/dark.png) |
 
 ### Courses / "Kurse"
 
-- add a button to grades ("Bewertungen") to the left sidebar
-  - optionally open them in a new tab by default
-- collapse / expand all sections in the left sidebar by double-clicking on one of the collapse / expand icons
+-   add a button to grades ("Bewertungen") to the left sidebar
+    -   optionally open them in a new tab by default
+-   collapse / expand all sections in the left sidebar by double-clicking on one of the collapse / expand icons
 
 [installation]: https://github.com/jxn-30/better-moodle/raw/main/redesign.user.js
