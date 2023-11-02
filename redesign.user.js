@@ -651,7 +651,7 @@ ready(() => {
     let sidebarContent;
 
     const addDropdownItem = course => {
-        if (dropdownMenu) {
+         const createAnchor = () => {
             const anchor = document.createElement('a');
             anchor.classList.add('dropdown-item');
             anchor.href = course.viewurl;
@@ -664,28 +664,24 @@ ready(() => {
                 fullName
             );
             anchor.title = anchor.textContent;
+            return anchor;
+         }
+
+        if (dropdownMenu) {
+            const anchor = createAnchor();
+            anchor.classList.add('dropdown-item');
             anchor.style.setProperty('overflow', 'hidden');
             anchor.style.setProperty('text-overflow', 'ellipsis');
             dropdownMenu.append(anchor);
         }
         if (mobileDropdownMenu) {
-            const anchor = document.createElement('a');
+            const anchor = createAnchor();
             anchor.classList.add(
                 'pl-5',
                 'bg-light',
                 'list-group-item',
                 'list-group-item-action'
             );
-            anchor.href = course.viewurl;
-            const shortName = document.createElement('strong');
-            shortName.textContent = course.shortname;
-            const fullName = document.createElement('small');
-            fullName.textContent = course.fullname;
-            anchor.append(
-                ...(course.shortname ? [shortName, '\u00a0'] : []),
-                fullName
-            );
-            anchor.title = anchor.textContent;
             mobileDropdownMenu.append(anchor);
         }
     };
