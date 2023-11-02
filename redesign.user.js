@@ -381,6 +381,14 @@ const SETTINGS = [
         type: Boolean,
         default: true,
     },
+    {
+        id: 'courses.imgMaxWidth',
+        name: 'Bildüberlauf verhindern',
+        description:
+            'Verhindert, dass Bilder in den Kursen mehr als die komplette Breite einnehmen und damit ein horizontales Scrollen der Seite verursachen.',
+        type: Boolean,
+        default: true,
+    }
 ];
 // endregion
 
@@ -843,6 +851,17 @@ ready(() => {
             })
         ));
 });
+// endregion
+
+// region Feature: courses.imgMaxWidth
+if (getSetting('courses.imgMaxWidth')) {
+    GM_addStyle(`
+/* prevent images from overflowing */
+#page-content .course-content img {
+    max-width: 100%;
+}
+    `);
+}
 // endregion
 
 // region Settings modal
