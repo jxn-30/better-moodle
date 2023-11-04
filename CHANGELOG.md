@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.0](https://github.com/jxn-30/better-moodle/compare/v1.9.0...v1.10.0) (2023-11-04)
+
+
+### Features
+
+* **settings:** add button to export settings ([bc7d73a](https://github.com/jxn-30/better-moodle/commit/bc7d73a69782920e0e6015ae20917e0ea4b99869))
+* **settings:** add button to import settings ([24c20e3](https://github.com/jxn-30/better-moodle/commit/24c20e34e8d7bb31401947a911e4d11fad2e90ee))
+
 ## [1.9.0](https://github.com/jxn-30/better-moodle/compare/v1.8.1...v1.9.0) (2023-11-02)
 
 
