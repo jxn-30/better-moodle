@@ -16,6 +16,7 @@
 // @grant           GM_addStyle
 // @grant           GM_getValue
 // @grant           GM_setValue
+// @grant           GM_listValues
 // @grant           GM_info
 // ==/UserScript==
 
@@ -1354,12 +1355,31 @@ ready(() => {
                 ?.append(versionSpan);
             // endregion
 
+            const footerBtnGroup = document.createElement('div');
+            footerBtnGroup.classList.add('btn-group', 'mr-auto');
+
+            footerBtnGroup.id = PREFIX('settings-footer-btn-group');
+
+            GM_addStyle(`
+#${footerBtnGroup.id} > button > span {
+    font-size: 0;
+    transition: font-size 0.5s;
+}
+#${footerBtnGroup.id} > button:hover > span {
+    font-size: unset;
+}
+`);
+
+            modal.getFooter()[0].prepend(footerBtnGroup);
+
             // region changelog
             const changelogBtn = document.createElement('button');
-            changelogBtn.classList.add('btn', 'btn-link', 'mr-auto');
+            changelogBtn.classList.add('btn', 'btn-outline-primary');
             const changelogIcon = document.createElement('i');
-            changelogIcon.classList.add('fa', 'fa-history');
-            changelogBtn.append(changelogIcon, ' Changelog');
+            changelogIcon.classList.add('fa', 'fa-history', 'fa-fw');
+            const changelogText = document.createElement('span');
+            changelogText.textContent = 'Changelog';
+            changelogBtn.append(changelogIcon, changelogText);
 
             changelogBtn.addEventListener('click', () =>
                 create({
@@ -1383,7 +1403,33 @@ ready(() => {
                         .then(md => mdToHtml(md, 3)),
                 }).then(modal => modal.show())
             );
-            modal.getFooter()[0].prepend(changelogBtn);
+            footerBtnGroup.append(changelogBtn);
+            // endregion
+
+            // region export
+            const exportBtn = document.createElement('button');
+            exportBtn.classList.add('btn', 'btn-outline-primary');
+
+            const exportIcon = document.createElement('i');
+            exportIcon.classList.add('fa', 'fa-download', 'fa-fw');
+            const exportText = document.createElement('span');
+            exportText.textContent = 'Einstellungen exportieren';
+            exportBtn.append(exportIcon, exportText);
+
+            exportBtn.addEventListener('click', e => {
+                e.preventDefault();
+                const config = Object.fromEntries(
+                    GM_listValues().map(key => [key, GM_getValue(key)])
+                );
+                const blob = new Blob([JSON.stringify(config)], {
+                    type: 'application/json',
+                });
+                const link = document.createElement('a');
+                link.download = 'better-moodle-settings.json';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+            });
+            footerBtnGroup.append(exportBtn);
             // endregion
         }));
 });
