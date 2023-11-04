@@ -1431,6 +1431,40 @@ ready(() => {
             });
             footerBtnGroup.append(exportBtn);
             // endregion
+
+            // region import
+            const importBtn = document.createElement('button');
+            importBtn.classList.add('btn', 'btn-outline-primary');
+
+            const importIcon = document.createElement('i');
+            importIcon.classList.add('fa', 'fa-upload', 'fa-fw');
+            const importText = document.createElement('span');
+            importText.textContent = 'Einstellungen importieren';
+            importBtn.append(importIcon, importText);
+
+            importBtn.addEventListener('click', e => {
+                e.preventDefault();
+
+                const importInput = document.createElement('input');
+                importInput.type = 'file';
+                importInput.accept = '.json';
+                importInput.addEventListener('change', () => {
+                    const file = importInput.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.addEventListener('load', () => {
+                        const config = JSON.parse(reader.result);
+                        Object.entries(config).forEach(([key, value]) =>
+                            GM_setValue(key, value)
+                        );
+                        window.location.reload();
+                    });
+                    reader.readAsText(file);
+                });
+                importInput.click();
+            });
+            footerBtnGroup.append(importBtn);
+            // endregion
         }));
 });
 // endregion
