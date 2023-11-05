@@ -17,6 +17,7 @@
 // @grant           GM_getValue
 // @grant           GM_setValue
 // @grant           GM_listValues
+// @grant           GM_addValueChangeListener
 // @grant           GM_info
 // ==/UserScript==
 
@@ -318,6 +319,14 @@ const SETTINGS = [
         default: true,
     },
     {
+        id: 'general.bookmarkManager',
+        name: 'Lesezeichen-Manager',
+        description:
+            'Aktiviert einen kleinen internen Lesezeichen-Manager, um direkt im Moodle zu bestimmten Orten zu springen.',
+        type: Boolean,
+        default: true,
+    },
+    {
         id: 'general.christmasCountdown',
         name: 'Countdown bis Heiligabend 🎄',
         description:
@@ -442,6 +451,167 @@ if (getSetting('general.truncatedTexts')) {
         }
         if (target.title || !target.classList.contains('text-truncate')) return;
         target.title = target.textContent.trim();
+    });
+}
+// endregion
+
+// region Feature: general.bookmarkManager
+if (getSetting('general.bookmarkManager')) {
+    ready(() => {
+        const BOOKMARKS_STORAGE = PREFIX('bookmarks');
+
+        const bookmarkBtnWrapper = document.createElement('div');
+        bookmarkBtnWrapper.classList.add('dropdown');
+        const bookmarksBtn = document.createElement('a');
+        bookmarksBtn.classList.add(
+            'nav-link',
+            'position-relative',
+            'icon-no-margin'
+        );
+        bookmarksBtn.href = '#';
+        bookmarksBtn.role = 'button';
+        bookmarksBtn.dataset.toggle = 'dropdown';
+        const bookmarksIcon = document.createElement('i');
+        bookmarksIcon.classList.add('icon', 'fa', 'fa-bookmark-o', 'fa-fw');
+        bookmarksIcon.title = bookmarksBtn.ariaLabel =
+            'Einstellungen von Better Moodle';
+        bookmarksIcon.role = 'img';
+        bookmarksBtn.append(bookmarksIcon);
+
+        const dropdown = document.createElement('div');
+        dropdown.classList.add('dropdown-menu', 'dropdown-menu-right');
+
+        const bookmarksWrapper = document.createElement('div');
+        bookmarksWrapper.id = PREFIX('bookmarks-dropdown-bookmarks');
+
+        const setBookmarksList = bookmarks => {
+            bookmarksWrapper.innerHTML = '';
+            bookmarks.forEach(({ title, url }) => {
+                const bookmark = document.createElement('a');
+                bookmark.classList.add('dropdown-item');
+                bookmark.href = url;
+                bookmark.textContent = title;
+                bookmarksWrapper.append(bookmark);
+            });
+        };
+
+        setBookmarksList(GM_getValue(BOOKMARKS_STORAGE, []));
+
+        GM_addValueChangeListener(BOOKMARKS_STORAGE, (_, __, bookmarks) =>
+            setBookmarksList(bookmarks)
+        );
+
+        const divider = document.createElement('div');
+        divider.classList.add('dropdown-divider');
+
+        const addBookmarkBtn = document.createElement('a');
+        addBookmarkBtn.classList.add('dropdown-item');
+        addBookmarkBtn.href = '#';
+        addBookmarkBtn.textContent = 'Lesezeichen setzen';
+        addBookmarkBtn.addEventListener('click', e => {
+            e.preventDefault();
+
+            const form = document.createElement('form');
+            form.classList.add('mform');
+            const container = document.createElement('div');
+            container.classList.add('fcontainer');
+
+            const addFormItem = title => {
+                const group = document.createElement('div');
+                group.classList.add('form-group', 'row', 'fitem');
+                const labelWrapper = document.createElement('div');
+                labelWrapper.classList.add(
+                    'col-md-3',
+                    'col-form-label',
+                    'd-flex',
+                    'pb-0',
+                    'pt-0'
+                );
+                const label = document.createElement('label');
+                label.classList.add('d-inline', 'word-break');
+                label.textContent = title;
+                labelWrapper.append(label);
+
+                const inputWrapper = document.createElement('div');
+                inputWrapper.classList.add(
+                    'col-md-9',
+                    'form-inline',
+                    'align-items-start',
+                    'felement'
+                );
+                const input = document.createElement('input');
+                input.classList.add('form-control', 'w-100');
+                input.type = 'text';
+                input.required = true;
+                input.id = PREFIX(`bookmark-new-${crypto.randomUUID()}`);
+                label.setAttribute('for', input.id);
+                inputWrapper.append(input);
+
+                group.append(labelWrapper, inputWrapper);
+
+                container.append(group);
+                form.append(container);
+
+                return input;
+            };
+
+            const titleInput = addFormItem('Bezeichnung');
+            titleInput.value = document.title.replace(/\|.*?$/, '');
+            const urlInput = addFormItem('URL');
+            urlInput.value = window.location.href;
+
+            require(['core/modal_factory', 'core/modal_events'], (
+                { create, types },
+                ModalEvents
+            ) =>
+                create({
+                    type: types.SAVE_CANCEL,
+                    large: true,
+                    scrollable: true,
+                    title: 'Lesezeichen setzen',
+                    body: form,
+                    removeOnClose: true,
+                }).then(modal => {
+                    modal.show();
+
+                    modal.getRoot().on(ModalEvents.save, () => {
+                        const bookmarks = GM_getValue(BOOKMARKS_STORAGE, []);
+                        bookmarks.push({
+                            title: titleInput.value,
+                            url: urlInput.value,
+                        });
+                        GM_setValue(BOOKMARKS_STORAGE, bookmarks);
+                    });
+                }));
+        });
+
+        const manageBookmarksBtn = document.createElement('a');
+        manageBookmarksBtn.classList.add('dropdown-item');
+        manageBookmarksBtn.href = '#';
+        manageBookmarksBtn.textContent = 'Lesezeichen verwalten';
+        manageBookmarksBtn.addEventListener('click', e => {
+            e.preventDefault();
+        });
+
+        dropdown.append(
+            bookmarksWrapper,
+            divider,
+            addBookmarkBtn,
+            manageBookmarksBtn
+        );
+        bookmarkBtnWrapper.append(bookmarksBtn, dropdown);
+        document
+            .querySelector('#usernavigation .usermenu-container')
+            ?.before(bookmarkBtnWrapper);
+
+        GM_addStyle(`
+#${bookmarksWrapper.id}:empty::before {
+    display: block;
+    text-align: center;
+    content: "Bislang sind keine Lesezeichen vorhanden!";
+    padding: .25rem 1.5rem; /* this is the padding of .dropdown-item set by moodle */
+}
+`);
     });
 }
 // endregion
