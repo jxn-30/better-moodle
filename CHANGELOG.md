@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/jxn-30/better-moodle/compare/v1.10.0...v1.11.0) (2023-11-06)
+
+
+### Features
+
+* bookmarks ([#45](https://github.com/jxn-30/better-moodle/issues/45)) ([bc3e599](https://github.com/jxn-30/better-moodle/commit/bc3e5999f65fafd8815348b5a932b45415da527f))
+
 ## [1.10.0](https://github.com/jxn-30/better-moodle/compare/v1.9.0...v1.10.0) (2023-11-04)
 
 
