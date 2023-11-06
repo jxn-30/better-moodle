@@ -17,6 +17,7 @@
 // @grant           GM_getValue
 // @grant           GM_setValue
 // @grant           GM_listValues
+// @grant           GM_addValueChangeListener
 // @grant           GM_info
 // ==/UserScript==
 
@@ -318,6 +319,14 @@ const SETTINGS = [
         default: true,
     },
     {
+        id: 'general.bookmarkManager',
+        name: 'Lesezeichen-Manager',
+        description:
+            'Aktiviert einen kleinen internen Lesezeichen-Manager, um direkt im Moodle zu bestimmten Orten zu springen.',
+        type: Boolean,
+        default: true,
+    },
+    {
         id: 'general.christmasCountdown',
         name: 'Countdown bis Heiligabend 🎄',
         description:
@@ -442,6 +451,381 @@ if (getSetting('general.truncatedTexts')) {
         }
         if (target.title || !target.classList.contains('text-truncate')) return;
         target.title = target.textContent.trim();
+    });
+}
+// endregion
+
+// region Feature: general.bookmarkManager
+if (getSetting('general.bookmarkManager')) {
+    ready(() => {
+        const BOOKMARKS_STORAGE = PREFIX('bookmarks');
+
+        const bookmarkBtnWrapper = document.createElement('div');
+        bookmarkBtnWrapper.classList.add('dropdown');
+        const bookmarksBtn = document.createElement('a');
+        bookmarksBtn.classList.add(
+            'nav-link',
+            'position-relative',
+            'icon-no-margin'
+        );
+        bookmarksBtn.href = '#';
+        bookmarksBtn.role = 'button';
+        bookmarksBtn.dataset.toggle = 'dropdown';
+        const bookmarksIcon = document.createElement('i');
+        bookmarksIcon.classList.add('icon', 'fa', 'fa-bookmark-o', 'fa-fw');
+        bookmarksIcon.title = bookmarksBtn.ariaLabel =
+            'Einstellungen von Better Moodle';
+        bookmarksIcon.role = 'img';
+        bookmarksBtn.append(bookmarksIcon);
+
+        const dropdown = document.createElement('div');
+        dropdown.classList.add('dropdown-menu', 'dropdown-menu-right');
+
+        const bookmarksWrapper = document.createElement('div');
+        bookmarksWrapper.id = PREFIX('bookmarks-dropdown-bookmarks');
+
+        const setBookmarksList = bookmarks => {
+            bookmarksWrapper.innerHTML = '';
+            bookmarksIcon.classList.remove('fa-bookmark', 'fa-bookmark-o');
+            bookmarks.forEach(({ title, url }) => {
+                const httpsUrl = url.startsWith('https://')
+                    ? url
+                    : `https://${url}`;
+                const bookmark = document.createElement('a');
+                bookmark.classList.add('dropdown-item');
+                bookmark.href = httpsUrl;
+                bookmark.textContent = title;
+                bookmarksWrapper.append(bookmark);
+
+                try {
+                    const bookmarkWithoutHash = new URL(httpsUrl);
+                    bookmarkWithoutHash.hash = '';
+                    const currentPage = new URL(window.location.href);
+                    currentPage.hash = '';
+
+                    if (currentPage.href.includes(bookmarkWithoutHash.href)) {
+                        bookmarksIcon.classList.add('fa-bookmark');
+                    }
+                } catch {
+                    // ignore invalid URLs
+                }
+            });
+            if (!bookmarksIcon.classList.contains('fa-bookmark')) {
+                bookmarksIcon.classList.add('fa-bookmark-o');
+            }
+        };
+
+        setBookmarksList(GM_getValue(BOOKMARKS_STORAGE, []));
+
+        GM_addValueChangeListener(BOOKMARKS_STORAGE, (_, __, bookmarks) =>
+            setBookmarksList(bookmarks)
+        );
+
+        const divider = document.createElement('div');
+        divider.classList.add('dropdown-divider');
+
+        const addBookmarkBtn = document.createElement('a');
+        addBookmarkBtn.classList.add('dropdown-item');
+        addBookmarkBtn.href = '#';
+        addBookmarkBtn.textContent = 'Lesezeichen setzen';
+        addBookmarkBtn.addEventListener('click', e => {
+            e.preventDefault();
+
+            const form = document.createElement('form');
+            form.classList.add('mform');
+            const container = document.createElement('div');
+            container.classList.add('fcontainer');
+
+            const addFormItem = (title, addon = '') => {
+                const group = document.createElement('div');
+                group.classList.add('form-group', 'row', 'fitem');
+                const labelWrapper = document.createElement('div');
+                labelWrapper.classList.add(
+                    'col-md-3',
+                    'col-form-label',
+                    'd-flex',
+                    'pb-0',
+                    'pt-0'
+                );
+                const label = document.createElement('label');
+                label.classList.add('d-inline', 'word-break');
+                label.textContent = title;
+                labelWrapper.append(label);
+
+                const inputWrapper = document.createElement('div');
+                inputWrapper.classList.add(
+                    'col-md-9',
+                    'form-inline',
+                    'align-items-start',
+                    'felement'
+                );
+                const input = document.createElement('input');
+                input.classList.add('form-control', 'flex-grow-1');
+                input.type = 'text';
+                input.required = true;
+                input.placeholder = title;
+                input.id = PREFIX(`bookmark-new-${crypto.randomUUID()}`);
+                label.setAttribute('for', input.id);
+
+                if (addon) {
+                    inputWrapper.classList.add('input-group');
+
+                    const addonDiv = document.createElement('div');
+                    addonDiv.classList.add('input-group-prepend');
+                    const addonText = document.createElement('span');
+                    addonText.classList.add('input-group-text');
+                    addonText.textContent = addon;
+                    addonDiv.append(addonText);
+                    inputWrapper.append(addonDiv, input);
+                } else {
+                    inputWrapper.append(input);
+                }
+
+                group.append(labelWrapper, inputWrapper);
+
+                container.append(group);
+                form.append(container);
+
+                return input;
+            };
+
+            const titleInput = addFormItem('Bezeichnung');
+            titleInput.value = document.title.replace(/\|.*?$/, '').trim();
+            const urlInput = addFormItem('URL', 'https://');
+            urlInput.type = 'url';
+            urlInput.value = window.location.href.replace(/^https:\/\//, '');
+
+            require(['core/modal_factory', 'core/modal_events'], (
+                { create, types },
+                ModalEvents
+            ) =>
+                create({
+                    type: types.SAVE_CANCEL,
+                    large: true,
+                    scrollable: true,
+                    title: 'Lesezeichen setzen',
+                    body: form,
+                    removeOnClose: true,
+                }).then(modal => {
+                    modal.show();
+
+                    modal.getRoot().on(ModalEvents.save, () => {
+                        const bookmarks = GM_getValue(BOOKMARKS_STORAGE, []);
+                        bookmarks.push({
+                            title: titleInput.value,
+                            url: urlInput.value,
+                        });
+                        GM_setValue(BOOKMARKS_STORAGE, bookmarks);
+                    });
+                }));
+        });
+
+        let manageFormStyleAdded = false;
+
+        const manageBookmarksBtn = document.createElement('a');
+        manageBookmarksBtn.classList.add('dropdown-item');
+        manageBookmarksBtn.href = '#';
+        manageBookmarksBtn.textContent = 'Lesezeichen verwalten';
+        manageBookmarksBtn.addEventListener('click', e => {
+            e.preventDefault();
+
+            const form = document.createElement('form');
+            form.classList.add('mform');
+            form.id = PREFIX('bookmark-manager-form');
+            const container = document.createElement('div');
+            container.classList.add('fcontainer');
+
+            if (!manageFormStyleAdded) {
+                GM_addStyle(`
+#${form.id} {
+    color: inherit;
+}
+
+#${form.id} > .fcontainer :is(.fitem:first-child [data-button="up"], .fitem:last-child [data-button="down"]) {
+    opacity: 0.65;
+    pointer-events: none;
+    cursor: not-allowed;
+}`);
+                manageFormStyleAdded = true;
+            }
+
+            const addFormItem = (title, url) => {
+                const group = document.createElement('div');
+                group.classList.add('form-group', 'row', 'fitem');
+                const titleWrapper = document.createElement('div');
+                titleWrapper.classList.add(
+                    'col-md-4',
+                    'form-inline',
+                    'align-items-start',
+                    'felement'
+                );
+                const titleInput = document.createElement('input');
+                titleInput.classList.add('form-control', 'w-100');
+                titleInput.type = 'text';
+                titleInput.required = true;
+                titleInput.value = title;
+                titleInput.dataset.attribute = 'title';
+                titleInput.placeholder = 'Bezeichnung';
+                titleWrapper.append(titleInput);
+
+                const urlWrapper = document.createElement('div');
+                urlWrapper.classList.add(
+                    'col-md-8',
+                    'form-inline',
+                    'align-items-start',
+                    'felement',
+                    'input-group'
+                );
+                const httpsAddon = document.createElement('div');
+                httpsAddon.classList.add('input-group-prepend');
+                const httpsAddonText = document.createElement('span');
+                httpsAddonText.classList.add('input-group-text');
+                httpsAddonText.textContent = 'https://';
+                httpsAddon.append(httpsAddonText);
+
+                const urlInput = document.createElement('input');
+                urlInput.classList.add('form-control', 'flex-grow-1');
+                urlInput.type = 'url';
+                urlInput.required = true;
+                urlInput.value = url;
+                urlInput.dataset.attribute = 'url';
+                urlInput.placeholder = 'URL / Link';
+
+                const mobileLinebreak = document.createElement('div');
+                mobileLinebreak.classList.add('w-100', 'd-lg-none');
+
+                const btns = document.createElement('div');
+                btns.classList.add(
+                    'btn-group',
+                    'ml-auto',
+                    'input-group-append'
+                );
+                const moveUpBtn = document.createElement('button');
+                moveUpBtn.classList.add('btn', 'btn-outline-secondary');
+                moveUpBtn.dataset.button = 'up';
+                const upIcon = document.createElement('i');
+                upIcon.classList.add('fa', 'fa-arrow-up', 'fa-fw');
+                moveUpBtn.append(upIcon);
+                const moveDownBtn = document.createElement('button');
+                moveDownBtn.classList.add('btn', 'btn-outline-secondary');
+                moveDownBtn.dataset.button = 'down';
+                const downIcon = document.createElement('i');
+                downIcon.classList.add('fa', 'fa-arrow-down', 'fa-fw');
+                moveDownBtn.append(downIcon);
+                const deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('btn', 'btn-outline-danger');
+                deleteBtn.dataset.button = 'delete';
+                const deleteIcon = document.createElement('i');
+                deleteIcon.classList.add('fa', 'fa-trash', 'fa-fw');
+                deleteBtn.append(deleteIcon);
+
+                btns.append(moveUpBtn, moveDownBtn, deleteBtn);
+                urlWrapper.append(httpsAddon, urlInput, mobileLinebreak, btns);
+
+                group.append(titleWrapper, urlWrapper);
+
+                container.append(group);
+            };
+
+            GM_getValue(BOOKMARKS_STORAGE, []).forEach(({ title, url }) =>
+                addFormItem(title, url)
+            );
+
+            const addBookmarkBtn = document.createElement('button');
+            addBookmarkBtn.classList.add(
+                'btn',
+                'btn-outline-success',
+                'd-block',
+                'ml-auto'
+            );
+            const addIcon = document.createElement('i');
+            addIcon.classList.add('fa', 'fa-plus', 'fa-fw');
+            addBookmarkBtn.append(addIcon);
+
+            addBookmarkBtn.addEventListener('click', e => {
+                e.preventDefault();
+                addFormItem('', '');
+            });
+
+            form.append(container, addBookmarkBtn);
+
+            form.addEventListener('click', e => {
+                const target = e.target;
+                if (!(target instanceof HTMLElement)) return;
+                const button = target.closest('[data-button]');
+                const row = target.closest('.fitem');
+                if (!button || !row) return;
+
+                const action = button.dataset.button;
+                switch (action) {
+                    case 'up':
+                        row.previousSibling.before(row);
+                        break;
+                    case 'down':
+                        row.nextSibling.after(row);
+                        break;
+                    case 'delete':
+                        row.remove();
+                        break;
+                }
+            });
+
+            require(['core/modal_factory', 'core/modal_events'], (
+                { create, types },
+                ModalEvents
+            ) =>
+                create({
+                    type: types.SAVE_CANCEL,
+                    large: true,
+                    scrollable: true,
+                    title: 'Lesezeichen bearbeiten',
+                    body: form,
+                    removeOnClose: true,
+                }).then(modal => {
+                    modal.show();
+
+                    modal.getRoot().on(ModalEvents.save, () => {
+                        const bookmarks = [];
+                        form.querySelectorAll('.fitem').forEach(row => {
+                            const title = row
+                                .querySelector('input[data-attribute="title"]')
+                                ?.value.trim();
+                            const url = row
+                                .querySelector('input[data-attribute="url"]')
+                                ?.value.trim()
+                                .replace(/^https:\/\//, '');
+
+                            if (!title || !url) return;
+
+                            bookmarks.push({
+                                title,
+                                url,
+                            });
+                        });
+                        GM_setValue(BOOKMARKS_STORAGE, bookmarks);
+                    });
+                }));
+        });
+
+        dropdown.append(
+            bookmarksWrapper,
+            divider,
+            addBookmarkBtn,
+            manageBookmarksBtn
+        );
+        bookmarkBtnWrapper.append(bookmarksBtn, dropdown);
+        document
+            .querySelector('#usernavigation .usermenu-container')
+            ?.before(bookmarkBtnWrapper);
+
+        GM_addStyle(`
+#${bookmarksWrapper.id}:empty::before {
+    display: block;
+    text-align: center;
+    content: "Bislang sind keine Lesezeichen vorhanden!";
+    padding: .25rem 1.5rem; /* this is the padding of .dropdown-item set by moodle */
+}
+`);
     });
 }
 // endregion
