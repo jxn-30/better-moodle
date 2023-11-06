@@ -486,13 +486,26 @@ if (getSetting('general.bookmarkManager')) {
 
         const setBookmarksList = bookmarks => {
             bookmarksWrapper.innerHTML = '';
+            bookmarksIcon.classList.remove('fa-bookmark', 'fa-bookmark-o');
             bookmarks.forEach(({ title, url }) => {
                 const bookmark = document.createElement('a');
                 bookmark.classList.add('dropdown-item');
                 bookmark.href = url;
                 bookmark.textContent = title;
                 bookmarksWrapper.append(bookmark);
+
+                const bookmarkWithoutHash = new URL(url);
+                bookmarkWithoutHash.hash = '';
+                const currentPage = new URL(window.location.href);
+                currentPage.hash = '';
+
+                if (currentPage.href.includes(bookmarkWithoutHash.href)) {
+                    bookmarksIcon.classList.add('fa-bookmark');
+                }
             });
+            if (!bookmarksIcon.classList.contains('fa-bookmark')) {
+                bookmarksIcon.classList.add('fa-bookmark-o');
+            }
         };
 
         setBookmarksList(GM_getValue(BOOKMARKS_STORAGE, []));
