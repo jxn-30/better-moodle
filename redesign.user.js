@@ -687,12 +687,29 @@ if (getSetting('general.bookmarkManager')) {
                 group.append(titleWrapper, urlWrapper);
 
                 container.append(group);
-                form.append(container);
             };
 
             GM_getValue(BOOKMARKS_STORAGE, []).forEach(({ title, url }) =>
                 addFormItem(title, url)
             );
+
+            const addBookmarkBtn = document.createElement('button');
+            addBookmarkBtn.classList.add(
+                'btn',
+                'btn-outline-success',
+                'd-block',
+                'ml-auto'
+            );
+            const addIcon = document.createElement('i');
+            addIcon.classList.add('fa', 'fa-plus', 'fa-fw');
+            addBookmarkBtn.append(addIcon);
+
+            addBookmarkBtn.addEventListener('click', e => {
+                e.preventDefault();
+                addFormItem('', '');
+            });
+
+            form.append(container, addBookmarkBtn);
 
             form.addEventListener('click', e => {
                 const target = e.target;
