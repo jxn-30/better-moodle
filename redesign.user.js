@@ -556,8 +556,9 @@ if (getSetting('general.bookmarkManager')) {
             };
 
             const titleInput = addFormItem('Bezeichnung');
-            titleInput.value = document.title.replace(/\|.*?$/, '');
+            titleInput.value = document.title.replace(/\|.*?$/, '').trim();
             const urlInput = addFormItem('URL');
+            urlInput.type = 'url';
             urlInput.value = window.location.href;
 
             require(['core/modal_factory', 'core/modal_events'], (
@@ -585,12 +586,154 @@ if (getSetting('general.bookmarkManager')) {
                 }));
         });
 
+        let manageFormStyleAdded = false;
+
         const manageBookmarksBtn = document.createElement('a');
         manageBookmarksBtn.classList.add('dropdown-item');
         manageBookmarksBtn.href = '#';
         manageBookmarksBtn.textContent = 'Lesezeichen verwalten';
         manageBookmarksBtn.addEventListener('click', e => {
             e.preventDefault();
+
+            const form = document.createElement('form');
+            form.classList.add('mform');
+            form.id = PREFIX('bookmark-manager-form');
+            const container = document.createElement('div');
+            container.classList.add('fcontainer');
+
+            if (!manageFormStyleAdded) {
+                GM_addStyle(`
+#${form.id} {
+    color: inherit;
+}
+
+#${form.id} > .fcontainer :is(.fitem:first-child [data-button="up"], .fitem:last-child [data-button="down"]) {
+    opacity: 0.65;
+    pointer-events: none;
+    cursor: not-allowed;
+}`);
+                manageFormStyleAdded = true;
+            }
+
+            const addFormItem = (title, url) => {
+                const group = document.createElement('div');
+                group.classList.add('form-group', 'row', 'fitem');
+                const titleWrapper = document.createElement('div');
+                titleWrapper.classList.add(
+                    'col-md-4',
+                    'form-inline',
+                    'align-items-start',
+                    'felement'
+                );
+                const titleInput = document.createElement('input');
+                titleInput.classList.add('form-control', 'w-100');
+                titleInput.type = 'text';
+                titleInput.required = true;
+                titleInput.value = title;
+                titleInput.dataset.attribute = 'title';
+                titleWrapper.append(titleInput);
+
+                const urlWrapper = document.createElement('div');
+                urlWrapper.classList.add(
+                    'col-md-8',
+                    'form-inline',
+                    'align-items-start',
+                    'felement'
+                );
+                const urlInput = document.createElement('input');
+                urlInput.classList.add('form-control', 'flex-grow-1');
+                urlInput.type = 'url';
+                urlInput.required = true;
+                urlInput.value = url;
+                urlInput.dataset.attribute = 'url';
+
+                const btns = document.createElement('div');
+                btns.classList.add('btn-group', 'ml-auto');
+                const moveUpBtn = document.createElement('button');
+                moveUpBtn.classList.add('btn', 'btn-outline-secondary');
+                moveUpBtn.dataset.button = 'up';
+                const upIcon = document.createElement('i');
+                upIcon.classList.add('fa', 'fa-arrow-up', 'fa-fw');
+                moveUpBtn.append(upIcon);
+                const moveDownBtn = document.createElement('button');
+                moveDownBtn.classList.add('btn', 'btn-outline-secondary');
+                moveDownBtn.dataset.button = 'down';
+                const downIcon = document.createElement('i');
+                downIcon.classList.add('fa', 'fa-arrow-down', 'fa-fw');
+                moveDownBtn.append(downIcon);
+                const deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('btn', 'btn-outline-danger');
+                deleteBtn.dataset.button = 'delete';
+                const deleteIcon = document.createElement('i');
+                deleteIcon.classList.add('fa', 'fa-trash', 'fa-fw');
+                deleteBtn.append(deleteIcon);
+
+                btns.append(moveUpBtn, moveDownBtn, deleteBtn);
+                urlWrapper.append(urlInput, btns);
+
+                group.append(titleWrapper, urlWrapper);
+
+                container.append(group);
+                form.append(container);
+            };
+
+            GM_getValue(BOOKMARKS_STORAGE, []).forEach(({ title, url }) =>
+                addFormItem(title, url)
+            );
+
+            form.addEventListener('click', e => {
+                const target = e.target;
+                if (!(target instanceof HTMLElement)) return;
+                const button = target.closest('[data-button]');
+                const row = target.closest('.fitem');
+                if (!button || !row) return;
+
+                const action = button.dataset.button;
+                switch (action) {
+                    case 'up':
+                        row.previousSibling.before(row);
+                        break;
+                    case 'down':
+                        row.nextSibling.after(row);
+                        break;
+                    case 'delete':
+                        row.remove();
+                        break;
+                }
+            });
+
+            require(['core/modal_factory', 'core/modal_events'], (
+                { create, types },
+                ModalEvents
+            ) =>
+                create({
+                    type: types.SAVE_CANCEL,
+                    large: true,
+                    scrollable: true,
+                    title: 'Lesezeichen bearbeiten',
+                    body: form,
+                    removeOnClose: true,
+                }).then(modal => {
+                    modal.show();
+
+                    modal.getRoot().on(ModalEvents.save, () => {
+                        const bookmarks = [];
+                        form.querySelectorAll('input[data-attribute]').forEach(
+                            input => {
+                                const { attribute } = input.dataset;
+                                if (
+                                    bookmarks.length === 0 ||
+                                    attribute in bookmarks.at(-1)
+                                ) {
+                                    bookmarks.push({});
+                                }
+                                bookmarks.at(-1)[attribute] =
+                                    input.value.trim();
+                            }
+                        );
+                        GM_setValue(BOOKMARKS_STORAGE, bookmarks);
+                    });
+                }));
         });
 
         dropdown.append(
