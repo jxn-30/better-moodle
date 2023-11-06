@@ -488,19 +488,26 @@ if (getSetting('general.bookmarkManager')) {
             bookmarksWrapper.innerHTML = '';
             bookmarksIcon.classList.remove('fa-bookmark', 'fa-bookmark-o');
             bookmarks.forEach(({ title, url }) => {
+                const httpsUrl = url.startsWith('https://')
+                    ? url
+                    : `https://${url}`;
                 const bookmark = document.createElement('a');
                 bookmark.classList.add('dropdown-item');
-                bookmark.href = url;
+                bookmark.href = httpsUrl;
                 bookmark.textContent = title;
                 bookmarksWrapper.append(bookmark);
 
-                const bookmarkWithoutHash = new URL(url);
-                bookmarkWithoutHash.hash = '';
-                const currentPage = new URL(window.location.href);
-                currentPage.hash = '';
+                try {
+                    const bookmarkWithoutHash = new URL(httpsUrl);
+                    bookmarkWithoutHash.hash = '';
+                    const currentPage = new URL(window.location.href);
+                    currentPage.hash = '';
 
-                if (currentPage.href.includes(bookmarkWithoutHash.href)) {
-                    bookmarksIcon.classList.add('fa-bookmark');
+                    if (currentPage.href.includes(bookmarkWithoutHash.href)) {
+                        bookmarksIcon.classList.add('fa-bookmark');
+                    }
+                } catch {
+                    // ignore invalid URLs
                 }
             });
             if (!bookmarksIcon.classList.contains('fa-bookmark')) {
@@ -529,7 +536,7 @@ if (getSetting('general.bookmarkManager')) {
             const container = document.createElement('div');
             container.classList.add('fcontainer');
 
-            const addFormItem = title => {
+            const addFormItem = (title, addon = '') => {
                 const group = document.createElement('div');
                 group.classList.add('form-group', 'row', 'fitem');
                 const labelWrapper = document.createElement('div');
@@ -553,12 +560,26 @@ if (getSetting('general.bookmarkManager')) {
                     'felement'
                 );
                 const input = document.createElement('input');
-                input.classList.add('form-control', 'w-100');
+                input.classList.add('form-control', 'flex-grow-1');
                 input.type = 'text';
                 input.required = true;
+                input.placeholder = title;
                 input.id = PREFIX(`bookmark-new-${crypto.randomUUID()}`);
                 label.setAttribute('for', input.id);
-                inputWrapper.append(input);
+
+                if (addon) {
+                    inputWrapper.classList.add('input-group');
+
+                    const addonDiv = document.createElement('div');
+                    addonDiv.classList.add('input-group-prepend');
+                    const addonText = document.createElement('span');
+                    addonText.classList.add('input-group-text');
+                    addonText.textContent = addon;
+                    addonDiv.append(addonText);
+                    inputWrapper.append(addonDiv, input);
+                } else {
+                    inputWrapper.append(input);
+                }
 
                 group.append(labelWrapper, inputWrapper);
 
@@ -570,9 +591,9 @@ if (getSetting('general.bookmarkManager')) {
 
             const titleInput = addFormItem('Bezeichnung');
             titleInput.value = document.title.replace(/\|.*?$/, '').trim();
-            const urlInput = addFormItem('URL');
+            const urlInput = addFormItem('URL', 'https://');
             urlInput.type = 'url';
-            urlInput.value = window.location.href;
+            urlInput.value = window.location.href.replace(/^https:\/\//, '');
 
             require(['core/modal_factory', 'core/modal_events'], (
                 { create, types },
@@ -644,6 +665,7 @@ if (getSetting('general.bookmarkManager')) {
                 titleInput.required = true;
                 titleInput.value = title;
                 titleInput.dataset.attribute = 'title';
+                titleInput.placeholder = 'Bezeichnung';
                 titleWrapper.append(titleInput);
 
                 const urlWrapper = document.createElement('div');
@@ -651,17 +673,33 @@ if (getSetting('general.bookmarkManager')) {
                     'col-md-8',
                     'form-inline',
                     'align-items-start',
-                    'felement'
+                    'felement',
+                    'input-group'
                 );
+                const httpsAddon = document.createElement('div');
+                httpsAddon.classList.add('input-group-prepend');
+                const httpsAddonText = document.createElement('span');
+                httpsAddonText.classList.add('input-group-text');
+                httpsAddonText.textContent = 'https://';
+                httpsAddon.append(httpsAddonText);
+
                 const urlInput = document.createElement('input');
                 urlInput.classList.add('form-control', 'flex-grow-1');
                 urlInput.type = 'url';
                 urlInput.required = true;
                 urlInput.value = url;
                 urlInput.dataset.attribute = 'url';
+                urlInput.placeholder = 'URL / Link';
+
+                const mobileLinebreak = document.createElement('div');
+                mobileLinebreak.classList.add('w-100', 'd-lg-none');
 
                 const btns = document.createElement('div');
-                btns.classList.add('btn-group', 'ml-auto');
+                btns.classList.add(
+                    'btn-group',
+                    'ml-auto',
+                    'input-group-append'
+                );
                 const moveUpBtn = document.createElement('button');
                 moveUpBtn.classList.add('btn', 'btn-outline-secondary');
                 moveUpBtn.dataset.button = 'up';
@@ -682,7 +720,7 @@ if (getSetting('general.bookmarkManager')) {
                 deleteBtn.append(deleteIcon);
 
                 btns.append(moveUpBtn, moveDownBtn, deleteBtn);
-                urlWrapper.append(urlInput, btns);
+                urlWrapper.append(httpsAddon, urlInput, mobileLinebreak, btns);
 
                 group.append(titleWrapper, urlWrapper);
 
@@ -748,19 +786,22 @@ if (getSetting('general.bookmarkManager')) {
 
                     modal.getRoot().on(ModalEvents.save, () => {
                         const bookmarks = [];
-                        form.querySelectorAll('input[data-attribute]').forEach(
-                            input => {
-                                const { attribute } = input.dataset;
-                                if (
-                                    bookmarks.length === 0 ||
-                                    attribute in bookmarks.at(-1)
-                                ) {
-                                    bookmarks.push({});
-                                }
-                                bookmarks.at(-1)[attribute] =
-                                    input.value.trim();
-                            }
-                        );
+                        form.querySelectorAll('.fitem').forEach(row => {
+                            const title = row
+                                .querySelector('input[data-attribute="title"]')
+                                ?.value.trim();
+                            const url = row
+                                .querySelector('input[data-attribute="url"]')
+                                ?.value.trim()
+                                .replace(/^https:\/\//, '');
+
+                            if (!title || !url) return;
+
+                            bookmarks.push({
+                                title,
+                                url,
+                            });
+                        });
                         GM_setValue(BOOKMARKS_STORAGE, bookmarks);
                     });
                 }));
