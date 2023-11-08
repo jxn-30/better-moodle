@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/jxn-30/better-moodle/compare/v1.11.0...v1.11.1) (2023-11-08)
+
+
+### Bug Fixes
+
+* **bookmarks:** fix invalid title attribute on bookmarks icon ([b87d432](https://github.com/jxn-30/better-moodle/commit/b87d432e88ce0c20654227f0552eb061ba59acf5))
+
 ## [1.11.0](https://github.com/jxn-30/better-moodle/compare/v1.10.0...v1.11.0) (2023-11-06)
 
 
