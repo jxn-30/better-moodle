@@ -473,8 +473,7 @@ if (getSetting('general.bookmarkManager')) {
         bookmarksBtn.dataset.toggle = 'dropdown';
         const bookmarksIcon = document.createElement('i');
         bookmarksIcon.classList.add('icon', 'fa', 'fa-bookmark-o', 'fa-fw');
-        bookmarksIcon.title = bookmarksBtn.ariaLabel =
-            'Einstellungen von Better Moodle';
+        bookmarksIcon.title = bookmarksBtn.ariaLabel = 'Lesezeichen';
         bookmarksIcon.role = 'img';
         bookmarksBtn.append(bookmarksIcon);
 
