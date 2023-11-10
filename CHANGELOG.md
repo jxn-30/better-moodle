@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.2](https://github.com/jxn-30/better-moodle/compare/v1.11.1...v1.11.2) (2023-11-10)
+
+
+### Bug Fixes
+
+* **my-courses:** fix dropdown not working when in "Mehr" dropdown ([22dea29](https://github.com/jxn-30/better-moodle/commit/22dea2944cf9484544280d9f4b24a42c57feb787))
+
 ## [1.11.1](https://github.com/jxn-30/better-moodle/compare/v1.11.0...v1.11.1) (2023-11-08)
 
 
