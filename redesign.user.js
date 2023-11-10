@@ -1129,10 +1129,16 @@ ready(() => {
             myCoursesA.classList.add('dropdown-toggle');
             myCoursesA.dataset.toggle = 'dropdown';
             myCoursesA.href = '#';
+            myCoursesA.id = PREFIX('my-courses-dropdown-toggle');
 
             dropdownMenu = document.createElement('div');
             dropdownMenu.classList.add('dropdown-menu');
             dropdownMenu.style.setProperty('max-width', '500px');
+            dropdownMenu.role = 'menu';
+            dropdownMenu.id = PREFIX('my-courses-dropdown-menu');
+
+            myCoursesA.setAttribute('aria-controls', dropdownMenu.id);
+            dropdownMenu.setAttribute('aria-labelledby', myCoursesA.id);
 
             myCoursesA.after(dropdownMenu);
 
