@@ -1328,6 +1328,13 @@ if (getSetting('courses.imageZoom')) {
         copyImage.addEventListener('load', () => {
             const { naturalWidth: width, naturalHeight: height } = copyImage;
 
+            // a size could not be determined
+            if (!width || !height) {
+                copyImage.style.setProperty('max-width', `90%`);
+                copyImage.style.setProperty('max-height', `90%`);
+                copyImage.style.setProperty('transform', `scale(1)`);
+            }
+
             const maxWidth = window.innerWidth * 0.9;
             const maxHeight = window.innerHeight * 0.9;
 
