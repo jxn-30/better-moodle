@@ -1299,6 +1299,7 @@ if (getSetting('courses.imageZoom')) {
 /* image zooming */
 #${overlay.id} > img {
     cursor: zoom-out;
+    transform: scale(0);
     transition: transform 0.2s ease-in-out;
     will-change: transform;
 }`);
@@ -1317,6 +1318,13 @@ if (getSetting('courses.imageZoom')) {
         e.preventDefault();
 
         copyImage = target.cloneNode(true);
+
+        // remove additional styles that could produce weird results
+        copyImage.style.removeProperty('margin');
+        copyImage.style.setProperty('display', 'block');
+        copyImage.removeAttribute('width');
+        copyImage.removeAttribute('height');
+
         copyImage.addEventListener('load', () => {
             const { naturalWidth: width, naturalHeight: height } = copyImage;
 
