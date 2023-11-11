@@ -1321,6 +1321,8 @@ if (getSetting('courses.imageZoom')) {
 
         // remove additional styles that could produce weird results
         copyImage.style.removeProperty('margin');
+        copyImage.style.removeProperty('width');
+        copyImage.style.removeProperty('height');
         copyImage.style.setProperty('display', 'block');
         copyImage.removeAttribute('width');
         copyImage.removeAttribute('height');
