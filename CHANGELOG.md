@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.11.3](https://github.com/jxn-30/better-moodle/compare/v1.11.2...v1.11.3) (2023-11-11)
+
+
+### Bug Fixes
+
+* **image-zooming:** fix invalid sizes when images have additional style ([81bb559](https://github.com/jxn-30/better-moodle/commit/81bb5594a67346965ffb71f6416573ed1e01a5e8))
+* **image-zooming:** fix invalid sizes when images have additional style ([a90153f](https://github.com/jxn-30/better-moodle/commit/a90153f50a386f0f98cecaa991ce12455944651e))
+* **image-zooming:** fix size of some SVG images ([8abfdb0](https://github.com/jxn-30/better-moodle/commit/8abfdb073b04990f829fbadd3edbe861a90f2ae7))
+
 ## [1.11.2](https://github.com/jxn-30/better-moodle/compare/v1.11.1...v1.11.2) (2023-11-10)
 
 
