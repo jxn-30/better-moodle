@@ -327,6 +327,14 @@ const SETTINGS = [
         default: true,
     },
     {
+        id: 'general.noDownload',
+        name: 'Download unterbinden',
+        description:
+            'Verhindert das automatische Herunterladen von Dateien (insbesondere PDFs) wo immer möglich.',
+        type: Boolean,
+        default: false,
+    },
+    {
         id: 'general.christmasCountdown',
         name: 'Countdown bis Heiligabend 🎄',
         description:
@@ -825,6 +833,20 @@ if (getSetting('general.bookmarkManager')) {
     padding: .25rem 1.5rem; /* this is the padding of .dropdown-item set by moodle */
 }
 `);
+    });
+}
+// endregion
+
+// region Feature: general.noDownload
+if (getSetting('general.noDownload')) {
+    document.addEventListener('click', e => {
+        const target = e.target;
+        if (!(target instanceof HTMLAnchorElement)) return;
+        const url = new URL(target.href, window.location);
+        if (url.searchParams.has('forcedownload')) {
+            url.searchParams.delete('forcedownload');
+        }
+        target.href = url.href;
     });
 }
 // endregion
