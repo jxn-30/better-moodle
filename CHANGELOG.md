@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/jxn-30/better-moodle/compare/v1.11.3...v1.12.0) (2023-11-13)
+
+
+### Features
+
+* new option to try to prevent automatic file download (e.g. PDFs) ([3481027](https://github.com/jxn-30/better-moodle/commit/34810278944184dc37ca7d0331697b5627e8dd5d))
+
 ## [1.11.3](https://github.com/jxn-30/better-moodle/compare/v1.11.2...v1.11.3) (2023-11-11)
 
 
