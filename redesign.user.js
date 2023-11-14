@@ -220,15 +220,15 @@ const mdToHtml = (md, headingStart = 1) => {
                       .join(replacement[3] || '</li>\n<li>') +
                   replacement[2]
                 : firstChar === '#'
-                ? `<h${(i =
-                      b.indexOf(' ') + (headingStart - 1))}>${inlineEscape(
-                      b.slice(i + 1 - (headingStart - 1))
-                  )}</h${i}>`
-                : firstChar === '<'
-                ? b
-                : b.startsWith('---')
-                ? '<hr />'
-                : `<p>${inlineEscape(b)}</p>`;
+                  ? `<h${(i =
+                        b.indexOf(' ') + (headingStart - 1))}>${inlineEscape(
+                        b.slice(i + 1 - (headingStart - 1))
+                    )}</h${i}>`
+                  : firstChar === '<'
+                    ? b
+                    : b.startsWith('---')
+                      ? '<hr />'
+                      : `<p>${inlineEscape(b)}</p>`;
         });
 
     return html;
