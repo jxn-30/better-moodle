@@ -839,14 +839,18 @@ if (getSetting('general.bookmarkManager')) {
 
 // region Feature: general.noDownload
 if (getSetting('general.noDownload')) {
-    document.addEventListener('click', e => {
+    document.addEventListener('mousedown', e => {
         const target = e.target;
         if (!(target instanceof HTMLAnchorElement)) return;
-        const url = new URL(target.href, window.location);
-        if (url.searchParams.has('forcedownload')) {
-            url.searchParams.delete('forcedownload');
+        try {
+            const url = new URL(target.href, window.location);
+            if (url.searchParams.has('forcedownload')) {
+                url.searchParams.delete('forcedownload');
+                target.href = url.href;
+            }
+        } catch {
+            // if href is not a valid URL just ignore it
         }
-        target.href = url.href;
     });
 }
 // endregion
