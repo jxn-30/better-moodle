@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/jxn-30/better-moodle/compare/v1.12.0...v1.12.1) (2023-11-15)
+
+
+### Bug Fixes
+
+* **noDownload:** fix detection of middle click ([2170dc0](https://github.com/jxn-30/better-moodle/commit/2170dc02810deee04cc8ab0e0ceaa5a9f1a4def6))
+
 ## [1.12.0](https://github.com/jxn-30/better-moodle/compare/v1.11.3...v1.12.0) (2023-11-13)
 
 
