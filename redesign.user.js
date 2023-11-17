@@ -284,6 +284,31 @@ body.dir-rtl a.${PREFIX('no-external-icon')}::before {
 // endregion
 
 // region Settings
+/**
+ * @typedef {Object} BaseSetting
+ * @property {string} id
+ * @property {string} name
+ * @property {string} description
+ * @property {(settings: Record<string, boolean>) => boolean} [disabled]
+ */
+
+/**
+ * @typedef {BaseSetting} BooleanSetting
+ * @extends BaseSetting
+ * @property {typeof Boolean} type
+ * @property {boolean} default
+ */
+
+/**
+ * @typedef {BaseSetting} NumberSetting
+ * @extends BaseSetting
+ * @property {typeof Number} type
+ * @property {number} default
+ */
+
+/** @typedef {BooleanSetting | NumberSetting} Setting */
+
+/** @type {Array<Setting | string>} */
 const SETTINGS = [
     'Allgemeine Einstellungen',
     {
