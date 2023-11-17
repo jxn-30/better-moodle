@@ -251,6 +251,40 @@ const githubLink = (path, icon = true, iconAndExternalIcon = false) => {
 
     return link;
 };
+
+/**
+ * @typedef {Object} CourseGrouping
+ * @property {string} classification
+ * @property {string} customfieldname
+ * @property {string} customfieldvalue
+ * @property {boolean} active
+ * @property {string} name
+ */
+
+/**
+ * gets all course groupings as available in my courses view
+ * @return {Promise<CourseGrouping[]>}
+ */
+const getCourseGroupings = () =>
+    fetch('/my/courses.php')
+        .then(res => res.text())
+        .then(html => new DOMParser().parseFromString(html, 'text/html'))
+        .then(doc => {
+            const customfieldname =
+                doc.querySelector('[data-region="courses-view"]')?.dataset
+                    .customfieldname ?? '';
+            return Array.from(
+                doc.querySelectorAll(
+                    '#groupingdropdown + .dropdown-menu [data-filter="grouping"]'
+                )
+            ).map(group => ({
+                classification: group.dataset.pref,
+                customfieldname,
+                customfieldvalue: group.dataset.customfieldvalue,
+                active: group.ariaCurrent === 'true',
+                name: group.textContent.trim(),
+            }));
+        });
 // endregion
 
 // region Global styles
@@ -398,6 +432,15 @@ const SETTINGS = [
             'Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.',
         type: Boolean,
         default: true,
+    },
+    // dropdown filter => Filter von my-courses + "sync"-setting
+    {
+        id: 'myCourses.navbarDropdownFilter',
+        name: '',
+        description: '',
+        type: HTMLSelectElement,
+        items: () => getCourseGroupings().then(groupings => groupings),
+        disabled: settings => !settings['myCourses.navbarDropdown'],
     },
     'Kurse',
     {
@@ -1090,7 +1133,7 @@ ready(() => {
 
 // region Features: myCourses.navbarDropdown, Dashboard left sidebar
 // add a left sidebar with the users courses. Also manipulate my courses link to be a dropdown
-ready(() => {
+ready(async () => {
     if (window.location.pathname.startsWith('/login/')) return;
 
     /** @type {HTMLDivElement} */
@@ -1257,12 +1300,6 @@ ready(() => {
             mobileA.append(caretDown, caretRight);
             mobileA.after(mobileDropdownMenu);
         }
-
-        addDropdownItem({
-            fullname: '[Meine Kurse]',
-            shortname: '',
-            viewurl: myCoursesLink,
-        });
     }
 
     // add a left sidebar
@@ -1284,21 +1321,33 @@ ready(() => {
         );
     }
 
+    const courseGroupings = await getCourseGroupings();
+    const currentGrouping =
+        courseGroupings.find(grouping => grouping.active) ?? courseGroupings[0];
+
     // fetch the courses
-    require(['core_course/repository'], ({
-        getEnrolledCoursesByTimelineClassification,
+    require(['block_myoverview/repository'], ({
+        getEnrolledCoursesByTimeline,
     }) =>
-        getEnrolledCoursesByTimelineClassification(
-            'all',
-            0,
-            0,
-            'shortname'
-        ).then(({ courses }) =>
+        getEnrolledCoursesByTimeline({
+            classification: currentGrouping.classification,
+            customfieldname: currentGrouping.customfieldname,
+            customfieldvalue: currentGrouping.customfieldvalue,
+            limit: 0,
+            offset: 0,
+            sort: 'shortname',
+        }).then(({ courses }) => {
+            addDropdownItem({
+                fullname: '[Meine Kurse]',
+                shortname: '',
+                viewurl: myCoursesLink,
+            });
+
             courses.forEach(course => {
                 addDropdownItem(course);
                 addSidebarItem(course);
-            })
-        ));
+            });
+        }));
 });
 // endregion
 
