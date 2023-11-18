@@ -1,5 +1,5 @@
 {
-    "extends": ["eslint:recommended", "prettier"],
+    "extends": ["eslint:recommended", "prettier", "plugin:@typescript-eslint/recommended"],
     "env": {
         "browser": true,
         "es2022": true
@@ -84,7 +84,10 @@
         {
             "files": ["*.user.js"],
             "plugins": ["userscripts"],
-            "extends": ["plugin:userscripts/recommended"],
+            "extends": ["plugin:userscripts/recommended"]
+        },
+        {
+            "files": ["*.user.js", "redesign.ts"],
             "globals": {
                 "uneval": "readonly",
                 "unsafeWindow": "readonly",

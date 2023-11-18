@@ -1,54 +1,43 @@
-// ==UserScript==
-// @name            🎓️ UzL: Better Moodle
-// @namespace       https://uni-luebeck.de
-// @                x-release-please-start-version
-// @version         1.12.1
-// @                x-release-please-start-end
-// @author          Jan (jxn_30)
-// @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
-// @homepage        https://github.com/jxn-30/better-moodle
-// @homepageURL     https://github.com/jxn-30/better-moodle
-// @icon            https://www.uni-luebeck.de/favicon.ico
-// @updateURL       https://github.com/jxn-30/better-moodle/raw/main/redesign.user.js
-// @downloadURL     https://github.com/jxn-30/better-moodle/raw/main/redesign.user.js
-// @match           https://moodle.uni-luebeck.de/*
-// @run-at          document-body
-// @grant           GM_addStyle
-// @grant           GM_getValue
-// @grant           GM_setValue
-// @grant           GM_listValues
-// @grant           GM_addValueChangeListener
-// @grant           GM_info
-// ==/UserScript==
-
 /* global M, require */
 
+import { Bookmarks } from './betterMoodle';
+import { EnrolledCourse } from './moodle';
+import { SettingByID, SettingID, Settings, SettingTypeByID } from './Settings';
+
 // region Helper functions
-const PREFIX = str => `better-moodle-${str}`;
-const getSettingKey = id => PREFIX(`settings.${id}`);
-const getSetting = id =>
-    GM_getValue(getSettingKey(id), SETTINGS.find(s => s.id === id)?.default);
+const PREFIX = (str: string) => `better-moodle-${str}`;
+const getSettingKey = (id: SettingID) => PREFIX(`settings.${id}`);
+const getSetting = <
+    ID extends SettingID,
+    Type extends SettingTypeByID<ID> = SettingTypeByID<ID>,
+>(
+    id: ID
+): Type | undefined => {
+    const setting = SETTINGS.find(s => typeof s !== 'string' && s.id === id) as
+        | SettingByID<ID>
+        | undefined;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error Because Typescript does not understand that SettingByID<ID>["default"] actually is SettingByID<ID>["default"]
+    return GM_getValue<Type | undefined>(getSettingKey(id), setting?.default);
+};
 
 /**
  * Awaits the DOM to be ready and then calls the callback.
- * @param {() => void} callback
  */
-const ready = callback => {
+const ready = (callback: () => void) => {
     if (document.readyState !== 'loading') callback();
     else {
         document.addEventListener('DOMContentLoaded', callback, { once: true });
     }
 };
 
-/**
- * creates a sidebar in moodle style
- * @param {string} id
- * @param {'left' | 'right'} position
- * @param {string} icon
- * @param {(content: HTMLDivElement, header: HTMLDivElement) => void} callback
- */
-const createSidebar = (id, position, icon, callback) => {
-    const prefix = str => `${PREFIX(id)}-sidebar-${str}`;
+const createSidebar = (
+    id: string,
+    position: 'left' | 'right',
+    icon: string,
+    callback: (content: HTMLDivElement, header: HTMLDivElement) => void
+) => {
+    const prefix = (str: string) => `${PREFIX(id)}-sidebar-${str}`;
     const storage = prefix('open');
 
     const sidebar = document.createElement('div');
@@ -138,16 +127,14 @@ const createSidebar = (id, position, icon, callback) => {
     });
 };
 
-/** @type {[number, number, number]} */
-const currentScriptVersion = [];
-/** @type {[number, number, number]} */
-const latestScriptVersion = [];
-/** @type {Promise<boolean>} */
+const currentScriptVersion: [number, number, number] = [0, 0, 0];
+const latestScriptVersion: [number, number, number] = [0, 0, 0];
+
 const updateAvailable = fetch(
     'https://api.github.com/repos/jxn-30/better-moodle/releases/latest'
 )
     .then(res => res.json())
-    .then(({ tag_name }) =>
+    .then(({ tag_name }: { tag_name: string }) =>
         tag_name
             .replace(/^v/, '')
             .split('.')
@@ -179,14 +166,12 @@ const updateAvailable = fetch(
 // this is adopted from https://github.com/p01/mmd.js
 /**
  * converts a Markdown text into HTML
- * @param {string} md
- * @param {number} [headingStart]
  */
-const mdToHtml = (md, headingStart = 1) => {
+const mdToHtml = (md: string, headingStart = 1) => {
     let html = '';
 
-    const escape = string => new Option(string).innerHTML;
-    const inlineEscape = string =>
+    const escape = (string: string) => new Option(string).innerHTML;
+    const inlineEscape = (string: string) =>
         escape(string)
             .replace(/!\[([^\]]*)]\(([^(]+)\)/g, '<img alt="$1" src="$2">') // image
             .replace(/\[([^\]]+)]\(([^(]+?)\)/g, '<a href="$2">$1</a>') // link
@@ -202,14 +187,20 @@ const mdToHtml = (md, headingStart = 1) => {
         '1': [/\n[1-9]\d*\.? /, '<ol><li>', '</li></ol>'],
         ' ': [/\n {4}/, '<pre><code>', '</code></pre>', '\n'],
         '>': [/\n> /, '<blockquote>', '</blockquote>', '\n'],
-    };
+    } satisfies Record<
+        string,
+        [RegExp, string, string] | [RegExp, string, string, string]
+    >;
 
     md.replace(/^\s+|\r|\s+$/g, '')
         .replace(/\t/g, '    ')
         .split(/\n\n+/)
         .forEach(b => {
             const firstChar = b[0];
-            const replacement = replacements[firstChar];
+            const replacement =
+                firstChar in replacements
+                    ? replacements[firstChar as keyof typeof replacements]
+                    : undefined;
             let i;
             html += replacement
                 ? replacement[1] +
@@ -234,7 +225,7 @@ const mdToHtml = (md, headingStart = 1) => {
     return html;
 };
 
-const githubLink = (path, icon = true, iconAndExternalIcon = false) => {
+const githubLink = (path: string, icon = true, iconAndExternalIcon = false) => {
     const link = document.createElement('a');
     link.href = `https://github.com/jxn-30/better-moodle${path}`;
     link.target = '_blank';
@@ -284,31 +275,7 @@ body.dir-rtl a.${PREFIX('no-external-icon')}::before {
 // endregion
 
 // region Settings
-/**
- * @typedef {Object} BaseSetting
- * @property {string} id
- * @property {string} name
- * @property {string} description
- * @property {(settings: Record<string, boolean>) => boolean} [disabled]
- */
 
-/**
- * @typedef {BaseSetting} BooleanSetting
- * @extends BaseSetting
- * @property {typeof Boolean} type
- * @property {boolean} default
- */
-
-/**
- * @typedef {BaseSetting} NumberSetting
- * @extends BaseSetting
- * @property {typeof Number} type
- * @property {number} default
- */
-
-/** @typedef {BooleanSetting | NumberSetting} Setting */
-
-/** @type {Array<Setting | string>} */
 const SETTINGS = [
     'Allgemeine Einstellungen',
     {
@@ -367,6 +334,7 @@ const SETTINGS = [
         type: Boolean,
         default: false,
     },
+
     'Dashboard',
     // {Layout anpassen}
     {
@@ -378,6 +346,7 @@ const SETTINGS = [
         default: 'Coming soon...',
         disabled: () => true,
     },
+
     'Meine Kurse',
     {
         id: 'myCourses.boxesPerRow',
@@ -399,6 +368,7 @@ const SETTINGS = [
         type: Boolean,
         default: true,
     },
+
     'Kurse',
     {
         id: 'courses.grades',
@@ -440,7 +410,7 @@ const SETTINGS = [
         type: Boolean,
         default: true,
     },
-];
+] satisfies Settings;
 // endregion
 
 // region Feature: general.fullwidth
@@ -461,7 +431,7 @@ if (getSetting('general.externalLinks')) {
     document.addEventListener('click', e => {
         const target = e.target;
         if (!(target instanceof HTMLAnchorElement) || target.target) return;
-        const { origin, protocol } = new URL(target.href, window.location);
+        const { origin, protocol } = new URL(target.href, window.location.href);
         if (protocol === 'javascript:') return;
         if (origin && origin !== window.location.origin) {
             target.target = '_blank';
@@ -476,14 +446,11 @@ if (getSetting('general.externalLinks')) {
 if (getSetting('general.truncatedTexts')) {
     document.addEventListener('mouseover', e => {
         const target = e.target;
-        if (
-            !(target instanceof HTMLElement) &&
-            !(target instanceof SVGElement)
-        ) {
+        if (!(target instanceof HTMLElement)) {
             return;
         }
         if (target.title || !target.classList.contains('text-truncate')) return;
-        target.title = target.textContent.trim();
+        target.title = target.textContent?.trim() ?? '';
     });
 }
 // endregion
@@ -516,7 +483,7 @@ if (getSetting('general.bookmarkManager')) {
         const bookmarksWrapper = document.createElement('div');
         bookmarksWrapper.id = PREFIX('bookmarks-dropdown-bookmarks');
 
-        const setBookmarksList = bookmarks => {
+        const setBookmarksList = (bookmarks: Bookmarks) => {
             bookmarksWrapper.innerHTML = '';
             bookmarksIcon.classList.remove('fa-bookmark', 'fa-bookmark-o');
             bookmarks.forEach(({ title, url }) => {
@@ -547,10 +514,11 @@ if (getSetting('general.bookmarkManager')) {
             }
         };
 
-        setBookmarksList(GM_getValue(BOOKMARKS_STORAGE, []));
+        setBookmarksList(GM_getValue<Bookmarks>(BOOKMARKS_STORAGE, []));
 
-        GM_addValueChangeListener(BOOKMARKS_STORAGE, (_, __, bookmarks) =>
-            setBookmarksList(bookmarks)
+        GM_addValueChangeListener(
+            BOOKMARKS_STORAGE,
+            (_, __, bookmarks: Bookmarks) => setBookmarksList(bookmarks)
         );
 
         const divider = document.createElement('div');
@@ -568,7 +536,7 @@ if (getSetting('general.bookmarkManager')) {
             const container = document.createElement('div');
             container.classList.add('fcontainer');
 
-            const addFormItem = (title, addon = '') => {
+            const addFormItem = (title: string, addon = '') => {
                 const group = document.createElement('div');
                 group.classList.add('form-group', 'row', 'fitem');
                 const labelWrapper = document.createElement('div');
@@ -627,10 +595,10 @@ if (getSetting('general.bookmarkManager')) {
             urlInput.type = 'url';
             urlInput.value = window.location.href.replace(/^https:\/\//, '');
 
-            require(['core/modal_factory', 'core/modal_events'], (
-                { create, types },
-                ModalEvents
-            ) =>
+            require<['core/modal_factory', 'core/modal_events']>([
+                'core/modal_factory',
+                'core/modal_events',
+            ], ({ create, types }, ModalEvents) =>
                 create({
                     type: types.SAVE_CANCEL,
                     large: true,
@@ -642,7 +610,10 @@ if (getSetting('general.bookmarkManager')) {
                     modal.show();
 
                     modal.getRoot().on(ModalEvents.save, () => {
-                        const bookmarks = GM_getValue(BOOKMARKS_STORAGE, []);
+                        const bookmarks = GM_getValue<Bookmarks>(
+                            BOOKMARKS_STORAGE,
+                            []
+                        );
                         bookmarks.push({
                             title: titleInput.value,
                             url: urlInput.value,
@@ -681,7 +652,7 @@ if (getSetting('general.bookmarkManager')) {
                 manageFormStyleAdded = true;
             }
 
-            const addFormItem = (title, url) => {
+            const addFormItem = (title: string, url: string) => {
                 const group = document.createElement('div');
                 group.classList.add('form-group', 'row', 'fitem');
                 const titleWrapper = document.createElement('div');
@@ -784,17 +755,18 @@ if (getSetting('general.bookmarkManager')) {
             form.addEventListener('click', e => {
                 const target = e.target;
                 if (!(target instanceof HTMLElement)) return;
-                const button = target.closest('[data-button]');
-                const row = target.closest('.fitem');
+                const button =
+                    target.closest<HTMLButtonElement>('[data-button]');
+                const row = target.closest<HTMLElement>('.fitem');
                 if (!button || !row) return;
 
                 const action = button.dataset.button;
                 switch (action) {
                     case 'up':
-                        row.previousSibling.before(row);
+                        row.previousSibling?.before(row);
                         break;
                     case 'down':
-                        row.nextSibling.after(row);
+                        row.nextSibling?.after(row);
                         break;
                     case 'delete':
                         row.remove();
@@ -802,10 +774,10 @@ if (getSetting('general.bookmarkManager')) {
                 }
             });
 
-            require(['core/modal_factory', 'core/modal_events'], (
-                { create, types },
-                ModalEvents
-            ) =>
+            require<['core/modal_factory', 'core/modal_events']>([
+                'core/modal_factory',
+                'core/modal_events',
+            ], ({ create, types }, ModalEvents) =>
                 create({
                     type: types.SAVE_CANCEL,
                     large: true,
@@ -817,13 +789,17 @@ if (getSetting('general.bookmarkManager')) {
                     modal.show();
 
                     modal.getRoot().on(ModalEvents.save, () => {
-                        const bookmarks = [];
+                        const bookmarks: Bookmarks = [];
                         form.querySelectorAll('.fitem').forEach(row => {
                             const title = row
-                                .querySelector('input[data-attribute="title"]')
+                                .querySelector<HTMLInputElement>(
+                                    'input[data-attribute="title"]'
+                                )
                                 ?.value.trim();
                             const url = row
-                                .querySelector('input[data-attribute="url"]')
+                                .querySelector<HTMLInputElement>(
+                                    'input[data-attribute="url"]'
+                                )
                                 ?.value.trim()
                                 .replace(/^https:\/\//, '');
 
@@ -868,7 +844,7 @@ if (getSetting('general.noDownload')) {
         const target = e.target;
         if (!(target instanceof HTMLAnchorElement)) return;
         try {
-            const url = new URL(target.href, window.location);
+            const url = new URL(target.href, window.location.href);
             if (url.searchParams.has('forcedownload')) {
                 url.searchParams.delete('forcedownload');
                 target.href = url.href;
@@ -883,11 +859,11 @@ if (getSetting('general.noDownload')) {
 // region Feature: general.christmasCountdown
 // add the Christmas countdown
 if (getSetting('general.christmasCountdown')) {
-    const getDayOfYear = date => {
+    const getDayOfYear = (date: Date) => {
         const start = new Date(date.getFullYear(), 0, 0);
         const diff =
-            date -
-            start +
+            date.getTime() -
+            start.getTime() +
             (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
         const oneDay = 1000 * 60 * 60 * 24;
         return Math.floor(diff / oneDay);
@@ -902,7 +878,7 @@ if (getSetting('general.christmasCountdown')) {
     nextYearChristmas.setFullYear(now.getFullYear() + 1);
 
     const SCROLL_SPEED_MS_PER_PX = 100;
-    const durationForPx = px => px * SCROLL_SPEED_MS_PER_PX;
+    const durationForPx = (px: number) => px * SCROLL_SPEED_MS_PER_PX;
 
     const navItem = document.createElement('div');
     navItem.classList.add('flex-shrink-1');
@@ -965,7 +941,7 @@ if (getSetting('general.christmasCountdown')) {
         const nextUpdate = new Date();
         nextUpdate.setDate(now.getDate() + 1);
         nextUpdate.setHours(0, 0, 0, 0);
-        setTimeout(updateCountdown, nextUpdate - now);
+        setTimeout(updateCountdown, nextUpdate.getTime() - now.getTime());
     };
 
     const updateScrollWidth = () => {
@@ -1010,8 +986,14 @@ if (getSetting('general.christmasCountdown')) {
 if (window.location.pathname === '/my/') {
     createSidebar('dashboard-right', 'right', 'calendar', content => {
         // move blocks into sidebar
-        content.append(document.querySelector('.block_timeline'));
-        content.append(document.querySelector('.block_calendar_upcoming'));
+        content.append(
+            ...[
+                document.querySelector<HTMLDivElement>('.block_timeline'),
+                document.querySelector<HTMLDivElement>(
+                    '.block_calendar_upcoming'
+                ),
+            ].filter(<S>(value: S | null): value is S => !!value)
+        );
     });
 }
 // endregion
@@ -1065,7 +1047,7 @@ ready(() => {
             ) {
                 return;
             }
-            const collapseIcon = target.closest(
+            const collapseIcon = target.closest<HTMLElement>(
                 '.courseindex-section-title .icons-collapse-expand'
             );
             if (!collapseIcon) return;
@@ -1073,7 +1055,7 @@ ready(() => {
             e.preventDefault();
 
             drawer
-                .querySelectorAll(
+                .querySelectorAll<HTMLElement>(
                     `.courseindex-section-title .icons-collapse-expand${
                         collapseIcon.classList.contains('collapsed')
                             ? ':not(.collapsed)'
@@ -1093,15 +1075,14 @@ ready(() => {
 ready(() => {
     if (window.location.pathname.startsWith('/login/')) return;
 
-    /** @type {HTMLDivElement} */
-    let dropdownMenu;
-    /** @type {HTMLDivElement} */
-    let mobileDropdownMenu;
+    let dropdownMenu: HTMLDivElement;
+    let mobileDropdownMenu: HTMLDivElement;
 
-    /** @type {HTMLDivElement} */
-    let sidebarContent;
+    let sidebarContent: HTMLDivElement;
 
-    const addDropdownItem = course => {
+    const addDropdownItem = (
+        course: Pick<EnrolledCourse, 'fullname' | 'shortname' | 'viewurl'>
+    ) => {
         const createAnchor = () => {
             const anchor = document.createElement('a');
             anchor.classList.add('dropdown-item');
@@ -1114,7 +1095,7 @@ ready(() => {
                 ...(course.shortname ? [shortName, '\u00a0'] : []),
                 fullName
             );
-            anchor.title = anchor.textContent;
+            anchor.title = anchor.textContent ?? '';
             return anchor;
         };
 
@@ -1137,7 +1118,9 @@ ready(() => {
         }
     };
 
-    const addSidebarItem = course => {
+    const addSidebarItem = (
+        course: Pick<EnrolledCourse, 'fullname' | 'shortname' | 'viewurl'>
+    ) => {
         if (!sidebarContent) return;
         const card = document.createElement('div');
         card.classList.add('card', 'block', 'mb-3');
@@ -1156,8 +1139,7 @@ ready(() => {
                 : []),
             fullName
         );
-        anchor.title = anchor.textContent;
-        anchor.title = anchor.textContent;
+        anchor.title = anchor.textContent ?? '';
 
         cardBody.append(anchor);
         card.append(cardBody);
@@ -1206,7 +1188,7 @@ ready(() => {
         }
 
         // mobile menu
-        const mobileA = document.querySelector(
+        const mobileA = document.querySelector<HTMLAnchorElement>(
             `#theme_boost-drawers-primary .list-group-item[href="${myCoursesLink}"]`
         );
         if (mobileA) {
@@ -1285,9 +1267,9 @@ ready(() => {
     }
 
     // fetch the courses
-    require(['core_course/repository'], ({
+    require<['core_course/repository']>(['core_course/repository'], ({
         getEnrolledCoursesByTimelineClassification,
-    }) =>
+    }) => {
         getEnrolledCoursesByTimelineClassification(
             'all',
             0,
@@ -1298,7 +1280,8 @@ ready(() => {
                 addDropdownItem(course);
                 addSidebarItem(course);
             })
-        ));
+        );
+    });
 });
 // endregion
 
@@ -1318,7 +1301,7 @@ if (getSetting('courses.imageZoom')) {
     const overlay = document.createElement('div');
     overlay.id = PREFIX('image-zoom-overlay');
 
-    let copyImage;
+    let copyImage: HTMLImageElement;
 
     GM_addStyle(`
 #page-content .course-content img {
@@ -1362,13 +1345,13 @@ if (getSetting('courses.imageZoom')) {
         overlay.style.removeProperty('opacity');
     });
 
-    const zoomImage = e => {
+    const zoomImage = (e: Event) => {
         const target = e.target;
         if (!(target instanceof HTMLImageElement)) return;
 
         e.preventDefault();
 
-        copyImage = target.cloneNode(true);
+        copyImage = target.cloneNode(true) as HTMLImageElement;
 
         // remove additional styles that could produce weird results
         copyImage.style.removeProperty('margin');
@@ -1402,10 +1385,11 @@ if (getSetting('courses.imageZoom')) {
         overlay.style.setProperty('opacity', '1');
     };
 
-    ready(() =>
-        document
-            .querySelector('#page-content .course-content')
-            ?.addEventListener('click', zoomImage)
+    ready(
+        () =>
+            document
+                .querySelector('#page-content .course-content')
+                ?.addEventListener('click', zoomImage)
     );
 }
 // endregion
@@ -1451,12 +1435,9 @@ ready(() => {
     form.classList.add('mform');
 
     let fieldsetCounter = 0;
-    let currentFieldset;
+    let currentFieldset: HTMLFieldSetElement;
 
-    /**
-     * @param {string} name
-     */
-    const createFieldset = name => {
+    const createFieldset = (name: string) => {
         const fieldset = (currentFieldset = document.createElement('fieldset'));
         form.append(fieldset);
 
@@ -1605,10 +1586,8 @@ ready(() => {
 
             const value = GM_getValue(SETTING_KEY, setting.default);
 
-            /** @type{HTMLInputElement} */
             const input = document.createElement('input');
-            /** @type{HTMLElement} */
-            let formControl;
+            let formControl: HTMLElement | undefined = undefined;
 
             input.id = PREFIX(`settings-input-${index}`);
 
@@ -1623,7 +1602,7 @@ ready(() => {
                     );
                     input.classList.add('custom-control-input');
                     input.type = 'checkbox';
-                    input.checked = value;
+                    input.checked = !!value;
                     const switchLabel = document.createElement('label');
                     switchLabel.setAttribute('for', input.id);
                     switchLabel.classList.add('custom-control-label');
@@ -1634,7 +1613,7 @@ ready(() => {
                 case Number: {
                     input.classList.add('form-control');
                     input.type = 'number';
-                    input.value = value;
+                    input.value = value.toString();
                     break;
                 }
                 default: {
@@ -1646,10 +1625,10 @@ ready(() => {
                 label.setAttribute('for', input.id);
                 input.name = setting.id;
 
-                if (setting.attributes) {
+                if ('attributes' in setting) {
                     Object.entries(setting.attributes).forEach(
                         ([key, value]) => {
-                            input.setAttribute(key, value);
+                            input.setAttribute(key, value.toString());
                         }
                     );
                 }
@@ -1666,9 +1645,12 @@ ready(() => {
     });
 
     const getFormValue = () => {
-        const formValue = {};
-        SETTINGS.forEach(({ id, type }) => {
-            if (!id) return;
+        const formValue: Partial<Record<SettingID, string | number | boolean>> =
+            {};
+        SETTINGS.forEach(setting => {
+            if (typeof setting === 'string') return;
+
+            const { id, type } = setting;
 
             switch (type) {
                 case Boolean:
@@ -1685,10 +1667,13 @@ ready(() => {
 
     const updateDisabledStates = () => {
         const settings = getFormValue();
-        SETTINGS.forEach(({ id, disabled }) => {
-            if (!id || !disabled || !form[id]) return;
+        SETTINGS.forEach(setting => {
+            if (typeof setting === 'string') return;
 
-            const isDisabled = disabled(settings);
+            const { id } = setting;
+            if (!id || !('disabled' in setting) || !form[id]) return;
+
+            const isDisabled = setting.disabled(settings);
             const classMethod = isDisabled ? 'add' : 'remove';
             form[id].disabled = isDisabled;
             form[id].classList[classMethod]('disabled');
@@ -1704,10 +1689,10 @@ ready(() => {
     document
         .querySelector('#usernavigation .usermenu-container')
         ?.before(settingsBtnWrapper);
-    require(['core/modal_factory', 'core/modal_events'], (
-        { create, types },
-        ModalEvents
-    ) =>
+    require<['core/modal_factory', 'core/modal_events']>([
+        'core/modal_factory',
+        'core/modal_events',
+    ], ({ create, types }, ModalEvents) =>
         create({
             type: types.SAVE_CANCEL,
             large: true,
@@ -1717,8 +1702,6 @@ ready(() => {
             }&nbsp;Better Moodle: Einstellungen`,
             body: form,
         }).then(modal => {
-            console.log(modal);
-
             // open the modal on click onto the settings button
             settingsBtnWrapper.addEventListener('click', () => modal.show());
 
@@ -1736,7 +1719,7 @@ ready(() => {
             moodleSettingsLink.style.setProperty('font-size', 'small');
             modal.getTitle()[0].after(moodleSettingsLink);
             modal.header[0]
-                .querySelector('button.close')
+                .querySelector<HTMLButtonElement>('button.close')
                 ?.style.setProperty('margin-left', '0');
             // endregion
 
@@ -1744,14 +1727,14 @@ ready(() => {
             // handle the save & cancel buttons
             modal.getRoot().on(ModalEvents.save, () => {
                 Object.entries(getFormValue()).forEach(([setting, value]) =>
-                    GM_setValue(getSettingKey(setting), value)
+                    GM_setValue(getSettingKey(setting as SettingID), value)
                 );
 
                 window.location.reload();
             });
             modal.getRoot().on(ModalEvents.cancel, () =>
                 SETTINGS.forEach(setting => {
-                    if (!setting.id) return;
+                    if (typeof setting === 'string') return;
 
                     const input = form[setting.id];
                     if (!input) return;
@@ -1802,7 +1785,9 @@ ready(() => {
                         title: 'Better Moodle aktualisieren',
                         body: 'Den Anweisungen zum Aktualisieren im Script-Manager (z.&nbsp;B. Tampermonkey) folgen und anschließend Moodle neu laden.',
                     }).then(modal => modal.show());
-                    open(GM_info.script.updateURL, '_self');
+                    if (GM_info.script.updateURL) {
+                        open(GM_info.script.updateURL, '_self');
+                    }
                 });
             });
 
@@ -1908,11 +1893,12 @@ ready(() => {
                 importInput.type = 'file';
                 importInput.accept = '.json';
                 importInput.addEventListener('change', () => {
-                    const file = importInput.files[0];
+                    const file = importInput.files?.[0];
                     if (!file) return;
                     const reader = new FileReader();
                     reader.addEventListener('load', () => {
-                        const config = JSON.parse(reader.result);
+                        if (!reader.result) return;
+                        const config = JSON.parse(reader.result.toString());
                         Object.entries(config).forEach(([key, value]) =>
                             GM_setValue(key, value)
                         );

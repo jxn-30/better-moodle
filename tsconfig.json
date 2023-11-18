@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "checkJs": true,
+        "esModuleInterop": true,
+        "module": "ESNext",
+        "sourceMap": false,
+        "strict": true,
+        "target": "ES2019",
+        "types": ["tampermonkey", "jquery"],
+        "newLine": "lf"
+    },
+    "exclude": ["node_modules"],
+    "files": [
+        "redesign.ts",
+        "moodle.d.ts"
+    ]
+}
