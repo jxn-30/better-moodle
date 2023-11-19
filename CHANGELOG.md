@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/jxn-30/better-moodle/compare/v1.12.1...v1.13.0) (2023-11-19)
+
+
+### Features
+
+* **my-courses:** add filter for dropdown and dashboard sidebar [#31](https://github.com/jxn-30/better-moodle/issues/31) ([#57](https://github.com/jxn-30/better-moodle/issues/57)) ([373445b](https://github.com/jxn-30/better-moodle/commit/373445be02753c189ccee1417ff800d11febc40e))
+
 ## [1.12.1](https://github.com/jxn-30/better-moodle/compare/v1.12.0...v1.12.1) (2023-11-15)
 
 
