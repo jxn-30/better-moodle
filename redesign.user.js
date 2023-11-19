@@ -292,10 +292,13 @@ const getCourseGroupingOptions = () =>
             key: '_sync',
             title: '[Mit Auswahl auf "Meine Kurse"-Seite synchronisieren]',
         },
-        ...groupings.map(group => ({
-            key: JSON.stringify(group),
-            title: group.name,
-        })),
+        ...groupings.map(group => {
+            delete group.active;
+            return {
+                key: JSON.stringify(group),
+                title: group.name,
+            };
+        }),
     ]);
 // endregion
 
@@ -1356,7 +1359,93 @@ ready(async () => {
                 myCoursesLink.textContent = 'Meine Kurse';
                 myCoursesLink.href = '/my/courses.php';
                 myCoursesLink.classList.add('w-100', 'text-center');
-                header.append(myCoursesLink);
+
+                // add the filter dropdown
+                const dropdownToggle = document.createElement('button');
+                dropdownToggle.classList.add(
+                    'btn',
+                    'icon-no-margin',
+                    'dropdown-toggle'
+                );
+                dropdownToggle.dataset.toggle = 'dropdown';
+                dropdownToggle.id = PREFIX(
+                    'dashboard-my-courses-filter-toggle'
+                );
+                const filterIcon = document.createElement('i');
+                filterIcon.classList.add('icon', 'fa', 'fa-filter', 'fa-fw');
+                dropdownToggle.append(filterIcon);
+                const dropdown = document.createElement('ul');
+                dropdown.classList.add('dropdown-menu', 'w-100');
+                dropdown.id = PREFIX('dashboard-my-courses-filter-menu');
+
+                dropdownToggle.setAttribute('aria-controls', dropdown.id);
+                dropdown.setAttribute('aria-labelledby', dropdownToggle.id);
+
+                // move the dropdown after it has been initially opened
+                require(['jquery'], $ => {
+                    $(header).on('shown.bs.dropdown', () =>
+                        sidebarContent.prepend(dropdown)
+                    );
+                });
+
+                const settingId = 'dashboard.courseListFilter';
+
+                const value = getSetting(settingId);
+
+                getCourseGroupingOptions().then(options =>
+                    options.forEach(({ key, title }) => {
+                        const item = document.createElement('li');
+                        item.dataset.value = key;
+                        const link = document.createElement('a');
+                        link.classList.add('dropdown-item');
+                        link.href = '#';
+                        link.textContent = title;
+                        if (value === key) link.ariaCurrent = 'true';
+                        item.append(link);
+                        dropdown.append(item);
+                    })
+                );
+
+                const updateSidebar = newValue => {
+                    dropdown
+                        .querySelector('[aria-current="true"]')
+                        ?.removeAttribute('aria-current');
+                    dropdown
+                        .querySelector(
+                            `[data-value=${JSON.stringify(newValue)}] a`
+                        )
+                        ?.setAttribute('aria-current', 'true');
+
+                    fillSidebar();
+                };
+
+                dropdown.addEventListener('click', e => {
+                    e.preventDefault();
+                    const target = e.target;
+                    if (!(target instanceof HTMLElement)) return;
+                    const item = target.closest('[data-value]');
+                    if (!item) return;
+                    GM_setValue(getSettingKey(settingId), item.dataset.value);
+                    updateSidebar(item.dataset.value);
+                });
+
+                GM_addValueChangeListener(
+                    getSettingKey(settingId),
+                    (_, __, newValue) => updateSidebar(newValue)
+                );
+
+                GM_addStyle(`
+#${dropdown.id} {
+    transform: unset !important;
+}
+
+#${dropdown.id} a {
+    width: 100%;
+}
+
+`);
+
+                header.append(myCoursesLink, dropdownToggle, dropdown);
             }
         );
     }
@@ -1386,20 +1475,61 @@ ready(async () => {
               )
             : JSON.parse(dropdownGroupingSetting);
 
-    const sidebarGroupingSetting = getSetting('dashboard.courseListFilter');
-    const sidebarGrouping =
-        sidebarGroupingSetting === '_sync' && sidebarContent
-            ? await getGroupings().then(
-                  courseGroupings =>
-                      courseGroupings.find(grouping => grouping.active) ??
-                      courseGroupings[0]
-              )
-            : JSON.parse(sidebarGroupingSetting);
+    const fillSidebar = async () => {
+        if (!sidebarContent) return;
+
+        const loadingSpan = document.createElement('span');
+        loadingSpan.classList.add(
+            'loading-icon',
+            'icon-no-margin',
+            'text-center'
+        );
+        const loadingIcon = document.createElement('i');
+        loadingIcon.classList.add(
+            'icon',
+            'fa',
+            'fa-circle-o-notch',
+            'fa-spin',
+            'fa-fw'
+        );
+        loadingSpan.append(loadingIcon);
+
+        sidebarContent.innerHTML = '';
+        sidebarContent.append(loadingSpan);
+
+        const sidebarGroupingSetting = getSetting('dashboard.courseListFilter');
+        const sidebarGrouping =
+            sidebarGroupingSetting === '_sync'
+                ? await getGroupings().then(
+                      courseGroupings =>
+                          courseGroupings.find(grouping => grouping.active) ??
+                          courseGroupings[0]
+                  )
+                : JSON.parse(sidebarGroupingSetting);
+
+        // fetch the courses
+        require(['block_myoverview/repository'], ({
+            getEnrolledCoursesByTimeline,
+        }) =>
+            getEnrolledCoursesByTimeline({
+                classification: sidebarGrouping.classification,
+                customfieldname: sidebarGrouping.customfieldname,
+                customfieldvalue: sidebarGrouping.customfieldvalue,
+                limit: 0,
+                offset: 0,
+                sort: 'shortname',
+            }).then(({ courses }) => {
+                loadingSpan.remove();
+                courses.forEach(addSidebarItem);
+            }));
+    };
+
+    fillSidebar();
 
     // fetch the courses
     require(['block_myoverview/repository'], ({
         getEnrolledCoursesByTimeline,
-    }) => {
+    }) =>
         getEnrolledCoursesByTimeline({
             classification: dropdownGrouping.classification,
             customfieldname: dropdownGrouping.customfieldname,
@@ -1417,21 +1547,7 @@ ready(async () => {
             }
 
             courses.forEach(addDropdownItem);
-        });
-
-        if (sidebarContent) {
-            getEnrolledCoursesByTimeline({
-                classification: sidebarGrouping.classification,
-                customfieldname: sidebarGrouping.customfieldname,
-                customfieldvalue: sidebarGrouping.customfieldvalue,
-                limit: 0,
-                offset: 0,
-                sort: 'shortname',
-            }).then(({ courses }) => {
-                courses.forEach(addSidebarItem);
-            });
-        }
-    });
+        }));
 });
 // endregion
 
