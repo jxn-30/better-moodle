@@ -340,7 +340,23 @@ body.dir-rtl a.${PREFIX('no-external-icon')}::before {
  * @property {number} default
  */
 
-/** @typedef {BooleanSetting | NumberSetting} Setting */
+/**
+ * @typedef {BaseSetting} StringSetting
+ * @extends BaseSetting
+ * @property {typeof String} type
+ * @property {string} default
+ */
+
+/**
+ * @typedef {BaseSetting} SelectSetting
+ * @extends BaseSetting
+ * @property {typeof HTMLSelectElement} type
+ * @property {string[] | string} default
+ * @property {(() => Promise<{key: string, title: string}[]>) | {key: string, title: string}[]} options
+ * @property {boolean} multiselect
+ */
+
+/** @typedef {BooleanSetting | NumberSetting | StringSetting | SelectSetting} Setting */
 
 /** @type {Array<Setting | string>} */
 const SETTINGS = [
@@ -436,10 +452,23 @@ const SETTINGS = [
     // dropdown filter => Filter von my-courses + "sync"-setting
     {
         id: 'myCourses.navbarDropdownFilter',
-        name: '',
-        description: '',
+        name: 'Filter der Kurs-Dropdown',
+        description:
+            'Welche Kurse sollen in der Dropdown angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
         type: HTMLSelectElement,
-        items: () => getCourseGroupings().then(groupings => groupings),
+        options: () =>
+            getCourseGroupings().then(groupings => [
+                {
+                    key: '_sync',
+                    title: '[Mit Auswahl auf "Meine Kurse"-Seite synchronisieren]',
+                },
+                ...groupings.map(group => ({
+                    key: JSON.stringify(group),
+                    title: group.name,
+                })),
+            ]),
+        default: '_sync',
+        multiselect: false,
         disabled: settings => !settings['myCourses.navbarDropdown'],
     },
     'Kurse',
@@ -1321,14 +1350,20 @@ ready(async () => {
         );
     }
 
-    const courseGroupings = await getCourseGroupings();
+    const groupingSetting = getSetting('myCourses.navbarDropdownFilter');
     const currentGrouping =
-        courseGroupings.find(grouping => grouping.active) ?? courseGroupings[0];
+        groupingSetting === '_sync'
+            ? await getCourseGroupings().then(
+                  courseGroupings =>
+                      courseGroupings.find(grouping => grouping.active) ??
+                      courseGroupings[0]
+              )
+            : JSON.parse(groupingSetting);
 
     // fetch the courses
     require(['block_myoverview/repository'], ({
         getEnrolledCoursesByTimeline,
-    }) =>
+    }) => {
         getEnrolledCoursesByTimeline({
             classification: currentGrouping.classification,
             customfieldname: currentGrouping.customfieldname,
@@ -1337,17 +1372,27 @@ ready(async () => {
             offset: 0,
             sort: 'shortname',
         }).then(({ courses }) => {
-            addDropdownItem({
-                fullname: '[Meine Kurse]',
-                shortname: '',
-                viewurl: myCoursesLink,
-            });
+            if (myCoursesA) {
+                addDropdownItem({
+                    fullname: '[Meine Kurse]',
+                    shortname: '',
+                    viewurl: myCoursesA.href,
+                });
+            }
 
-            courses.forEach(course => {
-                addDropdownItem(course);
-                addSidebarItem(course);
-            });
-        }));
+            courses.forEach(addDropdownItem);
+        });
+    });
+    require(['core_course/repository'], ({
+        getEnrolledCoursesByTimelineClassification,
+    }) => {
+        getEnrolledCoursesByTimelineClassification(
+            'all',
+            0,
+            0,
+            'shortname'
+        ).then(({ courses }) => courses.forEach(addSidebarItem));
+    });
 });
 // endregion
 
@@ -1654,8 +1699,14 @@ ready(() => {
 
             const value = GM_getValue(SETTING_KEY, setting.default);
 
-            /** @type{HTMLInputElement} */
-            const input = document.createElement('input');
+            const inputType = {
+                [HTMLSelectElement]: 'select',
+            };
+
+            /** @type{HTMLInputElement | HTMLSelectElement} */
+            const input = document.createElement(
+                inputType[setting.type] || 'input'
+            );
             /** @type{HTMLElement} */
             let formControl;
 
@@ -1684,6 +1735,28 @@ ready(() => {
                     input.classList.add('form-control');
                     input.type = 'number';
                     input.value = value;
+                    break;
+                }
+                case HTMLSelectElement: {
+                    input.classList.add('custom-select');
+                    input.dataset.initialValue = value;
+                    /** @type {Promise<{key: string, title: string}[]>} **/
+                    const options = Array.isArray(setting.options)
+                        ? new Promise(resolve => resolve(setting.options))
+                        : setting.options();
+                    options.then(options =>
+                        options.forEach(option => {
+                            const optionEl = document.createElement('option');
+                            optionEl.value = option.key;
+                            optionEl.textContent = option.title;
+
+                            if (option.key === value) {
+                                optionEl.selected = true;
+                            }
+
+                            input.append(optionEl);
+                        })
+                    );
                     break;
                 }
                 default: {
