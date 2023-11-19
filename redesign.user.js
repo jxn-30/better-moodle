@@ -285,6 +285,18 @@ const getCourseGroupings = () =>
                 name: group.textContent.trim(),
             }));
         });
+/** gets all course groupings as options for a select */
+const getCourseGroupingOptions = () =>
+    getCourseGroupings().then(groupings => [
+        {
+            key: '_sync',
+            title: '[Mit Auswahl auf "Meine Kurse"-Seite synchronisieren]',
+        },
+        ...groupings.map(group => ({
+            key: JSON.stringify(group),
+            title: group.name,
+        })),
+    ]);
 // endregion
 
 // region Global styles
@@ -428,6 +440,16 @@ const SETTINGS = [
         default: 'Coming soon...',
         disabled: () => true,
     },
+    {
+        id: 'dashboard.courseListFilter',
+        name: 'Filter der Kurse-Sidebar',
+        description:
+            'Welche Kurse sollen in der Sidebar angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
+        type: HTMLSelectElement,
+        options: getCourseGroupingOptions,
+        default: '_sync',
+        multiselect: false,
+    },
     'Meine Kurse',
     {
         id: 'myCourses.boxesPerRow',
@@ -449,24 +471,13 @@ const SETTINGS = [
         type: Boolean,
         default: true,
     },
-    // dropdown filter => Filter von my-courses + "sync"-setting
     {
         id: 'myCourses.navbarDropdownFilter',
         name: 'Filter der Kurs-Dropdown',
         description:
             'Welche Kurse sollen in der Dropdown angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
         type: HTMLSelectElement,
-        options: () =>
-            getCourseGroupings().then(groupings => [
-                {
-                    key: '_sync',
-                    title: '[Mit Auswahl auf "Meine Kurse"-Seite synchronisieren]',
-                },
-                ...groupings.map(group => ({
-                    key: JSON.stringify(group),
-                    title: group.name,
-                })),
-            ]),
+        options: getCourseGroupingOptions,
         default: '_sync',
         multiselect: false,
         disabled: settings => !settings['myCourses.navbarDropdown'],
@@ -1350,24 +1361,49 @@ ready(async () => {
         );
     }
 
-    const groupingSetting = getSetting('myCourses.navbarDropdownFilter');
-    const currentGrouping =
-        groupingSetting === '_sync'
-            ? await getCourseGroupings().then(
+    /** @type {CourseGrouping[]} */
+    let courseGroupings;
+
+    const getGroupings = () => {
+        if (courseGroupings) {
+            return new Promise(resolve => resolve(courseGroupings));
+        }
+        return getCourseGroupings().then(groupings => {
+            courseGroupings = groupings;
+            return groupings;
+        });
+    };
+
+    const dropdownGroupingSetting = getSetting(
+        'myCourses.navbarDropdownFilter'
+    );
+    const dropdownGrouping =
+        dropdownGroupingSetting === '_sync'
+            ? await getGroupings().then(
                   courseGroupings =>
                       courseGroupings.find(grouping => grouping.active) ??
                       courseGroupings[0]
               )
-            : JSON.parse(groupingSetting);
+            : JSON.parse(dropdownGroupingSetting);
+
+    const sidebarGroupingSetting = getSetting('dashboard.courseListFilter');
+    const sidebarGrouping =
+        sidebarGroupingSetting === '_sync' && sidebarContent
+            ? await getGroupings().then(
+                  courseGroupings =>
+                      courseGroupings.find(grouping => grouping.active) ??
+                      courseGroupings[0]
+              )
+            : JSON.parse(sidebarGroupingSetting);
 
     // fetch the courses
     require(['block_myoverview/repository'], ({
         getEnrolledCoursesByTimeline,
     }) => {
         getEnrolledCoursesByTimeline({
-            classification: currentGrouping.classification,
-            customfieldname: currentGrouping.customfieldname,
-            customfieldvalue: currentGrouping.customfieldvalue,
+            classification: dropdownGrouping.classification,
+            customfieldname: dropdownGrouping.customfieldname,
+            customfieldvalue: dropdownGrouping.customfieldvalue,
             limit: 0,
             offset: 0,
             sort: 'shortname',
@@ -1382,16 +1418,19 @@ ready(async () => {
 
             courses.forEach(addDropdownItem);
         });
-    });
-    require(['core_course/repository'], ({
-        getEnrolledCoursesByTimelineClassification,
-    }) => {
-        getEnrolledCoursesByTimelineClassification(
-            'all',
-            0,
-            0,
-            'shortname'
-        ).then(({ courses }) => courses.forEach(addSidebarItem));
+
+        if (sidebarContent) {
+            getEnrolledCoursesByTimeline({
+                classification: sidebarGrouping.classification,
+                customfieldname: sidebarGrouping.customfieldname,
+                customfieldvalue: sidebarGrouping.customfieldvalue,
+                limit: 0,
+                offset: 0,
+                sort: 'shortname',
+            }).then(({ courses }) => {
+                courses.forEach(addSidebarItem);
+            });
+        }
     });
 });
 // endregion
