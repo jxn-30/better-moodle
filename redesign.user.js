@@ -251,6 +251,55 @@ const githubLink = (path, icon = true, iconAndExternalIcon = false) => {
 
     return link;
 };
+
+/**
+ * @typedef {Object} CourseGrouping
+ * @property {string} classification
+ * @property {string} customfieldname
+ * @property {string} customfieldvalue
+ * @property {boolean} active
+ * @property {string} name
+ */
+
+/**
+ * gets all course groupings as available in my courses view
+ * @return {Promise<CourseGrouping[]>}
+ */
+const getCourseGroupings = () =>
+    fetch('/my/courses.php')
+        .then(res => res.text())
+        .then(html => new DOMParser().parseFromString(html, 'text/html'))
+        .then(doc => {
+            const customfieldname =
+                doc.querySelector('[data-region="courses-view"]')?.dataset
+                    .customfieldname ?? '';
+            return Array.from(
+                doc.querySelectorAll(
+                    '#groupingdropdown + .dropdown-menu [data-filter="grouping"]'
+                )
+            ).map(group => ({
+                classification: group.dataset.pref,
+                customfieldname,
+                customfieldvalue: group.dataset.customfieldvalue,
+                active: group.ariaCurrent === 'true',
+                name: group.textContent.trim(),
+            }));
+        });
+/** gets all course groupings as options for a select */
+const getCourseGroupingOptions = () =>
+    getCourseGroupings().then(groupings => [
+        {
+            key: '_sync',
+            title: '[Mit Auswahl auf "Meine Kurse"-Seite synchronisieren]',
+        },
+        ...groupings.map(group => {
+            delete group.active;
+            return {
+                key: JSON.stringify(group),
+                title: group.name,
+            };
+        }),
+    ]);
 // endregion
 
 // region Global styles
@@ -306,7 +355,23 @@ body.dir-rtl a.${PREFIX('no-external-icon')}::before {
  * @property {number} default
  */
 
-/** @typedef {BooleanSetting | NumberSetting} Setting */
+/**
+ * @typedef {BaseSetting} StringSetting
+ * @extends BaseSetting
+ * @property {typeof String} type
+ * @property {string} default
+ */
+
+/**
+ * @typedef {BaseSetting} SelectSetting
+ * @extends BaseSetting
+ * @property {typeof HTMLSelectElement} type
+ * @property {string[] | string} default
+ * @property {(() => Promise<{key: string, title: string}[]>) | {key: string, title: string}[]} options
+ * @property {boolean} multiselect
+ */
+
+/** @typedef {BooleanSetting | NumberSetting | StringSetting | SelectSetting} Setting */
 
 /** @type {Array<Setting | string>} */
 const SETTINGS = [
@@ -378,6 +443,16 @@ const SETTINGS = [
         default: 'Coming soon...',
         disabled: () => true,
     },
+    {
+        id: 'dashboard.courseListFilter',
+        name: 'Filter der Kurse-Sidebar',
+        description:
+            'Welche Kurse sollen in der Sidebar angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
+        type: HTMLSelectElement,
+        options: getCourseGroupingOptions,
+        default: '_sync',
+        multiselect: false,
+    },
     'Meine Kurse',
     {
         id: 'myCourses.boxesPerRow',
@@ -398,6 +473,17 @@ const SETTINGS = [
             'Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.',
         type: Boolean,
         default: true,
+    },
+    {
+        id: 'myCourses.navbarDropdownFilter',
+        name: 'Filter der Kurs-Dropdown',
+        description:
+            'Welche Kurse sollen in der Dropdown angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
+        type: HTMLSelectElement,
+        options: getCourseGroupingOptions,
+        default: '_sync',
+        multiselect: false,
+        disabled: settings => !settings['myCourses.navbarDropdown'],
     },
     'Kurse',
     {
@@ -1090,7 +1176,7 @@ ready(() => {
 
 // region Features: myCourses.navbarDropdown, Dashboard left sidebar
 // add a left sidebar with the users courses. Also manipulate my courses link to be a dropdown
-ready(() => {
+ready(async () => {
     if (window.location.pathname.startsWith('/login/')) return;
 
     /** @type {HTMLDivElement} */
@@ -1257,12 +1343,6 @@ ready(() => {
             mobileA.append(caretDown, caretRight);
             mobileA.after(mobileDropdownMenu);
         }
-
-        addDropdownItem({
-            fullname: '[Meine Kurse]',
-            shortname: '',
-            viewurl: myCoursesLink,
-        });
     }
 
     // add a left sidebar
@@ -1279,26 +1359,195 @@ ready(() => {
                 myCoursesLink.textContent = 'Meine Kurse';
                 myCoursesLink.href = '/my/courses.php';
                 myCoursesLink.classList.add('w-100', 'text-center');
-                header.append(myCoursesLink);
+
+                // add the filter dropdown
+                const dropdownToggle = document.createElement('button');
+                dropdownToggle.classList.add(
+                    'btn',
+                    'icon-no-margin',
+                    'dropdown-toggle'
+                );
+                dropdownToggle.dataset.toggle = 'dropdown';
+                dropdownToggle.id = PREFIX(
+                    'dashboard-my-courses-filter-toggle'
+                );
+                const filterIcon = document.createElement('i');
+                filterIcon.classList.add('icon', 'fa', 'fa-filter', 'fa-fw');
+                dropdownToggle.append(filterIcon);
+                const dropdown = document.createElement('ul');
+                dropdown.classList.add('dropdown-menu', 'w-100');
+                dropdown.id = PREFIX('dashboard-my-courses-filter-menu');
+
+                dropdownToggle.setAttribute('aria-controls', dropdown.id);
+                dropdown.setAttribute('aria-labelledby', dropdownToggle.id);
+
+                // move the dropdown after it has been initially opened
+                require(['jquery'], $ => {
+                    $(header).on('shown.bs.dropdown', () =>
+                        sidebarContent.prepend(dropdown)
+                    );
+                });
+
+                const settingId = 'dashboard.courseListFilter';
+
+                const value = getSetting(settingId);
+
+                getCourseGroupingOptions().then(options =>
+                    options.forEach(({ key, title }) => {
+                        const item = document.createElement('li');
+                        item.dataset.value = key;
+                        const link = document.createElement('a');
+                        link.classList.add('dropdown-item');
+                        link.href = '#';
+                        link.textContent = title;
+                        if (value === key) link.ariaCurrent = 'true';
+                        item.append(link);
+                        dropdown.append(item);
+                    })
+                );
+
+                const updateSidebar = newValue => {
+                    dropdown
+                        .querySelector('[aria-current="true"]')
+                        ?.removeAttribute('aria-current');
+                    dropdown
+                        .querySelector(
+                            `[data-value=${JSON.stringify(newValue)}] a`
+                        )
+                        ?.setAttribute('aria-current', 'true');
+
+                    fillSidebar();
+                };
+
+                dropdown.addEventListener('click', e => {
+                    e.preventDefault();
+                    const target = e.target;
+                    if (!(target instanceof HTMLElement)) return;
+                    const item = target.closest('[data-value]');
+                    if (!item) return;
+                    GM_setValue(getSettingKey(settingId), item.dataset.value);
+                    updateSidebar(item.dataset.value);
+                });
+
+                GM_addValueChangeListener(
+                    getSettingKey(settingId),
+                    (_, __, newValue) => updateSidebar(newValue)
+                );
+
+                GM_addStyle(`
+#${dropdown.id} {
+    transform: unset !important;
+}
+
+#${dropdown.id} a {
+    width: 100%;
+}
+
+`);
+
+                header.append(myCoursesLink, dropdownToggle, dropdown);
             }
         );
     }
 
+    /** @type {CourseGrouping[]} */
+    let courseGroupings;
+
+    const getGroupings = () => {
+        if (courseGroupings) {
+            return new Promise(resolve => resolve(courseGroupings));
+        }
+        return getCourseGroupings().then(groupings => {
+            courseGroupings = groupings;
+            return groupings;
+        });
+    };
+
+    const dropdownGroupingSetting = getSetting(
+        'myCourses.navbarDropdownFilter'
+    );
+    const dropdownGrouping =
+        dropdownGroupingSetting === '_sync'
+            ? await getGroupings().then(
+                  courseGroupings =>
+                      courseGroupings.find(grouping => grouping.active) ??
+                      courseGroupings[0]
+              )
+            : JSON.parse(dropdownGroupingSetting);
+
+    const fillSidebar = async () => {
+        if (!sidebarContent) return;
+
+        const loadingSpan = document.createElement('span');
+        loadingSpan.classList.add(
+            'loading-icon',
+            'icon-no-margin',
+            'text-center'
+        );
+        const loadingIcon = document.createElement('i');
+        loadingIcon.classList.add(
+            'icon',
+            'fa',
+            'fa-circle-o-notch',
+            'fa-spin',
+            'fa-fw'
+        );
+        loadingSpan.append(loadingIcon);
+
+        sidebarContent.innerHTML = '';
+        sidebarContent.append(loadingSpan);
+
+        const sidebarGroupingSetting = getSetting('dashboard.courseListFilter');
+        const sidebarGrouping =
+            sidebarGroupingSetting === '_sync'
+                ? await getGroupings().then(
+                      courseGroupings =>
+                          courseGroupings.find(grouping => grouping.active) ??
+                          courseGroupings[0]
+                  )
+                : JSON.parse(sidebarGroupingSetting);
+
+        // fetch the courses
+        require(['block_myoverview/repository'], ({
+            getEnrolledCoursesByTimeline,
+        }) =>
+            getEnrolledCoursesByTimeline({
+                classification: sidebarGrouping.classification,
+                customfieldname: sidebarGrouping.customfieldname,
+                customfieldvalue: sidebarGrouping.customfieldvalue,
+                limit: 0,
+                offset: 0,
+                sort: 'shortname',
+            }).then(({ courses }) => {
+                loadingSpan.remove();
+                courses.forEach(addSidebarItem);
+            }));
+    };
+
+    fillSidebar();
+
     // fetch the courses
-    require(['core_course/repository'], ({
-        getEnrolledCoursesByTimelineClassification,
+    require(['block_myoverview/repository'], ({
+        getEnrolledCoursesByTimeline,
     }) =>
-        getEnrolledCoursesByTimelineClassification(
-            'all',
-            0,
-            0,
-            'shortname'
-        ).then(({ courses }) =>
-            courses.forEach(course => {
-                addDropdownItem(course);
-                addSidebarItem(course);
-            })
-        ));
+        getEnrolledCoursesByTimeline({
+            classification: dropdownGrouping.classification,
+            customfieldname: dropdownGrouping.customfieldname,
+            customfieldvalue: dropdownGrouping.customfieldvalue,
+            limit: 0,
+            offset: 0,
+            sort: 'shortname',
+        }).then(({ courses }) => {
+            if (myCoursesA) {
+                addDropdownItem({
+                    fullname: '[Meine Kurse]',
+                    shortname: '',
+                    viewurl: myCoursesA.href,
+                });
+            }
+
+            courses.forEach(addDropdownItem);
+        }));
 });
 // endregion
 
@@ -1605,8 +1854,14 @@ ready(() => {
 
             const value = GM_getValue(SETTING_KEY, setting.default);
 
-            /** @type{HTMLInputElement} */
-            const input = document.createElement('input');
+            const inputType = {
+                [HTMLSelectElement]: 'select',
+            };
+
+            /** @type{HTMLInputElement | HTMLSelectElement} */
+            const input = document.createElement(
+                inputType[setting.type] || 'input'
+            );
             /** @type{HTMLElement} */
             let formControl;
 
@@ -1635,6 +1890,28 @@ ready(() => {
                     input.classList.add('form-control');
                     input.type = 'number';
                     input.value = value;
+                    break;
+                }
+                case HTMLSelectElement: {
+                    input.classList.add('custom-select');
+                    input.dataset.initialValue = value;
+                    /** @type {Promise<{key: string, title: string}[]>} **/
+                    const options = Array.isArray(setting.options)
+                        ? new Promise(resolve => resolve(setting.options))
+                        : setting.options();
+                    options.then(options =>
+                        options.forEach(option => {
+                            const optionEl = document.createElement('option');
+                            optionEl.value = option.key;
+                            optionEl.textContent = option.title;
+
+                            if (option.key === value) {
+                                optionEl.selected = true;
+                            }
+
+                            input.append(optionEl);
+                        })
+                    );
                     break;
                 }
                 default: {
