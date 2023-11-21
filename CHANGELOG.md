@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/jxn-30/better-moodle/compare/v1.13.0...v1.13.1) (2023-11-21)
+
+
+### Bug Fixes
+
+* **my-courses:** fix double loading filter ([10de932](https://github.com/jxn-30/better-moodle/commit/10de93249fa87977255329f550d4d9b37c1314ec))
+
 ## [1.13.0](https://github.com/jxn-30/better-moodle/compare/v1.12.1...v1.13.0) (2023-11-19)
 
 
