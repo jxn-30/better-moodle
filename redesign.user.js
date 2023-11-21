@@ -1523,7 +1523,8 @@ ready(async () => {
                 if (!courses.length) {
                     const noCoursesSpan = document.createElement('span');
                     noCoursesSpan.classList.add('text-muted', 'text-center');
-                    noCoursesSpan.textContent = 'Keine Kurse im aktuellen Filter vorhanden.';
+                    noCoursesSpan.textContent =
+                        'Keine Kurse im aktuellen Filter vorhanden.';
                     sidebarContent.append(noCoursesSpan);
                 }
             }));
