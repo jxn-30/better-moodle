@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.2](https://github.com/jxn-30/better-moodle/compare/v1.13.1...v1.13.2) (2023-11-21)
+
+
+### Bug Fixes
+
+* do not go to my-courses after login ([284482a](https://github.com/jxn-30/better-moodle/commit/284482ad1edc0639037badef0897328fd47229a1))
+
 ## [1.13.1](https://github.com/jxn-30/better-moodle/compare/v1.13.0...v1.13.1) (2023-11-21)
 
 
