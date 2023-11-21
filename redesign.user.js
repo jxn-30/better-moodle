@@ -1668,6 +1668,8 @@ if (getSetting('courses.imageZoom')) {
 // region Settings modal
 // A settings modal
 ready(() => {
+    if (window.location.pathname.startsWith('/login/')) return;
+
     const settingsBtnWrapper = document.createElement('div');
     const settingsBtn = document.createElement('a');
     settingsBtn.classList.add(
