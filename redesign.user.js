@@ -1426,7 +1426,6 @@ ready(async () => {
                     const item = target.closest('[data-value]');
                     if (!item) return;
                     GM_setValue(getSettingKey(settingId), item.dataset.value);
-                    updateSidebar(item.dataset.value);
                 });
 
                 GM_addValueChangeListener(
@@ -1521,10 +1520,16 @@ ready(async () => {
             }).then(({ courses }) => {
                 loadingSpan.remove();
                 courses.forEach(addSidebarItem);
+                if (!courses.length) {
+                    const noCoursesSpan = document.createElement('span');
+                    noCoursesSpan.classList.add('text-muted', 'text-center');
+                    noCoursesSpan.textContent = 'Keine Kurse im aktuellen Filter vorhanden.';
+                    sidebarContent.append(noCoursesSpan);
+                }
             }));
     };
 
-    fillSidebar();
+    fillSidebar().then();
 
     // fetch the courses
     require(['block_myoverview/repository'], ({
