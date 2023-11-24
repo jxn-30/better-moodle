@@ -1744,6 +1744,14 @@ if (messagesSendHotkey) {
 
         inputField.addEventListener('keydown', e => {
             if (e.key !== 'Enter') return;
+            if (
+                messageApp.querySelector(
+                    '.emoji-auto-complete-container:not(.hidden)'
+                )
+            ) {
+                return;
+            }
+
             switch (messagesSendHotkey) {
                 case 'shiftEnter':
                     if (e.shiftKey) sendBtn.click();
