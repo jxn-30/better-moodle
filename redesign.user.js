@@ -526,6 +526,30 @@ const SETTINGS = [
         type: Boolean,
         default: true,
     },
+    'Mitteilungen',
+    {
+        id: 'messages.sendHotkey',
+        name: 'Mitteilungen per Tastenkombination absenden',
+        description:
+            'Ermöglicht das Absenden von Mitteilungen per Tastenkombination (z. B. Strg + Enter).',
+        type: HTMLSelectElement,
+        options: () =>
+            Promise.resolve([
+                {
+                    key: '',
+                    title: '[Deaktiviert] Kein Absenden per Tastenkombination',
+                },
+                {
+                    key: 'shiftEnter',
+                    title: 'Umschalt + Enter',
+                },
+                {
+                    key: 'ctrlEnter',
+                    title: 'Strg + Enter',
+                },
+            ]),
+        default: '',
+    },
 ];
 // endregion
 
@@ -1662,6 +1686,40 @@ if (getSetting('courses.imageZoom')) {
             .querySelector('#page-content .course-content')
             ?.addEventListener('click', zoomImage)
     );
+}
+// endregion
+
+// region Feature messages.sendHotkey
+const messagesSendHotkey = getSetting('messages.sendHotkey');
+if (messagesSendHotkey) {
+    ready(() => {
+        // .message-app
+        const messageApp = document.querySelector('.message-app');
+        if (!messageApp) return;
+
+        const inputField = messageApp.querySelector(
+            'textarea[data-region="send-message-txt"]'
+        );
+        const sendBtn = messageApp.querySelector(
+            '[data-action="send-message"]'
+        );
+
+        if (!inputField || !sendBtn) return;
+
+        inputField.addEventListener('keydown', e => {
+            if (e.key !== 'Enter') return;
+            switch (messagesSendHotkey) {
+                case 'shiftEnter':
+                    if (e.shiftKey) sendBtn.click();
+                    e.preventDefault();
+                    break;
+                case 'ctrlEnter':
+                    if (e.ctrlKey) sendBtn.click();
+                    e.preventDefault();
+                    break;
+            }
+        });
+    });
 }
 // endregion
 
