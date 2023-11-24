@@ -29,6 +29,8 @@ const getSettingKey = id => PREFIX(`settings.${id}`);
 const getSetting = id =>
     GM_getValue(getSettingKey(id), SETTINGS.find(s => s.id === id)?.default);
 
+const MyCoursesFilterSyncChangeKey = PREFIX('myCourses.filterSyncChange');
+
 /**
  * Awaits the DOM to be ready and then calls the callback.
  * @param {() => void} callback
@@ -1203,6 +1205,23 @@ ready(() => {
 ready(async () => {
     if (window.location.pathname.startsWith('/login/')) return;
 
+    if (window.location.pathname === '/my/courses.php') {
+        require([
+            'jquery',
+            'block_myoverview/selectors',
+            'core/custom_interaction_events',
+        ], (jquery, selectors, { events }) => {
+            const block = jquery(document.querySelector('.block-myoverview'));
+            if (!block) return;
+            const filters = block.find(selectors.FILTERS);
+            if (!filters) return;
+
+            filters.on(events.activate, selectors.FILTER_OPTION, () =>
+                GM_setValue(MyCoursesFilterSyncChangeKey, Math.random())
+            );
+        });
+    }
+
     /** @type {HTMLDivElement} */
     let dropdownMenu;
     /** @type {HTMLDivElement} */
@@ -1456,6 +1475,9 @@ ready(async () => {
                     getSettingKey(settingId),
                     (_, __, newValue) => updateSidebar(newValue)
                 );
+                GM_addValueChangeListener(MyCoursesFilterSyncChangeKey, () =>
+                    updateSidebar(getSetting(settingId))
+                );
 
                 GM_addStyle(`
 #${dropdown.id} {
@@ -1473,57 +1495,30 @@ ready(async () => {
         );
     }
 
-    /** @type {CourseGrouping[]} */
-    let courseGroupings;
-
-    const getGroupings = () => {
-        if (courseGroupings) {
-            return new Promise(resolve => resolve(courseGroupings));
-        }
-        return getCourseGroupings().then(groupings => {
-            courseGroupings = groupings;
-            return groupings;
-        });
-    };
-
-    const dropdownGroupingSetting = getSetting(
-        'myCourses.navbarDropdownFilter'
+    const loadingSpan = document.createElement('span');
+    loadingSpan.classList.add('loading-icon', 'icon-no-margin', 'text-center');
+    const loadingIcon = document.createElement('i');
+    loadingIcon.classList.add(
+        'icon',
+        'fa',
+        'fa-circle-o-notch',
+        'fa-spin',
+        'fa-fw'
     );
-    const dropdownGrouping =
-        dropdownGroupingSetting === '_sync'
-            ? await getGroupings().then(
-                  courseGroupings =>
-                      courseGroupings.find(grouping => grouping.active) ??
-                      courseGroupings[0]
-              )
-            : JSON.parse(dropdownGroupingSetting);
+    loadingSpan.append(loadingIcon);
 
     const fillSidebar = async () => {
         if (!sidebarContent) return;
 
-        const loadingSpan = document.createElement('span');
-        loadingSpan.classList.add(
-            'loading-icon',
-            'icon-no-margin',
-            'text-center'
-        );
-        const loadingIcon = document.createElement('i');
-        loadingIcon.classList.add(
-            'icon',
-            'fa',
-            'fa-circle-o-notch',
-            'fa-spin',
-            'fa-fw'
-        );
-        loadingSpan.append(loadingIcon);
+        const loadingSpanEl = loadingSpan.cloneNode(true);
 
         sidebarContent.innerHTML = '';
-        sidebarContent.append(loadingSpan);
+        sidebarContent.append(loadingSpanEl);
 
         const sidebarGroupingSetting = getSetting('dashboard.courseListFilter');
         const sidebarGrouping =
             sidebarGroupingSetting === '_sync'
-                ? await getGroupings().then(
+                ? await getCourseGroupings().then(
                       courseGroupings =>
                           courseGroupings.find(grouping => grouping.active) ??
                           courseGroupings[0]
@@ -1542,7 +1537,7 @@ ready(async () => {
                 offset: 0,
                 sort: 'shortname',
             }).then(({ courses }) => {
-                loadingSpan.remove();
+                loadingSpanEl.remove();
                 courses.forEach(addSidebarItem);
                 if (!courses.length) {
                     const noCoursesSpan = document.createElement('span');
@@ -1556,28 +1551,69 @@ ready(async () => {
 
     fillSidebar().then();
 
-    // fetch the courses
-    require(['block_myoverview/repository'], ({
-        getEnrolledCoursesByTimeline,
-    }) =>
-        getEnrolledCoursesByTimeline({
-            classification: dropdownGrouping.classification,
-            customfieldname: dropdownGrouping.customfieldname,
-            customfieldvalue: dropdownGrouping.customfieldvalue,
-            limit: 0,
-            offset: 0,
-            sort: 'shortname',
-        }).then(({ courses }) => {
-            if (myCoursesA) {
-                addDropdownItem({
-                    fullname: '[Meine Kurse]',
-                    shortname: '',
-                    viewurl: myCoursesA.href,
-                });
-            }
+    const fillDropdown = async () => {
+        if (dropdownMenu) dropdownMenu.innerHTML = '';
+        if (mobileDropdownMenu) mobileDropdownMenu.innerHTML = '';
 
-            courses.forEach(addDropdownItem);
-        }));
+        const dropdownLoadingSpan = loadingSpan.cloneNode(true);
+        const mobileLoadingSpan = loadingSpan.cloneNode(true);
+
+        dropdownMenu?.append(dropdownLoadingSpan);
+        mobileDropdownMenu?.append(mobileLoadingSpan);
+
+        const dropdownGroupingSetting = getSetting(
+            'myCourses.navbarDropdownFilter'
+        );
+        const dropdownGrouping =
+            dropdownGroupingSetting === '_sync'
+                ? await getCourseGroupings().then(
+                      courseGroupings =>
+                          courseGroupings.find(grouping => grouping.active) ??
+                          courseGroupings[0]
+                  )
+                : JSON.parse(dropdownGroupingSetting);
+
+        // fetch the courses
+        require(['block_myoverview/repository'], ({
+            getEnrolledCoursesByTimeline,
+        }) =>
+            getEnrolledCoursesByTimeline({
+                classification: dropdownGrouping.classification,
+                customfieldname: dropdownGrouping.customfieldname,
+                customfieldvalue: dropdownGrouping.customfieldvalue,
+                limit: 0,
+                offset: 0,
+                sort: 'shortname',
+            }).then(({ courses }) => {
+                dropdownLoadingSpan.remove();
+                mobileLoadingSpan.remove();
+
+                if (myCoursesA) {
+                    addDropdownItem({
+                        fullname: '[Meine Kurse]',
+                        shortname: '',
+                        viewurl: myCoursesA.href,
+                    });
+                }
+
+                courses.forEach(addDropdownItem);
+
+                if (!courses.length) {
+                    const noCoursesSpan = document.createElement('span');
+                    noCoursesSpan.classList.add('text-muted', 'text-center');
+                    noCoursesSpan.textContent =
+                        'Keine Kurse im aktuellen Filter vorhanden.';
+                    dropdownMenu?.append(noCoursesSpan);
+                    mobileDropdownMenu?.append(noCoursesSpan.cloneNode(true));
+                }
+            }));
+    };
+
+    GM_addValueChangeListener(MyCoursesFilterSyncChangeKey, () =>
+        fillDropdown()
+    );
+
+    fillDropdown().then();
 });
 // endregion
 
