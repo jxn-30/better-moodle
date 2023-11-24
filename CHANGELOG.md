@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/jxn-30/better-moodle/compare/v1.13.2...v1.14.0) (2023-11-24)
+
+
+### Features
+
+* **messages:** send messages with hotkey ([c8929a0](https://github.com/jxn-30/better-moodle/commit/c8929a0047fb1fda1e3a5398013a5d701c1c8b64))
+
 ## [1.13.2](https://github.com/jxn-30/better-moodle/compare/v1.13.1...v1.13.2) (2023-11-21)
 
 
