@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.3](https://github.com/jxn-30/better-moodle/compare/v1.14.2...v1.14.3) (2023-11-24)
+
+
+### Bug Fixes
+
+* **updater:** check for updates on each settings modal open ([0f27e47](https://github.com/jxn-30/better-moodle/commit/0f27e4796a8b0f24dfb798ac65dd6928153724ca))
+
 ## [1.14.2](https://github.com/jxn-30/better-moodle/compare/v1.14.1...v1.14.2) (2023-11-24)
 
 
