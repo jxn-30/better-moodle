@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.4](https://github.com/jxn-30/better-moodle/compare/v1.14.3...v1.14.4) (2023-11-24)
+
+
+### Bug Fixes
+
+* **myCourses:** fix link to my courses ([618793b](https://github.com/jxn-30/better-moodle/commit/618793bf278d09802216914240439dd09777359c))
+* **myCourses:** fix loading circle not being centered ([7874370](https://github.com/jxn-30/better-moodle/commit/787437070a7a9c9668083cf454fc82f3b57b26d9))
+
 ## [1.14.3](https://github.com/jxn-30/better-moodle/compare/v1.14.2...v1.14.3) (2023-11-24)
 
 
