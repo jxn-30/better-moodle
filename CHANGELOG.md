@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.2](https://github.com/jxn-30/better-moodle/compare/v1.14.1...v1.14.2) (2023-11-24)
+
+
+### Bug Fixes
+
+* **messageSendHotkey:** do not send when emoji picker is open ([2ee52ca](https://github.com/jxn-30/better-moodle/commit/2ee52ca9525b0ec350175c9d646e7b0195b7671c))
+
 ## [1.14.1](https://github.com/jxn-30/better-moodle/compare/v1.14.0...v1.14.1) (2023-11-24)
 
 
