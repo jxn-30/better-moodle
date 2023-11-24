@@ -1502,7 +1502,12 @@ ready(async () => {
     }
 
     const loadingSpan = document.createElement('span');
-    loadingSpan.classList.add('loading-icon', 'icon-no-margin', 'text-center');
+    loadingSpan.classList.add(
+        'loading-icon',
+        'icon-no-margin',
+        'text-center',
+        'd-block'
+    );
     const loadingIcon = document.createElement('i');
     loadingIcon.classList.add(
         'icon',
