@@ -1598,7 +1598,7 @@ ready(async () => {
                     addDropdownItem({
                         fullname: '[Meine Kurse]',
                         shortname: '',
-                        viewurl: myCoursesA.href,
+                        viewurl: '/my/courses.php',
                     });
                 }
 
