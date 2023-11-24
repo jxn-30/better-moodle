@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/jxn-30/better-moodle/compare/v1.14.0...v1.14.1) (2023-11-24)
+
+
+### Bug Fixes
+
+* **myCourses:** fix live sync ([62958ce](https://github.com/jxn-30/better-moodle/commit/62958ce300cd3fd3b1f99b31910c3d353c3655a3))
+
 ## [1.14.0](https://github.com/jxn-30/better-moodle/compare/v1.13.2...v1.14.0) (2023-11-24)
 
 
