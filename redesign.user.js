@@ -144,39 +144,45 @@ const createSidebar = (id, position, icon, callback) => {
 const currentScriptVersion = [];
 /** @type {[number, number, number]} */
 const latestScriptVersion = [];
-/** @type {Promise<boolean>} */
-const updateAvailable = fetch(
-    'https://api.github.com/repos/jxn-30/better-moodle/releases/latest'
-)
-    .then(res => res.json())
-    .then(({ tag_name }) =>
-        tag_name
-            .replace(/^v/, '')
-            .split('.')
-            .map(e => Number(e))
-    )
-    .then(([latestMajor, latestMinor, latestPatch]) => {
-        const [currentMajor, currentMinor, currentPatch] =
-            GM_info.script.version.split('.').map(e => Number(e));
+/** @type {() => Promise<boolean>} */
+const updateAvailable = () =>
+    fetch('https://api.github.com/repos/jxn-30/better-moodle/releases/latest')
+        .then(res => res.json())
+        .then(({ tag_name }) =>
+            tag_name
+                .replace(/^v/, '')
+                .split('.')
+                .map(e => Number(e))
+        )
+        .then(([latestMajor, latestMinor, latestPatch]) => {
+            const [currentMajor, currentMinor, currentPatch] =
+                GM_info.script.version.split('.').map(e => Number(e));
 
-        latestScriptVersion.splice(0, 3, latestMajor, latestMinor, latestPatch);
-        Object.freeze(latestScriptVersion);
+            latestScriptVersion.splice(
+                0,
+                3,
+                latestMajor,
+                latestMinor,
+                latestPatch
+            );
 
-        currentScriptVersion.splice(
-            0,
-            3,
-            currentMajor,
-            currentMinor,
-            currentPatch
-        );
-        Object.freeze(currentScriptVersion);
+            if (!Object.isFrozen(currentScriptVersion)) {
+                currentScriptVersion.splice(
+                    0,
+                    3,
+                    currentMajor,
+                    currentMinor,
+                    currentPatch
+                );
+                Object.freeze(currentScriptVersion);
+            }
 
-        return (
-            latestMajor > currentMajor || // major update
-            latestMinor > currentMinor || // minor update
-            latestPatch > currentPatch // patch update
-        );
-    });
+            return (
+                latestMajor > currentMajor || // major update
+                latestMinor > currentMinor || // minor update
+                latestPatch > currentPatch // patch update
+            );
+        });
 
 // this is adopted from https://github.com/p01/mmd.js
 /**
@@ -1788,17 +1794,6 @@ ready(() => {
     settingsIcon.role = 'img';
     settingsBtn.append(settingsIcon);
 
-    // region Feature: general.updateNotification
-    if (getSetting('general.updateNotification')) {
-        updateAvailable.then(available => {
-            if (!available) return;
-            const updateBadge = document.createElement('div');
-            updateBadge.classList.add('count-container');
-            settingsBtn.append(updateBadge);
-        });
-    }
-    // endregion
-
     const srSpan = document.createElement('span');
     srSpan.classList.add('sr-only', 'sr-only-focusable');
     srSpan.dataset.region = 'jumpto';
@@ -2104,8 +2099,31 @@ ready(() => {
             }&nbsp;Better Moodle: Einstellungen`,
             body: form,
         }).then(modal => {
+            const updateBadge = document.createElement('div');
+            updateBadge.classList.add('count-container');
+
+            const updateCheck = () =>
+                updateAvailable().then(available => {
+                    if (available) {
+                        versionSpan.append(updateBtn);
+                        // region Feature: general.updateNotification
+                        if (getSetting('general.updateNotification')) {
+                            settingsBtn.append(updateBadge);
+                        }
+                        // endregion
+                    } else {
+                        updateBtn.remove();
+                        updateBadge.remove();
+                    }
+                    currentCode.textContent = currentScriptVersion.join('.');
+                    latestCode.textContent = latestScriptVersion.join('.');
+                });
+
             // open the modal on click onto the settings button
-            settingsBtnWrapper.addEventListener('click', () => modal.show());
+            settingsBtnWrapper.addEventListener('click', () => {
+                updateCheck().then();
+                modal.show();
+            });
 
             // region link to moodle settings
             // add a link to moodle settings
@@ -2172,24 +2190,22 @@ ready(() => {
                 latestCode
             );
 
-            updateAvailable.then(available => {
-                if (!available) return;
-                const updateBtn = document.createElement('a');
-                updateBtn.classList.add('btn-primary', 'btn-sm', 'ml-2');
-                updateBtn.href = '#';
-                updateBtn.textContent = 'Update installieren';
-                versionSpan.append(updateBtn);
+            const updateBtn = document.createElement('a');
+            updateBtn.classList.add('btn-primary', 'btn-sm', 'ml-2');
+            updateBtn.href = '#';
+            updateBtn.textContent = 'Update installieren';
 
-                updateBtn.addEventListener('click', e => {
-                    e.preventDefault();
-                    create({
-                        type: types.ALERT,
-                        title: 'Better Moodle aktualisieren',
-                        body: 'Den Anweisungen zum Aktualisieren im Script-Manager (z.&nbsp;B. Tampermonkey) folgen und anschließend Moodle neu laden.',
-                    }).then(modal => modal.show());
-                    open(GM_info.script.updateURL, '_self');
-                });
+            updateBtn.addEventListener('click', e => {
+                e.preventDefault();
+                create({
+                    type: types.ALERT,
+                    title: 'Better Moodle aktualisieren',
+                    body: 'Den Anweisungen zum Aktualisieren im Script-Manager (z.&nbsp;B. Tampermonkey) folgen und anschließend Moodle neu laden.',
+                }).then(modal => modal.show());
+                open(GM_info.script.updateURL, '_self');
             });
+
+            updateCheck().then();
 
             modal
                 .getBody()[0]
