@@ -308,6 +308,162 @@ const getCourseGroupingOptions = () =>
             };
         }),
     ]);
+
+/** @type {(...elements: Node[]) => Promise<[Node, Node][]>} */
+const addMarqueeItems = await (async () => {
+    const navItem = document.createElement('div');
+    navItem.classList.add('flex-shrink-1');
+    navItem.style.setProperty('overflow', 'hidden');
+
+    const navLink = document.createElement('a');
+    navLink.classList.add('nav-link', 'position-relative');
+    navLink.id = PREFIX('nav-marquee-wrapper');
+
+    const content = document.createElement('span');
+    const textSpanClass = PREFIX('nav-marquee');
+    content.classList.add(textSpanClass);
+
+    const keyFrames = `${textSpanClass}-keyframes`;
+    const scrollStartVar = '--nav-marquee-scroll-start';
+    const scrollEndVar = '--nav-marquee-scroll-end';
+    const scrollDurationVar = '--nav-marquee-scroll-duration';
+
+    const SCROLL_SPEED_MS_PER_PX = 100;
+    const durationForPx = px => px * SCROLL_SPEED_MS_PER_PX;
+
+    GM_addStyle(`
+#${navLink.id} {
+    ${scrollStartVar}: 100%;
+    ${scrollEndVar}: 100%;
+    ${scrollDurationVar}: 10s;
+}
+#${navLink.id}.animated {
+    animation: ${keyFrames} var(${scrollDurationVar}) linear infinite;
+}
+#${navLink.id}:not(.animated) > .${textSpanClass}:nth-child(2) {
+    display: none;
+}
+
+#${navLink.id} > .${textSpanClass} > *::after {
+    content: "${'\xa0'.repeat(11)}";
+    background-image: url("https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+#${navLink.id}:not(.animated) > .${textSpanClass} > *:last-child::after {
+    display: none;
+}
+
+@keyframes ${keyFrames} {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(var(${scrollEndVar}));
+    }
+}
+`);
+
+    const updateScrollWidth = () => {
+        const navLinkWidth = Math.floor(navLink.getBoundingClientRect().width);
+        let textSpanWidth = Math.floor(content.getBoundingClientRect().width);
+        if (textSpanWidth <= navLinkWidth) {
+            navLink.classList.remove('animated');
+        } else {
+            navLink.classList.add('animated');
+
+            textSpanWidth = Math.floor(content.getBoundingClientRect().width);
+
+            navLink.style.setProperty(scrollEndVar, `-${textSpanWidth}px`);
+            navLink.style.setProperty(
+                scrollDurationVar,
+                `${durationForPx(textSpanWidth)}ms`
+            );
+        }
+    };
+
+    new ResizeObserver(updateScrollWidth).observe(navLink);
+
+    const cloneEl = content.cloneNode(true);
+
+    navLink.append(content, cloneEl);
+    navItem.append(navLink);
+    ready(() => {
+        document.getElementById('usernavigation')?.prepend(navItem);
+        updateScrollWidth();
+    });
+
+    /** @type {Node[]} */
+    const marqueeElements = [];
+    /** @type {Node[]} */
+    const clonedMarqueeElements = [];
+
+    let resolveEventsAdded;
+    let eventsAdded = new Promise(resolve => {
+        resolveEventsAdded = () => {
+            resolve();
+            eventsAdded = undefined;
+        };
+    });
+
+    /** @type {(...elements: Node[]) => Promise<[Node, Node][]>} */
+    const addItems = async (...elements) => {
+        if (eventsAdded && marqueeElements.length) await eventsAdded;
+
+        marqueeElements.push(...elements);
+        clonedMarqueeElements.push(...elements.map(e => e.cloneNode(true)));
+
+        const newElements = marqueeElements.slice(-elements.length);
+        const newClonedElements = clonedMarqueeElements.slice(-elements.length);
+
+        content.append(...newElements);
+        cloneEl.append(...newClonedElements);
+
+        updateScrollWidth();
+
+        return newElements.map((e, i) => [e, newClonedElements[i]]);
+    };
+
+    // we can add information about oncoming events like FZB and Nikolausumtrunk here.
+    // await fetch('http://localhost:3000/events.json') // this is for testing locally (npx serve --cors)
+    await fetch('https://github.com/jxn-30/better-moodle/raw/main/events.json')
+        .then(res => res.json())
+        .then(events =>
+            events.filter(event => new Date(event.end) > Date.now())
+        )
+        .then(events =>
+            events.map(event => {
+                const mainAdElement = document.createElement('span');
+                mainAdElement.textContent = event.text;
+
+                const startDate = new Date(event.start);
+                const endDate = new Date(event.end);
+                const now = new Date();
+                if (startDate > now || endDate < now) {
+                    mainAdElement.classList.add('hidden');
+                }
+                if (startDate > now) {
+                    setTimeout(
+                        () => mainAdElement.classList.remove('hidden'),
+                        startDate - now
+                    );
+                }
+                if (now < endDate) {
+                    setTimeout(
+                        () => mainAdElement.classList.add('hidden'),
+                        endDate - now
+                    );
+                }
+
+                return mainAdElement;
+            })
+        )
+        .then(eventItems => addItems(...eventItems))
+        .then(resolveEventsAdded);
+
+    return addItems;
+})();
 // endregion
 
 // region Global styles
@@ -1019,106 +1175,31 @@ if (getSetting('general.christmasCountdown')) {
     const nextYearChristmas = new Date(thisYearChristmas);
     nextYearChristmas.setFullYear(now.getFullYear() + 1);
 
-    const SCROLL_SPEED_MS_PER_PX = 100;
-    const durationForPx = px => px * SCROLL_SPEED_MS_PER_PX;
-
-    const navItem = document.createElement('div');
-    navItem.classList.add('flex-shrink-1');
-    navItem.style.setProperty('overflow', 'hidden');
-    const navLink = document.createElement('a');
-    navLink.classList.add('nav-link', 'position-relative');
-    navLink.id = PREFIX('christmas-countdown-wrapper');
     const textSpan = document.createElement('span');
-    const textSpanClass = PREFIX('christmas-countdown');
-    textSpan.classList.add(textSpanClass);
-    const textSpanClone = document.createElement('span');
-    textSpanClone.classList.add(textSpanClass);
-    const keyFrames = `${textSpanClass}-keyframes`;
-    const scrollStartVar = '--christmas-countdown-scroll-start';
-    const scrollEndVar = '--christmas-countdown-scroll-end';
-    const scrollDurationVar = '--christmas-countdown-scroll-duration';
 
-    GM_addStyle(`
-#${navLink.id} {
-    ${scrollStartVar}: 100%;
-    ${scrollEndVar}: 100%;
-    ${scrollDurationVar}: 10s;
-}
-#${navLink.id}.animated {
-    animation: ${keyFrames} var(${scrollDurationVar}) linear infinite;
-}
-#${navLink.id}:not(.animated) > .${textSpanClass}:nth-child(2) {
-    display: none;
-}
+    addMarqueeItems(textSpan).then(([[, textSpanClone]]) => {
+        const updateCountdown = () => {
+            const todayDayOfYear = getDayOfYear(now);
+            const daysToChristmas =
+                now < firstChristmasDay
+                    ? getDayOfYear(thisYearChristmas) - todayDayOfYear
+                    : getDayOfYear(thisYearLastDay) -
+                      todayDayOfYear +
+                      getDayOfYear(nextYearChristmas);
 
-@keyframes ${keyFrames} {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(var(${scrollEndVar}));
-    }
-}
-`);
-
-    const updateCountdown = () => {
-        const todayDayOfYear = getDayOfYear(now);
-        const daysToChristmas =
-            now < firstChristmasDay
-                ? getDayOfYear(thisYearChristmas) - todayDayOfYear
-                : getDayOfYear(thisYearLastDay) -
-                  todayDayOfYear +
-                  getDayOfYear(nextYearChristmas);
-
-        textSpanClone.innerHTML = textSpan.innerHTML =
-            (daysToChristmas
+            textSpan.innerHTML = textSpanClone.innerHTML = daysToChristmas
                 ? `Noch&nbsp;<b>${daysToChristmas}</b>&nbsp;Tag${
                       daysToChristmas > 1 ? 'e' : ''
                   } bis Heiligabend.`
-                : '🎄 Heute ist Heiligabend. Frohe Weihnachten! 🎄') +
-            '\xa0'.repeat(5);
+                : '🎄 Heute ist Heiligabend. Frohe Weihnachten! 🎄';
 
-        updateScrollWidth();
+            const nextUpdate = new Date();
+            nextUpdate.setDate(now.getDate() + 1);
+            nextUpdate.setHours(0, 0, 0, 0);
+            setTimeout(updateCountdown, nextUpdate - now);
+        };
 
-        const nextUpdate = new Date();
-        nextUpdate.setDate(now.getDate() + 1);
-        nextUpdate.setHours(0, 0, 0, 0);
-        setTimeout(updateCountdown, nextUpdate - now);
-    };
-
-    const updateScrollWidth = () => {
-        const navLinkWidth = Math.floor(navLink.getBoundingClientRect().width);
-        let textSpanWidth = Math.floor(textSpan.getBoundingClientRect().width);
-        if (textSpanWidth <= navLinkWidth) {
-            navLink.classList.remove('animated');
-            textSpan.innerHTML = textSpan.innerHTML.replace(/(&nbsp;)+$/g, '');
-        } else {
-            navLink.classList.add('animated');
-
-            textSpan.innerHTML = textSpan.innerHTML.replace(
-                /(&nbsp;)*$/g,
-                '\xa0'.repeat(5)
-            );
-
-            textSpanWidth = Math.floor(textSpan.getBoundingClientRect().width);
-
-            navLink.style.setProperty(scrollEndVar, `-${textSpanWidth}px`);
-            navLink.style.setProperty(
-                scrollDurationVar,
-                `${durationForPx(textSpanWidth)}ms`
-            );
-        }
-    };
-
-    updateCountdown();
-
-    new ResizeObserver(updateScrollWidth).observe(navLink);
-
-    navLink.append(textSpan, textSpanClone);
-    navItem.append(navLink);
-    ready(() => {
-        document.getElementById('usernavigation')?.prepend(navItem);
-        updateScrollWidth();
+        updateCountdown();
     });
 }
 // endregion
