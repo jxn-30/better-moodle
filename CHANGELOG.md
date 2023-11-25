@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/jxn-30/better-moodle/compare/v1.14.4...v1.15.0) (2023-11-25)
+
+
+### Features
+
+* **changelog:** allow opening changelog in new tab ([0bbb79c](https://github.com/jxn-30/better-moodle/commit/0bbb79c019d01043b1ff5a77b1bb86d3ddc10878))
+
 ## [1.14.4](https://github.com/jxn-30/better-moodle/compare/v1.14.3...v1.14.4) (2023-11-24)
 
 
