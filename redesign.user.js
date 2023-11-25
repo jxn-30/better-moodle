@@ -2226,19 +2226,28 @@ ready(() => {
             footerBtnGroup.id = PREFIX('settings-footer-btn-group');
 
             GM_addStyle(`
-#${footerBtnGroup.id} > button > span {
+/* show button text only on hover */
+#${footerBtnGroup.id} > :where(button, a) > span {
     font-size: 0;
     transition: font-size 0.5s;
 }
-#${footerBtnGroup.id} > button:hover > span {
+#${footerBtnGroup.id} > :where(button, a):hover > span {
     font-size: unset;
+}
+
+/* Do not show the external-link icon */
+#${footerBtnGroup.id} > a::after {
+    display: none;
 }
 `);
 
             modal.getFooter()[0].prepend(footerBtnGroup);
 
             // region changelog
-            const changelogBtn = document.createElement('button');
+            const changelogBtn = document.createElement('a');
+            changelogBtn.href =
+                'https://github.com/jxn-30/better-moodle/blob/main/CHANGELOG.md';
+            changelogBtn.target = '_blank';
             changelogBtn.classList.add('btn', 'btn-outline-primary');
             const changelogIcon = document.createElement('i');
             changelogIcon.classList.add('fa', 'fa-history', 'fa-fw');
@@ -2246,7 +2255,8 @@ ready(() => {
             changelogText.textContent = 'Changelog';
             changelogBtn.append(changelogIcon, changelogText);
 
-            changelogBtn.addEventListener('click', () =>
+            changelogBtn.addEventListener('click', e => {
+                e.preventDefault();
                 create({
                     type: types.ALERT,
                     large: true,
@@ -2266,8 +2276,8 @@ ready(() => {
                                 .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n')
                         )
                         .then(md => mdToHtml(md, 3)),
-                }).then(modal => modal.show())
-            );
+                }).then(modal => modal.show());
+            });
             footerBtnGroup.append(changelogBtn);
             // endregion
 
