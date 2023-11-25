@@ -242,7 +242,8 @@ const mdToHtml = (md, headingStart = 1) => {
     return html;
 };
 
-const githubLink = (path, icon = true, iconAndExternalIcon = false) => {
+const noExternalLinkIconClass = PREFIX('no-external-icon');
+const githubLink = (path, icon = true, externalIcon = false) => {
     const link = document.createElement('a');
     link.href = `https://github.com/jxn-30/better-moodle${path}`;
     link.target = '_blank';
@@ -251,10 +252,10 @@ const githubLink = (path, icon = true, iconAndExternalIcon = false) => {
         const icon = document.createElement('i');
         icon.classList.add('fa', 'fa-github', 'fa-fw');
         link.appendChild(icon);
+    }
 
-        if (!iconAndExternalIcon) {
-            link.classList.add(PREFIX('no-external-icon'));
-        }
+    if (!externalIcon) {
+        link.classList.add(noExternalLinkIconClass);
     }
 
     return link;
@@ -489,8 +490,8 @@ GM_addStyle(`
 }
 
 /* remove "external link" icon for specific classes (discouraged but sometimes it doesn't look good) */
-body.dir-ltr a.${PREFIX('no-external-icon')}::after,
-body.dir-rtl a.${PREFIX('no-external-icon')}::before {
+body.dir-ltr a.${noExternalLinkIconClass}::after,
+body.dir-rtl a.${noExternalLinkIconClass}::before {
     display: none !important;
 }
     `);
@@ -2315,20 +2316,15 @@ ready(() => {
 #${footerBtnGroup.id} > :where(button, a):hover > span {
     font-size: unset;
 }
-
-/* Do not show the external-link icon */
-#${footerBtnGroup.id} > a::after {
-    display: none;
-}
 `);
 
             modal.getFooter()[0].prepend(footerBtnGroup);
 
             // region changelog
-            const changelogBtn = document.createElement('a');
-            changelogBtn.href =
-                'https://github.com/jxn-30/better-moodle/blob/main/CHANGELOG.md';
-            changelogBtn.target = '_blank';
+            const changelogBtn = githubLink(
+                '/better-moodle/blob/main/CHANGELOG.md',
+                false
+            );
             changelogBtn.classList.add('btn', 'btn-outline-primary');
             const changelogIcon = document.createElement('i');
             changelogIcon.classList.add('fa', 'fa-history', 'fa-fw');
