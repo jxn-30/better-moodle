@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.16.0](https://github.com/jxn-30/better-moodle/compare/v1.15.0...v1.16.0) (2023-11-25)
+
+
+### Features
+
+* **marquee:** add timed events ([1a05581](https://github.com/jxn-30/better-moodle/commit/1a05581a0f34c3dc72538f5f80ddaccf1f40d1f3))
+
+
+### Bug Fixes
+
+* **changelog:** use internal function for safer github link ([96594af](https://github.com/jxn-30/better-moodle/commit/96594af114601bce789218aa7900620cff9f13c5))
+* **events:** fix link to events file ([adb08c1](https://github.com/jxn-30/better-moodle/commit/adb08c126a144e0f8080d3e223597622405bf85d))
+
 ## [1.15.0](https://github.com/jxn-30/better-moodle/compare/v1.14.4...v1.15.0) (2023-11-25)
 
 
