@@ -428,7 +428,9 @@ const addMarqueeItems = await (async () => {
 
     // we can add information about oncoming events like FZB and Nikolausumtrunk here.
     // await fetch('http://localhost:3000/events.json') // this is for testing locally (npx serve --cors)
-    await fetch('https://github.com/jxn-30/better-moodle/raw/main/events.json')
+    await fetch(
+        'https://raw.githubusercontent.com/jxn-30/better-moodle/main/events.json'
+    )
         .then(res => res.json())
         .then(events =>
             events.filter(event => new Date(event.end) > Date.now())
