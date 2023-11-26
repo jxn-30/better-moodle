@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.3](https://github.com/jxn-30/better-moodle/compare/v1.17.2...v1.17.3) (2023-11-26)
+
+
+### Reverts
+
+* **userscript:** revert userscript name to avoid issues with Tampermonkey ([990f719](https://github.com/jxn-30/better-moodle/commit/990f719b5929bbb53f3d17ae044b582f378b3157))
+
 ## [1.17.2](https://github.com/jxn-30/better-moodle/compare/v1.17.1...v1.17.2) (2023-11-26)
 
 
