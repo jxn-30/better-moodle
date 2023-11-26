@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            🎓️ UzL: Better-Moodle
+// @name            🎓️ UzL: better-moodle
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
 // @version         1.17.2
