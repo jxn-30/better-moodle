@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            🎓️ UzL: Better Moodle
+// @name            🎓️ UzL: Better-Moodle
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
 // @version         1.17.1
@@ -548,9 +548,9 @@ const SETTINGS = [
     'Allgemeine Einstellungen',
     {
         id: 'general.updateNotification',
-        name: 'Benachrichtigung bei better-moodle Updates',
+        name: 'Benachrichtigung bei Better-Moodle Updates',
         description:
-            'Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für better-moodle gibt.',
+            'Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für Better-Moodle gibt.',
         type: Boolean,
         default: true,
     },
@@ -1890,7 +1890,7 @@ ready(() => {
     const settingsIcon = document.createElement('i');
     settingsIcon.classList.add('icon', 'fa', 'fa-gears', 'fa-fw');
     settingsIcon.title = settingsBtn.ariaLabel =
-        'Einstellungen von Better Moodle';
+        'Einstellungen von Better-Moodle';
     settingsIcon.role = 'img';
     settingsBtn.append(settingsIcon);
 
@@ -2201,7 +2201,7 @@ ready(() => {
             scrollable: true,
             title: `${
                 githubLink('').outerHTML
-            }&nbsp;Better Moodle: Einstellungen`,
+            }&nbsp;Better-Moodle: Einstellungen`,
             body: form,
         }).then(modal => {
             const updateBadge = document.createElement('div');
@@ -2304,7 +2304,7 @@ ready(() => {
                 e.preventDefault();
                 create({
                     type: types.ALERT,
-                    title: 'Better Moodle aktualisieren',
+                    title: 'Better-Moodle aktualisieren',
                     body: 'Den Anweisungen zum Aktualisieren im Script-Manager (z.&nbsp;B. Tampermonkey) folgen und anschließend Moodle neu laden.',
                 }).then(modal => modal.show());
                 open(GM_info.script.updateURL, '_self');
@@ -2358,7 +2358,7 @@ ready(() => {
                     scrollable: true,
                     title: `${
                         githubLink('/blob/main/CHANGELOG.md').outerHTML
-                    }&nbsp;Better Moodle: Changelog`,
+                    }&nbsp;Better-Moodle: Changelog`,
                     body: fetch(
                         `https://raw.githubusercontent.com/jxn-30/better-moodle/main/CHANGELOG.md?_=${
                             Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes

@@ -1,4 +1,4 @@
-# better-moodle
+# Better-Moodle
 
 This is an userscript to improve the design of [UzL Moodle](https://moodle.uni-luebeck.de/), as we don't like the new default design.
 
@@ -13,7 +13,7 @@ _Pictures on this page may contain blurred items. This is due to privacy reasons
 
 Your Userscript-Manager _should_ regularly check for updates. You may always update manually by opening [installation link][installation].
 
-If enabled, better-moodle will also show a small red dot next to the settings icon in the navigation bar, if an update is available.
+If enabled, Better-Moodle will also show a small red dot next to the settings icon in the navigation bar, if an update is available.
 A button that allows updating (if an update is available) can be found within the settings menu.
 
 ## Changelog
