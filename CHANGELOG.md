@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.2](https://github.com/jxn-30/better-moodle/compare/v1.17.1...v1.17.2) (2023-11-26)
+
+
+### Bug Fixes
+
+* **corporateDesign:** use consistent name `Better-Moodle` everywhere ([c9d574b](https://github.com/jxn-30/better-moodle/commit/c9d574b18d65f3356351bf6f09ee1ad48b4066f8))
+
 ## [1.17.1](https://github.com/jxn-30/better-moodle/compare/v1.17.0...v1.17.1) (2023-11-26)
 
 
