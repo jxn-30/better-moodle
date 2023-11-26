@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.1](https://github.com/jxn-30/better-moodle/compare/v1.17.0...v1.17.1) (2023-11-26)
+
+
+### Bug Fixes
+
+* **settings:** fix string settings not being shown ([7a9528c](https://github.com/jxn-30/better-moodle/commit/7a9528c36e610fbdb6109a3054a4ea07cc3be748))
+
 ## [1.17.0](https://github.com/jxn-30/better-moodle/compare/v1.16.0...v1.17.0) (2023-11-26)
 
 
