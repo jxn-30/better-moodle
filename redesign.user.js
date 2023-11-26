@@ -2097,6 +2097,11 @@ ready(() => {
                     input.value = value;
                     break;
                 }
+                case String:
+                    input.classList.add('form-control');
+                    input.type = 'text';
+                    input.value = value;
+                    break;
                 case HTMLSelectElement: {
                     input.classList.add('custom-select');
                     input.dataset.initialValue = value;
