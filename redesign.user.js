@@ -427,43 +427,46 @@ const addMarqueeItems = await (async () => {
     };
 
     // we can add information about oncoming events like FZB and Nikolausumtrunk here.
-    // await fetch('http://localhost:3000/events.json') // this is for testing locally (npx serve --cors)
-    await fetch(
-        'https://raw.githubusercontent.com/jxn-30/better-moodle/main/events.json'
-    )
-        .then(res => res.json())
-        .then(events =>
-            events.filter(event => new Date(event.end) > Date.now())
+    // the getSetting method cannot be used as SETTINGS is not defined there yet
+    if (GM_getValue(getSettingKey('general.eventAdvertisements'), true)) {
+        // await fetch('http://localhost:3000/events.json') // this is for testing locally (npx serve --cors)
+        await fetch(
+            'https://raw.githubusercontent.com/jxn-30/better-moodle/main/events.json'
         )
-        .then(events =>
-            events.map(event => {
-                const mainAdElement = document.createElement('span');
-                mainAdElement.textContent = event.text;
+            .then(res => res.json())
+            .then(events =>
+                events.filter(event => new Date(event.end) > Date.now())
+            )
+            .then(events =>
+                events.map(event => {
+                    const mainAdElement = document.createElement('span');
+                    mainAdElement.textContent = event.text;
 
-                const startDate = new Date(event.start);
-                const endDate = new Date(event.end);
-                const now = new Date();
-                if (startDate > now || endDate < now) {
-                    mainAdElement.classList.add('hidden');
-                }
-                if (startDate > now) {
-                    setTimeout(
-                        () => mainAdElement.classList.remove('hidden'),
-                        startDate - now
-                    );
-                }
-                if (now < endDate) {
-                    setTimeout(
-                        () => mainAdElement.classList.add('hidden'),
-                        endDate - now
-                    );
-                }
+                    const startDate = new Date(event.start);
+                    const endDate = new Date(event.end);
+                    const now = new Date();
+                    if (startDate > now || endDate < now) {
+                        mainAdElement.classList.add('hidden');
+                    }
+                    if (startDate > now) {
+                        setTimeout(
+                            () => mainAdElement.classList.remove('hidden'),
+                            startDate - now
+                        );
+                    }
+                    if (now < endDate) {
+                        setTimeout(
+                            () => mainAdElement.classList.add('hidden'),
+                            endDate - now
+                        );
+                    }
 
-                return mainAdElement;
-            })
-        )
-        .then(eventItems => addItems(...eventItems))
-        .then(resolveEventsAdded);
+                    return mainAdElement;
+                })
+            )
+            .then(eventItems => addItems(...eventItems))
+            .then(resolveEventsAdded);
+    } else resolveEventsAdded();
 
     return addItems;
 })();
@@ -590,6 +593,14 @@ const SETTINGS = [
             'Verhindert das automatische Herunterladen von Dateien (insbesondere PDFs) wo immer möglich.',
         type: Boolean,
         default: false,
+    },
+    {
+        id: 'general.eventAdvertisements',
+        name: 'Event-Ankündigungen',
+        description:
+            'Zeigt ab und zu (selten) Ankündigungen zu coolen Events deiner studentischen Gremien in der Navigationsleiste an.',
+        type: Boolean,
+        default: true,
     },
     {
         id: 'general.christmasCountdown',
