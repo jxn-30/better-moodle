@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/jxn-30/better-moodle/compare/v1.16.0...v1.17.0) (2023-11-26)
+
+
+### Features
+
+* **events:** option to disable event ads ([594fa73](https://github.com/jxn-30/better-moodle/commit/594fa73a2f68bc9495ebdfa3930a75dea6b2b61d))
+
 ## [1.16.0](https://github.com/jxn-30/better-moodle/compare/v1.15.0...v1.16.0) (2023-11-25)
 
 
