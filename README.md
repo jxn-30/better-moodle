@@ -151,6 +151,9 @@ It's not a bug, it's a feature! In allen anderen Fällen kannst du einfach auf [
 ### Ich habe eine tolle Idee für ein neues Feature
 Erstelle gerne ein Issue auf [GitHub](https://github.com/jxn-30/better-moodle), reiche eine Contribution ein oder schreibe eine Mail an Jan: `boehmerle[at]fsmain.uni-luebeck.de`.
 
+### Ich habe plötzlich mehrere Knöpfe zu den Better-Moodle Einstellungen. Was ist passiert?
+Hoppala, da scheint wohl versehentlich Better-Moodle mehrfach installiert zu sein. Keine Sorge, das kann passieren und lässt sich einfach beheben: Öffne einfach die Scriptübersicht deines Userscript-Managers (Bei Tampermonkey klickst du einfach auf das Tampermonkey-Icon in deinem Browser (ein schwarzes oder rotes Quadrat mit zwei Löchern drin), ggf. ist es hinter einem Puzzleteil oder einem Paket-Icon versteckt, und klickst anschließend auf "Übersicht") und lösche einmal alle Installationen von Better-Moodle. Anschließend kannst du die aktuellste Version von Better-Moodle einfach über den [Installationslink][installation] neu installieren.
+
 ### Welche Userscript-Manager funktionieren?  
 Prinzipiell sollten alle gängigen Userscript-Manager funktionieren, allerdings wurde Better-Moodle primär mit Tampermonkey getestet.
 
