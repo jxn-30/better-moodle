@@ -147,11 +147,11 @@ Bist du einer der Menschen, die das "Mitteilungen"-Feature von Moodle nutzt? Man
 
 ### XY funktioniert nicht. Was tun?
 
-It's not a bug, it's a feature! In allen anderen Fällen kannst du einfach auf [GitHub](https://github.com/jxn-30/better-moodle/issues/new?labels=bug&template=bug.yml&title=%5BBUG%5D%3A+) ein Issue eröffnen. Alternativ geht auch eine Mail an Jan: `boehmerle[at]fsmain.uni-luebeck.de`. Bitte gebe auch immer an, welche Version von Better-Moodle ihr verwendet. Diese Information kann in den Better-Moodle-Einstellungen über die Zahnräder in der Navigationsleiste von Moodle gefunden werden.
+It's not a bug, it's a feature! In allen anderen Fällen kannst du einfach auf [GitHub](https://github.com/jxn-30/better-moodle/issues/new?labels=bug&template=bug.yml&title=%5BBUG%5D%3A+) ein Issue eröffnen. Alternativ geht auch eine Mail an Jan. Die E-Mail-Adresse findest du direkt im "Hilfe zu Better-Moodle"-Bereich, welchen du über die Einstellungen erreichen kannst. Bitte gebe auch immer an, welche Version von Better-Moodle ihr verwendet. Diese Information kann in den Better-Moodle-Einstellungen über die Zahnräder in der Navigationsleiste von Moodle gefunden werden.
 
 ### Ich habe eine tolle Idee für ein neues Feature
 
-Erstelle gerne ein Issue auf [GitHub](https://github.com/jxn-30/better-moodle/issues/new?template=feature.yml&title=%5BFeature+request%5D%3A+), reiche eine Contribution ein oder schreibe eine Mail an Jan: `boehmerle[at]fsmain.uni-luebeck.de`.
+Erstelle gerne ein Issue auf [GitHub](https://github.com/jxn-30/better-moodle/issues/new?template=feature.yml&title=%5BFeature+request%5D%3A+), reiche eine Contribution ein oder schreibe eine Mail an Jan. Die E-Mail-Adresse findest du direkt im "Hilfe zu Better-Moodle"-Bereich, welchen du über die Einstellungen erreichen kannst. 
 
 ### Ich habe plötzlich mehrere Knöpfe zu den Better-Moodle Einstellungen. Was ist passiert?
 
