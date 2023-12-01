@@ -2,15 +2,15 @@
 
 [![Aktuelle Version](https://img.shields.io/github/v/release/jxn-30/better-moodle?label=Aktuellste%20Version&color=004B5A&style=for-the-badge)](https://github.com/jxn-30/better-moodle/releases/latest)
 
-* [Installation](#installation)
-* [Disclaimer](#disclaimer)
-* [Update](#update)
-  * [Changelog](#changelog)
-* [Features](#features)
-* [FAQ](#faq)
-* [Alte Bilder und Impressionen](#alte-bilder-und-impressionen)
+-   [Installation](#installation)
+-   [Disclaimer](#disclaimer)
+-   [Update](#update)
+    -   [Changelog](#changelog)
+-   [Features](#features)
+-   [FAQ](#faq)
+-   [Alte Bilder und Impressionen](#alte-bilder-und-impressionen)
 
-[//]: # (TODO: English texts via summary?)
+[//]: # 'TODO: English texts via summary?'
 
 Better-Moodle ist ein Userscript, um das Design vom [UzL Moodle](https://moodle.uni-luebeck.de/) zu verbessern und zusätzliche, coole Features hinzuzufügen
 
@@ -43,7 +43,7 @@ Better-Moodle erhält regelmäßig Updates. Ein vollständiges Changelog ist in 
 
 Alle Features von Better-Moodle lassen sich in den Einstellungen (de-)aktivieren. Die Einstellungen sind über das Icon mit den Zahnrädern in der rechten oberen Ecke neben dem Profilbild in der Navigationsleiste erreichbar.
 
-[//]: # (TODO: Add pictures settings-btn)
+[//]: # 'TODO: Add pictures settings-btn'
 
 > _Dunkles Design_  
 > Nein, Better-Moodle hat keinen Dark-Mode. Wir empfehlen die Verwendung der Browser-Erweiterung [Dark Reader](https://darkreader.org/).
@@ -53,7 +53,7 @@ Alle Features von Better-Moodle lassen sich in den Einstellungen (de-)aktivieren
 
 Aktuell begrenzt Moodle die Breite der Inhalte und lässt einen großen weißen Rand. Better-Moodle entfernt diesen Rand und lässt die Inhalte immer die volle Breite des Bildschirms nutzen.
 
-[//]: # (TODO: Add pictures full-width)
+[//]: # 'TODO: Add pictures full-width'
 
 ### Externe Links
 
@@ -67,7 +67,7 @@ Manche Texte, insbesondere in der Seitenleiste, sind in Moodle abgeschnitten. Se
 
 Manche Menschen nutzen den Lesezeichen-Manager ihres Browsers, um ihre Lesezeichen zu verwalten. Andere nutzen Better-Moodle, um ihre Lesezeichen zu verwalten. Better-Moodle bietet die Möglichkeit, Lesezeichen zu speichern und zu verwalten. Die Lesezeichen sind über das Lesezeichen-Icon in der rechten oberen Ecke der Navigationsleiste erreichbar.
 
-[//]: # (TODO: Add pictures bookmark-manager)
+[//]: # 'TODO: Add pictures bookmark-manager'
 
 ### Download unterbinden
 
@@ -78,14 +78,14 @@ Moodle scheint es zu lieben, Dateien runterzuladen, aber nicht jeder freut sich 
 Wusstest du schon, dass es an deiner Lieblings-Uni ganz tolle studentische Gremien gibt? Wir veranstalten unter anderem regelmäßig coole Events, einige wenige davon werden in der Navigationsleiste angekündigt. Dabei handelt es sich um größere Events, wie z. B. die beiden Adventsveranstaltungen oder das COAL.
 Ja, du kannst diese Ankündigungen natürlich auch ausschalten, wenn du sie nicht sehen möchtest.
 
-[//]: # (TODO: Add pictures event announcements)
+[//]: # 'TODO: Add pictures event announcements'
 
 ### Countdown bis Heiligabend
 
 Kommt Weihnachten bei dir auch jedes Jahr so plötzlich und unerwartet? Dann ist dieser kleine Countdown genau das richtige für dich, denn er erinnert dich jederzeit im Moodle in der Navigationsleiste daran, wie viele Tage es noch bis Heiligabend sind.
 Teilnehmenden des Mathe-Vorkurses und manch einer "Analysis 1" Vorlesung kommt dieser Countdown sicherlich bekannt vor, denn diese Einstellung ist eine kleine Hommage an dieses Erlebnis.
 
-[//]: # (TODO: Add pictures christmasCountdown)
+[//]: # 'TODO: Add pictures christmasCountdown'
 
 ### Layout im Dashboard
 
@@ -94,7 +94,7 @@ Mit Better-Moodle wird genau so eine "Meine Kurse"-Seitenleiste links hinzugefü
 
 Es ist geplant, dass sich alle Nutzer von Better-Moodle dieses Layout selbst anpassen können, um individuell zu bestimmen, welche Features genutzt werden möchten und wo diese zu sehen sein sollen. Aktuell sit aber das Standard-Layout fest vorgegeben.
 
-[//]: # (TODO: Add pictures dashboard)
+[//]: # 'TODO: Add pictures dashboard'
 
 ### Filter der Kurse-Sidebar
 
@@ -111,7 +111,7 @@ Gerade in Kombination mit der Einstellung "Volle Breite", sehen die Kacheln so s
 
 Analog zur "Meine Kurse"-Seitenleiste im Dashboard gibt es auch eine Dropdown für die Navigationsleiste. Damit kannst du deine Kurse nicht nur vom Dashboard aus direkt erreichen, sondern auch von jeder anderen Seite aus.
 
-[//]: # (TODO: Add pictures my-courses dropdown)
+[//]: # 'TODO: Add pictures my-courses dropdown'
 
 #### Filter der Kurs-Dropdown
 
@@ -121,7 +121,7 @@ Auch hier kannst du einen Filter für die Kurse auswählen, die in der Dropdown-
 
 Du möchtest in deinen Kursen die Bewertungen öffnen können, ohne erst aufwendig auf die Hauptseite des Kurses zu wechseln? Mit dieser Einstellung wird ein Link oben in die linke Seitenleiste in Kursen hinzugefügt, über die du direkt zu den Bewertungen des jeweiligen Kurses gelangst.
 
-[//]: # (TODO: Add pictures bewertungen)
+[//]: # 'TODO: Add pictures bewertungen'
 
 #### Bewertungen in neuem Tab öffnen
 
@@ -146,37 +146,42 @@ Bist du einer der Menschen, die das "Mitteilungen"-Feature von Moodle nutzt? Man
 ## FAQ
 
 ### XY funktioniert nicht. Was tun?
+
 It's not a bug, it's a feature! In allen anderen Fällen kannst du einfach auf [GitHub](https://github.com/jxn-30/better-moodle) ein Issue eröffnen. Alternativ geht auch eine Mail an Jan: `boehmerle[at]fsmain.uni-luebeck.de`. Bitte gebe auch immer an, welche Version von Better-Moodle ihr verwendet. Diese Information kann in den Better-Moodle-Einstellungen über die Zahnräder in der Navigationsleiste von Moodle gefunden werden.
 
 ### Ich habe eine tolle Idee für ein neues Feature
+
 Erstelle gerne ein Issue auf [GitHub](https://github.com/jxn-30/better-moodle), reiche eine Contribution ein oder schreibe eine Mail an Jan: `boehmerle[at]fsmain.uni-luebeck.de`.
 
 ### Ich habe plötzlich mehrere Knöpfe zu den Better-Moodle Einstellungen. Was ist passiert?
+
 Hoppala, da scheint wohl versehentlich Better-Moodle mehrfach installiert zu sein. Keine Sorge, das kann passieren und lässt sich einfach beheben: Öffne einfach die Scriptübersicht deines Userscript-Managers (Bei Tampermonkey klickst du einfach auf das Tampermonkey-Icon in deinem Browser (ein schwarzes oder rotes Quadrat mit zwei Löchern drin), ggf. ist es hinter einem Puzzleteil oder einem Paket-Icon versteckt, und klickst anschließend auf "Übersicht") und lösche einmal alle Installationen von Better-Moodle. Anschließend kannst du die aktuellste Version von Better-Moodle einfach über den [Installationslink][installation] neu installieren.
 
-### Welche Userscript-Manager funktionieren?  
+### Welche Userscript-Manager funktionieren?
+
 Prinzipiell sollten alle gängigen Userscript-Manager funktionieren, allerdings wurde Better-Moodle primär mit Tampermonkey getestet.
 
-### Kann ich Better-Moodle auch auf meinem Handy nutzen?  
+### Kann ich Better-Moodle auch auf meinem Handy nutzen?
+
 Jein: Unserer Kenntnis nach ist Firefox für Android aktuell der einzige mobile Browser, der Tampermonkey als Add-On unterstützt. Better-Moodle wird auch regelmäßig in der mobilen Umgebung getestet und sollte dort problemlos funktionieren.
 
-### Was ist Tampermonkey (bzw. ein Userscript-Manager) eigentlich?  
+### Was ist Tampermonkey (bzw. ein Userscript-Manager) eigentlich?
+
 Userscript-Manager ermöglichen es, beliebige Scripte (in JavaScript geschrieben) auf Webseiten auszuführen und diese somit anzupassen und die Anzeige im Browser zu verändern.
 
-### Ist Tampermonkey nicht gefährlich?  
+### Ist Tampermonkey nicht gefährlich?
+
 Es ist potenziell möglich, gefährliche Userscripte zu installieren, die Nutzerdaten abgreifen können. Userscript-Manager verbieten daher die Ausführung von Userscripten z. B. auf gängigen Online-Banking Seiten. Achtet bei der Installation und dem Aktualisieren von Userscripten immer darauf, dass ihr der Herkunft des Scripts vertraut. Better-Moodle ist Open-Source, das heißt, jede/r kann den Quellcode einsehen und sich somit selbst davon überzeugen, dass Better-Moodle keinen bösartigen Code enthält. Außerdem könnt ihr uns vertrauen ;)
-
-
 
 ## Alte Bilder und Impressionen
 
 Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar sind, hier noch ein paar Impressionen von Better-Moodle. Teilweise sind neue Features in diesen Bildern noch nicht vorhanden.
 
 |                     Default Design                      |                    Userscript (Light mode)                     |                    Userscript (Dark mode)                    |
-|:-------------------------------------------------------:|:--------------------------------------------------------------:|:------------------------------------------------------------:|
+| :-----------------------------------------------------: | :------------------------------------------------------------: | :----------------------------------------------------------: |
 | ![Default Design](./img/general/my_courses/default.png) | ![Userscript (Light mode)](./img/general/my_courses/light.png) | ![Userscript (Dark mode)](./img/general/my_courses/dark.png) |
 |     ![Default Design](./img/dashboard/default.png)      |     ![Userscript (Light mode)](./img/dashboard/light.png)      |     ![Userscript (Dark mode)](./img/dashboard/dark.png)      |
 |                                                         |  ![Userscript (Light mode)](./img/dashboard/light_closed.png)  |  ![Userscript (Dark mode)](./img/dashboard/dark_closed.png)  |
-|     ![Default Design](./img/my_courses/default.png)     |     ![Userscript (Light mode)](./img/my_courses/light.png)     |     ![Userscript (Dark mode)](./img/my_courses/dark.png)     |)
+|     ![Default Design](./img/my_courses/default.png)     |     ![Userscript (Light mode)](./img/my_courses/light.png)     |     ![Userscript (Dark mode)](./img/my_courses/dark.png)     |
 
 [installation]: https://github.com/jxn-30/better-moodle/raw/main/redesign.user.js
