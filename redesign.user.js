@@ -2427,13 +2427,13 @@ ready(() => {
 Lies dir gerne zunächst einmal die FAQ von Better-Moodle durch: [Better-Moodle FAQ](${githubLink(
                             '#faq'
                         )}).
-                        
+
 ## Okay cool, aber da steht XY nicht mit dabei. Was nun?
 
 Schreib doch gerne eine Mail an Jan: [${cntctAdr}](${getEmail(
                             'Better-Moodle: Ich benötige bitte Hilfe',
                             `Hallo Jan,
-                            
+
 ich habe eine Frage zu Better-Moodle, die ich aber leider nicht duch die FAQ beantwortet bekommen habe:
 
 [...]
@@ -2463,10 +2463,10 @@ Dieses Verhalten hätte ich stattdessen erwartet:
 Viele Grüße
 [Dein Name]`
                         )}).
-                        
+
 Bitte gebe dabei auch immer so viele Informationen wie möglich an, damit der Fehler optimal nachvollzogen und reproduziert werden kann.
 Das hilft, ihn schneller und effizienter zu beheben.
-                        
+
 ## Ich habe eine tolle Idee für ein neues Feature!
 
 Erstelle gerne ein Issue auf [GitHub](${githubPath(
