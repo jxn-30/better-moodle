@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.1](https://github.com/jxn-30/better-moodle/compare/v1.18.0...v1.18.1) (2023-12-01)
+
+
+### Bug Fixes
+
+* **helpPopup:** fix invalid line breaks ([74dc2b0](https://github.com/jxn-30/better-moodle/commit/74dc2b0445cbcfc9bbf6c1b13961d4e3a2302862))
+
 ## [1.18.0](https://github.com/jxn-30/better-moodle/compare/v1.17.3...v1.18.0) (2023-12-01)
 
 
