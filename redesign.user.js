@@ -243,9 +243,11 @@ const mdToHtml = (md, headingStart = 1) => {
 };
 
 const noExternalLinkIconClass = PREFIX('no-external-icon');
+
+const githubPath = path => `https://github.com/jxn-30/better-moodle${path}`;
 const githubLink = (path, icon = true, externalIcon = false) => {
     const link = document.createElement('a');
-    link.href = `https://github.com/jxn-30/better-moodle${path}`;
+    link.href = githubPath(path);
     link.target = '_blank';
 
     if (icon) {
@@ -470,6 +472,24 @@ const addMarqueeItems = await (async () => {
 
     return addItems;
 })();
+
+// that is the contact mail of Jan but encoded a little so that it is not easily readable by bots
+const cntctAdr = `${atob(
+    'LTE5MjUsLTE5MTIsLTE5MjIsLTE5MTksLTE5MTQsLTE5MjIsLTE5MDksLTE5MTUsLTE5MjI='
+)
+    .split(',')
+    .map(c => String.fromCharCode(Number(c) + 2023))
+    .join('')}@${['fsmain', ...location.hostname.split('.').slice(-2)].join(
+    '.'
+)}`;
+
+const getEmail = (subject = '', body = '') => {
+    const url = new URL(`mailto:${cntctAdr}`);
+    url.searchParams.set('subject', subject);
+    url.searchParams.set('body', body);
+    // e.g. Thunderbird does take the + literally instead of decoding it to a space
+    return url.href.replace(/\+/g, '%20');
+};
 // endregion
 
 // region Global styles
@@ -1904,6 +1924,14 @@ ready(() => {
     const form = document.createElement('form');
     form.classList.add('mform');
 
+    const helpBtn = document.createElement('a');
+    helpBtn.classList.add('ml-auto', 'font-weight-normal', 'z-index-1');
+    helpBtn.style.setProperty('font-size', 'small');
+    helpBtn.href = '#';
+    const helpIcon = document.createElement('i');
+    helpIcon.classList.add('fa', 'fa-question-circle', 'fa-fw');
+    helpBtn.append(helpIcon, 'Hilfe zu Better-Moodle');
+
     let fieldsetCounter = 0;
     let currentFieldset;
 
@@ -1927,7 +1955,7 @@ ready(() => {
             'ftoggler',
             'align-items-center',
             'position-relative',
-            'mr-1'
+            'w-100'
         );
         const collapseBtn = document.createElement('a');
         collapseBtn.classList.add(
@@ -1973,9 +2001,13 @@ ready(() => {
             'd-flex',
             'align-self-stretch',
             'align-items-center',
-            'mb-0'
+            'mb-0',
+            'w-100'
         );
         heading.textContent = name;
+
+        // on first fieldset, show the help button
+        if (!fieldsetCounter) heading.append(helpBtn);
 
         headerWrapper.append(collapseBtn, heading);
         headerRow.append(headerWrapper);
@@ -2374,6 +2406,89 @@ ready(() => {
                 }).then(modal => modal.show());
             });
             footerBtnGroup.append(changelogBtn);
+            // endregion
+
+            // region help button
+            helpBtn.addEventListener('click', e => {
+                e.preventDefault();
+                create({
+                    type: types.ALERT,
+                    large: true,
+                    scrollable: true,
+                    title: 'Hilfe zu Better-Moodle',
+                    body: mdToHtml(
+                        `
+# Schön, dass du dieses Fensterchen gefunden hast! 🎉
+
+---
+
+## Wie funktioniert ...? Was wenn ...?
+
+Lies dir gerne zunächst einmal die FAQ von Better-Moodle durch: [Better-Moodle FAQ](${githubLink(
+                            '#faq'
+                        )}).
+                        
+## Okay cool, aber da steht XY nicht mit dabei. Was nun?
+
+Schreib doch gerne eine Mail an Jan: [${cntctAdr}](${getEmail(
+                            'Better-Moodle: Ich benötige bitte Hilfe',
+                            `Hallo Jan,
+                            
+ich habe eine Frage zu Better-Moodle, die ich aber leider nicht duch die FAQ beantwortet bekommen habe:
+
+[...]
+
+Vielen Dank und liebe Grüße
+[Name]`
+                        )}).
+
+Denke dabei bitte daran, über deine Uni-Mail-Adresse und nicht über deine Private Email zu schreiben.
+
+## Ich habe einen Fehler gefunden!
+
+Huch, in Better-Moodle gibt es doch keine Fehler? 😱
+
+Spaß beiseite, auch in Better-Moodle kann es mal vorkommen, dass ein Fehler auftritt. Eröffne gerne ein neues Issue auf [GitHub](${githubPath(
+                            '/issues/new?labels=bug&template=bug.yml&title=%5BBUG%5D%3A+'
+                        )}) oder schreibe Jan eine Mail, wenn du kein GitHub nutzen möchtest: [${cntctAdr}](${getEmail(
+                            'Better-Moodle: Bug-Report',
+                            `Hallo Jan,
+ich habe einen Bug in Better-Moodle gefunden!
+
+Ich nutze diesen Browser:
+Ich nutze diese Version von Better-Moodle: ${currentScriptVersion.join('.')}
+Diese Schritte habe ich durchgeführt, als das Problem aufgetreten ist:
+Dieses Verhalten hätte ich stattdessen erwartet:
+
+Viele Grüße
+[Dein Name]`
+                        )}).
+                        
+Bitte gebe dabei auch immer so viele Informationen wie möglich an, damit der Fehler optimal nachvollzogen und reproduziert werden kann.
+Das hilft, ihn schneller und effizienter zu beheben.
+                        
+## Ich habe eine tolle Idee für ein neues Feature!
+
+Erstelle gerne ein Issue auf [GitHub](${githubPath(
+                            '/issues/new?labels=&template=feature.yml&title=%5BFeature+request%5D%3A+'
+                        )}), reiche dort eine Contribution ein oder schreibe eine Mail an Jan: [${cntctAdr}](${getEmail(
+                            'Better-Moodle: Feature-Idee',
+                            `Hallo Jan,
+ich habe einen tollen Vorschlag für Better-Moodle:
+
+[hier eine ausführliche Beschreibung des Vorschlags]
+
+Viele Grüße
+[Dein Name]`
+                        )})
+                        `.trim(),
+                        3
+                    ),
+                }).then(modal => {
+                    modal.setButtonText('cancel', 'Danke für diese Hilfe! 😊');
+                    modal.show();
+                });
+            });
             // endregion
 
             // region export
