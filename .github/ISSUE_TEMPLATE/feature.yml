@@ -1,0 +1,33 @@
+name: Feature Vorschlag / Feature Request
+description: Mache einen Vorschlag für ein Feature / Create a feature request
+title: '[Feature request]: '
+
+body:
+    - type: textarea
+      id: description
+      attributes:
+          label: Geht deine Idee aus einer Problemstellung hervor? / Is your feature related to a problem?
+          description: |
+              Schreibe uns, was der Hintergrund für deine Idee ist. / Write a clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+      validations:
+          required: true
+
+    - type: textarea
+      id: feature
+      attributes:
+          label: Lösung oder Feature / Solution or Feature
+          description: Was soll das Feature können, was soll passieren? / Give us a clear and concise description of what you want to happen.
+      validations:
+          required: true
+
+    - type: textarea
+      id: alternatives
+      attributes:
+          label: Alternativen / Alternatives
+          description: Hast du bereits über alternative Lösungen nachgedacht? Vielleicht können wir diese mit einbauen. / A clear and concise description of any alternative solutions or features you've considered.
+
+    - type: textarea
+      id: additional
+      attributes:
+          label: Sonstiges / Additional
+          description: Hier kannst du weitere Punkte anfügen, die deine Idee besser verständlich machen (z.B. Screenshots o.ä.) /  You can use this section for any other information that may be relevant, such as Screenshots.

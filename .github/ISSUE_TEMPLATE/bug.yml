@@ -1,0 +1,55 @@
+name: Fehlermeldung / Bug Report
+description: Fehlermeldung erstellen / Create a bug report
+title: '[BUG]: '
+labels: ['bug']
+
+body:
+    - type: textarea
+      id: description
+      attributes:
+          label: Was ist passiert / What happened?
+          description: |
+              Füge hier eine detaillierte Beschreibung ein, was genau passiert. / Please describe as detailed as possible how exactly the bug looks like.
+                
+              Je detaillierter, desto besser! / The more detailed, the better we can help you.
+      validations:
+          required: true
+
+    - type: textarea
+      id: reproduce
+      attributes:
+          label: Wie kann man den Fehler reproduzieren? / How to reproduce?
+          description: Beschreibe hier, wenn möglich, was du gemacht hast, als der Fehler auftrat. / Explain here, what you did when the error occurred.
+          value: |
+              1. Auf '...' klicken / Go to '...'
+              2. '...' eingeben / Enter on '...'
+              3. ... / ...
+              4. Das Fehlverhalten tritt auf / The error occurred
+      validations:
+          required: true
+
+    - type: textarea
+      id: expected
+      attributes:
+          label: Erwartetes Verhalten / Expected behavior
+          description: Welches Verhalten hättest du erwartet? / What did you expect to happen? What behaviour did you expect from Better-Moodle?
+      validations:
+          required: true
+
+    - type: textarea
+      id: system
+      attributes:
+          label: System
+          description: Bitte fülle diese Informationen aus / Please fill out
+          value: |
+              - Betriebssystem / OS: [z.B. / e.g. Windows 10]
+              - Browser und Version / Browser and Version: [z.B. / e.g. Firefox 101.3]
+              - Better-Moodle-Version: [z.B. / e.g. 1.14.3]
+      validations:
+          required: true
+
+    - type: textarea
+      id: additional
+      attributes:
+          label: Sonstiges / Additional
+          description: Hier kannst du bei Bedarf weitere Infos oder Screenshots hinzufügen. / You can use this section for any other information that may be relevant, such as Screenshots or Logs.
