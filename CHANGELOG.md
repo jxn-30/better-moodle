@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/jxn-30/better-moodle/compare/v1.17.3...v1.18.0) (2023-12-01)
+
+
+### Features
+
+* add a help popup accessible from settings ([474a572](https://github.com/jxn-30/better-moodle/commit/474a572948a4278fac98cb4c938404d43e7ecd7e))
+
 ## [1.17.3](https://github.com/jxn-30/better-moodle/compare/v1.17.2...v1.17.3) (2023-11-26)
 
 
