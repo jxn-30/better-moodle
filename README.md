@@ -151,7 +151,7 @@ It's not a bug, it's a feature! In allen anderen Fällen kannst du einfach auf [
 
 ### Ich habe eine tolle Idee für ein neues Feature
 
-Erstelle gerne ein Issue auf [GitHub](https://github.com/jxn-30/better-moodle/issues/new?template=feature.yml&title=%5BFeature+request%5D%3A+), reiche eine Contribution ein oder schreibe eine Mail an Jan. Die E-Mail-Adresse findest du direkt im "Hilfe zu Better-Moodle"-Bereich, welchen du über die Einstellungen erreichen kannst. 
+Erstelle gerne ein Issue auf [GitHub](https://github.com/jxn-30/better-moodle/issues/new?template=feature.yml&title=%5BFeature+request%5D%3A+), reiche eine Contribution ein oder schreibe eine Mail an Jan. Die E-Mail-Adresse findest du direkt im "Hilfe zu Better-Moodle"-Bereich, welchen du über die Einstellungen erreichen kannst.
 
 ### Ich habe plötzlich mehrere Knöpfe zu den Better-Moodle Einstellungen. Was ist passiert?
 
