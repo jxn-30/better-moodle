@@ -10,11 +10,17 @@
 -   [FAQ](#faq)
 -   [Alte Bilder und Impressionen](#alte-bilder-und-impressionen)
 
-[//]: # 'TODO: English texts via summary?'
+[//]: # 'TODO: More english translations'
 
 Better-Moodle ist ein Userscript, um das Design vom [UzL Moodle](https://moodle.uni-luebeck.de/) zu verbessern und zusätzliche, coole Features hinzuzufügen
 
 _Bilder in dieser Beschreibung enthalten teilweise verschwommene Elemente, um den Datenschutz zu wahren._
+
+> **🇬🇧 English Version**
+>
+> Better-Moodle, currently, does not have an english Version, however it is already planned ([#77](https://github.com/jxn-30/better-moodle/issues/77)).
+>
+> Within this README, English texts can be found - if available - in the extendable areas marked with `🇬🇧`. They can be opened and closed by clicking on the respective area.
 
 ## Installation
 
@@ -23,11 +29,29 @@ _Bilder in dieser Beschreibung enthalten teilweise verschwommene Elemente, um de
 3. Moodle einmal neu laden und ein besseres Moodle genießen 🎉
 4. Bei Bedarf über das Zahnräder-Icon oben rechts im Moodle, neben deinem Profilbild, Better-Moodle individualisieren
 
+<details>
+<summary>🇬🇧 Installation</summary>
+
+1. install an Userscript-Manager as a browser extension (e.g. [Tampermonkey](https://tampermonkey.net))
+2. click [here][installation] to install Better-Moodle
+3. reload Moodle once and enjoy a better Moodle 🎉
+4. if required, customize Better-Moodle via the gears icon at the top right of Moodle, next to your profile picture
+ </details>
+
 ## Disclaimer
 
-Better-Moodle wurde privat von einem Fachschaftsmitglied entwickelt und ist kein offizielles Projekt der Uni. Es dient ausschließlich dazu, eure individuelle Moodle-Nutzung zu verbessern, und sammelt keinerlei Daten von euch. Die Nutzung geschieht natürlich dennoch auf eigene Verantwortung! ;)
+Better-Moodle wurde privat von einem Fachschaftsmitglied entwickelt und ist kein offizielles Projekt der Uni. Es dient ausschließlich dazu, die individuelle Moodle-Nutzung zu verbessern, und sammelt keinerlei Daten. Die Nutzung geschieht natürlich dennoch auf eigene Verantwortung! ;)
 
-Bei der Verwendung von Userscript-Managern wie Tampermonkey nutzt ihr ein externes Tool, für das wir nicht zuständig oder verantwortlich sind. Wir raten zur Vorsicht bei der Installation weiterer Userscripts.
+Bei der Verwendung von Userscript-Managern wie Tampermonkey wird ein externes Tool genutzt, für das wir nicht zuständig oder verantwortlich sind. Es wird zur Vorsicht bei der Installation weiterer Userscripts geraten.
+
+<details>
+<summary>🇬🇧 Disclaimer</summary>
+
+Better-Moodle was developed privately by a member of FS MaIn and is not an official project of the university. Its sole purpose is to improve the individual use of Moodle and does not collect any data. Of course, you still use it at your own risk ;)
+
+When using userscript managers such as Tampermonkey, an external tool is used for which we are not responsible. Caution is advised when installing additional userscripts.
+
+</details>
 
 ## Update
 
@@ -155,7 +179,7 @@ Erstelle gerne ein Issue auf [GitHub](https://github.com/jxn-30/better-moodle/is
 
 ### Ich habe plötzlich mehrere Knöpfe zu den Better-Moodle Einstellungen. Was ist passiert?
 
-Hoppala, da scheint wohl versehentlich Better-Moodle mehrfach installiert zu sein. Keine Sorge, das kann passieren und lässt sich einfach beheben: Öffne einfach die Scriptübersicht deines Userscript-Managers (Bei Tampermonkey klickst du einfach auf das Tampermonkey-Icon in deinem Browser (ein schwarzes oder rotes Quadrat mit zwei Löchern drin), ggf. ist es hinter einem Puzzleteil oder einem Paket-Icon versteckt, und klickst anschließend auf "Übersicht") und lösche einmal alle Installationen von Better-Moodle. Anschließend kannst du die aktuellste Version von Better-Moodle einfach über den [Installationslink][installation] neu installieren.
+Hoppla, da scheint wohl versehentlich Better-Moodle mehrfach installiert zu sein. Keine Sorge, das kann passieren und lässt sich einfach beheben: Öffne einfach die Scriptübersicht deines Userscript-Managers (Bei Tampermonkey klickst du einfach auf das Tampermonkey-Icon in deinem Browser (ein schwarzes oder rotes Quadrat mit zwei Löchern drin), ggf. ist es hinter einem Puzzleteil oder einem Paket-Icon versteckt, und klickst anschließend auf "Übersicht") und lösche einmal alle Installationen von Better-Moodle. Anschließend kannst du die aktuellste Version von Better-Moodle einfach über den [Installationslink][installation] neu installieren.
 
 ### Welche Userscript-Manager funktionieren?
 
