@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.2](https://github.com/jxn-30/better-moodle/compare/v1.18.1...1.18.2) (2023-12-03)
+
+
+### Bug Fixes
+
+* **dashboard:** fix detecting if current page is dashboard ([657545a](https://github.com/jxn-30/better-moodle/commit/657545a2834be9eee4ef25f8f39ef691f512d7c3))
+
 ## [1.18.1](https://github.com/jxn-30/better-moodle/compare/v1.18.0...v1.18.1) (2023-12-01)
 
 
