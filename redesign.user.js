@@ -490,6 +490,10 @@ const getEmail = (subject = '', body = '') => {
     // e.g. Thunderbird does take the + literally instead of decoding it to a space
     return url.href.replace(/\+/g, '%20');
 };
+
+const isDashboard =
+    window.location.pathname === '/my/' ||
+    window.location.pathname === '/my/index.php';
 // endregion
 
 // region Global styles
@@ -1240,7 +1244,7 @@ if (getSetting('general.christmasCountdown')) {
 
 // region Feature: Dashboard right sidebar
 // add a right sidebar with timeline and upcoming events on Dashboard
-if (window.location.pathname === '/my/') {
+if (isDashboard) {
     createSidebar('dashboard-right', 'right', 'calendar', content => {
         // move blocks into sidebar
         content.append(document.querySelector('.block_timeline'));
@@ -1510,7 +1514,7 @@ ready(async () => {
     }
 
     // add a left sidebar
-    if (window.location.pathname === '/my/') {
+    if (isDashboard) {
         createSidebar(
             'dashboard-left',
             'left',
