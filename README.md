@@ -1,6 +1,6 @@
 # Better-Moodle
 
-[![Aktuelle Version](https://img.shields.io/github/v/release/jxn-30/better-moodle?label=Aktuellste%20Version&color=004B5A&style=for-the-badge)](https://github.com/jxn-30/better-moodle/releases/latest)
+[![Aktuelle Version / Current Version](https://img.shields.io/github/v/release/jxn-30/better-moodle?label=Aktuellste%20Version%20/%20Current%20Version&color=004B5A&style=for-the-badge)](https://github.com/jxn-30/better-moodle/releases/latest)
 
 -   [Installation](#installation)
 -   [Disclaimer](#disclaimer)
