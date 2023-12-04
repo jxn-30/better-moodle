@@ -312,8 +312,8 @@ const getCourseGroupingOptions = () =>
         }),
     ]);
 
-/** @type {(...elements: Node[]) => Promise<[Node, Node][]>} */
-const addMarqueeItems = await (async () => {
+/** @type {(...elements: Node[]) => [Node, Node][]} */
+const addMarqueeItems = (() => {
     const navItem = document.createElement('div');
     navItem.classList.add('flex-shrink-1');
     navItem.style.setProperty('overflow', 'hidden');
@@ -402,18 +402,8 @@ const addMarqueeItems = await (async () => {
     /** @type {Node[]} */
     const clonedMarqueeElements = [];
 
-    let resolveEventsAdded;
-    let eventsAdded = new Promise(resolve => {
-        resolveEventsAdded = () => {
-            resolve();
-            eventsAdded = undefined;
-        };
-    });
-
-    /** @type {(...elements: Node[]) => Promise<[Node, Node][]>} */
-    const addItems = async (...elements) => {
-        if (eventsAdded && marqueeElements.length) await eventsAdded;
-
+    /** @type {(...elements: Node[]) => [Node, Node][]} */
+    const addItems = (...elements) => {
         marqueeElements.push(...elements);
         clonedMarqueeElements.push(...elements.map(e => e.cloneNode(true)));
 
@@ -432,7 +422,7 @@ const addMarqueeItems = await (async () => {
     // the getSetting method cannot be used as SETTINGS is not defined there yet
     if (GM_getValue(getSettingKey('general.eventAdvertisements'), true)) {
         // await fetch('http://localhost:3000/events.json') // this is for testing locally (npx serve --cors)
-        await fetch(
+        fetch(
             'https://raw.githubusercontent.com/jxn-30/better-moodle/main/events.json'
         )
             .then(res => res.json())
@@ -466,9 +456,24 @@ const addMarqueeItems = await (async () => {
                     return mainAdElement;
                 })
             )
-            .then(eventItems => addItems(...eventItems))
-            .then(resolveEventsAdded);
-    } else resolveEventsAdded();
+            .then(eventItems => {
+                marqueeElements.unshift(...eventItems);
+                clonedMarqueeElements.unshift(
+                    ...eventItems.map(e => e.cloneNode(true))
+                );
+
+                const newElements = marqueeElements.slice(0, eventItems.length);
+                const newClonedElements = clonedMarqueeElements.slice(
+                    0,
+                    eventItems.length
+                );
+
+                content.prepend(...newElements);
+                cloneEl.prepend(...newClonedElements);
+
+                updateScrollWidth();
+            });
+    }
 
     return addItems;
 })();
@@ -1215,30 +1220,30 @@ if (getSetting('general.christmasCountdown')) {
 
     const textSpan = document.createElement('span');
 
-    addMarqueeItems(textSpan).then(([[, textSpanClone]]) => {
-        const updateCountdown = () => {
-            const todayDayOfYear = getDayOfYear(now);
-            const daysToChristmas =
-                now < firstChristmasDay
-                    ? getDayOfYear(thisYearChristmas) - todayDayOfYear
-                    : getDayOfYear(thisYearLastDay) -
-                      todayDayOfYear +
-                      getDayOfYear(nextYearChristmas);
+    const [[, textSpanClone]] = addMarqueeItems(textSpan);
 
-            textSpan.innerHTML = textSpanClone.innerHTML = daysToChristmas
-                ? `Noch&nbsp;<b>${daysToChristmas}</b>&nbsp;Tag${
-                      daysToChristmas > 1 ? 'e' : ''
-                  } bis Heiligabend.`
-                : '🎄 Heute ist Heiligabend. Frohe Weihnachten! 🎄';
+    const updateCountdown = () => {
+        const todayDayOfYear = getDayOfYear(now);
+        const daysToChristmas =
+            now < firstChristmasDay
+                ? getDayOfYear(thisYearChristmas) - todayDayOfYear
+                : getDayOfYear(thisYearLastDay) -
+                  todayDayOfYear +
+                  getDayOfYear(nextYearChristmas);
 
-            const nextUpdate = new Date();
-            nextUpdate.setDate(now.getDate() + 1);
-            nextUpdate.setHours(0, 0, 0, 0);
-            setTimeout(updateCountdown, nextUpdate - now);
-        };
+        textSpan.innerHTML = textSpanClone.innerHTML = daysToChristmas
+            ? `Noch&nbsp;<b>${daysToChristmas}</b>&nbsp;Tag${
+                  daysToChristmas > 1 ? 'e' : ''
+              } bis Heiligabend.`
+            : '🎄 Heute ist Heiligabend. Frohe Weihnachten! 🎄';
 
-        updateCountdown();
-    });
+        const nextUpdate = new Date();
+        nextUpdate.setDate(now.getDate() + 1);
+        nextUpdate.setHours(0, 0, 0, 0);
+        setTimeout(updateCountdown, nextUpdate - now);
+    };
+
+    updateCountdown();
 }
 // endregion
 
