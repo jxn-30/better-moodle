@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.3](https://github.com/jxn-30/better-moodle/compare/1.18.2...1.18.3) (2023-12-04)
+
+
+### Performance Improvements
+
+* fix long startup time ([6e0a682](https://github.com/jxn-30/better-moodle/commit/6e0a68210f2d646a28653ae15ef04466f57a9510))
+
 ## [1.18.2](https://github.com/jxn-30/better-moodle/compare/v1.18.1...1.18.2) (2023-12-03)
 
 
