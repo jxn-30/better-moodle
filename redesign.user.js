@@ -1612,6 +1612,7 @@ ready(async () => {
                 GM_addStyle(`
 #${dropdown.id} {
     transform: unset !important;
+    position: sticky !important;
 }
 
 #${dropdown.id} a {
