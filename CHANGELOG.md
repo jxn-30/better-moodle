@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.4](https://github.com/jxn-30/better-moodle/compare/1.18.3...1.18.4) (2023-12-05)
+
+
+### Bug Fixes
+
+* **dashboard:** fix filter position for myCourses-Sidebar ([b38e3c1](https://github.com/jxn-30/better-moodle/commit/b38e3c124da9fef8c60b05f279ee69a783d51a0e))
+
 ## [1.18.3](https://github.com/jxn-30/better-moodle/compare/1.18.2...1.18.3) (2023-12-04)
 
 
