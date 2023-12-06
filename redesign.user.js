@@ -23,6 +23,471 @@
 
 /* global M, require */
 
+// region translations
+const TRANSLATIONS = {
+    de: {
+        sidebar: {
+            open: 'Blockleiste öffnen',
+            close: 'Blockleiste schließen',
+        },
+        courseGroupings: {
+            sync: '[Mit Auswahl auf "Meine Kurse"-Seite synchronisieren]',
+        },
+        bookmarks: {
+            title: 'Lesezeichen',
+            add: 'Lesezeichen setzen',
+            manage: 'Lesezeichen verwalten',
+            name: 'Bezeichnung',
+            url: 'URL',
+            empty: 'Bislang sind keine Lesezeichen vorhanden!',
+        },
+        christmasCountdown: {
+            countdown: [
+                'Noch <b>{{days}}</b> Tag bis Heiligabend.',
+                'Noch <b>{{days}}</b> Tage bis Heiligabend.',
+            ],
+            christmas: '🎄 Heute ist Heiligabend. Frohe Weihnachten! 🎄',
+        },
+        courses: {
+            grades: 'Bewertungen',
+        },
+        myCourses: {
+            lists: {
+                empty: 'Keine Kurse im aktuellen Filter vorhanden.',
+                myCoursesLink: 'Meine Kurse',
+            },
+        },
+        modals: {
+            settings: {
+                title: 'Einstellungen',
+                moodleSettings: 'Zu den Moodle-Einstellungen',
+                installedVersion: 'installierte Version',
+                latestVersion: 'aktuellste Version',
+                updateBtn: 'Update installieren',
+                import: 'Einstellungen importieren',
+                export: 'Einstellungen exportieren',
+            },
+            update: {
+                title: 'Better-Moodle aktualisieren',
+                content:
+                    'Den Anweisungen zum Aktualisieren im Script-Manager (z.&nbsp;B. Tampermonkey) folgen und anschließend Moodle neu laden.',
+            },
+            changelog: 'Changelog',
+            help: {
+                title: 'Hilfe zu Better-Moodle',
+                close: 'Danke für diese Hilfe! 😊',
+                content: `
+# Schön, dass du dieses Fensterchen gefunden hast! 🎉
+
+---
+
+## Wie funktioniert ...? Was wenn ...?
+
+Lies dir gerne zunächst einmal die FAQ von Better-Moodle durch: [Better-Moodle FAQ]({{faqLink}}).
+
+## Okay cool, aber da steht XY nicht mit dabei. Was nun?
+
+Schreib doch gerne eine Mail an Jan: [{{mailAdress}}]({{mailLinkHelp}}).
+
+Denke dabei bitte daran, über deine Uni-Mail-Adresse und nicht über deine Private Email zu schreiben.
+
+## Ich habe einen Fehler gefunden!
+
+Huch, in Better-Moodle gibt es doch keine Fehler? 😱
+
+Spaß beiseite, auch in Better-Moodle kann es mal vorkommen, dass ein Fehler auftritt. Eröffne gerne ein neues Issue auf [GitHub]({{githubIssueBug}}) oder schreibe Jan eine Mail, wenn du kein GitHub nutzen möchtest: [{{mailAdress}}]({{mailLinkBug}}).
+
+Bitte gebe dabei auch immer so viele Informationen wie möglich an, damit der Fehler optimal nachvollzogen und reproduziert werden kann.
+Das hilft, ihn schneller und effizienter zu beheben.
+
+## Ich habe eine tolle Idee für ein neues Feature!
+
+Erstelle gerne ein Issue auf [GitHub]({{githubIssueFeature}}), reiche dort eine Contribution ein oder schreibe eine Mail an Jan: [{{mailAdress}}]({{mailLinkFeature}})`,
+                mails: {
+                    help: {
+                        subject: 'Ich benötige bitte Hilfe',
+                        content: `Hallo Jan,
+
+ich habe eine Frage zu Better-Moodle, die ich aber leider nicht duch die FAQ beantwortet bekommen habe:
+
+[...]
+
+Vielen Dank und liebe Grüße
+[Dein Name]`,
+                    },
+                    bug: {
+                        subject: 'Bug-Report',
+                        content: `Hallo Jan,
+ich habe einen Bug in Better-Moodle gefunden!
+
+Ich nutze diesen Browser:
+Ich nutze diese Version von Better-Moodle: {{currentVersion}}
+Diese Schritte habe ich durchgeführt, als das Problem aufgetreten ist:
+Dieses Verhalten hätte ich stattdessen erwartet:
+
+Viele Grüße
+[Dein Name]`,
+                    },
+                    feature: {
+                        subject: 'Feature-Idee',
+                        content: `Hallo Jan,
+ich habe einen tollen Vorschlag für Better-Moodle:
+
+[hier eine ausführliche Beschreibung des Vorschlags]
+
+Viele Grüße
+[Dein Name]`,
+                    },
+                },
+            },
+        },
+        settings: {
+            general: {
+                _title: 'Allgemeine Einstellungen',
+                updateNotification: {
+                    name: 'Benachrichtigung bei Better-Moodle Updates',
+                    description:
+                        'Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für Better-Moodle gibt.',
+                },
+                fullwidth: {
+                    name: 'Volle Breite',
+                    description:
+                        'Entfernt den seltsamen weißen Rand und sorgt dafür, dass die Seiten die volle Breite nutzen.',
+                },
+                externalLinks: {
+                    name: 'Externe Links',
+                    description:
+                        'Sorgt dafür, dass externe Links immer automatisch in einem neuen Tab geöffnet werden.',
+                },
+                truncatedTexts: {
+                    name: 'Abgeschnittene Texte',
+                    description:
+                        'Fügt ein Title-Attribut bei potentiell abgeschnittenen Texten hinzu, damit man per Maus-Hover den vollen Text lesen kann.',
+                },
+                bookmarkManager: {
+                    name: 'Lesezeichen-Manager',
+                    description:
+                        'Aktiviert einen kleinen internen Lesezeichen-Manager, um direkt im Moodle zu bestimmten Orten zu springen.',
+                },
+                noDownload: {
+                    name: 'Download unterbinden',
+                    description:
+                        'Verhindert das automatische Herunterladen von Dateien (insbesondere PDFs) wo immer möglich.',
+                },
+                eventAdvertisements: {
+                    name: 'Event-Ankündigungen',
+                    description:
+                        'Zeigt ab und zu (selten) Ankündigungen zu coolen Events deiner studentischen Gremien in der Navigationsleiste an.',
+                },
+                christmasCountdown: {
+                    name: 'Countdown bis Heiligabend 🎄',
+                    description:
+                        'Zeigt einen Countdown bis Heiligabend in der Navigationsleiste an.\nHierbei handelt es sich um eine kleine Hommage an den Mathe-Vorkurs.',
+                },
+            },
+            dashboard: {
+                '_title': 'Dashboard',
+                '~layoutPlaceholder': {
+                    name: 'Layout',
+                    description:
+                        'Hier sollst du mal das Layout anpassen können. Das ist aber leider noch nicht fertig. Bitte habe noch ein bisschen Geduld hiermit :)',
+                },
+                'courseListFilter': {
+                    name: 'Filter der Kurse-Sidebar',
+                    description:
+                        'Welche Kurse sollen in der Sidebar angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
+                },
+            },
+            myCourses: {
+                _title: 'Meine Kurse',
+                boxesPerRow: {
+                    name: 'Kacheln pro Zeile',
+                    description:
+                        'Zahl der Kacheln pro Zeile auf der "Meine Kurse"-Seite, wenn die Ansicht auf "Kacheln" gestellt ist. (Ist bis zu einer Fenster-/Bildschirmbreite bis 840px aktiv)',
+                },
+                navbarDropdown: {
+                    name: 'Dropdown in der Navigationsleiste',
+                    description:
+                        'Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.',
+                },
+                navbarDropdownFilter: {
+                    name: 'Filter der Kurs-Dropdown',
+                    description:
+                        'Welche Kurse sollen in der Dropdown angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
+                },
+            },
+            courses: {
+                _title: 'Kurse',
+                grades: {
+                    name: 'Link zu Bewertungen in der Sidebar',
+                    description:
+                        'Zeigt einen Link zu den Bewertungen des Kurses in der linken Seitenleiste an.',
+                },
+                gradesNewTab: {
+                    name: 'Bewertungen in neuem Tab öffnen',
+                    description:
+                        'Öffnet die Bewertungen standardmäßig einem neuen Tab.',
+                },
+                collapseAll: {
+                    name: 'Seitenleiste vollständig ein-/ausklappen',
+                    description:
+                        'Klappt alle Abschnitte in der Seitenleiste ein oder aus, wenn doppelt auf einen der Pfeile in der Seitenleiste geklickt wird.',
+                },
+                imgMaxWidth: {
+                    name: 'Bildüberlauf verhindern',
+                    description:
+                        'Verhindert, dass Bilder in den Kursen mehr als die komplette Breite einnehmen und damit ein horizontales Scrollen der Seite verursachen.',
+                },
+                imageZoom: {
+                    name: 'Bilder zoomen',
+                    description:
+                        'Zoomt ein Bild heran, wenn es angeklickt wird. So lassen sich kleine Bilder einfach per Knopfdruck vergrößert anzeigen.',
+                },
+            },
+            messages: {
+                _title: 'Mitteilungen',
+                sendHotkey: {
+                    name: 'Mitteilungen per Tastenkombination absenden',
+                    description:
+                        'Ermöglicht das Absenden von Mitteilungen per Tastenkombination (z. B. Strg + Enter).',
+                },
+            },
+        },
+    },
+    en: {
+        sidebar: {
+            open: 'Open sidebar',
+            close: 'Close sidebar',
+        },
+        courseGroupings: {
+            sync: '[sync with filter on "my courses" page]',
+        },
+        bookmarks: {
+            title: 'Bookmarks',
+            add: 'Add bookmark',
+            manage: 'Manage bookmarks',
+            name: 'Description',
+            url: 'URL',
+            empty: 'There are no bookmarks set yet!',
+        },
+        christmasCountdown: {
+            countdown: [
+                '<b>{{days}}</b> day until Christmas Eve.',
+                '<b>{{days}}</b> days until Christmas Eve.',
+            ],
+            christmas: '🎄 Today is Christmas Eve. Merry Christmas! 🎄',
+        },
+        courses: {
+            grades: 'Grades',
+        },
+        myCourses: {
+            lists: {
+                empty: 'No courses with currently selected filter available.',
+                myCoursesLink: 'My courses',
+            },
+        },
+        modals: {
+            settings: {
+                title: 'Preferences',
+                moodleSettings: 'Go to Moodle-Preferences',
+                installedVersion: 'installed version',
+                latestVersion: 'latest Version',
+                updateBtn: 'install update',
+                import: 'import preferences',
+                export: 'export preferences',
+            },
+            update: {
+                title: 'Update Better-Moodle',
+                content:
+                    'Follow the instructions for updating in the script manager (e.g. Tampermonkey) and then reload Moodle.',
+            },
+            changelog: 'Changelog',
+            help: {
+                title: 'Support for Better-Moodle',
+                close: 'Thanks for the great support! 😊',
+                content: `
+# Lovely that you found this little window! 🎉
+
+
+---
+
+
+## How does ... work? What if ...?
+
+Please read the Better-Moodle FAQ first: [Better-Moodle FAQ]({{faqLink}}).
+
+
+## Okay cool, but it doesn't say XY. What now?
+
+Why don't you write an email to Jan: [{{mailAdress}}]({{mailLinkHelp}}).
+
+Please remember to use your university e-mail address and not your private e-mail address.
+
+## I have found an error!
+
+Oops? there are no errors in Better-Moodle?! 😱
+
+Joking aside, even in Better-Moodle it can happen that an error occurs. Feel free to open a new issue on [GitHub]({{githubIssueBug}}) or write Jan an email if you don't want to use GitHub: [{{mailAdress}}]({{mailLinkBug}}).
+
+Please always provide as much information as possible so that the bug can be traced and reproduced in the best possible way.
+This helps to fix it faster and more efficiently.
+
+## I have a great idea for a new feature!
+
+Feel free to create an issue on [GitHub]({{githubIssueFeature}}), submit a contribution there or write an email to Jan: [{{mailAdress}}]({{mailLinkFeature}})`,
+                mails: {
+                    help: {
+                        subject: 'I need help please',
+                        content: `Hello Jan,
+
+I have a question about Better-Moodle, but unfortunately I didn't find an answer in the FAQ:
+
+[...]
+
+Many thanks and best regards
+[Your name]`,
+                    },
+                    bug: {
+                        subject: 'Bug-Report',
+                        content: `Hello Jan,
+I have found a bug in Better-Moodle!
+
+I am using this browser:
+I use this version of Better-Moodle: {{currentVersion}}
+I was following these steps when the problem occurred:
+This is the behavior I would have expected instead:
+
+Best regards
+[Your name]`,
+                    },
+                    feature: {
+                        subject: 'Feature idea',
+                        content: `Hello Jan,
+I have a great suggestion for Better-Moodle:
+
+[here is a detailed description of the suggestion]
+
+Best regards
+[your name]`,
+                    },
+                },
+            },
+        },
+        settings: {
+            general: {
+                _title: 'General settings',
+                updateNotification: {
+                    name: 'Notification for Better-Moodle updates',
+                    description:
+                        'Displays a small red dot by the cogs in the navigation bar when there is an update for Better-Moodle.',
+                },
+                fullwidth: {
+                    name: 'Full width',
+                    description:
+                        'Removes the weird white border and makes pages use the full width.',
+                },
+                externalLinks: {
+                    name: 'External links',
+                    description:
+                        'Ensures that external links are always automatically opened in a new tab.',
+                },
+                truncatedTexts: {
+                    name: 'Truncated texts',
+                    description:
+                        'Adds a title attribute to potentially truncated texts so that you can read the full text via mouse hover.',
+                },
+                bookmarkManager: {
+                    name: 'Bookmark Manager',
+                    description:
+                        'Enables a small internal bookmark manager to jump directly to specific locations in Moodle.',
+                },
+                noDownload: {
+                    name: 'Prevent download',
+                    description:
+                        'Prevents automatic downloading of files (especially PDFs) wherever possible.',
+                },
+                eventAdvertisements: {
+                    name: 'Event announcements',
+                    description:
+                        'Occasionally (rarely) displays announcements about cool events from your student committees ("Studentische Gremien") in the navigation bar.',
+                },
+                christmasCountdown: {
+                    name: 'Countdown to Christmas Eve 🎄',
+                    description:
+                        'Displays a countdown to Christmas Eve in the navigation bar.\nThis is a small homage to the math pre-course.',
+                },
+            },
+            dashboard: {
+                '_title': 'Dashboard',
+                '~layoutPlaceholder': {
+                    name: 'Layout',
+                    description:
+                        'Here you should be able to customize the layout. Unfortunately, this is not ready yet. Please be patient with this :)',
+                },
+                'courseListFilter': {
+                    name: 'Filter of the course sidebar',
+                    description:
+                        'Which courses should be displayed in the sidebar? The filters of the "My courses" page are available.',
+                },
+            },
+            myCourses: {
+                _title: 'My courses',
+                boxesPerRow: {
+                    name: 'Tiles per row',
+                    description:
+                        'Number of tiles per row on the "My Courses" page when the view is set to "Tiles". (Is active up to a window/screen width of 840px)',
+                },
+                navbarDropdown: {
+                    name: 'Dropdown in the navigation bar',
+                    description:
+                        'Converts the "My courses" link into a dropdown to allow quick direct access to all your courses.',
+                },
+                navbarDropdownFilter: {
+                    name: 'Filter the course dropdown',
+                    description:
+                        'Which courses should be displayed in the dropdown? The filters on the "My courses" page are available.',
+                },
+            },
+            courses: {
+                _title: 'Courses',
+                grades: {
+                    name: 'Link to reviews in the sidebar',
+                    description:
+                        "Displays a link to the course's grades in the left sidebar.",
+                },
+                gradesNewTab: {
+                    name: 'Open grades in new tab',
+                    description: 'Opens the grades in a new tab by default.',
+                },
+                collapseAll: {
+                    name: 'Fully collapse/expand sidebar',
+                    description:
+                        'Collapses or expands all sections in the sidebar when one of the arrows in the sidebar is double-clicked.',
+                },
+                imgMaxWidth: {
+                    name: 'Prevent image overflow',
+                    description:
+                        'Prevents images in courses from taking up more than the full width, causing the page to scroll horizontally.',
+                },
+                imageZoom: {
+                    name: 'Zoom images',
+                    description:
+                        'Zooms in on an image when it is clicked. This allows small images to be enlarged at the touch of a button.',
+                },
+            },
+            messages: {
+                _title: 'Messages',
+                sendHotkey: {
+                    name: 'Send messages by hotkey',
+                    description:
+                        'Allows messages to be sent using a key combination (e.g. Ctrl + Enter).',
+                },
+            },
+        },
+    },
+};
+// endregion
+
 // region Helper functions
 const PREFIX = str => `better-moodle-${str}`;
 const getSettingKey = id => PREFIX(`settings.${id}`);
@@ -77,7 +542,7 @@ const createSidebar = (id, position, icon, callback) => {
     closeBtn.dataset.target = sidebar.id;
     closeBtn.dataset.toggle = 'tooltip';
     closeBtn.dataset.placement = position === 'left' ? 'right' : 'left'; // Yeah, moodle. IDK what that means and why
-    closeBtn.title = 'Blockleiste schließen';
+    closeBtn.title = $t('sidebar.close');
     const closeIcon = document.createElement('i');
     closeIcon.classList.add('icon', 'fa', 'fa-times', 'fa-fw');
     closeIcon.setAttribute('aria-hidden', 'true');
@@ -104,7 +569,7 @@ const createSidebar = (id, position, icon, callback) => {
     toggleBtn.dataset.target = sidebar.id;
     toggleBtn.dataset.toggle = 'tooltip';
     toggleBtn.dataset.toggle = 'tooltip';
-    toggleBtn.title = 'Blockleiste öffnen';
+    toggleBtn.title = $t('sidebar.open');
     toggleBtn.dataset.originalTitle = toggleBtn.title;
     const toggleBtnSRSpan = document.createElement('span');
     toggleBtnSRSpan.classList.add('sr-only');
@@ -301,7 +766,7 @@ const getCourseGroupingOptions = () =>
     getCourseGroupings().then(groupings => [
         {
             key: '_sync',
-            title: '[Mit Auswahl auf "Meine Kurse"-Seite synchronisieren]',
+            title: $t('courseGroupings.sync'),
         },
         ...groupings.map(group => {
             delete group.active;
@@ -499,6 +964,27 @@ const getEmail = (subject = '', body = '') => {
 const isDashboard =
     window.location.pathname === '/my/' ||
     window.location.pathname === '/my/index.php';
+
+const lang = document.documentElement.lang;
+
+const $t = (key, args = {}) => {
+    const t =
+        key
+            .split('.')
+            .reduce(
+                (prev, current) => (prev || TRANSLATIONS[lang])[current],
+                TRANSLATIONS[lang]
+            ) ?? key;
+    if (t === key) {
+        console.warn(
+            `Better-Moodle: Translation for key "${key}" on locale ${lang} not found!`
+        );
+    }
+    return Object.entries(args).reduce(
+        (t, [key, value]) => t.replaceAll(`{{${key}}}`, value),
+        t
+    );
+};
 // endregion
 
 // region Global styles
@@ -574,98 +1060,65 @@ body.dir-rtl a.${noExternalLinkIconClass}::before {
 
 /** @type {Array<Setting | string>} */
 const SETTINGS = [
-    'Allgemeine Einstellungen',
+    $t('settings.general._title'),
     {
         id: 'general.updateNotification',
-        name: 'Benachrichtigung bei Better-Moodle Updates',
-        description:
-            'Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für Better-Moodle gibt.',
         type: Boolean,
         default: true,
     },
     {
         id: 'general.fullwidth',
-        name: 'Volle Breite',
-        description:
-            'Entfernt den seltsamen weißen Rand und sorgt dafür, dass die Seiten die volle Breite nutzen.',
         type: Boolean,
         default: true,
     },
     {
         id: 'general.externalLinks',
-        name: 'Externe Links',
-        description:
-            'Sorgt dafür, dass externe Links immer automatisch in einem neuen Tab geöffnet werden.',
         type: Boolean,
         default: true,
     },
     {
         id: 'general.truncatedTexts',
-        name: 'Abgeschnittene Texte',
-        description:
-            'Fügt ein Title-Attribut bei potentiell abgeschnittenen Texten hinzu, damit man per Maus-Hover den vollen Text lesen kann.',
         type: Boolean,
         default: true,
     },
     {
         id: 'general.bookmarkManager',
-        name: 'Lesezeichen-Manager',
-        description:
-            'Aktiviert einen kleinen internen Lesezeichen-Manager, um direkt im Moodle zu bestimmten Orten zu springen.',
         type: Boolean,
         default: true,
     },
     {
         id: 'general.noDownload',
-        name: 'Download unterbinden',
-        description:
-            'Verhindert das automatische Herunterladen von Dateien (insbesondere PDFs) wo immer möglich.',
         type: Boolean,
         default: false,
     },
     {
         id: 'general.eventAdvertisements',
-        name: 'Event-Ankündigungen',
-        description:
-            'Zeigt ab und zu (selten) Ankündigungen zu coolen Events deiner studentischen Gremien in der Navigationsleiste an.',
         type: Boolean,
         default: true,
     },
     {
         id: 'general.christmasCountdown',
-        name: 'Countdown bis Heiligabend 🎄',
-        description:
-            'Zeigt einen Countdown bis Heiligabend in der Navigationsleiste an.\nHierbei handelt es sich um eine kleine Hommage an den Mathe-Vorkurs.',
         type: Boolean,
         default: false,
     },
-    'Dashboard',
+    $t('settings.dashboard._title'),
     // {Layout anpassen}
     {
         id: 'dashboard.~layoutPlaceholder',
-        name: 'Layout',
-        description:
-            'Hier sollst du mal das Layout anpassen können. Das ist aber leider noch nicht fertig. Bitte habe noch ein bisschen Geduld hiermit :)',
         type: String,
         default: 'Coming soon...',
         disabled: () => true,
     },
     {
         id: 'dashboard.courseListFilter',
-        name: 'Filter der Kurse-Sidebar',
-        description:
-            'Welche Kurse sollen in der Sidebar angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
         type: HTMLSelectElement,
         options: getCourseGroupingOptions,
         default: '_sync',
         multiselect: false,
     },
-    'Meine Kurse',
+    $t('settings.myCourses._title'),
     {
         id: 'myCourses.boxesPerRow',
-        name: 'Kacheln pro Zeile',
-        description:
-            'Zahl der Kacheln pro Zeile auf der "Meine Kurse"-Seite, wenn die Ansicht auf "Kacheln" gestellt ist. (Ist bis zu einer Fenster-/Bildschirmbreite bis 840px aktiv)',
         type: Number,
         default: 4,
         attributes: {
@@ -675,70 +1128,47 @@ const SETTINGS = [
     },
     {
         id: 'myCourses.navbarDropdown',
-        name: 'Dropdown in der Navigationsleiste',
-        description:
-            'Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.',
         type: Boolean,
         default: true,
     },
     {
         id: 'myCourses.navbarDropdownFilter',
-        name: 'Filter der Kurs-Dropdown',
-        description:
-            'Welche Kurse sollen in der Dropdown angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
         type: HTMLSelectElement,
         options: getCourseGroupingOptions,
         default: '_sync',
         multiselect: false,
         disabled: settings => !settings['myCourses.navbarDropdown'],
     },
-    'Kurse',
+    $t('settings.courses._title'),
     {
         id: 'courses.grades',
-        name: 'Link zu Bewertungen in der Sidebar',
-        description:
-            'Zeigt einen Link zu den Bewertungen des Kurses in der linken Seitenleiste an.',
         type: Boolean,
         default: true,
     },
     {
         id: 'courses.gradesNewTab',
-        name: 'Bewertungen in neuem Tab öffnen',
-        description: 'Öffnet die Bewertungen standardmäßig einem neuen Tab.',
         type: Boolean,
         default: false,
         disabled: settings => !settings['courses.grades'],
     },
     {
         id: 'courses.collapseAll',
-        name: 'Seitenleiste vollständig ein-/ausklappen',
-        description:
-            'Klappt alle Abschnitte in der Seitenleiste ein oder aus, wenn doppelt auf einen der Pfeile in der Seitenleiste geklickt wird.',
         type: Boolean,
         default: true,
     },
     {
         id: 'courses.imgMaxWidth',
-        name: 'Bildüberlauf verhindern',
-        description:
-            'Verhindert, dass Bilder in den Kursen mehr als die komplette Breite einnehmen und damit ein horizontales Scrollen der Seite verursachen.',
         type: Boolean,
         default: true,
     },
     {
         id: 'courses.imageZoom',
-        name: 'Bilder zoomen',
-        description:
-            'Zoomt ein Bild heran, wenn es angeklickt wird. So lassen sich kleine Bilder einfach per Knopfdruck vergrößert anzeigen.',
         type: Boolean,
         default: true,
     },
-    'Mitteilungen',
+    $t('settings.messages._title'),
     {
         id: 'messages.sendHotkey',
-        name: 'Mitteilungen per Tastenkombination absenden',
-        description:
-            'Ermöglicht das Absenden von Mitteilungen per Tastenkombination (z. B. Strg + Enter).',
         type: HTMLSelectElement,
         options: () =>
             Promise.resolve([
@@ -823,7 +1253,8 @@ if (getSetting('general.bookmarkManager')) {
         bookmarksBtn.dataset.toggle = 'dropdown';
         const bookmarksIcon = document.createElement('i');
         bookmarksIcon.classList.add('icon', 'fa', 'fa-bookmark-o', 'fa-fw');
-        bookmarksIcon.title = bookmarksBtn.ariaLabel = 'Lesezeichen';
+        bookmarksIcon.title = bookmarksBtn.ariaLabel =
+            $t('bookmarks.title').toString();
         bookmarksIcon.role = 'img';
         bookmarksBtn.append(bookmarksIcon);
 
@@ -876,7 +1307,7 @@ if (getSetting('general.bookmarkManager')) {
         const addBookmarkBtn = document.createElement('a');
         addBookmarkBtn.classList.add('dropdown-item');
         addBookmarkBtn.href = '#';
-        addBookmarkBtn.textContent = 'Lesezeichen setzen';
+        addBookmarkBtn.textContent = $t('bookmarks.add').toString();
         addBookmarkBtn.addEventListener('click', e => {
             e.preventDefault();
 
@@ -938,9 +1369,9 @@ if (getSetting('general.bookmarkManager')) {
                 return input;
             };
 
-            const titleInput = addFormItem('Bezeichnung');
+            const titleInput = addFormItem($t('bookmarks.name'));
             titleInput.value = document.title.replace(/\|.*?$/, '').trim();
-            const urlInput = addFormItem('URL', 'https://');
+            const urlInput = addFormItem($t('bookmarks.url'), 'https://');
             urlInput.type = 'url';
             urlInput.value = window.location.href.replace(/^https:\/\//, '');
 
@@ -952,7 +1383,7 @@ if (getSetting('general.bookmarkManager')) {
                     type: types.SAVE_CANCEL,
                     large: true,
                     scrollable: true,
-                    title: 'Lesezeichen setzen',
+                    title: $t('bookmarks.add').toString(),
                     body: form,
                     removeOnClose: true,
                 }).then(modal => {
@@ -974,7 +1405,7 @@ if (getSetting('general.bookmarkManager')) {
         const manageBookmarksBtn = document.createElement('a');
         manageBookmarksBtn.classList.add('dropdown-item');
         manageBookmarksBtn.href = '#';
-        manageBookmarksBtn.textContent = 'Lesezeichen verwalten';
+        manageBookmarksBtn.textContent = $t('bookmarks.manage').toString();
         manageBookmarksBtn.addEventListener('click', e => {
             e.preventDefault();
 
@@ -1014,7 +1445,7 @@ if (getSetting('general.bookmarkManager')) {
                 titleInput.required = true;
                 titleInput.value = title;
                 titleInput.dataset.attribute = 'title';
-                titleInput.placeholder = 'Bezeichnung';
+                titleInput.placeholder = $t('bookmarks.name').toString();
                 titleWrapper.append(titleInput);
 
                 const urlWrapper = document.createElement('div');
@@ -1038,7 +1469,7 @@ if (getSetting('general.bookmarkManager')) {
                 urlInput.required = true;
                 urlInput.value = url;
                 urlInput.dataset.attribute = 'url';
-                urlInput.placeholder = 'URL / Link';
+                urlInput.placeholder = $t('bookmarks.url').toString();
 
                 const mobileLinebreak = document.createElement('div');
                 mobileLinebreak.classList.add('w-100', 'd-lg-none');
@@ -1127,7 +1558,7 @@ if (getSetting('general.bookmarkManager')) {
                     type: types.SAVE_CANCEL,
                     large: true,
                     scrollable: true,
-                    title: 'Lesezeichen bearbeiten',
+                    title: $t('bookmarks.manage').toString(),
                     body: form,
                     removeOnClose: true,
                 }).then(modal => {
@@ -1171,7 +1602,7 @@ if (getSetting('general.bookmarkManager')) {
 #${bookmarksWrapper.id}:empty::before {
     display: block;
     text-align: center;
-    content: "Bislang sind keine Lesezeichen vorhanden!";
+    content: ${JSON.stringify($t('bookmarks.empty'))};
     padding: .25rem 1.5rem; /* this is the padding of .dropdown-item set by moodle */
 }
 `);
@@ -1232,10 +1663,10 @@ if (getSetting('general.christmasCountdown')) {
                   getDayOfYear(nextYearChristmas);
 
         textSpan.innerHTML = textSpanClone.innerHTML = daysToChristmas
-            ? `Noch&nbsp;<b>${daysToChristmas}</b>&nbsp;Tag${
-                  daysToChristmas > 1 ? 'e' : ''
-              } bis Heiligabend.`
-            : '🎄 Heute ist Heiligabend. Frohe Weihnachten! 🎄';
+            ? $t(`christmasCountdown.countdown.${Number(!!daysToChristmas)}`, {
+                  days: daysToChristmas,
+              }).toString()
+            : $t('christmasCountdown.christmas').toString();
 
         const nextUpdate = new Date();
         nextUpdate.setDate(now.getDate() + 1);
@@ -1288,7 +1719,7 @@ ready(() => {
         calcItem.classList.add('icon', 'fa', 'fa-calculator', 'fa-fw');
         link.href = `/grade/report/user/index.php?id=${M.cfg.courseId}`;
         link.classList.add('w-100', 'text-center');
-        link.append(calcItem, ' Bewertungen');
+        link.append(calcItem, `\xa0${$t('courses.grades')}`);
 
         if (getSetting('courses.gradesNewTab')) link.target = '_blank';
 
@@ -1529,7 +1960,9 @@ ready(async () => {
 
                 // add the my-courses link as a sidebar header
                 const myCoursesLink = document.createElement('a');
-                myCoursesLink.textContent = 'Meine Kurse';
+                myCoursesLink.textContent = $t(
+                    'myCourses.lists.myCoursesLink'
+                ).toString();
                 myCoursesLink.href = '/my/courses.php';
                 myCoursesLink.classList.add('w-100', 'text-center');
 
@@ -1678,8 +2111,9 @@ ready(async () => {
                 if (!courses.length) {
                     const noCoursesSpan = document.createElement('span');
                     noCoursesSpan.classList.add('text-muted', 'text-center');
-                    noCoursesSpan.textContent =
-                        'Keine Kurse im aktuellen Filter vorhanden.';
+                    noCoursesSpan.textContent = $t(
+                        'myCourses.lists.empty'
+                    ).toString();
                     sidebarContent.append(noCoursesSpan);
                 }
             }));
@@ -1726,7 +2160,7 @@ ready(async () => {
 
                 if (myCoursesA) {
                     addDropdownItem({
-                        fullname: '[Meine Kurse]',
+                        fullname: `[${$t('myCourses.lists.myCoursesLink')}]`,
                         shortname: '',
                         viewurl: '/my/courses.php',
                     });
@@ -1737,8 +2171,9 @@ ready(async () => {
                 if (!courses.length) {
                     const noCoursesSpan = document.createElement('span');
                     noCoursesSpan.classList.add('text-muted', 'text-center');
-                    noCoursesSpan.textContent =
-                        'Keine Kurse im aktuellen Filter vorhanden.';
+                    noCoursesSpan.textContent = $t(
+                        'myCourses.lists.empty'
+                    ).toString();
                     dropdownMenu?.append(noCoursesSpan);
                     mobileDropdownMenu?.append(noCoursesSpan.cloneNode(true));
                 }
@@ -1919,8 +2354,9 @@ ready(() => {
     settingsBtn.role = 'button';
     const settingsIcon = document.createElement('i');
     settingsIcon.classList.add('icon', 'fa', 'fa-gears', 'fa-fw');
-    settingsIcon.title = settingsBtn.ariaLabel =
-        'Einstellungen von Better-Moodle';
+    settingsIcon.title = settingsBtn.ariaLabel = `Better-Moodle:\xa0${$t(
+        'modals.settings.title'
+    ).toString()}`;
     settingsIcon.role = 'img';
     settingsBtn.append(settingsIcon);
 
@@ -1940,7 +2376,7 @@ ready(() => {
     helpBtn.href = '#';
     const helpIcon = document.createElement('i');
     helpIcon.classList.add('fa', 'fa-question-circle', 'fa-fw');
-    helpBtn.append(helpIcon, 'Hilfe zu Better-Moodle');
+    helpBtn.append(helpIcon, $t('modals.help.title').toString());
 
     let fieldsetCounter = 0;
     let currentFieldset;
@@ -2059,7 +2495,7 @@ ready(() => {
             );
             const label = document.createElement('label');
             label.classList.add('d-inline', 'word-break');
-            label.textContent = setting.name;
+            label.textContent = $t(`settings.${setting.id}.name`).toString();
 
             const descWrapper = document.createElement('div');
             descWrapper.classList.add(
@@ -2073,7 +2509,9 @@ ready(() => {
             descBtn.dataset.container = 'body';
             descBtn.dataset.toggle = 'popover';
             descBtn.dataset.placement = 'right';
-            descBtn.dataset.content = setting.description;
+            descBtn.dataset.content = $t(
+                `settings.${setting.id}.description`
+            ).toString();
             descBtn.dataset.trigger = 'focus';
             descBtn.dataset.originalTitle = '';
             descBtn.title = '';
@@ -2241,9 +2679,9 @@ ready(() => {
             type: types.SAVE_CANCEL,
             large: true,
             scrollable: true,
-            title: `${
-                githubLink('').outerHTML
-            }&nbsp;Better-Moodle: Einstellungen`,
+            title: `${githubLink('').outerHTML} Better-Moodle:&nbsp;${$t(
+                'modals.settings.title'
+            )}`,
             body: form,
         }).then(modal => {
             const updateBadge = document.createElement('div');
@@ -2277,7 +2715,9 @@ ready(() => {
             const moodleSettingsLink = document.createElement('a');
             moodleSettingsLink.href = '/user/preferences.php';
             moodleSettingsLink.target = '_blank';
-            moodleSettingsLink.textContent = 'Zu den Moodle-Einstellungen';
+            moodleSettingsLink.textContent = $t(
+                'modals.settings.moodleSettings'
+            ).toString();
             moodleSettingsLink.style.setProperty('padding', '1rem 1rem');
             moodleSettingsLink.style.setProperty(
                 'margin',
@@ -2330,24 +2770,24 @@ ready(() => {
             latestCode.textContent = latestScriptVersion.join('.');
 
             versionSpan.append(
-                'installierte Version:\xa0',
+                `${$t('modals.settings.installedVersion')}:\xa0`,
                 currentCode,
                 ' ',
-                'aktuellste Version:\xa0',
+                `${$t('modals.settings.installedVersion')}:\xa0`,
                 latestCode
             );
 
             const updateBtn = document.createElement('a');
             updateBtn.classList.add('btn-primary', 'btn-sm', 'ml-2');
             updateBtn.href = '#';
-            updateBtn.textContent = 'Update installieren';
+            updateBtn.textContent = $t('modals.settings.updateBtn').toString();
 
             updateBtn.addEventListener('click', e => {
                 e.preventDefault();
                 create({
                     type: types.ALERT,
-                    title: 'Better-Moodle aktualisieren',
-                    body: 'Den Anweisungen zum Aktualisieren im Script-Manager (z.&nbsp;B. Tampermonkey) folgen und anschließend Moodle neu laden.',
+                    title: $t('modals.update.title'),
+                    body: $t('modals.update.content'),
                 }).then(modal => modal.show());
                 open(GM_info.script.updateURL, '_self');
             });
@@ -2389,7 +2829,7 @@ ready(() => {
             const changelogIcon = document.createElement('i');
             changelogIcon.classList.add('fa', 'fa-history', 'fa-fw');
             const changelogText = document.createElement('span');
-            changelogText.textContent = 'Changelog';
+            changelogText.textContent = $t('modals.changelog').toString();
             changelogBtn.append(changelogIcon, changelogText);
 
             changelogBtn.addEventListener('click', e => {
@@ -2400,7 +2840,7 @@ ready(() => {
                     scrollable: true,
                     title: `${
                         githubLink('/blob/main/CHANGELOG.md').outerHTML
-                    }&nbsp;Better-Moodle: Changelog`,
+                    } Better-Moodle:&nbsp;${$t('modals.changelog')}`,
                     body: fetch(
                         `https://raw.githubusercontent.com/jxn-30/better-moodle/main/CHANGELOG.md?_=${
                             Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
@@ -2425,77 +2865,43 @@ ready(() => {
                     type: types.ALERT,
                     large: true,
                     scrollable: true,
-                    title: 'Hilfe zu Better-Moodle',
+                    title: $t('modals.help.title'),
                     body: mdToHtml(
-                        `
-# Schön, dass du dieses Fensterchen gefunden hast! 🎉
-
----
-
-## Wie funktioniert ...? Was wenn ...?
-
-Lies dir gerne zunächst einmal die FAQ von Better-Moodle durch: [Better-Moodle FAQ](${githubLink(
-                            '#faq'
-                        )}).
-
-## Okay cool, aber da steht XY nicht mit dabei. Was nun?
-
-Schreib doch gerne eine Mail an Jan: [${cntctAdr}](${getEmail(
-                            'Better-Moodle: Ich benötige bitte Hilfe',
-                            `Hallo Jan,
-
-ich habe eine Frage zu Better-Moodle, die ich aber leider nicht duch die FAQ beantwortet bekommen habe:
-
-[...]
-
-Vielen Dank und liebe Grüße
-[Name]`
-                        )}).
-
-Denke dabei bitte daran, über deine Uni-Mail-Adresse und nicht über deine Private Email zu schreiben.
-
-## Ich habe einen Fehler gefunden!
-
-Huch, in Better-Moodle gibt es doch keine Fehler? 😱
-
-Spaß beiseite, auch in Better-Moodle kann es mal vorkommen, dass ein Fehler auftritt. Eröffne gerne ein neues Issue auf [GitHub](${githubPath(
-                            '/issues/new?labels=bug&template=bug.yml&title=%5BBUG%5D%3A+'
-                        )}) oder schreibe Jan eine Mail, wenn du kein GitHub nutzen möchtest: [${cntctAdr}](${getEmail(
-                            'Better-Moodle: Bug-Report',
-                            `Hallo Jan,
-ich habe einen Bug in Better-Moodle gefunden!
-
-Ich nutze diesen Browser:
-Ich nutze diese Version von Better-Moodle: ${currentScriptVersion.join('.')}
-Diese Schritte habe ich durchgeführt, als das Problem aufgetreten ist:
-Dieses Verhalten hätte ich stattdessen erwartet:
-
-Viele Grüße
-[Dein Name]`
-                        )}).
-
-Bitte gebe dabei auch immer so viele Informationen wie möglich an, damit der Fehler optimal nachvollzogen und reproduziert werden kann.
-Das hilft, ihn schneller und effizienter zu beheben.
-
-## Ich habe eine tolle Idee für ein neues Feature!
-
-Erstelle gerne ein Issue auf [GitHub](${githubPath(
-                            '/issues/new?labels=&template=feature.yml&title=%5BFeature+request%5D%3A+'
-                        )}), reiche dort eine Contribution ein oder schreibe eine Mail an Jan: [${cntctAdr}](${getEmail(
-                            'Better-Moodle: Feature-Idee',
-                            `Hallo Jan,
-ich habe einen tollen Vorschlag für Better-Moodle:
-
-[hier eine ausführliche Beschreibung des Vorschlags]
-
-Viele Grüße
-[Dein Name]`
-                        )})
-                        `.trim(),
+                        $t('modals.help.content', {
+                            faqLink: githubPath('#faq'),
+                            mailAdress: cntctAdr,
+                            mailLinkHelp: getEmail(
+                                `Better Moodle: ${$t(
+                                    'modals.help.mails.help.subject'
+                                )}`,
+                                $t('modals.help.mails.help.content')
+                            ),
+                            githubIssueBug: githubPath(
+                                '/issues/new?labels=bug&template=bug.yml&title=%5BBUG%5D%3A+'
+                            ),
+                            mailLinkBug: getEmail(
+                                `Better Moodle: ${$t(
+                                    'modals.help.mails.bug.subject'
+                                )}`,
+                                $t('modals.help.mails.bug.content', {
+                                    currentVersion:
+                                        currentScriptVersion.join('.'),
+                                })
+                            ),
+                            githubIssueFeature: githubPath(
+                                '/issues/new?labels=&template=feature.yml&title=%5BFeature+request%5D%3A+'
+                            ),
+                            mailLinkFeature: getEmail(
+                                `Better Moodle: ${$t(
+                                    'modals.help.mails.feature.subject'
+                                )}`,
+                                $t('modals.help.mails.feature.content')
+                            ),
+                        }).trim(),
                         3
                     ),
                 }).then(modal => {
-                    modal.setButtonText('cancel', 'Danke für diese Hilfe! 😊');
+                    modal.setButtonText('cancel', $t('modals.help.close'));
                     modal.show();
                 });
             });
@@ -2508,7 +2914,7 @@ Viele Grüße
             const exportIcon = document.createElement('i');
             exportIcon.classList.add('fa', 'fa-download', 'fa-fw');
             const exportText = document.createElement('span');
-            exportText.textContent = 'Einstellungen exportieren';
+            exportText.textContent = $t('modals.settings.export').toString();
             exportBtn.append(exportIcon, exportText);
 
             exportBtn.addEventListener('click', e => {
@@ -2534,7 +2940,7 @@ Viele Grüße
             const importIcon = document.createElement('i');
             importIcon.classList.add('fa', 'fa-upload', 'fa-fw');
             const importText = document.createElement('span');
-            importText.textContent = 'Einstellungen importieren';
+            importText.textContent = $t('modals.settings.import').toString();
             importBtn.append(importIcon, importText);
 
             importBtn.addEventListener('click', e => {
