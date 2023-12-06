@@ -12,13 +12,15 @@
 
 [//]: # 'TODO: More english translations'
 
-Better-Moodle ist ein Userscript, um das Design vom [UzL Moodle](https://moodle.uni-luebeck.de/) zu verbessern und zusätzliche, coole Features hinzuzufügen
+Better-Moodle ist ein Userscript, um das Design vom [UzL Moodle](https://moodle.uni-luebeck.de/) zu verbessern und zusätzliche, coole Features hinzuzufügen.
+
+🇬🇧 Better-Moodle is a userscript to improve the design of [UzL Moodle](https://moodle.uni-luebeck.de/) and add additional, cool features.
 
 _Bilder in dieser Beschreibung enthalten teilweise verschwommene Elemente, um den Datenschutz zu wahren._
 
 > **🇬🇧 English Version**
 >
-> Better-Moodle, currently, does not have an english Version, however it is already planned ([#77](https://github.com/jxn-30/better-moodle/issues/77)).
+> Better-Moodle will use English translations whenever the page indicates to be in english.
 >
 > Within this README, English texts can be found - if available - in the extendable areas marked with `🇬🇧`. They can be opened and closed by clicking on the respective area.
 
