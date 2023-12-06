@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/jxn-30/better-moodle/compare/1.19.0...1.20.0) (2023-12-06)
+
+
+### Features
+
+* **courses:** new feature to hide self-enrol hint ([98f10a1](https://github.com/jxn-30/better-moodle/commit/98f10a12d14ef7447e6f9110083b0800ec37ec26))
+
 ## [1.19.0](https://github.com/jxn-30/better-moodle/compare/1.18.4...1.19.0) (2023-12-06)
 
 
