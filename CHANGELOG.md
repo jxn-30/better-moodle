@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.19.0](https://github.com/jxn-30/better-moodle/compare/1.18.4...1.19.0) (2023-12-06)
+
+
+### Features
+
+* add english translations ([#77](https://github.com/jxn-30/better-moodle/issues/77)) ([c624461](https://github.com/jxn-30/better-moodle/commit/c624461e1b982c17f325ed9deb85a03966930dd4))
+
+
+### Bug Fixes
+
+* **bookmarks:** default bookmarks manager to be disabled ([5a721b9](https://github.com/jxn-30/better-moodle/commit/5a721b95ebdc7431ca70338cc0aee323b7a84c72))
+
 ## [1.18.4](https://github.com/jxn-30/better-moodle/compare/1.18.3...1.18.4) (2023-12-05)
 
 
