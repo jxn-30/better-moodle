@@ -1084,7 +1084,7 @@ const SETTINGS = [
     {
         id: 'general.bookmarkManager',
         type: Boolean,
-        default: true,
+        default: false,
     },
     {
         id: 'general.noDownload',
