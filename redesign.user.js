@@ -243,6 +243,11 @@ Viele Grüße
                     description:
                         'Zoomt ein Bild heran, wenn es angeklickt wird. So lassen sich kleine Bilder einfach per Knopfdruck vergrößert anzeigen.',
                 },
+                hideSelfEnrolHint: {
+                    name: 'Hinweis zur Selbsteinschreibung ohne Einschreibeschlüssel ausblenden',
+                    description:
+                        'Moodle zeigt einen Hinweis an, wenn bei einem Kurs die Selbsteinschreibung ohne Einschreibeschlüssel aktiviert ist. Manche empfinden diesen Hinweis als störend, deshalb kann er mit dieser Einstellung ausgeblendet werden.',
+                },
             },
             messages: {
                 _title: 'Mitteilungen',
@@ -473,6 +478,11 @@ Best regards
                     name: 'Zoom images',
                     description:
                         'Zooms in on an image when it is clicked. This allows small images to be enlarged at the touch of a button.',
+                },
+                hideSelfEnrolHint: {
+                    name: 'Hide hint for self-enrollment without enrollment key',
+                    description:
+                        'Moodle displays a hint when self-enrollment without an enrollment key is enabled for a course. Some people find this hint annoying, so it can be hidden with this setting.',
                 },
             },
             messages: {
@@ -1165,6 +1175,11 @@ const SETTINGS = [
         id: 'courses.imageZoom',
         type: Boolean,
         default: true,
+    },
+    {
+        id: 'courses.hideSelfEnrolHint',
+        type: Boolean,
+        default: false,
     },
     $t('settings.messages._title'),
     {
@@ -2293,6 +2308,16 @@ if (getSetting('courses.imageZoom')) {
             .querySelector('#page-content .course-content')
             ?.addEventListener('click', zoomImage)
     );
+}
+// endregion
+
+// region Feature: courses.hideSelfEnrolHint
+if (getSetting('courses.hideSelfEnrolHint')) {
+    GM_addStyle(`
+.course-hint-selfenrol.alert.alert-info {
+    display: none !important;
+}
+`);
 }
 // endregion
 

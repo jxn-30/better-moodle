@@ -14,7 +14,7 @@
 
 Better-Moodle ist ein Userscript, um das Design vom [UzL Moodle](https://moodle.uni-luebeck.de/) zu verbessern und zusätzliche, coole Features hinzuzufügen.
 
-🇬🇧 Better-Moodle is a userscript to improve the design of [UzL Moodle](https://moodle.uni-luebeck.de/) and add additional, cool features.
+🇬🇧 Better-Moodle is an userscript to improve the design of [UzL Moodle](https://moodle.uni-luebeck.de/) and add additional, cool features.
 
 _Bilder in dieser Beschreibung enthalten teilweise verschwommene Elemente, um den Datenschutz zu wahren._
 
@@ -164,6 +164,10 @@ Ist ein Bild sehr breit, so kann es passieren, dass es in den Seiten eines Kurse
 ### Bilder zoomen
 
 Kleine Bilder sind schwer zu erkennen, deshalb ermöglicht es dir diese Einstellung, Bilder in Kursinhalten per Klick heranzuzoomen, um sie besser erkennen zu können. Per Klick auf das heran gezoomte Bild kannst du es wieder auf Standardgröße zurücksetzen.
+
+### Hinweis zur Selbsteinschreibung ohne Einschreibeschlüssel ausblenden
+
+In manchen Kursen zeigt Moodle einen Hinweis an, dass die Selbsteinschreibung ohne Einschreibeschlüssel aktiviert ist (nur NutzerInnen mit entsprechenden Rechten können diesen Hinweis sehen). Dieser Hinweis kann mit dieser Einstellung ausgeblendet werden.
 
 ### Mitteilungen per Tastenkombination absenden
 
