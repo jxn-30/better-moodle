@@ -198,82 +198,82 @@
             "vn": {
                 "title": "vegan",
                 "abk": "",
-                "img": "/upload/img/iconprop_vegan.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_vegan.hd.png?h=80&t=2"
             },
             "ve": {
                 "title": "vegetarisch",
                 "abk": "",
-                "img": "/upload/img/iconprop_vegetarisch.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_vegetarisch.hd.png?h=80&t=2"
             },
             "MV": {
                 "title": "mensaVital",
                 "abk": "",
-                "img": "/upload/img/iconprop_mv.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_mv.hd.png?h=80&t=2"
             },
             "SHT": {
                 "title": "Schleswig-Holstein Teller",
                 "abk": "",
-                "img": "/upload/img/sh_teller1.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/sh_teller1.png?h=80&t=2"
             },
             "BIO": {
                 "title": "mit Zutat aus ökologischer Erzeugung, s. (Bio)-Hinweis",
                 "abk": "",
-                "img": "/upload/img/iconprop_bio.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_bio.hd.png?h=80&t=2"
             },
             "S": {
                 "title": "Schwein",
                 "abk": "",
-                "img": "/upload/img/iconprop_ags.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_ags.hd.png?h=80&t=2"
             },
             "R": {
                 "title": "Rind",
                 "abk": "",
-                "img": "/upload/img/iconprop_r.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_r.hd.png?h=80&t=2"
             },
             "L": {
                 "title": "Lamm",
                 "abk": "",
-                "img": "/upload/img/iconprop_l.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_l.hd.png?h=80&t=2"
             },
             "G": {
                 "title": "Geflügel",
                 "abk": "",
-                "img": "/upload/img/iconprop_g.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_g.hd.png?h=80&t=2"
             },
             "AGS": {
                 "title": "Schwein aus artgerechter Haltung",
                 "abk": "",
-                "img": "/upload/img/iconprop_s.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_s.hd.png?h=80&t=2"
             },
             "AGR": {
                 "title": "Rind aus artgerechter Haltung",
                 "abk": "",
-                "img": "/upload/img/iconprop_agr.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_agr.hd.png?h=80&t=2"
             },
             "AGL": {
                 "title": "Lamm aus artgerechter Haltung",
                 "abk": "",
-                "img": "/upload/img/iconprop_agl.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_agl.hd.png?h=80&t=2"
             },
             "AGG": {
                 "title": "Geflügel aus artgerechter Haltung",
                 "abk": "",
-                "img": "/upload/img/iconprop_agg.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_agg.hd.png?h=80&t=2"
             },
             "AGF": {
                 "title": "Fisch aus artgerechter Haltung",
                 "abk": "",
-                "img": "/upload/img/iconprop_agf.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_agf.hd.png?h=80&t=2"
             },
             "A": {
                 "title": "ohne Alkohol",
                 "abk": "",
-                "img": "/upload/img/iconprop_a.hd.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/iconprop_a.hd.png?h=80&t=2"
             },
             "IN": {
                 "title": "Internationale Speisen",
                 "abk": "",
-                "img": "/upload/img/international.png?h=80&t=2"
+                "img": "https://studentenwerk.sh/upload/img/international.png?h=80&t=2"
             }
         }
     },
@@ -447,6 +447,28 @@
                 "mensa": false,
                 "items": [
                     {
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "G"
+                ],
+                "preise": [
+                    3.5,
+                    3.5,
+                    3.5
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
                         "name": " Currywurst",
                         "zusatz": "(10, Sf)"
                     }
@@ -464,28 +486,6 @@
                     3.35,
                     3.35,
                     3.35
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "G"
-                ],
-                "preise": [
-                    3.5,
-                    3.5,
-                    3.5
                 ]
             }
         ],
@@ -730,28 +730,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "G"
-                ],
-                "preise": [
-                    3.5,
-                    3.5,
-                    3.5
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Currywurst",
                         "zusatz": "(10, Sf)"
                     }
@@ -769,6 +747,28 @@
                     3.35,
                     3.35,
                     3.35
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "G"
+                ],
+                "preise": [
+                    3.5,
+                    3.5,
+                    3.5
                 ]
             }
         ],
@@ -889,6 +889,27 @@
                 "mensa": false,
                 "items": [
                     {
+                        "name": " Ofenkartoffel mit Sour Creme",
+                        "zusatz": "(Mi)"
+                    }
+                ],
+                "allergene": [
+                    "Mi"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "ve"
+                ],
+                "preise": [
+                    3.3,
+                    3.3,
+                    3.3
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
                         "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
                         "zusatz": "(Ei, Mi)"
                     }
@@ -905,27 +926,6 @@
                     3.6,
                     3.6,
                     3.6
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
-                        "name": " Ofenkartoffel mit Sour Creme",
-                        "zusatz": "(Mi)"
-                    }
-                ],
-                "allergene": [
-                    "Mi"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve"
-                ],
-                "preise": [
-                    3.3,
-                    3.3,
-                    3.3
                 ]
             },
             {
@@ -1058,25 +1058,6 @@
                 "mensa": true,
                 "items": [
                     {
-                        "name": " planted.Bratwurst"
-                    }
-                ],
-                "allergene": [],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve",
-                    "vn"
-                ],
-                "preise": [
-                    1.2,
-                    1.3,
-                    1.4
-                ]
-            },
-            {
-                "mensa": true,
-                "items": [
-                    {
                         "name": " Kochwurst",
                         "zusatz": "(2, 3, 4, 8, 10, Sf, Sl)"
                     }
@@ -1100,6 +1081,25 @@
                     1.35,
                     1.75,
                     2.05
+                ]
+            },
+            {
+                "mensa": true,
+                "items": [
+                    {
+                        "name": " planted.Bratwurst"
+                    }
+                ],
+                "allergene": [],
+                "zusatzstoffe": [],
+                "arten": [
+                    "ve",
+                    "vn"
+                ],
+                "preise": [
+                    1.2,
+                    1.3,
+                    1.4
                 ]
             },
             {
@@ -1168,28 +1168,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "G"
-                ],
-                "preise": [
-                    3.5,
-                    3.5,
-                    3.5
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Currywurst",
                         "zusatz": "(10, Sf)"
                     }
@@ -1207,6 +1185,28 @@
                     3.35,
                     3.35,
                     3.35
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "G"
+                ],
+                "preise": [
+                    3.5,
+                    3.5,
+                    3.5
                 ]
             }
         ],
@@ -1408,28 +1408,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "G"
-                ],
-                "preise": [
-                    3.5,
-                    3.5,
-                    3.5
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Currywurst",
                         "zusatz": "(10, Sf)"
                     }
@@ -1447,6 +1425,28 @@
                     3.35,
                     3.35,
                     3.35
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "G"
+                ],
+                "preise": [
+                    3.5,
+                    3.5,
+                    3.5
                 ]
             }
         ],
@@ -1586,27 +1586,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Ofenkartoffel mit Sour Creme",
-                        "zusatz": "(Mi)"
-                    }
-                ],
-                "allergene": [
-                    "Mi"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve"
-                ],
-                "preise": [
-                    3.3,
-                    3.3,
-                    3.3
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
                         "zusatz": "(Ei, Mi)"
                     }
@@ -1629,22 +1608,21 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
+                        "name": " Ofenkartoffel mit Sour Creme",
+                        "zusatz": "(Mi)"
                     }
                 ],
                 "allergene": [
-                    "GlW",
-                    "GlG"
+                    "Mi"
                 ],
                 "zusatzstoffe": [],
                 "arten": [
-                    "G"
+                    "ve"
                 ],
                 "preise": [
-                    3.5,
-                    3.5,
-                    3.5
+                    3.3,
+                    3.3,
+                    3.3
                 ]
             },
             {
@@ -1668,6 +1646,28 @@
                     3.35,
                     3.35,
                     3.35
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "G"
+                ],
+                "preise": [
+                    3.5,
+                    3.5,
+                    3.5
                 ]
             }
         ],
@@ -1810,41 +1810,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Döner Style Teller mit Gyros",
-                        "zusatz": "(GlW, GlG, Se)"
-                    },
-                    {
-                        "name": " veganer Tzatziki",
-                        "zusatz": "(3, Sf, So)"
-                    },
-                    {
-                        "name": " vegane Curry  Mayonnaise",
-                        "zusatz": "(Sf, So)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG",
-                    "Se",
-                    "Sf",
-                    "So"
-                ],
-                "zusatzstoffe": [
-                    "3"
-                ],
-                "arten": [
-                    "S"
-                ],
-                "preise": [
-                    4.95,
-                    4.95,
-                    4.95
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Planted Döner Style Teller",
                         "zusatz": "(GlW, GlG, Se, Sf)"
                     },
@@ -1870,6 +1835,41 @@
                 "arten": [
                     "ve",
                     "vn"
+                ],
+                "preise": [
+                    4.95,
+                    4.95,
+                    4.95
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Döner Style Teller mit Gyros",
+                        "zusatz": "(GlW, GlG, Se)"
+                    },
+                    {
+                        "name": " veganer Tzatziki",
+                        "zusatz": "(3, Sf, So)"
+                    },
+                    {
+                        "name": " vegane Curry  Mayonnaise",
+                        "zusatz": "(Sf, So)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG",
+                    "Se",
+                    "Sf",
+                    "So"
+                ],
+                "zusatzstoffe": [
+                    "3"
+                ],
+                "arten": [
+                    "S"
                 ],
                 "preise": [
                     4.95,
@@ -1943,28 +1943,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "G"
-                ],
-                "preise": [
-                    3.5,
-                    3.5,
-                    3.5
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Currywurst",
                         "zusatz": "(10, Sf)"
                     }
@@ -1982,6 +1960,28 @@
                     3.35,
                     3.35,
                     3.35
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "G"
+                ],
+                "preise": [
+                    3.5,
+                    3.5,
+                    3.5
                 ]
             }
         ],
@@ -2109,6 +2109,28 @@
                 "mensa": false,
                 "items": [
                     {
+                        "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
+                        "zusatz": "(Ei, Mi)"
+                    }
+                ],
+                "allergene": [
+                    "Ei",
+                    "Mi"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "ve"
+                ],
+                "preise": [
+                    3.6,
+                    3.6,
+                    3.6
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
                         "name": " Ofenkartoffel mit Sour Creme",
                         "zusatz": "(Mi)"
                     }
@@ -2130,22 +2152,22 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
-                        "zusatz": "(Ei, Mi)"
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
                     }
                 ],
                 "allergene": [
-                    "Ei",
-                    "Mi"
+                    "GlW",
+                    "GlG"
                 ],
                 "zusatzstoffe": [],
                 "arten": [
-                    "ve"
+                    "G"
                 ],
                 "preise": [
-                    3.6,
-                    3.6,
-                    3.6
+                    3.5,
+                    3.5,
+                    3.5
                 ]
             },
             {
@@ -2169,28 +2191,6 @@
                     3.35,
                     3.35,
                     3.35
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "G"
-                ],
-                "preise": [
-                    3.5,
-                    3.5,
-                    3.5
                 ]
             }
         ],
@@ -2370,28 +2370,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "G"
-                ],
-                "preise": [
-                    3.5,
-                    3.5,
-                    3.5
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Currywurst",
                         "zusatz": "(10, Sf)"
                     }
@@ -2409,6 +2387,28 @@
                     3.35,
                     3.35,
                     3.35
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "G"
+                ],
+                "preise": [
+                    3.5,
+                    3.5,
+                    3.5
                 ]
             }
         ],
@@ -2521,26 +2521,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Handpizza Margherita",
-                        "zusatz": "(GlW, Mi)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "Mi"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve"
-                ],
-                "preise": [
-                    null
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Handpizza Salami",
                         "zusatz": "(2, 3, GlW, Mi, Sf)"
                     }
@@ -2567,11 +2547,12 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Ofenkartoffel mit Sour Creme",
-                        "zusatz": "(Mi)"
+                        "name": " Handpizza Margherita",
+                        "zusatz": "(GlW, Mi)"
                     }
                 ],
                 "allergene": [
+                    "GlW",
                     "Mi"
                 ],
                 "zusatzstoffe": [],
@@ -2579,9 +2560,7 @@
                     "ve"
                 ],
                 "preise": [
-                    3.3,
-                    3.3,
-                    3.3
+                    null
                 ]
             },
             {
@@ -2604,6 +2583,27 @@
                     3.6,
                     3.6,
                     3.6
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Ofenkartoffel mit Sour Creme",
+                        "zusatz": "(Mi)"
+                    }
+                ],
+                "allergene": [
+                    "Mi"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "ve"
+                ],
+                "preise": [
+                    3.3,
+                    3.3,
+                    3.3
                 ]
             },
             {
