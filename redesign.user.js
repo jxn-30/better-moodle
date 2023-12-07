@@ -995,6 +995,95 @@ const $t = (key, args = {}) => {
         t
     );
 };
+
+/**
+ * @param {string} name
+ * @param {string} [collapseBtnId]
+ * @param {string} [containerId]
+ */
+const createFieldset = (
+    name,
+    collapseBtnId = crypto.randomUUID(),
+    containerId = crypto.randomUUID()
+) => {
+    const fieldset = document.createElement('fieldset');
+
+    const legend = document.createElement('legend');
+    legend.classList.add('sr-only');
+    legend.textContent = name;
+
+    const headerRow = document.createElement('div');
+    headerRow.classList.add('d-flex', 'align-items-center', 'mb-2');
+    const headerWrapper = document.createElement('div');
+    headerWrapper.classList.add(
+        'position-relative',
+        'd-flex',
+        'ftoggler',
+        'align-items-center',
+        'position-relative',
+        'w-100'
+    );
+    const collapseBtn = document.createElement('a');
+    collapseBtn.classList.add(
+        'btn',
+        'btn-icon',
+        'mr-1',
+        'icons-collapse-expand',
+        'stretched-link',
+        'fheader'
+    );
+    collapseBtn.dataset.toggle = 'collapse';
+    collapseBtn.id = PREFIX(collapseBtnId);
+    const expandedSpan = document.createElement('span');
+    expandedSpan.classList.add('expanded-icon', 'icon-no-margin', 'p-2');
+    expandedSpan.title = 'Einklappen';
+    const expandedIcon = document.createElement('i');
+    expandedIcon.classList.add('icon', 'fa', 'fa-chevron-down', 'fa-fw');
+    expandedSpan.append(expandedIcon);
+    const collapsedSpan = document.createElement('span');
+    collapsedSpan.classList.add('collapsed-icon', 'icon-no-margin', 'p-2');
+    collapsedSpan.title = 'Ausklappen';
+    const collapsedLTRIcon = document.createElement('i');
+    collapsedLTRIcon.classList.add(
+        'icon',
+        'fa',
+        'fa-chevron-right',
+        'fa-fw',
+        'dir-ltr-hide'
+    );
+    const collapsedRTLIcon = document.createElement('i');
+    collapsedRTLIcon.classList.add(
+        'icon',
+        'fa',
+        'fa-chevron-right',
+        'fa-fw',
+        'dir-rtl-hide'
+    );
+    collapsedSpan.append(collapsedLTRIcon, collapsedRTLIcon);
+    collapseBtn.append(expandedSpan, collapsedSpan);
+
+    const heading = document.createElement('h3');
+    heading.classList.add(
+        'd-flex',
+        'align-self-stretch',
+        'align-items-center',
+        'mb-0',
+        'w-100'
+    );
+    heading.textContent = name;
+
+    headerWrapper.append(collapseBtn, heading);
+    headerRow.append(headerWrapper);
+
+    const container = document.createElement('div');
+    container.classList.add('fcontainer', 'collapseable', 'collapse');
+    container.id = PREFIX(containerId);
+    collapseBtn.href = `#${container.id}`;
+
+    fieldset.append(legend, headerRow, container);
+
+    return { fieldset, legend, headerRow, container, heading, collapseBtn };
+};
 // endregion
 
 // region Global styles
@@ -2409,103 +2498,35 @@ ready(() => {
     /**
      * @param {string} name
      */
-    const createFieldset = name => {
-        const fieldset = (currentFieldset = document.createElement('fieldset'));
-        form.append(fieldset);
-
-        const legend = document.createElement('legend');
-        legend.classList.add('sr-only');
-        legend.textContent = name;
-
-        const headerRow = document.createElement('div');
-        headerRow.classList.add('d-flex', 'align-items-center', 'mb-2');
-        const headerWrapper = document.createElement('div');
-        headerWrapper.classList.add(
-            'position-relative',
-            'd-flex',
-            'ftoggler',
-            'align-items-center',
-            'position-relative',
-            'w-100'
+    const createSettingsFieldset = name => {
+        const fieldset = createFieldset(
+            name,
+            `settings-collapseElement-${fieldsetCounter}`,
+            `settings-containerElement-${fieldsetCounter}`
         );
-        const collapseBtn = document.createElement('a');
-        collapseBtn.classList.add(
-            'btn',
-            'btn-icon',
-            'mr-1',
-            'icons-collapse-expand',
-            'stretched-link',
-            'fheader'
-        );
-        collapseBtn.dataset.toggle = 'collapse';
-        collapseBtn.id = PREFIX(`settings-collapseElement-${fieldsetCounter}`);
-        const expandedSpan = document.createElement('span');
-        expandedSpan.classList.add('expanded-icon', 'icon-no-margin', 'p-2');
-        expandedSpan.title = 'Einklappen';
-        const expandedIcon = document.createElement('i');
-        expandedIcon.classList.add('icon', 'fa', 'fa-chevron-down', 'fa-fw');
-        expandedSpan.append(expandedIcon);
-        const collapsedSpan = document.createElement('span');
-        collapsedSpan.classList.add('collapsed-icon', 'icon-no-margin', 'p-2');
-        collapsedSpan.title = 'Ausklappen';
-        const collapsedLTRIcon = document.createElement('i');
-        collapsedLTRIcon.classList.add(
-            'icon',
-            'fa',
-            'fa-chevron-right',
-            'fa-fw',
-            'dir-ltr-hide'
-        );
-        const collapsedRTLIcon = document.createElement('i');
-        collapsedRTLIcon.classList.add(
-            'icon',
-            'fa',
-            'fa-chevron-right',
-            'fa-fw',
-            'dir-rtl-hide'
-        );
-        collapsedSpan.append(collapsedLTRIcon, collapsedRTLIcon);
-        collapseBtn.append(expandedSpan, collapsedSpan);
-
-        const heading = document.createElement('h3');
-        heading.classList.add(
-            'd-flex',
-            'align-self-stretch',
-            'align-items-center',
-            'mb-0',
-            'w-100'
-        );
-        heading.textContent = name;
+        currentFieldset = fieldset.fieldset;
+        form.append(currentFieldset);
 
         // on first fieldset, show the help button
-        if (!fieldsetCounter) heading.append(helpBtn);
-
-        headerWrapper.append(collapseBtn, heading);
-        headerRow.append(headerWrapper);
-
-        const container = document.createElement('div');
-        container.classList.add('fcontainer', 'collapseable', 'collapse');
-        container.id = PREFIX(`settings-containerElement-${fieldsetCounter}`);
-        collapseBtn.href = `#${container.id}`;
+        if (!fieldsetCounter) fieldset.heading.append(helpBtn);
 
         // all fieldsets are collapsed by default except the first one
-        if (fieldsetCounter) collapseBtn.classList.add('collapsed');
-        else container.classList.add('show');
+        if (fieldsetCounter) fieldset.collapseBtn.classList.add('collapsed');
+        else fieldset.container.classList.add('show');
 
-        fieldset.append(legend, headerRow, container);
         fieldsetCounter++;
     };
 
     SETTINGS.forEach((setting, index) => {
         // if setting is a string, use this as a heading / fieldset
         if (typeof setting === 'string') {
-            createFieldset(setting);
+            createSettingsFieldset(setting);
         }
         // otherwise, add the settings inputs
         else {
             const SETTING_KEY = getSettingKey(setting.id);
 
-            if (!currentFieldset) createFieldset('');
+            if (!currentFieldset) createSettingsFieldset('');
 
             const settingRow = document.createElement('div');
             settingRow.classList.add('form-group', 'row', 'fitem');
