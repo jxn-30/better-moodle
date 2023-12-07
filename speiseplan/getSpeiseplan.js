@@ -49,11 +49,12 @@ const getSpeisen = (document, Node) => {
 fetch('https://studentenwerk.sh/de/mensen-in-luebeck?ort=3&mensa=8')
     .then(res => res.text())
     .then(html => new JSDOM(html))
-    .then(({ window: { document, Node } }) => {
+    .then(({ window: { document, Node, URL } }) => {
         const filters = {};
         document.querySelectorAll('.filterbutton').forEach(filter => {
             const type = filterTypes[filter.dataset.typ];
             filters[type] ??= {};
+            const img = filter.querySelector('img')?.src ?? '';
             filters[type][filter.dataset.wert] = {
                 title:
                     filter
@@ -61,7 +62,7 @@ fetch('https://studentenwerk.sh/de/mensen-in-luebeck?ort=3&mensa=8')
                         ?.textContent?.trim() ?? '',
                 abk:
                     filter.querySelector('span.abk')?.textContent?.trim() ?? '',
-                img: filter.querySelector('img')?.src ?? '',
+                img: img && new URL(img, 'https://studentenwerk.sh/').href,
             };
         });
         Object.freeze(filters);
