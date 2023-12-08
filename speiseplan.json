@@ -404,28 +404,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
-                        "zusatz": "(Ei, Mi)"
-                    }
-                ],
-                "allergene": [
-                    "Ei",
-                    "Mi"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve"
-                ],
-                "preise": [
-                    3.6,
-                    3.6,
-                    3.6
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Ofenkartoffel mit Sour Creme",
                         "zusatz": "(Mi)"
                     }
@@ -447,22 +425,22 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
+                        "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
+                        "zusatz": "(Ei, Mi)"
                     }
                 ],
                 "allergene": [
-                    "GlW",
-                    "GlG"
+                    "Ei",
+                    "Mi"
                 ],
                 "zusatzstoffe": [],
                 "arten": [
-                    "G"
+                    "ve"
                 ],
                 "preise": [
-                    3.5,
-                    3.5,
-                    3.5
+                    3.6,
+                    3.6,
+                    3.6
                 ]
             },
             {
@@ -486,6 +464,28 @@
                     3.35,
                     3.35,
                     3.35
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "G"
+                ],
+                "preise": [
+                    3.5,
+                    3.5,
+                    3.5
                 ]
             }
         ],
@@ -687,6 +687,27 @@
                 "mensa": false,
                 "items": [
                     {
+                        "name": " Ofenkartoffel mit Sour Creme",
+                        "zusatz": "(Mi)"
+                    }
+                ],
+                "allergene": [
+                    "Mi"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "ve"
+                ],
+                "preise": [
+                    3.3,
+                    3.3,
+                    3.3
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
                         "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
                         "zusatz": "(Ei, Mi)"
                     }
@@ -703,27 +724,6 @@
                     3.6,
                     3.6,
                     3.6
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
-                        "name": " Ofenkartoffel mit Sour Creme",
-                        "zusatz": "(Mi)"
-                    }
-                ],
-                "allergene": [
-                    "Mi"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve"
-                ],
-                "preise": [
-                    3.3,
-                    3.3,
-                    3.3
                 ]
             },
             {
@@ -889,27 +889,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Ofenkartoffel mit Sour Creme",
-                        "zusatz": "(Mi)"
-                    }
-                ],
-                "allergene": [
-                    "Mi"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve"
-                ],
-                "preise": [
-                    3.3,
-                    3.3,
-                    3.3
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
                         "zusatz": "(Ei, Mi)"
                     }
@@ -932,22 +911,21 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
+                        "name": " Ofenkartoffel mit Sour Creme",
+                        "zusatz": "(Mi)"
                     }
                 ],
                 "allergene": [
-                    "GlW",
-                    "GlG"
+                    "Mi"
                 ],
                 "zusatzstoffe": [],
                 "arten": [
-                    "G"
+                    "ve"
                 ],
                 "preise": [
-                    3.5,
-                    3.5,
-                    3.5
+                    3.3,
+                    3.3,
+                    3.3
                 ]
             },
             {
@@ -971,6 +949,28 @@
                     3.35,
                     3.35,
                     3.35
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "G"
+                ],
+                "preise": [
+                    3.5,
+                    3.5,
+                    3.5
                 ]
             }
         ],
@@ -1058,6 +1058,25 @@
                 "mensa": true,
                 "items": [
                     {
+                        "name": " planted.Bratwurst"
+                    }
+                ],
+                "allergene": [],
+                "zusatzstoffe": [],
+                "arten": [
+                    "ve",
+                    "vn"
+                ],
+                "preise": [
+                    1.2,
+                    1.3,
+                    1.4
+                ]
+            },
+            {
+                "mensa": true,
+                "items": [
+                    {
                         "name": " Kochwurst",
                         "zusatz": "(2, 3, 4, 8, 10, Sf, Sl)"
                     }
@@ -1084,25 +1103,6 @@
                 ]
             },
             {
-                "mensa": true,
-                "items": [
-                    {
-                        "name": " planted.Bratwurst"
-                    }
-                ],
-                "allergene": [],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve",
-                    "vn"
-                ],
-                "preise": [
-                    1.2,
-                    1.3,
-                    1.4
-                ]
-            },
-            {
                 "mensa": false,
                 "items": [
                     {
@@ -1125,27 +1125,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Ofenkartoffel mit Sour Creme",
-                        "zusatz": "(Mi)"
-                    }
-                ],
-                "allergene": [
-                    "Mi"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve"
-                ],
-                "preise": [
-                    3.3,
-                    3.3,
-                    3.3
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
                         "zusatz": "(Ei, Mi)"
                     }
@@ -1162,6 +1141,27 @@
                     3.6,
                     3.6,
                     3.6
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Ofenkartoffel mit Sour Creme",
+                        "zusatz": "(Mi)"
+                    }
+                ],
+                "allergene": [
+                    "Mi"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "ve"
+                ],
+                "preise": [
+                    3.3,
+                    3.3,
+                    3.3
                 ]
             },
             {
@@ -1408,6 +1408,28 @@
                 "mensa": false,
                 "items": [
                     {
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "G"
+                ],
+                "preise": [
+                    3.5,
+                    3.5,
+                    3.5
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
                         "name": " Currywurst",
                         "zusatz": "(10, Sf)"
                     }
@@ -1425,28 +1447,6 @@
                     3.35,
                     3.35,
                     3.35
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "G"
-                ],
-                "preise": [
-                    3.5,
-                    3.5,
-                    3.5
                 ]
             }
         ],
@@ -1586,6 +1586,27 @@
                 "mensa": false,
                 "items": [
                     {
+                        "name": " Ofenkartoffel mit Sour Creme",
+                        "zusatz": "(Mi)"
+                    }
+                ],
+                "allergene": [
+                    "Mi"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "ve"
+                ],
+                "preise": [
+                    3.3,
+                    3.3,
+                    3.3
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
                         "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
                         "zusatz": "(Ei, Mi)"
                     }
@@ -1602,27 +1623,6 @@
                     3.6,
                     3.6,
                     3.6
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
-                        "name": " Ofenkartoffel mit Sour Creme",
-                        "zusatz": "(Mi)"
-                    }
-                ],
-                "allergene": [
-                    "Mi"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve"
-                ],
-                "preise": [
-                    3.3,
-                    3.3,
-                    3.3
                 ]
             },
             {
@@ -2152,28 +2152,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "G"
-                ],
-                "preise": [
-                    3.5,
-                    3.5,
-                    3.5
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Currywurst",
                         "zusatz": "(10, Sf)"
                     }
@@ -2191,6 +2169,28 @@
                     3.35,
                     3.35,
                     3.35
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "G"
+                ],
+                "preise": [
+                    3.5,
+                    3.5,
+                    3.5
                 ]
             }
         ],
@@ -2521,6 +2521,26 @@
                 "mensa": false,
                 "items": [
                     {
+                        "name": " Handpizza Margherita",
+                        "zusatz": "(GlW, Mi)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "Mi"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "ve"
+                ],
+                "preise": [
+                    null
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
                         "name": " Handpizza Salami",
                         "zusatz": "(2, 3, GlW, Mi, Sf)"
                     }
@@ -2547,12 +2567,11 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Handpizza Margherita",
-                        "zusatz": "(GlW, Mi)"
+                        "name": " Ofenkartoffel mit Sour Creme",
+                        "zusatz": "(Mi)"
                     }
                 ],
                 "allergene": [
-                    "GlW",
                     "Mi"
                 ],
                 "zusatzstoffe": [],
@@ -2560,7 +2579,9 @@
                     "ve"
                 ],
                 "preise": [
-                    null
+                    3.3,
+                    3.3,
+                    3.3
                 ]
             },
             {
@@ -2583,27 +2604,6 @@
                     3.6,
                     3.6,
                     3.6
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
-                        "name": " Ofenkartoffel mit Sour Creme",
-                        "zusatz": "(Mi)"
-                    }
-                ],
-                "allergene": [
-                    "Mi"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve"
-                ],
-                "preise": [
-                    3.3,
-                    3.3,
-                    3.3
                 ]
             },
             {
