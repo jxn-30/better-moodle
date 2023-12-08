@@ -1,4 +1,5 @@
-import fs from 'fs/promises';
+import assert from 'node:assert';
+import fs from 'node:fs/promises';
 import { JSDOM } from 'jsdom';
 
 const filterTypes = {
@@ -74,7 +75,8 @@ const getSpeisen = (document, Node) => {
                 ?.textContent?.trim()
                 .split('/')
                 .map(p => p.trim().replace(',', '.'))
-                .map(p => parseFloat(p)),
+                .map(p => parseFloat(p))
+                .filter(Boolean),
         });
     });
     Object.values(speisen).forEach(day =>
@@ -118,7 +120,9 @@ const getLocalizedSpeiseplan = lang =>
                     abk:
                         filter.querySelector('span.abk')?.textContent?.trim() ??
                         '',
-                    img: img && new URL(img, 'https://studentenwerk.sh/').href,
+                    ...(img
+                        ? { img: new URL(img, 'https://studentenwerk.sh').href }
+                        : {}),
                 };
             });
             Object.freeze(filters);
@@ -138,13 +142,27 @@ const getLocalizedSpeiseplan = lang =>
                     return speiseplan;
                 })
         );
-Promise.all([getLocalizedSpeiseplan('de'), getLocalizedSpeiseplan('en')]).then(
-    ([de, en]) =>
-        fs.writeFile(
-            'speiseplan.json',
-            JSON.stringify({ lastUpdate: Date.now(), de, en }, null, 4),
-            {
-                encoding: 'utf-8',
-            }
+Promise.all([
+    getLocalizedSpeiseplan('de'),
+    getLocalizedSpeiseplan('en'),
+    fs.readFile('speiseplan.json', { encoding: 'utf-8' }),
+])
+    .then(([de, en, oldSpeiseplan]) => ({
+        de,
+        en,
+        oldSpeiseplan: JSON.parse(oldSpeiseplan),
+    }))
+    .then(({ de, en, oldSpeiseplan }) =>
+        assert.deepStrictEqual(
+            { de: oldSpeiseplan.de, en: oldSpeiseplan.en },
+            { de, en },
+            new Error(
+                JSON.stringify({ lastUpdate: Date.now(), de, en }, null, 4)
+            )
         )
-);
+    )
+    .catch(({ message }) =>
+        fs.writeFile('speiseplan.json', message, {
+            encoding: 'utf-8',
+        })
+    );

@@ -1,5 +1,5 @@
 {
-    "lastUpdate": 1702071964711,
+    "lastUpdate": 1702073070564,
     "de": {
         "filters": {
             "allergene": {
@@ -1346,9 +1346,7 @@
                     "arten": [
                         "ve"
                     ],
-                    "preise": [
-                        null
-                    ]
+                    "preise": []
                 },
                 {
                     "mensa": false,
@@ -2572,9 +2570,7 @@
                     "arten": [
                         "ve"
                     ],
-                    "preise": [
-                        null
-                    ]
+                    "preise": []
                 },
                 {
                     "mensa": false,
@@ -4068,9 +4064,7 @@
                     "arten": [
                         "ve"
                     ],
-                    "preise": [
-                        null
-                    ]
+                    "preise": []
                 },
                 {
                     "mensa": false,
@@ -5272,9 +5266,7 @@
                     "arten": [
                         "ve"
                     ],
-                    "preise": [
-                        null
-                    ]
+                    "preise": []
                 },
                 {
                     "mensa": false,
