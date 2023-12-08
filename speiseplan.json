@@ -597,41 +597,6 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Döner Style Teller mit Gyros",
-                        "zusatz": "(GlW, GlG, Se)"
-                    },
-                    {
-                        "name": " veganer Tzatziki",
-                        "zusatz": "(3, Sf, So)"
-                    },
-                    {
-                        "name": " vegane Curry  Mayonnaise",
-                        "zusatz": "(Sf, So)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG",
-                    "Se",
-                    "Sf",
-                    "So"
-                ],
-                "zusatzstoffe": [
-                    "3"
-                ],
-                "arten": [
-                    "S"
-                ],
-                "preise": [
-                    4.95,
-                    4.95,
-                    4.95
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
                         "name": " Planted Döner Style Teller",
                         "zusatz": "(GlW, GlG, Se, Sf)"
                     },
@@ -668,6 +633,41 @@
                 "mensa": false,
                 "items": [
                     {
+                        "name": " Döner Style Teller mit Gyros",
+                        "zusatz": "(GlW, GlG, Se)"
+                    },
+                    {
+                        "name": " veganer Tzatziki",
+                        "zusatz": "(3, Sf, So)"
+                    },
+                    {
+                        "name": " vegane Curry  Mayonnaise",
+                        "zusatz": "(Sf, So)"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlG",
+                    "Se",
+                    "Sf",
+                    "So"
+                ],
+                "zusatzstoffe": [
+                    "3"
+                ],
+                "arten": [
+                    "S"
+                ],
+                "preise": [
+                    4.95,
+                    4.95,
+                    4.95
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
                         "name": " Pommes Frites"
                     }
                 ],
@@ -681,27 +681,6 @@
                     1.95,
                     1.95,
                     1.95
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
-                        "name": " Ofenkartoffel mit Sour Creme",
-                        "zusatz": "(Mi)"
-                    }
-                ],
-                "allergene": [
-                    "Mi"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "ve"
-                ],
-                "preise": [
-                    3.3,
-                    3.3,
-                    3.3
                 ]
             },
             {
@@ -730,23 +709,21 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Currywurst",
-                        "zusatz": "(10, Sf)"
+                        "name": " Ofenkartoffel mit Sour Creme",
+                        "zusatz": "(Mi)"
                     }
                 ],
                 "allergene": [
-                    "Sf"
+                    "Mi"
                 ],
-                "zusatzstoffe": [
-                    "10"
-                ],
+                "zusatzstoffe": [],
                 "arten": [
-                    "AGS"
+                    "ve"
                 ],
                 "preise": [
-                    3.35,
-                    3.35,
-                    3.35
+                    3.3,
+                    3.3,
+                    3.3
                 ]
             },
             {
@@ -769,6 +746,29 @@
                     3.5,
                     3.5,
                     3.5
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
+                        "name": " Currywurst",
+                        "zusatz": "(10, Sf)"
+                    }
+                ],
+                "allergene": [
+                    "Sf"
+                ],
+                "zusatzstoffe": [
+                    "10"
+                ],
+                "arten": [
+                    "AGS"
+                ],
+                "preise": [
+                    3.35,
+                    3.35,
+                    3.35
                 ]
             }
         ],
@@ -1100,6 +1100,31 @@
                     1.35,
                     1.75,
                     2.05
+                ]
+            },
+            {
+                "mensa": true,
+                "items": [
+                    {
+                        "name": " Pulled Pork Burger",
+                        "zusatz": "(GlW, GlD)"
+                    },
+                    {
+                        "name": " Kartoffelspalten"
+                    }
+                ],
+                "allergene": [
+                    "GlW",
+                    "GlD"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "AGS"
+                ],
+                "preise": [
+                    4.95,
+                    6.75,
+                    7.45
                 ]
             },
             {
@@ -2567,6 +2592,28 @@
                 "mensa": false,
                 "items": [
                     {
+                        "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
+                        "zusatz": "(Ei, Mi)"
+                    }
+                ],
+                "allergene": [
+                    "Ei",
+                    "Mi"
+                ],
+                "zusatzstoffe": [],
+                "arten": [
+                    "ve"
+                ],
+                "preise": [
+                    3.6,
+                    3.6,
+                    3.6
+                ]
+            },
+            {
+                "mensa": false,
+                "items": [
+                    {
                         "name": " Ofenkartoffel mit Sour Creme",
                         "zusatz": "(Mi)"
                     }
@@ -2588,22 +2635,22 @@
                 "mensa": false,
                 "items": [
                     {
-                        "name": " Kartoffelgratin, Erbsen, Karotten, Gouda",
-                        "zusatz": "(Ei, Mi)"
+                        "name": " Hähnchenschnitzel, Knuspermantel",
+                        "zusatz": "(GlW, GlG)"
                     }
                 ],
                 "allergene": [
-                    "Ei",
-                    "Mi"
+                    "GlW",
+                    "GlG"
                 ],
                 "zusatzstoffe": [],
                 "arten": [
-                    "ve"
+                    "G"
                 ],
                 "preise": [
-                    3.6,
-                    3.6,
-                    3.6
+                    3.5,
+                    3.5,
+                    3.5
                 ]
             },
             {
@@ -2627,28 +2674,6 @@
                     3.35,
                     3.35,
                     3.35
-                ]
-            },
-            {
-                "mensa": false,
-                "items": [
-                    {
-                        "name": " Hähnchenschnitzel, Knuspermantel",
-                        "zusatz": "(GlW, GlG)"
-                    }
-                ],
-                "allergene": [
-                    "GlW",
-                    "GlG"
-                ],
-                "zusatzstoffe": [],
-                "arten": [
-                    "G"
-                ],
-                "preise": [
-                    3.5,
-                    3.5,
-                    3.5
                 ]
             }
         ],
