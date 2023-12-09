@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/jxn-30/better-moodle/compare/1.20.0...1.21.0) (2023-12-09)
+
+
+### Features
+
+* **speiseplan:** integrate optional speiseplan popup ([aff0964](https://github.com/jxn-30/better-moodle/commit/aff0964ecd2d97bd997dfea5fa3f2c95a7781e63))
+
 ## [1.20.0](https://github.com/jxn-30/better-moodle/compare/1.19.0...1.20.0) (2023-12-06)
 
 
