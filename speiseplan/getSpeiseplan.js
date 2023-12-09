@@ -147,11 +147,15 @@ Promise.all([
     getLocalizedSpeiseplan('en'),
     fs.readFile('speiseplan.json', { encoding: 'utf-8' }),
 ])
-    .then(([de, en, oldSpeiseplan]) => ({
-        de,
-        en,
-        oldSpeiseplan: JSON.parse(oldSpeiseplan),
-    }))
+    .then(([de, en, oldSpeiseplan]) => {
+        // They do not show the SH-Teller filter in the english version...
+        en.filters.arten.SHT ??= de.filters.arten.SHT;
+        return {
+            de,
+            en,
+            oldSpeiseplan: JSON.parse(oldSpeiseplan),
+        };
+    })
     .then(({ de, en, oldSpeiseplan }) =>
         assert.deepStrictEqual(
             { de: oldSpeiseplan.de, en: oldSpeiseplan.en },

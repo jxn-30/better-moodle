@@ -1,5 +1,5 @@
 {
-    "lastUpdate": 1702073070564,
+    "lastUpdate": 1702082792193,
     "de": {
         "filters": {
             "allergene": {
@@ -2916,6 +2916,11 @@
                     "title": "International dishes",
                     "abk": "",
                     "img": "https://studentenwerk.sh/upload/img/international.png?h=80&t=2"
+                },
+                "SHT": {
+                    "title": "Schleswig-Holstein Teller",
+                    "abk": "",
+                    "img": "https://studentenwerk.sh/upload/img/sh_teller1.png?h=80&t=2"
                 }
             }
         },
