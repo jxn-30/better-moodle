@@ -57,6 +57,17 @@ const TRANSLATIONS = {
                 myCoursesLink: 'Meine Kurse',
             },
         },
+        speiseplan: {
+            title: 'Speiseplan der Mensa',
+            close: 'Schließen',
+            toStudiwerkPage: 'Speiseplan auf der Seite des Studentenwerks',
+            lastUpdate: 'Stand',
+            table: {
+                speise: 'Gericht',
+                type: 'Art(en)',
+                price: 'Preis',
+            },
+        },
         modals: {
             settings: {
                 title: 'Einstellungen',
@@ -184,6 +195,11 @@ Viele Grüße
                     description:
                         'Zeigt einen Countdown bis Heiligabend in der Navigationsleiste an.\nHierbei handelt es sich um eine kleine Hommage an den Mathe-Vorkurs.',
                 },
+                speiseplan: {
+                    name: 'Speiseplan direkt im Moodle öffnen',
+                    description:
+                        'Öffnet den Speiseplan der Mensa in einem Popup im Moodle.',
+                },
             },
             dashboard: {
                 '_title': 'Dashboard',
@@ -289,6 +305,17 @@ Viele Grüße
             lists: {
                 empty: 'No courses with currently selected filter available.',
                 myCoursesLink: 'My courses',
+            },
+        },
+        speiseplan: {
+            title: 'Menu of the canteen',
+            close: 'Close',
+            toStudiwerkPage: 'Menu on the website of Studentenwerk',
+            lastUpdate: 'Status',
+            table: {
+                speise: 'Dish',
+                type: 'Type(s)',
+                price: 'Price',
             },
         },
         modals: {
@@ -420,6 +447,11 @@ Best regards
                     name: 'Countdown to Christmas Eve 🎄',
                     description:
                         'Displays a countdown to Christmas Eve in the navigation bar.\nThis is a small homage to the math pre-course.',
+                },
+                speiseplan: {
+                    name: 'Open canteen menu in Moodle',
+                    description:
+                        'Opens menu of the canteen in a popup in Moodle.',
                 },
             },
             dashboard: {
@@ -975,19 +1007,19 @@ const isDashboard =
     window.location.pathname === '/my/' ||
     window.location.pathname === '/my/index.php';
 
-const lang = document.documentElement.lang;
+const MOODLE_LANG = document.documentElement.lang;
 
 const $t = (key, args = {}) => {
     const t =
         key
             .split('.')
             .reduce(
-                (prev, current) => (prev || TRANSLATIONS[lang])[current],
-                TRANSLATIONS[lang]
+                (prev, current) => (prev || TRANSLATIONS[MOODLE_LANG])[current],
+                TRANSLATIONS[MOODLE_LANG]
             ) ?? key;
     if (t === key) {
         console.warn(
-            `Better-Moodle: Translation for key "${key}" on locale ${lang} not found!`
+            `Better-Moodle: Translation for key "${key}" on locale ${MOODLE_LANG} not found!`
         );
     }
     return Object.entries(args).reduce(
@@ -1030,7 +1062,8 @@ const createFieldset = (
         'mr-1',
         'icons-collapse-expand',
         'stretched-link',
-        'fheader'
+        'fheader',
+        'collapsed'
     );
     collapseBtn.dataset.toggle = 'collapse';
     collapseBtn.id = PREFIX(collapseBtnId);
@@ -1200,6 +1233,7 @@ const SETTINGS = [
         type: Boolean,
         default: false,
     },
+    { id: 'general.speiseplan', type: Boolean, default: false },
     $t('settings.dashboard._title'),
     // {Layout anpassen}
     {
@@ -1779,6 +1813,294 @@ if (getSetting('general.christmasCountdown')) {
     };
 
     updateCountdown();
+}
+// endregion
+
+// region Feature: general.speiseplan
+if (getSetting('general.speiseplan')) {
+    const foodEmojis = [
+        '🍔',
+        '🍟',
+        '🍕',
+        '🌭',
+        '🥪',
+        '🌮',
+        '🌯',
+        '🫔',
+        '🥙',
+        '🧆',
+        '🥚',
+        '🍳',
+        '🥘',
+        '🍲',
+        '🥣',
+        '🥗',
+        '🍝',
+        '🍱',
+        '🍘',
+        '🍙',
+        '🍚',
+        '🍛',
+        '🍜',
+        '🍢',
+        '🍣',
+        '🍤',
+        '🍥',
+        '🥮',
+        '🥟',
+        '🥠',
+        '🥡',
+    ];
+
+    const desktopBtn = document.createElement('li');
+    desktopBtn.classList.add('nav-item');
+    const desktopLink = document.createElement('a');
+    desktopLink.classList.add('nav-link');
+    desktopLink.href = '#';
+    desktopLink.textContent =
+        foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
+    desktopBtn.title = $t('speiseplan.title').toString();
+    desktopBtn.append(desktopLink);
+
+    const mobileBtn = document.createElement('a');
+    mobileBtn.classList.add('list-group-item', 'list-group-item-action');
+    mobileBtn.href = '#';
+    mobileBtn.textContent = `${
+        foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
+    }\xa0${$t('speiseplan.title').toString()}`;
+
+    const tableClass = PREFIX('speiseplan-table');
+    const speiseClass = PREFIX('speiseplan-speise');
+    const artenClass = PREFIX('speiseplan-arten');
+    const preiseClass = PREFIX('speiseplan-preise');
+    const abkClass = PREFIX('speiseplan-abk');
+
+    GM_addStyle(`
+.${tableClass} .${speiseClass}[data-location]::before {
+    content: attr(data-location);
+    color: #e8e6e3;
+    background-color: #586e3b;
+    font-weight: bold;
+    font-size: smaller;
+    padding: 4px;
+    border-radius: 6px;
+    margin-right: .5em;
+}
+
+.${tableClass} .${speiseClass}[data-location="Cafeteria"]::before {
+    background-color: #4b6669;
+}
+
+.${tableClass} .${speiseClass} .${abkClass} {
+    font-size: smaller;
+}
+
+.${tableClass} .${speiseClass} .${abkClass}::before {
+    margin-left: 1em;
+    content: "(";
+}
+
+.${tableClass} .${speiseClass} .${abkClass} > span:not(:last-child)::after {
+    content: "; ";
+}
+
+.${tableClass} .${speiseClass} .${abkClass}::after {
+    content: ")";
+}
+
+.${tableClass} .${artenClass} {
+    text-align: center;
+}
+
+.${tableClass} .${artenClass} img {
+    max-width: 40px;
+    max-height: 40px;
+}
+
+.${tableClass} .${preiseClass} > span:not(:last-child)::after {
+    content: "\xa0/\xa0";
+}
+`);
+
+    const createDayFieldset = (day, speisen, filter, firstFieldset) => {
+        const date = new Date(day);
+        const { fieldset, container, collapseBtn } = createFieldset(
+            date.toLocaleString(MOODLE_LANG, {
+                weekday: 'long',
+                year: undefined,
+                month: '2-digit',
+                day: '2-digit',
+            }),
+            `speiseplan-collapseElement-${day}`,
+            `speiseplan-containerElement-${day}`
+        );
+
+        // do not collapse today
+        if (firstFieldset) {
+            collapseBtn.classList.remove('collapsed');
+            container.classList.add('show');
+        }
+
+        // add the speiseplan information for the day in there
+        const table = document.createElement('table');
+        table.classList.add('table', 'generaltable', tableClass);
+        const tableHead = table.createTHead();
+        const tableHeadRow = tableHead.insertRow();
+        ['speise', 'type', 'price'].forEach(head => {
+            const headCell = document.createElement('th');
+            headCell.textContent = $t(`speiseplan.table.${head}`).toString();
+            tableHeadRow.append(headCell);
+        });
+        const tbody = table.createTBody();
+        speisen.forEach(speise => {
+            const row = tbody.insertRow();
+
+            const speiseCell = row.insertCell();
+            speiseCell.classList.add(speiseClass);
+            speiseCell.dataset.location = speise.mensa ? 'Mensa' : 'Cafeteria';
+            speise.items.forEach(({ name, zusatz }) => {
+                const speiseEl = document.createElement('span');
+                speiseEl.textContent = name;
+                if (zusatz) {
+                    const zusatzEl = document.createElement('span');
+                    zusatzEl.textContent = zusatz;
+                    zusatzEl.classList.add('text-muted');
+                    speiseEl.append('\xa0', zusatzEl);
+                }
+                speiseCell.append(speiseEl, document.createElement('br'));
+            });
+
+            const allergene = document.createElement('div');
+            allergene.classList.add(abkClass, 'text-muted');
+            speise.allergene.forEach(allergen => {
+                const allergenFilter = filter.allergene[allergen];
+                const allergenSpan = document.createElement('span');
+                allergenSpan.textContent += `${allergenFilter.abk}:\xa0${allergenFilter.title}`;
+                allergene.append(allergenSpan);
+            });
+            if (speise.allergene.length) speiseCell.append(allergene);
+            const zusatzstoffe = document.createElement('div');
+            zusatzstoffe.classList.add(abkClass, 'text-muted');
+            speise.zusatzstoffe.forEach(zusatzstoff => {
+                const zusatzstoffFilter = filter.zusatzstoffe[zusatzstoff];
+                const zusatzstoffSpan = document.createElement('span');
+                zusatzstoffSpan.textContent += `${zusatzstoffFilter.abk}:\xa0${zusatzstoffFilter.title}`;
+                zusatzstoffe.append(zusatzstoffSpan);
+            });
+            if (speise.zusatzstoffe.length) speiseCell.append(zusatzstoffe);
+
+            const artenCell = row.insertCell();
+            artenCell.classList.add(artenClass);
+            speise.arten.forEach(art => {
+                const img = document.createElement('img');
+                const artFilter = filter.arten[art];
+                img.src = artFilter.img;
+                img.alt = img.title = artFilter.title;
+                artenCell.append(img);
+            });
+
+            const preiseCell = row.insertCell();
+            preiseCell.classList.add(preiseClass);
+            speise.preise.forEach(preis => {
+                const preisEl = document.createElement('span');
+                preisEl.textContent = preis.toLocaleString(MOODLE_LANG, {
+                    style: 'currency',
+                    currency: 'EUR',
+                });
+                preiseCell.append(preisEl);
+            });
+        });
+        container.append(table);
+
+        return fieldset;
+    };
+
+    const openSpeiseplan = e => {
+        e.preventDefault();
+        let lastUpdateTimestamp = 0;
+        require(['core/modal_factory'], ({ create, types }) =>
+            create({
+                type: types.ALERT,
+                large: true,
+                scrollable: true,
+                title: `${
+                    foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
+                }\xa0${$t('speiseplan.title').toString()}`,
+                body: fetch(
+                    `https://raw.githubusercontent.com/jxn-30/better-moodle/main/speiseplan.json?_=${
+                        Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
+                    }`
+                )
+                    .then(res => res.json())
+                    .then(
+                        ({
+                            lastUpdate,
+                            [MOODLE_LANG]: { speisen, filters },
+                        }) => {
+                            lastUpdateTimestamp = lastUpdate;
+                            return Object.entries(speisen)
+                                .filter(
+                                    ([day]) =>
+                                        new Date(day) >
+                                        Date.now() - 24 * 60 * 60 * 1000
+                                )
+                                .map(([day, speisen], index) =>
+                                    createDayFieldset(
+                                        day,
+                                        speisen,
+                                        filters,
+                                        !index
+                                    )
+                                );
+                        }
+                    ),
+            }).then(modal => {
+                modal.bodyPromise.then(() => {
+                    const lastUpdateText = document.createElement('small');
+                    lastUpdateText.textContent = `${$t(
+                        'speiseplan.lastUpdate'
+                    )}:\xa0${new Date(lastUpdateTimestamp).toLocaleString(
+                        MOODLE_LANG,
+                        {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        }
+                    )}`;
+                    modal.getTitle().append('\xa0', lastUpdateText);
+                });
+                modal.setButtonText(
+                    'cancel',
+                    `🍴\xa0${$t('speiseplan.close')}`
+                );
+                modal.getBody()[0].classList.add('mform');
+
+                const studiwerkLink = document.createElement('a');
+                studiwerkLink.href = `https://studentenwerk.sh/${MOODLE_LANG}/${
+                    { de: 'mensen-in-luebeck', en: 'food-overview' }[
+                        MOODLE_LANG
+                    ]
+                }?ort=3&mensa=8`;
+                studiwerkLink.textContent = $t('speiseplan.toStudiwerkPage');
+                studiwerkLink.target = '_blank';
+                studiwerkLink.classList.add('mr-auto');
+                modal.getFooter().prepend(studiwerkLink);
+
+                modal.show();
+            }));
+    };
+
+    desktopLink.addEventListener('click', openSpeiseplan);
+    mobileBtn.addEventListener('click', openSpeiseplan);
+
+    ready(() => {
+        document.querySelector('.dropdownmoremenu')?.before(desktopBtn);
+        document
+            .querySelector('#theme_boost-drawers-primary .list-group')
+            ?.append(mobileBtn);
+    });
 }
 // endregion
 
@@ -2511,8 +2833,10 @@ ready(() => {
         if (!fieldsetCounter) fieldset.heading.append(helpBtn);
 
         // all fieldsets are collapsed by default except the first one
-        if (fieldsetCounter) fieldset.collapseBtn.classList.add('collapsed');
-        else fieldset.container.classList.add('show');
+        if (!fieldsetCounter) {
+            fieldset.collapseBtn.classList.remove('collapsed');
+            fieldset.container.classList.add('show');
+        }
 
         fieldsetCounter++;
     };
