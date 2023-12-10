@@ -19,6 +19,8 @@
 // @grant           GM_listValues
 // @grant           GM_addValueChangeListener
 // @grant           GM_info
+// @grant           GM_xmlhttpRequest
+// @connect         studentenwerk.sh
 // ==/UserScript==
 
 /* global M, require */
@@ -61,7 +63,6 @@ const TRANSLATIONS = {
             title: 'Speiseplan der Mensa',
             close: 'Schließen',
             toStudiwerkPage: 'Speiseplan auf der Seite des Studentenwerks',
-            lastUpdate: 'Stand',
             table: {
                 speise: 'Gericht',
                 type: 'Art(en)',
@@ -311,7 +312,6 @@ Viele Grüße
             title: 'Menu of the canteen',
             close: 'Close',
             toStudiwerkPage: 'Menu on the website of Studentenwerk',
-            lastUpdate: 'Status',
             table: {
                 speise: 'Dish',
                 type: 'Type(s)',
@@ -1007,7 +1007,7 @@ const isDashboard =
     window.location.pathname === '/my/' ||
     window.location.pathname === '/my/index.php';
 
-const MOODLE_LANG = document.documentElement.lang;
+const MOODLE_LANG = document.documentElement.lang.toLowerCase();
 
 const $t = (key, args = {}) => {
     const t =
@@ -1116,6 +1116,143 @@ const createFieldset = (
     fieldset.append(legend, headerRow, container);
 
     return { fieldset, legend, headerRow, container, heading, collapseBtn };
+};
+
+/**
+ * @typedef {Object} SpeiseplanFilter
+ * @property {string} title
+ * @property {string} abk
+ * @property {string} [img]
+ */
+
+/**
+ * @typedef {Object} Speise
+ * @property {boolean} mensa
+ * @property {{name: string, zusatz?: string}[]} items
+ * @property {string[]} allergene
+ * @property {string[]} zusatzstoffe
+ * @property {string[]} arten
+ * @property {number[]} preise
+ */
+
+/**
+ * @typedef {Object} Speiseplan
+ * @property {Record<string, Speise[]>} speisen
+ * @property {SpeiseplanFilter} filters
+ */
+
+/**
+ * get the speiseplan of this and next week
+ * @returns {Promise<Speiseplan>}
+ */
+const getSpeiseplan = async () => {
+    const filterTypes = {
+        1: 'allergene',
+        2: 'zusatzstoffe',
+        3: 'arten',
+    };
+    Object.seal(filterTypes);
+    Object.freeze(filterTypes);
+
+    /**
+     * @param {Document} doc
+     * @returns {Speiseplan.speisen}
+     */
+    const getSpeisen = doc => {
+        const speisen = {};
+        doc.querySelectorAll('.mensa_menu_detail').forEach(speise => {
+            const day = speise.closest('[data-day]').dataset.day;
+            speisen[day] ??= [];
+            const items = [{ name: '' }];
+            speise.querySelector('.menu_name').childNodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    items.at(-1).name += node.textContent.trim();
+                }
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    if (node.tagName === 'BR') {
+                        items.push({ name: '' });
+                    } else if (node.classList.contains('mensa_zusatz')) {
+                        items.at(-1).zusatz = node.textContent.trim();
+                    }
+                }
+            });
+            speisen[day].push({
+                mensa: !!speise.querySelector('.mensatyp_mensa'),
+                items,
+                allergene: speise.dataset.allergene.split('|').filter(Boolean),
+                zusatzstoffe: speise.dataset.zusatzstoffe
+                    .split('|')
+                    .filter(Boolean),
+                arten: speise.dataset.arten.split('|').filter(Boolean),
+                preise: speise
+                    .querySelector('.menu_preis')
+                    ?.textContent?.trim()
+                    .split('/')
+                    .map(p => p.trim().replace(',', '.'))
+                    .map(p => parseFloat(p))
+                    .filter(Boolean),
+            });
+        });
+        return speisen;
+    };
+
+    const localizedPath = {
+        de: 'mensen-in-luebeck',
+        en: 'food-overview',
+    };
+    Object.seal(localizedPath);
+    Object.freeze(localizedPath);
+
+    /**
+     * Fetches the speiseplan from the studentenwerk website and returns it as a document
+     * @param {boolean} [nextWeek]
+     * @returns {Promise<Document>}
+     */
+    const getDoc = (nextWeek = false) =>
+        new Promise(resolve =>
+            GM_xmlhttpRequest({
+                url: `https://studentenwerk.sh/${MOODLE_LANG}/${
+                    localizedPath[MOODLE_LANG]
+                }?ort=3&mensa=8${nextWeek ? '&nw=1' : ''}`,
+                onload: ({ responseText }) =>
+                    resolve(
+                        new DOMParser().parseFromString(
+                            responseText,
+                            'text/html'
+                        )
+                    ),
+            })
+        );
+
+    const mensaplanDoc = await getDoc();
+
+    /** @type {SpeiseplanFilter} */
+    const filters = {};
+    mensaplanDoc.querySelectorAll('.filterbutton').forEach(filter => {
+        const type = filterTypes[filter.dataset.typ];
+        filters[type] ??= {};
+        const img = filter.querySelector('img')?.src ?? undefined;
+        let imgUrl;
+        if (img) {
+            imgUrl = new URL(new URL(img).pathname, 'https://studentenwerk.sh');
+        }
+        filters[type][filter.dataset.wert] = {
+            title:
+                filter.querySelector('span:not(.abk)')?.textContent?.trim() ??
+                '',
+            abk: filter.querySelector('span.abk')?.textContent?.trim() ?? '',
+            ...(imgUrl ? { img: imgUrl.href } : {}),
+        };
+    });
+    Object.freeze(filters);
+
+    return {
+        filters,
+        speisen: {
+            ...getSpeisen(mensaplanDoc),
+            ...getSpeisen(await getDoc(true)),
+        },
+    };
 };
 // endregion
 
@@ -2017,7 +2154,7 @@ if (getSetting('general.speiseplan')) {
 
     const openSpeiseplan = e => {
         e.preventDefault();
-        let lastUpdateTimestamp = 0;
+
         require(['core/modal_factory'], ({ create, types }) =>
             create({
                 type: types.ALERT,
@@ -2026,51 +2163,17 @@ if (getSetting('general.speiseplan')) {
                 title: `${
                     foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
                 }\xa0${$t('speiseplan.title').toString()}`,
-                body: fetch(
-                    `https://raw.githubusercontent.com/jxn-30/better-moodle/main/speiseplan.json?_=${
-                        Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
-                    }`
-                )
-                    .then(res => res.json())
-                    .then(
-                        ({
-                            lastUpdate,
-                            [MOODLE_LANG]: { speisen, filters },
-                        }) => {
-                            lastUpdateTimestamp = lastUpdate;
-                            return Object.entries(speisen)
-                                .filter(
-                                    ([day]) =>
-                                        new Date(day) >
-                                        Date.now() - 24 * 60 * 60 * 1000
-                                )
-                                .map(([day, speisen], index) =>
-                                    createDayFieldset(
-                                        day,
-                                        speisen,
-                                        filters,
-                                        !index
-                                    )
-                                );
-                        }
-                    ),
+                body: getSpeiseplan().then(({ speisen, filters }) =>
+                    Object.entries(speisen)
+                        .filter(
+                            ([day]) =>
+                                new Date(day) > Date.now() - 24 * 60 * 60 * 1000
+                        )
+                        .map(([day, speisen], index) =>
+                            createDayFieldset(day, speisen, filters, !index)
+                        )
+                ),
             }).then(modal => {
-                modal.bodyPromise.then(() => {
-                    const lastUpdateText = document.createElement('small');
-                    lastUpdateText.textContent = `${$t(
-                        'speiseplan.lastUpdate'
-                    )}:\xa0${new Date(lastUpdateTimestamp).toLocaleString(
-                        MOODLE_LANG,
-                        {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                        }
-                    )}`;
-                    modal.getTitle().append('\xa0', lastUpdateText);
-                });
                 modal.setButtonText(
                     'cancel',
                     `🍴\xa0${$t('speiseplan.close')}`
