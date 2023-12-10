@@ -9,6 +9,7 @@
 -   [Features](#features)
 -   [FAQ](#faq)
 -   [Alte Bilder und Impressionen](#alte-bilder-und-impressionen)
+-   [Better-Moodle ohne Userscript-Manager nutzen](#better-moodle-ohne-userscript-manager-nutzen)
 
 [//]: # 'TODO: More english translations'
 
@@ -216,9 +217,11 @@ Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar s
 
 ## Better-Moodle ohne Userscript-Manager nutzen
 
-Better-Moodle ist darauf ausgelegt, mit einem Userscript-Manager genutzt zu werden, da es von Userscript-Managern bereitgestellte Funktionen und Informgationen nutzt, die zum Beispiel dafür da sind, Style zu ändern oder Einstellungen zu speichern.
+Better-Moodle ist darauf ausgelegt, mit einem Userscript-Manager genutzt zu werden, da es von Userscript-Managern bereitgestellte Funktionen und Informationen nutzt, die zum Beispiel dafür da sind, Style zu ändern oder Einstellungen zu speichern.
 
 Möchte man Better-Moodle ohne einen Userscript-Manager nutzen, so muss mann diese Funktionen und Objekte überschreiben. Es wurde bewusst die Entscheidung getroffen, diese nicht in Better-Moodle selbst zu implementieren, sondern stattdessen hier sogenannte Workarounds zu veröffentlichen. Die Code-Snippets können einfach verwendet werden und sollten vor dem Code von Better-Moodle eingefügt werden.
+
+Wie man den Code von Better-Moodle am liebsten in das Moodle injiziert bleibt dem Anwender in diesem Fall selbst überlassen.
 
 ### Workaround für `GM_addStyle`
 
