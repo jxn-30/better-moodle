@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.1](https://github.com/jxn-30/better-moodle/compare/1.21.0...1.21.1) (2023-12-10)
+
+
+### Bug Fixes
+
+* **speiseplan:** remove workaround via GitHub ([0392c76](https://github.com/jxn-30/better-moodle/commit/0392c7688b95cf52847a720c2d868976191bfa9d))
+
 ## [1.21.0](https://github.com/jxn-30/better-moodle/compare/1.20.0...1.21.0) (2023-12-09)
 
 
