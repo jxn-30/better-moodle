@@ -1156,7 +1156,7 @@ const getSpeiseplan = async () => {
 
     /**
      * @param {Document} doc
-     * @returns {Speiseplan.speisen}
+     * @returns {Speiseplan['speisen']}
      */
     const getSpeisen = doc => {
         const speisen = {};
@@ -1226,8 +1226,17 @@ const getSpeiseplan = async () => {
 
     const mensaplanDoc = await getDoc();
 
-    /** @type {SpeiseplanFilter} */
-    const filters = {};
+    /** @type {Record<string, Record<string, SpeiseplanFilter>>} */
+    const filters = {
+        arten: {
+            SHT: {
+                // we need to define SH-Teller as it is not defined on english website
+                title: 'Schleswig-Holstein Teller',
+                abk: '',
+                img: 'https://studentenwerk.sh/upload/img/sh_teller1.png?h=80&t=2',
+            },
+        },
+    };
     mensaplanDoc.querySelectorAll('.filterbutton').forEach(filter => {
         const type = filterTypes[filter.dataset.typ];
         filters[type] ??= {};
