@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.2](https://github.com/jxn-30/better-moodle/compare/1.21.1...1.21.2) (2023-12-11)
+
+
+### Bug Fixes
+
+* **speiseplan:** fix english version not loading ([ea1e3cf](https://github.com/jxn-30/better-moodle/commit/ea1e3cf80da805c9ad6745902820bf6a79ebe736))
+
 ## [1.21.1](https://github.com/jxn-30/better-moodle/compare/1.21.0...1.21.1) (2023-12-10)
 
 
