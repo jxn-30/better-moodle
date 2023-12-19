@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.3](https://github.com/jxn-30/better-moodle/compare/1.21.2...1.21.3) (2023-12-19)
+
+
+### Bug Fixes
+
+* **settings:** fix latest-version text being installed version ([b5d0e67](https://github.com/jxn-30/better-moodle/commit/b5d0e676b72796c08cba564fc5a3f11520bda748))
+
 ## [1.21.2](https://github.com/jxn-30/better-moodle/compare/1.21.1...1.21.2) (2023-12-11)
 
 
