@@ -3255,7 +3255,7 @@ ready(() => {
                 `${$t('modals.settings.installedVersion')}:\xa0`,
                 currentCode,
                 ' ',
-                `${$t('modals.settings.installedVersion')}:\xa0`,
+                `${$t('modals.settings.latestVersion')}:\xa0`,
                 latestCode
             );
 
