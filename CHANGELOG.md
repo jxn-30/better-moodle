@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.0](https://github.com/jxn-30/better-moodle/compare/1.21.3...1.22.0) (2023-12-22)
+
+
+### Features
+
+* **updater:** show changelog since last update when updating Better-Moodle ([47a8073](https://github.com/jxn-30/better-moodle/commit/47a8073b850f0d1dd19c3b2a3b225928f6c4c3ba))
+
 ## [1.21.3](https://github.com/jxn-30/better-moodle/compare/1.21.2...1.21.3) (2023-12-19)
 
 
