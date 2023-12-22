@@ -3150,6 +3150,27 @@ ready(() => {
     updateDisabledStates();
     form.addEventListener('change', updateDisabledStates);
 
+    /** @type {string} */
+    let changelogHtml;
+
+    /** @type {() => Promise<string>} */
+    const getChangelogHtml = () =>
+        changelogHtml
+            ? Promise.resolve(changelogHtml)
+            : fetch(
+                  `https://raw.githubusercontent.com/jxn-30/better-moodle/main/CHANGELOG.md?_=${
+                      Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
+                  }`
+              )
+                  .then(res => res.text())
+                  .then(md =>
+                      md
+                          .replace(/^#\s.*/g, '')
+                          .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n')
+                  )
+                  .then(md => mdToHtml(md, 3))
+                  .then(html => (changelogHtml = html));
+
     document
         .querySelector('#usernavigation .usermenu-container')
         ?.before(settingsBtnWrapper);
@@ -3270,7 +3291,34 @@ ready(() => {
                     type: types.ALERT,
                     title: $t('modals.update.title'),
                     body: $t('modals.update.content'),
-                }).then(modal => modal.show());
+                }).then(modal => {
+                    getChangelogHtml().then(html => {
+                        const el = document.createElement('div');
+                        el.innerHTML = html;
+
+                        const currentVersionHeadingId = PREFIX(
+                            crypto.randomUUID()
+                        );
+
+                        for (const heading of el.querySelectorAll('h4')) {
+                            if (
+                                heading.textContent
+                                    .trim()
+                                    .startsWith(currentScriptVersion.join('.'))
+                            ) {
+                                heading.id = currentVersionHeadingId;
+                                break;
+                            }
+                        }
+
+                        el.querySelectorAll(
+                            `#${currentVersionHeadingId}, #${currentVersionHeadingId} ~ *`
+                        ).forEach(child => child.remove());
+
+                        modal.getBody().append(el);
+                    });
+                    modal.show();
+                });
                 open(GM_info.script.updateURL, '_self');
             });
 
@@ -3323,18 +3371,7 @@ ready(() => {
                     title: `${
                         githubLink('/blob/main/CHANGELOG.md').outerHTML
                     } Better-Moodle:&nbsp;${$t('modals.changelog')}`,
-                    body: fetch(
-                        `https://raw.githubusercontent.com/jxn-30/better-moodle/main/CHANGELOG.md?_=${
-                            Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
-                        }`
-                    )
-                        .then(res => res.text())
-                        .then(md =>
-                            md
-                                .replace(/^#\s.*/g, '')
-                                .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n')
-                        )
-                        .then(md => mdToHtml(md, 3)),
+                    body: getChangelogHtml(),
                 }).then(modal => modal.show());
             });
             footerBtnGroup.append(changelogBtn);
