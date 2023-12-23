@@ -1947,9 +1947,14 @@ if (getSetting('general.christmasCountdown')) {
                   getDayOfYear(nextYearChristmas);
 
         textSpan.innerHTML = textSpanClone.innerHTML = daysToChristmas
-            ? $t(`christmasCountdown.countdown.${Number(!!daysToChristmas)}`, {
-                  days: daysToChristmas,
-              }).toString()
+            ? $t(
+                  `christmasCountdown.countdown.${Number(
+                      !!(daysToChristmas - 1)
+                  )}`,
+                  {
+                      days: daysToChristmas,
+                  }
+              ).toString()
             : $t('christmasCountdown.christmas').toString();
 
         const nextUpdate = new Date();
