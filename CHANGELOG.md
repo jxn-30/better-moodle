@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.1](https://github.com/jxn-30/better-moodle/compare/1.22.0...1.22.1) (2023-12-23)
+
+
+### Bug Fixes
+
+* **christmasCountdown:** fix text on 12/23 being plural instead of singular ([b0c24ac](https://github.com/jxn-30/better-moodle/commit/b0c24aceda5652d603062f812392ebb98b5d3800))
+
 ## [1.22.0](https://github.com/jxn-30/better-moodle/compare/1.21.3...1.22.0) (2023-12-22)
 
 
