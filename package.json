@@ -14,7 +14,7 @@
         "eslint": "8.56.0",
         "eslint-config-prettier": "9.1.0",
         "eslint-plugin-userscripts": "0.5.0",
-        "jsdom": "23.0.1",
+        "jsdom": "23.2.0",
         "prettier": "3.1.1",
         "userscript-meta": "1.0.1"
     }
