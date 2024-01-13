@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.2](https://github.com/jxn-30/better-moodle/compare/1.22.1...1.22.2) (2024-01-13)
+
+
+### Bug Fixes
+
+* **dashboard:** adjust amount of shown recent courses when toggling sidebars ([ecaef49](https://github.com/jxn-30/better-moodle/commit/ecaef49584289aa99003f5cdbfdd5a5b9f1c0dbc))
+
 ## [1.22.1](https://github.com/jxn-30/better-moodle/compare/1.22.0...1.22.1) (2023-12-23)
 
 
