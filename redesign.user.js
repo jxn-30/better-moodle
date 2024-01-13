@@ -3493,3 +3493,28 @@ ready(() => {
         }));
 });
 // endregion
+
+// region Bugfix: Adjust amount of "recently accessed courses" on dashboard when opening / closing drawers
+if (isDashboard) {
+    ready(() =>
+        // TODO: find a way to make moodle init the drawers to publish the PubSub events itself
+        require(['core/pubsub'], PubSub => {
+            const update = open => {
+                PubSub.publish('nav-drawer-toggle-start', open);
+                setTimeout(
+                    () => PubSub.publish('nav-drawer-toggle-end', open),
+                    100
+                );
+            };
+
+            // TODO: Find a way to get event types via require(['theme_boost/drawers'], ({eventTypes}) => [...]) that does not break moodle;
+            window.addEventListener('theme_boost/drawers:shown', () =>
+                update(true)
+            );
+            window.addEventListener('theme_boost/drawers:hidden', () =>
+                update(false)
+            );
+        })
+    );
+}
+// endregion
