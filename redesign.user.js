@@ -726,24 +726,23 @@ const mdToHtml = (md, headingStart = 1) => {
             const firstChar = b[0];
             const replacement = replacements[firstChar];
             let i;
-            html += replacement
-                ? replacement[1] +
-                  `\n${b}`
-                      .split(replacement[0])
-                      .slice(1)
-                      .map(replacement[3] ? escape : inlineEscape)
-                      .join(replacement[3] || '</li>\n<li>') +
-                  replacement[2]
-                : firstChar === '#'
-                  ? `<h${(i =
+            html +=
+                replacement ?
+                    replacement[1] +
+                    `\n${b}`
+                        .split(replacement[0])
+                        .slice(1)
+                        .map(replacement[3] ? escape : inlineEscape)
+                        .join(replacement[3] || '</li>\n<li>') +
+                    replacement[2]
+                : firstChar === '#' ?
+                    `<h${(i =
                         b.indexOf(' ') + (headingStart - 1))}>${inlineEscape(
                         b.slice(i + 1 - (headingStart - 1))
                     )}</h${i}>`
-                  : firstChar === '<'
-                    ? b
-                    : b.startsWith('---')
-                      ? '<hr />'
-                      : `<p>${inlineEscape(b)}</p>`;
+                : firstChar === '<' ? b
+                : b.startsWith('---') ? '<hr />'
+                : `<p>${inlineEscape(b)}</p>`;
         });
 
     return html;
@@ -1552,9 +1551,8 @@ if (getSetting('general.bookmarkManager')) {
             bookmarksWrapper.innerHTML = '';
             bookmarksIcon.classList.remove('fa-bookmark', 'fa-bookmark-o');
             bookmarks.forEach(({ title, url }) => {
-                const httpsUrl = url.startsWith('https://')
-                    ? url
-                    : `https://${url}`;
+                const httpsUrl =
+                    url.startsWith('https://') ? url : `https://${url}`;
                 const bookmark = document.createElement('a');
                 bookmark.classList.add('dropdown-item');
                 bookmark.href = httpsUrl;
@@ -1940,22 +1938,23 @@ if (getSetting('general.christmasCountdown')) {
     const updateCountdown = () => {
         const todayDayOfYear = getDayOfYear(now);
         const daysToChristmas =
-            now < firstChristmasDay
-                ? getDayOfYear(thisYearChristmas) - todayDayOfYear
-                : getDayOfYear(thisYearLastDay) -
-                  todayDayOfYear +
-                  getDayOfYear(nextYearChristmas);
+            now < firstChristmasDay ?
+                getDayOfYear(thisYearChristmas) - todayDayOfYear
+            :   getDayOfYear(thisYearLastDay) -
+                todayDayOfYear +
+                getDayOfYear(nextYearChristmas);
 
-        textSpan.innerHTML = textSpanClone.innerHTML = daysToChristmas
-            ? $t(
-                  `christmasCountdown.countdown.${Number(
-                      !!(daysToChristmas - 1)
-                  )}`,
-                  {
-                      days: daysToChristmas,
-                  }
-              ).toString()
-            : $t('christmasCountdown.christmas').toString();
+        textSpan.innerHTML = textSpanClone.innerHTML =
+            daysToChristmas ?
+                $t(
+                    `christmasCountdown.countdown.${Number(
+                        !!(daysToChristmas - 1)
+                    )}`,
+                    {
+                        days: daysToChristmas,
+                    }
+                ).toString()
+            :   $t('christmasCountdown.christmas').toString();
 
         const nextUpdate = new Date();
         nextUpdate.setDate(now.getDate() + 1);
@@ -2291,9 +2290,9 @@ ready(() => {
             drawer
                 .querySelectorAll(
                     `.courseindex-section-title .icons-collapse-expand${
-                        collapseIcon.classList.contains('collapsed')
-                            ? ':not(.collapsed)'
-                            : '.collapsed'
+                        collapseIcon.classList.contains('collapsed') ?
+                            ':not(.collapsed)'
+                        :   '.collapsed'
                     }`
                 )
                 .forEach(collapseIcon => collapseIcon.click());
@@ -2384,9 +2383,9 @@ ready(async () => {
         const fullName = document.createElement('small');
         fullName.textContent = course.fullname;
         anchor.append(
-            ...(course.shortname
-                ? [shortName, document.createElement('br')]
-                : []),
+            ...(course.shortname ?
+                [shortName, document.createElement('br')]
+            :   []),
             fullName
         );
         anchor.title = anchor.textContent;
@@ -2629,13 +2628,13 @@ ready(async () => {
 
         const sidebarGroupingSetting = getSetting('dashboard.courseListFilter');
         const sidebarGrouping =
-            sidebarGroupingSetting === '_sync'
-                ? await getCourseGroupings().then(
-                      courseGroupings =>
-                          courseGroupings.find(grouping => grouping.active) ??
-                          courseGroupings[0]
-                  )
-                : JSON.parse(sidebarGroupingSetting);
+            sidebarGroupingSetting === '_sync' ?
+                await getCourseGroupings().then(
+                    courseGroupings =>
+                        courseGroupings.find(grouping => grouping.active) ??
+                        courseGroupings[0]
+                )
+            :   JSON.parse(sidebarGroupingSetting);
 
         // fetch the courses
         require(['block_myoverview/repository'], ({
@@ -2678,13 +2677,13 @@ ready(async () => {
             'myCourses.navbarDropdownFilter'
         );
         const dropdownGrouping =
-            dropdownGroupingSetting === '_sync'
-                ? await getCourseGroupings().then(
-                      courseGroupings =>
-                          courseGroupings.find(grouping => grouping.active) ??
-                          courseGroupings[0]
-                  )
-                : JSON.parse(dropdownGroupingSetting);
+            dropdownGroupingSetting === '_sync' ?
+                await getCourseGroupings().then(
+                    courseGroupings =>
+                        courseGroupings.find(grouping => grouping.active) ??
+                        courseGroupings[0]
+                )
+            :   JSON.parse(dropdownGroupingSetting);
 
         // fetch the courses
         require(['block_myoverview/repository'], ({
@@ -3073,9 +3072,10 @@ ready(() => {
                     input.classList.add('custom-select');
                     input.dataset.initialValue = value;
                     /** @type {Promise<{key: string, title: string}[]>} **/
-                    const options = Array.isArray(setting.options)
-                        ? new Promise(resolve => resolve(setting.options))
-                        : setting.options();
+                    const options =
+                        Array.isArray(setting.options) ?
+                            new Promise(resolve => resolve(setting.options))
+                        :   setting.options();
                     options.then(options =>
                         options.forEach(option => {
                             const optionEl = document.createElement('option');
@@ -3160,21 +3160,21 @@ ready(() => {
 
     /** @type {() => Promise<string>} */
     const getChangelogHtml = () =>
-        changelogHtml
-            ? Promise.resolve(changelogHtml)
-            : fetch(
-                  `https://raw.githubusercontent.com/jxn-30/better-moodle/main/CHANGELOG.md?_=${
-                      Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
-                  }`
-              )
-                  .then(res => res.text())
-                  .then(md =>
-                      md
-                          .replace(/^#\s.*/g, '')
-                          .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n')
-                  )
-                  .then(md => mdToHtml(md, 3))
-                  .then(html => (changelogHtml = html));
+        changelogHtml ?
+            Promise.resolve(changelogHtml)
+        :   fetch(
+                `https://raw.githubusercontent.com/jxn-30/better-moodle/main/CHANGELOG.md?_=${
+                    Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
+                }`
+            )
+                .then(res => res.text())
+                .then(md =>
+                    md
+                        .replace(/^#\s.*/g, '')
+                        .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n')
+                )
+                .then(md => mdToHtml(md, 3))
+                .then(html => (changelogHtml = html));
 
     document
         .querySelector('#usernavigation .usermenu-container')
