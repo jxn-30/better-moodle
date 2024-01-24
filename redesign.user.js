@@ -1117,6 +1117,119 @@ const createFieldset = (
     return { fieldset, legend, headerRow, container, heading, collapseBtn };
 };
 
+const appendableListFormClass = PREFIX('appendable-list-form');
+GM_addStyle(`
+.${appendableListFormClass} {
+    color: inherit;
+}
+
+.${appendableListFormClass} .fitem {
+    column-gap: 1em;
+}
+
+.${appendableListFormClass} > .fcontainer :is(.fitem:first-child [data-button="up"], .fitem:last-child [data-button="down"]) {
+    opacity: 0.65;
+    pointer-events: none;
+    cursor: not-allowed;
+}`);
+
+/**
+ * @param {string} id
+ * @template ALFData
+ * @param {(data: ALFData) => HTMLDivElement[]} createFormItem
+ * @param {ALFData} emptyData
+ * @returns {{form: HTMLFormElement, addFormItems: (data: ALFData[]) => void}}
+ */
+const createAppendableListForm = (id, createFormItem, emptyData) => {
+    const form = document.createElement('form');
+    form.classList.add('mform', appendableListFormClass);
+    form.id = PREFIX(id);
+    const container = document.createElement('div');
+    container.classList.add('fcontainer');
+
+    /**
+     * @template ALFData
+     * @param {ALFData} data
+     */
+    const addFormItem = data => {
+        const group = document.createElement('div');
+        group.classList.add(
+            'form-group',
+            'd-flex',
+            'flex-wrap',
+            'flex-lg-nowrap',
+            'fitem'
+        );
+
+        const btns = document.createElement('div');
+        btns.classList.add('btn-group', 'ml-auto');
+        const moveUpBtn = document.createElement('button');
+        moveUpBtn.classList.add('btn', 'btn-outline-secondary');
+        moveUpBtn.dataset.button = 'up';
+        const upIcon = document.createElement('i');
+        upIcon.classList.add('fa', 'fa-arrow-up', 'fa-fw');
+        moveUpBtn.append(upIcon);
+        const moveDownBtn = document.createElement('button');
+        moveDownBtn.classList.add('btn', 'btn-outline-secondary');
+        moveDownBtn.dataset.button = 'down';
+        const downIcon = document.createElement('i');
+        downIcon.classList.add('fa', 'fa-arrow-down', 'fa-fw');
+        moveDownBtn.append(downIcon);
+        const deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('btn', 'btn-outline-danger');
+        deleteBtn.dataset.button = 'delete';
+        const deleteIcon = document.createElement('i');
+        deleteIcon.classList.add('fa', 'fa-trash', 'fa-fw');
+        deleteBtn.append(deleteIcon);
+
+        btns.append(moveUpBtn, moveDownBtn, deleteBtn);
+
+        const mobileLinebreak = document.createElement('div');
+        mobileLinebreak.classList.add('w-100', 'd-lg-none');
+
+        group.append(...createFormItem(data), mobileLinebreak, btns);
+        container.append(group);
+    };
+
+    const addFormItems = data => data.forEach(d => addFormItem(d));
+
+    const addBtn = document.createElement('button');
+    addBtn.classList.add('btn', 'btn-outline-success', 'd-block', 'ml-auto');
+    const addIcon = document.createElement('i');
+    addIcon.classList.add('fa', 'fa-plus', 'fa-fw');
+    addBtn.append(addIcon);
+
+    form.addEventListener('click', e => {
+        const target = e.target;
+        if (!(target instanceof HTMLElement)) return;
+        const button = target.closest('[data-button]');
+        const row = target.closest('.fitem');
+        if (!button || !row) return;
+
+        const action = button.dataset.button;
+        switch (action) {
+            case 'up':
+                row.previousSibling.before(row);
+                break;
+            case 'down':
+                row.nextSibling.after(row);
+                break;
+            case 'delete':
+                row.remove();
+                break;
+        }
+    });
+
+    addBtn.addEventListener('click', e => {
+        e.preventDefault();
+        addFormItem(emptyData);
+    });
+
+    form.append(container, addBtn);
+
+    return { form, addFormItems };
+};
+
 /**
  * @typedef {Object} SpeiseplanFilter
  * @property {string} title
@@ -1691,32 +1804,9 @@ if (getSetting('general.bookmarkManager')) {
         manageBookmarksBtn.addEventListener('click', e => {
             e.preventDefault();
 
-            const form = document.createElement('form');
-            form.classList.add('mform');
-            form.id = PREFIX('bookmark-manager-form');
-            const container = document.createElement('div');
-            container.classList.add('fcontainer');
-
-            if (!manageFormStyleAdded) {
-                GM_addStyle(`
-#${form.id} {
-    color: inherit;
-}
-
-#${form.id} > .fcontainer :is(.fitem:first-child [data-button="up"], .fitem:last-child [data-button="down"]) {
-    opacity: 0.65;
-    pointer-events: none;
-    cursor: not-allowed;
-}`);
-                manageFormStyleAdded = true;
-            }
-
-            const addFormItem = (title, url) => {
-                const group = document.createElement('div');
-                group.classList.add('form-group', 'row', 'fitem');
+            const createFormItem = ({ title, url }) => {
                 const titleWrapper = document.createElement('div');
                 titleWrapper.classList.add(
-                    'col-md-4',
                     'form-inline',
                     'align-items-start',
                     'felement'
@@ -1732,11 +1822,14 @@ if (getSetting('general.bookmarkManager')) {
 
                 const urlWrapper = document.createElement('div');
                 urlWrapper.classList.add(
-                    'col-md-8',
                     'form-inline',
                     'align-items-start',
                     'felement',
                     'input-group'
+                );
+                urlWrapper.style.setProperty(
+                    'flex-basis',
+                    'calc(8 * (100% / 12) - 1em)'
                 );
                 const httpsAddon = document.createElement('div');
                 httpsAddon.classList.add('input-group-prepend');
@@ -1753,84 +1846,32 @@ if (getSetting('general.bookmarkManager')) {
                 urlInput.dataset.attribute = 'url';
                 urlInput.placeholder = $t('bookmarks.url').toString();
 
-                const mobileLinebreak = document.createElement('div');
-                mobileLinebreak.classList.add('w-100', 'd-lg-none');
+                urlWrapper.append(httpsAddon, urlInput);
 
-                const btns = document.createElement('div');
-                btns.classList.add(
-                    'btn-group',
-                    'ml-auto',
-                    'input-group-append'
-                );
-                const moveUpBtn = document.createElement('button');
-                moveUpBtn.classList.add('btn', 'btn-outline-secondary');
-                moveUpBtn.dataset.button = 'up';
-                const upIcon = document.createElement('i');
-                upIcon.classList.add('fa', 'fa-arrow-up', 'fa-fw');
-                moveUpBtn.append(upIcon);
-                const moveDownBtn = document.createElement('button');
-                moveDownBtn.classList.add('btn', 'btn-outline-secondary');
-                moveDownBtn.dataset.button = 'down';
-                const downIcon = document.createElement('i');
-                downIcon.classList.add('fa', 'fa-arrow-down', 'fa-fw');
-                moveDownBtn.append(downIcon);
-                const deleteBtn = document.createElement('button');
-                deleteBtn.classList.add('btn', 'btn-outline-danger');
-                deleteBtn.dataset.button = 'delete';
-                const deleteIcon = document.createElement('i');
-                deleteIcon.classList.add('fa', 'fa-trash', 'fa-fw');
-                deleteBtn.append(deleteIcon);
-
-                btns.append(moveUpBtn, moveDownBtn, deleteBtn);
-                urlWrapper.append(httpsAddon, urlInput, mobileLinebreak, btns);
-
-                group.append(titleWrapper, urlWrapper);
-
-                container.append(group);
+                return [titleWrapper, urlWrapper];
             };
 
-            GM_getValue(BOOKMARKS_STORAGE, []).forEach(({ title, url }) =>
-                addFormItem(title, url)
+            const { form, addFormItems } = createAppendableListForm(
+                'bookmark-manager-form',
+                createFormItem,
+                { title: '', url: '' }
             );
 
-            const addBookmarkBtn = document.createElement('button');
-            addBookmarkBtn.classList.add(
-                'btn',
-                'btn-outline-success',
-                'd-block',
-                'ml-auto'
-            );
-            const addIcon = document.createElement('i');
-            addIcon.classList.add('fa', 'fa-plus', 'fa-fw');
-            addBookmarkBtn.append(addIcon);
+            if (!manageFormStyleAdded) {
+                GM_addStyle(`
+#${form.id} .felement:first-child {
+    flex-basis: calc(4 * (100% / 12) - 1em);
+    flex-grow: 1;
+}
+#${form.id} .felement:nth-child(2) {
+    flex-basis: calc(8 * (100% / 12) - 1em);
+    flex-grow: 1;
+}
+`);
+                manageFormStyleAdded = true;
+            }
 
-            addBookmarkBtn.addEventListener('click', e => {
-                e.preventDefault();
-                addFormItem('', '');
-            });
-
-            form.append(container, addBookmarkBtn);
-
-            form.addEventListener('click', e => {
-                const target = e.target;
-                if (!(target instanceof HTMLElement)) return;
-                const button = target.closest('[data-button]');
-                const row = target.closest('.fitem');
-                if (!button || !row) return;
-
-                const action = button.dataset.button;
-                switch (action) {
-                    case 'up':
-                        row.previousSibling.before(row);
-                        break;
-                    case 'down':
-                        row.nextSibling.after(row);
-                        break;
-                    case 'delete':
-                        row.remove();
-                        break;
-                }
-            });
+            addFormItems(GM_getValue(BOOKMARKS_STORAGE, []));
 
             require(['core/modal_factory', 'core/modal_events'], (
                 { create, types },
