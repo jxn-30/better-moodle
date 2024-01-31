@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.3](https://github.com/jxn-30/better-moodle/compare/1.22.2...1.22.3) (2024-01-31)
+
+
+### Bug Fixes
+
+* **grades:** remove unnecessary whitespace ([056642f](https://github.com/jxn-30/better-moodle/commit/056642f535ff5b02fab5b9fa63dbf09b7e5a3b08))
+
 ## [1.22.2](https://github.com/jxn-30/better-moodle/compare/1.22.1...1.22.2) (2024-01-13)
 
 
