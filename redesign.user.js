@@ -2302,7 +2302,7 @@ ready(() => {
         calcItem.classList.add('icon', 'fa', 'fa-calculator', 'fa-fw');
         link.href = `/grade/report/user/index.php?id=${M.cfg.courseId}`;
         link.classList.add('w-100', 'text-center');
-        link.append(calcItem, `\xa0${$t('courses.grades')}`);
+        link.append(calcItem, $t('courses.grades').toString());
 
         if (getSetting('courses.gradesNewTab')) link.target = '_blank';
 
