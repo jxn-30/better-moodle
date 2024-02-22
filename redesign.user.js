@@ -272,6 +272,11 @@ Viele Grüße
                     name: 'Mitteilungen per Tastenkombination absenden',
                     description:
                         'Ermöglicht das Absenden von Mitteilungen per Tastenkombination (z. B. Strg + Enter).',
+                    options: {
+                        '': '[Deaktiviert] Kein Absenden per Tastenkombination',
+                        'shiftEnter': 'Umschalt + Enter',
+                        'ctrlEnter': 'Strg + Enter',
+                    },
                 },
             },
         },
@@ -523,6 +528,11 @@ Best regards
                     name: 'Send messages by hotkey',
                     description:
                         'Allows messages to be sent using a key combination (e.g. Ctrl + Enter).',
+                    options: {
+                        '': '[Disabled] Do not send by hotkey',
+                        'shiftEnter': 'Shift + Enter',
+                        'ctrlEnter': 'Ctrl + Enter',
+                    },
                 },
             },
         },
@@ -533,8 +543,7 @@ Best regards
 // region Helper functions
 const PREFIX = str => `better-moodle-${str}`;
 const getSettingKey = id => PREFIX(`settings.${id}`);
-const getSetting = id =>
-    GM_getValue(getSettingKey(id), SETTINGS.find(s => s.id === id)?.default);
+const getSetting = id => settingsById[id].value;
 
 const MyCoursesFilterSyncChangeKey = PREFIX('myCourses.filterSyncChange');
 
@@ -1408,6 +1417,144 @@ body.dir-rtl a.${noExternalLinkIconClass}::before {
 // endregion
 
 // region Settings
+/** @template ValueType */
+class Setting {
+    /** @type {string} */
+    #id;
+    /** @type {ValueType} */
+    #default;
+    /** @type {HTMLInputElement} */
+    #input = document.createElement('input');
+    /** @type {(settings: Record<string, Setting>) => boolean} */
+    #disabledFn = () => false;
+    /** @type {HTMLLabelElement} */
+    #label;
+
+    /**
+     * @param {string} id
+     * @param {ValueType} defaultValue
+     */
+    constructor(id, defaultValue) {
+        if (this.constructor === Setting) {
+            throw new TypeError(
+                'Cannot create instance of abstract class Setting'
+            );
+        }
+        this.#id = id;
+        this.#default = defaultValue;
+
+        // removing invalid characters from HTML id
+        this.#input.id = PREFIX(`settings-input-${this.id}`)
+            .replace(/ /gu, '_')
+            .replace(/["']/gu, '')
+            .replace(/[^\w-]/gu, '-');
+        this.#input.value = this.value;
+    }
+
+    /**
+     * @returns {string}
+     */
+    get id() {
+        return this.#id;
+    }
+
+    /**
+     * @returns {string}
+     */
+    get settingKey() {
+        return getSettingKey(this.id);
+    }
+
+    /**
+     * @returns {ValueType}
+     */
+    get inputValue() {
+        return this.#input.value;
+    }
+
+    /**
+     * @returns {ValueType}
+     */
+    get value() {
+        return GM_getValue(this.settingKey, this.#default);
+    }
+
+    /**
+     * @param {ValueType} newValue
+     */
+    set value(newValue) {
+        this.#input.value = newValue;
+        GM_setValue(this.settingKey, newValue);
+    }
+
+    /**
+     * @returns {string}
+     */
+    get title() {
+        return $t(`settings.${this.id}.name`).toString();
+    }
+
+    /**
+     * @returns {string}
+     */
+    get description() {
+        return $t(`settings.${this.id}.description`).toString();
+    }
+
+    /**
+     * @returns {HTMLInputElement}
+     */
+    get formControl() {
+        return this.#input;
+    }
+
+    /**
+     * @returns {string}
+     */
+    get inputId() {
+        return this.#input.id;
+    }
+
+    /**
+     * @param {function(Record<string, Setting>): boolean} disabledFn
+     */
+    setDisabledFn(disabledFn) {
+        this.#disabledFn = disabledFn;
+        return this;
+    }
+
+    /**
+     * @param {Record<string, Setting>} settings
+     * @returns {boolean}
+     */
+    toggleDisabled(settings) {
+        const disabled = this.#disabledFn(settings);
+        this.#input.disabled = disabled;
+        if (disabled) {
+            this.#input.classList.add('disabled');
+            this.#label?.classList.add('text-muted');
+        } else {
+            this.#input.classList.remove('disabled');
+            this.#label?.classList.remove('text-muted');
+        }
+        return disabled;
+    }
+
+    /**
+     * @param {HTMLLabelElement} label
+     */
+    setLabel(label) {
+        this.#label = label;
+    }
+
+    saveInput() {
+        this.value = this.#input.value;
+    }
+
+    resetInput() {
+        this.#input.value = this.value;
+    }
+}
 /**
  * @typedef {Object} BaseSetting
  * @property {string} id
@@ -1416,174 +1563,240 @@ body.dir-rtl a.${noExternalLinkIconClass}::before {
  * @property {(settings: Record<string, boolean>) => boolean} [disabled]
  */
 
-/**
- * @typedef {BaseSetting} BooleanSetting
- * @extends BaseSetting
- * @property {typeof Boolean} type
- * @property {boolean} default
- */
+/** @extends {Setting<boolean>} */
+class BooleanSetting extends Setting {
+    /** @type {HTMLDivElement} */
+    #_formControl = document.createElement('div');
+
+    /**
+     * @param {string} id
+     * @param {boolean} defaultValue
+     */
+    constructor(id, defaultValue) {
+        super(id, defaultValue);
+
+        // set up the real formControl to be used in settings modal
+        this.#_formControl.classList.add('custom-control', 'custom-switch');
+        super.formControl.classList.add('custom-control-input');
+        super.formControl.type = 'checkbox';
+        super.formControl.checked = this.value;
+
+        const switchLabel = document.createElement('label');
+        switchLabel.classList.add('custom-control-label');
+        switchLabel.htmlFor = super.formControl.id;
+        switchLabel.textContent = '';
+
+        this.#_formControl.append(super.formControl, switchLabel);
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    get inputValue() {
+        return super.formControl.checked;
+    }
+
+    /**
+     * @returns {HTMLDivElement}
+     */
+    get formControl() {
+        return this.#_formControl;
+    }
+
+    saveInput() {
+        this.value = super.formControl.checked;
+    }
+
+    resetInput() {
+        super.formControl.checked = this.value;
+    }
+}
+
+/** @extends {Setting<string>} */
+class StringSetting extends Setting {
+    /**
+     * @param {string} id
+     * @param {string} defaultValue
+     */
+    constructor(id, defaultValue) {
+        super(id, defaultValue);
+
+        super.formControl.type = 'text';
+        super.formControl.classList.add('form-control');
+    }
+}
+
+/** @extends {Setting<number>} */
+class NumberSetting extends Setting {
+    /**
+     * @param {string} id
+     * @param {number} defaultValue
+     * @param {number} [min]
+     * @param {number} [max]
+     */
+    constructor(id, defaultValue, min, max) {
+        super(id, defaultValue);
+
+        super.formControl.type = 'number';
+        super.formControl.classList.add('form-control');
+        if (typeof min === 'number') {
+            super.formControl.min = min.toString();
+        }
+        if (typeof max === 'number') {
+            super.formControl.max = max.toString();
+        }
+    }
+}
 
 /**
- * @typedef {BaseSetting} NumberSetting
- * @extends BaseSetting
- * @property {typeof Number} type
- * @property {number} default
+ * @template {string} Values
+ * @extends {Setting<Values>}
  */
+class SelectSetting extends Setting {
+    /** @type {HTMLSelectElement} */
+    #input = document.createElement('select');
 
-/**
- * @typedef {BaseSetting} StringSetting
- * @extends BaseSetting
- * @property {typeof String} type
- * @property {string} default
- */
+    /**
+     * @param {string} id
+     * @param {Values} defaultValue
+     * @param {(Values | {key: Values, title: string})[] || Promise<(Values | {key: Values, title: string})[]>} options
+     */
+    constructor(id, defaultValue, options) {
+        super(id, defaultValue);
 
-/**
- * @typedef {BaseSetting} SelectSetting
- * @extends BaseSetting
- * @property {typeof HTMLSelectElement} type
- * @property {string[] | string} default
- * @property {(() => Promise<{key: string, title: string}[]>) | {key: string, title: string}[]} options
- * @property {boolean} multiselect
- */
+        this.#input.id = this.inputId;
+        this.#input.classList.add('custom-select');
+        this.#input.dataset.initialValue = this.value;
 
-/** @typedef {BooleanSetting | NumberSetting | StringSetting | SelectSetting} Setting */
+        const optionsPromise =
+            options instanceof Promise ? options : Promise.resolve(options);
+        optionsPromise.then(options =>
+            options.forEach(option => {
+                const opt = document.createElement('option');
+                const value = typeof option === 'string' ? option : option.key;
+                if (typeof option === 'string') {
+                    opt.value = value;
+                    opt.textContent = $t(
+                        `settings.${this.id}.options.${option}`
+                    ).toString();
+                } else {
+                    opt.value = value;
+                    opt.textContent = option.title;
+                }
+                if (value === this.value) {
+                    opt.selected = true;
+                }
+                this.#input.append(opt);
+            })
+        );
+    }
+
+    /**
+     * @returns {Values}
+     */
+    get inputValue() {
+        return this.#input.value;
+    }
+
+    /**
+     * @returns {ValueType}
+     */
+    get value() {
+        return super.value;
+    }
+
+    /**
+     * @param {Values} newValue
+     */
+    set value(newValue) {
+        this.#input.value = newValue;
+        GM_setValue(this.settingKey, newValue);
+    }
+
+    /**
+     * @returns {HTMLSelectElement}
+     */
+    get formControl() {
+        return this.#input;
+    }
+
+    /**
+     * @param {Record<string, Setting>} settings
+     * @returns {boolean}
+     */
+    toggleDisabled(settings) {
+        const disabled = super.toggleDisabled(settings);
+        this.#input.disabled = disabled;
+        if (disabled) {
+            this.#input.classList.add('disabled');
+        } else {
+            this.#input.classList.remove('disabled');
+        }
+        return disabled;
+    }
+
+    saveInput() {
+        this.value = this.#input.value;
+    }
+
+    resetInput() {
+        this.#input.value = this.value;
+    }
+}
 
 /** @type {Array<Setting | string>} */
 const SETTINGS = [
     $t('settings.general._title'),
-    {
-        id: 'general.updateNotification',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'general.fullwidth',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'general.externalLinks',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'general.truncatedTexts',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'general.bookmarkManager',
-        type: Boolean,
-        default: false,
-    },
-    {
-        id: 'general.noDownload',
-        type: Boolean,
-        default: false,
-    },
-    {
-        id: 'general.eventAdvertisements',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'general.christmasCountdown',
-        type: Boolean,
-        default: false,
-    },
-    { id: 'general.speiseplan', type: Boolean, default: false },
+    new BooleanSetting('general.updateNotification', true),
+    new BooleanSetting('general.fullwidth', true),
+    new BooleanSetting('general.externalLinks', true),
+    new BooleanSetting('general.truncatedTexts', true),
+    new BooleanSetting('general.bookmarkManager', false),
+    new BooleanSetting('general.noDownload', false),
+    new BooleanSetting('general.eventAdvertisements', true),
+    new BooleanSetting('general.christmasCountdown', false),
+    new BooleanSetting('general.speiseplan', false),
     $t('settings.dashboard._title'),
     // {Layout anpassen}
-    {
-        id: 'dashboard.~layoutPlaceholder',
-        type: String,
-        default: 'Coming soon...',
-        disabled: () => true,
-    },
-    {
-        id: 'dashboard.courseListFilter',
-        type: HTMLSelectElement,
-        options: getCourseGroupingOptions,
-        default: '_sync',
-        multiselect: false,
-    },
+    new StringSetting(
+        'dashboard.~layoutPlaceholder',
+        'Coming soon...'
+    ).setDisabledFn(() => true),
+    /** @type {SelectSetting<'_sync'>} */
+    new SelectSetting(
+        'dashboard.courseListFilter',
+        '_sync',
+        getCourseGroupingOptions()
+    ),
     $t('settings.myCourses._title'),
-    {
-        id: 'myCourses.boxesPerRow',
-        type: Number,
-        default: 4,
-        attributes: {
-            min: 1,
-            max: 10,
-        },
-    },
-    {
-        id: 'myCourses.navbarDropdown',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'myCourses.navbarDropdownFilter',
-        type: HTMLSelectElement,
-        options: getCourseGroupingOptions,
-        default: '_sync',
-        multiselect: false,
-        disabled: settings => !settings['myCourses.navbarDropdown'],
-    },
+    new NumberSetting('myCourses.boxesPerRow', 4, 1, 10),
+    new BooleanSetting('myCourses.navbarDropdown', true),
+    new SelectSetting(
+        'myCourses.navbarDropdownFilter',
+        '_sync',
+        getCourseGroupingOptions()
+    ).setDisabledFn(
+        settings => !settings['myCourses.navbarDropdown'].inputValue
+    ),
     $t('settings.courses._title'),
-    {
-        id: 'courses.grades',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'courses.gradesNewTab',
-        type: Boolean,
-        default: false,
-        disabled: settings => !settings['courses.grades'],
-    },
-    {
-        id: 'courses.collapseAll',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'courses.imgMaxWidth',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'courses.imageZoom',
-        type: Boolean,
-        default: true,
-    },
-    {
-        id: 'courses.hideSelfEnrolHint',
-        type: Boolean,
-        default: false,
-    },
+    new BooleanSetting('courses.grades', true),
+    new BooleanSetting('courses.gradesNewTab', false).setDisabledFn(
+        settings => !settings['courses.grades'].inputValue
+    ),
+    new BooleanSetting('courses.collapseAll', true),
+    new BooleanSetting('courses.imgMaxWidth', true),
+    new BooleanSetting('courses.imageZoom', true),
+    new BooleanSetting('courses.hideSelfEnrolHint', false),
     $t('settings.messages._title'),
-    {
-        id: 'messages.sendHotkey',
-        type: HTMLSelectElement,
-        options: () =>
-            Promise.resolve([
-                {
-                    key: '',
-                    title: '[Deaktiviert] Kein Absenden per Tastenkombination',
-                },
-                {
-                    key: 'shiftEnter',
-                    title: 'Umschalt + Enter',
-                },
-                {
-                    key: 'ctrlEnter',
-                    title: 'Strg + Enter',
-                },
-            ]),
-        default: '',
-    },
+    new SelectSetting('messages.sendHotkey', '', [
+        '',
+        'shiftEnter',
+        'ctrlEnter',
+    ]),
 ];
+const settingsById = Object.fromEntries(
+    SETTINGS.filter(s => typeof s !== 'string').map(s => [s.id, s])
+);
 // endregion
 
 // region Feature: general.fullwidth
@@ -2998,15 +3211,13 @@ ready(() => {
         fieldsetCounter++;
     };
 
-    SETTINGS.forEach((setting, index) => {
+    SETTINGS.forEach(setting => {
         // if setting is a string, use this as a heading / fieldset
         if (typeof setting === 'string') {
             createSettingsFieldset(setting);
         }
         // otherwise, add the settings inputs
         else {
-            const SETTING_KEY = getSettingKey(setting.id);
-
             if (!currentFieldset) createSettingsFieldset('');
 
             const settingRow = document.createElement('div');
@@ -3022,7 +3233,8 @@ ready(() => {
             );
             const label = document.createElement('label');
             label.classList.add('d-inline', 'word-break');
-            label.textContent = $t(`settings.${setting.id}.name`).toString();
+            label.textContent = setting.title;
+            setting.setLabel(label);
 
             const descWrapper = document.createElement('div');
             descWrapper.classList.add(
@@ -3036,9 +3248,7 @@ ready(() => {
             descBtn.dataset.container = 'body';
             descBtn.dataset.toggle = 'popover';
             descBtn.dataset.placement = 'right';
-            descBtn.dataset.content = $t(
-                `settings.${setting.id}.description`
-            ).toString();
+            descBtn.dataset.content = setting.description;
             descBtn.dataset.trigger = 'focus';
             descBtn.dataset.originalTitle = '';
             descBtn.title = '';
@@ -3063,133 +3273,20 @@ ready(() => {
                 'felement'
             );
             inputWrapper.dataset.setting = setting.id;
+            inputWrapper.append(setting.formControl);
 
-            const value = GM_getValue(SETTING_KEY, setting.default);
-
-            const inputType = {
-                [HTMLSelectElement]: 'select',
-            };
-
-            /** @type{HTMLInputElement | HTMLSelectElement} */
-            const input = document.createElement(
-                inputType[setting.type] || 'input'
-            );
-            /** @type{HTMLElement} */
-            let formControl;
-
-            input.id = PREFIX(`settings-input-${index}`);
-
-            let showInput = true;
-
-            switch (setting.type) {
-                case Boolean: {
-                    formControl = document.createElement('div');
-                    formControl.classList.add(
-                        'custom-control',
-                        'custom-switch'
-                    );
-                    input.classList.add('custom-control-input');
-                    input.type = 'checkbox';
-                    input.checked = value;
-                    const switchLabel = document.createElement('label');
-                    switchLabel.setAttribute('for', input.id);
-                    switchLabel.classList.add('custom-control-label');
-                    switchLabel.textContent = ' ';
-                    formControl.append(input, switchLabel);
-                    break;
-                }
-                case Number: {
-                    input.classList.add('form-control');
-                    input.type = 'number';
-                    input.value = value;
-                    break;
-                }
-                case String:
-                    input.classList.add('form-control');
-                    input.type = 'text';
-                    input.value = value;
-                    break;
-                case HTMLSelectElement: {
-                    input.classList.add('custom-select');
-                    input.dataset.initialValue = value;
-                    /** @type {Promise<{key: string, title: string}[]>} **/
-                    const options =
-                        Array.isArray(setting.options) ?
-                            new Promise(resolve => resolve(setting.options))
-                        :   setting.options();
-                    options.then(options =>
-                        options.forEach(option => {
-                            const optionEl = document.createElement('option');
-                            optionEl.value = option.key;
-                            optionEl.textContent = option.title;
-
-                            if (option.key === value) {
-                                optionEl.selected = true;
-                            }
-
-                            input.append(optionEl);
-                        })
-                    );
-                    break;
-                }
-                default: {
-                    showInput = false;
-                }
-            }
-
-            if (showInput) {
-                label.setAttribute('for', input.id);
-                input.name = setting.id;
-
-                if (setting.attributes) {
-                    Object.entries(setting.attributes).forEach(
-                        ([key, value]) => {
-                            input.setAttribute(key, value);
-                        }
-                    );
-                }
-            } else {
-                label.classList.add('text-muted');
-            }
-
-            if (formControl) inputWrapper.append(formControl);
-            else if (showInput) inputWrapper.append(input);
+            label.htmlFor = setting.inputId;
 
             settingRow.append(labelWrapper, inputWrapper);
             currentFieldset.querySelector('.fcontainer')?.append(settingRow);
         }
     });
 
-    const getFormValue = () => {
-        const formValue = {};
-        SETTINGS.forEach(({ id, type }) => {
-            if (!id) return;
-
-            switch (type) {
-                case Boolean:
-                    formValue[id] = form[id]?.checked;
-                    break;
-                default:
-                    formValue[id] = form[id]?.value;
-            }
-
-            if (typeof formValue[id] === 'undefined') delete formValue[id];
-        });
-        return formValue;
-    };
-
     const updateDisabledStates = () => {
-        const settings = getFormValue();
-        SETTINGS.forEach(({ id, disabled }) => {
-            if (!id || !disabled || !form[id]) return;
+        SETTINGS.forEach(setting => {
+            if (typeof setting === 'string') return;
 
-            const isDisabled = disabled(settings);
-            const classMethod = isDisabled ? 'add' : 'remove';
-            form[id].disabled = isDisabled;
-            form[id].classList[classMethod]('disabled');
-            form.querySelectorAll(`label[for="${form[id].id}"]`).forEach(
-                label => label.classList[classMethod]('text-muted')
-            );
+            setting.toggleDisabled(settingsById);
         });
     };
 
@@ -3282,9 +3379,11 @@ ready(() => {
             // region save & cancel
             // handle the save & cancel buttons
             modal.getRoot().on(ModalEvents.save, () => {
-                Object.entries(getFormValue()).forEach(([setting, value]) =>
-                    GM_setValue(getSettingKey(setting), value)
-                );
+                SETTINGS.forEach(setting => {
+                    if (typeof setting === 'string') return;
+
+                    setting.saveInput();
+                });
 
                 window.location.reload();
             });
@@ -3292,18 +3391,7 @@ ready(() => {
                 SETTINGS.forEach(setting => {
                     if (!setting.id) return;
 
-                    const input = form[setting.id];
-                    if (!input) return;
-
-                    const value = getSetting(setting.id);
-
-                    switch (setting.type) {
-                        case Boolean:
-                            input.checked = value;
-                            break;
-                        default:
-                            input.value = value;
-                    }
+                    setting.resetInput();
                 })
             );
             // endregion
