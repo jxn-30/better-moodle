@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.0](https://github.com/jxn-30/better-moodle/compare/1.22.3...1.23.0) (2024-02-22)
+
+
+### Code Refactoring
+
+* **settings:** rewrite settings ([6dfde11](https://github.com/jxn-30/better-moodle/commit/6dfde112e99c934a7e296ded003d468a1bab6060))
+
 ## [1.22.3](https://github.com/jxn-30/better-moodle/compare/1.22.2...1.22.3) (2024-01-31)
 
 
