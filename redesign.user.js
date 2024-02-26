@@ -792,25 +792,27 @@ const githubLink = (path, icon = true, externalIcon = false) => {
  * @return {Promise<CourseGrouping[]>}
  */
 const getCourseGroupings = () =>
-    fetch('/my/courses.php')
-        .then(res => res.text())
-        .then(html => new DOMParser().parseFromString(html, 'text/html'))
-        .then(doc => {
-            const customfieldname =
-                doc.querySelector('[data-region="courses-view"]')?.dataset
-                    .customfieldname ?? '';
-            return Array.from(
-                doc.querySelectorAll(
-                    '#groupingdropdown + .dropdown-menu [data-filter="grouping"]'
-                )
-            ).map(group => ({
-                classification: group.dataset.pref,
-                customfieldname,
-                customfieldvalue: group.dataset.customfieldvalue,
-                active: group.ariaCurrent === 'true',
-                name: group.textContent.trim(),
-            }));
-        });
+    window.location.pathname.startsWith('/login') ?
+        Promise.resolve([])
+    :   fetch('/my/courses.php')
+            .then(res => res.text())
+            .then(html => new DOMParser().parseFromString(html, 'text/html'))
+            .then(doc => {
+                const customfieldname =
+                    doc.querySelector('[data-region="courses-view"]')?.dataset
+                        .customfieldname ?? '';
+                return Array.from(
+                    doc.querySelectorAll(
+                        '#groupingdropdown + .dropdown-menu [data-filter="grouping"]'
+                    )
+                ).map(group => ({
+                    classification: group.dataset.pref,
+                    customfieldname,
+                    customfieldvalue: group.dataset.customfieldvalue,
+                    active: group.ariaCurrent === 'true',
+                    name: group.textContent.trim(),
+                }));
+            });
 /** gets all course groupings as options for a select */
 const getCourseGroupingOptions = () =>
     getCourseGroupings().then(groupings => [
