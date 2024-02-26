@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.1](https://github.com/jxn-30/better-moodle/compare/1.23.0...1.23.1) (2024-02-26)
+
+
+### Bug Fixes
+
+* **login:** fix accidental redirect to /my/courses on login ([38a037f](https://github.com/jxn-30/better-moodle/commit/38a037f1c973c8c2e91cf6b92524429ab5d8c1af))
+
 ## [1.23.0](https://github.com/jxn-30/better-moodle/compare/1.22.3...1.23.0) (2024-02-22)
 
 
