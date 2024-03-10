@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            🎓️ UzL: better-moodle
+// @name            🎓️ CAU: better-moodle
 // @namespace       https://uni-kiel.de
 // @                x-release-please-start-version
 // @version         1.23.1
