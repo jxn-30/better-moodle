@@ -1,17 +1,17 @@
 // ==UserScript==
 // @name            🎓️ UzL: better-moodle
-// @namespace       https://uni-luebeck.de
+// @namespace       https://uni-kiel.de
 // @                x-release-please-start-version
 // @version         1.23.1
 // @                x-release-please-start-end
-// @author          Jan (jxn_30)
+// @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
-// @homepage        https://github.com/jxn-30/better-moodle
-// @homepageURL     https://github.com/jxn-30/better-moodle
-// @icon            https://www.uni-luebeck.de/favicon.ico
-// @updateURL       https://github.com/jxn-30/better-moodle/raw/main/redesign.user.js
-// @downloadURL     https://github.com/jxn-30/better-moodle/raw/main/redesign.user.js
-// @match           https://moodle.uni-luebeck.de/*
+// @homepage        https://github.com/YorikHansen/better-moodle
+// @homepageURL     https://github.com/YorikHansen/better-moodle
+// @icon            https://www.uni-kiel.de/favicon.ico
+// @updateURL       https://github.com/YorikHansen/better-moodle/raw/main/redesign.user.js
+// @downloadURL     https://github.com/YorikHansen/better-moodle/raw/main/redesign.user.js
+// @match           https://elearn.informatik.uni-kiel.de/*
 // @run-at          document-body
 // @grant           GM_addStyle
 // @grant           GM_getValue
@@ -99,7 +99,7 @@ Lies dir gerne zunächst einmal die FAQ von Better-Moodle durch: [Better-Moodle 
 
 ## Okay cool, aber da steht XY nicht mit dabei. Was nun?
 
-Schreib doch gerne eine Mail an Jan: [{{mailAdress}}]({{mailLinkHelp}}).
+Schreib doch gerne eine Mail an Yorik: [{{mailAdress}}]({{mailLinkHelp}}).
 
 Denke dabei bitte daran, über deine Uni-Mail-Adresse und nicht über deine Private Email zu schreiben.
 
@@ -107,18 +107,18 @@ Denke dabei bitte daran, über deine Uni-Mail-Adresse und nicht über deine Priv
 
 Huch, in Better-Moodle gibt es doch keine Fehler? 😱
 
-Spaß beiseite, auch in Better-Moodle kann es mal vorkommen, dass ein Fehler auftritt. Eröffne gerne ein neues Issue auf [GitHub]({{githubIssueBug}}) oder schreibe Jan eine Mail, wenn du kein GitHub nutzen möchtest: [{{mailAdress}}]({{mailLinkBug}}).
+Spaß beiseite, auch in Better-Moodle kann es mal vorkommen, dass ein Fehler auftritt. Eröffne gerne ein neues Issue auf [GitHub]({{githubIssueBug}}) oder schreibe Yorik eine Mail, wenn du kein GitHub nutzen möchtest: [{{mailAdress}}]({{mailLinkBug}}).
 
 Bitte gebe dabei auch immer so viele Informationen wie möglich an, damit der Fehler optimal nachvollzogen und reproduziert werden kann.
 Das hilft, ihn schneller und effizienter zu beheben.
 
 ## Ich habe eine tolle Idee für ein neues Feature!
 
-Erstelle gerne ein Issue auf [GitHub]({{githubIssueFeature}}), reiche dort eine Contribution ein oder schreibe eine Mail an Jan: [{{mailAdress}}]({{mailLinkFeature}})`,
+Erstelle gerne ein Issue auf [GitHub]({{githubIssueFeature}}), reiche dort eine Contribution ein oder schreibe eine Mail an Yorik: [{{mailAdress}}]({{mailLinkFeature}})`,
                 mails: {
                     help: {
                         subject: 'Ich benötige bitte Hilfe',
-                        content: `Hallo Jan,
+                        content: `Hallo Yorik,
 
 ich habe eine Frage zu Better-Moodle, die ich aber leider nicht duch die FAQ beantwortet bekommen habe:
 
@@ -129,7 +129,7 @@ Vielen Dank und liebe Grüße
                     },
                     bug: {
                         subject: 'Bug-Report',
-                        content: `Hallo Jan,
+                        content: `Hallo Yorik,
 ich habe einen Bug in Better-Moodle gefunden!
 
 Ich nutze diesen Browser:
@@ -142,7 +142,7 @@ Viele Grüße
                     },
                     feature: {
                         subject: 'Feature-Idee',
-                        content: `Hallo Jan,
+                        content: `Hallo Yorik,
 ich habe einen tollen Vorschlag für Better-Moodle:
 
 [hier eine ausführliche Beschreibung des Vorschlags]
@@ -356,7 +356,7 @@ Please read the Better-Moodle FAQ first: [Better-Moodle FAQ]({{faqLink}}).
 
 ## Okay cool, but it doesn't say XY. What now?
 
-Why don't you write an email to Jan: [{{mailAdress}}]({{mailLinkHelp}}).
+Why don't you write an email to Yorik: [{{mailAdress}}]({{mailLinkHelp}}).
 
 Please remember to use your university e-mail address and not your private e-mail address.
 
@@ -364,18 +364,18 @@ Please remember to use your university e-mail address and not your private e-mai
 
 Oops? there are no errors in Better-Moodle?! 😱
 
-Joking aside, even in Better-Moodle it can happen that an error occurs. Feel free to open a new issue on [GitHub]({{githubIssueBug}}) or write Jan an email if you don't want to use GitHub: [{{mailAdress}}]({{mailLinkBug}}).
+Joking aside, even in Better-Moodle it can happen that an error occurs. Feel free to open a new issue on [GitHub]({{githubIssueBug}}) or write Yorik an email if you don't want to use GitHub: [{{mailAdress}}]({{mailLinkBug}}).
 
 Please always provide as much information as possible so that the bug can be traced and reproduced in the best possible way.
 This helps to fix it faster and more efficiently.
 
 ## I have a great idea for a new feature!
 
-Feel free to create an issue on [GitHub]({{githubIssueFeature}}), submit a contribution there or write an email to Jan: [{{mailAdress}}]({{mailLinkFeature}})`,
+Feel free to create an issue on [GitHub]({{githubIssueFeature}}), submit a contribution there or write an email to Yorik: [{{mailAdress}}]({{mailLinkFeature}})`,
                 mails: {
                     help: {
                         subject: 'I need help please',
-                        content: `Hello Jan,
+                        content: `Hello Yorik,
 
 I have a question about Better-Moodle, but unfortunately I didn't find an answer in the FAQ:
 
@@ -386,7 +386,7 @@ Many thanks and best regards
                     },
                     bug: {
                         subject: 'Bug-Report',
-                        content: `Hello Jan,
+                        content: `Hello Yorik,
 I have found a bug in Better-Moodle!
 
 I am using this browser:
@@ -399,7 +399,7 @@ Best regards
                     },
                     feature: {
                         subject: 'Feature idea',
-                        content: `Hello Jan,
+                        content: `Hello Yorik,
 I have a great suggestion for Better-Moodle:
 
 [here is a detailed description of the suggestion]
@@ -662,7 +662,7 @@ const currentScriptVersion = [];
 const latestScriptVersion = [];
 /** @type {() => Promise<boolean>} */
 const updateAvailable = () =>
-    fetch('https://api.github.com/repos/jxn-30/better-moodle/releases/latest')
+    fetch('https://api.github.com/repos/YorikHansen/better-moodle/releases/latest') // TODO: Actually provide releases
         .then(res => res.json())
         .then(({ tag_name }) =>
             tag_name
@@ -759,7 +759,7 @@ const mdToHtml = (md, headingStart = 1) => {
 
 const noExternalLinkIconClass = PREFIX('no-external-icon');
 
-const githubPath = path => `https://github.com/jxn-30/better-moodle${path}`;
+const githubPath = path => `https://github.com/YorikHansen/better-moodle${path}`;
 const githubLink = (path, icon = true, externalIcon = false) => {
     const link = document.createElement('a');
     link.href = githubPath(path);
@@ -866,7 +866,7 @@ const addMarqueeItems = (() => {
 
 #${navLink.id} > .${textSpanClass} > *::after {
     content: "${'\xa0'.repeat(11)}";
-    background-image: url("https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico");
+    background-image: url("https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico"); /* TODO */
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -940,7 +940,7 @@ const addMarqueeItems = (() => {
     if (GM_getValue(getSettingKey('general.eventAdvertisements'), true)) {
         // await fetch('http://localhost:3000/events.json') // this is for testing locally (npx serve --cors)
         fetch(
-            'https://raw.githubusercontent.com/jxn-30/better-moodle/main/events.json'
+            'https://raw.githubusercontent.com/YorikHansen/better-moodle/main/events.json'
         )
             .then(res => res.json())
             .then(events =>
@@ -995,15 +995,8 @@ const addMarqueeItems = (() => {
     return addItems;
 })();
 
-// that is the contact mail of Jan but encoded a little so that it is not easily readable by bots
-const cntctAdr = `${atob(
-    'LTE5MjUsLTE5MTIsLTE5MjIsLTE5MTksLTE5MTQsLTE5MjIsLTE5MDksLTE5MTUsLTE5MjI='
-)
-    .split(',')
-    .map(c => String.fromCharCode(Number(c) + 2023))
-    .join('')}@${['fsmain', ...location.hostname.split('.').slice(-2)].join(
-    '.'
-)}`;
+// that is the contact mail of Yorik but encoded a little so that it is not easily readable by bots
+const cntctAdr = 'bettermoodle@yorik.dev';
 
 const getEmail = (subject = '', body = '') => {
     const url = new URL(`mailto:${cntctAdr}`);
@@ -1320,7 +1313,7 @@ const getSpeiseplan = async () => {
     };
 
     const localizedPath = {
-        de: 'mensen-in-luebeck',
+        de: 'mensen-in-kiel',
         en: 'food-overview',
     };
     Object.seal(localizedPath);
@@ -1336,7 +1329,7 @@ const getSpeiseplan = async () => {
             GM_xmlhttpRequest({
                 url: `https://studentenwerk.sh/${MOODLE_LANG}/${
                     localizedPath[MOODLE_LANG]
-                }?ort=3&mensa=8${nextWeek ? '&nw=1' : ''}`,
+                }?ort=1&mensa=1${nextWeek ? '&nw=1' : ''}`,
                 onload: ({ responseText }) =>
                     resolve(
                         new DOMParser().parseFromString(
@@ -2451,10 +2444,10 @@ if (getSetting('general.speiseplan')) {
 
                 const studiwerkLink = document.createElement('a');
                 studiwerkLink.href = `https://studentenwerk.sh/${MOODLE_LANG}/${
-                    { de: 'mensen-in-luebeck', en: 'food-overview' }[
+                    { de: 'mensen-in-kiel', en: 'food-overview' }[
                         MOODLE_LANG
                     ]
-                }?ort=3&mensa=8`;
+                }?ort=1&mensa=1`;
                 studiwerkLink.textContent = $t('speiseplan.toStudiwerkPage');
                 studiwerkLink.target = '_blank';
                 studiwerkLink.classList.add('mr-auto');
@@ -3303,7 +3296,7 @@ ready(() => {
         changelogHtml ?
             Promise.resolve(changelogHtml)
         :   fetch(
-                `https://raw.githubusercontent.com/jxn-30/better-moodle/main/CHANGELOG.md?_=${
+                `https://raw.githubusercontent.com/YorikHansen/better-moodle/main/CHANGELOG.md?_=${
                     Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
                 }`
             )
