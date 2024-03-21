@@ -6,23 +6,23 @@
 -   [Disclaimer](#disclaimer)
 -   [Update](#update)
     -   [Changelog](#changelog)
--   [Features [UzL]](#features)
--   [FAQ [UzL]](faq)
--   [Alte Bilder und Impressionen [UzL]](impressions)
--   [Better-Moodle ohne Userscript-Manager nutzen [UzL]](without-userscript-manager)
+-   [Features \[UzL\]](#features)
+-   [FAQ \[UzL\]][faq]
+-   [Alte Bilder und Impressionen \[UzL\]][impressions]
+-   [Better-Moodle ohne Userscript-Manager nutzen \[UzL\]][use-without-userscript-manager]
 
-Better-Moodle ist ein Userscript, um das Design vom [Informatik Moodle der Uni Kiel](kiel-moodle) zu verbessern und zusätzliche, coole Features hinzuzufügen. Es basiert auf [Better-Moodle der UzL](better-moodle-uzl) von [Jan](https://github.com/jxn-30).
+Better-Moodle ist ein Userscript, um das Design vom [Informatik Moodle der Uni Kiel][kiel-moodle] zu verbessern und zusätzliche, coole Features hinzuzufügen. Es basiert auf [Better-Moodle der UzL][better-moodle-uzl] von [Jan](https://github.com/jxn-30).
 
-Wenn du dir spezielle Kiel-spezifische Features wünscht, kannst du gerne ein Issue oder einen Pull-Request öffnen. Richte dich ansonsten direkt an [Better-Moodle der UzL](better-moodle-uzl).
+Wenn du dir spezielle Kiel-spezifische Features wünscht, kannst du gerne ein Issue oder einen Pull-Request öffnen. Richte dich ansonsten direkt an [Better-Moodle der UzL][better-moodle-uzl].
 
 
 <details>
 
 <summary>🇬🇧 Introduction</summary>
 
-🇬🇧 Better-Moodle is an userscript to improve the design of the [Kiel Universities computer science Moodle](kiel-moodle) and add additional, cool features. It's based on [Better-Moodle of the UzL](better-moodle-uzl) by [Jan](https://github.com/jxn-30).
+🇬🇧 Better-Moodle is an userscript to improve the design of the [Kiel Universities computer science Moodle][kiel-moodle] and add additional, cool features. It's based on [Better-Moodle of the UzL][better-moodle-uzl] by [Jan](https://github.com/jxn-30).
 
-If you have any Kiel specific feature requests, feel free to open an issue or a pull request. Otherwise, please refer to the original [Better-Moodle of the UzL](better-moodle-uzl) for general feature requests.
+If you have any Kiel specific feature requests, feel free to open an issue or a pull request. Otherwise, please refer to the original [Better-Moodle of the UzL][better-moodle-uzl] for general feature requests.
 
 </details>
 
@@ -120,23 +120,23 @@ see [Better-Moodle of the UzL][faq]
 
 ## Alte Bilder und Impressionen
 
-siehe [Better-Moodle der UzL](impressions)
+siehe [Better-Moodle der UzL][impressions]
 
 <details>
 <summary>🇬🇧 Old pictures and impressions</summary>
 
-see [Better-Moodle of the UzL](impressions)
+see [Better-Moodle of the UzL][impressions]
 
 </details>
 
 ## Better-Moodle ohne Userscript-Manager nutzen
 
-siehe [Better-Moodle der UzL](without-userscript-manager)
+siehe [Better-Moodle der UzL][use-without-userscript-manager]
 
 <details>
 <summary>🇬🇧 Use Better-Moodle without Userscript-Manager</summary>
 
-see [Better-Moodle of the UzL](without-userscript-manager)
+see [Better-Moodle of the UzL][use-without-userscript-manager]
 
 </details>
 
@@ -146,4 +146,4 @@ see [Better-Moodle of the UzL](without-userscript-manager)
 [impressions]: https://github.com/jxn-30/better-moodle#alte-bilder-und-impressionen
 [installation]: https://github.com/YorikHansen/better-moodle/raw/main/redesign.user.js
 [kiel-moodle]: https://elearn.informatik.uni-kiel.de/
-[without-userscript-manager]: https://github.com/jxn-30/better-moodle#better-moodle-ohne-userscript-manager-nutzen
+[use-without-userscript-manager]: https://github.com/jxn-30/better-moodle#better-moodle-ohne-userscript-manager-nutzen
