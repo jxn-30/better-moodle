@@ -66,13 +66,18 @@ const TRANSLATIONS = {
             },
         },
         speiseplan: {
-            title: 'Speiseplan der Mensa',
+            title: 'Speiseplan der Mensa "{{canteen}}"',
             close: 'Schließen',
             toStudiwerkPage: 'Speiseplan auf der Seite des Studentenwerks',
             table: {
                 speise: 'Gericht',
                 type: 'Art(en)',
                 price: 'Preis',
+            },
+            canteen: {
+                '1': 'Mensa I',
+                '2': 'Mensa II',
+                '3': 'Mensa Gaarden',
             },
         },
         modals: {
@@ -285,6 +290,18 @@ Viele Grüße
                     },
                 },
             },
+            speiseplan: {
+                _title: 'Speiseplan',
+                canteen: {
+                    name: 'Standard Mensa',
+                    description: 'Welche Mensa soll standardmäßig angezeigt werden?',
+                    options: {
+                        '1': 'Mensa I',
+                        '2': 'Mensa II',
+                        '3': 'Mensa Gaarden',
+                    }
+                },
+            },
         },
     },
     en: {
@@ -325,13 +342,18 @@ Viele Grüße
             },
         },
         speiseplan: {
-            title: 'Menu of the canteen',
+            title: 'Menu of the canteen "{{canteen}}"',
             close: 'Close',
             toStudiwerkPage: 'Menu on the website of Studentenwerk',
             table: {
                 speise: 'Dish',
                 type: 'Type(s)',
                 price: 'Price',
+            },
+            canteen: {
+                '1': 'Mensa I',
+                '2': 'Mensa II',
+                '3': 'Mensa Gaarden',
             },
         },
         modals: {
@@ -543,6 +565,18 @@ Best regards
                         '': '[Disabled] Do not send by hotkey',
                         'shiftEnter': 'Shift + Enter',
                         'ctrlEnter': 'Ctrl + Enter',
+                    },
+                },
+            },
+            speiseplan: {
+                _title: 'Canteen menu',
+                canteen: {
+                    name: 'Default canteen',
+                    description: 'Which canteen should be used by default?',
+                    options: {
+                        '1': 'Mensa I',
+                        '2': 'Mensa II',
+                        '3': 'Mensa Gaarden',
                     },
                 },
             },
@@ -982,13 +1016,13 @@ const addMarqueeItems = (() => {
                     if (startDateDay > now) {
                         setTimeout(
                             () => {
-                                mainAdElement.classList.remove('hidden');    
+                                mainAdElement.classList.remove('hidden');
                                 mainAdElement.innerHTML = $t('eventAdvertisements.today',
-                                {
-                                    event: event.title,
-                                    start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                                    location: event.location,
-                                }).toString()
+                                    {
+                                        event: event.title,
+                                        start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                                        location: event.location,
+                                    }).toString()
                             },
                             startDateDay - now
                         );
@@ -1392,7 +1426,7 @@ const getSpeiseplan = async () => {
         new Promise(resolve =>
             GM_xmlhttpRequest({
                 url: `https://studentenwerk.sh/${MOODLE_LANG}/${localizedPath[MOODLE_LANG]
-                    }?ort=1&mensa=1${nextWeek ? '&nw=1' : ''}`, // TODO: Allow selection of Mensa 2 or even the TF Mensa
+                    }?ort=1&mensa=${getSetting('speiseplan.canteen')}${nextWeek ? '&nw=1' : ''}`, // TODO: Allow selection of Mensa 2 or even the TF Mensa
                 onload: ({ responseText }) =>
                     resolve(
                         new DOMParser().parseFromString(
@@ -1850,6 +1884,12 @@ const SETTINGS = [
         '',
         'shiftEnter',
         'ctrlEnter',
+    ]),
+    $t('settings.speiseplan._title'),
+    new SelectSetting('speiseplan.canteen', '1', [
+        '1',
+        '2',
+        '3'
     ]),
 ];
 const settingsById = Object.fromEntries(
@@ -2321,14 +2361,18 @@ if (getSetting('general.speiseplan')) {
     desktopLink.href = '#';
     desktopLink.textContent =
         foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
-    desktopBtn.title = $t('speiseplan.title').toString();
+    desktopBtn.title = $t('speiseplan.title', {
+        canteen: $t(`speiseplan.canteen.${getSetting('speiseplan.canteen')}`)
+    }).toString();
     desktopBtn.append(desktopLink);
 
     const mobileBtn = document.createElement('a');
     mobileBtn.classList.add('list-group-item', 'list-group-item-action');
     mobileBtn.href = '#';
     mobileBtn.textContent = `${foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
-        }\xa0${$t('speiseplan.title').toString()}`;
+        }\xa0${$t('speiseplan.title', {
+            canteen: $t(`speiseplan.canteen.${getSetting('speiseplan.canteen')}`)
+        }).toString()}`;
 
     const tableClass = PREFIX('speiseplan-table');
     const speiseClass = PREFIX('speiseplan-speise');
@@ -2485,7 +2529,9 @@ if (getSetting('general.speiseplan')) {
                 large: true,
                 scrollable: true,
                 title: `${foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
-                    }\xa0${$t('speiseplan.title').toString()}`,
+                    }\xa0${$t('speiseplan.title', {
+                        canteen: $t(`speiseplan.canteen.${getSetting('speiseplan.canteen')}`)
+                    }).toString()}`,
                 body: getSpeiseplan().then(({ speisen, filters }) =>
                     Object.entries(speisen)
                         .filter(
@@ -2507,7 +2553,7 @@ if (getSetting('general.speiseplan')) {
                 studiwerkLink.href = `https://studentenwerk.sh/${MOODLE_LANG}/${{ de: 'mensen-in-kiel', en: 'food-overview' }[
                     MOODLE_LANG
                 ]
-                    }?ort=1&mensa=1`;
+                    }?ort=1&mensa=${getSetting('speiseplan.canteen')}`;
                 studiwerkLink.textContent = $t('speiseplan.toStudiwerkPage');
                 studiwerkLink.target = '_blank';
                 studiwerkLink.classList.add('mr-auto');

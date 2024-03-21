@@ -88,16 +88,22 @@ Better-Moodle receives regular updates. A complete changelog can be found in the
 
 ## Features
 
-*Bisher gibt es keine Kiel-spezifischen Features.*
+### Speiseplan der Mensa
 
-weitere Features: siehe [Better-Moodle der UzL][features]
+Better-Moodle bettet den Speiseplan der Mensa direkt in Moodle ein. In der Menüleiste wird ein zufälliges Lebensmittel angezeigt, das den Speiseplan öffnet. Deine Lieblingsmensa kannst du in den Einstellungen auswählen. Das Feature ist kann in den Einstellungen deaktiviert werden.
+
+### weitere Features
+*siehe [Better-Moodle der UzL][features]*
 
 <details>
 <summary>🇬🇧 Features</summary>
 
-*There are no Kiel-specific features yet.*
+### Canteen menu
 
-additional features: see [Better-Moodle of the UzL][features]
+Better-Moodle embeds the canteen menu directly into Moodle. A random food is displayed in the menu bar, which opens the canteen menu. You can select your favorite canteen in the settings. The feature can be deactivated in the settings.
+
+### additional features
+*see [Better-Moodle of the UzL][features]*
 
 </details>
 
