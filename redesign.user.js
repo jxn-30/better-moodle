@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            🎓️ CAU: better-moodle
-// @namespace       https://uni-kiel.de
+// @namespace       https://informatik.uni-kiel.de
 // @                x-release-please-start-version
 // @version         1.23.1
 // @                x-release-please-start-end
@@ -21,6 +21,7 @@
 // @grant           GM_info
 // @grant           GM_xmlhttpRequest
 // @connect         studentenwerk.sh
+// @connect         cloud.rz.uni-kiel.de
 // ==/UserScript==
 
 /* global M, require */
@@ -52,6 +53,11 @@ const TRANSLATIONS = {
         },
         courses: {
             grades: 'Bewertungen',
+        },
+        eventAdvertisements: {
+            saveTheDate: 'Save the Date: <b>{{event}}</b> am {{date}} um {{start}} Uhr',
+            today: 'Heute: <b>{{event}}</b> um {{start}} Uhr ({{location}})',
+            now: 'Jetzt: <b>{{event}}</b> ({{location}})',
         },
         myCourses: {
             lists: {
@@ -118,7 +124,7 @@ Erstelle gerne ein Issue auf [GitHub]({{githubIssueFeature}}), reiche dort eine 
                 mails: {
                     help: {
                         subject: 'Ich benötige bitte Hilfe',
-                        content: `Hallo Yorik,
+                        content: `Moin Yorik,
 
 ich habe eine Frage zu Better-Moodle, die ich aber leider nicht duch die FAQ beantwortet bekommen habe:
 
@@ -129,7 +135,7 @@ Vielen Dank und liebe Grüße
                     },
                     bug: {
                         subject: 'Bug-Report',
-                        content: `Hallo Yorik,
+                        content: `Moin Yorik,
 ich habe einen Bug in Better-Moodle gefunden!
 
 Ich nutze diesen Browser:
@@ -142,7 +148,7 @@ Viele Grüße
                     },
                     feature: {
                         subject: 'Feature-Idee',
-                        content: `Hallo Yorik,
+                        content: `Moin Yorik,
 ich habe einen tollen Vorschlag für Better-Moodle:
 
 [hier eine ausführliche Beschreibung des Vorschlags]
@@ -189,7 +195,7 @@ Viele Grüße
                 eventAdvertisements: {
                     name: 'Event-Ankündigungen',
                     description:
-                        'Zeigt ab und zu (selten) Ankündigungen zu coolen Events deiner studentischen Gremien in der Navigationsleiste an.',
+                        'Zeigt ab und zu Ankündigungen zu coolen Events deiner Fachschaft in der Navigationsleiste an.',
                 },
                 christmasCountdown: {
                     name: 'Countdown bis Heiligabend 🎄',
@@ -307,6 +313,11 @@ Viele Grüße
         courses: {
             grades: 'Grades',
         },
+        eventAdvertisements: {
+            saveTheDate: 'Save the Date: <b>{{event}}</b> at {{date}}, {{start}}',
+            today: 'Today: <b>{{event}}</b> at {{start}} ({{location}})',
+            now: 'Now: <b>{{event}}</b> ({{location}})',
+        },
         myCourses: {
             lists: {
                 empty: 'No courses with currently selected filter available.',
@@ -375,7 +386,7 @@ Feel free to create an issue on [GitHub]({{githubIssueFeature}}), submit a contr
                 mails: {
                     help: {
                         subject: 'I need help please',
-                        content: `Hello Yorik,
+                        content: `Hi Yorik,
 
 I have a question about Better-Moodle, but unfortunately I didn't find an answer in the FAQ:
 
@@ -386,7 +397,7 @@ Many thanks and best regards
                     },
                     bug: {
                         subject: 'Bug-Report',
-                        content: `Hello Yorik,
+                        content: `Hi Yorik,
 I have found a bug in Better-Moodle!
 
 I am using this browser:
@@ -399,7 +410,7 @@ Best regards
                     },
                     feature: {
                         subject: 'Feature idea',
-                        content: `Hello Yorik,
+                        content: `Hi Yorik,
 I have a great suggestion for Better-Moodle:
 
 [here is a detailed description of the suggestion]
@@ -446,7 +457,7 @@ Best regards
                 eventAdvertisements: {
                     name: 'Event announcements',
                     description:
-                        'Occasionally (rarely) displays announcements about cool events from your student committees ("Studentische Gremien") in the navigation bar.',
+                        'Occasionally displays announcements about cool events from your student organisation ("Fachschaft") in the navigation bar.',
                 },
                 christmasCountdown: {
                     name: 'Countdown to Christmas Eve 🎄',
@@ -744,14 +755,14 @@ const mdToHtml = (md, headingStart = 1) => {
                         .map(replacement[3] ? escape : inlineEscape)
                         .join(replacement[3] || '</li>\n<li>') +
                     replacement[2]
-                : firstChar === '#' ?
-                    `<h${(i =
-                        b.indexOf(' ') + (headingStart - 1))}>${inlineEscape(
-                        b.slice(i + 1 - (headingStart - 1))
-                    )}</h${i}>`
-                : firstChar === '<' ? b
-                : b.startsWith('---') ? '<hr />'
-                : `<p>${inlineEscape(b)}</p>`;
+                    : firstChar === '#' ?
+                        `<h${(i =
+                            b.indexOf(' ') + (headingStart - 1))}>${inlineEscape(
+                                b.slice(i + 1 - (headingStart - 1))
+                            )}</h${i}>`
+                        : firstChar === '<' ? b
+                            : b.startsWith('---') ? '<hr />'
+                                : `<p>${inlineEscape(b)}</p>`;
         });
 
     return html;
@@ -794,7 +805,7 @@ const githubLink = (path, icon = true, externalIcon = false) => {
 const getCourseGroupings = () =>
     window.location.pathname.startsWith('/login') ?
         Promise.resolve([])
-    :   fetch('/my/courses.php')
+        : fetch('/my/courses.php')
             .then(res => res.text())
             .then(html => new DOMParser().parseFromString(html, 'text/html'))
             .then(doc => {
@@ -866,7 +877,7 @@ const addMarqueeItems = (() => {
 
 #${navLink.id} > .${textSpanClass} > *::after {
     content: "${'\xa0'.repeat(11)}";
-    background-image: url("https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico"); /* TODO */
+    background-image: url("https://www.fs-infmath.uni-kiel.de/favicon.ico"); /* TODO */
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -935,12 +946,14 @@ const addMarqueeItems = (() => {
         return newElements.map((e, i) => [e, newClonedElements[i]]);
     };
 
-    // we can add information about oncoming events like FZB and Nikolausumtrunk here.
+
+    // TODO: Parse the ICS file from the CAU Cloud (https://cloud.rz.uni-kiel.de/remote.php/dav/public-calendars/6i9dfBcXyqsLYKZK/?export) on client side
+
+    // we can add information about oncoming events here.
     // the getSetting method cannot be used as SETTINGS is not defined there yet
     if (GM_getValue(getSettingKey('general.eventAdvertisements'), true)) {
-        // await fetch('http://localhost:3000/events.json') // this is for testing locally (npx serve --cors)
         fetch(
-            'https://raw.githubusercontent.com/YorikHansen/better-moodle/main/events.json'
+            'https://yorik.dev/better-moodle/events.json?cal=https://cloud.rz.uni-kiel.de/remote.php/dav/public-calendars/6i9dfBcXyqsLYKZK/?export'
         )
             .then(res => res.json())
             .then(events =>
@@ -949,19 +962,63 @@ const addMarqueeItems = (() => {
             .then(events =>
                 events.map(event => {
                     const mainAdElement = document.createElement('span');
-                    mainAdElement.textContent = event.text;
+                    mainAdElement.innerHTML = $t('eventAdvertisements.saveTheDate',
+                        {
+                            event: event.title,
+                            start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                            location: event.location,
+                        }).toString();
 
                     const startDate = new Date(event.start);
+                    const startDateDay = new Date(event.start.slice(0, 10));
                     const endDate = new Date(event.end);
                     const now = new Date();
-                    if (startDate > now || endDate < now) {
+                    if (startDateDay > now || endDate < now) {
                         mainAdElement.classList.add('hidden');
+                    }
+
+                    // TODO: Build logic to automatically display "save the dates" and not only "today" and "now"
+
+                    if (startDateDay > now) {
+                        setTimeout(
+                            () => {
+                                mainAdElement.classList.remove('hidden');    
+                                mainAdElement.innerHTML = $t('eventAdvertisements.today',
+                                {
+                                    event: event.title,
+                                    start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                                    location: event.location,
+                                }).toString()
+                            },
+                            startDateDay - now
+                        );
+                    } else {
+                        mainAdElement.innerHTML = $t('eventAdvertisements.today',
+                            {
+                                event: event.title,
+                                start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                                location: event.location,
+                            }).toString()
                     }
                     if (startDate > now) {
                         setTimeout(
-                            () => mainAdElement.classList.remove('hidden'),
+                            () => {
+                                mainAdElement.innerHTML = $t('eventAdvertisements.now',
+                                    {
+                                        event: event.title,
+                                        start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                                        location: event.location,
+                                    }).toString()
+                            },
                             startDate - now
                         );
+                    } else {
+                        mainAdElement.innerHTML = $t('eventAdvertisements.now',
+                            {
+                                event: event.title,
+                                start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                                location: event.location,
+                            }).toString()
                     }
                     if (now < endDate) {
                         setTimeout(
@@ -995,7 +1052,7 @@ const addMarqueeItems = (() => {
     return addItems;
 })();
 
-// that is the contact mail of Yorik but encoded a little so that it is not easily readable by bots
+// that is the contact mail of Yorik
 const cntctAdr = 'bettermoodle@yorik.dev';
 
 const getEmail = (subject = '', body = '') => {
@@ -1013,6 +1070,13 @@ const isDashboard =
 const MOODLE_LANG = document.documentElement.lang.toLowerCase();
 
 const $t = (key, args = {}) => {
+    const escapeHTML = x => x ? x.toString()
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;')
+        : '';
     const t =
         key
             .split('.')
@@ -1026,7 +1090,7 @@ const $t = (key, args = {}) => {
         );
     }
     return Object.entries(args).reduce(
-        (t, [key, value]) => t.replaceAll(`{{${key}}}`, value),
+        (t, [key, value]) => t.replaceAll(`{{${key}}}`, escapeHTML(value)),
         t
     );
 };
@@ -1327,9 +1391,8 @@ const getSpeiseplan = async () => {
     const getDoc = (nextWeek = false) =>
         new Promise(resolve =>
             GM_xmlhttpRequest({
-                url: `https://studentenwerk.sh/${MOODLE_LANG}/${
-                    localizedPath[MOODLE_LANG]
-                }?ort=1&mensa=1${nextWeek ? '&nw=1' : ''}`,
+                url: `https://studentenwerk.sh/${MOODLE_LANG}/${localizedPath[MOODLE_LANG]
+                    }?ort=1&mensa=1${nextWeek ? '&nw=1' : ''}`, // TODO: Allow selection of Mensa 2 or even the TF Mensa
                 onload: ({ responseText }) =>
                     resolve(
                         new DOMParser().parseFromString(
@@ -2189,7 +2252,7 @@ if (getSetting('general.christmasCountdown')) {
         const daysToChristmas =
             now < firstChristmasDay ?
                 getDayOfYear(thisYearChristmas) - todayDayOfYear
-            :   getDayOfYear(thisYearLastDay) -
+                : getDayOfYear(thisYearLastDay) -
                 todayDayOfYear +
                 getDayOfYear(nextYearChristmas);
 
@@ -2203,7 +2266,7 @@ if (getSetting('general.christmasCountdown')) {
                         days: daysToChristmas,
                     }
                 ).toString()
-            :   $t('christmasCountdown.christmas').toString();
+                : $t('christmasCountdown.christmas').toString();
 
         const nextUpdate = new Date();
         nextUpdate.setDate(now.getDate() + 1);
@@ -2264,9 +2327,8 @@ if (getSetting('general.speiseplan')) {
     const mobileBtn = document.createElement('a');
     mobileBtn.classList.add('list-group-item', 'list-group-item-action');
     mobileBtn.href = '#';
-    mobileBtn.textContent = `${
-        foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
-    }\xa0${$t('speiseplan.title').toString()}`;
+    mobileBtn.textContent = `${foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
+        }\xa0${$t('speiseplan.title').toString()}`;
 
     const tableClass = PREFIX('speiseplan-table');
     const speiseClass = PREFIX('speiseplan-speise');
@@ -2422,9 +2484,8 @@ if (getSetting('general.speiseplan')) {
                 type: types.ALERT,
                 large: true,
                 scrollable: true,
-                title: `${
-                    foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
-                }\xa0${$t('speiseplan.title').toString()}`,
+                title: `${foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
+                    }\xa0${$t('speiseplan.title').toString()}`,
                 body: getSpeiseplan().then(({ speisen, filters }) =>
                     Object.entries(speisen)
                         .filter(
@@ -2443,11 +2504,10 @@ if (getSetting('general.speiseplan')) {
                 modal.getBody()[0].classList.add('mform');
 
                 const studiwerkLink = document.createElement('a');
-                studiwerkLink.href = `https://studentenwerk.sh/${MOODLE_LANG}/${
-                    { de: 'mensen-in-kiel', en: 'food-overview' }[
-                        MOODLE_LANG
-                    ]
-                }?ort=1&mensa=1`;
+                studiwerkLink.href = `https://studentenwerk.sh/${MOODLE_LANG}/${{ de: 'mensen-in-kiel', en: 'food-overview' }[
+                    MOODLE_LANG
+                ]
+                    }?ort=1&mensa=1`;
                 studiwerkLink.textContent = $t('speiseplan.toStudiwerkPage');
                 studiwerkLink.target = '_blank';
                 studiwerkLink.classList.add('mr-auto');
@@ -2538,10 +2598,9 @@ ready(() => {
 
             drawer
                 .querySelectorAll(
-                    `.courseindex-section-title .icons-collapse-expand${
-                        collapseIcon.classList.contains('collapsed') ?
-                            ':not(.collapsed)'
-                        :   '.collapsed'
+                    `.courseindex-section-title .icons-collapse-expand${collapseIcon.classList.contains('collapsed') ?
+                        ':not(.collapsed)'
+                        : '.collapsed'
                     }`
                 )
                 .forEach(collapseIcon => collapseIcon.click());
@@ -2634,7 +2693,7 @@ ready(async () => {
         anchor.append(
             ...(course.shortname ?
                 [shortName, document.createElement('br')]
-            :   []),
+                : []),
             fullName
         );
         anchor.title = anchor.textContent;
@@ -2883,7 +2942,7 @@ ready(async () => {
                         courseGroupings.find(grouping => grouping.active) ??
                         courseGroupings[0]
                 )
-            :   JSON.parse(sidebarGroupingSetting);
+                : JSON.parse(sidebarGroupingSetting);
 
         // fetch the courses
         require(['block_myoverview/repository'], ({
@@ -2932,7 +2991,7 @@ ready(async () => {
                         courseGroupings.find(grouping => grouping.active) ??
                         courseGroupings[0]
                 )
-            :   JSON.parse(dropdownGroupingSetting);
+                : JSON.parse(dropdownGroupingSetting);
 
         // fetch the courses
         require(['block_myoverview/repository'], ({
@@ -3295,9 +3354,8 @@ ready(() => {
     const getChangelogHtml = () =>
         changelogHtml ?
             Promise.resolve(changelogHtml)
-        :   fetch(
-                `https://raw.githubusercontent.com/YorikHansen/better-moodle/main/CHANGELOG.md?_=${
-                    Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
+            : fetch(
+                `https://raw.githubusercontent.com/YorikHansen/better-moodle/main/CHANGELOG.md?_=${Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
                 }`
             )
                 .then(res => res.text())
@@ -3497,9 +3555,8 @@ ready(() => {
                     type: types.ALERT,
                     large: true,
                     scrollable: true,
-                    title: `${
-                        githubLink('/blob/main/CHANGELOG.md').outerHTML
-                    } Better-Moodle:&nbsp;${$t('modals.changelog')}`,
+                    title: `${githubLink('/blob/main/CHANGELOG.md').outerHTML
+                        } Better-Moodle:&nbsp;${$t('modals.changelog')}`,
                     body: getChangelogHtml(),
                 }).then(modal => modal.show());
             });
