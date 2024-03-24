@@ -2,6 +2,9 @@
 
 ## [1.24.2](https://github.com/YorikHansen/better-moodle/compare/1.24.1...1.24.2) (2024-03-24)
 
+### Changes
+
+- Namespace has changed. You may need to reinstall better-moodle
 
 ### Bug Fixes
 
