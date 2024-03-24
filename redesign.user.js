@@ -2589,6 +2589,17 @@ ready(async () => {
     /** @type {HTMLDivElement} */
     let sidebarContent;
 
+    /**
+     * @typedef {Object} Course
+     * @property {string} shortname
+     * @property {string} fullname
+     * @property {string} viewurl
+     * @property {boolean} isfavourite
+     */
+
+    /**
+     * @param {Course} course
+     */
     const addDropdownItem = course => {
         const createAnchor = () => {
             const anchor = document.createElement('a');
@@ -2603,6 +2614,13 @@ ready(async () => {
                 fullName
             );
             anchor.title = anchor.textContent;
+
+            if (course.isfavourite) {
+                const favouriteIcon = document.createElement('i');
+                favouriteIcon.classList.add('icon', 'fa', 'fa-star', 'fa-fw');
+                anchor.prepend(favouriteIcon);
+            }
+
             return anchor;
         };
 
@@ -2625,6 +2643,9 @@ ready(async () => {
         }
     };
 
+    /**
+     * @param {Course} course
+     */
     const addSidebarItem = course => {
         if (!sidebarContent) return;
         const card = document.createElement('div');
@@ -2645,7 +2666,12 @@ ready(async () => {
             fullName
         );
         anchor.title = anchor.textContent;
-        anchor.title = anchor.textContent;
+
+        if (course.isfavourite) {
+            const favouriteIcon = document.createElement('i');
+            favouriteIcon.classList.add('icon', 'fa', 'fa-star', 'fa-fw');
+            anchor.prepend(favouriteIcon);
+        }
 
         cardBody.append(anchor);
         card.append(cardBody);
