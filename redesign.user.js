@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://informatik.uni-kiel.de
 // @                x-release-please-start-version
-// @version         1.24.0
+// @version         1.24.2
 // @                x-release-please-start-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -1524,6 +1524,12 @@ GM_addStyle(`
 body.dir-ltr a.${noExternalLinkIconClass}::after,
 body.dir-rtl a.${noExternalLinkIconClass}::before {
     display: none !important;
+}
+
+/* fix info-buttons next to form labels to be aligned left instead of centered */
+.form-label-addon [data-toggle="popover"] i.icon.fa {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
 }
     `);
 // endregion
@@ -3384,7 +3390,7 @@ ready(() => {
 
             const labelWrapper = document.createElement('div');
             labelWrapper.classList.add(
-                'col-md-4',
+                'col-md-5',
                 'col-form-label',
                 'd-flex',
                 'pb-0',
@@ -3426,7 +3432,7 @@ ready(() => {
 
             const inputWrapper = document.createElement('div');
             inputWrapper.classList.add(
-                'col-md-8',
+                'col-md-7',
                 'form-inline',
                 'align-items-start',
                 'felement'
@@ -3494,7 +3500,7 @@ ready(() => {
             const updateCheck = () =>
                 updateAvailable().then(available => {
                     if (available) {
-                        versionSpan.append(updateBtn);
+                        versionSpan.after(updateBtn);
                         // region Feature: general.updateNotification
                         if (getSetting('general.updateNotification')) {
                             settingsBtn.append(updateBadge);
@@ -3557,7 +3563,7 @@ ready(() => {
             // region version span & update btn
             // add a small note about current and latest script version
             const versionSpan = document.createElement('span');
-            versionSpan.classList.add('small', 'ml-auto');
+            versionSpan.classList.add('small', 'ml-2');
 
             const currentCode = document.createElement('code');
             currentCode.textContent = currentScriptVersion.join('.');
@@ -3567,13 +3573,13 @@ ready(() => {
             versionSpan.append(
                 `${$t('modals.settings.installedVersion')}:\xa0`,
                 currentCode,
-                ' ',
+                document.createElement('br'),
                 `${$t('modals.settings.latestVersion')}:\xa0`,
                 latestCode
             );
 
             const updateBtn = document.createElement('a');
-            updateBtn.classList.add('btn-primary', 'btn-sm', 'ml-2');
+            updateBtn.classList.add('btn-primary', 'btn-sm', 'ml-auto');
             updateBtn.href = '#';
             updateBtn.textContent = $t('modals.settings.updateBtn').toString();
 
