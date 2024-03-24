@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.24.2](https://github.com/YorikHansen/better-moodle/compare/1.24.1...1.24.2) (2024-03-24)
+
+
+### Bug Fixes
+
+* **settings:** fix update button not looking good ([d5d58bc](https://github.com/YorikHansen/better-moodle/commit/d5d58bca4a2e719714e34ef42d4423f2cf4477ee))
+
+## [1.24.1](https://github.com/YorikHansen/better-moodle/compare/1.24.0...1.24.1) (2024-03-24)
+
+
+### Bug Fixes
+
+* **settings:** give labels more space ([831a61a](https://github.com/YorikHansen/better-moodle/commit/831a61a4211023d0bcdbbb705e8dbb78913c7102))
+* **style:** improve default moodle style: fix info-buttons next to form labels to be aligned left instead of centered ([37b8e43](https://github.com/YorikHansen/better-moodle/commit/37b8e435dc2400420328bc1c2ba098e6a23ca64c))
+
 ## [1.24.0](https://github.com/YorikHansen/better-moodle/compare/1.23.1...1.24.0) (2024-03-24)
 
 
