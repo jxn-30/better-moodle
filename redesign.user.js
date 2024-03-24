@@ -3403,7 +3403,7 @@ ready(() => {
             const updateCheck = () =>
                 updateAvailable().then(available => {
                     if (available) {
-                        versionSpan.append(updateBtn);
+                        versionSpan.after(updateBtn);
                         // region Feature: general.updateNotification
                         if (getSetting('general.updateNotification')) {
                             settingsBtn.append(updateBadge);
@@ -3466,7 +3466,7 @@ ready(() => {
             // region version span & update btn
             // add a small note about current and latest script version
             const versionSpan = document.createElement('span');
-            versionSpan.classList.add('small', 'ml-auto');
+            versionSpan.classList.add('small', 'ml-2');
 
             const currentCode = document.createElement('code');
             currentCode.textContent = currentScriptVersion.join('.');
@@ -3476,13 +3476,13 @@ ready(() => {
             versionSpan.append(
                 `${$t('modals.settings.installedVersion')}:\xa0`,
                 currentCode,
-                ' ',
+                document.createElement('br'),
                 `${$t('modals.settings.latestVersion')}:\xa0`,
                 latestCode
             );
 
             const updateBtn = document.createElement('a');
-            updateBtn.classList.add('btn-primary', 'btn-sm', 'ml-2');
+            updateBtn.classList.add('btn-primary', 'btn-sm', 'ml-auto');
             updateBtn.href = '#';
             updateBtn.textContent = $t('modals.settings.updateBtn').toString();
 
