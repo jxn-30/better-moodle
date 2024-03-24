@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://informatik.uni-kiel.de
 // @                x-release-please-start-version
-// @version         1.23.1
+// @version         1.24.0
 // @                x-release-please-start-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -225,6 +225,11 @@ Viele Grüße
                     description:
                         'Welche Kurse sollen in der Sidebar angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
                 },
+                'courseListFavouritesAtTop': {
+                    name: 'Favoriten oben in der Kursliste',
+                    description:
+                        'Favorisierte Kurse werden immer oben in der Kursliste angezeigt, anstelle an der normalen Stelle bei alphabetischer Sortierung.',
+                },
             },
             myCourses: {
                 _title: 'Meine Kurse',
@@ -242,6 +247,11 @@ Viele Grüße
                     name: 'Filter der Kurs-Dropdown',
                     description:
                         'Welche Kurse sollen in der Dropdown angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
+                },
+                navbarDropdownFavouritesAtTop: {
+                    name: 'Favoriten oben in der Kurs-Dropdown',
+                    description:
+                        'Favorisierte Kurse werden immer oben in der Kurs-Dropdown angezeigt, anstelle an der normalen Stelle bei alphabetischer Sortierung.',
                 },
             },
             courses: {
@@ -504,6 +514,11 @@ Best regards
                     description:
                         'Which courses should be displayed in the sidebar? The filters of the "My courses" page are available.',
                 },
+                'courseListFavouritesAtTop': {
+                    name: 'Show favourite courses at top',
+                    description:
+                        'Favourite courses are always displayed at the top of the course list instead of in the normal position when sorted alphabetically.',
+                },
             },
             myCourses: {
                 _title: 'My courses',
@@ -521,6 +536,11 @@ Best regards
                     name: 'Filter the course dropdown',
                     description:
                         'Which courses should be displayed in the dropdown? The filters on the "My courses" page are available.',
+                },
+                navbarDropdownFavouritesAtTop: {
+                    name: 'Show favourite courses at top in dropdown',
+                    description:
+                        'Favourite courses are always displayed at the top of the course dropdown instead of in the normal position when sorted alphabetically.',
                 },
             },
             courses: {
@@ -1860,6 +1880,7 @@ const SETTINGS = [
         '_sync',
         getCourseGroupingOptions()
     ),
+    new BooleanSetting('dashboard.courseListFavouritesAtTop', true),
     $t('settings.myCourses._title'),
     new NumberSetting('myCourses.boxesPerRow', 4, 1, 10),
     new BooleanSetting('myCourses.navbarDropdown', true),
@@ -1867,6 +1888,12 @@ const SETTINGS = [
         'myCourses.navbarDropdownFilter',
         '_sync',
         getCourseGroupingOptions()
+    ).setDisabledFn(
+        settings => !settings['myCourses.navbarDropdown'].inputValue
+    ),
+    new BooleanSetting(
+        'myCourses.navbarDropdownFavouritesAtTop',
+        true
     ).setDisabledFn(
         settings => !settings['myCourses.navbarDropdown'].inputValue
     ),
@@ -2687,6 +2714,17 @@ ready(async () => {
     /** @type {HTMLDivElement} */
     let sidebarContent;
 
+    /**
+     * @typedef {Object} Course
+     * @property {string} shortname
+     * @property {string} fullname
+     * @property {string} viewurl
+     * @property {boolean} isfavourite
+     */
+
+    /**
+     * @param {Course} course
+     */
     const addDropdownItem = course => {
         const createAnchor = () => {
             const anchor = document.createElement('a');
@@ -2701,6 +2739,13 @@ ready(async () => {
                 fullName
             );
             anchor.title = anchor.textContent;
+
+            if (course.isfavourite) {
+                const favouriteIcon = document.createElement('i');
+                favouriteIcon.classList.add('icon', 'fa', 'fa-star', 'fa-fw');
+                anchor.prepend(favouriteIcon);
+            }
+
             return anchor;
         };
 
@@ -2723,6 +2768,9 @@ ready(async () => {
         }
     };
 
+    /**
+     * @param {Course} course
+     */
     const addSidebarItem = course => {
         if (!sidebarContent) return;
         const card = document.createElement('div');
@@ -2743,7 +2791,12 @@ ready(async () => {
             fullName
         );
         anchor.title = anchor.textContent;
-        anchor.title = anchor.textContent;
+
+        if (course.isfavourite) {
+            const favouriteIcon = document.createElement('i');
+            favouriteIcon.classList.add('icon', 'fa', 'fa-star', 'fa-fw');
+            anchor.prepend(favouriteIcon);
+        }
 
         cardBody.append(anchor);
         card.append(cardBody);
@@ -3003,6 +3056,9 @@ ready(async () => {
                 sort: 'shortname',
             }).then(({ courses }) => {
                 loadingSpanEl.remove();
+                if (getSetting('dashboard.courseListFavouritesAtTop')) {
+                    courses.sort((a, b) => b.isfavourite - a.isfavourite);
+                }
                 courses.forEach(addSidebarItem);
                 if (!courses.length) {
                     const noCoursesSpan = document.createElement('span');
@@ -3062,6 +3118,9 @@ ready(async () => {
                     });
                 }
 
+                if (getSetting('myCourses.navbarDropdownFavouritesAtTop')) {
+                    courses.sort((a, b) => b.isfavourite - a.isfavourite);
+                }
                 courses.forEach(addDropdownItem);
 
                 if (!courses.length) {

@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.24.0](https://github.com/jxn-30/better-moodle/compare/1.23.1...1.24.0) (2024-03-24)
+
+
+### Features
+
+* **dashboard:** add a star to indicate courses marked as favorite in sidebar ([5860766](https://github.com/jxn-30/better-moodle/commit/58607668b5cac2a76efcda8428609b205186748c))
+* **dashboard:** add option to allow showing favourite courses on top in sidebar ([f64303d](https://github.com/jxn-30/better-moodle/commit/f64303d8f35280204ed6bfdbae0ef297dd4223e3))
+* **my-courses:** add a star to indicate courses marked as favorite in my-courses dropdown ([5860766](https://github.com/jxn-30/better-moodle/commit/58607668b5cac2a76efcda8428609b205186748c))
+* **my-courses:** add option to allow showing favourite courses on top my-courses dropdown ([f64303d](https://github.com/jxn-30/better-moodle/commit/f64303d8f35280204ed6bfdbae0ef297dd4223e3))
+
 ## [1.23.1](https://github.com/jxn-30/better-moodle/compare/1.23.0...1.23.1) (2024-02-26)
 
 
