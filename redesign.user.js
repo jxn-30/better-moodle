@@ -1435,6 +1435,12 @@ body.dir-ltr a.${noExternalLinkIconClass}::after,
 body.dir-rtl a.${noExternalLinkIconClass}::before {
     display: none !important;
 }
+
+/* fix info-buttons next to form labels to be aligned left instead of centered */
+.form-label-addon [data-toggle="popover"] i.icon.fa {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+}
     `);
 // endregion
 
