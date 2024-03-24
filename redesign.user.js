@@ -3286,7 +3286,7 @@ ready(() => {
 
             const labelWrapper = document.createElement('div');
             labelWrapper.classList.add(
-                'col-md-4',
+                'col-md-5',
                 'col-form-label',
                 'd-flex',
                 'pb-0',
@@ -3328,7 +3328,7 @@ ready(() => {
 
             const inputWrapper = document.createElement('div');
             inputWrapper.classList.add(
-                'col-md-8',
+                'col-md-7',
                 'form-inline',
                 'align-items-start',
                 'felement'
