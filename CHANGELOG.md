@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.2](https://github.com/jxn-30/better-moodle/compare/1.24.1...1.24.2) (2024-03-24)
+
+
+### Bug Fixes
+
+* **settings:** fix update button not looking good ([d5d58bc](https://github.com/jxn-30/better-moodle/commit/d5d58bca4a2e719714e34ef42d4423f2cf4477ee))
+
 ## [1.24.1](https://github.com/jxn-30/better-moodle/compare/1.24.0...1.24.1) (2024-03-24)
 
 
