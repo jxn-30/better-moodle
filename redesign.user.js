@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            🎓️ CAU: better-moodle
-// @namespace       https://informatik.uni-kiel.de
+// @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
 // @version         1.24.2
 // @                x-release-please-start-end
