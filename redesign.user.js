@@ -214,6 +214,11 @@ Viele Grüße
                     description:
                         'Welche Kurse sollen in der Sidebar angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
                 },
+                'courseListFavouritesAtTop': {
+                    name: 'Favoriten oben in der Kursliste',
+                    description:
+                        'Favorisierte Kurse werden immer oben in der Kursliste angezeigt, anstelle an der normalen Stelle bei alphabetischer Sortierung.',
+                },
             },
             myCourses: {
                 _title: 'Meine Kurse',
@@ -231,6 +236,11 @@ Viele Grüße
                     name: 'Filter der Kurs-Dropdown',
                     description:
                         'Welche Kurse sollen in der Dropdown angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.',
+                },
+                navbarDropdownFavouritesAtTop: {
+                    name: 'Favoriten oben in der Kurs-Dropdown',
+                    description:
+                        'Favorisierte Kurse werden immer oben in der Kurs-Dropdown angezeigt, anstelle an der normalen Stelle bei alphabetischer Sortierung.',
                 },
             },
             courses: {
@@ -471,6 +481,11 @@ Best regards
                     description:
                         'Which courses should be displayed in the sidebar? The filters of the "My courses" page are available.',
                 },
+                'courseListFavouritesAtTop': {
+                    name: 'Show favourite courses at top',
+                    description:
+                        'Favourite courses are always displayed at the top of the course list instead of in the normal position when sorted alphabetically.',
+                },
             },
             myCourses: {
                 _title: 'My courses',
@@ -488,6 +503,11 @@ Best regards
                     name: 'Filter the course dropdown',
                     description:
                         'Which courses should be displayed in the dropdown? The filters on the "My courses" page are available.',
+                },
+                navbarDropdownFavouritesAtTop: {
+                    name: 'Show favourite courses at top in dropdown',
+                    description:
+                        'Favourite courses are always displayed at the top of the course dropdown instead of in the normal position when sorted alphabetically.',
                 },
             },
             courses: {
@@ -1770,6 +1790,7 @@ const SETTINGS = [
         '_sync',
         getCourseGroupingOptions()
     ),
+    new BooleanSetting('dashboard.courseListFavouritesAtTop', true),
     $t('settings.myCourses._title'),
     new NumberSetting('myCourses.boxesPerRow', 4, 1, 10),
     new BooleanSetting('myCourses.navbarDropdown', true),
@@ -1777,6 +1798,12 @@ const SETTINGS = [
         'myCourses.navbarDropdownFilter',
         '_sync',
         getCourseGroupingOptions()
+    ).setDisabledFn(
+        settings => !settings['myCourses.navbarDropdown'].inputValue
+    ),
+    new BooleanSetting(
+        'myCourses.navbarDropdownFavouritesAtTop',
+        true
     ).setDisabledFn(
         settings => !settings['myCourses.navbarDropdown'].inputValue
     ),
@@ -2931,6 +2958,9 @@ ready(async () => {
                 sort: 'shortname',
             }).then(({ courses }) => {
                 loadingSpanEl.remove();
+                if (getSetting('dashboard.courseListFavouritesAtTop')) {
+                    courses.sort((a, b) => b.isfavourite - a.isfavourite);
+                }
                 courses.forEach(addSidebarItem);
                 if (!courses.length) {
                     const noCoursesSpan = document.createElement('span');
@@ -2990,6 +3020,9 @@ ready(async () => {
                     });
                 }
 
+                if (getSetting('myCourses.navbarDropdownFavouritesAtTop')) {
+                    courses.sort((a, b) => b.isfavourite - a.isfavourite);
+                }
                 courses.forEach(addDropdownItem);
 
                 if (!courses.length) {
