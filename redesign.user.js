@@ -1016,7 +1016,7 @@ const addMarqueeItems = (() => {
             )
             .then(events =>
                 // Due to moodle being down daily, don't load events that are more than 48 hours in the future
-                events.filter(event => new Date(event.start) - Date.now() <= 172800) // TODO: Change if save-the-date logic is implemented
+                events.filter(event => new Date(event.start) - Date.now() <= 172800000) // TODO: Change if save-the-date logic is implemented
             )
             .then(events =>
                 events.map(event => {
