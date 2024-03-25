@@ -26,6 +26,8 @@
 
 /* global M, require */
 
+const MAX_TIMEOUT = 2147483647;
+
 // region translations
 const TRANSLATIONS = {
     de: {
@@ -1015,10 +1017,6 @@ const addMarqueeItems = (() => {
                 events.filter(event => new Date(event.end) > Date.now())
             )
             .then(events =>
-                // Due to moodle being down daily, don't load events that are more than 48 hours in the future
-                events.filter(event => new Date(event.start) - Date.now() <= 172800000) // TODO: Change if save-the-date logic is implemented
-            )
-            .then(events =>
                 events.map(event => {
                     const mainAdElement = document.createElement('span');
                     mainAdElement.innerHTML = $t('eventAdvertisements.saveTheDate',
@@ -1039,51 +1037,56 @@ const addMarqueeItems = (() => {
                     // TODO: Build logic to automatically display "save the dates" and not only "today" and "now"
 
                     if (startDateDay > now) {
-                        setTimeout(
-                            () => {
-                                mainAdElement.classList.remove('hidden');
-                                mainAdElement.innerHTML = $t('eventAdvertisements.today',
-                                    {
+                        let delta = startDateDay - now;
+                        if (!(delta > MAX_TIMEOUT)) {
+                            setTimeout(
+                                () => {
+                                    mainAdElement.classList.remove('hidden');
+                                    mainAdElement.innerHTML = $t('eventAdvertisements.today', {
                                         event: event.title,
                                         start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                                         location: event.location,
                                     }).toString()
-                            },
-                            startDateDay - now
-                        );
+                                },
+                                delta
+                            );
+                        }
                     } else {
-                        mainAdElement.innerHTML = $t('eventAdvertisements.today',
-                            {
-                                event: event.title,
-                                start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                                location: event.location,
-                            }).toString()
+                        mainAdElement.innerHTML = $t('eventAdvertisements.today', {
+                            event: event.title,
+                            start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                            location: event.location,
+                        }).toString()
                     }
                     if (startDate > now) {
-                        setTimeout(
-                            () => {
-                                mainAdElement.innerHTML = $t('eventAdvertisements.now',
-                                    {
+                        let delta = startDate - now;
+                        if (!(delta > MAX_TIMEOUT)) {
+                            setTimeout(
+                                () => {
+                                    mainAdElement.innerHTML = $t('eventAdvertisements.now', {
                                         event: event.title,
                                         start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                                         location: event.location,
                                     }).toString()
-                            },
-                            startDate - now
-                        );
+                                },
+                                delta
+                            );
+                        }
                     } else {
-                        mainAdElement.innerHTML = $t('eventAdvertisements.now',
-                            {
-                                event: event.title,
-                                start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                                location: event.location,
-                            }).toString()
+                        mainAdElement.innerHTML = $t('eventAdvertisements.now', {
+                            event: event.title,
+                            start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                            location: event.location,
+                        }).toString()
                     }
                     if (now < endDate) {
-                        setTimeout(
-                            () => mainAdElement.classList.add('hidden'),
-                            endDate - now
-                        );
+                        let delta = endDate - now;
+                        if (!(delta > MAX_TIMEOUT)) {
+                            setTimeout(
+                                () => mainAdElement.classList.add('hidden'),
+                                delta
+                            );
+                        }
                     }
 
                     return mainAdElement;
