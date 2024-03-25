@@ -1,10 +1,16 @@
 # Changelog
 
+## [1.24.3](https://github.com/YorikHansen/better-moodle/compare/1.24.2...1.24.3) (2024-03-25)
+
+### Bug Fixes
+
+* **events:** fix bug that displayed events in distant future
+
 ## [1.24.2](https://github.com/YorikHansen/better-moodle/compare/1.24.1...1.24.2) (2024-03-24)
 
 ### Changes
 
-- Namespace has changed. You may need to reinstall better-moodle
+* Namespace has changed. You may need to reinstall better-moodle
 
 ### Bug Fixes
 

@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.24.2
+// @version         1.24.3
 // @                x-release-please-start-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -1011,7 +1011,12 @@ const addMarqueeItems = (() => {
         )
             .then(res => res.json())
             .then(events =>
+                // Filter out events that are already over
                 events.filter(event => new Date(event.end) > Date.now())
+            )
+            .then(events =>
+                // Due to moodle being down daily, don't load events that are more than 48 hours in the future
+                events.filter(event => new Date(event.start) - Date.now() <= 172800) // TODO: Change if save-the-date logic is implemented
             )
             .then(events =>
                 events.map(event => {
