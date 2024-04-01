@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.4](https://github.com/YorikHansen/better-moodle/compare/1.24.3...1.24.4) (2024-04-01)
+
+### Bug Fixes
+
+* **canteen-menu:** fix canteen menu crashing when an unknown Art is encountered ([a817048](https://github.com/YorikHansen/better-moodle/commit/a817048f9df6d85180be5c143f14ab17bf6d4ebd))
+
+
 ## [1.24.3](https://github.com/YorikHansen/better-moodle/compare/1.24.2...1.24.3) (2024-03-25)
 
 ### Bug Fixes
