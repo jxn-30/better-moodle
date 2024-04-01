@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.24.3
+// @version         1.24.4
 // @                x-release-please-start-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -2539,10 +2539,14 @@ if (getSetting('general.speiseplan')) {
             artenCell.classList.add(artenClass);
             speise.arten.forEach(art => {
                 const img = document.createElement('img');
-                const artFilter = filter.arten[art];
-                img.src = artFilter.img;
-                img.alt = img.title = artFilter.title;
-                artenCell.append(img);
+                if (!filter.arten[art]) {
+                    console.error(`Art ${art} is unknown`);
+                } else {
+                    const artFilter = filter.arten[art];
+                    img.src = artFilter.img;
+                    img.alt = img.title = artFilter.title;
+                    artenCell.append(img);
+                }
             });
 
             const preiseCell = row.insertCell();
