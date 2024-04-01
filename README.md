@@ -34,7 +34,7 @@ If you have any Kiel specific feature requests, feel free to open an issue or a 
 
 ## Installation
 
-1. Userscript-Manager als Browser-Erweiterung installieren (z. B. [Tampermonkey](https://tampermonkey.net))
+1. Userscript-Manager als Browser-Erweiterung installieren (z. B. [Violentmonkey](https://violentmonkey.github.io/))
 2. Klicke [hier][installation], um Better-Moodle zu installieren
 3. Moodle einmal neu laden und ein besseres Moodle genießen 🎉
 4. Bei Bedarf über das Zahnräder-Icon oben rechts im Moodle, neben deinem Profilbild, Better-Moodle individualisieren
@@ -42,7 +42,7 @@ If you have any Kiel specific feature requests, feel free to open an issue or a 
 <details>
 <summary>🇬🇧 Installation</summary>
 
-1. install an Userscript-Manager as a browser extension (e.g. [Tampermonkey](https://tampermonkey.net))
+1. install an Userscript-Manager as a browser extension (e.g. [Violentmonkey](https://violentmonkey.github.io/))
 2. click [here][installation] to install Better-Moodle
 3. reload Moodle once and enjoy a better Moodle 🎉
 4. if required, customize Better-Moodle via the gears icon at the top right of Moodle, next to your profile picture
