@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.24.4
+// @version         1.24.5
 // @                x-release-please-start-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -2521,7 +2521,10 @@ if (getSetting('general.speiseplan')) {
             speise.allergene.forEach(allergen => {
                 const allergenFilter = filter.allergene[allergen];
                 const allergenSpan = document.createElement('span');
-                allergenSpan.textContent += `${allergenFilter.abk}:\xa0${allergenFilter.title}`;
+                allergenSpan.textContent +=
+                    allergenFilter ?
+                        `${allergenFilter.abk}:\xa0${allergenFilter.title}`
+                    :   allergen;
                 allergene.append(allergenSpan);
             });
             if (speise.allergene.length) speiseCell.append(allergene);
@@ -2530,7 +2533,10 @@ if (getSetting('general.speiseplan')) {
             speise.zusatzstoffe.forEach(zusatzstoff => {
                 const zusatzstoffFilter = filter.zusatzstoffe[zusatzstoff];
                 const zusatzstoffSpan = document.createElement('span');
-                zusatzstoffSpan.textContent += `${zusatzstoffFilter.abk}:\xa0${zusatzstoffFilter.title}`;
+                zusatzstoffSpan.textContent +=
+                    zusatzstoffFilter ?
+                        `${zusatzstoffFilter.abk}:\xa0${zusatzstoffFilter.title}`
+                    :   zusatzstoff;
                 zusatzstoffe.append(zusatzstoffSpan);
             });
             if (speise.zusatzstoffe.length) speiseCell.append(zusatzstoffe);
@@ -2538,15 +2544,14 @@ if (getSetting('general.speiseplan')) {
             const artenCell = row.insertCell();
             artenCell.classList.add(artenClass);
             speise.arten.forEach(art => {
-                const img = document.createElement('img');
-                if (!filter.arten[art]) {
-                    console.error(`Art ${art} is unknown`);
-                } else {
-                    const artFilter = filter.arten[art];
-                    img.src = artFilter.img;
-                    img.alt = img.title = artFilter.title;
-                    artenCell.append(img);
+                const artFilter = filter.arten[art];
+                if (!artFilter) {
+                    return artenCell.append(art, document.createElement('br'));
                 }
+                const img = document.createElement('img');
+                img.src = artFilter.img;
+                img.alt = img.title = artFilter.title;
+                artenCell.append(img);
             });
 
             const preiseCell = row.insertCell();

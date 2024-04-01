@@ -6,6 +6,7 @@
 -   [Disclaimer](#disclaimer)
 -   [Update](#update)
     -   [Changelog](#changelog)
+-   [Hochschulen](#hochschulen)
 -   [Features \[UzL\]](#features)
 -   [FAQ \[UzL\]][faq]
 -   [Alte Bilder und Impressionen \[UzL\]][impressions]
@@ -85,6 +86,13 @@ If enabled in the settings, Better-Moodle will also display a small red dot next
 Better-Moodle receives regular updates. A complete changelog can be found in the file [CHANGELOG.md](./CHANGELOG.md). The changelog is also accessible via the settings menu via the button in the lower left corner of the footer.
 
 </details>
+
+## Hochschulen
+
+Es gibt ganz viele, ganz tolle Menschen, die gerne programmieren und so breitet sich das Better-Moodle mit der Zeit auch auf anderen Hochschulen aus. Von diesen Hochschulen ist bekannt, dass Better-Moodle von ehrenamtlichen Studis entwickelt und getestet wird:
+
+- **Original: [Universität zu Lübeck (UzL)](https://github.com/jxn-30/better-moodle)** by [@jxn-30](https://github.com/jxn-30)
+- [CAU Kiel](https://github.com/YorikHansen/better-moodle) by [@YorikHansen](https://github.com/YorikHansen)
 
 ## Features
 
