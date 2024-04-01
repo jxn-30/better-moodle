@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.3](https://github.com/jxn-30/better-moodle/compare/1.24.2...1.24.3) (2024-04-01)
+
+
+### Bug Fixes
+
+* **speiseplan:** do not crash when zusatzstoff, allergen or speiseart is unknown ([f7ce212](https://github.com/jxn-30/better-moodle/commit/f7ce212ff91a99adf4534fcfbd54e2bd3f872f0b))
+
 ## [1.24.2](https://github.com/jxn-30/better-moodle/compare/1.24.1...1.24.2) (2024-03-24)
 
 
