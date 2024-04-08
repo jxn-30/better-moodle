@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.24.5
+// @version         1.24.6
 // @                x-release-please-start-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -58,6 +58,7 @@ const TRANSLATIONS = {
         },
         eventAdvertisements: {
             saveTheDate: 'Save the Date: <b>{{event}}</b> am {{date}} um {{start}} Uhr',
+            tomorrow: 'Morgen: <b>{{event}}</b> um {{start}} Uhr ({{location}})',
             today: 'Heute: <b>{{event}}</b> um {{start}} Uhr ({{location}})',
             now: 'Jetzt: <b>{{event}}</b> ({{location}})',
         },
@@ -344,6 +345,7 @@ Viele Grüße
         },
         eventAdvertisements: {
             saveTheDate: 'Save the Date: <b>{{event}}</b> at {{date}}, {{start}}',
+            tomorrow: 'Tomorrow: <b>{{event}}</b> at {{start}} ({{location}})',
             today: 'Today: <b>{{event}}</b> at {{start}} ({{location}})',
             now: 'Now: <b>{{event}}</b> ({{location}})',
         },
@@ -1017,78 +1019,73 @@ const addMarqueeItems = (() => {
                 events.filter(event => new Date(event.end) > Date.now())
             )
             .then(events =>
+                events.filter(event => event.status === 'CONFIRMED') // TODO: Add message for canceled events
+            )
+            .then(events =>
                 events.map(event => {
-                    const mainAdElement = document.createElement('span');
-                    mainAdElement.innerHTML = $t('eventAdvertisements.saveTheDate',
-                        {
-                            event: event.title,
-                            start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                            location: event.location,
-                        }).toString();
-
                     const startDate = new Date(event.start);
-                    const startDateDay = new Date(event.start.slice(0, 10));
                     const endDate = new Date(event.end);
+                    const startDateDay = new Date(event.start.slice(0, 10));
+                    const beforeStartDateDay = new Date(event.start.slice(0, 10)) - 1000 * 60 * 60 * 24;
+                    const startAdDay = startDateDay - (() => {
+                        switch (event.priority) {
+                            case 1: return 1000 * 60 * 60 * 24 * 7;   // 1 week
+                            case 2: return 1000 * 60 * 60 * 24 * 7;   // 1 week
+                            case 3: return 1000 * 60 * 60 * 24 * 5;   // 5 days
+                            case 4: return 1000 * 60 * 60 * 24 * 3;   // 3 days
+                            case 5: return 1000 * 60 * 60 * 24        // Normal priority
+                            case 0: return 0;                         // Not set
+                            default: return startDateDay + startDate; // low priority
+                        }
+                    })();
                     const now = new Date();
-                    if (startDateDay > now || endDate < now) {
+
+                    const mainAdElement = document.createElement('span');
+                    mainAdElement.innerText = `${startDate.toISOString()}: ${event.title}`; // Not visible, just for debugging
+
+                    const showEvent = (time, template) => {
+                        if (time > now) {
+                            let delta = time - now;
+                            if (!(delta > MAX_TIMEOUT)) {
+                                setTimeout(() => {
+                                    mainAdElement.classList.remove('hidden');
+                                    mainAdElement.innerHTML = template;
+                                }, delta);
+                            }
+                        } else {
+                            mainAdElement.innerHTML = template;
+                        }
+                    }
+
+                    const ad = { // TODO: Add attach url as link with icon.
+                        event: event.title,
+                        date: new Date(event.start).toLocaleDateString(MOODLE_LANG, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+                        start: new Date(event.start).toLocaleTimeString(MOODLE_LANG, { hour: '2-digit', minute: '2-digit' }),
+                        location: event.location,
+                    };
+
+                    if (startAdDay > now || endDate < now) {
                         mainAdElement.classList.add('hidden');
                     }
 
-                    // TODO: Build logic to automatically display "save the dates" and not only "today" and "now"
+                    if (event.priority !== 0 && event.priority < 5 && beforeStartDateDay > now) {
+                        showEvent(startAdDay, $t('eventAdvertisements.saveTheDate', ad));
+                    }
+                    if (event.priority !== 0 && event.priority <= 5 && startDateDay > now) {
+                        showEvent(beforeStartDateDay, $t('eventAdvertisements.tomorrow', ad));
+                    }
+                    if (event.priority <= 5 && startDate > now) {
+                        showEvent(startDateDay, $t('eventAdvertisements.today', ad));
+                    }
+                    if (endDate > now) {
+                        showEvent(startDate, $t('eventAdvertisements.now', ad));
 
-                    if (startDateDay > now) {
-                        let delta = startDateDay - now;
-                        if (!(delta > MAX_TIMEOUT)) {
-                            setTimeout(
-                                () => {
-                                    mainAdElement.classList.remove('hidden');
-                                    mainAdElement.innerHTML = $t('eventAdvertisements.today', {
-                                        event: event.title,
-                                        start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                                        location: event.location,
-                                    }).toString()
-                                },
-                                delta
-                            );
-                        }
-                    } else {
-                        mainAdElement.innerHTML = $t('eventAdvertisements.today', {
-                            event: event.title,
-                            start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                            location: event.location,
-                        }).toString()
-                    }
-                    if (startDate > now) {
-                        let delta = startDate - now;
-                        if (!(delta > MAX_TIMEOUT)) {
-                            setTimeout(
-                                () => {
-                                    mainAdElement.innerHTML = $t('eventAdvertisements.now', {
-                                        event: event.title,
-                                        start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                                        location: event.location,
-                                    }).toString()
-                                },
-                                delta
-                            );
-                        }
-                    } else {
-                        mainAdElement.innerHTML = $t('eventAdvertisements.now', {
-                            event: event.title,
-                            start: new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                            location: event.location,
-                        }).toString()
-                    }
-                    if (now < endDate) {
-                        let delta = endDate - now;
-                        if (!(delta > MAX_TIMEOUT)) {
-                            setTimeout(
-                                () => mainAdElement.classList.add('hidden'),
-                                delta
-                            );
+                        if ((endDate - now) < MAX_TIMEOUT) {
+                            setTimeout(() => {
+                                mainAdElement.classList.add('hidden');
+                            }, endDate - now);
                         }
                     }
-
                     return mainAdElement;
                 })
             )
@@ -2524,7 +2521,7 @@ if (getSetting('general.speiseplan')) {
                 allergenSpan.textContent +=
                     allergenFilter ?
                         `${allergenFilter.abk}:\xa0${allergenFilter.title}`
-                    :   allergen;
+                        : allergen;
                 allergene.append(allergenSpan);
             });
             if (speise.allergene.length) speiseCell.append(allergene);
@@ -2536,7 +2533,7 @@ if (getSetting('general.speiseplan')) {
                 zusatzstoffSpan.textContent +=
                     zusatzstoffFilter ?
                         `${zusatzstoffFilter.abk}:\xa0${zusatzstoffFilter.title}`
-                    :   zusatzstoff;
+                        : zusatzstoff;
                 zusatzstoffe.append(zusatzstoffSpan);
             });
             if (speise.zusatzstoffe.length) speiseCell.append(zusatzstoffe);
@@ -3198,14 +3195,14 @@ if (getSetting('courses.imageZoom')) {
     right: 0;
     z-index: 2000;
     opacity: 0;
-    
+
     background: rgba(0, 0, 0, 0.75);
-    
+
     cursor: zoom-out;
-    
+
     transition: opacity 0.2s ease-in-out;
     will-change: opacity;
-    
+
     display: flex;
     align-items: center;
     justify-content: center;
