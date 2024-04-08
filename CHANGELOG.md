@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.6](https://github.com/YorikHansen/better-moodle/compare/1.24.5...1.24.6) (2024-04-08)
+
+### Code Refactoring
+
+* **events:** Consider priority when displaying save-the-date notes for events ([758b3fb](https://github.com/YorikHansen/better-moodle/commit/758b3fbb4593e0a3923c73eb58803465b2b91c90))
+
+
 ## [1.24.5](https://github.com/YorikHansen/better-moodle/compare/1.24.4...1.24.5) (2024-04-01)
 
 
