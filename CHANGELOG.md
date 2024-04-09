@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.25.1](https://github.com/jxn-30/better-moodle/compare/1.25.0...1.25.1) (2024-04-09)
+
+
+### Bug Fixes
+
+* **googlyEyes:** do not render eyes when pointer device cannot hover ([e548f12](https://github.com/jxn-30/better-moodle/commit/e548f12d8c006919fc08c43092c3b53527bd2609))
+* **googlyEyes:** use an easing function to actually see pupils moving better ([89c70f1](https://github.com/jxn-30/better-moodle/commit/89c70f1dc495429db6467f6065218f621df11d53))
+* **logo:** apply glowing logo in dark mode on login page too ([fc900d1](https://github.com/jxn-30/better-moodle/commit/fc900d19b8a2639b0847ed933be1d1778ca07d54))
+
+
+### Performance Improvements
+
+* **googlyEyes:** improve performance of googlyEyes ([b8aa4a4](https://github.com/jxn-30/better-moodle/commit/b8aa4a42784245c5324ba8f389065d1b8a53ed68))
+
 ## [1.25.0](https://github.com/jxn-30/better-moodle/compare/1.24.3...1.25.0) (2024-04-09)
 
 
