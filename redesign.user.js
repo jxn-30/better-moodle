@@ -3684,10 +3684,7 @@ ready(() => {
             modal.getFooter()[0].prepend(footerBtnGroup);
 
             // region changelog
-            const changelogBtn = githubLink(
-                '/better-moodle/blob/main/CHANGELOG.md',
-                false
-            );
+            const changelogBtn = githubLink('/blob/main/CHANGELOG.md', false);
             changelogBtn.classList.add('btn', 'btn-outline-primary');
             const changelogIcon = document.createElement('i');
             changelogIcon.classList.add('fa', 'fa-history', 'fa-fw');
