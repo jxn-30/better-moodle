@@ -1451,7 +1451,8 @@ body.dir-rtl a.${noExternalLinkIconClass}::before {
 }
 
 /* make the UzL-Logo glow beautifully when using dark mode of darkreader */
-html[data-darkreader-scheme="dark"] .navbar.fixed-top .navbar-brand .logo {
+html[data-darkreader-scheme="dark"] .navbar.fixed-top .navbar-brand .logo,
+html[data-darkreader-scheme="dark"] #logoimage {
     filter: brightness(500%);
 }
     `);
