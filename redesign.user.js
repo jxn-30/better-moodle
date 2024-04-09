@@ -1546,8 +1546,9 @@ body.dir-rtl a.${noExternalLinkIconClass}::before {
 }
 
 /* make the Logo glow beautifully when using dark mode of darkreader */
-html[data-darkreader-scheme="dark"] .navbar.fixed-top .navbar-brand .logo {
-    filter: brightness(500%);
+html[data-darkreader-scheme="dark"] .navbar.fixed-top .navbar-brand .logo,
+html[data-darkreader-scheme="dark"] #logoimage {
+    filter: drop-shadow(0 0 0.75rem #124080) brightness(240%);
 }
     `);
 // endregion
