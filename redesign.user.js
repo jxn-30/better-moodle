@@ -2595,11 +2595,15 @@ if (
         eyes.append(eye);
     }
 
+    const pupils = Array.from(eyes.querySelectorAll('.pupil'));
+    const pupilPositions = pupils.map(pupil => pupil.getBoundingClientRect());
+
+    let positionTimeout;
+
     document.addEventListener('mousemove', e => {
-        const pupils = eyes.querySelectorAll('.pupil');
         const { clientX: mouseLeft, clientY: mouseTop } = e;
-        pupils.forEach(pupil => {
-            const { top, left } = pupil.getBoundingClientRect();
+        pupils.forEach((pupil, index) => {
+            const { top, left } = pupilPositions[index];
             const translateX =
                 mouseLeft < left ?
                     (mouseLeft / left) * 100 - 100
@@ -2613,6 +2617,17 @@ if (
                 `translateX(${translateX}%) translateY(${translateY}%)`
             );
         });
+
+        if (positionTimeout) clearTimeout(positionTimeout);
+        positionTimeout = setTimeout(
+            () =>
+                pupilPositions.splice(
+                    0,
+                    pupils.length,
+                    ...pupils.map(pupil => pupil.getBoundingClientRect())
+                ),
+            100
+        );
     });
 
     ready(() =>
