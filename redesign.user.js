@@ -6,6 +6,7 @@
 // @                x-release-please-start-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
+// @description:en  Improves this weird design that Moodle 4 brings with it
 // @homepage        https://github.com/YorikHansen/better-moodle
 // @homepageURL     https://github.com/YorikHansen/better-moodle
 // @icon            https://www.uni-kiel.de/favicon.ico
