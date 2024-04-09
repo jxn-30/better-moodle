@@ -91,16 +91,16 @@ Better-Moodle receives regular updates. A complete changelog can be found in the
 
 Es gibt ganz viele, ganz tolle Menschen, die gerne programmieren und so breitet sich das Better-Moodle mit der Zeit auch auf anderen Hochschulen aus. Von diesen Hochschulen ist bekannt, dass Better-Moodle von ehrenamtlichen Studis entwickelt und getestet wird:
 
-- Original: [Universität zu Lübeck (UzL)](https://github.com/jxn-30/better-moodle) by [@jxn-30](https://github.com/jxn-30)
-- **[Uni Kiel (CAU)](https://github.com/YorikHansen/better-moodle)** by [@YorikHansen](https://github.com/YorikHansen)
+-   Original: [Universität zu Lübeck (UzL)](https://github.com/jxn-30/better-moodle) by [@jxn-30](https://github.com/jxn-30)
+-   **[Uni Kiel (CAU)](https://github.com/YorikHansen/better-moodle)** by [@YorikHansen](https://github.com/YorikHansen)
 
 <details>
 <summary>🇬🇧 Universities</summary>
 
 There are many, very great people who like to program and so Better-Moodle spreads to other universities over time. From these universities it is known that Better-Moodle is developed and tested by volunteer students:
 
-- Original: [University of Lübeck (UzL)](https://github.com/jxn-30/better-moodle) by [@jxn-30](https://github.com/jxn-30)
-- **[Kiel University (CAU)](https://github.com/YorikHansen/better-moodle)** by [@YorikHansen](https://github.com/YorikHansen)
+-   Original: [University of Lübeck (UzL)](https://github.com/jxn-30/better-moodle) by [@jxn-30](https://github.com/jxn-30)
+-   **[Kiel University (CAU)](https://github.com/YorikHansen/better-moodle)** by [@YorikHansen](https://github.com/YorikHansen)
 
 </details>
 
