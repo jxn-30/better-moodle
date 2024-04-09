@@ -2533,7 +2533,10 @@ if (getSetting('general.speiseplan')) {
 // endregion
 
 // region Feature: general.googlyEyes
-if (getSetting('general.googlyEyes')) {
+if (
+    getSetting('general.googlyEyes') &&
+    window.matchMedia('(hover: hover)').matches
+) {
     GM_addStyle(`
 /* This is the fancy style for googly Eyes 👀 */
 .eyes {
