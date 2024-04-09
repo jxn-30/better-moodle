@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.25.0](https://github.com/jxn-30/better-moodle/compare/1.24.3...1.25.0) (2024-04-09)
+
+
+### Features
+
+* **googlyEyes:** implement xEyes for Better-Moodle 👀 ([363dfa9](https://github.com/jxn-30/better-moodle/commit/363dfa99f2d6e5fd3928a98445cdd049aa2db2a0))
+* **logo:** make UzL-Logo glow a little when using darkmode of darkreader ([f4443c6](https://github.com/jxn-30/better-moodle/commit/f4443c6010d1acc5328b6b081d9853d9c70da474))
+
 ## [1.24.3](https://github.com/jxn-30/better-moodle/compare/1.24.2...1.24.3) (2024-04-01)
 
 
