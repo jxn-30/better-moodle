@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.24.6
+// @version         1.25.0
 // @                x-release-please-start-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -214,6 +214,10 @@ Viele Grüße
                     name: 'Speiseplan direkt im Moodle öffnen',
                     description:
                         'Öffnet den Speiseplan der Mensa in einem Popup im Moodle.',
+                },
+                googlyEyes: {
+                    name: 'xEyes für Better-Moodle',
+                    description: '👀',
                 },
             },
             dashboard: {
@@ -504,6 +508,10 @@ Best regards
                     name: 'Open canteen menu in Moodle',
                     description:
                         'Opens menu of the canteen in a popup in Moodle.',
+                },
+                googlyEyes: {
+                    name: 'xEyes for Better-Moodle',
+                    description: '👀',
                 },
             },
             dashboard: {
@@ -1536,6 +1544,11 @@ body.dir-rtl a.${noExternalLinkIconClass}::before {
     margin-left: 0.25rem;
     margin-right: 0.25rem;
 }
+
+/* make the UzL-Logo glow beautifully when using dark mode of darkreader */
+html[data-darkreader-scheme="dark"] .navbar.fixed-top .navbar-brand .logo {
+    filter: brightness(500%);
+}
     `);
 // endregion
 
@@ -1879,6 +1892,7 @@ const SETTINGS = [
     new BooleanSetting('general.eventAdvertisements', true),
     new BooleanSetting('general.christmasCountdown', false),
     new BooleanSetting('general.speiseplan', false),
+    new BooleanSetting('general.googlyEyes', true),
     $t('settings.dashboard._title'),
     // {Layout anpassen}
     new StringSetting(
@@ -2619,6 +2633,94 @@ if (getSetting('general.speiseplan')) {
             .querySelector('#theme_boost-drawers-primary .list-group')
             ?.append(mobileBtn);
     });
+}
+// endregion
+
+// region Feature: general.googlyEyes
+if (getSetting('general.googlyEyes')) {
+    GM_addStyle(`
+/* This is the fancy style for googly Eyes 👀 */
+.eyes {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  --eye-width: 40%;
+  --eye-border-width: 2px;
+  --eye-height: 65%;
+  --pupil-width: max(1%, 4px);
+  --pupil-height: var(--pupil-width);
+}
+
+.eye {
+  background-color: white;
+  border: var(--eye-border-width) solid black;
+  border-radius: 43%;
+  display: flex;
+  width: var(--eye-width);
+  height: var(--eye-height);
+  min-width: var(--eye-width);
+  min-height: var(--eye-height);
+  max-width: var(--eye-width);
+  max-height: var(--eye-height);
+  align-items: center;
+  justify-content: center;
+}
+.eye:not(:last-child) {
+  margin-right: calc(10% / 2);
+}
+
+.pupil {
+  background-color: black;
+  border: calc(var(--pupil-width) / 2) solid black;
+  border-radius: 50%;
+  display: block;
+  width: var(--pupil-width);
+  height: var(--pupil-height);
+  min-width: var(--pupil-width);
+  min-height: var(--pupil-height);
+  max-width: var(--pupil-width);
+  max-height: var(--pupil-height);
+}
+`);
+
+    const eyes = document.createElement('div');
+    eyes.classList.add('eyes');
+    for (let i = 0; i < 2; i++) {
+        const eye = document.createElement('span');
+        eye.classList.add('eye');
+        const pupil = document.createElement('span');
+        pupil.classList.add('pupil');
+        eye.append(pupil);
+        eyes.append(eye);
+    }
+
+    document.addEventListener('mousemove', e => {
+        const pupils = eyes.querySelectorAll('.pupil');
+        const { clientX: mouseLeft, clientY: mouseTop } = e;
+        pupils.forEach(pupil => {
+            const { top, left } = pupil.getBoundingClientRect();
+            const translateX =
+                mouseLeft < left ?
+                    (mouseLeft / left) * 100 - 100
+                :   ((mouseLeft - left) / (innerWidth - left)) * 100;
+            const translateY =
+                mouseTop < top ?
+                    (mouseTop / top) * 100 - 100
+                :   ((mouseTop - top) / (innerHeight - top)) * 100;
+            pupil.style.setProperty(
+                'transform',
+                `translateX(${translateX}%) translateY(${translateY}%)`
+            );
+        });
+    });
+
+    ready(() =>
+        document
+            .querySelector('.btn-footer-popover .fa-question')
+            ?.replaceWith(eyes)
+    );
 }
 // endregion
 
