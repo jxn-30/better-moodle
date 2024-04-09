@@ -201,6 +201,10 @@ Viele Grüße
                     description:
                         'Öffnet den Speiseplan der Mensa in einem Popup im Moodle.',
                 },
+                googlyEyes: {
+                    name: 'xEyes für Better-Moodle',
+                    description: '👀',
+                },
             },
             dashboard: {
                 '_title': 'Dashboard',
@@ -467,6 +471,10 @@ Best regards
                     name: 'Open canteen menu in Moodle',
                     description:
                         'Opens menu of the canteen in a popup in Moodle.',
+                },
+                googlyEyes: {
+                    name: 'xEyes for Better-Moodle',
+                    description: '👀',
                 },
             },
             dashboard: {
@@ -1789,6 +1797,7 @@ const SETTINGS = [
     new BooleanSetting('general.eventAdvertisements', true),
     new BooleanSetting('general.christmasCountdown', false),
     new BooleanSetting('general.speiseplan', false),
+    new BooleanSetting('general.googlyEyes', true),
     $t('settings.dashboard._title'),
     // {Layout anpassen}
     new StringSetting(
@@ -2523,6 +2532,94 @@ if (getSetting('general.speiseplan')) {
 }
 // endregion
 
+// region Feature: general.googlyEyes
+if (getSetting('general.googlyEyes')) {
+    GM_addStyle(`
+/* This is the fancy style for googly Eyes 👀 */
+.eyes {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  --eye-width: 40%;
+  --eye-border-width: 2px;
+  --eye-height: 65%;
+  --pupil-width: max(1%, 4px);
+  --pupil-height: var(--pupil-width);
+}
+
+.eye {
+  background-color: white;
+  border: var(--eye-border-width) solid black;
+  border-radius: 43%;
+  display: flex;
+  width: var(--eye-width);
+  height: var(--eye-height);
+  min-width: var(--eye-width);
+  min-height: var(--eye-height);
+  max-width: var(--eye-width);
+  max-height: var(--eye-height);
+  align-items: center;
+  justify-content: center;
+}
+.eye:not(:last-child) {
+  margin-right: calc(10% / 2);
+}
+
+.pupil {
+  background-color: black;
+  border: calc(var(--pupil-width) / 2) solid black;
+  border-radius: 50%;
+  display: block;
+  width: var(--pupil-width);
+  height: var(--pupil-height);
+  min-width: var(--pupil-width);
+  min-height: var(--pupil-height);
+  max-width: var(--pupil-width);
+  max-height: var(--pupil-height);
+}
+`);
+
+    const eyes = document.createElement('div');
+    eyes.classList.add('eyes');
+    for (let i = 0; i < 2; i++) {
+        const eye = document.createElement('span');
+        eye.classList.add('eye');
+        const pupil = document.createElement('span');
+        pupil.classList.add('pupil');
+        eye.append(pupil);
+        eyes.append(eye);
+    }
+
+    document.addEventListener('mousemove', e => {
+        const pupils = eyes.querySelectorAll('.pupil');
+        const { clientX: mouseLeft, clientY: mouseTop } = e;
+        pupils.forEach(pupil => {
+            const { top, left } = pupil.getBoundingClientRect();
+            const translateX =
+                mouseLeft < left ?
+                    (mouseLeft / left) * 100 - 100
+                :   ((mouseLeft - left) / (innerWidth - left)) * 100;
+            const translateY =
+                mouseTop < top ?
+                    (mouseTop / top) * 100 - 100
+                :   ((mouseTop - top) / (innerHeight - top)) * 100;
+            pupil.style.setProperty(
+                'transform',
+                `translateX(${translateX}%) translateY(${translateY}%)`
+            );
+        });
+    });
+
+    ready(() =>
+        document
+            .querySelector('.btn-footer-popover .fa-question')
+            ?.replaceWith(eyes)
+    );
+}
+// endregion
+
 // region Feature: Dashboard right sidebar
 // add a right sidebar with timeline and upcoming events on Dashboard
 if (isDashboard) {
@@ -3097,14 +3194,14 @@ if (getSetting('courses.imageZoom')) {
     right: 0;
     z-index: 2000;
     opacity: 0;
-    
+
     background: rgba(0, 0, 0, 0.75);
-    
+
     cursor: zoom-out;
-    
+
     transition: opacity 0.2s ease-in-out;
     will-change: opacity;
-    
+
     display: flex;
     align-items: center;
     justify-content: center;
