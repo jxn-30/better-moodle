@@ -96,7 +96,7 @@ const TRANSLATIONS = {
             update: {
                 title: 'Better-Moodle aktualisieren',
                 content:
-                    'Den Anweisungen zum Aktualisieren im Script-Manager (z.&nbsp;B. Tampermonkey) folgen und anschließend Moodle neu laden.',
+                    'Den Anweisungen zum Aktualisieren im Script-Manager (z.&nbsp;B. Violentmonkey) folgen und anschließend Moodle neu laden.',
             },
             changelog: 'Changelog',
             help: {
@@ -383,7 +383,7 @@ Viele Grüße
             update: {
                 title: 'Update Better-Moodle',
                 content:
-                    'Follow the instructions for updating in the script manager (e.g. Tampermonkey) and then reload Moodle.',
+                    'Follow the instructions for updating in the script manager (e.g. Violentmonkey) and then reload Moodle.',
             },
             changelog: 'Changelog',
             help: {
@@ -1135,7 +1135,7 @@ const $t = (key, args = {}) => {
         .replaceAll('>', '&gt;')
         .replaceAll('"', '&quot;')
         .replaceAll("'", '&#039;')
-        : '';
+        : ''; // TODO: Don't escape '&' for E-Mail-Links
     const t =
         key
             .split('.')
