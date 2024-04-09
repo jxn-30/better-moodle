@@ -2606,15 +2606,17 @@ if (
             const { top, left } = pupilPositions[index];
             const translateX =
                 mouseLeft < left ?
-                    (mouseLeft / left) * 100 - 100
-                :   ((mouseLeft - left) / (innerWidth - left)) * 100;
+                    mouseLeft / left - 1
+                :   (mouseLeft - left) / (innerWidth - left);
             const translateY =
                 mouseTop < top ?
-                    (mouseTop / top) * 100 - 100
-                :   ((mouseTop - top) / (innerHeight - top)) * 100;
+                    mouseTop / top - 1
+                :   (mouseTop - top) / (innerHeight - top);
+            const ease = x =>
+                x < 0 ? -1 * ease(-1 * x) : 100 - Math.pow(1 - x, 2) * 100;
             pupil.style.setProperty(
                 'transform',
-                `translateX(${translateX}%) translateY(${translateY}%)`
+                `translateX(${ease(translateX)}%) translateY(${ease(translateY)}%)`
             );
         });
 
