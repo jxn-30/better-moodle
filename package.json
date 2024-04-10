@@ -6,14 +6,17 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "lint:fix": "yarn eslint . --ext .js,.user.js,.mjs --exit-on-fatal-error --report-unused-disable-directives --cache --cache-strategy content --fix",
+        "lint:fix": "yarn eslint . --exit-on-fatal-error --report-unused-disable-directives --cache --cache-strategy content --fix",
         "prettier:write": "prettier --write --cache --cache-strategy content ."
     },
     "devDependencies": {
+        "@eslint/js": "9.0.0",
+        "@types/eslint": "8.56.7",
         "@types/tampermonkey": "5.0.2",
-        "eslint": "8.57.0",
+        "eslint": "9.0.0",
         "eslint-config-prettier": "9.1.0",
         "eslint-plugin-userscripts": "0.5.2",
+        "globals": "15.0.0",
         "prettier": "3.2.5",
         "userscript-meta": "1.0.1"
     }
