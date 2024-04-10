@@ -2639,7 +2639,10 @@ if (getSetting('general.speiseplan')) {
 // endregion
 
 // region Feature: general.googlyEyes
-if (getSetting('general.googlyEyes')) {
+if (
+    getSetting('general.googlyEyes') &&
+    window.matchMedia('(hover: hover)').matches
+) {
     GM_addStyle(`
 /* This is the fancy style for googly Eyes 👀 */
 .eyes {
@@ -2698,24 +2701,41 @@ if (getSetting('general.googlyEyes')) {
         eyes.append(eye);
     }
 
+    const pupils = Array.from(eyes.querySelectorAll('.pupil'));
+    const pupilPositions = pupils.map(pupil => pupil.getBoundingClientRect());
+
+    let positionTimeout;
+
     document.addEventListener('mousemove', e => {
-        const pupils = eyes.querySelectorAll('.pupil');
         const { clientX: mouseLeft, clientY: mouseTop } = e;
-        pupils.forEach(pupil => {
-            const { top, left } = pupil.getBoundingClientRect();
+        pupils.forEach((pupil, index) => {
+            const { top, left } = pupilPositions[index];
             const translateX =
                 mouseLeft < left ?
-                    (mouseLeft / left) * 100 - 100
-                :   ((mouseLeft - left) / (innerWidth - left)) * 100;
+                    mouseLeft / left - 1
+                :   (mouseLeft - left) / (innerWidth - left);
             const translateY =
                 mouseTop < top ?
-                    (mouseTop / top) * 100 - 100
-                :   ((mouseTop - top) / (innerHeight - top)) * 100;
+                    mouseTop / top - 1
+                :   (mouseTop - top) / (innerHeight - top);
+            const ease = x =>
+                x < 0 ? -1 * ease(-1 * x) : 100 - Math.pow(1 - x, 2) * 100;
             pupil.style.setProperty(
                 'transform',
-                `translateX(${translateX}%) translateY(${translateY}%)`
+                `translateX(${ease(translateX)}%) translateY(${ease(translateY)}%)`
             );
         });
+
+        if (positionTimeout) clearTimeout(positionTimeout);
+        positionTimeout = setTimeout(
+            () =>
+                pupilPositions.splice(
+                    0,
+                    pupils.length,
+                    ...pupils.map(pupil => pupil.getBoundingClientRect())
+                ),
+            100
+        );
     });
 
     ready(() =>
