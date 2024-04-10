@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.25.1
+// @version         1.25.2
 // @                x-release-please-start-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -2479,6 +2479,20 @@ if (getSetting('general.speiseplan')) {
 .${tableClass} .${preiseClass} > span:not(:last-child)::after {
     content: "\xa0/\xa0";
 }
+
+/* improve arten images in dark mode */
+html[data-darkreader-scheme="dark"] .${artenClass} img {
+  --stroke-pos: 0.5px;
+  --stroke-neg: -0.5px;
+  --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
+  filter: drop-shadow(var(--stroke-pos) 0 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(0 var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-neg) 0 var(--stroke-color));
+}
+html[data-darkreader-scheme="dark"] .${artenClass} img[src*="sh_teller"] {
+  filter: brightness(1.5);
+}
+html[data-darkreader-scheme="dark"] .${artenClass} img[src*="iconprop_bio"] {
+  filter: brightness(0.9);
+}
 `);
 
     const createDayFieldset = (day, speisen, filter, firstFieldset) => {
@@ -3787,10 +3801,7 @@ ready(() => {
             modal.getFooter()[0].prepend(footerBtnGroup);
 
             // region changelog
-            const changelogBtn = githubLink(
-                '/better-moodle/blob/main/CHANGELOG.md',
-                false
-            );
+            const changelogBtn = githubLink('/blob/main/CHANGELOG.md', false);
             changelogBtn.classList.add('btn', 'btn-outline-primary');
             const changelogIcon = document.createElement('i');
             changelogIcon.classList.add('fa', 'fa-history', 'fa-fw');
