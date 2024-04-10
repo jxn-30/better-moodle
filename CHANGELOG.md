@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.25.2](https://github.com/YorikHansen/better-moodle/compare/1.25.1...1.25.2) (2024-04-10)
+
+
+### Bug Fixes
+
+* **changelog:** fix changelog link being wrong ([33d08b0](https://github.com/YorikHansen/better-moodle/commit/33d08b084fc9b338bcd36a0ae890f6562543c443))
+* **speiseplan:** improve arten images in darkreader dark mode ([9a629ab](https://github.com/YorikHansen/better-moodle/commit/9a629ab37628bb480ca4c43729f2a45e53b55436))
+
+
 ## [1.25.1](https://github.com/YorikHansen/better-moodle/compare/1.25.0...1.25.1) (2024-04-09)
 
 
