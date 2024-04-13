@@ -632,7 +632,13 @@ Best regards
 // region Helper functions
 const PREFIX = str => `better-moodle-${str}`;
 const getSettingKey = id => PREFIX(`settings.${id}`);
-const getSetting = id => settingsById[id].value;
+/**
+ * @param {string} id
+ * @param {boolean} [inputValue]
+ * @returns {ValueType}
+ */
+const getSetting = (id, inputValue = false) =>
+    inputValue ? settingsById[id].inputValue : settingsById[id].value;
 
 const MyCoursesFilterSyncChangeKey = PREFIX('myCourses.filterSyncChange');
 
@@ -1475,6 +1481,15 @@ const getSpeiseplan = async () => {
         },
     };
 };
+
+const debounce = (fn, delay = 100) => {
+    let timeout;
+    return () => {
+        const context = this;
+        if (timeout) clearTimeout(timeout);
+        timeout = setTimeout(() => fn.apply(context, arguments), delay);
+    };
+};
 // endregion
 
 // region Global styles
@@ -1620,6 +1635,7 @@ class Setting {
 
     /**
      * @param {function(Record<string, Setting>): boolean} disabledFn
+     * @returns {this}
      */
     setDisabledFn(disabledFn) {
         this.#disabledFn = disabledFn;
@@ -1656,6 +1672,15 @@ class Setting {
 
     resetInput() {
         this.#input.value = this.value;
+    }
+
+    /**
+     * @param {function(InputEvent): void} listener
+     * @returns {this}
+     */
+    onInput(listener) {
+        this.#input.addEventListener('input', listener);
+        return this;
     }
 }
 
@@ -1957,6 +1982,15 @@ class SelectSetting extends Setting {
     resetInput() {
         this.#input.value = this.value;
     }
+
+    /**
+     * @param {function(InputEvent): void} listener
+     * @returns {this}
+     */
+    onInput(listener) {
+        this.#input.addEventListener('change', listener);
+        return this;
+    }
 }
 
 /** @type {Array<Setting | string>} */
@@ -1973,11 +2007,29 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     $t('settings.darkmode._title'),
-    new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']),
-    new SliderSetting('darkmode.brightness', 100, 0, 150, 1, 7),
-    new SliderSetting('darkmode.contrast', 100, 0, 150, 1, 7),
-    new SliderSetting('darkmode.grayscale', 0, 0, 100, 1, 6),
-    new SliderSetting('darkmode.sepia', 0, 0, 100, 1, 6),
+    new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
+        () => updateDarkReaderMode(true)
+    ),
+    new SliderSetting('darkmode.brightness', 100, 0, 150, 1, 7)
+        .setDisabledFn(
+            settings => settings['darkmode.mode'].inputValue === 'off'
+        )
+        .onInput(debounce(() => updateDarkReaderMode(true))),
+    new SliderSetting('darkmode.contrast', 100, 0, 150, 1, 7)
+        .setDisabledFn(
+            settings => settings['darkmode.mode'].inputValue === 'off'
+        )
+        .onInput(debounce(() => updateDarkReaderMode(true))),
+    new SliderSetting('darkmode.grayscale', 0, 0, 100, 1, 6)
+        .setDisabledFn(
+            settings => settings['darkmode.mode'].inputValue === 'off'
+        )
+        .onInput(debounce(() => updateDarkReaderMode(true))),
+    new SliderSetting('darkmode.sepia', 0, 0, 100, 1, 6)
+        .setDisabledFn(
+            settings => settings['darkmode.mode'].inputValue === 'off'
+        )
+        .onInput(debounce(() => updateDarkReaderMode(true))),
     $t('settings.dashboard._title'),
     // {Layout anpassen}
     new StringSetting(
@@ -2835,17 +2887,26 @@ if (
 // endregion
 
 // region Feature: Darkmode
-const darkModeSetting = getSetting('darkmode.mode');
-if (darkModeSetting !== 'off') {
-    const settings = {
-        brightness: getSetting('darkmode.brightness'),
-        contrast: getSetting('darkmode.contrast'),
-        grayscale: getSetting('darkmode.grayscale'),
-        sepia: getSetting('darkmode.sepia'),
-    };
-    if (darkModeSetting === 'auto') DarkReader.auto(settings);
-    else DarkReader.enable(settings);
-}
+const updateDarkReaderMode = (live = false) => {
+    const darkModeSetting = getSetting('darkmode.mode', live);
+    if (darkModeSetting !== 'off') {
+        const settings = {
+            brightness: getSetting('darkmode.brightness', live),
+            contrast: getSetting('darkmode.contrast', live),
+            grayscale: getSetting('darkmode.grayscale', live),
+            sepia: getSetting('darkmode.sepia', live),
+        };
+        if (darkModeSetting === 'auto') DarkReader.auto(settings);
+        else {
+            DarkReader.auto(false);
+            DarkReader.enable(settings);
+        }
+    } else {
+        DarkReader.auto(false);
+        if (DarkReader.isEnabled()) DarkReader.disable();
+    }
+};
+updateDarkReaderMode();
 // endregion
 
 // region Feature: Dashboard right sidebar
@@ -3794,13 +3855,14 @@ ready(() => {
 
                 window.location.reload();
             });
-            modal.getRoot().on(ModalEvents.cancel, () =>
+            modal.getRoot().on(ModalEvents.cancel, () => {
                 SETTINGS.forEach(setting => {
                     if (!setting.id) return;
 
                     setting.resetInput();
-                })
-            );
+                });
+                updateDarkReaderMode();
+            });
             // endregion
 
             // region version span & update btn
