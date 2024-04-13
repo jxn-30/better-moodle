@@ -209,6 +209,8 @@ Viele Grüße
             },
             darkmode: {
                 _title: 'Darkmode',
+                _description:
+                    'Der in Better-Moodle integrierte Darkmode wird durch [Dark Reader](https://darkreader.org/) generiert. 😊',
                 mode: {
                     name: 'Modus',
                     description:
@@ -511,6 +513,8 @@ Best regards
             },
             darkmode: {
                 _title: 'Darkmode',
+                _description:
+                    'Darkmode in Better-Moodle is brought to you through [Dark Reader](https://darkreader.org/). 😊',
                 mode: {
                     name: 'Mode',
                     description: 'Select a mode for Darkmode (on, off, auto)',
@@ -2007,6 +2011,7 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     $t('settings.darkmode._title'),
+    $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
         () => updateDarkReaderMode(true)
     ),
@@ -3678,13 +3683,24 @@ ready(() => {
         fieldsetCounter++;
     };
 
+    let prevSettingIsString;
+
     SETTINGS.forEach(setting => {
         // if setting is a string, use this as a heading / fieldset
         if (typeof setting === 'string') {
-            createSettingsFieldset(setting);
+            if (!prevSettingIsString) {
+                createSettingsFieldset(setting);
+            } else {
+                const p = document.createElement('p');
+                p.classList.add('col-12');
+                p.innerHTML = mdToHtml(setting);
+                currentFieldset.querySelector('.fcontainer')?.append(p);
+            }
+            prevSettingIsString = true;
         }
         // otherwise, add the settings inputs
         else {
+            prevSettingIsString = false;
             if (!currentFieldset) createSettingsFieldset('');
 
             const settingRow = document.createElement('div');
