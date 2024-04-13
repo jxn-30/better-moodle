@@ -21,9 +21,10 @@
 // @grant           GM_info
 // @grant           GM_xmlhttpRequest
 // @connect         studentenwerk.sh
+// @require         https://unpkg.com/darkreader@4.9.83/darkreader.js#sha512=4b9a2010f7fd05609bf3372cbfdede407b736bd467396d33a8a0922b373244e03fb20c2f1be61be0b5a998561c3068f53788bad82f71ceab1fce3f9fc818ece8
 // ==/UserScript==
 
-/* global M, require */
+/* global M, require, DarkReader */
 
 // region translations
 const TRANSLATIONS = {
@@ -204,6 +205,37 @@ Viele Grüße
                 googlyEyes: {
                     name: 'xEyes für Better-Moodle',
                     description: '👀',
+                },
+            },
+            darkmode: {
+                _title: 'Darkmode',
+                mode: {
+                    name: 'Modus',
+                    description:
+                        'Wähle den Modus des Darkmodes (an, aus, automatisch)',
+                    options: {
+                        on: 'An',
+                        off: 'Aus',
+                        auto: 'Automatisch (Systemeinstellung befolgen)',
+                    },
+                },
+                brightness: {
+                    name: 'Helligkeit',
+                    description: 'Stelle die Helligkeit des Darkmodes ein.',
+                },
+                contrast: {
+                    name: 'Kontrast',
+                    description: 'Stelle den Kontrast des Darkmodes ein.',
+                },
+                grayscale: {
+                    name: 'Graustufen',
+                    description:
+                        'Stelle ein, wie wenige Farben du im Moodle haben möchtest.',
+                },
+                sepia: {
+                    name: 'Sepia',
+                    description:
+                        'Stelle einen Sepia-Wert für den Darkmodes ein.',
                 },
             },
             dashboard: {
@@ -475,6 +507,35 @@ Best regards
                 googlyEyes: {
                     name: 'xEyes for Better-Moodle',
                     description: '👀',
+                },
+            },
+            darkmode: {
+                _title: 'Darkmode',
+                mode: {
+                    name: 'Mode',
+                    description: 'Select a mode for Darkmode (on, off, auto)',
+                    options: {
+                        on: 'On',
+                        off: 'Off',
+                        auto: 'Auto (follow system setting)',
+                    },
+                },
+                brightness: {
+                    name: 'Brightness',
+                    description: 'Set the brightness of the dark mode.',
+                },
+                contrast: {
+                    name: 'Contrast',
+                    description: 'Set the contrast of the dark mode.',
+                },
+                grayscale: {
+                    name: 'Grayscale',
+                    description:
+                        'Set how few colours you want to have in Moodle.',
+                },
+                sepia: {
+                    name: 'Sepia',
+                    description: 'Set the sepia value of the dark mode.',
                 },
             },
             dashboard: {
@@ -1760,7 +1821,7 @@ class SliderSetting extends NumberSetting {
         }
 
         const labelDatalist = document.createElement('datalist');
-        const labelCount = Math.min(10, labels);
+        const labelCount = Math.max(2, Math.min(10, labels)); // minimum 2, maximum 10 labels
         for (
             let currentStep = min;
             currentStep <= max;
@@ -1911,6 +1972,12 @@ const SETTINGS = [
     new BooleanSetting('general.christmasCountdown', false),
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
+    $t('settings.darkmode._title'),
+    new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']),
+    new SliderSetting('darkmode.brightness', 100, 0, 150, 1, 7),
+    new SliderSetting('darkmode.contrast', 100, 0, 150, 1, 7),
+    new SliderSetting('darkmode.grayscale', 0, 0, 100, 1, 6),
+    new SliderSetting('darkmode.sepia', 0, 0, 100, 1, 6),
     $t('settings.dashboard._title'),
     // {Layout anpassen}
     new StringSetting(
@@ -2764,6 +2831,20 @@ if (
             .querySelector('.btn-footer-popover .fa-question')
             ?.replaceWith(eyes)
     );
+}
+// endregion
+
+// region Feature: Darkmode
+const darkModeSetting = getSetting('darkmode.mode');
+if (darkModeSetting !== 'off') {
+    const settings = {
+        brightness: getSetting('darkmode.brightness'),
+        contrast: getSetting('darkmode.contrast'),
+        grayscale: getSetting('darkmode.grayscale'),
+        sepia: getSetting('darkmode.sepia'),
+    };
+    if (darkModeSetting === 'auto') DarkReader.auto(settings);
+    else DarkReader.enable(settings);
 }
 // endregion
 
