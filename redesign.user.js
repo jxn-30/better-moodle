@@ -1597,13 +1597,6 @@ class Setting {
         this.#input.value = this.value;
     }
 }
-/**
- * @typedef {Object} BaseSetting
- * @property {string} id
- * @property {string} name
- * @property {string} description
- * @property {(settings: Record<string, boolean>) => boolean} [disabled]
- */
 
 /** @extends {Setting<boolean>} */
 class BooleanSetting extends Setting {
@@ -1675,8 +1668,9 @@ class NumberSetting extends Setting {
      * @param {number} defaultValue
      * @param {number} [min]
      * @param {number} [max]
+     * @param {number} [step]
      */
-    constructor(id, defaultValue, min, max) {
+    constructor(id, defaultValue, min, max, step = 1) {
         super(id, defaultValue);
 
         super.formControl.type = 'number';
@@ -1687,6 +1681,124 @@ class NumberSetting extends Setting {
         if (typeof max === 'number') {
             super.formControl.max = max.toString();
         }
+        if (typeof step === 'number') {
+            super.formControl.step = step.toString();
+        }
+    }
+
+    /** @returns {number} */
+    get inputValue() {
+        return Number(super.formControl.value);
+    }
+}
+
+GM_addStyle(`
+/* Some style to show tick-mark labels on range inputs */
+datalist[style*="--label-count"] {
+    display: grid;
+    grid-template-columns: repeat(var(--label-count), 1fr);
+    text-align: center;
+    /* WTF? idk how and why but it seems to work. It positions the labels almost correctly */
+    margin: 0 calc(50% - 0.5 * calc((1 + 1 / (var(--label-count) - 1)) * (100% - 1em)));
+}
+
+/* style to show a bubble with current range input value */
+input[type="range"] + output {
+    position: absolute;
+    text-align: center;
+    padding: 2px;
+    transform: translateX(-50%);
+    background-color: var(--primary);
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+}
+`);
+
+/** @extends {NumberSetting} */
+class SliderSetting extends NumberSetting {
+    #wrapper = document.createElement('div');
+
+    /**
+     * @param {string} id
+     * @param {number} defaultValue
+     * @param {number} [min]
+     * @param {number} [max]
+     * @param {number} [step]
+     * @param {number} [labels]
+     */
+    constructor(
+        id,
+        defaultValue,
+        min,
+        max,
+        step = 1,
+        labels = (max - min + 1) / step
+    ) {
+        super(id, defaultValue, min, max, step);
+
+        super.formControl.type = 'range';
+        super.formControl.classList.replace(
+            'form-control',
+            'form-control-range'
+        );
+
+        const datalist = document.createElement('datalist');
+        if (step) {
+            const steps = (max - min + 1) / step;
+            datalist.id = `${super.formControl.id}-datalist`;
+            super.formControl.setAttribute('list', datalist.id);
+            for (
+                let currentStep = min;
+                currentStep <= max;
+                currentStep += (max - min + 1) / steps
+            ) {
+                const option = document.createElement('option');
+                option.value = currentStep.toString();
+                datalist.append(option);
+            }
+        }
+
+        const labelDatalist = document.createElement('datalist');
+        const labelCount = Math.min(10, labels);
+        for (
+            let currentStep = min;
+            currentStep <= max;
+            currentStep += (max - min) / (labelCount - 1)
+        ) {
+            const option = document.createElement('option');
+            option.value = currentStep.toString();
+            option.label = currentStep.toLocaleString(MOODLE_LANG);
+            labelDatalist.append(option);
+        }
+        labelDatalist.style.setProperty('--label-count', labelCount.toString());
+
+        const outputEl = document.createElement('output');
+        outputEl.htmlFor = super.formControl.id;
+        const setOutput = () => {
+            const val = super.inputValue;
+            const percentageValue = ((val - min) / (max - min)) * 100;
+            outputEl.textContent = val.toLocaleString(MOODLE_LANG);
+            // see https://css-tricks.com/value-bubbles-for-range-inputs/
+            outputEl.style.setProperty(
+                'left',
+                `calc(${percentageValue}% + (${8 - percentageValue * 0.15}px))`
+            );
+        };
+        super.formControl.addEventListener('input', setOutput);
+        setOutput();
+
+        this.#wrapper.classList.add('w-100', 'position-relative');
+        this.#wrapper.append(
+            super.formControl,
+            outputEl,
+            datalist,
+            labelDatalist
+        );
+    }
+
+    get formControl() {
+        return this.#wrapper;
     }
 }
 
@@ -1813,7 +1925,7 @@ const SETTINGS = [
     ),
     new BooleanSetting('dashboard.courseListFavouritesAtTop', true),
     $t('settings.myCourses._title'),
-    new NumberSetting('myCourses.boxesPerRow', 4, 1, 10),
+    new SliderSetting('myCourses.boxesPerRow', 4, 1, 10),
     new BooleanSetting('myCourses.navbarDropdown', true),
     new SelectSetting(
         'myCourses.navbarDropdownFilter',
@@ -3483,7 +3595,8 @@ ready(() => {
                 'col-md-7',
                 'form-inline',
                 'align-items-start',
-                'felement'
+                'felement',
+                'overflow-hidden'
             );
             inputWrapper.dataset.setting = setting.id;
             inputWrapper.append(setting.formControl);
