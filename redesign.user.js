@@ -2906,9 +2906,9 @@ const updateDarkReaderMode = (live = false) => {
             DarkReader.auto(false);
             DarkReader.enable(settings);
         }
-    } else {
+    } else if (DarkReader.isEnabled()) {
         DarkReader.auto(false);
-        if (DarkReader.isEnabled()) DarkReader.disable();
+        DarkReader.disable();
     }
 };
 updateDarkReaderMode();
