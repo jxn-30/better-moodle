@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.0](https://github.com/YorikHansen/better-moodle/compare/1.25.2...1.26.0) (2024-04-14)
+
+
+### Features
+
+* implement darkmode ([#136](https://github.com/YorikHansen/better-moodle/issues/136)) ([9b3fd41](https://github.com/YorikHansen/better-moodle/commit/9b3fd41d6d1dd5372aca218e9fcdbd749241e962))
+
 ## [1.25.2](https://github.com/YorikHansen/better-moodle/compare/1.25.1...1.25.2) (2024-04-10)
 
 

@@ -2,8 +2,8 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.25.2
-// @                x-release-please-start-end
+// @version         1.26.0
+// @                x-release-please-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @description:en  Improves this weird design that Moodle 4 brings with it
@@ -22,10 +22,11 @@
 // @grant           GM_info
 // @grant           GM_xmlhttpRequest
 // @connect         studentenwerk.sh
+// @require         https://unpkg.com/darkreader@4.9.83/darkreader.js#sha512=4b9a2010f7fd05609bf3372cbfdede407b736bd467396d33a8a0922b373244e03fb20c2f1be61be0b5a998561c3068f53788bad82f71ceab1fce3f9fc818ece8
 // @connect         cloud.rz.uni-kiel.de
 // ==/UserScript==
 
-/* global M, require */
+/* global M, require, DarkReader */
 
 const MAX_TIMEOUT = 2147483647;
 
@@ -219,6 +220,39 @@ Viele Grüße
                 googlyEyes: {
                     name: 'xEyes für Better-Moodle',
                     description: '👀',
+                },
+            },
+            darkmode: {
+                _title: 'Darkmode',
+                _description:
+                    'Der in Better-Moodle integrierte Darkmode wird durch [Dark Reader](https://darkreader.org/) generiert. 😊',
+                mode: {
+                    name: 'Modus',
+                    description:
+                        'Wähle den Modus des Darkmodes (an, aus, automatisch)',
+                    options: {
+                        on: 'An',
+                        off: 'Aus',
+                        auto: 'Automatisch (Systemeinstellung befolgen)',
+                    },
+                },
+                brightness: {
+                    name: 'Helligkeit',
+                    description: 'Stelle die Helligkeit des Darkmodes ein.',
+                },
+                contrast: {
+                    name: 'Kontrast',
+                    description: 'Stelle den Kontrast des Darkmodes ein.',
+                },
+                grayscale: {
+                    name: 'Graustufen',
+                    description:
+                        'Stelle ein, wie wenige Farben du im Moodle haben möchtest.',
+                },
+                sepia: {
+                    name: 'Sepia',
+                    description:
+                        'Stelle einen Sepia-Wert für den Darkmodes ein.',
                 },
             },
             dashboard: {
@@ -515,6 +549,37 @@ Best regards
                     description: '👀',
                 },
             },
+            darkmode: {
+                _title: 'Darkmode',
+                _description:
+                    'Darkmode in Better-Moodle is brought to you through [Dark Reader](https://darkreader.org/). 😊',
+                mode: {
+                    name: 'Mode',
+                    description: 'Select a mode for Darkmode (on, off, auto)',
+                    options: {
+                        on: 'On',
+                        off: 'Off',
+                        auto: 'Auto (follow system setting)',
+                    },
+                },
+                brightness: {
+                    name: 'Brightness',
+                    description: 'Set the brightness of the dark mode.',
+                },
+                contrast: {
+                    name: 'Contrast',
+                    description: 'Set the contrast of the dark mode.',
+                },
+                grayscale: {
+                    name: 'Grayscale',
+                    description:
+                        'Set how few colours you want to have in Moodle.',
+                },
+                sepia: {
+                    name: 'Sepia',
+                    description: 'Set the sepia value of the dark mode.',
+                },
+            },
             dashboard: {
                 '_title': 'Dashboard',
                 '~layoutPlaceholder': {
@@ -621,7 +686,13 @@ Best regards
 // region Helper functions
 const PREFIX = str => `better-moodle-${str}`;
 const getSettingKey = id => PREFIX(`settings.${id}`);
-const getSetting = id => settingsById[id].value;
+/**
+ * @param {string} id
+ * @param {boolean} [inputValue]
+ * @returns {ValueType}
+ */
+const getSetting = (id, inputValue = false) =>
+    inputValue ? settingsById[id].inputValue : settingsById[id].value;
 
 const MyCoursesFilterSyncChangeKey = PREFIX('myCourses.filterSyncChange');
 
@@ -1136,6 +1207,7 @@ const isDashboard =
     window.location.pathname === '/my/index.php';
 
 const MOODLE_LANG = document.documentElement.lang.toLowerCase();
+const DARK_MODE_SELECTOR = 'html[data-darkreader-scheme="dark"]';
 
 const $t = (key, args = {}) => {
     const escapeHTML = x => x ? x.toString()
@@ -1510,6 +1582,15 @@ const getSpeiseplan = async () => {
         },
     };
 };
+
+const debounce = (fn, delay = 100) => {
+    let timeout;
+    return () => {
+        const context = this;
+        if (timeout) clearTimeout(timeout);
+        timeout = setTimeout(() => fn.apply(context, arguments), delay);
+    };
+};
 // endregion
 
 // region Global styles
@@ -1544,12 +1625,6 @@ body.dir-rtl a.${noExternalLinkIconClass}::before {
 .form-label-addon [data-toggle="popover"] i.icon.fa {
     margin-left: 0.25rem;
     margin-right: 0.25rem;
-}
-
-/* make the Logo glow beautifully when using dark mode of darkreader */
-html[data-darkreader-scheme="dark"] .navbar.fixed-top .navbar-brand .logo,
-html[data-darkreader-scheme="dark"] #logoimage {
-    filter: grayscale(1) contrast(200) invert(18%) sepia(93%) saturate(2977%) hue-rotate(204deg) brightness(96%) contrast(95%) brightness(60%) brightness(280%);
 }
     `);
 // endregion
@@ -1655,6 +1730,7 @@ class Setting {
 
     /**
      * @param {function(Record<string, Setting>): boolean} disabledFn
+     * @returns {this}
      */
     setDisabledFn(disabledFn) {
         this.#disabledFn = disabledFn;
@@ -1692,14 +1768,16 @@ class Setting {
     resetInput() {
         this.#input.value = this.value;
     }
+
+    /**
+     * @param {function(InputEvent): void} listener
+     * @returns {this}
+     */
+    onInput(listener) {
+        this.#input.addEventListener('input', listener);
+        return this;
+    }
 }
-/**
- * @typedef {Object} BaseSetting
- * @property {string} id
- * @property {string} name
- * @property {string} description
- * @property {(settings: Record<string, boolean>) => boolean} [disabled]
- */
 
 /** @extends {Setting<boolean>} */
 class BooleanSetting extends Setting {
@@ -1771,8 +1849,9 @@ class NumberSetting extends Setting {
      * @param {number} defaultValue
      * @param {number} [min]
      * @param {number} [max]
+     * @param {number} [step]
      */
-    constructor(id, defaultValue, min, max) {
+    constructor(id, defaultValue, min, max, step = 1) {
         super(id, defaultValue);
 
         super.formControl.type = 'number';
@@ -1783,6 +1862,129 @@ class NumberSetting extends Setting {
         if (typeof max === 'number') {
             super.formControl.max = max.toString();
         }
+        if (typeof step === 'number') {
+            super.formControl.step = step.toString();
+        }
+    }
+
+    /** @returns {number} */
+    get inputValue() {
+        return Number(super.formControl.value);
+    }
+}
+
+GM_addStyle(`
+/* Some style to show tick-mark labels on range inputs */
+datalist[style*="--label-count"] {
+    display: grid;
+    grid-template-columns: repeat(var(--label-count), 1fr);
+    text-align: center;
+    /* WTF? idk how and why but it seems to work. It positions the labels almost correctly */
+    margin: 0 calc(50% - 0.5 * calc((1 + 1 / (var(--label-count) - 1)) * (100% - 1em)));
+}
+
+/* style to show a bubble with current range input value */
+input[type="range"] + output {
+    position: absolute;
+    text-align: center;
+    padding: 2px;
+    transform: translateX(-50%);
+    background-color: var(--primary);
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+}
+`);
+
+/** @extends {NumberSetting} */
+class SliderSetting extends NumberSetting {
+    #wrapper = document.createElement('div');
+
+    /**
+     * @param {string} id
+     * @param {number} defaultValue
+     * @param {number} [min]
+     * @param {number} [max]
+     * @param {number} [step]
+     * @param {number} [labels]
+     */
+    constructor(
+        id,
+        defaultValue,
+        min,
+        max,
+        step = 1,
+        labels = (max - min + 1) / step
+    ) {
+        super(id, defaultValue, min, max, step);
+
+        super.formControl.type = 'range';
+        super.formControl.classList.replace(
+            'form-control',
+            'form-control-range'
+        );
+
+        const datalist = document.createElement('datalist');
+        if (step) {
+            const steps = (max - min + 1) / step;
+            datalist.id = `${super.formControl.id}-datalist`;
+            super.formControl.setAttribute('list', datalist.id);
+            for (
+                let currentStep = min;
+                currentStep <= max;
+                currentStep += (max - min + 1) / steps
+            ) {
+                const option = document.createElement('option');
+                option.value = currentStep.toString();
+                datalist.append(option);
+            }
+        }
+
+        const labelDatalist = document.createElement('datalist');
+        const labelCount = Math.max(2, Math.min(10, labels)); // minimum 2, maximum 10 labels
+        for (
+            let currentStep = min;
+            currentStep <= max;
+            currentStep += (max - min) / (labelCount - 1)
+        ) {
+            const option = document.createElement('option');
+            option.value = currentStep.toString();
+            option.label = currentStep.toLocaleString(MOODLE_LANG);
+            labelDatalist.append(option);
+        }
+        labelDatalist.style.setProperty('--label-count', labelCount.toString());
+
+        const outputEl = document.createElement('output');
+        outputEl.htmlFor = super.formControl.id;
+        const setOutput = () => {
+            const val = super.inputValue;
+            const percentageValue = ((val - min) / (max - min)) * 100;
+            outputEl.textContent = val.toLocaleString(MOODLE_LANG);
+            // see https://css-tricks.com/value-bubbles-for-range-inputs/
+            outputEl.style.setProperty(
+                'left',
+                `calc(${percentageValue}% + (${8 - percentageValue * 0.15}px))`
+            );
+        };
+        super.formControl.addEventListener('input', setOutput);
+        setOutput();
+
+        this.#wrapper.classList.add('w-100', 'position-relative');
+        this.#wrapper.append(
+            super.formControl,
+            outputEl,
+            datalist,
+            labelDatalist
+        );
+    }
+
+    get formControl() {
+        return this.#wrapper;
+    }
+
+    resetInput() {
+        super.resetInput();
+        super.formControl.dispatchEvent(new Event('input'));
     }
 }
 
@@ -1880,6 +2082,15 @@ class SelectSetting extends Setting {
     resetInput() {
         this.#input.value = this.value;
     }
+
+    /**
+     * @param {function(InputEvent): void} listener
+     * @returns {this}
+     */
+    onInput(listener) {
+        this.#input.addEventListener('change', listener);
+        return this;
+    }
 }
 
 /** @type {Array<Setting | string>} */
@@ -1895,6 +2106,31 @@ const SETTINGS = [
     new BooleanSetting('general.christmasCountdown', false),
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
+    $t('settings.darkmode._title'),
+    $t('settings.darkmode._description'),
+    new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
+        () => updateDarkReaderMode(true)
+    ),
+    new SliderSetting('darkmode.brightness', 100, 0, 150, 1, 7)
+        .setDisabledFn(
+            settings => settings['darkmode.mode'].inputValue === 'off'
+        )
+        .onInput(debounce(() => updateDarkReaderMode(true))),
+    new SliderSetting('darkmode.contrast', 100, 0, 150, 1, 7)
+        .setDisabledFn(
+            settings => settings['darkmode.mode'].inputValue === 'off'
+        )
+        .onInput(debounce(() => updateDarkReaderMode(true))),
+    new SliderSetting('darkmode.grayscale', 0, 0, 100, 1, 6)
+        .setDisabledFn(
+            settings => settings['darkmode.mode'].inputValue === 'off'
+        )
+        .onInput(debounce(() => updateDarkReaderMode(true))),
+    new SliderSetting('darkmode.sepia', 0, 0, 100, 1, 6)
+        .setDisabledFn(
+            settings => settings['darkmode.mode'].inputValue === 'off'
+        )
+        .onInput(debounce(() => updateDarkReaderMode(true))),
     $t('settings.dashboard._title'),
     // {Layout anpassen}
     new StringSetting(
@@ -1909,7 +2145,7 @@ const SETTINGS = [
     ),
     new BooleanSetting('dashboard.courseListFavouritesAtTop', true),
     $t('settings.myCourses._title'),
-    new NumberSetting('myCourses.boxesPerRow', 4, 1, 10),
+    new SliderSetting('myCourses.boxesPerRow', 4, 1, 10),
     new BooleanSetting('myCourses.navbarDropdown', true),
     new SelectSetting(
         'myCourses.navbarDropdownFilter',
@@ -2481,16 +2717,16 @@ if (getSetting('general.speiseplan')) {
 }
 
 /* improve arten images in dark mode */
-html[data-darkreader-scheme="dark"] .${artenClass} img {
+${DARK_MODE_SELECTOR} .${artenClass} img {
   --stroke-pos: 0.5px;
   --stroke-neg: -0.5px;
   --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
   filter: drop-shadow(var(--stroke-pos) 0 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(0 var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-neg) 0 var(--stroke-color));
 }
-html[data-darkreader-scheme="dark"] .${artenClass} img[src*="sh_teller"] {
+${DARK_MODE_SELECTOR} .${artenClass} img[src*="sh_teller"] {
   filter: brightness(1.5);
 }
-html[data-darkreader-scheme="dark"] .${artenClass} img[src*="iconprop_bio"] {
+${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
   filter: brightness(0.9);
 }
 `);
@@ -2758,6 +2994,36 @@ if (
             ?.replaceWith(eyes)
     );
 }
+// endregion
+
+// region Feature: Darkmode
+GM_addStyle(`
+/* make the UzL-Logo glow beautifully when using dark mode of darkreader */
+${DARK_MODE_SELECTOR} .navbar.fixed-top .navbar-brand .logo,
+${DARK_MODE_SELECTOR} #logoimage {
+    filter: grayscale(1) contrast(200) invert(18%) sepia(93%) saturate(2977%) hue-rotate(204deg) brightness(96%) contrast(95%) brightness(60%) brightness(280%);
+}
+`);
+const updateDarkReaderMode = (live = false) => {
+    const darkModeSetting = getSetting('darkmode.mode', live);
+    if (darkModeSetting !== 'off') {
+        const settings = {
+            brightness: getSetting('darkmode.brightness', live),
+            contrast: getSetting('darkmode.contrast', live),
+            grayscale: getSetting('darkmode.grayscale', live),
+            sepia: getSetting('darkmode.sepia', live),
+        };
+        if (darkModeSetting === 'auto') DarkReader.auto(settings);
+        else {
+            DarkReader.auto(false);
+            DarkReader.enable(settings);
+        }
+    } else if (DarkReader.isEnabled()) {
+        DarkReader.auto(false);
+        DarkReader.disable();
+    }
+};
+updateDarkReaderMode();
 // endregion
 
 // region Feature: Dashboard right sidebar
@@ -3528,13 +3794,24 @@ ready(() => {
         fieldsetCounter++;
     };
 
+    let prevSettingIsString;
+
     SETTINGS.forEach(setting => {
         // if setting is a string, use this as a heading / fieldset
         if (typeof setting === 'string') {
-            createSettingsFieldset(setting);
+            if (!prevSettingIsString) {
+                createSettingsFieldset(setting);
+            } else {
+                const p = document.createElement('p');
+                p.classList.add('col-12');
+                p.innerHTML = mdToHtml(setting);
+                currentFieldset.querySelector('.fcontainer')?.append(p);
+            }
+            prevSettingIsString = true;
         }
         // otherwise, add the settings inputs
         else {
+            prevSettingIsString = false;
             if (!currentFieldset) createSettingsFieldset('');
 
             const settingRow = document.createElement('div');
@@ -3587,7 +3864,8 @@ ready(() => {
                 'col-md-7',
                 'form-inline',
                 'align-items-start',
-                'felement'
+                'felement',
+                'overflow-hidden'
             );
             inputWrapper.dataset.setting = setting.id;
             inputWrapper.append(setting.formControl);
@@ -3703,13 +3981,14 @@ ready(() => {
 
                 window.location.reload();
             });
-            modal.getRoot().on(ModalEvents.cancel, () =>
+            modal.getRoot().on(ModalEvents.cancel, () => {
                 SETTINGS.forEach(setting => {
                     if (!setting.id) return;
 
                     setting.resetInput();
-                })
-            );
+                });
+                updateDarkReaderMode();
+            });
             // endregion
 
             // region version span & update btn
