@@ -3,7 +3,7 @@
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
 // @version         1.25.2
-// @                x-release-please-start-end
+// @                x-release-please-end
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
 // @homepage        https://github.com/jxn-30/better-moodle
