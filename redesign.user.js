@@ -1117,6 +1117,7 @@ const isDashboard =
     window.location.pathname === '/my/index.php';
 
 const MOODLE_LANG = document.documentElement.lang.toLowerCase();
+const DARK_MODE_SELECTOR = 'html[data-darkreader-scheme="dark"]';
 
 const $t = (key, args = {}) => {
     const t =
@@ -1528,12 +1529,6 @@ body.dir-rtl a.${noExternalLinkIconClass}::before {
 .form-label-addon [data-toggle="popover"] i.icon.fa {
     margin-left: 0.25rem;
     margin-right: 0.25rem;
-}
-
-/* make the UzL-Logo glow beautifully when using dark mode of darkreader */
-html[data-darkreader-scheme="dark"] .navbar.fixed-top .navbar-brand .logo,
-html[data-darkreader-scheme="dark"] #logoimage {
-    filter: brightness(500%);
 }
     `);
 // endregion
@@ -2617,16 +2612,16 @@ if (getSetting('general.speiseplan')) {
 }
 
 /* improve arten images in dark mode */
-html[data-darkreader-scheme="dark"] .${artenClass} img {
+${DARK_MODE_SELECTOR} .${artenClass} img {
   --stroke-pos: 0.5px;
   --stroke-neg: -0.5px;
   --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
   filter: drop-shadow(var(--stroke-pos) 0 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(0 var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-neg) 0 var(--stroke-color));
 }
-html[data-darkreader-scheme="dark"] .${artenClass} img[src*="sh_teller"] {
+${DARK_MODE_SELECTOR} .${artenClass} img[src*="sh_teller"] {
   filter: brightness(1.5);
 }
-html[data-darkreader-scheme="dark"] .${artenClass} img[src*="iconprop_bio"] {
+${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
   filter: brightness(0.9);
 }
 `);
@@ -2897,6 +2892,13 @@ if (
 // endregion
 
 // region Feature: Darkmode
+GM_addStyle(`
+/* make the UzL-Logo glow beautifully when using dark mode of darkreader */
+${DARK_MODE_SELECTOR} .navbar.fixed-top .navbar-brand .logo,
+${DARK_MODE_SELECTOR} #logoimage {
+    filter: brightness(500%);
+}
+`);
 const updateDarkReaderMode = (live = false) => {
     const darkModeSetting = getSetting('darkmode.mode', live);
     if (darkModeSetting !== 'off') {
