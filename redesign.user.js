@@ -1890,6 +1890,11 @@ class SliderSetting extends NumberSetting {
     get formControl() {
         return this.#wrapper;
     }
+
+    resetInput() {
+        super.resetInput();
+        super.formControl.dispatchEvent(new Event('input'));
+    }
 }
 
 /**
