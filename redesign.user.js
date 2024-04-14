@@ -2,7 +2,7 @@
 // @name            🎓️ UzL: better-moodle
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
-// @version         1.25.2
+// @version         1.26.0
 // @                x-release-please-start-end
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -21,7 +21,7 @@
 // @grant           GM_info
 // @grant           GM_xmlhttpRequest
 // @connect         studentenwerk.sh
-// @require         https://unpkg.com/darkreader@4.9.83/darkreader.js#sha512=4b9a2010f7fd05609bf3372cbfdede407b736bd467396d33a8a0922b373244e03fb20c2f1be61be0b5a998561c3068f53788bad82f71ceab1fce3f9fc818ece8
+// @require         https://unpkg.com/darkreader@1.26.0/darkreader.js#sha512=4b9a2010f7fd05609bf3372cbfdede407b736bd467396d33a8a0922b373244e03fb20c2f1be61be0b5a998561c3068f53788bad82f71ceab1fce3f9fc818ece8
 // ==/UserScript==
 
 /* global M, require, DarkReader */
