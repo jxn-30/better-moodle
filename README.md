@@ -80,9 +80,11 @@ Alle Features von Better-Moodle lassen sich in den Einstellungen (de-)aktivieren
 
 [//]: # 'TODO: Add pictures settings-btn'
 
-> _Dunkles Design_  
-> Nein, Better-Moodle hat keinen Dark-Mode. Wir empfehlen die Verwendung der Browser-Erweiterung [Dark Reader](https://darkreader.org/).
-> Beispielhaft sind auf dieser Seite Screenshots mit einem Helligkeitswert von 100 % und einem Kontrastwert von 150 % in Dark Reader zu sehen.
+### Dunkles Design (Darkmode)
+
+Ab Version 1.26.0 bietet Better-Moodle einen Darkmode, der mithilfe von [Dark Reader](https://darkreader.org/) generiert wurden. Der Darkmode kann in den Einstellungen aktiviert und konfiguriert werden.
+
+Beispielhaft sind auf dieser Seite Screenshots mit einem Helligkeitswert von 100 % und einem Kontrastwert von 150 % in Dark Reader zu sehen.
 
 ### Volle Breite
 
