@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.26.1
+// @version         1.26.2
 // @                x-release-please-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
