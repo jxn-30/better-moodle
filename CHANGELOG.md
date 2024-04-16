@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.2](https://github.com/jxn-30/better-moodle/compare/1.26.1...1.26.2) (2024-04-16)
+
+
+### Bug Fixes
+
+* **googlyEyes:** fix eyes looking weird due to 2e27b18 ([7d98b50](https://github.com/jxn-30/better-moodle/commit/7d98b507478d5b0ed91edccf746c605bf447eaf7))
+
 ## [1.26.1](https://github.com/jxn-30/better-moodle/compare/1.26.0...1.26.1) (2024-04-16)
 
 
