@@ -2805,6 +2805,7 @@ if (
 
 .eye {
   background-color: white;
+  filter: brightness(1000%); /* this fixes Dark Reader turning the eye dark in chromium based browsers */
   border: var(--eye-border-width) solid black;
   border-radius: 43%;
   display: flex;
