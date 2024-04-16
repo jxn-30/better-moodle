@@ -2805,7 +2805,6 @@ if (
 
 .eye {
   background-color: white;
-  filter: brightness(1000%); /* this fixes Dark Reader turning the eye dark in chromium based browsers */
   border: var(--eye-border-width) solid black;
   border-radius: 43%;
   display: flex;
@@ -2909,10 +2908,16 @@ const updateDarkReaderMode = (live = false) => {
             grayscale: getSetting('darkmode.grayscale', live),
             sepia: getSetting('darkmode.sepia', live),
         };
-        if (darkModeSetting === 'auto') DarkReader.auto(settings);
+        const fixes = {
+            css: `
+.eye {
+    background-color: white;
+}`,
+        };
+        if (darkModeSetting === 'auto') DarkReader.auto(settings, fixes);
         else {
             DarkReader.auto(false);
-            DarkReader.enable(settings);
+            DarkReader.enable(settings, fixes);
         }
     } else if (DarkReader.isEnabled()) {
         DarkReader.auto(false);
