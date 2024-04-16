@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.26.1](https://github.com/YorikHansen/better-moodle/compare/1.26.0...1.26.1) (2024-04-16)
+
+
+### Bug Fixes
+
+* **googlyEyes:** fix eyes being dark in dark mode in chromium based browsers ([2e27b18](https://github.com/YorikHansen/better-moodle/commit/2e27b182136ce68a2ce4efef1436a998a0d9d269))
+
+
 ## [1.26.0](https://github.com/YorikHansen/better-moodle/compare/1.25.2...1.26.0) (2024-04-14)
 
 

@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.26.0
+// @version         1.26.1
 // @                x-release-please-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -3013,10 +3013,16 @@ const updateDarkReaderMode = (live = false) => {
             grayscale: getSetting('darkmode.grayscale', live),
             sepia: getSetting('darkmode.sepia', live),
         };
-        if (darkModeSetting === 'auto') DarkReader.auto(settings);
+        const fixes = {
+            css: `
+.eye {
+    background-color: white;
+}`,
+        };
+        if (darkModeSetting === 'auto') DarkReader.auto(settings, fixes);
         else {
             DarkReader.auto(false);
-            DarkReader.enable(settings);
+            DarkReader.enable(settings, fixes);
         }
     } else if (DarkReader.isEnabled()) {
         DarkReader.auto(false);
