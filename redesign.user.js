@@ -70,6 +70,17 @@ const TRANSLATIONS = {
                 price: 'Preis',
             },
         },
+        semesterzeiten: {
+            skip: 'Semesterzeiten überspringen',
+            table: {
+                name: 'Zeitraum',
+                start: 'Beginn',
+                end: 'Ende',
+                finished: 'Fortschritt',
+                show: 'Im Balken anzeigen?',
+                holiday: 'Feiertag',
+            },
+        },
         modals: {
             settings: {
                 title: 'Einstellungen',
@@ -205,6 +216,11 @@ Viele Grüße
                 googlyEyes: {
                     name: 'xEyes für Better-Moodle',
                     description: '👀',
+                },
+                semesterzeiten: {
+                    name: 'Semesterzeiten',
+                    description:
+                        'Zeigt im Dashboard ein neues Feld mit einem Fortschrittsbalken des aktuellen Semester an. Ebenfalls dabei: Informationen über wichtige Zeiträume im Semester.',
                 },
             },
             darkmode: {
@@ -371,6 +387,17 @@ Viele Grüße
                 price: 'Price',
             },
         },
+        semesterzeiten: {
+            skip: 'Skip semester times',
+            table: {
+                name: 'Period',
+                start: 'Start',
+                end: 'End',
+                finished: 'Progress',
+                show: 'Show in Progress bar?',
+                holiday: 'Public Holiday',
+            },
+        },
         modals: {
             settings: {
                 title: 'Preferences',
@@ -509,6 +536,11 @@ Best regards
                 googlyEyes: {
                     name: 'xEyes for Better-Moodle',
                     description: '👀',
+                },
+                semesterzeiten: {
+                    name: 'Semester times',
+                    description:
+                        'Displays a new field in the dashboard with a progress bar of the current semester. Also included: information about important periods in the semester.',
                 },
             },
             darkmode: {
@@ -859,6 +891,8 @@ const mdToHtml = (md, headingStart = 1) => {
 const noExternalLinkIconClass = PREFIX('no-external-icon');
 
 const githubPath = path => `https://github.com/jxn-30/better-moodle${path}`;
+const rawGithubPath = path =>
+    `https://raw.githubusercontent.com/jxn-30/better-moodle/main/${path}`;
 const githubLink = (path, icon = true, externalIcon = false) => {
     const link = document.createElement('a');
     link.href = githubPath(path);
@@ -1038,9 +1072,7 @@ const addMarqueeItems = (() => {
     // the getSetting method cannot be used as SETTINGS is not defined there yet
     if (GM_getValue(getSettingKey('general.eventAdvertisements'), true)) {
         // await fetch('http://localhost:3000/events.json') // this is for testing locally (npx serve --cors)
-        fetch(
-            'https://raw.githubusercontent.com/jxn-30/better-moodle/main/events.json'
-        )
+        fetch(rawGithubPath('events.json'))
             .then(res => res.json())
             .then(events =>
                 events.filter(event => new Date(event.end) > Date.now())
@@ -1495,6 +1527,19 @@ const debounce = (fn, delay = 100) => {
         timeout = setTimeout(() => fn.apply(context, arguments), delay);
     };
 };
+
+/**
+ * @param {Date} date
+ * @param {boolean} [year=true]
+ * @param {boolean} [weekday=false]
+ */
+const dateToString = (date, year = true, weekday = false) =>
+    date.toLocaleDateString(MOODLE_LANG, {
+        weekday: weekday ? 'long' : undefined,
+        year: year ? 'numeric' : undefined,
+        month: '2-digit',
+        day: '2-digit',
+    });
 // endregion
 
 // region Global styles
@@ -2010,6 +2055,7 @@ const SETTINGS = [
     new BooleanSetting('general.christmasCountdown', false),
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
+    new BooleanSetting('general.semesterzeiten', false),
     $t('settings.darkmode._title'),
     $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
@@ -2629,12 +2675,7 @@ ${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
     const createDayFieldset = (day, speisen, filter, firstFieldset) => {
         const date = new Date(day);
         const { fieldset, container, collapseBtn } = createFieldset(
-            date.toLocaleString(MOODLE_LANG, {
-                weekday: 'long',
-                year: undefined,
-                month: '2-digit',
-                day: '2-digit',
-            }),
+            dateToString(date, false, true),
             `speiseplan-collapseElement-${day}`,
             `speiseplan-containerElement-${day}`
         );
@@ -2888,6 +2929,358 @@ if (
             .querySelector('.btn-footer-popover .fa-question')
             ?.replaceWith(eyes)
     );
+}
+// endregion
+
+// region Feature: general.semesterzeiten
+if (isDashboard && getSetting('general.semesterzeiten')) {
+    const skipProgress = document.createElement('a');
+    skipProgress.classList.add('sr-only', 'sr-only-focusable');
+    skipProgress.textContent = $t('semesterzeiten.skip').toString();
+    const afterSpan = document.createElement('span');
+    afterSpan.id = PREFIX('general-semesterzeiten-after');
+    skipProgress.href = `#${afterSpan.id}`;
+
+    const progressSection = document.createElement('section');
+    progressSection.classList.add('block', 'card', 'mb-3');
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body', 'p-3');
+    const cardContent = document.createElement('div');
+    cardContent.classList.add('card-text', 'content');
+
+    const topBar = document.createElement('div');
+    topBar.classList.add('d-flex', 'align-items-center');
+
+    const progressWrapper = document.createElement('div');
+    progressWrapper.classList.add('progress', 'w-100');
+    progressWrapper.id = PREFIX('general-semesterzeiten-progress');
+
+    const infoLink = document.createElement('a');
+    infoLink.classList.add('mr-2');
+    infoLink.href = '#';
+    const infoIcon = document.createElement('i');
+    infoIcon.classList.add('icon', 'fa', 'fa-info-circle', 'fa-fw', 'mr-0');
+    infoLink.append(infoIcon);
+    infoLink.addEventListener('click', e => {
+        e.preventDefault();
+        additionalTable.classList.toggle('d-none');
+    });
+
+    const loadingProgressBar = document.createElement('div');
+    loadingProgressBar.classList.add(
+        'progress-bar',
+        'w-100',
+        'progress-bar-striped',
+        'progress-bar-animated'
+    );
+
+    const additionalTable = document.createElement('table');
+    additionalTable.classList.add(
+        'table',
+        'table-striped',
+        'table-hover',
+        'table-responsive-xs',
+        'd-none'
+    );
+    const tableHead = additionalTable.createTHead();
+    const tableHeadRow = tableHead.insertRow();
+    ['name', 'start', 'end', 'finished', 'show'].forEach(head => {
+        const headCell = document.createElement('th');
+        headCell.textContent = $t(`semesterzeiten.table.${head}`).toString();
+        tableHeadRow.append(headCell);
+    });
+    const tbody = additionalTable.createTBody();
+
+    progressWrapper.append(loadingProgressBar);
+    topBar.append(infoLink, progressWrapper);
+    cardContent.append(topBar, additionalTable);
+    cardBody.append(cardContent);
+    progressSection.append(cardBody);
+
+    const shownBars = new Set(['semester']);
+    const barTypeStyle = document.createElement('style');
+    const updateBarTypeStyle = () =>
+        (barTypeStyle.textContent =
+            shownBars.size === 0 ?
+                ''
+            :   `
+[data-storage] {
+    display: none;
+}
+
+${Array.from(shownBars)
+    .map(bar => `[data-storage="${bar}"]`)
+    .join(',')} {
+    display: flex;
+}
+`);
+
+    ready(() =>
+        document
+            .querySelector('#block-region-content')
+            ?.prepend(skipProgress, progressSection, afterSpan, barTypeStyle)
+    );
+
+    /**
+     * @typedef {Object} Semester
+     * @property {string} name
+     * @property {string} start
+     * @property {string} end
+     * @property {AdditionalSemesterzeit[]} additional
+     */
+
+    /**
+     * @typedef {Object} AdditionalSemesterzeit
+     * @property {string} name
+     * @property {string} storage
+     * @property {'success'|'info'|'warning'|'danger'} color
+     * @property {string} start
+     * @property {string} end
+     */
+
+    // helping function to get typing
+    /**
+     * @return {Promise<{ recurringHolidays: string[], semesters: Semester[] }>}
+     */
+    const getSemesterzeiten = () =>
+        fetch('http://localhost:3000/semesterzeiten.json') // this is for testing locally (npx serve --cors)
+            //fetch(rawGithubPath('semesterzeiten.json'))
+            .then(res => res.json());
+
+    getSemesterzeiten().then(({ recurringHolidays, semesters }) => {
+        const now = new Date();
+        const currentSemester = semesters.find(
+            semester =>
+                now > new Date(semester.start) && now < new Date(semester.end)
+        );
+        if (!currentSemester) return;
+
+        const currentSemesterStart = new Date(currentSemester.start);
+        const currentSemesterEnd = new Date(
+            new Date(currentSemester.end).getTime() + 1000 * 60 * 60 * 24 - 1
+        );
+        const currentSemesterDuration =
+            currentSemesterEnd - currentSemesterStart;
+
+        /** @type {Map<Date, {start: number[], end: number[]}>} */
+        const progressStops = new Map([[now, { start: [], end: [] }]]);
+        const bars = [];
+        /**
+         * @param {Date} start
+         * @param {Date} end
+         * @param {string} color
+         * @param {string} name
+         * @param {string} storage
+         */
+        const addBar = (start, end, color, name, storage) => {
+            addStart(start, bars.length);
+            // add almost one day here to mark the end of the day
+            addEnd(
+                new Date(end.getTime() + 1000 * 60 * 60 * 24 - 1),
+                bars.length
+            );
+            bars.push({
+                color,
+                name:
+                    start === end ?
+                        `${name} (${dateToString(start, true, true)})`
+                    :   `${name} (${dateToString(start)} - ${dateToString(end)})`,
+                storage,
+            });
+        };
+        /**
+         * @param {Date} date
+         * @param {number} barId
+         */
+        const addStart = (date, barId) => {
+            const normalizedDate =
+                date < currentSemesterStart ? currentSemesterStart : date;
+            if (progressStops.has(normalizedDate)) {
+                progressStops.get(normalizedDate).start.push(barId);
+            } else {
+                progressStops.set(normalizedDate, { start: [barId], end: [] });
+            }
+        };
+        /**
+         * @param {Date} date
+         * @param {number} barId
+         */
+        const addEnd = (date, barId) => {
+            const normalizedDate =
+                date > currentSemesterEnd ? currentSemesterEnd : date;
+            if (progressStops.has(normalizedDate)) {
+                progressStops.get(normalizedDate).end.push(barId);
+            } else {
+                progressStops.set(normalizedDate, { start: [], end: [barId] });
+            }
+        };
+        addBar(
+            currentSemesterStart,
+            currentSemesterEnd,
+            'primary',
+            currentSemester.name,
+            'semester'
+        );
+
+        const semesterRow = tbody.insertRow();
+        semesterRow.classList.add('table-primary');
+        [
+            currentSemester.name,
+            dateToString(currentSemesterStart),
+            dateToString(currentSemesterEnd),
+            (
+                (now - currentSemesterStart) /
+                currentSemesterDuration
+            ).toLocaleString(MOODLE_LANG, {
+                style: 'percent',
+                maximumFractionDigits: 2,
+            }),
+        ].forEach(content => (semesterRow.insertCell().textContent = content));
+        // empty cell as there is no possibility to toggle this bar
+        semesterRow.insertCell();
+
+        const getToggle = storage => {
+            const key = `semesterzeiten.show.${storage}`;
+            const storageKey = PREFIX(key);
+            const storedState = GM_getValue(storageKey, false);
+            const fakeSetting = new BooleanSetting(storageKey, storedState);
+            fakeSetting.onInput(() => {
+                GM_setValue(storageKey, fakeSetting.inputValue);
+                if (fakeSetting.inputValue) {
+                    shownBars.add(storage);
+                } else {
+                    shownBars.delete(storage);
+                }
+                updateBarTypeStyle();
+            });
+            if (storedState) shownBars.add(storage);
+
+            return fakeSetting.formControl;
+        };
+
+        currentSemester.additional.forEach(additional => {
+            const row = tbody.insertRow();
+            row.classList.add(`table-${additional.color}`);
+
+            const additionalStart = new Date(additional.start);
+            const additionalEnd = new Date(additional.end);
+            addBar(
+                additionalStart,
+                additionalEnd,
+                additional.color,
+                additional.name,
+                additional.storage
+            );
+
+            const finishedBy =
+                now < additionalStart ? 0
+                : now > additionalEnd ? 1
+                : (now - additionalStart) / (additionalEnd - additionalStart);
+
+            [
+                additional.name,
+                dateToString(additionalStart),
+                dateToString(additionalEnd),
+                finishedBy.toLocaleString(MOODLE_LANG, {
+                    style: 'percent',
+                    maximumFractionDigits: 2,
+                }),
+            ].forEach(content => (row.insertCell().textContent = content));
+
+            row.insertCell().append(getToggle(additional.storage));
+        });
+
+        recurringHolidays.forEach(holiday => {
+            for (
+                let year = currentSemesterStart.getFullYear();
+                year <= currentSemesterEnd.getFullYear();
+                year++
+            ) {
+                const holidayDay = new Date(`${year}-${holiday}`);
+                if (
+                    holidayDay <= currentSemesterStart ||
+                    holidayDay >= currentSemesterEnd
+                ) {
+                    return;
+                }
+
+                addBar(
+                    holidayDay,
+                    holidayDay,
+                    'secondary',
+                    $t('semesterzeiten.table.holiday').toString(),
+                    `holiday.${holiday}`
+                );
+
+                const row = tbody.insertRow();
+                row.classList.add('table-secondary');
+                const cell = row.insertCell();
+                cell.textContent = `${$t('semesterzeiten.table.holiday')}: ${dateToString(holidayDay, true, true)}`;
+                cell.colSpan = 4;
+
+                row.insertCell().append(getToggle(`holiday.${holiday}`));
+            }
+        });
+
+        const currentIndexes = new Set();
+        const stopDates = Array.from(progressStops.keys()).toSorted(
+            (a, b) => a - b
+        );
+        stopDates.slice(0, -1).forEach((date, index) => {
+            // if (date >= now) return;
+            const nextDate = stopDates[index + 1];
+            const { start, end } = progressStops.get(date);
+            start.forEach(barId => currentIndexes.add(barId));
+            end.forEach(barId => currentIndexes.delete(barId));
+
+            const startPercentage =
+                (date - currentSemesterStart) / currentSemesterDuration;
+            const endPercentage =
+                (nextDate - currentSemesterStart) / currentSemesterDuration;
+            const width = (endPercentage - startPercentage) * 100;
+
+            const bar = document.createElement('div');
+            bar.classList.add('progress-bar');
+            bar.style.setProperty('width', `${width}%`);
+
+            let title = '';
+
+            if (date >= now) bar.style.setProperty('opacity', '0.25');
+
+            progressWrapper.append(bar);
+
+            // no bar => full height with transparency
+            if (currentIndexes.size === 0) {
+                bar.classList.add('bg-transparent');
+            }
+            // one bar => full height with color
+            else if (currentIndexes.size === 1) {
+                const currentBar = bars[Array.from(currentIndexes)[0]];
+                title += currentBar.name;
+                bar.classList.add(`bg-${currentBar.color}`);
+                bar.dataset.storage = currentBar.storage;
+            }
+            // multiple bars => we need a wrapper
+            else {
+                currentIndexes.forEach(barId => {
+                    const subBar = document.createElement('div');
+                    subBar.classList.add('progress-bar', 'w-100', 'h-100');
+                    const currentBar = bars[barId];
+                    subBar.classList.add(`bg-${currentBar.color}`);
+                    subBar.dataset.storage = currentBar.storage;
+                    title += `${currentBar.name}\n`;
+                    bar.append(subBar);
+                });
+            }
+            bar.dataset.originalTitle = title.trim().replace(/\n/g, '<br>');
+            bar.dataset.toggle = 'tooltip';
+            bar.dataset.placement = 'top';
+            bar.dataset.html = 'true';
+        });
+
+        loadingProgressBar.remove();
+        updateBarTypeStyle();
+    });
 }
 // endregion
 
