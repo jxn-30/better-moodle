@@ -3043,9 +3043,8 @@ ${Array.from(shownBars)
      * @return {Promise<{ recurringHolidays: string[], semesters: Semester[] }>}
      */
     const getSemesterzeiten = () =>
-        fetch('http://localhost:3000/semesterzeiten.json') // this is for testing locally (npx serve --cors)
-            //fetch(rawGithubPath('semesterzeiten.json'))
-            .then(res => res.json());
+        // fetch('http://localhost:3000/semesterzeiten.json') // this is for testing locally (npx serve --cors)
+        fetch(rawGithubPath('semesterzeiten.json')).then(res => res.json());
 
     getSemesterzeiten().then(({ recurringHolidays, semesters }) => {
         const now = new Date();
