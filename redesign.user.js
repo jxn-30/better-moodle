@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.26.2
+// @version         1.27.0
 // @                x-release-please-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -24,6 +24,7 @@
 // @connect         studentenwerk.sh
 // @require         https://unpkg.com/darkreader@4.9.83/darkreader.js#sha512=4b9a2010f7fd05609bf3372cbfdede407b736bd467396d33a8a0922b373244e03fb20c2f1be61be0b5a998561c3068f53788bad82f71ceab1fce3f9fc818ece8
 // @connect         cloud.rz.uni-kiel.de
+// @connect         www.uni-kiel.de
 // ==/UserScript==
 
 /* global M, require, DarkReader */
@@ -59,8 +60,10 @@ const TRANSLATIONS = {
             grades: 'Bewertungen',
         },
         eventAdvertisements: {
-            saveTheDate: 'Save the Date: <b>{{event}}</b> am {{date}} um {{start}} Uhr',
-            tomorrow: 'Morgen: <b>{{event}}</b> um {{start}} Uhr ({{location}})',
+            saveTheDate:
+                'Save the Date: <b>{{event}}</b> am {{date}} um {{start}} Uhr',
+            tomorrow:
+                'Morgen: <b>{{event}}</b> um {{start}} Uhr ({{location}})',
             today: 'Heute: <b>{{event}}</b> um {{start}} Uhr ({{location}})',
             now: 'Jetzt: <b>{{event}}</b> ({{location}})',
         },
@@ -80,9 +83,20 @@ const TRANSLATIONS = {
                 price: 'Preis',
             },
             canteen: {
-                '1': 'Mensa I',
-                '2': 'Mensa II',
-                '3': 'Mensa Gaarden',
+                1: 'Mensa I',
+                2: 'Mensa II',
+                3: 'Mensa Gaarden',
+            },
+        },
+        semesterzeiten: {
+            skip: 'Semesterzeiten überspringen',
+            table: {
+                name: 'Zeitraum',
+                start: 'Beginn',
+                end: 'Ende',
+                finished: 'Fortschritt',
+                show: 'Im Balken anzeigen?',
+                holiday: 'Feiertag',
             },
         },
         modals: {
@@ -221,6 +235,11 @@ Viele Grüße
                     name: 'xEyes für Better-Moodle',
                     description: '👀',
                 },
+                semesterzeiten: {
+                    name: 'Semesterzeiten',
+                    description:
+                        'Zeigt im Dashboard ein neues Feld mit einem Fortschrittsbalken des aktuellen Semester an. Ebenfalls dabei: Informationen über wichtige Zeiträume im Semester.',
+                },
             },
             darkmode: {
                 _title: 'Darkmode',
@@ -346,12 +365,13 @@ Viele Grüße
                 _title: 'Speiseplan',
                 canteen: {
                     name: 'Standard Mensa',
-                    description: 'Welche Mensa soll standardmäßig angezeigt werden?',
+                    description:
+                        'Welche Mensa soll standardmäßig angezeigt werden?',
                     options: {
-                        '1': 'Mensa I',
-                        '2': 'Mensa II',
-                        '3': 'Mensa Gaarden',
-                    }
+                        1: 'Mensa I',
+                        2: 'Mensa II',
+                        3: 'Mensa Gaarden',
+                    },
                 },
             },
         },
@@ -383,7 +403,8 @@ Viele Grüße
             grades: 'Grades',
         },
         eventAdvertisements: {
-            saveTheDate: 'Save the Date: <b>{{event}}</b> at {{date}}, {{start}}',
+            saveTheDate:
+                'Save the Date: <b>{{event}}</b> at {{date}}, {{start}}',
             tomorrow: 'Tomorrow: <b>{{event}}</b> at {{start}} ({{location}})',
             today: 'Today: <b>{{event}}</b> at {{start}} ({{location}})',
             now: 'Now: <b>{{event}}</b> ({{location}})',
@@ -404,9 +425,20 @@ Viele Grüße
                 price: 'Price',
             },
             canteen: {
-                '1': 'Mensa I',
-                '2': 'Mensa II',
-                '3': 'Mensa Gaarden',
+                1: 'Mensa I',
+                2: 'Mensa II',
+                3: 'Mensa Gaarden',
+            },
+        },
+        semesterzeiten: {
+            skip: 'Skip semester times',
+            table: {
+                name: 'Period',
+                start: 'Start',
+                end: 'End',
+                finished: 'Progress',
+                show: 'Show in Progress bar?',
+                holiday: 'Public Holiday',
             },
         },
         modals: {
@@ -548,6 +580,11 @@ Best regards
                     name: 'xEyes for Better-Moodle',
                     description: '👀',
                 },
+                semesterzeiten: {
+                    name: 'Semester times',
+                    description:
+                        'Displays a new field in the dashboard with a progress bar of the current semester. Also included: information about important periods in the semester.',
+                },
             },
             darkmode: {
                 _title: 'Darkmode',
@@ -672,9 +709,9 @@ Best regards
                     name: 'Default canteen',
                     description: 'Which canteen should be used by default?',
                     options: {
-                        '1': 'Mensa I',
-                        '2': 'Mensa II',
-                        '3': 'Mensa Gaarden',
+                        1: 'Mensa I',
+                        2: 'Mensa II',
+                        3: 'Mensa Gaarden',
                     },
                 },
             },
@@ -811,7 +848,9 @@ const currentScriptVersion = [];
 const latestScriptVersion = [];
 /** @type {() => Promise<boolean>} */
 const updateAvailable = () =>
-    fetch('https://api.github.com/repos/YorikHansen/better-moodle/releases/latest') // TODO: Actually provide releases
+    fetch(
+        'https://api.github.com/repos/YorikHansen/better-moodle/releases/latest'
+    ) // TODO: Actually provide releases
         .then(res => res.json())
         .then(({ tag_name }) =>
             tag_name
@@ -893,14 +932,14 @@ const mdToHtml = (md, headingStart = 1) => {
                         .map(replacement[3] ? escape : inlineEscape)
                         .join(replacement[3] || '</li>\n<li>') +
                     replacement[2]
-                    : firstChar === '#' ?
-                        `<h${(i =
-                            b.indexOf(' ') + (headingStart - 1))}>${inlineEscape(
-                                b.slice(i + 1 - (headingStart - 1))
-                            )}</h${i}>`
-                        : firstChar === '<' ? b
-                            : b.startsWith('---') ? '<hr />'
-                                : `<p>${inlineEscape(b)}</p>`;
+                : firstChar === '#' ?
+                    `<h${(i =
+                        b.indexOf(' ') + (headingStart - 1))}>${inlineEscape(
+                        b.slice(i + 1 - (headingStart - 1))
+                    )}</h${i}>`
+                : firstChar === '<' ? b
+                : b.startsWith('---') ? '<hr />'
+                : `<p>${inlineEscape(b)}</p>`;
         });
 
     return html;
@@ -908,7 +947,10 @@ const mdToHtml = (md, headingStart = 1) => {
 
 const noExternalLinkIconClass = PREFIX('no-external-icon');
 
-const githubPath = path => `https://github.com/YorikHansen/better-moodle${path}`;
+const githubPath = path =>
+    `https://github.com/YorikHansen/better-moodle${path}`;
+const rawGithubPath = path =>
+    `https://raw.githubusercontent.com/YorikHansen/better-moodle/main/${path}`;
 const githubLink = (path, icon = true, externalIcon = false) => {
     const link = document.createElement('a');
     link.href = githubPath(path);
@@ -943,7 +985,7 @@ const githubLink = (path, icon = true, externalIcon = false) => {
 const getCourseGroupings = () =>
     window.location.pathname.startsWith('/login') ?
         Promise.resolve([])
-        : fetch('/my/courses.php')
+    :   fetch('/my/courses.php')
             .then(res => res.text())
             .then(html => new DOMParser().parseFromString(html, 'text/html'))
             .then(doc => {
@@ -1084,40 +1126,50 @@ const addMarqueeItems = (() => {
         return newElements.map((e, i) => [e, newClonedElements[i]]);
     };
 
-
     // TODO: Parse the ICS file from the CAU Cloud (https://cloud.rz.uni-kiel.de/remote.php/dav/public-calendars/6i9dfBcXyqsLYKZK/?export) on client side
 
     // we can add information about oncoming events here.
     // the getSetting method cannot be used as SETTINGS is not defined there yet
     if (GM_getValue(getSettingKey('general.eventAdvertisements'), true)) {
         fetch(
-            'https://yorik.dev/better-moodle/events.json?cal=https://cloud.rz.uni-kiel.de/remote.php/dav/public-calendars/6i9dfBcXyqsLYKZK/?export'
+            'https://better-moodle.yorik.dev/events.json?cal=https://cloud.rz.uni-kiel.de/remote.php/dav/public-calendars/6i9dfBcXyqsLYKZK/?export'
         )
             .then(res => res.json())
             .then(events =>
                 // Filter out events that are already over
                 events.filter(event => new Date(event.end) > Date.now())
             )
-            .then(events =>
-                events.filter(event => event.status === 'CONFIRMED') // TODO: Add message for canceled events
+            .then(
+                events => events.filter(event => event.status === 'CONFIRMED') // TODO: Add message for canceled events
             )
             .then(events =>
                 events.map(event => {
                     const startDate = new Date(event.start);
                     const endDate = new Date(event.end);
                     const startDateDay = new Date(event.start.slice(0, 10));
-                    const beforeStartDateDay = new Date(event.start.slice(0, 10)) - 1000 * 60 * 60 * 24;
-                    const startAdDay = startDateDay - (() => {
-                        switch (event.priority) {
-                            case 1: return 1000 * 60 * 60 * 24 * 7;   // 1 week
-                            case 2: return 1000 * 60 * 60 * 24 * 7;   // 1 week
-                            case 3: return 1000 * 60 * 60 * 24 * 5;   // 5 days
-                            case 4: return 1000 * 60 * 60 * 24 * 3;   // 3 days
-                            case 5: return 1000 * 60 * 60 * 24        // Normal priority
-                            case 0: return 0;                         // Not set
-                            default: return startDateDay + startDate; // low priority
-                        }
-                    })();
+                    const beforeStartDateDay =
+                        new Date(event.start.slice(0, 10)) -
+                        1000 * 60 * 60 * 24;
+                    const startAdDay =
+                        startDateDay -
+                        (() => {
+                            switch (event.priority) {
+                                case 1:
+                                    return 1000 * 60 * 60 * 24 * 7; // 1 week
+                                case 2:
+                                    return 1000 * 60 * 60 * 24 * 7; // 1 week
+                                case 3:
+                                    return 1000 * 60 * 60 * 24 * 5; // 5 days
+                                case 4:
+                                    return 1000 * 60 * 60 * 24 * 3; // 3 days
+                                case 5:
+                                    return 1000 * 60 * 60 * 24; // Normal priority
+                                case 0:
+                                    return 0; // Not set
+                                default:
+                                    return startDateDay + startDate; // low priority
+                            }
+                        })();
                     const now = new Date();
 
                     const mainAdElement = document.createElement('span');
@@ -1135,12 +1187,24 @@ const addMarqueeItems = (() => {
                         } else {
                             mainAdElement.innerHTML = template;
                         }
-                    }
+                    };
 
-                    const ad = { // TODO: Add attach url as link with icon.
+                    const ad = {
+                        // TODO: Add attach url as link with icon.
                         event: event.title,
-                        date: new Date(event.start).toLocaleDateString(MOODLE_LANG, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
-                        start: new Date(event.start).toLocaleTimeString(MOODLE_LANG, { hour: '2-digit', minute: '2-digit' }),
+                        date: new Date(event.start).toLocaleDateString(
+                            MOODLE_LANG,
+                            {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                            }
+                        ),
+                        start: new Date(event.start).toLocaleTimeString(
+                            MOODLE_LANG,
+                            { hour: '2-digit', minute: '2-digit' }
+                        ),
                         location: event.location,
                     };
 
@@ -1148,19 +1212,36 @@ const addMarqueeItems = (() => {
                         mainAdElement.classList.add('hidden');
                     }
 
-                    if (event.priority !== 0 && event.priority < 5 && beforeStartDateDay > now) {
-                        showEvent(startAdDay, $t('eventAdvertisements.saveTheDate', ad));
+                    if (
+                        event.priority !== 0 &&
+                        event.priority < 5 &&
+                        beforeStartDateDay > now
+                    ) {
+                        showEvent(
+                            startAdDay,
+                            $t('eventAdvertisements.saveTheDate', ad)
+                        );
                     }
-                    if (event.priority !== 0 && event.priority <= 5 && startDateDay > now) {
-                        showEvent(beforeStartDateDay, $t('eventAdvertisements.tomorrow', ad));
+                    if (
+                        event.priority !== 0 &&
+                        event.priority <= 5 &&
+                        startDateDay > now
+                    ) {
+                        showEvent(
+                            beforeStartDateDay,
+                            $t('eventAdvertisements.tomorrow', ad)
+                        );
                     }
                     if (event.priority <= 5 && startDate > now) {
-                        showEvent(startDateDay, $t('eventAdvertisements.today', ad));
+                        showEvent(
+                            startDateDay,
+                            $t('eventAdvertisements.today', ad)
+                        );
                     }
                     if (endDate > now) {
                         showEvent(startDate, $t('eventAdvertisements.now', ad));
 
-                        if ((endDate - now) < MAX_TIMEOUT) {
+                        if (endDate - now < MAX_TIMEOUT) {
                             setTimeout(() => {
                                 mainAdElement.classList.add('hidden');
                             }, endDate - now);
@@ -1210,13 +1291,16 @@ const MOODLE_LANG = document.documentElement.lang.toLowerCase();
 const DARK_MODE_SELECTOR = 'html[data-darkreader-scheme="dark"]';
 
 const $t = (key, args = {}) => {
-    const escapeHTML = x => x ? x.toString()
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;')
-        : ''; // TODO: Don't escape '&' for E-Mail-Links
+    const escapeHTML = x =>
+        x ?
+            x
+                .toString()
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;')
+        :   ''; // TODO: Don't escape '&' for E-Mail-Links
     const t =
         key
             .split('.')
@@ -1531,8 +1615,9 @@ const getSpeiseplan = async () => {
     const getDoc = (nextWeek = false) =>
         new Promise(resolve =>
             GM_xmlhttpRequest({
-                url: `https://studentenwerk.sh/${MOODLE_LANG}/${localizedPath[MOODLE_LANG]
-                    }?ort=1&mensa=${getSetting('speiseplan.canteen')}${nextWeek ? '&nw=1' : ''}`, // TODO: Allow selection of Mensa 2 or even the TF Mensa
+                url: `https://studentenwerk.sh/${MOODLE_LANG}/${
+                    localizedPath[MOODLE_LANG]
+                }?ort=1&mensa=${getSetting('speiseplan.canteen')}${nextWeek ? '&nw=1' : ''}`, // TODO: Allow selection of Mensa 2 or even the TF Mensa
                 onload: ({ responseText }) =>
                     resolve(
                         new DOMParser().parseFromString(
@@ -1591,6 +1676,19 @@ const debounce = (fn, delay = 100) => {
         timeout = setTimeout(() => fn.apply(context, arguments), delay);
     };
 };
+
+/**
+ * @param {Date} date
+ * @param {boolean} [year=true]
+ * @param {boolean} [weekday=false]
+ */
+const dateToString = (date, year = true, weekday = false) =>
+    date.toLocaleDateString(MOODLE_LANG, {
+        weekday: weekday ? 'long' : undefined,
+        year: year ? 'numeric' : undefined,
+        month: '2-digit',
+        day: '2-digit',
+    });
 // endregion
 
 // region Global styles
@@ -2106,6 +2204,7 @@ const SETTINGS = [
     new BooleanSetting('general.christmasCountdown', false),
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
+    new BooleanSetting('general.semesterzeiten', false),
     $t('settings.darkmode._title'),
     $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
@@ -2176,11 +2275,7 @@ const SETTINGS = [
         'ctrlEnter',
     ]),
     $t('settings.speiseplan._title'),
-    new SelectSetting('speiseplan.canteen', '1', [
-        '1',
-        '2',
-        '3'
-    ]),
+    new SelectSetting('speiseplan.canteen', '1', ['1', '2', '3']),
 ];
 const settingsById = Object.fromEntries(
     SETTINGS.filter(s => typeof s !== 'string').map(s => [s.id, s])
@@ -2582,7 +2677,7 @@ if (getSetting('general.christmasCountdown')) {
         const daysToChristmas =
             now < firstChristmasDay ?
                 getDayOfYear(thisYearChristmas) - todayDayOfYear
-                : getDayOfYear(thisYearLastDay) -
+            :   getDayOfYear(thisYearLastDay) -
                 todayDayOfYear +
                 getDayOfYear(nextYearChristmas);
 
@@ -2596,7 +2691,7 @@ if (getSetting('general.christmasCountdown')) {
                         days: daysToChristmas,
                     }
                 ).toString()
-                : $t('christmasCountdown.christmas').toString();
+            :   $t('christmasCountdown.christmas').toString();
 
         const nextUpdate = new Date();
         nextUpdate.setDate(now.getDate() + 1);
@@ -2652,17 +2747,18 @@ if (getSetting('general.speiseplan')) {
     desktopLink.textContent =
         foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
     desktopBtn.title = $t('speiseplan.title', {
-        canteen: $t(`speiseplan.canteen.${getSetting('speiseplan.canteen')}`)
+        canteen: $t(`speiseplan.canteen.${getSetting('speiseplan.canteen')}`),
     }).toString();
     desktopBtn.append(desktopLink);
 
     const mobileBtn = document.createElement('a');
     mobileBtn.classList.add('list-group-item', 'list-group-item-action');
     mobileBtn.href = '#';
-    mobileBtn.textContent = `${foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
-        }\xa0${$t('speiseplan.title', {
-            canteen: $t(`speiseplan.canteen.${getSetting('speiseplan.canteen')}`)
-        }).toString()}`;
+    mobileBtn.textContent = `${
+        foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
+    }\xa0${$t('speiseplan.title', {
+        canteen: $t(`speiseplan.canteen.${getSetting('speiseplan.canteen')}`),
+    }).toString()}`;
 
     const tableClass = PREFIX('speiseplan-table');
     const speiseClass = PREFIX('speiseplan-speise');
@@ -2734,12 +2830,7 @@ ${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
     const createDayFieldset = (day, speisen, filter, firstFieldset) => {
         const date = new Date(day);
         const { fieldset, container, collapseBtn } = createFieldset(
-            date.toLocaleString(MOODLE_LANG, {
-                weekday: 'long',
-                year: undefined,
-                month: '2-digit',
-                day: '2-digit',
-            }),
+            dateToString(date, false, true),
             `speiseplan-collapseElement-${day}`,
             `speiseplan-containerElement-${day}`
         );
@@ -2787,7 +2878,7 @@ ${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
                 allergenSpan.textContent +=
                     allergenFilter ?
                         `${allergenFilter.abk}:\xa0${allergenFilter.title}`
-                        : allergen;
+                    :   allergen;
                 allergene.append(allergenSpan);
             });
             if (speise.allergene.length) speiseCell.append(allergene);
@@ -2799,7 +2890,7 @@ ${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
                 zusatzstoffSpan.textContent +=
                     zusatzstoffFilter ?
                         `${zusatzstoffFilter.abk}:\xa0${zusatzstoffFilter.title}`
-                        : zusatzstoff;
+                    :   zusatzstoff;
                 zusatzstoffe.append(zusatzstoffSpan);
             });
             if (speise.zusatzstoffe.length) speiseCell.append(zusatzstoffe);
@@ -2841,10 +2932,13 @@ ${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
                 type: types.ALERT,
                 large: true,
                 scrollable: true,
-                title: `${foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
-                    }\xa0${$t('speiseplan.title', {
-                        canteen: $t(`speiseplan.canteen.${getSetting('speiseplan.canteen')}`)
-                    }).toString()}`,
+                title: `${
+                    foodEmojis[Math.floor(Math.random() * foodEmojis.length)]
+                }\xa0${$t('speiseplan.title', {
+                    canteen: $t(
+                        `speiseplan.canteen.${getSetting('speiseplan.canteen')}`
+                    ),
+                }).toString()}`,
                 body: getSpeiseplan().then(({ speisen, filters }) =>
                     Object.entries(speisen)
                         .filter(
@@ -2863,10 +2957,9 @@ ${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
                 modal.getBody()[0].classList.add('mform');
 
                 const studiwerkLink = document.createElement('a');
-                studiwerkLink.href = `https://studentenwerk.sh/${MOODLE_LANG}/${{ de: 'mensen-in-kiel', en: 'food-overview' }[
-                    MOODLE_LANG
-                ]
-                    }?ort=1&mensa=${getSetting('speiseplan.canteen')}`;
+                studiwerkLink.href = `https://studentenwerk.sh/${MOODLE_LANG}/${
+                    { de: 'mensen-in-kiel', en: 'food-overview' }[MOODLE_LANG]
+                }?ort=1&mensa=${getSetting('speiseplan.canteen')}`;
                 studiwerkLink.textContent = $t('speiseplan.toStudiwerkPage');
                 studiwerkLink.target = '_blank';
                 studiwerkLink.classList.add('mr-auto');
@@ -2996,6 +3089,466 @@ if (
 }
 // endregion
 
+// region Feature: general.semesterzeiten
+if (isDashboard && getSetting('general.semesterzeiten')) {
+    const skipProgress = document.createElement('a');
+    skipProgress.classList.add('sr-only', 'sr-only-focusable');
+    skipProgress.textContent = $t('semesterzeiten.skip').toString();
+    const afterSpan = document.createElement('span');
+    afterSpan.id = PREFIX('general-semesterzeiten-after');
+    skipProgress.href = `#${afterSpan.id}`;
+
+    const progressSection = document.createElement('section');
+    progressSection.classList.add('block', 'card', 'mb-3');
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body', 'p-3');
+    const cardContent = document.createElement('div');
+    cardContent.classList.add('card-text', 'content');
+
+    const topBar = document.createElement('div');
+    topBar.classList.add('d-flex', 'align-items-center');
+
+    const progressWrapper = document.createElement('div');
+    progressWrapper.classList.add('progress', 'w-100');
+    progressWrapper.id = PREFIX('general-semesterzeiten-progress');
+
+    const infoLink = document.createElement('a');
+    infoLink.classList.add('mr-2');
+    infoLink.href = '#';
+    const infoIcon = document.createElement('i');
+    infoIcon.classList.add('icon', 'fa', 'fa-info-circle', 'fa-fw', 'mr-0');
+    infoLink.append(infoIcon);
+    infoLink.addEventListener('click', e => {
+        e.preventDefault();
+        additionalTable.classList.toggle('d-none');
+    });
+
+    const loadingProgressBar = document.createElement('div');
+    loadingProgressBar.classList.add(
+        'progress-bar',
+        'w-100',
+        'progress-bar-striped',
+        'progress-bar-animated'
+    );
+
+    const additionalTable = document.createElement('table');
+    additionalTable.classList.add(
+        'table',
+        'table-striped',
+        'table-hover',
+        'table-responsive-xs',
+        'd-none'
+    );
+    const tableHead = additionalTable.createTHead();
+    const tableHeadRow = tableHead.insertRow();
+    ['name', 'start', 'end', 'finished', 'show'].forEach(head => {
+        const headCell = document.createElement('th');
+        headCell.textContent = $t(`semesterzeiten.table.${head}`).toString();
+        tableHeadRow.append(headCell);
+    });
+    const tbody = additionalTable.createTBody();
+
+    progressWrapper.append(loadingProgressBar);
+    topBar.append(infoLink, progressWrapper);
+    cardContent.append(topBar, additionalTable);
+    cardBody.append(cardContent);
+    progressSection.append(cardBody);
+
+    const shownBars = new Set(['semester']);
+    const barTypeStyle = document.createElement('style');
+    const updateBarTypeStyle = () =>
+        (barTypeStyle.textContent =
+            shownBars.size === 0 ?
+                ''
+            :   `
+[data-storage] {
+    display: none;
+}
+
+${Array.from(shownBars)
+    .map(bar => `[data-storage="${bar}"]`)
+    .join(',')} {
+    display: flex;
+}
+`);
+
+    ready(() =>
+        document
+            .querySelector('#block-region-content')
+            ?.prepend(skipProgress, progressSection, afterSpan, barTypeStyle)
+    );
+
+    /**
+     * @typedef {Object} Semester
+     * @property {string} name
+     * @property {string} start
+     * @property {string} end
+     * @property {AdditionalSemesterzeit[]} additional
+     */
+
+    /**
+     * @typedef {Object} AdditionalSemesterzeit
+     * @property {string} name
+     * @property {string} storage
+     * @property {'success'|'info'|'warning'|'danger'} color
+     * @property {string} start
+     * @property {string} end
+     */
+
+    // helping function to get typing
+    /**
+     * @return {Promise<{ recurringHolidays: string[], semesters: Semester[] }>}
+     */
+    const getSemesterzeiten = () =>
+        // TODO: Fetch from https://www.uni-kiel.de/gf-praesidium/de/termine/semesterzeiten
+        new Promise(resolve =>
+            GM_xmlhttpRequest({
+                url: 'https://www.uni-kiel.de/gf-praesidium/de/termine/semesterzeiten',
+                onload: ({ responseText }) =>
+                    resolve(
+                        new DOMParser().parseFromString(
+                            responseText,
+                            'text/html'
+                        )
+                    ),
+            })
+        )
+            .then(doc => {
+                let table = [];
+                doc.getElementById('content-core')
+                    .querySelectorAll('tr')
+                    .forEach(el => {
+                        let row = [];
+                        el.querySelectorAll('td').forEach(elem => {
+                            row.push(elem.innerText);
+                        });
+                        table.push(row);
+                    });
+                return table;
+            })
+            .then(table => {
+                const germanDate = date => {
+                    const [day, month, year] = date.split('.');
+                    return `${year}-${month}-${day}`;
+                };
+                let semesters = [];
+                let head = table[0].slice(1).map(x => x.trim());
+                let body = table.slice(1);
+                for (let c = 1; c <= head.length; c++) {
+                    let semester = head[c - 1];
+                    let attributes = {};
+                    for (let r = 0; r < body.length; r++) {
+                        let row = body[r];
+                        let attribute = row[0].match(/^[^\*\(]+/)[0].trim(); // Stop parsing after * or (
+                        let tmp = attribute.match(/^(.*)(beginn|ende)$/);
+                        if (tmp) {
+                            if (!attributes[tmp[1]]) {
+                                attributes[tmp[1]] = { start: null, end: null };
+                            }
+                            switch (tmp[2]) {
+                                case 'beginn':
+                                    attributes[tmp[1]].start = germanDate(
+                                        row[c].trim()
+                                    );
+                                    break;
+                                case 'ende':
+                                    attributes[tmp[1]].end = germanDate(
+                                        row[c].trim()
+                                    );
+                                    break;
+                            }
+                        } else {
+                            let [start, end] = row[c]
+                                .split('-')
+                                .map(e => e.trim());
+                            if (start && end) {
+                                end = germanDate(end);
+                                if (start.length <= 6) {
+                                    start += end.slice(0, 4);
+                                }
+                                start = germanDate(start);
+
+                                attributes[attribute] = {
+                                    start: start,
+                                    end: end,
+                                };
+                            }
+                        }
+                    }
+
+                    let additionals = [];
+                    for (let attribute in attributes) {
+                        let name = attribute.replaceAll(/\s+/gi, ' ').trim();
+                        if (name !== 'Semester') {
+                            name =
+                                name === 'Vorlesungs' ? 'Vorlesungszeit' : name;
+                            let storage = name
+                                .toLowerCase()
+                                .replaceAll(/\s+/gi, '-')
+                                .replaceAll(/[^\da-z\-]/gi, '');
+                            let start = attributes[attribute].start;
+                            let end = attributes[attribute].end;
+                            
+                            additionals.push({
+                                name: name,
+                                storage: storage,
+                                color: name === 'Vorlesungszeit' ? 'info' : 'success',
+                                start: start,
+                                end: end,
+                            });
+                        }
+                    }
+
+                    semesters.push({
+                        name: semester,
+                        start: attributes['Semester'].start,
+                        end: attributes['Semester'].end,
+                        additional: additionals,
+                    });
+                }
+                return {
+                    recurringHolidays: [], // TODO: Implement holidays
+                    semesters: semesters
+                };
+            });
+
+    getSemesterzeiten().then(({ recurringHolidays, semesters }) => {
+        const now = new Date();
+        const currentSemester = semesters.find(
+            semester =>
+                now > new Date(semester.start) && now < new Date(semester.end)
+        );
+        if (!currentSemester) return;
+
+        const currentSemesterStart = new Date(currentSemester.start);
+        const currentSemesterEnd = new Date(
+            new Date(currentSemester.end).getTime() + 1000 * 60 * 60 * 24 - 1
+        );
+        const currentSemesterDuration =
+            currentSemesterEnd - currentSemesterStart;
+
+        /** @type {Map<Date, {start: number[], end: number[]}>} */
+        const progressStops = new Map([[now, { start: [], end: [] }]]);
+        const bars = [];
+        /**
+         * @param {Date} start
+         * @param {Date} end
+         * @param {string} color
+         * @param {string} name
+         * @param {string} storage
+         */
+        const addBar = (start, end, color, name, storage) => {
+            addStart(start, bars.length);
+            // add almost one day here to mark the end of the day
+            addEnd(
+                new Date(end.getTime() + 1000 * 60 * 60 * 24 - 1),
+                bars.length
+            );
+            bars.push({
+                color,
+                name:
+                    start === end ?
+                        `${name} (${dateToString(start, true, true)})`
+                    :   `${name} (${dateToString(start)} - ${dateToString(end)})`,
+                storage,
+            });
+        };
+        /**
+         * @param {Date} date
+         * @param {number} barId
+         */
+        const addStart = (date, barId) => {
+            const normalizedDate =
+                date < currentSemesterStart ? currentSemesterStart : date;
+            if (progressStops.has(normalizedDate)) {
+                progressStops.get(normalizedDate).start.push(barId);
+            } else {
+                progressStops.set(normalizedDate, { start: [barId], end: [] });
+            }
+        };
+        /**
+         * @param {Date} date
+         * @param {number} barId
+         */
+        const addEnd = (date, barId) => {
+            const normalizedDate =
+                date > currentSemesterEnd ? currentSemesterEnd : date;
+            if (progressStops.has(normalizedDate)) {
+                progressStops.get(normalizedDate).end.push(barId);
+            } else {
+                progressStops.set(normalizedDate, { start: [], end: [barId] });
+            }
+        };
+        addBar(
+            currentSemesterStart,
+            currentSemesterEnd,
+            'primary',
+            currentSemester.name,
+            'semester'
+        );
+
+        const semesterRow = tbody.insertRow();
+        semesterRow.classList.add('table-primary');
+        [
+            currentSemester.name,
+            dateToString(currentSemesterStart),
+            dateToString(currentSemesterEnd),
+            (
+                (now - currentSemesterStart) /
+                currentSemesterDuration
+            ).toLocaleString(MOODLE_LANG, {
+                style: 'percent',
+                maximumFractionDigits: 2,
+            }),
+        ].forEach(content => (semesterRow.insertCell().textContent = content));
+        // empty cell as there is no possibility to toggle this bar
+        semesterRow.insertCell();
+
+        const getToggle = storage => {
+            const key = `semesterzeiten.show.${storage}`;
+            const storageKey = PREFIX(key);
+            const storedState = GM_getValue(storageKey, false);
+            const fakeSetting = new BooleanSetting(storageKey, storedState);
+            fakeSetting.onInput(() => {
+                GM_setValue(storageKey, fakeSetting.inputValue);
+                if (fakeSetting.inputValue) {
+                    shownBars.add(storage);
+                } else {
+                    shownBars.delete(storage);
+                }
+                updateBarTypeStyle();
+            });
+            if (storedState) shownBars.add(storage);
+
+            return fakeSetting.formControl;
+        };
+
+        currentSemester.additional.forEach(additional => {
+            const row = tbody.insertRow();
+            row.classList.add(`table-${additional.color}`);
+
+            const additionalStart = new Date(additional.start);
+            const additionalEnd = new Date(additional.end);
+            addBar(
+                additionalStart,
+                additionalEnd,
+                additional.color,
+                additional.name,
+                additional.storage
+            );
+
+            const finishedBy =
+                now < additionalStart ? 0
+                : now > additionalEnd ? 1
+                : (now - additionalStart) / (additionalEnd - additionalStart);
+
+            [
+                additional.name,
+                dateToString(additionalStart),
+                dateToString(additionalEnd),
+                finishedBy.toLocaleString(MOODLE_LANG, {
+                    style: 'percent',
+                    maximumFractionDigits: 2,
+                }),
+            ].forEach(content => (row.insertCell().textContent = content));
+
+            row.insertCell().append(getToggle(additional.storage));
+        });
+
+        recurringHolidays.forEach(holiday => {
+            for (
+                let year = currentSemesterStart.getFullYear();
+                year <= currentSemesterEnd.getFullYear();
+                year++
+            ) {
+                const holidayDay = new Date(`${year}-${holiday}`);
+                if (
+                    holidayDay <= currentSemesterStart ||
+                    holidayDay >= currentSemesterEnd
+                ) {
+                    return;
+                }
+
+                addBar(
+                    holidayDay,
+                    holidayDay,
+                    'secondary',
+                    $t('semesterzeiten.table.holiday').toString(),
+                    `holiday.${holiday}`
+                );
+
+                const row = tbody.insertRow();
+                row.classList.add('table-secondary');
+                const cell = row.insertCell();
+                cell.textContent = `${$t('semesterzeiten.table.holiday')}: ${dateToString(holidayDay, true, true)}`;
+                cell.colSpan = 4;
+
+                row.insertCell().append(getToggle(`holiday.${holiday}`));
+            }
+        });
+
+        const currentIndexes = new Set();
+        const stopDates = Array.from(progressStops.keys()).toSorted(
+            (a, b) => a - b
+        );
+        stopDates.slice(0, -1).forEach((date, index) => {
+            // if (date >= now) return;
+            const nextDate = stopDates[index + 1];
+            const { start, end } = progressStops.get(date);
+            start.forEach(barId => currentIndexes.add(barId));
+            end.forEach(barId => currentIndexes.delete(barId));
+
+            const startPercentage =
+                (date - currentSemesterStart) / currentSemesterDuration;
+            const endPercentage =
+                (nextDate - currentSemesterStart) / currentSemesterDuration;
+            const width = (endPercentage - startPercentage) * 100;
+
+            const bar = document.createElement('div');
+            bar.classList.add('progress-bar');
+            bar.style.setProperty('width', `${width}%`);
+
+            let title = '';
+
+            if (date >= now) bar.style.setProperty('opacity', '0.25');
+
+            progressWrapper.append(bar);
+
+            // no bar => full height with transparency
+            if (currentIndexes.size === 0) {
+                bar.classList.add('bg-transparent');
+            }
+            // one bar => full height with color
+            else if (currentIndexes.size === 1) {
+                const currentBar = bars[Array.from(currentIndexes)[0]];
+                title += currentBar.name;
+                bar.classList.add(`bg-${currentBar.color}`);
+                bar.dataset.storage = currentBar.storage;
+            }
+            // multiple bars => we need a wrapper
+            else {
+                currentIndexes.forEach(barId => {
+                    const subBar = document.createElement('div');
+                    subBar.classList.add('progress-bar', 'w-100', 'h-100');
+                    const currentBar = bars[barId];
+                    subBar.classList.add(`bg-${currentBar.color}`);
+                    subBar.dataset.storage = currentBar.storage;
+                    title += `${currentBar.name}\n`;
+                    bar.append(subBar);
+                });
+            }
+            bar.dataset.originalTitle = title.trim().replace(/\n/g, '<br>');
+            bar.dataset.toggle = 'tooltip';
+            bar.dataset.placement = 'top';
+            bar.dataset.html = 'true';
+        });
+
+        loadingProgressBar.remove();
+        updateBarTypeStyle();
+    });
+}
+// endregion
+
 // region Feature: Darkmode
 GM_addStyle(`
 /* make the UzL-Logo glow beautifully when using dark mode of darkreader */
@@ -3101,9 +3654,10 @@ ready(() => {
 
             drawer
                 .querySelectorAll(
-                    `.courseindex-section-title .icons-collapse-expand${collapseIcon.classList.contains('collapsed') ?
-                        ':not(.collapsed)'
-                        : '.collapsed'
+                    `.courseindex-section-title .icons-collapse-expand${
+                        collapseIcon.classList.contains('collapsed') ?
+                            ':not(.collapsed)'
+                        :   '.collapsed'
                     }`
                 )
                 .forEach(collapseIcon => collapseIcon.click());
@@ -3217,7 +3771,7 @@ ready(async () => {
         anchor.append(
             ...(course.shortname ?
                 [shortName, document.createElement('br')]
-                : []),
+            :   []),
             fullName
         );
         anchor.title = anchor.textContent;
@@ -3471,7 +4025,7 @@ ready(async () => {
                         courseGroupings.find(grouping => grouping.active) ??
                         courseGroupings[0]
                 )
-                : JSON.parse(sidebarGroupingSetting);
+            :   JSON.parse(sidebarGroupingSetting);
 
         // fetch the courses
         require(['block_myoverview/repository'], ({
@@ -3523,7 +4077,7 @@ ready(async () => {
                         courseGroupings.find(grouping => grouping.active) ??
                         courseGroupings[0]
                 )
-                : JSON.parse(dropdownGroupingSetting);
+            :   JSON.parse(dropdownGroupingSetting);
 
         // fetch the courses
         require(['block_myoverview/repository'], ({
@@ -3901,8 +4455,9 @@ ready(() => {
     const getChangelogHtml = () =>
         changelogHtml ?
             Promise.resolve(changelogHtml)
-            : fetch(
-                `https://raw.githubusercontent.com/YorikHansen/better-moodle/main/CHANGELOG.md?_=${Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
+        :   fetch(
+                `https://raw.githubusercontent.com/YorikHansen/better-moodle/main/CHANGELOG.md?_=${
+                    Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
                 }`
             )
                 .then(res => res.text())
@@ -4100,8 +4655,9 @@ ready(() => {
                     type: types.ALERT,
                     large: true,
                     scrollable: true,
-                    title: `${githubLink('/blob/main/CHANGELOG.md').outerHTML
-                        } Better-Moodle:&nbsp;${$t('modals.changelog')}`,
+                    title: `${
+                        githubLink('/blob/main/CHANGELOG.md').outerHTML
+                    } Better-Moodle:&nbsp;${$t('modals.changelog')}`,
                     body: getChangelogHtml(),
                 }).then(modal => modal.show());
             });
