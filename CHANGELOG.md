@@ -11,6 +11,7 @@
 ### Bug Fixes
 
 * **semesterzeiten:** use data living on GitHub ([ddd6a48](https://github.com/YorikHansen/better-moodle/commit/ddd6a48f7b80147c45945b0a722c151aee323cb8))
+* **semesterzeiten:** Get semesterzeiten from uni kiel website (ugly :c) ([0843de2](https://github.com/YorikHansen/better-moodle/commit/0843de24a6efbcaf31ba02f324e11915555c47c2))
 
 ## [1.26.2](https://github.com/YorikHansen/better-moodle/compare/1.26.1...1.26.2) (2024-04-16)
 
