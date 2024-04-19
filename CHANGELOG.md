@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.27.2](https://github.com/YorikHansen/better-moodle/compare/1.27.1...1.27.2) (2024-04-19)
+
+### Bug Fixes
+
+* Fix better-moodle not loading when not logged in at all (not even as a guest) ([a3074fc](https://github.com/YorikHansen/better-moodle/commit/a3074fca83be8ec54ce92679c9e20dff58a7f205))
+
 
 ## [1.27.1](https://github.com/YorikHansen/better-moodle/compare/1.27.0...1.27.1) (2024-04-19)
 

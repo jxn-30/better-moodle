@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.27.1
+// @version         1.27.2
 // @                x-release-please-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -1177,7 +1177,7 @@ const addMarqueeItems = (() => {
 
                     const showEvent = (time, template) => {
                         if (time > now) {
-                            let delta = time - now;
+                            const delta = time - now;
                             if (!(delta > MAX_TIMEOUT)) {
                                 setTimeout(() => {
                                     mainAdElement.classList.remove('hidden');
@@ -3240,11 +3240,11 @@ ${Array.from(shownBars)
             })
         )
             .then(doc => {
-                let table = [];
+                const table = [];
                 doc.getElementById('content-core')
                     .querySelectorAll('tr')
                     .forEach(el => {
-                        let row = [];
+                        const row = [];
                         el.querySelectorAll('td').forEach(elem => {
                             row.push(elem.innerText);
                         });
@@ -3257,16 +3257,16 @@ ${Array.from(shownBars)
                     const [day, month, year] = date.split('.');
                     return `${year}-${month}-${day}`;
                 };
-                let semesters = [];
-                let head = table[0].slice(1).map(x => x.trim());
-                let body = table.slice(1);
+                const semesters = [];
+                const head = table[0].slice(1).map(x => x.trim());
+                const body = table.slice(1);
                 for (let c = 1; c <= head.length; c++) {
-                    let semester = head[c - 1];
-                    let attributes = {};
+                    const semester = head[c - 1];
+                    const attributes = {};
                     for (let r = 0; r < body.length; r++) {
-                        let row = body[r];
-                        let attribute = row[0].match(/^[^\*\(]+/)[0].trim(); // Stop parsing after * or (
-                        let tmp = attribute.match(/^(.*)(beginn|ende)$/);
+                        const row = body[r];
+                        const attribute = row[0].match(/^[^*(]+/)[0].trim(); // Stop parsing after * or (
+                        const tmp = attribute.match(/^(.*)(beginn|ende)$/);
                         if (tmp) {
                             if (!attributes[tmp[1]]) {
                                 attributes[tmp[1]] = { start: null, end: null };
@@ -3295,49 +3295,55 @@ ${Array.from(shownBars)
                                 start = germanDate(start);
 
                                 attributes[attribute] = {
-                                    start: start,
-                                    end: end,
+                                    start,
+                                    end,
                                 };
                             }
                         }
                     }
 
-                    let additionals = [];
-                    for (let attribute in attributes) {
-                        let name = attribute.replaceAll(/\s+/gi, ' ').trim();
-                        if (name !== 'Semester') {
-                            name =
-                                name === 'Vorlesungs' ? 'Vorlesungszeit' : name;
-                            let storage = name
-                                .toLowerCase()
-                                .replaceAll(/\s+/gi, '-')
-                                .replaceAll(/[^\da-z\-]/gi, '');
-                            let start = attributes[attribute].start;
-                            let end = attributes[attribute].end;
+                    const additionals = [];
+                    for (const attribute in attributes) {
+                        if (Object.hasOwn(attributes, attribute)) {
+                            let name = attribute
+                                .replaceAll(/\s+/gi, ' ')
+                                .trim();
+                            if (name !== 'Semester') {
+                                name =
+                                    name === 'Vorlesungs' ? 'Vorlesungszeit' : (
+                                        name
+                                    );
+                                const storage = name
+                                    .toLowerCase()
+                                    .replaceAll(/\s+/gi, '-')
+                                    .replaceAll(/[^\da-z-]/gi, '');
+                                const start = attributes[attribute].start;
+                                const end = attributes[attribute].end;
 
-                            additionals.push({
-                                name: name,
-                                storage: storage,
-                                color:
-                                    name === 'Vorlesungszeit' ? 'info' : (
-                                        'success'
-                                    ),
-                                start: start,
-                                end: end,
-                            });
+                                additionals.push({
+                                    name,
+                                    storage,
+                                    color:
+                                        name === 'Vorlesungszeit' ? 'info' : (
+                                            'success'
+                                        ),
+                                    start,
+                                    end,
+                                });
+                            }
                         }
                     }
 
                     semesters.push({
                         name: semester,
-                        start: attributes['Semester'].start,
-                        end: attributes['Semester'].end,
+                        start: attributes.Semester.start,
+                        end: attributes.Semester.end,
                         additional: additionals,
                     });
                 }
                 return {
                     recurringHolidays: [], // TODO: Implement holidays
-                    semesters: semesters,
+                    semesters,
                 };
             });
 
@@ -4100,13 +4106,13 @@ ready(async () => {
             'myCourses.navbarDropdownFilter'
         );
         const dropdownGrouping =
-                dropdownGroupingSetting === '_sync' ?
-                    await getCourseGroupings().then(
-                        courseGroupings =>
-                            courseGroupings.find(grouping => grouping.active) ??
-                            courseGroupings[0]
-                    )
-                :   JSON.parse(dropdownGroupingSetting);
+            dropdownGroupingSetting === '_sync' ?
+                await getCourseGroupings().then(
+                    courseGroupings =>
+                        courseGroupings.find(grouping => grouping.active) ??
+                        courseGroupings[0]
+                )
+            :   JSON.parse(dropdownGroupingSetting);
 
         if (dropdownGrouping) {
             // fetch the courses
@@ -4492,9 +4498,11 @@ ready(() => {
         changelogHtml ?
             Promise.resolve(changelogHtml)
         :   fetch(
-                `https://raw.githubusercontent.com/YorikHansen/better-moodle/main/CHANGELOG.md?_=${
-                    Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
-                }`
+                rawGithubPath(
+                    `CHANGELOG.md?_=${
+                        Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
+                    }`
+                )
             )
                 .then(res => res.text())
                 .then(md =>
