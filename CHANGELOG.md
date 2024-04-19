@@ -1,5 +1,14 @@
 # Changelog
 
+
+## [1.27.1](https://github.com/YorikHansen/better-moodle/compare/1.27.0...1.27.1) (2024-04-19)
+
+### Bug Fixes
+
+* **fullwidth:** Disabling not working on Kiel Moodle ([bc7a33d](https://github.com/YorikHansen/better-moodle/commit/bc7a33da1e20c184d67578a93bb0de2604d9f03f))
+* **fullwidth:** login screen in Kiel was >100% width ([cddfa6b](https://github.com/YorikHansen/better-moodle/commit/cddfa6b4e6a2dff3cca606e6901a1ad31f4ebe41))
+
+
 ## [1.27.0](https://github.com/YorikHansen/better-moodle/compare/1.26.2...1.27.0) (2024-04-18)
 
 
