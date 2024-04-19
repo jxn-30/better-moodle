@@ -2307,7 +2307,17 @@ GM_addStyle(`
     max-width: 100%;
 }
     `);
-
+    if (window.location.pathname === '/login/index.php') {
+        ready(() => {
+            document.querySelectorAll('p').forEach(p => {
+                if (p.innerText.match(/_{5,}/u)) {
+                    const div = document.createElement('div');
+                    div.classList.add('login-divider');
+                    p.replaceWith(div);
+                }
+            });
+        });
+    }
 
 // endregion
 
