@@ -850,7 +850,7 @@ const latestScriptVersion = [];
 const updateAvailable = () =>
     fetch(
         'https://api.github.com/repos/YorikHansen/better-moodle/releases/latest'
-    ) // TODO: Actually provide releases
+    )
         .then(res => res.json())
         .then(({ tag_name }) =>
             tag_name
@@ -1617,7 +1617,7 @@ const getSpeiseplan = async () => {
             GM_xmlhttpRequest({
                 url: `https://studentenwerk.sh/${MOODLE_LANG}/${
                     localizedPath[MOODLE_LANG]
-                }?ort=1&mensa=${getSetting('speiseplan.canteen')}${nextWeek ? '&nw=1' : ''}`, // TODO: Allow selection of Mensa 2 or even the TF Mensa
+                }?ort=1&mensa=${getSetting('speiseplan.canteen')}${nextWeek ? '&nw=1' : ''}`,
                 onload: ({ responseText }) =>
                     resolve(
                         new DOMParser().parseFromString(
@@ -2307,17 +2307,17 @@ GM_addStyle(`
     max-width: 100%;
 }
     `);
-    if (window.location.pathname === '/login/index.php') {
-        ready(() => {
-            document.querySelectorAll('p').forEach(p => {
-                if (p.innerText.match(/_{5,}/u)) {
-                    const div = document.createElement('div');
-                    div.classList.add('login-divider');
-                    p.replaceWith(div);
-                }
-            });
+if (window.location.pathname === '/login/index.php') {
+    ready(() => {
+        document.querySelectorAll('p').forEach(p => {
+            if (p.innerText.match(/_{5,}/u)) {
+                const div = document.createElement('div');
+                div.classList.add('login-divider');
+                p.replaceWith(div);
+            }
         });
-    }
+    });
+}
 
 // endregion
 
@@ -3227,7 +3227,6 @@ ${Array.from(shownBars)
      * @return {Promise<{ recurringHolidays: string[], semesters: Semester[] }>}
      */
     const getSemesterzeiten = () =>
-        // TODO: Fetch from https://www.uni-kiel.de/gf-praesidium/de/termine/semesterzeiten
         new Promise(resolve =>
             GM_xmlhttpRequest({
                 url: 'https://www.uni-kiel.de/gf-praesidium/de/termine/semesterzeiten',
@@ -4101,52 +4100,59 @@ ready(async () => {
             'myCourses.navbarDropdownFilter'
         );
         const dropdownGrouping =
-            dropdownGroupingSetting === '_sync' ?
-                await getCourseGroupings().then(
-                    courseGroupings =>
-                        courseGroupings.find(grouping => grouping.active) ??
-                        courseGroupings[0]
-                )
-            :   JSON.parse(dropdownGroupingSetting);
+                dropdownGroupingSetting === '_sync' ?
+                    await getCourseGroupings().then(
+                        courseGroupings =>
+                            courseGroupings.find(grouping => grouping.active) ??
+                            courseGroupings[0]
+                    )
+                :   JSON.parse(dropdownGroupingSetting);
 
-        // fetch the courses
-        require(['block_myoverview/repository'], ({
-            getEnrolledCoursesByTimeline,
-        }) =>
-            getEnrolledCoursesByTimeline({
-                classification: dropdownGrouping.classification,
-                customfieldname: dropdownGrouping.customfieldname,
-                customfieldvalue: dropdownGrouping.customfieldvalue,
-                limit: 0,
-                offset: 0,
-                sort: 'shortname',
-            }).then(({ courses }) => {
-                dropdownLoadingSpan.remove();
-                mobileLoadingSpan.remove();
+        if (dropdownGrouping) {
+            // fetch the courses
+            require(['block_myoverview/repository'], ({
+                getEnrolledCoursesByTimeline,
+            }) =>
+                getEnrolledCoursesByTimeline({
+                    classification: dropdownGrouping.classification,
+                    customfieldname: dropdownGrouping.customfieldname,
+                    customfieldvalue: dropdownGrouping.customfieldvalue,
+                    limit: 0,
+                    offset: 0,
+                    sort: 'shortname',
+                }).then(({ courses }) => {
+                    dropdownLoadingSpan.remove();
+                    mobileLoadingSpan.remove();
 
-                if (myCoursesA) {
-                    addDropdownItem({
-                        fullname: `[${$t('myCourses.lists.myCoursesLink')}]`,
-                        shortname: '',
-                        viewurl: '/my/courses.php',
-                    });
-                }
+                    if (myCoursesA) {
+                        addDropdownItem({
+                            fullname: `[${$t('myCourses.lists.myCoursesLink')}]`,
+                            shortname: '',
+                            viewurl: '/my/courses.php',
+                        });
+                    }
 
-                if (getSetting('myCourses.navbarDropdownFavouritesAtTop')) {
-                    courses.sort((a, b) => b.isfavourite - a.isfavourite);
-                }
-                courses.forEach(addDropdownItem);
+                    if (getSetting('myCourses.navbarDropdownFavouritesAtTop')) {
+                        courses.sort((a, b) => b.isfavourite - a.isfavourite);
+                    }
+                    courses.forEach(addDropdownItem);
 
-                if (!courses.length) {
-                    const noCoursesSpan = document.createElement('span');
-                    noCoursesSpan.classList.add('text-muted', 'text-center');
-                    noCoursesSpan.textContent = $t(
-                        'myCourses.lists.empty'
-                    ).toString();
-                    dropdownMenu?.append(noCoursesSpan);
-                    mobileDropdownMenu?.append(noCoursesSpan.cloneNode(true));
-                }
-            }));
+                    if (!courses.length) {
+                        const noCoursesSpan = document.createElement('span');
+                        noCoursesSpan.classList.add(
+                            'text-muted',
+                            'text-center'
+                        );
+                        noCoursesSpan.textContent = $t(
+                            'myCourses.lists.empty'
+                        ).toString();
+                        dropdownMenu?.append(noCoursesSpan);
+                        mobileDropdownMenu?.append(
+                            noCoursesSpan.cloneNode(true)
+                        );
+                    }
+                }));
+        }
     };
 
     GM_addValueChangeListener(MyCoursesFilterSyncChangeKey, () =>
