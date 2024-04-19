@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.27.0
+// @version         1.27.1
 // @                x-release-please-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -2291,7 +2291,24 @@ if (getSetting('general.fullwidth')) {
     max-width: unset !important;
 }
     `);
+} else {
+    GM_addStyle(`
+/* Don't use full width (Kiel overwrites the default Moodle CSS) */
+@media (min-width: 768px) {
+    #topofscroll, .header-maxwidth {
+        max-width: 830px !important;
+    }
 }
+    `);
+}
+// For both options: Fix Uni Kiel Login on mobile:
+GM_addStyle(`
+.login-container {
+    max-width: 100%;
+}
+    `);
+
+
 // endregion
 
 // region Feature: general.externalLinks
@@ -3288,11 +3305,14 @@ ${Array.from(shownBars)
                                 .replaceAll(/[^\da-z\-]/gi, '');
                             let start = attributes[attribute].start;
                             let end = attributes[attribute].end;
-                            
+
                             additionals.push({
                                 name: name,
                                 storage: storage,
-                                color: name === 'Vorlesungszeit' ? 'info' : 'success',
+                                color:
+                                    name === 'Vorlesungszeit' ? 'info' : (
+                                        'success'
+                                    ),
                                 start: start,
                                 end: end,
                             });
@@ -3308,7 +3328,7 @@ ${Array.from(shownBars)
                 }
                 return {
                     recurringHolidays: [], // TODO: Implement holidays
-                    semesters: semesters
+                    semesters: semesters,
                 };
             });
 
