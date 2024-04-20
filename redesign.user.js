@@ -2,7 +2,7 @@
 // @name            🎓️ CAU: better-moodle
 // @namespace       https://better-moodle.yorik.dev
 // @                x-release-please-start-version
-// @version         1.27.2
+// @version         1.27.3
 // @                x-release-please-end
 // @author          Jan (jxn_30), Yorik (YorikHansen)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -1991,6 +1991,11 @@ input[type="range"] + output {
     color: white;
     border-radius: 4px;
     font-weight: bold;
+}
+
+/* adds transparency to tick-mark labels of disabled range inputs  */
+input:disabled[type="range"] + output {
+    background-color: color-mix(in srgb, var(--primary) 50%, transparent);
 }
 `);
 
@@ -4482,7 +4487,6 @@ ready(() => {
         });
     };
 
-    updateDisabledStates();
     form.addEventListener('change', updateDisabledStates);
 
     /** @type {string} */
@@ -4524,6 +4528,8 @@ ready(() => {
             )}`,
             body: form,
         }).then(modal => {
+            updateDisabledStates();
+
             const updateBadge = document.createElement('div');
             updateBadge.classList.add('count-container');
 
