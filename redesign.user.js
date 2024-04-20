@@ -4224,6 +4224,8 @@ ready(() => {
             )}`,
             body: form,
         }).then(modal => {
+            updateDisabledStates();
+
             const updateBadge = document.createElement('div');
             updateBadge.classList.add('count-container');
 
