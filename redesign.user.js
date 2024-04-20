@@ -3207,10 +3207,11 @@ ${Array.from(shownBars)
             );
             bars.push({
                 color,
-                name:
+                name,
+                dateString:
                     start === end ?
-                        `${name} (${dateToString(start, true, true)})`
-                    :   `${name} (${dateToString(start)} - ${dateToString(end)})`,
+                        dateToString(start, true, true)
+                    :   `${dateToString(start)} - ${dateToString(end)}`,
                 storage,
             });
         };
@@ -3333,7 +3334,7 @@ ${Array.from(shownBars)
             // one bar => full height with color
             else if (currentIndexes.size === 1) {
                 const currentBar = bars[Array.from(currentIndexes)[0]];
-                title += currentBar.name;
+                title += `<p><b>${currentBar.name}</b><br>${currentBar.dateString}</p>`;
                 bar.classList.add(`bg-${currentBar.color}`);
                 bar.dataset.storage = currentBar.storage;
             }
@@ -3345,13 +3346,13 @@ ${Array.from(shownBars)
                     const currentBar = bars[barId];
                     subBar.classList.add(`bg-${currentBar.color}`);
                     subBar.dataset.storage = currentBar.storage;
-                    title += `${currentBar.name}\n`;
+                    title += `<p><b>${currentBar.name}</b><br>${currentBar.dateString}</p>`;
                     bar.append(subBar);
                 });
             }
-            bar.dataset.originalTitle = title.trim().replace(/\n/g, '<br>');
+            bar.dataset.originalTitle = title;
             bar.dataset.toggle = 'tooltip';
-            bar.dataset.placement = 'top';
+            bar.dataset.placement = 'bottom';
             bar.dataset.html = 'true';
         });
 
