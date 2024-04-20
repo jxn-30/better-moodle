@@ -4184,7 +4184,6 @@ ready(() => {
         });
     };
 
-    updateDisabledStates();
     form.addEventListener('change', updateDisabledStates);
 
     /** @type {string} */
