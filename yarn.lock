@@ -106,13 +106,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:8.56.9":
-  version: 8.56.9
-  resolution: "@types/eslint@npm:8.56.9"
+"@types/eslint@npm:8.56.10":
+  version: 8.56.10
+  resolution: "@types/eslint@npm:8.56.10"
   dependencies:
     "@types/estree": "npm:*"
     "@types/json-schema": "npm:*"
-  checksum: 10c0/a800e3d10bd12fc837773101c35a65c189528e306bc41eca9f30176f5ede4d35944a0c0e16b668971db3521df2f2bef62ab2471740eadc72aeb39dbaba6c9101
+  checksum: 10c0/674349d6c342c3864d70f4d5a9965f96fb253801532752c8c500ad6a1c2e8b219e01ccff5dc8791dcb58b5483012c495708bb9f3ff929f5c9322b3da126c15d3
   languageName: node
   linkType: hard
 
@@ -877,7 +877,7 @@ __metadata:
   resolution: "uzl-better-moodle@workspace:."
   dependencies:
     "@eslint/js": "npm:9.0.0"
-    "@types/eslint": "npm:8.56.9"
+    "@types/eslint": "npm:8.56.10"
     "@types/tampermonkey": "npm:5.0.2"
     darkreader: "npm:4.9.83"
     eslint: "npm:9.0.0"
