@@ -1843,6 +1843,11 @@ input[type="range"] + output {
     border-radius: 4px;
     font-weight: bold;
 }
+
+/* adds transparency to tick-mark labels of disabled range inputs  */
+input:disabled[type="range"] + output {
+    background-color: color-mix(in srgb, var(--primary) 50%, transparent);
+}
 `);
 
 /** @extends {NumberSetting} */
