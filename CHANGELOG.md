@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.28.1](https://github.com/jxn-30/better-moodle/compare/1.28.0...1.28.1) (2024-04-20)
+
+
+### Bug Fixes
+
+* **semesterzeiten:** fix multi language support ([2995c6c](https://github.com/jxn-30/better-moodle/commit/2995c6c9af34cfba94435e51456863c52e2937a2))
+* **semesterzeiten:** fix tooltips looking ugly ([9c09f94](https://github.com/jxn-30/better-moodle/commit/9c09f944107339c08518ca771a6fd64b772d6c55))
+
 ## [1.28.0](https://github.com/jxn-30/better-moodle/compare/1.27.1...1.28.0) (2024-04-20)
 
 
