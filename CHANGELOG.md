@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.27.1](https://github.com/jxn-30/better-moodle/compare/1.27.0...1.27.1) (2024-04-20)
+
+
+### Bug Fixes
+
+* **semesterzeiten:** fix year in SS 2026 easter and exam-mint-1 ([14f4679](https://github.com/jxn-30/better-moodle/commit/14f46794b9b2eb5b54048a63a249f26bf2dc5e92))
+* **settings:** Add transparency to disabled slider settings ([#144](https://github.com/jxn-30/better-moodle/issues/144)) ([c4568ab](https://github.com/jxn-30/better-moodle/commit/c4568ab97b62418d30727c9002048a2eb7c71f9d))
+* **settings:** fix initial disabled state of settings being wrong when dependent of select ([70d4eb6](https://github.com/jxn-30/better-moodle/commit/70d4eb62f5f9b954e58837dc0323a984e396e100))
+
 ## [1.27.0](https://github.com/jxn-30/better-moodle/compare/1.26.2...1.27.0) (2024-04-18)
 
 
