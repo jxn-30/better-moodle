@@ -241,15 +241,15 @@
                     "name": "1. Prüfungszeitraum MINT",
                     "storage": "exam-mint-1",
                     "color": "success",
-                    "start": "2025-07-20",
-                    "end": "2025-08-04"
+                    "start": "2026-07-20",
+                    "end": "2026-08-04"
                 },
                 {
                     "name": "Ostern",
                     "color": "danger",
                     "storage": "easter",
-                    "start": "2025-04-03",
-                    "end": "2025-04-06"
+                    "start": "2026-04-03",
+                    "end": "2026-04-06"
                 }
             ]
         }
