@@ -7,56 +7,64 @@
             "end": "2024-09-30",
             "additional": [
                 {
-                    "name": "Vorlesungszeitraum",
+                    "name:de": "Vorlesungszeitraum",
+                    "name:en": "Lecture period",
                     "storage": "lecture",
                     "color": "info",
                     "start": "2024-04-08",
                     "end": "2024-07-26"
                 },
                 {
-                    "name": "2. Prüfungszeitraum MINT (Wintersemester)",
+                    "name:de": "2. Prüfungszeitraum MINT (Wintersemester)",
+                    "name:en": "2nd examination period MINT (winter semester)",
                     "storage": "exam-mint-2-prev-semester",
                     "color": "success",
                     "start": "2024-03-19",
                     "end": "2024-04-05"
                 },
                 {
-                    "name": "1. Prüfungszeitraum MINT",
+                    "name:de": "1. Prüfungszeitraum MINT",
+                    "name:en": "1st examination period MINT",
                     "storage": "exam-mint-1",
                     "color": "success",
                     "start": "2024-07-22",
                     "end": "2024-08-06"
                 },
                 {
-                    "name": "2. Prüfungszeitraum MINT",
+                    "name:de": "2 Prüfungszeitraum MINT",
+                    "name:en": "2nd examination period MINT",
                     "storage": "exam-mint-2",
                     "color": "success",
                     "start": "2024-09-25",
                     "end": "2024-10-11"
                 },
                 {
-                    "name": "Prüfungszeitraum Medizin",
+                    "name:de": "Prüfungszeitraum Medizin",
+                    "name:en": "examination period Medicine",
                     "storage": "exam-med",
                     "color": "warning",
                     "start": "2024-07-15",
                     "end": "2024-07-26"
                 },
                 {
-                    "name": "Staatsexamen Medizin M2",
+                    "name:de": "Staatsexamen Medizin M2",
+                    "name:en": "State examination Medicine M2",
                     "storage": "exam-med-m2",
                     "color": "warning",
                     "start": "2024-04-09",
                     "end": "2024-04-11"
                 },
                 {
-                    "name": "Staatsexamen Medizin M1",
+                    "name:de": "Staatsexamen Medizin M1",
+                    "name:en": "State examination Medicine M1",
                     "storage": "exam-med-m1",
                     "color": "warning",
                     "start": "2024-08-20",
                     "end": "2024-08-21"
                 },
                 {
-                    "name": "Ostern",
+                    "name:de": "Ostern",
+                    "name:en": "Easter",
                     "color": "danger",
                     "storage": "easter",
                     "start": "2024-03-29",
@@ -70,49 +78,56 @@
             "end": "2025-03-31",
             "additional": [
                 {
-                    "name": "Vorlesungszeitraum",
+                    "name:de": "Vorlesungszeitraum",
+                    "name:en": "Lecture period",
                     "storage": "lecture",
                     "color": "info",
                     "start": "2024-10-14",
                     "end": "2025-02-07"
                 },
                 {
-                    "name": "2. Prüfungszeitraum MINT (Sommersemester)",
+                    "name:de": "2. Prüfungszeitraum MINT (Sommersemester)",
+                    "name:en": "2nd examination period MINT (summer semester)",
                     "storage": "exam-mint-2-prev-semester",
                     "color": "success",
                     "start": "2024-09-25",
                     "end": "2024-10-11"
                 },
                 {
-                    "name": "1. Prüfungszeitraum MINT",
+                    "name:de": "1. Prüfungszeitraum MINT",
+                    "name:en": "1st examination period MINT",
                     "storage": "exam-mint-1",
                     "color": "success",
                     "start": "2025-02-10",
                     "end": "2025-02-25"
                 },
                 {
-                    "name": "2. Prüfungszeitraum MINT",
+                    "name:de": "2 Prüfungszeitraum MINT",
+                    "name:en": "2nd examination period MINT",
                     "storage": "exam-mint-2",
                     "color": "success",
                     "start": "2025-03-20",
                     "end": "2025-04-04"
                 },
                 {
-                    "name": "Weihnachtsfrei",
+                    "name:de": "Weihnachtsfrei",
+                    "name:en": "Christmas holidays",
                     "storage": "christmas",
                     "color": "danger",
                     "start": "2024-12-24",
                     "end": "2025-01-03"
                 },
                 {
-                    "name": "Mathe-Vorkurs",
+                    "name:de": "Mathe-Vorkurs",
+                    "name:en": "Preliminary maths course",
                     "storage": "mathe-vorkurs",
                     "color": "success",
                     "start": "2024-09-23",
                     "end": "2024-10-04"
                 },
                 {
-                    "name": "Vorwoche",
+                    "name:de": "Vorwoche",
+                    "name:en": "Vorwoche",
                     "storage": "vorwoche",
                     "color": "success",
                     "start": "2024-10-07",
@@ -126,35 +141,40 @@
             "end": "2025-09-30",
             "additional": [
                 {
-                    "name": "Vorlesungszeitraum",
+                    "name:de": "Vorlesungszeitraum",
+                    "name:en": "Lecture period",
                     "storage": "lecture",
                     "color": "info",
                     "start": "2025-04-07",
                     "end": "2025-07-25"
                 },
                 {
-                    "name": "2. Prüfungszeitraum MINT (Wintersemester)",
+                    "name:de": "2. Prüfungszeitraum MINT (Wintersemester)",
+                    "name:en": "2nd examination period MINT (winter semester)",
                     "storage": "exam-mint-2-prev-semester",
                     "color": "success",
                     "start": "2025-03-20",
                     "end": "2025-04-04"
                 },
                 {
-                    "name": "1. Prüfungszeitraum MINT",
+                    "name:de": "1. Prüfungszeitraum MINT",
+                    "name:en": "1st examination period MINT",
                     "storage": "exam-mint-1",
                     "color": "success",
                     "start": "2025-07-21",
                     "end": "2025-08-05"
                 },
                 {
-                    "name": "2. Prüfungszeitraum MINT",
+                    "name:de": "2 Prüfungszeitraum MINT",
+                    "name:en": "2nd examination period MINT",
                     "storage": "exam-mint-2",
                     "color": "success",
                     "start": "2025-09-24",
                     "end": "2025-10-10"
                 },
                 {
-                    "name": "Ostern",
+                    "name:de": "Ostern",
+                    "name:en": "Easter",
                     "color": "danger",
                     "storage": "easter",
                     "start": "2025-04-18",
@@ -168,49 +188,55 @@
             "end": "2026-03-31",
             "additional": [
                 {
-                    "name": "Vorlesungszeitraum",
+                    "name:de": "Vorlesungszeitraum",
+                    "name:en": "Lecture period",
                     "storage": "lecture",
                     "color": "info",
                     "start": "2025-10-13",
                     "end": "2026-02-06"
                 },
                 {
-                    "name": "2. Prüfungszeitraum MINT (Sommersemester)",
+                    "name:de": "2. Prüfungszeitraum MINT (Sommersemester)",
+                    "name:en": "2nd examination period MINT (summer semester)",
                     "storage": "exam-mint-2-prev-semester",
                     "color": "success",
                     "start": "2025-09-24",
                     "end": "2025-10-10"
                 },
                 {
-                    "name": "1. Prüfungszeitraum MINT",
+                    "name:de": "1. Prüfungszeitraum MINT",
+                    "name:en": "1st examination period MINT",
                     "storage": "exam-mint-1",
                     "color": "success",
                     "start": "2026-02-09",
                     "end": "2026-02-24"
                 },
                 {
-                    "name": "2. Prüfungszeitraum MINT",
+                    "name:de": "2 Prüfungszeitraum MINT",
+                    "name:en": "2nd examination period MINT",
                     "storage": "exam-mint-2",
                     "color": "success",
                     "start": "2026-03-18",
                     "end": "2026-04-02"
                 },
                 {
-                    "name": "Weihnachtsfrei",
+                    "name:de": "Weihnachtsfrei",
+                    "name:en": "Christmas holidays",
                     "storage": "christmas",
                     "color": "danger",
                     "start": "2025-12-22",
                     "end": "2026-01-02"
                 },
                 {
-                    "name": "Mathe-Vorkurs",
+                    "name:de": "Mathe-Vorkurs",
+                    "name:en": "Preliminary maths course",
                     "storage": "mathe-vorkurs",
                     "color": "success",
                     "start": "2025-09-22",
                     "end": "2025-10-03"
                 },
                 {
-                    "name": "Vorwoche",
+                    "name:de": "Vorwoche",
                     "storage": "vorwoche",
                     "color": "success",
                     "start": "2025-10-06",
@@ -224,28 +250,32 @@
             "end": "2026-09-30",
             "additional": [
                 {
-                    "name": "Vorlesungszeitraum",
+                    "name:de": "Vorlesungszeitraum",
+                    "name:en": "Lecture period",
                     "storage": "lecture",
                     "color": "info",
                     "start": "2026-04-07",
                     "end": "2026-07-24"
                 },
                 {
-                    "name": "2. Prüfungszeitraum MINT (Wintersemester)",
+                    "name:de": "2. Prüfungszeitraum MINT (Wintersemester)",
+                    "name:en": "2nd examination period MINT (winter semester)",
                     "storage": "exam-mint-2-prev-semester",
                     "color": "success",
                     "start": "2026-03-18",
                     "end": "2026-04-02"
                 },
                 {
-                    "name": "1. Prüfungszeitraum MINT",
+                    "name:de": "1. Prüfungszeitraum MINT",
+                    "name:en": "1st examination period MINT",
                     "storage": "exam-mint-1",
                     "color": "success",
                     "start": "2026-07-20",
                     "end": "2026-08-04"
                 },
                 {
-                    "name": "Ostern",
+                    "name:de": "Ostern",
+                    "name:en": "Easter",
                     "color": "danger",
                     "storage": "easter",
                     "start": "2026-04-03",
