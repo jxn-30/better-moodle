@@ -2302,12 +2302,7 @@ if (getSetting('general.fullwidth')) {
     `);
 }
 // For both options: Fix Uni Kiel Login on mobile:
-GM_addStyle(`
-.login-container {
-    max-width: 100%;
-}
-    `);
-if (window.location.pathname === '/login/index.php') {
+if (window.location.pathname.startsWith('/login/')) {
     ready(() => {
         document.querySelectorAll('p').forEach(p => {
             if (p.innerText.match(/_{5,}/u)) {
