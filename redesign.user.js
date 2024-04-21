@@ -2976,6 +2976,26 @@ ${Array.from(shownBars)
 }
 `);
 
+    const nowAdditionsClass = PREFIX('semesterzeiten-now-additions');
+    GM_addStyle(`
+.${nowAdditionsClass}.progress-bar {
+    position: absolute;
+    height: 1rem;
+    pointer-events: none;
+    background-image: linear-gradient(45deg,rgba(255,255,255,.3) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.3) 75%,transparent 75%,transparent);
+    border-right: 1px solid black;
+}
+${DARK_MODE_SELECTOR} .${nowAdditionsClass}.progress-bar {
+    border-color: white;
+}
+
+span.${nowAdditionsClass} {
+    position: absolute;
+    transform: translateX(-50%) translateY(-100%);
+    font-size: .703125rem;
+}
+`);
+
     ready(() =>
         document
             .querySelector('#block-region-content')
@@ -3149,7 +3169,7 @@ ${Array.from(shownBars)
         topBar.classList.add('d-flex', 'align-items-center');
 
         const progressWrapper = document.createElement('div');
-        progressWrapper.classList.add('progress', 'w-100');
+        progressWrapper.classList.add('progress', 'w-100', 'position-relative');
         progressWrapper.id = PREFIX('general-semesterzeiten-progress');
 
         const infoLink = document.createElement('a');
@@ -3313,10 +3333,6 @@ ${Array.from(shownBars)
 
             let title = '';
 
-            if (isCurrentSemester && date >= now) {
-                bar.style.setProperty('opacity', '0.25');
-            }
-
             progressWrapper.append(bar);
 
             // no bar => full height with transparency
@@ -3351,6 +3367,30 @@ ${Array.from(shownBars)
         topBar.append(infoLink, progressWrapper);
         semesterDiv.append(topBar, additionalTable);
         cardContent.append(semesterDiv);
+
+        if (isCurrentSemester) {
+            const nowPercentage =
+                ((now - semesterStart) / semesterDuration) * 100;
+            const nowBar = document.createElement('div');
+            nowBar.classList.add(
+                'progress-bar',
+                'bg-transparent',
+                'progress-bar-striped',
+                nowAdditionsClass
+            );
+            nowBar.style.setProperty('width', `${nowPercentage}%`);
+
+            const todaySpan = document.createElement('span');
+            todaySpan.classList.add(nowAdditionsClass);
+            todaySpan.textContent = dateToString(now);
+            todaySpan.style.setProperty(
+                'margin-left',
+                `calc(${nowPercentage}% + 16px + .5rem)`
+            );
+
+            progressWrapper.prepend(nowBar);
+            progressWrapper.before(todaySpan);
+        }
     };
 
     getSemesterzeiten().then(({ recurringHolidays, semesters }) => {
