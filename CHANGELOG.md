@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.2](https://github.com/jxn-30/better-moodle/compare/1.28.1...1.28.2) (2024-04-21)
+
+
+### Bug Fixes
+
+* **semesterzeiten:** fix visibility of progress bar of current semester ([3d0b089](https://github.com/jxn-30/better-moodle/commit/3d0b08908bfbcbb11a643ac6da4a3f54a4328af0))
+
 ## [1.28.1](https://github.com/jxn-30/better-moodle/compare/1.28.0...1.28.1) (2024-04-20)
 
 
