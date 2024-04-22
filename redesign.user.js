@@ -1071,8 +1071,8 @@ const addMarqueeItems = (() => {
     // we can add information about oncoming events like FZB and Nikolausumtrunk here.
     // the getSetting method cannot be used as SETTINGS is not defined there yet
     if (GM_getValue(getSettingKey('general.eventAdvertisements'), true)) {
-        // await fetch('http://localhost:3000/events.json') // this is for testing locally (npx serve --cors)
-        fetch(rawGithubPath('events.json'))
+        // await fetch('http://localhost:3000/data/events.json') // this is for testing locally (npx serve --cors)
+        fetch(rawGithubPath('data/events.json'))
             .then(res => res.json())
             .then(events =>
                 events.filter(event => new Date(event.end) > Date.now())
@@ -3025,8 +3025,10 @@ span.${nowAdditionsClass} {
      * @return {Promise<{ recurringHolidays: string[], semesters: Semester[] }>}
      */
     const getSemesterzeiten = () =>
-        // fetch('http://localhost:3000/semesterzeiten.json') // this is for testing locally (npx serve --cors)
-        fetch(rawGithubPath('semesterzeiten.json')).then(res => res.json());
+        // fetch('http://localhost:3000/data/semesterzeiten.json') // this is for testing locally (npx serve --cors)
+        fetch(rawGithubPath('data/semesterzeiten.json')).then(res =>
+            res.json()
+        );
 
     /** @type {Map<string, Set<HTMLInputElement>>} */
     const toggles = new Map();
