@@ -54,6 +54,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@eslint/js@npm:9.1.1":
+  version: 9.1.1
+  resolution: "@eslint/js@npm:9.1.1"
+  checksum: 10c0/b25d11736b91d8df44dd217e88adb1f43d2bd5911ef4f4033e51faffe370f28d329731ffbf841d0b8303c8eedb60bda8c3a9efe803bb3b3737a06bb22c09ad0c
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.12.3":
   version: 0.12.3
   resolution: "@humanwhocodes/config-array@npm:0.12.3"
@@ -876,7 +883,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "uzl-better-moodle@workspace:."
   dependencies:
-    "@eslint/js": "npm:9.0.0"
+    "@eslint/js": "npm:9.1.1"
     "@types/eslint": "npm:8.56.10"
     "@types/tampermonkey": "npm:5.0.2"
     darkreader: "npm:4.9.83"
