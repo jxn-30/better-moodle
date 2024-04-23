@@ -4353,9 +4353,11 @@ ready(() => {
         changelogHtml ?
             Promise.resolve(changelogHtml)
         :   fetch(
-                `https://raw.githubusercontent.com/jxn-30/better-moodle/main/CHANGELOG.md?_=${
-                    Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
-                }`
+                rawGithubPath(
+                    `CHANGELOG.md?_=${
+                        Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
+                    }`
+                )
             )
                 .then(res => res.text())
                 .then(md =>
