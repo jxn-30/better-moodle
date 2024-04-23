@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.29.0](https://github.com/jxn-30/better-moodle/compare/1.28.2...1.29.0) (2024-04-23)
+
+
+### Features
+
+* **googlyEyes:** closing the eyes when entering a password ([8ae331b](https://github.com/jxn-30/better-moodle/commit/8ae331b8ac59b6c168065616605aaa860c8ac720))
+* **settings:** make slider inputs look more moodle-like ([f25c611](https://github.com/jxn-30/better-moodle/commit/f25c6115c3c16023923749d2a83f2dd12810c567))
+
+
+### Bug Fixes
+
+* **semesterzeiten:** fix semesterzeiten table on smaller screens ([142fca9](https://github.com/jxn-30/better-moodle/commit/142fca98e8c6739127717f4fff0967676bdaf1a9))
+
 ## [1.28.2](https://github.com/jxn-30/better-moodle/compare/1.28.1...1.28.2) (2024-04-21)
 
 
