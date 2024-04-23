@@ -4348,15 +4348,15 @@ ready(() => {
     /** @type {string} */
     let changelogHtml;
 
+    const changelogCache = 1000 * 60 * 5; // Cache for 5 minutes
+
     /** @type {() => Promise<string>} */
     const getChangelogHtml = () =>
         changelogHtml ?
             Promise.resolve(changelogHtml)
         :   fetch(
                 rawGithubPath(
-                    `CHANGELOG.md?_=${
-                        Math.floor(Date.now() / (1000 * 60 * 5)) // Cache for 5 minutes
-                    }`
+                    `CHANGELOG.md?_=${Math.floor(Date.now() / changelogCache)}`
                 )
             )
                 .then(res => res.text())
@@ -4366,7 +4366,11 @@ ready(() => {
                         .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n')
                 )
                 .then(md => mdToHtml(md, 3))
-                .then(html => (changelogHtml = html));
+                .then(html => {
+                    changelogHtml = html;
+                    setTimeout(() => (changelogHtml = ''), changelogCache);
+                    return html;
+                });
 
     document
         .querySelector('#usernavigation .usermenu-container')
