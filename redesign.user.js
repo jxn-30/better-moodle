@@ -2850,6 +2850,7 @@ if (
 }
 
 .eye {
+  position: relative;
   background-color: white;
   border: var(--eye-border-width) solid black;
   border-radius: 43%;
@@ -2878,6 +2879,22 @@ if (
   min-height: var(--pupil-height);
   max-width: var(--pupil-width);
   max-height: var(--pupil-height);
+}
+
+/* Hey, don't look while I enter a password! Wait, are you peeking? 😨 */
+.eye::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.5s linear;
+  background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgb(255, 255, 255) 49%, rgb(255, 255, 255) 51%, rgb(0, 0, 0) 65%, rgb(0, 0, 0) 100%);
+}
+body:has(input[type="password"]:focus) .eye::before {
+  opacity: 1;
 }
 `);
 
