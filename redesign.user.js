@@ -1873,6 +1873,7 @@ class SliderSetting extends NumberSetting {
         super(id, defaultValue, min, max, step);
 
         super.formControl.type = 'range';
+        super.formControl.classList.add('custom-range');
         super.formControl.classList.replace(
             'form-control',
             'form-control-range'
