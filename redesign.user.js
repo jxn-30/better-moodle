@@ -3117,14 +3117,20 @@ span.${nowAdditionsClass} {
         if (storage) lastCell.append(getToggle(storage));
         else {
             row.classList.add('font-weight-bold');
-            lastCell.classList.add('py-0', 'align-middle');
+            lastCell.classList.add('p-0', 'px-md-3', 'align-middle');
 
             const paging = document.createElement('nav');
             const pagingUl = document.createElement('ul');
-            pagingUl.classList.add('pagination', 'mb-0');
+            pagingUl.classList.add(
+                'pagination',
+                'mb-0',
+                'flex-nowrap',
+                'justify-content-center',
+                'justify-content-md-end'
+            );
 
             const prevBtn = document.createElement('li');
-            prevBtn.classList.add('page-item', 'ml-auto');
+            prevBtn.classList.add('page-item');
             const prevLink = document.createElement('a');
             prevLink.classList.add('page-link');
             prevLink.href = '#';
@@ -3210,7 +3216,6 @@ span.${nowAdditionsClass} {
             'table',
             'table-striped',
             'table-hover',
-            'table-responsive-xs',
             'hidden'
         );
         const tableHead = additionalTable.createTHead();
@@ -3384,8 +3389,12 @@ span.${nowAdditionsClass} {
             bar.dataset.html = 'true';
         });
 
+        const tableWrapper = document.createElement('div');
+        tableWrapper.classList.add('table-responsive');
+
         topBar.append(infoLink, progressWrapper);
-        semesterDiv.append(topBar, additionalTable);
+        tableWrapper.append(additionalTable);
+        semesterDiv.append(topBar, tableWrapper);
         cardContent.append(semesterDiv);
 
         if (isCurrentSemester) {
