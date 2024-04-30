@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.29.1](https://github.com/jxn-30/better-moodle/compare/1.29.0...1.29.1) (2024-04-30)
+
+
+### Bug Fixes
+
+* **updateCheck:** fix invalid version comparison formula ([bd5ad0e](https://github.com/jxn-30/better-moodle/commit/bd5ad0e8928d00ad8fcd37a508dc5374a493e561))
+
 ## [1.29.0](https://github.com/jxn-30/better-moodle/compare/1.28.2...1.29.0) (2024-04-23)
 
 
