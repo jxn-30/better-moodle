@@ -826,8 +826,10 @@ const updateAvailable = () =>
 
             return (
                 latestMajor > currentMajor || // major update
-                latestMinor > currentMinor || // minor update
-                latestPatch > currentPatch // patch update
+                (latestMajor === currentMajor && latestMinor > currentMinor) || // minor update
+                (latestMajor === currentMajor && // patch update
+                    latestMinor === currentMinor &&
+                    latestPatch > currentPatch)
             );
         });
 
