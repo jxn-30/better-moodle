@@ -2078,6 +2078,10 @@ class SelectSetting extends Setting {
 const SETTINGS = [
     $t('settings.general._title'),
     new BooleanSetting('general.updateNotification', true),
+    new SelectSetting('general.language', 'auto', [
+        'auto',
+        ...Object.keys(TRANSLATIONS),
+    ]),
     new BooleanSetting('general.fullwidth', true),
     new BooleanSetting('general.externalLinks', true),
     new BooleanSetting('general.truncatedTexts', true),
