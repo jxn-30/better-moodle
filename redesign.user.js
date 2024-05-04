@@ -1169,13 +1169,12 @@ const isDashboard =
     window.location.pathname === '/my/index.php';
 
 const MOODLE_LANG = document.documentElement.lang.toLowerCase();
+const BETTER_MOODLE_LANG = (() => {
+    const savedLanguage = GM_getValue(getSettingKey('general.language'), 'auto');
+    if (savedLanguage === 'auto') return MOODLE_LANG;
+    return savedLanguage;
+})();
 const DARK_MODE_SELECTOR = 'html[data-darkreader-scheme="dark"]';
-
-const BETTER_MOODLE_LANG = // This is ugly. There probably is a better way to do this
-
-        GM_getValue(getSettingKey('general.language'), 'auto') === 'auto' ?
-            MOODLE_LANG
-        :   GM_getValue(getSettingKey('general.language'), 'auto');
 
 const $t = (key, args = {}) => {
     const t =
@@ -2089,10 +2088,6 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     new BooleanSetting('general.semesterzeiten', false),
-    new SelectSetting('general.language', 'auto', [
-        'auto',
-        ...Object.keys(TRANSLATIONS),
-    ]),
     $t('settings.darkmode._title'),
     $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
