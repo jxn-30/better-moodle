@@ -14,7 +14,7 @@
         "@types/eslint": "8.56.10",
         "@types/tampermonkey": "5.0.2",
         "darkreader": "4.9.84",
-        "eslint": "9.1.1",
+        "eslint": "9.2.0",
         "eslint-config-prettier": "9.1.0",
         "eslint-plugin-userscripts": "0.5.2",
         "globals": "15.1.0",
