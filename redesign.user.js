@@ -4220,7 +4220,12 @@ ready(() => {
     form.classList.add('mform');
 
     const helpBtn = document.createElement('a');
-    helpBtn.classList.add('ml-auto', 'font-weight-normal', 'z-index-1');
+    helpBtn.classList.add(
+        'ml-auto',
+        'font-weight-normal',
+        'z-index-1',
+        'text-right'
+    );
     helpBtn.style.setProperty('font-size', 'small');
     helpBtn.href = '#';
     const helpIcon = document.createElement('i');
