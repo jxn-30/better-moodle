@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.0](https://github.com/jxn-30/better-moodle/compare/1.29.2...1.30.0) (2024-05-05)
+
+
+### Features
+
+* **better-moodle-language:** added a setting to force better-moodles language [#158](https://github.com/jxn-30/better-moodle/issues/158) ([#159](https://github.com/jxn-30/better-moodle/issues/159)) ([32cac89](https://github.com/jxn-30/better-moodle/commit/32cac89bf975bf6d209379f8c9d22a6c3473809d))
+
 ## [1.29.2](https://github.com/jxn-30/better-moodle/compare/1.29.1...1.29.2) (2024-05-05)
 
 
