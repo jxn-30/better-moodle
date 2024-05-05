@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.29.2](https://github.com/jxn-30/better-moodle/compare/1.29.1...1.29.2) (2024-05-05)
+
+
+### Bug Fixes
+
+* **settings:** fix select settings should be full width on small devices ([03724f6](https://github.com/jxn-30/better-moodle/commit/03724f6080f5444f2802edc760cdb74201430109))
+* **settings:** fix text of help btn looking weird with linebreak ([c88e385](https://github.com/jxn-30/better-moodle/commit/c88e3853f7628fb13d526b66de9a08ec454eb065))
+* **settings:** fix version span and update button looking weird on mobile ([65d78b9](https://github.com/jxn-30/better-moodle/commit/65d78b91eae67796f45f943dc4508ad9ec0f460c))
+
 ## [1.29.1](https://github.com/jxn-30/better-moodle/compare/1.29.0...1.29.1) (2024-04-30)
 
 
