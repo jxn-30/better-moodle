@@ -1170,7 +1170,10 @@ const isDashboard =
 
 const MOODLE_LANG = document.documentElement.lang.toLowerCase();
 const BETTER_MOODLE_LANG = (() => {
-    const savedLanguage = GM_getValue(getSettingKey('general.language'), 'auto');
+    const savedLanguage = GM_getValue(
+        getSettingKey('general.language'),
+        'auto'
+    );
     if (savedLanguage === 'auto') return MOODLE_LANG;
     return savedLanguage;
 })();
