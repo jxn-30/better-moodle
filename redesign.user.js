@@ -1962,7 +1962,7 @@ class SelectSetting extends Setting {
         super(id, defaultValue);
 
         this.#input.id = this.inputId;
-        this.#input.classList.add('custom-select');
+        this.#input.classList.add('custom-select', 'col-12', 'col-md-auto');
         this.#input.dataset.initialValue = this.value;
 
         const optionsPromise =
