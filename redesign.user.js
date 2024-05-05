@@ -4403,7 +4403,7 @@ ready(() => {
             const updateCheck = () =>
                 updateAvailable().then(available => {
                     if (available) {
-                        versionSpan.after(updateBtn);
+                        versionSpan.before(updateBtn);
                         // region Feature: general.updateNotification
                         if (getSetting('general.updateNotification')) {
                             settingsBtn.append(updateBadge);
@@ -4467,7 +4467,7 @@ ready(() => {
             // region version span & update btn
             // add a small note about current and latest script version
             const versionSpan = document.createElement('span');
-            versionSpan.classList.add('small', 'ml-2');
+            versionSpan.classList.add('small', 'text-right');
 
             const currentCode = document.createElement('code');
             currentCode.textContent = currentScriptVersion.join('.');
@@ -4483,7 +4483,7 @@ ready(() => {
             );
 
             const updateBtn = document.createElement('a');
-            updateBtn.classList.add('btn-primary', 'btn-sm', 'ml-auto');
+            updateBtn.classList.add('btn-primary', 'btn-sm');
             updateBtn.href = '#';
             updateBtn.textContent = $t('modals.settings.updateBtn').toString();
 
@@ -4526,12 +4526,15 @@ ready(() => {
 
             updateCheck().then();
 
-            modal
+            const updateSetting = modal
                 .getBody()[0]
                 .querySelector(
                     '.felement[data-setting="general.updateNotification"]'
-                )
-                ?.append(versionSpan);
+                );
+            if (updateSetting) {
+                updateSetting.classList.add('justify-content-between');
+                updateSetting.append(versionSpan);
+            }
             // endregion
 
             const footerBtnGroup = document.createElement('div');
