@@ -2221,6 +2221,7 @@ if (getSetting('general.bookmarkManager')) {
         const BOOKMARKS_STORAGE = PREFIX('bookmarks');
 
         const bookmarkBtnWrapper = document.createElement('div');
+        bookmarkBtnWrapper.id = PREFIX('bookmarks-dropdown');
         bookmarkBtnWrapper.classList.add('dropdown');
         const bookmarksBtn = document.createElement('a');
         bookmarksBtn.classList.add(
@@ -2251,9 +2252,9 @@ if (getSetting('general.bookmarkManager')) {
                 const httpsUrl =
                     url.startsWith('https://') ? url : `https://${url}`;
                 const bookmark = document.createElement('a');
-                bookmark.classList.add('dropdown-item');
+                bookmark.classList.add('dropdown-item', 'text-truncate');
                 bookmark.href = httpsUrl;
-                bookmark.textContent = title;
+                bookmark.textContent = bookmark.title = title;
                 bookmarksWrapper.append(bookmark);
 
                 try {
@@ -2506,6 +2507,25 @@ if (getSetting('general.bookmarkManager')) {
             ?.before(bookmarkBtnWrapper);
 
         GM_addStyle(`
+/* bookmarks dropdown should not be greater than 400px */
+#${bookmarkBtnWrapper.id} .dropdown-menu {
+    max-width: 400px;
+}
+
+/* this will allow the bookmarks dropdown menu to be aligned to right viewport side and fullwidth on mobile devices */
+@media (max-width: 576px) {
+    #${bookmarkBtnWrapper.id} {
+        position: inherit;   
+    }
+    #${bookmarkBtnWrapper.id} .dropdown-menu {
+        max-width: 100%;
+    }
+    #${bookmarkBtnWrapper.id} .dropdown-menu .dropdown-item {
+        overflow: auto;
+    }
+}
+
+/* show a placeholder text when there are no bookmarks */
 #${bookmarksWrapper.id}:empty::before {
     display: block;
     text-align: center;
