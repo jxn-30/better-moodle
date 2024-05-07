@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.1](https://github.com/jxn-30/better-moodle/compare/1.30.0...1.30.1) (2024-05-07)
+
+
+### Bug Fixes
+
+* **bookmarks:** fix long texts causing dropdown overflow [#166](https://github.com/jxn-30/better-moodle/issues/166) ([6b23101](https://github.com/jxn-30/better-moodle/commit/6b2310141537654b795130e0c7ec63a3651200f5))
+
 ## [1.30.0](https://github.com/jxn-30/better-moodle/compare/1.29.2...1.30.0) (2024-05-05)
 
 
