@@ -714,7 +714,7 @@ const ready = callback => {
  * @param {string} icon
  * @param {(content: HTMLDivElement, header: HTMLDivElement) => void} callback
  */
-const createSidebar = (id, position, icon, callback) => {
+const createSidebar = (id, position, icon, callback) => {  // TODO: Add in div for left/right
     const prefix = str => `${PREFIX(id)}-sidebar-${str}`;
     const storage = prefix('open');
 
@@ -735,7 +735,7 @@ const createSidebar = (id, position, icon, callback) => {
 
     const header = document.createElement('div');
     header.classList.add('drawerheader');
-    const closeBtn = document.createElement('button');
+    const closeBtn = document.createElement('button'); // TODO: show tooltip on autofocus (if mouse over)
     closeBtn.classList.add('btn', 'drawertoggle', 'icon-no-margin');
     closeBtn.dataset.toggler = 'drawers';
     closeBtn.dataset.action = 'closedrawer';
@@ -768,7 +768,7 @@ const createSidebar = (id, position, icon, callback) => {
     toggleBtn.dataset.action = 'toggle';
     toggleBtn.dataset.target = sidebar.id;
     toggleBtn.dataset.toggle = 'tooltip';
-    toggleBtn.dataset.toggle = 'tooltip';
+    toggleBtn.dataset.placement = position === 'left' ? 'right' : 'left'; // Yeah, moodle. IDK what that means and why
     toggleBtn.title = $t('sidebar.open');
     toggleBtn.dataset.originalTitle = toggleBtn.title;
     const toggleBtnSRSpan = document.createElement('span');
