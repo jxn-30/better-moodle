@@ -848,7 +848,7 @@ GM_addStyle(`
         position: initial !important;
     }
     .drawer-toggles .drawer-toggler .btn .icon.fa-fw {
-        width: 1.28574em; /* Reset to fa-fw default */
+        width: 16px; /* Reset to .icon default */
     }
     @media (max-width: 767.98px) {
         .better-moodle-drawer-toggles-right,
