@@ -822,16 +822,21 @@ const createSidebar = (id, position, icon, callback) => {
 
 GM_addStyle(`
     /* Sidebars */
+    .drawer-toggles {
+        position: fixed;
+        top: var(--navbar-height);
+        left: 0;
+        width: 100vw;
+        margin-top: 0.7rem;
+        margin-bottom: 0.7rem;
+        z-index: 100;
+    }
     .better-moodle-drawer-toggles-right,
     .better-moodle-drawer-toggles-left {
         display: flex;
         flex-direction: column;
         position: fixed;
-		gap: 0.7rem;
-        top: var(--navbar-height);
-        margin-top: 0.7rem;
-        margin-bottom: 0.7rem;
-        z-index: 100;
+        gap: 0.7rem;
     }
     .better-moodle-drawer-toggles-right {
         right: 0;
@@ -849,7 +854,7 @@ GM_addStyle(`
         .better-moodle-drawer-toggles-right,
         .better-moodle-drawer-toggles-left {
             top: auto;
-            bottom: var(--navbar-height);
+            bottom: calc(2.7rem + 36px);
             flex-direction: column-reverse;
         }
     }
