@@ -714,7 +714,7 @@ const ready = callback => {
  * @param {string} icon
  * @param {(content: HTMLDivElement, header: HTMLDivElement) => void} callback
  */
-const createSidebar = (id, position, icon, callback) => {  // TODO: Add in div for left/right
+const createSidebar = (id, position, icon, callback) => {
     const prefix = str => `${PREFIX(id)}-sidebar-${str}`;
     const storage = prefix('open');
 
@@ -735,7 +735,7 @@ const createSidebar = (id, position, icon, callback) => {  // TODO: Add in div f
 
     const header = document.createElement('div');
     header.classList.add('drawerheader');
-    const closeBtn = document.createElement('button'); // TODO: show tooltip on autofocus (if mouse over)
+    const closeBtn = document.createElement('button');
     closeBtn.classList.add('btn', 'drawertoggle', 'icon-no-margin');
     closeBtn.dataset.toggler = 'drawers';
     closeBtn.dataset.action = 'closedrawer';
@@ -768,7 +768,7 @@ const createSidebar = (id, position, icon, callback) => {  // TODO: Add in div f
     toggleBtn.dataset.action = 'toggle';
     toggleBtn.dataset.target = sidebar.id;
     toggleBtn.dataset.toggle = 'tooltip';
-    toggleBtn.dataset.placement = position === 'left' ? 'right' : 'left'; // Yeah, moodle. IDK what that means and why
+    toggleBtn.dataset.placement = position === 'left' ? 'right' : 'left'; // See above
     toggleBtn.title = $t('sidebar.open');
     toggleBtn.dataset.originalTitle = toggleBtn.title;
     const toggleBtnSRSpan = document.createElement('span');
@@ -797,13 +797,55 @@ const createSidebar = (id, position, icon, callback) => {  // TODO: Add in div f
         document.getElementById('page')?.before(sidebar);
 
         // append the toggle button
-        document
-            .querySelector('#page .drawer-toggles')
-            ?.append(toggleBtnWrapper);
+        const togglesDiv =
+            document.querySelector(
+                `.${PREFIX(`drawer-toggles-${position}`)}`
+            ) ||
+            (() => {
+                const togglesDiv = document.createElement('div');
+                togglesDiv.classList.add(PREFIX(`drawer-toggles-${position}`));
+                document
+                    .querySelectorAll(`.drawer-${position}-toggle`)
+                    .forEach(toggler => {
+                        togglesDiv.append(toggler);
+                    });
+                document
+                    .querySelector('#page .drawer-toggles')
+                    .append(togglesDiv);
+                return togglesDiv;
+            })();
+        togglesDiv.append(toggleBtnWrapper);
 
         callback(content, header);
     });
 };
+
+GM_addStyle(`
+    /* Sidebars */
+    .better-moodle-drawer-toggles-right,
+    .better-moodle-drawer-toggles-left {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+		gap: 0.7rem;
+        top: var(--navbar-height);
+        margin-top: 0.7rem;
+        margin-bottom: 0.7rem;
+        z-index: 100;
+    }
+    .better-moodle-drawer-toggles-right {
+        right: 0;
+    }
+    .better-moodle-drawer-toggles-left {
+        left: 0;
+    }
+    .drawer-toggler {
+        position: initial !important;
+    }
+    .drawer-toggles .drawer-toggler .btn .icon.fa-fw {
+        width: 1.28574em; /* Reset to fa-fw default */
+    }
+`);
 
 /** @type {[number, number, number]} */
 const currentScriptVersion = [];
