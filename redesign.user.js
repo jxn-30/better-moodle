@@ -845,6 +845,14 @@ GM_addStyle(`
     .drawer-toggles .drawer-toggler .btn .icon.fa-fw {
         width: 1.28574em; /* Reset to fa-fw default */
     }
+    @media (max-width: 767.98px) {
+        .better-moodle-drawer-toggles-right,
+        .better-moodle-drawer-toggles-left {
+            top: auto;
+            bottom: var(--navbar-height);
+            flex-direction: column-reverse;
+        }
+    }
 `);
 
 /** @type {[number, number, number]} */
