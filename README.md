@@ -10,7 +10,6 @@
 -   [Features](#features)
 -   [FAQ](#faq)
 -   [Alte Bilder und Impressionen](#alte-bilder-und-impressionen)
--   [Better-Moodle ohne Userscript-Manager nutzen](#better-moodle-ohne-userscript-manager-nutzen)
 
 [//]: # 'TODO: More english translations'
 
@@ -224,67 +223,3 @@ Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar s
 |     ![Default Design](./img/dashboard/default.png)      |     ![Userscript (Light mode)](./img/dashboard/light.png)      |     ![Userscript (Dark mode)](./img/dashboard/dark.png)      |
 |                                                         |  ![Userscript (Light mode)](./img/dashboard/light_closed.png)  |  ![Userscript (Dark mode)](./img/dashboard/dark_closed.png)  |
 |     ![Default Design](./img/my_courses/default.png)     |     ![Userscript (Light mode)](./img/my_courses/light.png)     |     ![Userscript (Dark mode)](./img/my_courses/dark.png)     |
-
-## Better-Moodle ohne Userscript-Manager nutzen
-
-Better-Moodle ist darauf ausgelegt, mit einem Userscript-Manager genutzt zu werden, da es von Userscript-Managern bereitgestellte Funktionen und Informationen nutzt, die zum Beispiel dafür da sind, Style zu ändern oder Einstellungen zu speichern.
-
-Möchte man Better-Moodle ohne einen Userscript-Manager nutzen, so muss mann diese Funktionen und Objekte überschreiben. Es wurde bewusst die Entscheidung getroffen, diese nicht in Better-Moodle selbst zu implementieren, sondern stattdessen hier sogenannte Workarounds zu veröffentlichen. Die Code-Snippets können einfach verwendet werden und sollten vor dem Code von Better-Moodle eingefügt werden.
-
-Wie man den Code von Better-Moodle am liebsten in das Moodle injiziert bleibt dem Anwender in diesem Fall selbst überlassen.
-
-### Workaround für `GM_addStyle`
-
-```js
-this.GM_addStyle ??= style => {
-    const styleEl = document.createElement('style');
-    styleEl.textContent = style;
-    document.head.append(styleEl);
-};
-```
-
-### Workaround für `GM_getValue`, `GM_setValue` und `GM_listValues`
-
-```js
-this.GM_getValue ??= (key, defaultValue) =>
-    JSON.parse(localStorage.getItem(key) ?? JSON.stringify(defaultValue));
-
-this.GM_setValue ??= (key, value) =>
-    localStorage.setItem(key, JSON.stringify(value));
-
-this.GM_listValues ??= () => Object.keys(localStorage);
-```
-
-### Workaround für `GM_addValueChangeListener` und `GM_removeValueChangeListener`
-
-```js
-this.GM_addValueChangeListener ??= (key, callback) => {
-    this.listeners ??= [];
-    const listener = ({ oldValue, newValue }) =>
-        callback(key, oldValue, newValue, false);
-    this.listeners.push(listener);
-    window.addEventListener('storage', listener);
-    return this.listeners.length;
-};
-
-this.GM_removeValueChangeListener ??= id => {
-    window.removeEventListener('storage', this.listeners[id - 1]);
-    this.listeners[id - 1] = null;
-};
-```
-
-### Workaround für `GM_info`
-
-Dies beinhaltet die Informationen, die Better-Moodle in Version `1.21.0` nutzt. Es kann sein, dass in zukünftigen Versionen weitere Informationen hinzukommen.
-
-```js
-this.GM_info ??= {
-    script: {
-        version: '1.21.0',
-        updateUrl:
-            'https://github.com/jxn-30/better-moodle/raw/main/redesign.user.js',
-    },
-};
-```
-
-[installation]: https://github.com/jxn-30/better-moodle/raw/main/redesign.user.js
