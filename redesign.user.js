@@ -1860,6 +1860,11 @@ datalist[style*="--label-count"] {
     /* WTF? idk how and why but it seems to work. It positions the labels almost correctly */
     margin: 0 calc(50% - 0.5 * calc((1 + 1 / (var(--label-count) - 1)) * (100% - 1em)));
 }
+/* overlapping text is bad => hide with ellipsis */
+datalist[style*="--label-count"] > option {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 /* style to show a bubble with current range input value */
 input[type="range"] + output {
@@ -1933,7 +1938,8 @@ class SliderSetting extends NumberSetting {
         ) {
             const option = document.createElement('option');
             option.value = currentStep.toString();
-            option.label = currentStep.toLocaleString(BETTER_MOODLE_LANG);
+            option.title = option.label =
+                currentStep.toLocaleString(BETTER_MOODLE_LANG);
             labelDatalist.append(option);
         }
         labelDatalist.style.setProperty('--label-count', labelCount.toString());
