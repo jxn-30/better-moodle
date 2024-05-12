@@ -19,6 +19,11 @@ jobs:
                   config-file: .release-please-config.json
                   manifest-file: .release-please-manifest.json
 
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ steps.generate-token.outputs.token }}
+
             - name: Upload release artifacts
               if: ${{ steps.release.outputs.release_created }}
               env:
