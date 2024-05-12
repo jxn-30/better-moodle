@@ -1855,7 +1855,7 @@ GM_addStyle(`
 /* Some style to show tick-mark labels on range inputs */
 datalist[style*="--label-count"] {
     display: grid;
-    grid-template-columns: repeat(var(--label-count), 1fr);
+    grid-template-columns: repeat(var(--label-count), minmax(0, 1fr));
     text-align: center;
     /* WTF? idk how and why but it seems to work. It positions the labels almost correctly */
     margin: 0 calc(50% - 0.5 * calc((1 + 1 / (var(--label-count) - 1)) * (100% - 1em)));
