@@ -798,12 +798,10 @@ const createSidebar = (id, position, icon, callback) => {
 
         // append the toggle button
         const togglesDiv =
-            document.querySelector(
-                `.${PREFIX(`drawer-toggles-${position}`)}`
-            ) ||
+            document.getElementById(PREFIX(`drawer-toggles-${position}`)) ||
             (() => {
                 const togglesDiv = document.createElement('div');
-                togglesDiv.classList.add(PREFIX(`drawer-toggles-${position}`));
+                togglesDiv.id = PREFIX(`drawer-toggles-${position}`);
                 document
                     .querySelectorAll(`.drawer-${position}-toggle`)
                     .forEach(toggler => {
@@ -831,17 +829,17 @@ GM_addStyle(`
         margin-bottom: 0.7rem;
         z-index: 100;
     }
-    .${PREFIX('drawer-toggles-right')},
-    .${PREFIX('drawer-toggles-left')} {
+    #${PREFIX('drawer-toggles-right')},
+    #${PREFIX('drawer-toggles-left')} {
         display: flex;
         flex-direction: column;
         position: fixed;
         gap: 0.7rem;
     }
-    .${PREFIX('drawer-toggles-right')} {
+    #${PREFIX('drawer-toggles-right')} {
         right: 0;
     }
-    .${PREFIX('drawer-toggles-left')} {
+    #${PREFIX('drawer-toggles-left')} {
         left: 0;
     }
     .drawer-toggler {
@@ -851,8 +849,8 @@ GM_addStyle(`
         width: 16px; /* Reset to .icon default */
     }
     @media (max-width: 767.98px) {
-        .${PREFIX('drawer-toggles-right')},
-        .${PREFIX('drawer-toggles-left')} {
+        #${PREFIX('drawer-toggles-right')},
+        #${PREFIX('drawer-toggles-left')} {
             top: auto;
             bottom: calc(2.7rem + 36px);
             flex-direction: column-reverse;
