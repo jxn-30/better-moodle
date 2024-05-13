@@ -35,5 +35,5 @@ jobs:
 
                   # upload the release artifacts with special nice names
                   gh release upload ${{ steps.release.outputs.tag_name }} \
-                    "better-moodle.user.js#Better-Moodle meta file for userscript managers (better-moodle.meta.js)" \
-                    "better-moodle.meta.js#Better-Moodle userscript version ${{ steps.release.outputs.tag_name }} (better-moodle.user.js)"
+                    "better-moodle.user.js#Better-Moodle userscript version ${{ steps.release.outputs.tag_name }} (better-moodle.user.js)" \
+                    "better-moodle.meta.js#Better-Moodle meta file for userscript managers (better-moodle.meta.js)"
