@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.4](https://github.com/jxn-30/better-moodle/compare/1.30.3...1.30.4) (2024-05-13)
+
+
+### Bug Fixes
+
+* **release:** fix description of release artifacts are switched ([2a906d9](https://github.com/jxn-30/better-moodle/commit/2a906d942eac2a5fdccedc114380ec6e1e6801ed))
+
 ## [1.30.3](https://github.com/jxn-30/better-moodle/compare/1.30.2...1.30.3) (2024-05-13)
 
 
