@@ -831,17 +831,17 @@ GM_addStyle(`
         margin-bottom: 0.7rem;
         z-index: 100;
     }
-    .better-moodle-drawer-toggles-right,
-    .better-moodle-drawer-toggles-left {
+    .${PREFIX('drawer-toggles-right')},
+    .${PREFIX('drawer-toggles-left')} {
         display: flex;
         flex-direction: column;
         position: fixed;
         gap: 0.7rem;
     }
-    .better-moodle-drawer-toggles-right {
+    .${PREFIX('drawer-toggles-right')} {
         right: 0;
     }
-    .better-moodle-drawer-toggles-left {
+    .${PREFIX('drawer-toggles-left')} {
         left: 0;
     }
     .drawer-toggler {
@@ -851,8 +851,8 @@ GM_addStyle(`
         width: 16px; /* Reset to .icon default */
     }
     @media (max-width: 767.98px) {
-        .better-moodle-drawer-toggles-right,
-        .better-moodle-drawer-toggles-left {
+        .${PREFIX('drawer-toggles-right')},
+        .${PREFIX('drawer-toggles-left')} {
             top: auto;
             bottom: calc(2.7rem + 36px);
             flex-direction: column-reverse;
