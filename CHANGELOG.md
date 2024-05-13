@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.3](https://github.com/jxn-30/better-moodle/compare/1.30.2...1.30.3) (2024-05-13)
+
+
+### Bug Fixes
+
+* **sidebar:** allow multiple sidebars on the same side ([#170](https://github.com/jxn-30/better-moodle/issues/170)) ([42acb3a](https://github.com/jxn-30/better-moodle/commit/42acb3aa0aec40d3263ae9caba491f91317722d5))
+
 ## [1.30.2](https://github.com/jxn-30/better-moodle/compare/1.30.1...1.30.2) (2024-05-12)
 
 
