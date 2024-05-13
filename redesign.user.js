@@ -2,7 +2,7 @@
 // @name            🎓️ UzL: better-moodle
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
-// @version         1.30.1
+// @version         1.30.2
 // @                x-release-please-end
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
@@ -1908,10 +1908,15 @@ GM_addStyle(`
 /* Some style to show tick-mark labels on range inputs */
 datalist[style*="--label-count"] {
     display: grid;
-    grid-template-columns: repeat(var(--label-count), 1fr);
+    grid-template-columns: repeat(var(--label-count), minmax(0, 1fr));
     text-align: center;
     /* WTF? idk how and why but it seems to work. It positions the labels almost correctly */
     margin: 0 calc(50% - 0.5 * calc((1 + 1 / (var(--label-count) - 1)) * (100% - 1em)));
+}
+/* overlapping text is bad => hide with ellipsis */
+datalist[style*="--label-count"] > option {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* style to show a bubble with current range input value */
@@ -1986,7 +1991,8 @@ class SliderSetting extends NumberSetting {
         ) {
             const option = document.createElement('option');
             option.value = currentStep.toString();
-            option.label = currentStep.toLocaleString(BETTER_MOODLE_LANG);
+            option.title = option.label =
+                currentStep.toLocaleString(BETTER_MOODLE_LANG);
             labelDatalist.append(option);
         }
         labelDatalist.style.setProperty('--label-count', labelCount.toString());

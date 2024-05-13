@@ -10,10 +10,30 @@ permissions:
 name: release-please
 
 jobs:
-    release-please:
+    release:
         runs-on: ubuntu-latest
         steps:
             - uses: google-github-actions/release-please-action@v4
+              id: release
               with:
                   config-file: .release-please-config.json
                   manifest-file: .release-please-manifest.json
+
+            - name: Checkout
+              if: ${{ steps.release.outputs.release_created }}
+              uses: actions/checkout@v4
+
+            - name: Upload release artifacts
+              if: ${{ steps.release.outputs.release_created }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  # make Better-Moodle available via a nicer link than redesign.user.js
+                  cp redesign.user.js better-moodle.user.js
+                  # extract metadata/userscript-header from the user script
+                  awk '/\/\/ ==UserScript==/,/\/\/ ==\/UserScript==/' better-moodle.user.js > better-moodle.meta.js
+
+                  # upload the release artifacts with special nice names
+                  gh release upload ${{ steps.release.outputs.tag_name }} \
+                    "better-moodle.user.js#Better-Moodle meta file for userscript managers (better-moodle.meta.js)" \
+                    "better-moodle.meta.js#Better-Moodle userscript version ${{ steps.release.outputs.tag_name }} (better-moodle.user.js)"

@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.30.2](https://github.com/jxn-30/better-moodle/compare/1.30.1...1.30.2) (2024-05-12)
+
+
+### Bug Fixes
+
+* **settings:** slider labels overlapping eachother ([591287d](https://github.com/jxn-30/better-moodle/commit/591287d29e168264d10449ac5e67659a344c7e77))
+* **settings:** slider labels should not grow ([59e714c](https://github.com/jxn-30/better-moodle/commit/59e714ca1b04521646f68e966412d965dbb1fca2))
+
 ## [1.30.1](https://github.com/jxn-30/better-moodle/compare/1.30.0...1.30.1) (2024-05-07)
 
 
