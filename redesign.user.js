@@ -21,7 +21,7 @@
 // @grant           GM_info
 // @grant           GM_xmlhttpRequest
 // @connect         studentenwerk.sh
-// @require         https://unpkg.com/darkreader@4.9.84/darkreader.js#sha512=5994805601e9df9f8c1afbb0c15b4512143db3ea4c9ab93aaa4bf6f0a4816c2956f6c0854f7a34d1eda64d966fd193077227d025b3b6ac0cab2abaa0e816e20c
+// @require         https://unpkg.com/darkreader@4.9.85/darkreader.js#sha512=6792b51c55273b96edc7d87f1180832cc321561d7f885004da58e660f53a7684f69e63d0aef1e2c5cc3313949ef1e16963ad420cec8595de391152156dc75b69
 // ==/UserScript==
 
 /* global M, require, DarkReader */
