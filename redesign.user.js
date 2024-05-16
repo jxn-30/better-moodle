@@ -1918,6 +1918,14 @@ datalist[style*="--label-count"] > option {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+/* make first and last label have custom alignments for better visibility */
+datalist[style*="--label-count"] > option:first-child {
+    text-align: right;
+}
+datalist[style*="--label-count"] > option:last-child {
+    text-align: left;
+}
+/* add ticks to labels */
 datalist[style*="--label-count"] > option::after {
     content: "";
     position: absolute;
@@ -1939,6 +1947,7 @@ input[type="range"] + output {
     font-weight: bold;
     z-index: 1;
     
+    /* position the label correctly */
     left: calc(1% * var(--percentage));
     transform: translateX(calc(-1% * var(--percentage)));
 }
