@@ -1918,6 +1918,15 @@ datalist[style*="--label-count"] > option {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+datalist[style*="--label-count"] > option::after {
+    content: "";
+    position: absolute;
+    border: 1px solid grey;
+    height: 10px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    top: 0;
+}
 
 /* style to show a bubble with current range input value */
 input[type="range"] + output {
@@ -1928,6 +1937,7 @@ input[type="range"] + output {
     color: white;
     border-radius: 4px;
     font-weight: bold;
+    z-index: 1;
     
     left: calc(1% * var(--percentage));
     transform: translateX(calc(-1% * var(--percentage)));
