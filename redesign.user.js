@@ -1920,10 +1920,12 @@ datalist[style*="--label-count"] > option {
 }
 /* make first and last label have custom alignments for better visibility */
 datalist[style*="--label-count"] > option:first-child {
-    text-align: right;
+    text-align: left;
+    padding-left: calc(50% - 4px);
 }
 datalist[style*="--label-count"] > option:last-child {
-    text-align: left;
+    text-align: right;
+    padding-right: calc(50% - 4px);
 }
 /* add ticks to labels */
 datalist[style*="--label-count"] > option::after {
