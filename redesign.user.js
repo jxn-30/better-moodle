@@ -1949,7 +1949,7 @@ class SliderSetting extends NumberSetting {
      * @param {number} [min]
      * @param {number} [max]
      * @param {number} [step]
-     * @param {number} [labels]
+     * @param {number | string[]} [labels]
      */
     constructor(
         id,
@@ -1985,7 +1985,12 @@ class SliderSetting extends NumberSetting {
         }
 
         const labelDatalist = document.createElement('datalist');
-        const labelCount = Math.max(2, Math.min(10, labels)); // minimum 2, maximum 10 labels
+        const fixLabels = Array.isArray(labels);
+        const labelCount =
+            fixLabels ? labels.length : Math.max(2, Math.min(10, labels)); // minimum 2, maximum 10 labels
+        /** @type {Map<number, string>} */
+        const valueToLabel = new Map();
+
         for (
             let currentStep = min;
             currentStep <= max;
@@ -1993,7 +1998,16 @@ class SliderSetting extends NumberSetting {
         ) {
             const option = document.createElement('option');
             option.value = currentStep.toString();
+            if (fixLabels) {
+                valueToLabel.set(
+                    currentStep,
+                    $t(
+                        `settings.${this.id}.labels.${labels.shift()}`
+                    ).toString()
+                );
+            }
             option.title = option.label =
+                valueToLabel.get(currentStep) ??
                 currentStep.toLocaleString(BETTER_MOODLE_LANG);
             labelDatalist.append(option);
         }
@@ -2004,7 +2018,8 @@ class SliderSetting extends NumberSetting {
         const setOutput = () => {
             const val = super.inputValue;
             const percentageValue = ((val - min) / (max - min)) * 100;
-            outputEl.textContent = val.toLocaleString(BETTER_MOODLE_LANG);
+            outputEl.textContent =
+                valueToLabel.get(val) ?? val.toLocaleString(BETTER_MOODLE_LANG);
             // see https://css-tricks.com/value-bubbles-for-range-inputs/
             outputEl.style.setProperty(
                 '--percentage',
