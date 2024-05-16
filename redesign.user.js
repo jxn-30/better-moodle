@@ -1924,11 +1924,13 @@ input[type="range"] + output {
     position: absolute;
     text-align: center;
     padding: 2px;
-    transform: translateX(-50%);
     background-color: var(--primary);
     color: white;
     border-radius: 4px;
     font-weight: bold;
+    
+    left: calc(1% * var(--percentage));
+    transform: translateX(calc(-1% * var(--percentage)));
 }
 
 /* adds transparency to tick-mark labels of disabled range inputs  */
@@ -2005,8 +2007,8 @@ class SliderSetting extends NumberSetting {
             outputEl.textContent = val.toLocaleString(BETTER_MOODLE_LANG);
             // see https://css-tricks.com/value-bubbles-for-range-inputs/
             outputEl.style.setProperty(
-                'left',
-                `calc(${percentageValue}% + (${8 - percentageValue * 0.15}px))`
+                '--percentage',
+                percentageValue.toString()
             );
         };
         super.formControl.addEventListener('input', setOutput);
