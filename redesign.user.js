@@ -395,7 +395,7 @@ Viele Grüße
                 fuzzyClock: {
                     name: 'Umgangssprachliche Uhr',
                     description:
-                        'Eine umgangssprachliche Uhr, wie sie auch aus von KDE Plasma bekannt ist.',
+                        'Eine umgangssprachliche Uhr, wie sie auch von KDE Plasma bekannt ist.',
                     fuzziness: {
                         name: 'Genauigkeit der Uhr',
                         description:
