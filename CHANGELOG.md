@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.31.1](https://github.com/jxn-30/better-moodle/compare/1.31.0...1.31.1) (2024-05-17)
+
+
+### Bug Fixes
+
+* **sidebar:** only change style when better-moodle fix is applied ([#178](https://github.com/jxn-30/better-moodle/issues/178)) ([e333f2e](https://github.com/jxn-30/better-moodle/commit/e333f2ec5e3925155caea5a6c884ddcbaeba72b9))
+
 ## [1.31.0](https://github.com/jxn-30/better-moodle/compare/1.30.4...1.31.0) (2024-05-17)
 
 
