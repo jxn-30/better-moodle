@@ -4502,7 +4502,7 @@ if (getSetting('clock.fuzzyClock')) {
                             ) % 12;
                         if (minuteSector === 0) {
                             const shownHour =
-                                minutes >= 0 ? twelveHour : twelveHour + 1;
+                                minutes < 30 ? twelveHour : twelveHour + 1;
                             timeString.push(shownHour, 'oClock');
                         } else if (minuteSector < 6) {
                             timeString.push(
