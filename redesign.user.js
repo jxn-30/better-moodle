@@ -847,8 +847,8 @@ GM_addStyle(`
     #${PREFIX('drawer-toggles-left')} .drawer-toggler {
         position: initial !important;
     }
-    #${PREFIX('drawer-toggles-right')} .drawer-toggles .drawer-toggler .btn .icon.fa-fw,
-    #${PREFIX('drawer-toggles-left')} .drawer-toggles .drawer-toggler .btn .icon.fa-fw {
+    #${PREFIX('drawer-toggles-right')} .drawer-toggler .btn .icon.fa-fw,
+    #${PREFIX('drawer-toggles-left')} .drawer-toggler .btn .icon.fa-fw {
         width: 16px; /* Reset to .icon default */
     }
     @media (max-width: 767.98px) {
