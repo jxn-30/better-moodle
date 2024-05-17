@@ -165,6 +165,57 @@ Viele Grüße
                 },
             },
         },
+        clock: {
+            fuzzyClock: {
+                to: 'vor',
+                past: 'nach',
+                oClock: 'Uhr',
+                half: 'halb',
+                1: 'Eins',
+                2: 'Zwei',
+                3: 'Drei',
+                4: 'Vier',
+                5: 'Fünf',
+                6: 'Sechs',
+                7: 'Sieben',
+                8: 'Acht',
+                9: 'Neun',
+                10: 'Zehn',
+                11: 'Elf',
+                12: 'Zwölf',
+                15: 'Viertel',
+                20: 'Zwanzig',
+                25: 'Fünfundzwanzig',
+                other: {
+                    30: [
+                        'Schlafenszeit',
+                        'Frühstück',
+                        'Zweites Frühstück',
+                        'Kaffeepause',
+                        'Mittagspause',
+                        'Nachmittagstee',
+                        'Abendessen',
+                        'Mitternachtssnack',
+                    ],
+                    40: [
+                        'Nacht',
+                        'Früher Morgen',
+                        'Morgen',
+                        'Vormittag',
+                        'Mittag',
+                        'Nachmittag',
+                        'Abend',
+                        'Später Abend',
+                    ],
+                    50: [
+                        'Wochenanfang',
+                        'Mitte der Woche',
+                        'Ende der Woche',
+                        'Wochenende!',
+                    ],
+                },
+            },
+        },
         settings: {
             general: {
                 _title: 'Allgemeine Einstellungen',
@@ -339,6 +390,26 @@ Viele Grüße
                         'Moodle zeigt einen Hinweis an, wenn bei einem Kurs die Selbsteinschreibung ohne Einschreibeschlüssel aktiviert ist. Manche empfinden diesen Hinweis als störend, deshalb kann er mit dieser Einstellung ausgeblendet werden.',
                 },
             },
+            clock: {
+                _title: 'Uhr',
+                fuzzyClock: {
+                    name: 'Umgangssprachliche Uhr',
+                    description:
+                        'Eine umgangssprachliche Uhr, wie sie auch aus von KDE Plasma bekannt ist.',
+                    fuzziness: {
+                        name: 'Genauigkeit der Uhr',
+                        description:
+                            'Wie genau soll die umgangssprachliche Uhr die Uhrzeit anzeigen?',
+                        labels: {
+                            '5min': '5 Minuten',
+                            '15min': '15 Minuten',
+                            'food': 'Essen',
+                            'day': 'Tageszeit',
+                            'week': 'Wochenabschnitt',
+                        },
+                    },
+                },
+            },
             messages: {
                 _title: 'Mitteilungen',
                 sendHotkey: {
@@ -491,6 +562,57 @@ I have a great suggestion for Better-Moodle:
 Best regards
 [your name]`,
                     },
+                },
+            },
+        },
+        clock: {
+            fuzzyClock: {
+                to: 'to',
+                past: 'past',
+                oClock: 'o’clock',
+                half: 'half past',
+                1: 'One',
+                2: 'Two',
+                3: 'Three',
+                4: 'Four',
+                5: 'Five',
+                6: 'Six',
+                7: 'Seven',
+                8: 'Eight',
+                9: 'Nine',
+                10: 'Ten',
+                11: 'Eleven',
+                12: 'Twelve',
+                15: 'Quarter',
+                20: 'Twenty',
+                25: 'Twenty-five',
+                other: {
+                    30: [
+                        'Sleep',
+                        'Breakfast',
+                        'Second Breakfast',
+                        'Elevenses',
+                        'Lunch',
+                        'Afternoon tea',
+                        'Dinner',
+                        'Supper',
+                    ],
+                    40: [
+                        'Night',
+                        'Early morning',
+                        'Morning',
+                        'Almost noon',
+                        'Noon',
+                        'Afternoon',
+                        'Evening',
+                        'Late Evening',
+                    ],
+                    50: [
+                        'Start of week',
+                        'Middle of week',
+                        'End of week',
+                        'Weekend!',
+                    ],
                 },
             },
         },
@@ -663,6 +785,24 @@ Best regards
                     name: 'Hide hint for self-enrollment without enrollment key',
                     description:
                         'Moodle displays a hint when self-enrollment without an enrollment key is enabled for a course. Some people find this hint annoying, so it can be hidden with this setting.',
+                },
+            },
+            clock: {
+                _title: 'Clock',
+                fuzzyClock: {
+                    name: 'Fuzzy Clock',
+                    description: 'A fuzzy clock, known from KDE Plasma.',
+                    fuzziness: {
+                        name: 'Fuzziness',
+                        description: 'How fuzzy should the fuzzy clock be?',
+                        labels: {
+                            '5min': '5 Minutes',
+                            '15min': '15 Minutes',
+                            'food': 'Food',
+                            'day': 'Daytime',
+                            'week': 'Weektime',
+                        },
+                    },
                 },
             },
             messages: {
@@ -1622,6 +1762,16 @@ const dateToString = (date, year = true, weekday = false) =>
         month: '2-digit',
         day: '2-digit',
     });
+/**
+ * @param {Date} date
+ * @param {boolean} [seconds=true]
+ */
+const timeToString = (date, seconds = true) =>
+    date.toLocaleTimeString(BETTER_MOODLE_LANG, {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: seconds ? '2-digit' : undefined,
+    });
 // endregion
 
 // region Global styles
@@ -2255,6 +2405,15 @@ const SETTINGS = [
     new BooleanSetting('courses.imgMaxWidth', true),
     new BooleanSetting('courses.imageZoom', true),
     new BooleanSetting('courses.hideSelfEnrolHint', false),
+    $t('settings.clock._title'),
+    new BooleanSetting('clock.fuzzyClock', false),
+    new SliderSetting('clock.fuzzyClock.fuzziness', 10, 10, 50, 10, [
+        '5min',
+        '15min',
+        'food',
+        'day',
+        'week',
+    ]).setDisabledFn(settings => !settings['clock.fuzzyClock'].inputValue),
     $t('settings.messages._title'),
     new SelectSetting('messages.sendHotkey', '', [
         '',
@@ -4292,6 +4451,113 @@ if (getSetting('courses.hideSelfEnrolHint')) {
     display: none !important;
 }
 `);
+}
+// endregion
+
+// region Feature: clock.fuzzyClock
+if (getSetting('clock.fuzzyClock')) {
+    /** @type {number} */
+    const fuzziness = getSetting('clock.fuzzyClock.fuzziness');
+
+    const clockSpan = document.createElement('span');
+    clockSpan.dataset.clockFuzziness = fuzziness.toString();
+
+    addMarqueeItems(clockSpan);
+
+    /** @type {Map<number, string>} */
+    const timeStrings = new Map();
+
+    setInterval(() => {
+        timeStrings.clear();
+
+        const now = new Date();
+        const hour = now.getHours();
+        const twelveHour = hour % 12 || 12;
+        const minutes = now.getMinutes();
+        const exactMinutes = minutes + now.getSeconds() / 60;
+
+        document
+            .querySelectorAll('[data-clock-fuzziness]')
+            .forEach(clockSpan => {
+                const fuzziness = parseInt(clockSpan.dataset.clockFuzziness);
+                if (timeStrings.has(fuzziness)) {
+                    clockSpan.textContent = timeStrings.get(fuzziness);
+                }
+
+                /** @type {(string|number)[]} */
+                const timeString = [];
+
+                switch (fuzziness) {
+                    case 0: // 1 second, "normal" clock
+                        timeStrings.set(fuzziness, timeToString(now, true));
+                        clockSpan.textContent = timeStrings.get(fuzziness);
+                        break;
+                    case 10: // 5 minutes
+                    case 20: {
+                        // 15 minutes
+                        const sectorSize = fuzziness === 10 ? 5 : 15;
+                        const minuteSector =
+                            Math.floor(
+                                (exactMinutes + sectorSize / 2) / sectorSize
+                            ) % 12;
+                        if (minuteSector === 0) {
+                            const shownHour =
+                                minutes >= 0 ? twelveHour : twelveHour + 1;
+                            timeString.push(shownHour, 'oClock');
+                        } else if (minuteSector < 6) {
+                            timeString.push(
+                                minuteSector * sectorSize,
+                                'past',
+                                twelveHour
+                            );
+                        } else if (minuteSector === 6) {
+                            timeString.push('half', twelveHour);
+                        } else if (minuteSector > 6) {
+                            timeString.push(
+                                60 - minuteSector * sectorSize,
+                                'to',
+                                twelveHour + 1
+                            );
+                        }
+                        break;
+                    }
+                    case 30:
+                    case 40: {
+                        /** @type {string[]} */
+                        const strings = $t(
+                            `clock.fuzzyClock.other.${fuzziness}`
+                        );
+                        const section = Math.floor(
+                            hour / (24 / strings.length)
+                        );
+                        timeString.push(`other.${fuzziness}.${section}`);
+                        break;
+                    }
+                    case 50: {
+                        const dayOfWeek = now.getDay();
+                        const weekString =
+                            dayOfWeek === 1 ?
+                                0 // Monday
+                            : dayOfWeek <= 3 ?
+                                1 // Tuesday, Wednesday
+                            : dayOfWeek <= 5 ?
+                                2 // Thursday, Friday
+                            :   3; // Saturday, Sunday
+                        timeString.push(`other.50.${weekString}`);
+                    }
+                }
+
+                if (timeString.length) {
+                    timeStrings.set(
+                        fuzziness,
+                        timeString
+                            .map(s => $t(`clock.fuzzyClock.${s}`))
+                            .join('\xa0')
+                    );
+                    clockSpan.textContent = timeStrings.get(fuzziness);
+                }
+            });
+    });
 }
 // endregion
 
