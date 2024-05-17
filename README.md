@@ -232,3 +232,5 @@ Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar s
   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=jxn-30%2Fbetter-moodle&type=Date" />
   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=jxn-30%2Fbetter-moodle&type=Date" />
 </picture>
+
+[installation]: https://github.com/jxn-30/better-moodle/raw/main/redesign.user.js
