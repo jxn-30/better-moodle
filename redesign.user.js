@@ -4633,7 +4633,7 @@ ready(() => {
                     });
                     modal.show();
                 });
-                open(GM_info.script.updateURL, '_self');
+                open(GM_info.script.downloadURL, '_self');
             });
 
             updateCheck().then();
