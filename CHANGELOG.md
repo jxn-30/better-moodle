@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.31.2](https://github.com/jxn-30/better-moodle/compare/1.31.1...1.31.2) (2024-05-17)
+
+
+### Bug Fixes
+
+* **sidebars:** fix wrong selector for toggler icons ([bb915f2](https://github.com/jxn-30/better-moodle/commit/bb915f25f5356011c8c9cb922d480562a0c52443))
+
 ## [1.31.1](https://github.com/jxn-30/better-moodle/compare/1.31.0...1.31.1) (2024-05-17)
 
 
