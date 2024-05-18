@@ -2,7 +2,7 @@
 // @name            🎓️ UzL: better-moodle
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
-// @version         1.31.2
+// @version         1.32.0
 // @                x-release-please-end
 // @author          Jan (jxn_30)
 // @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
