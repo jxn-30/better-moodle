@@ -171,6 +171,7 @@ Viele Grüße
                 past: 'nach',
                 oClock: 'Uhr',
                 half: 'halb',
+                0: 'Zwölf',
                 1: 'Eins',
                 2: 'Zwei',
                 3: 'Drei',
@@ -571,6 +572,7 @@ Best regards
                 past: 'past',
                 oClock: 'o’clock',
                 half: 'half past',
+                0: 'Twelve',
                 1: 'One',
                 2: 'Two',
                 3: 'Three',
@@ -4476,6 +4478,8 @@ if (getSetting('clock.fuzzyClock')) {
         const minutes = now.getMinutes();
         const exactMinutes = minutes + now.getSeconds() / 60;
 
+        timeStrings.set(0, timeToString(now, true));
+
         document
             .querySelectorAll('[data-clock-fuzziness]')
             .forEach(clockSpan => {
@@ -4489,34 +4493,37 @@ if (getSetting('clock.fuzzyClock')) {
 
                 switch (fuzziness) {
                     case 0: // 1 second, "normal" clock
-                        timeStrings.set(fuzziness, timeToString(now, true));
                         clockSpan.textContent = timeStrings.get(fuzziness);
                         break;
                     case 10: // 5 minutes
                     case 20: {
                         // 15 minutes
                         const sectorSize = fuzziness === 10 ? 5 : 15;
+                        const sectors = 60 / sectorSize;
+                        const middleSector = sectors / 2;
                         const minuteSector =
                             Math.floor(
                                 (exactMinutes + sectorSize / 2) / sectorSize
                             ) % 12;
                         if (minuteSector === 0) {
                             const shownHour =
-                                minutes < 30 ? twelveHour : twelveHour + 1;
+                                minutes < 30 ? twelveHour : (
+                                    (twelveHour + 1) % 12
+                                );
                             timeString.push(shownHour, 'oClock');
-                        } else if (minuteSector < 6) {
+                        } else if (minuteSector < middleSector) {
                             timeString.push(
                                 minuteSector * sectorSize,
                                 'past',
                                 twelveHour
                             );
-                        } else if (minuteSector === 6) {
+                        } else if (minuteSector === middleSector) {
                             timeString.push('half', twelveHour);
-                        } else if (minuteSector > 6) {
+                        } else if (minuteSector > middleSector) {
                             timeString.push(
                                 60 - minuteSector * sectorSize,
                                 'to',
-                                twelveHour + 1
+                                (twelveHour + 1) % 12
                             );
                         }
                         break;
@@ -4555,6 +4562,7 @@ if (getSetting('clock.fuzzyClock')) {
                             .join('\xa0')
                     );
                     clockSpan.textContent = timeStrings.get(fuzziness);
+                    clockSpan.title = timeStrings.get(0);
                 }
             });
     });
