@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.32.0](https://github.com/jxn-30/better-moodle/compare/1.31.2...1.32.0) (2024-05-18)
+
+
+### Features
+
+* **fuzzyClock:** implement a fuzzy clock ([#181](https://github.com/jxn-30/better-moodle/issues/181)) ([8ca777b](https://github.com/jxn-30/better-moodle/commit/8ca777b77587339b7d280dee1a912fc08fb0ffd0))
+* **settings:** add ticks for labels of sliders ([8ca777b](https://github.com/jxn-30/better-moodle/commit/8ca777b77587339b7d280dee1a912fc08fb0ffd0))
+* **settings:** allow custom labels for sliders ([8ca777b](https://github.com/jxn-30/better-moodle/commit/8ca777b77587339b7d280dee1a912fc08fb0ffd0))
+
 ## [1.31.2](https://github.com/jxn-30/better-moodle/compare/1.31.1...1.31.2) (2024-05-17)
 
 
