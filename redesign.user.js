@@ -1774,6 +1774,28 @@ const timeToString = (date, seconds = true) =>
         minute: '2-digit',
         second: seconds ? '2-digit' : undefined,
     });
+
+/**
+ * @param {number} delay
+ * @param {CallableFunction} callback
+ */
+const animationInterval = (delay, callback) => {
+    let last = Date.now();
+    let currentId;
+    const intervalCallback = () => {
+        currentId = requestAnimationFrame(intervalCallback);
+
+        const now = Date.now();
+        const elapsed = now - last;
+
+        if (elapsed >= delay) {
+            last = now - (elapsed % delay);
+            callback();
+        }
+    };
+    currentId = requestAnimationFrame(intervalCallback);
+    return () => cancelAnimationFrame(currentId);
+};
 // endregion
 
 // region Global styles
@@ -4469,7 +4491,7 @@ if (getSetting('clock.fuzzyClock')) {
     /** @type {Map<number, string>} */
     const timeStrings = new Map();
 
-    setInterval(() => {
+    animationInterval(1000, () => {
         timeStrings.clear();
 
         const now = new Date();
