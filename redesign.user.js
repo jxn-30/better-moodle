@@ -4501,15 +4501,14 @@ if (getSetting('clock.fuzzyClock')) {
                         const sectorSize = fuzziness === 10 ? 5 : 15;
                         const sectors = 60 / sectorSize;
                         const middleSector = sectors / 2;
+                        const nextHour = (twelveHour + 1) % 12;
                         const minuteSector =
                             Math.floor(
                                 (exactMinutes + sectorSize / 2) / sectorSize
                             ) % 12;
                         if (minuteSector === 0) {
                             const shownHour =
-                                minutes < 30 ? twelveHour : (
-                                    (twelveHour + 1) % 12
-                                );
+                                minutes < 30 ? twelveHour : nextHour;
                             timeString.push(shownHour, 'oClock');
                         } else if (minuteSector < middleSector) {
                             timeString.push(
@@ -4518,12 +4517,12 @@ if (getSetting('clock.fuzzyClock')) {
                                 twelveHour
                             );
                         } else if (minuteSector === middleSector) {
-                            timeString.push('half', twelveHour);
+                            timeString.push('half', nextHour);
                         } else if (minuteSector > middleSector) {
                             timeString.push(
                                 60 - minuteSector * sectorSize,
                                 'to',
-                                (twelveHour + 1) % 12
+                                nextHour
                             );
                         }
                         break;
