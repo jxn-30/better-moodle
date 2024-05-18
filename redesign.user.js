@@ -4569,7 +4569,7 @@ if (getSetting('clock.fuzzyClock')) {
                         const weekString =
                             dayOfWeek === 1 ?
                                 0 // Monday
-                            : 2 <= dayOfWeek && dayOfWeek <= 3 ?
+                            : dayOfWeek >= 2 && dayOfWeek <= 3 ?
                                 1 // Tuesday, Wednesday
                             : dayOfWeek <= 5 ?
                                 2 // Thursday, Friday
