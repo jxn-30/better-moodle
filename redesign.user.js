@@ -1801,7 +1801,7 @@ const timeToString = (date, seconds = true) =>
  * @param {CallableFunction} callback
  */
 const animationInterval = (delay, callback) => {
-    let last = Date.now();
+    let last = 0;
     let currentId;
     /**
      * @param {DOMHighResTimeStamp} now
