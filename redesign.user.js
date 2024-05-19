@@ -2455,7 +2455,6 @@ const SETTINGS = [
     new BooleanSetting('clock.clock.seconds', true).setDisabledFn(
         settings => !settings['clock.clock'].inputValue
     ),
-    ,
     new BooleanSetting('clock.fuzzyClock', false),
     new SliderSetting('clock.fuzzyClock.fuzziness', 10, 10, 50, 10, [
         '5min',
