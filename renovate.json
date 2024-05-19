@@ -14,6 +14,16 @@
         "reviewers": ["jxn-30"],
         "schedule": ["before 3am on saturday"]
     },
+    "packageRules": [
+        {
+            "groupName": "ESLint",
+            "lockFileMaintenance": { "enabled": true },
+            "matchManagers": ["npm"],
+            "matchDepNames": ["@eslint/js", "eslint"],
+            "rangeStrategy": "pin",
+            "separateMajorMinor": false
+        }
+    ],
     "rangeStrategy": "pin",
     "reviewers": ["jxn-30"],
     "schedule": ["before 3am every weekday"],
