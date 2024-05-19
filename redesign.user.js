@@ -1803,10 +1803,12 @@ const timeToString = (date, seconds = true) =>
 const animationInterval = (delay, callback) => {
     let last = Date.now();
     let currentId;
-    const intervalCallback = () => {
+    /**
+     * @param {DOMHighResTimeStamp} now
+     */
+    const intervalCallback = now => {
         currentId = requestAnimationFrame(intervalCallback);
 
-        const now = Date.now();
         const elapsed = now - last;
 
         if (elapsed >= delay) {
