@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.33.0](https://github.com/jxn-30/better-moodle/compare/1.32.1...1.33.0) (2024-05-19)
+
+
+### Features
+
+* **clock:** add a normal clock ([096e47a](https://github.com/jxn-30/better-moodle/commit/096e47a0bf1c712f37e6ce685986d547c7b3dc9d))
+
 ## [1.32.1](https://github.com/jxn-30/better-moodle/compare/1.32.0...1.32.1) (2024-05-19)
 
 
