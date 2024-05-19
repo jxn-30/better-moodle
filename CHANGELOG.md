@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.33.1](https://github.com/jxn-30/better-moodle/compare/1.33.0...1.33.1) (2024-05-19)
+
+
+### Bug Fixes
+
+* **settings:** remove accidental empty item ([9249382](https://github.com/jxn-30/better-moodle/commit/9249382102f4824d695cb97467db69e1bc89b7b0))
+
 ## [1.33.0](https://github.com/jxn-30/better-moodle/compare/1.32.1...1.33.0) (2024-05-19)
 
 
