@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.1](https://github.com/jxn-30/better-moodle/compare/1.32.0...1.32.1) (2024-05-19)
+
+
+### Bug Fixes
+
+* **fuzzyClock:** fix sundays showing up as 'middle of week' ([#184](https://github.com/jxn-30/better-moodle/issues/184)) ([f9530e1](https://github.com/jxn-30/better-moodle/commit/f9530e125759644290e49cfc0381334569c6ce8f))
+
 ## [1.32.0](https://github.com/jxn-30/better-moodle/compare/1.31.2...1.32.0) (2024-05-18)
 
 
