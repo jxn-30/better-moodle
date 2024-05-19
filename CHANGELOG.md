@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.33.2](https://github.com/jxn-30/better-moodle/compare/1.33.1...1.33.2) (2024-05-19)
+
+
+### Bug Fixes
+
+* **clock:** fix clock not showing at all ([c221eed](https://github.com/jxn-30/better-moodle/commit/c221eedb8524e9fc9475ccb5e3b5467d0d0be65f))
+
 ## [1.33.1](https://github.com/jxn-30/better-moodle/compare/1.33.0...1.33.1) (2024-05-19)
 
 
