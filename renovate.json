@@ -24,6 +24,7 @@
             "separateMajorMinor": false
         }
     ],
+    "postUpdateOptions": ["yarnDedupeHighest"],
     "rangeStrategy": "pin",
     "reviewers": ["jxn-30"],
     "schedule": ["before 3am every weekday"],
