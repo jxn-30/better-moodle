@@ -21,6 +21,11 @@
 // @grant           GM_info
 // @grant           GM_xmlhttpRequest
 // @connect         studentenwerk.sh
+// @connect         api.open-meteo.com
+// @connect         api.openweathermap.org
+// @connect         api.pirateweather.net
+// @connect         weather.visualcrossing.com
+// @connect         wttr.in
 // @require         https://unpkg.com/darkreader@4.9.85/darkreader.js#sha512=6792b51c55273b96edc7d87f1180832cc321561d7f885004da58e660f53a7684f69e63d0aef1e2c5cc3313949ef1e16963ad420cec8595de391152156dc75b69
 // ==/UserScript==
 
@@ -79,6 +84,94 @@ const TRANSLATIONS = {
                 finished: 'Fortschritt',
                 show: 'Im Balken anzeigen?',
                 holiday: 'Feiertag',
+            },
+        },
+        weatherDisplay: {
+            title: 'Wetter-Moodle',
+            close: 'Schließen',
+            updated: 'Zuletzt aktualisiert um',
+            credits: {
+                _long: 'Wetterdaten von',
+                _short: 'Quelle',
+                wttrIn: {
+                    name: 'wttr.in',
+                    url: 'https://wttr.in',
+                },
+                openMeteo: {
+                    name: 'Open-Meteo',
+                    url: 'https://open-meteo.com',
+                },
+                visualCrossing: {
+                    name: 'Visual Crossing',
+                    url: 'https://www.visualcrossing.com',
+                },
+                openWeatherMap: {
+                    name: 'OpenWeatherMap',
+                    url: 'https://openweathermap.org',
+                },
+                pirateWeather: {
+                    name: 'Pirate Weather',
+                    url: 'https://pirateweather.net',
+                },
+            },
+            weatherCodes: {
+                // Using the codes of openweathermap.org
+                0: 'Wetter nicht verfügbar',
+                200: 'Gewitter mit leichtem Regen',
+                201: 'Gewitter mit Regen',
+                202: 'Gewitter mit starkem Regen',
+                210: 'Leichtes Gewitter',
+                211: 'Gewitter',
+                212: 'Starkes Gewitter',
+                221: 'Gewitter',
+                230: 'Gewitter mit leichtem Nieselregen',
+                231: 'Gewitter mit Nieselregen',
+                232: 'Gewitter mit starkem Nieselregen',
+                300: 'Leichter Nieselregen',
+                301: 'Nieselregen',
+                302: 'Starker Nieselregen',
+                310: 'Leichter Nieselregen',
+                311: 'Nieselregen',
+                312: 'Starker Nieselregen',
+                313: 'Regenschauer und Nieselregen',
+                314: 'Starker Regenschauer und Nieselregen',
+                321: 'Nieselregen',
+                500: 'Leichter Regen',
+                501: 'Mäßiger Regen',
+                502: 'Starker Regen',
+                503: 'Sehr starker Regen',
+                504: 'Extremer Regen',
+                511: 'Gefrierender Regen',
+                520: 'Leichte Regenschauer',
+                521: 'Regenschauer',
+                522: 'Starker Regenschauer',
+                531: 'Regenschauer',
+                600: 'Leichter Schneefall',
+                601: 'Schneefall',
+                602: 'Starker Schneefall',
+                611: 'Schneeregen',
+                612: 'Leichter Schneeregen',
+                613: 'Schneeregen',
+                615: 'Leichter Regen und Schnee',
+                616: 'Regen und Schnee',
+                620: 'Leichter Schneeschauer',
+                621: 'Schneeschauer',
+                622: 'Starker Schneeschauer',
+                701: 'Nebel',
+                711: 'Rauch',
+                721: 'Dunst',
+                731: 'Sand/Staubwirbel',
+                741: 'Nebel',
+                751: 'Sand',
+                761: 'Staub',
+                762: 'Vulkanasche',
+                771: 'Sturmböen',
+                781: 'Tornado',
+                800: 'Klarer Himmel',
+                801: 'Kaum Wolken',
+                802: 'Wenige Wolken',
+                803: 'Überwiegend bewölkt',
+                804: 'Bedeckt',
             },
         },
         modals: {
@@ -424,6 +517,50 @@ Viele Grüße
                     },
                 },
             },
+            weatherDisplay: {
+                _title: 'Wetter-Moodle',
+                _description: `Um gute Wetterdaten zu erhalten, benötigst du bei einigen Anbietern einen API-Key. 
+Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen kostenlosen Optionen.`,
+                show: {
+                    name: 'Wetter anzeigen',
+                    description: 'Zeige das Wetter in Moodle an.',
+                },
+                provider: {
+                    name: 'Anbieter',
+                    description: 'Wähle den Anbieter für die Wetterdaten aus.',
+                    options: {
+                        wttrIn: 'wttr.in',
+                        openMeteo: 'Open-Meteo',
+                        visualCrossing: 'Visual Crossing (API-Key benötigt)',
+                        openWeatherMap: 'OpenWeatherMap (API-Key benötigt)',
+                        pirateWeather: 'Pirate Weather (API-Key benötigt)',
+                    },
+                },
+                openWeatherMapAPIKey: {
+                    name: 'API-Key für OpenWeatherMap',
+                    description:
+                        'Trage hier deinen API-Key für OpenWeatherMap ein (der Free-Plan ist ausreichend).',
+                },
+                pirateWeatherAPIKey: {
+                    name: 'API-Key für PirateWeather',
+                    description:
+                        'Trage hier deinen API-Key für PirateWeather ein (der Free-Plan ist ausreichend).',
+                },
+                visualCrossingAPIKey: {
+                    name: 'API-Key für Visual Crossing',
+                    description:
+                        'Trage hier deinen API-Key für Visual Crossing ein (der Free-Plan ist ausreichend).',
+                },
+                units: {
+                    name: 'Einheiten',
+                    description: 'Wähle die Einheiten für die Wetterdaten aus.',
+                    options: {
+                        metric: 'Metrisch (°C, km/h, km, mm)',
+                        scientific: 'SI Einheiten (K, m/s, m, m)',
+                        imperial: 'Imperial (°F, mph, mi, in)', // for weird people
+                    },
+                },
+            },
         },
     },
     en: {
@@ -477,6 +614,94 @@ Viele Grüße
                 finished: 'Progress',
                 show: 'Show in Progress bar?',
                 holiday: 'Public Holiday',
+            },
+        },
+        weatherDisplay: {
+            title: 'Weather-Moodle',
+            close: 'Close',
+            updated: 'Last updated at',
+            credits: {
+                _long: 'Weather data provided by',
+                _short: 'Source',
+                wttrIn: {
+                    name: 'wttr.in',
+                    url: 'https://wttr.in',
+                },
+                openMeteo: {
+                    name: 'Open-Meteo',
+                    url: 'https://open-meteo.com',
+                },
+                visualCrossing: {
+                    name: 'Visual Crossing',
+                    url: 'https://www.visualcrossing.com',
+                },
+                openWeatherMap: {
+                    name: 'OpenWeatherMap',
+                    url: 'https://openweathermap.org',
+                },
+                pirateWeather: {
+                    name: 'Pirate Weather',
+                    url: 'https://pirateweather.net',
+                },
+            },
+            weatherCodes: {
+                // Using the codes of openweathermap.org
+                0: 'Weather not available',
+                200: 'Thunderstorm with light rain',
+                201: 'Thunderstorm with rain',
+                202: 'Thunderstorm with heavy rain',
+                210: 'Light thunderstorm',
+                211: 'Thunderstorm',
+                212: 'Heavy thunderstorm',
+                221: 'Ragged thunderstorm',
+                230: 'Thunderstorm with light drizzle',
+                231: 'Thunderstorm with drizzle',
+                232: 'Thunderstorm with heavy drizzle',
+                300: 'Light intensity drizzle',
+                301: 'Drizzle',
+                302: 'Heavy intensity drizzle',
+                310: 'Light intensity drizzle rain',
+                311: 'Drizzle rain',
+                312: 'Heavy intensity drizzle rain',
+                313: 'Shower rain and drizzle',
+                314: 'Heavy shower rain and drizzle',
+                321: 'Shower drizzle',
+                500: 'Light rain',
+                501: 'Moderate rain',
+                502: 'Heavy intensity rain',
+                503: 'Very heavy rain',
+                504: 'Extreme rain',
+                511: 'Freezing rain',
+                520: 'Light intensity shower rain',
+                521: 'Shower rain',
+                522: 'Heavy intensity shower rain',
+                531: 'Ragged shower rain',
+                600: 'Light snow',
+                601: 'Snow',
+                602: 'Heavy snow',
+                611: 'Sleet',
+                612: 'Light shower sleet',
+                613: 'Shower sleet',
+                615: 'Light rain and snow',
+                616: 'Rain and snow',
+                620: 'Light shower snow',
+                621: 'Shower snow',
+                622: 'Heavy shower snow',
+                701: 'Mist',
+                711: 'Smoke',
+                721: 'Haze',
+                731: 'Sand, dust whirls',
+                741: 'Fog',
+                751: 'Sand',
+                761: 'Dust',
+                762: 'Volcanic ash',
+                771: 'Squalls',
+                781: 'Tornado',
+                800: 'Clear sky',
+                801: 'Few clouds',
+                802: 'Scattered clouds',
+                803: 'Broken clouds',
+                804: 'Overcast clouds',
             },
         },
         modals: {
@@ -817,6 +1042,50 @@ Best regards
                         '': '[Disabled] Do not send by hotkey',
                         'shiftEnter': 'Shift + Enter',
                         'ctrlEnter': 'Ctrl + Enter',
+                    },
+                },
+            },
+            weatherDisplay: {
+                _title: 'Weather-Moodle',
+                _description: `To get good weather data, you need an API key for some providers.
+Better-Moodle never requires more than the free plan of the respective provider to work.`,
+                show: {
+                    name: 'Show weather',
+                    description: 'Show the weather in Moodle.',
+                },
+                provider: {
+                    name: 'Provider',
+                    description: 'Choose the provider for the weather data.',
+                    options: {
+                        wttrIn: 'wttr.in',
+                        openMeteo: 'Open-Meteo',
+                        visualCrossing: 'Visual Crossing (requires API-Key)',
+                        openWeatherMap: 'OpenWeatherMap (requires API-Key)',
+                        pirateWeather: 'Pirate Weather (requires API-Key)',
+                    },
+                },
+                openWeatherMapAPIKey: {
+                    name: 'API-Key for OpenWeatherMap',
+                    description:
+                        'Put your API key for OpenWeatherMap here (the free plan is sufficient).',
+                },
+                pirateWeatherAPIKey: {
+                    name: 'API-Key for PirateWeather',
+                    description:
+                        'Put your API key for PirateWeather here (the free plan is sufficient).',
+                },
+                visualCrossingAPIKey: {
+                    name: 'API-Key for Visual Crossing',
+                    description:
+                        'Put your API key for Visual Crossing here (the free plan is sufficient).',
+                },
+                units: {
+                    name: 'Units',
+                    description: 'Select the units for the weather data.',
+                    options: {
+                        metric: 'Metric (°C, km/h, km, mm)',
+                        scientific: 'SI Units (K, m/s, m, m)',
+                        imperial: 'Imperial (°F, mph, mi, in)', // for weird people
                     },
                 },
             },
@@ -1782,7 +2051,11 @@ const timeToString = (date, seconds = true) =>
  * @param {number} delay
  * @param {CallableFunction} callback
  */
-const animationInterval = (delay, callback) => {
+const animationInterval = (delay, callback, runImmediate = false) => {
+    if (runImmediate) {
+        callback();
+    }
+
     let last = Date.now();
     let currentId;
     const intervalCallback = () => {
@@ -2441,6 +2714,33 @@ const SETTINGS = [
         'day',
         'week',
     ]).setDisabledFn(settings => !settings['clock.fuzzyClock'].inputValue),
+    $t('settings.weatherDisplay._title'),
+    $t('settings.weatherDisplay._description'),
+    new BooleanSetting('weatherDisplay.show', false),
+    new SelectSetting('weatherDisplay.units', 'metric', [
+        'metric',
+        'scientific',
+        'imperial',
+    ]),
+    new SelectSetting('weatherDisplay.provider', 'openMeteo', [
+        'openMeteo',
+        'wttrIn',
+        'visualCrossing',
+        'openWeatherMap',
+        'pirateWeather',
+    ]),
+    new StringSetting('weatherDisplay.visualCrossingAPIKey', '').setDisabledFn(
+        settings =>
+            settings['weatherDisplay.provider'].inputValue !== 'visualCrossing'
+    ),
+    new StringSetting('weatherDisplay.openWeatherMapAPIKey', '').setDisabledFn(
+        settings =>
+            settings['weatherDisplay.provider'].inputValue !== 'openWeatherMap'
+    ),
+    new StringSetting('weatherDisplay.pirateWeatherAPIKey', '').setDisabledFn(
+        settings =>
+            settings['weatherDisplay.provider'].inputValue !== 'pirateWeather'
+    ),
     $t('settings.messages._title'),
     new SelectSetting('messages.sendHotkey', '', [
         '',
@@ -4590,6 +4890,612 @@ if (getSetting('clock.fuzzyClock')) {
                 }
             });
     });
+}
+// endregion
+
+// region Feature: weatherDisplay
+if (getSetting('weatherDisplay.show')) {
+    const city = {
+        // TODO: Use coordinates more often
+        name: 'luebeck',
+        lat: 53.8655, // TODO: Are these values correct?
+        lon: 10.6866,
+    }; // TODO: Should this be configurable?
+    const provider = getSetting('weatherDisplay.provider');
+    const units = getSetting('weatherDisplay.units');
+    const ONE_MINUTE = 1000 * 60;
+    const FIVE_MINUTES = ONE_MINUTE * 5;
+
+    const VISUALCROSSING_API_KEY = getSetting(
+        'weatherDisplay.visualCrossingAPIKey'
+    );
+    const OPENWEATHERMAP_API_KEY = getSetting(
+        'weatherDisplay.openWeatherMapAPIKey'
+    );
+    const PIRATEWEATHER_API_KEY = getSetting(
+        'weatherDisplay.pirateWeatherAPIKey'
+    );
+
+    const prefix = str => PREFIX(`weather-display-${str}`);
+
+    const fetchJSON = url =>
+        new Promise((resolve, reject) => {
+            console.log('fetching', url);
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url,
+                onload: ({ responseText }) => resolve(JSON.parse(responseText)),
+                onerror: reject, // TODO: reject if not 200 OK
+            });
+        });
+
+    const manageRateLimit = (rateLimit, url) => {
+        const now = Date.now();
+        const host = new URL(url).host;
+        const [lastRequest, cached] = JSON.parse(
+            atob(GM_getValue(prefix(host), btoa('[0, null]')))
+        );
+
+        if (lastRequest + rateLimit > now) {
+            return new Promise(resolve => resolve(cached));
+        }
+        return fetchJSON(url).then(data => {
+            GM_setValue(prefix(host), btoa(JSON.stringify([now, data])));
+            return data;
+        });
+    };
+
+    const wttrIn = () => {
+        return manageRateLimit(
+            ONE_MINUTE,
+            `https://wttr.in/${city.name}?format=j1&lang`
+        ) // The `&lang` removes the faulty german translation
+            .then(data => {
+                const weatherType = (() => {
+                    switch (
+                        new Number(
+                            data.current_condition[0].weatherCode
+                        ).valueOf()
+                    ) {
+                        case 113:
+                            return 800;
+                        case 116:
+                            return 802;
+                        case 119:
+                            return 803;
+                        case 122:
+                            return 804;
+                        case 143:
+                            return 701;
+                        case 176:
+                            return 500;
+                        case 179:
+                            return 600;
+                        case 182:
+                        case 185:
+                            return 612;
+                        case 200:
+                            return 210;
+                        case 227:
+                            return 601;
+                        case 230:
+                            return 602;
+                        case 248:
+                        case 260:
+                            return 741;
+                        case 263:
+                        case 266:
+                            return 300;
+                        case 281:
+                            return 611;
+                        case 284:
+                            return 511;
+                        case 293:
+                            return 301;
+                        case 296:
+                            return 500;
+                        case 299:
+                            return 521;
+                        case 302:
+                            return 501;
+                        case 305:
+                            return 522;
+                        case 308:
+                            return 502;
+                        case 311:
+                            return 611;
+                        case 314:
+                            return 511;
+                        case 317:
+                            return 612;
+                        case 320:
+                            return 613;
+                        case 323:
+                        case 326:
+                            return 600;
+                        case 329:
+                        case 332:
+                            return 601;
+                        case 335:
+                        case 338:
+                            return 602;
+                        case 350:
+                            return 511;
+                        case 353:
+                            return 520;
+                        case 356:
+                            return 521;
+                        case 359:
+                            return 504;
+                        case 362:
+                            return 612;
+                        case 365:
+                            return 613;
+                        case 368:
+                            return 620;
+                        case 371:
+                            return 621;
+                        case 374:
+                            return 511;
+                        case 377:
+                            return 511;
+                        case 386:
+                            return 200;
+                        case 389:
+                            return 201;
+                        case 392:
+                            return 200;
+                        case 395:
+                            return 202;
+                        default:
+                            console.warn(
+                                'Unknown weather:',
+                                data.current_condition[0].weatherCode
+                            );
+                            return 0;
+                    }
+                })();
+                return {
+                    temperature: data.current_condition[0].temp_C,
+                    temperatureFeelsLike: data.current_condition[0].FeelsLikeC,
+                    windDirection: data.current_condition[0].winddirDegree,
+                    windSpeed: data.current_condition[0].windspeedKmph,
+                    visibilityDistance: data.current_condition[0].visibility,
+                    humidity: data.current_condition[0].humidity,
+                    pressure: data.current_condition[0].pressure,
+                    cloudCover: data.current_condition[0].cloudcover,
+                    rainGauge: data.current_condition[0].precipMM,
+                    weatherType,
+                    time: new Date(data.current_condition[0].localObsDateTime), // TODO: check different time zones
+                };
+            });
+    };
+
+    const openMeteo = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m&minutely_15=visibility&timeformat=unixtime&timezone=Europe%2FBerlin&forecast_days=1`
+        ).then(data => {
+            const now = Math.floor(Date.now() / 1000);
+            let visibilityIndex = 0;
+            for (let i = 0; i < data.minutely_15.length; i++) {
+                if (data.minutely_15.time[i] > now) {
+                    visibilityIndex = i;
+                    break;
+                }
+            }
+            const weatherType = (() => {
+                switch (data.current.weather_code) {
+                    case 0:
+                        return 800;
+                    case 1:
+                        return 801;
+                    case 2:
+                        return 802;
+                    case 3:
+                        return 804;
+                    case 45:
+                    case 48:
+                        return 741;
+                    case 51:
+                        return 300;
+                    case 53:
+                        return 301;
+                    case 55:
+                        return 302;
+                    case 56:
+                        return 612;
+                    case 57:
+                        return 613;
+                    case 61:
+                        return 500;
+                    case 63:
+                        return 501;
+                    case 65:
+                        return 502;
+                    case 66:
+                    case 67:
+                        return 511;
+                    case 71:
+                        return 600;
+                    case 73:
+                        return 601;
+                    case 75:
+                        return 602;
+                    case 77:
+                        return 611;
+                    case 80:
+                        return 520;
+                    case 81:
+                        return 521;
+                    case 82:
+                        return 522;
+                    case 85:
+                        return 620;
+                    case 86:
+                        return 621;
+                    case 95:
+                        return 211;
+                    case 96:
+                    case 99:
+                        return 511;
+                    default:
+                        console.warn(
+                            'Unknown weather:',
+                            data.current.weather_code
+                        );
+                        return 0;
+                }
+            })();
+            return {
+                temperature: data.current.temperature_2m,
+                temperatureFeelsLike: data.current.apparent_temperature,
+                windDirection: data.current.wind_direction_10m,
+                windSpeed: data.current.wind_speed_10m,
+                visibilityDistance:
+                    data.minutely_15.visibility[visibilityIndex] / 1000,
+                humidity: data.current.relative_humidity_2m,
+                pressure: data.current.surface_pressure,
+                cloudCover: data.current.cloud_cover,
+                rainGauge: data.current.precipitation,
+                weatherType,
+                time: new Date(data.current.time * 1000),
+            };
+        });
+    };
+
+    const visualCrossing = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city.name}?unitGroup=metric&lang=id&iconSet=icons2&include=current&key=${VISUALCROSSING_API_KEY}&contentType=json`
+        )
+            .then(data => {
+                const weatherType = (() => {
+                    switch (data.currentConditions.icon) {
+                        case 'snow':
+                            return 601;
+                        case 'snow-showers-day':
+                        case 'snow-showers-night':
+                            return 621;
+                        case 'thunder-rain':
+                        case 'thunder-showers-day':
+                        case 'thunder-showers-night':
+                            return 201;
+                        case 'rain':
+                            return 501;
+                        case 'rain-showers-day':
+                        case 'rain-showers-night':
+                            return 521;
+                        case 'fog':
+                            return 741;
+                        case 'wind':
+                            return 771;
+                        case 'cloudy':
+                            return 804;
+                        case 'partly-cloudy-day':
+                        case 'partly-cloudy-night':
+                            return 802;
+                        case 'clear-day':
+                        case 'clear-night':
+                            return 800;
+                        default:
+                            console.warn(
+                                'Unknown weather:',
+                                data.currentConditions.icon
+                            );
+                            return 0;
+                    }
+                })();
+                return {
+                    temperature: data.currentConditions.temp,
+                    temperatureFeelsLike: data.currentConditions.feelslike,
+                    windDirection: data.currentConditions.winddir,
+                    windSpeed: data.currentConditions.windspeed,
+                    visibilityDistance: data.currentConditions.visibility,
+                    humidity: data.currentConditions.humidity,
+                    pressure: data.currentConditions.pressure,
+                    cloudCover: data.currentConditions.cloudcover,
+                    rainGauge: data.currentConditions.precip,
+                    weatherType,
+                    time: new Date(data.currentConditions.datetimeEpoch * 1000),
+                };
+            })
+            .catch(wttrIn); // TODO: fix fallback
+    };
+
+    const openWeatherMap = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://api.openweathermap.org/data/2.5/weather?q=${city.name}&units=metric&appid=${OPENWEATHERMAP_API_KEY}`
+        )
+            .then(data => {
+                return {
+                    temperature: data.main.temp,
+                    temperatureFeelsLike: data.main.feels_like,
+                    windDirection: data.wind.deg,
+                    windSpeed: data.wind.speed,
+                    visibilityDistance: data.visibility / 1000,
+                    humidity: data.main.humidity,
+                    pressure: data.main.pressure,
+                    cloudCover: data.clouds.all,
+                    rainGauge: data.rain?.['1h'] ?? 0,
+                    weatherType: data.weather[0].id,
+                    time: new Date(data.dt * 1000),
+                };
+            })
+            .catch(wttrIn); // TODO: fix fallback
+    };
+
+    const pirateWeather = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://api.pirateweather.net/forecast/${PIRATEWEATHER_API_KEY}/${city.lat},${city.lon}?units=si`
+        )
+            .then(data => {
+                const weatherType = (() => {
+                    switch (data.currently.icon) {
+                        case 'clear-day':
+                        case 'clear-night':
+                            return 800;
+                        case 'rain':
+                            return 501;
+                        case 'snow':
+                            return 601;
+                        case 'sleet':
+                            return 611;
+                        case 'wind':
+                            return 771;
+                        case 'fog':
+                            return 741;
+                        case 'cloudy':
+                            return 804;
+                        case 'partly-cloudy-day':
+                        case 'partly-cloudy-night':
+                            return 802;
+                        default:
+                            console.warn(
+                                'Unknown weather:',
+                                data.currently.icon
+                            );
+                            return 0;
+                    }
+                })();
+                return {
+                    temperature: data.currently.temperature,
+                    temperatureFeelsLike: data.currently.apparentTemperature,
+                    windDirection: data.currently.windBearing,
+                    windSpeed: data.currently.windSpeed,
+                    visibilityDistance: data.currently.visibility,
+                    humidity: data.currently.humidity * 100,
+                    pressure: data.currently.pressure,
+                    cloudCover: data.currently.cloudCover,
+                    rainGauge: data.currently.precipIntensity,
+                    weatherType,
+                    time: new Date(data.currently.time * 1000),
+                };
+            })
+            .catch(wttrIn); // TODO: fix fallback
+    };
+
+    const weatherProvider = (() => {
+        switch (provider) {
+            case 'wttrIn':
+                return wttrIn;
+            case 'openMeteo':
+                return openMeteo;
+            case 'visualCrossing':
+                return visualCrossing;
+            case 'openWeatherMap':
+                return openWeatherMap;
+            case 'pirateWeather':
+                return pirateWeather;
+        }
+    })();
+
+    const displayData = (key, data) => {
+        const round = (value, precision, fixed = false) => {
+            const factor = 10 ** precision;
+            const roundedValue = Math.round(value * factor) / factor;
+            return fixed ? roundedValue.toFixed(precision) : roundedValue;
+        };
+        const unitConverter = {
+            temperature: {
+                metric: celsius => [celsius, '&#x202F;°C'],
+                scientific: celsius => [
+                    round(celsius + 273.15, 2, true),
+                    '&#x202F;K',
+                ],
+                imperial: celsius => [
+                    round((celsius * 9) / 5 + 32, 2),
+                    '&#x202F;°F',
+                ],
+            },
+            temperatureFeelsLike: {
+                metric: celsius => [celsius, '&#x202F;°C'],
+                scientific: celsius => [
+                    round(celsius + 273.15, 2, true),
+                    '&#x202F;K',
+                ],
+                imperial: celsius => [
+                    round((celsius * 9) / 5 + 32, 2),
+                    '&#x202F;°F',
+                ],
+            },
+            windDirection: {
+                metric: deg => [deg, '°'],
+                scientific: deg => [
+                    round((deg * Math.PI) / 180, 2, true),
+                    '&#x202F;rad',
+                ],
+                imperial: deg => [deg, '°'],
+            },
+            windSpeed: {
+                metric: kmh => [kmh, '&#x202F;km/h'],
+                scientific: kmh => [
+                    round((kmh * 1000) / 3600, 2, true),
+                    '&#x202F;m/s',
+                ],
+                imperial: kmh => [round(kmh / 1.609344, 2), '&#x202F;mph'],
+            },
+            visibilityDistance: {
+                metric: km => [km, '&#x202F;km'],
+                scientific: km => [km * 1000, '&#x202F;m'],
+                imperial: km => [round(km / 1.609344, 2), '&#x202F;mi'],
+            },
+            humidity: {
+                metric: percent => [percent, '&#x202F;%'],
+                scientific: percent => [round(percent / 100, 2, true), ''],
+                imperial: percent => [percent, '&#x202F;%'],
+            },
+            pressure: {
+                metric: hPa => [hPa, '&#x202F;hPa'],
+                scientific: hPa => [hPa * 100, '&#x202F;Pa'],
+                imperial: hPa => [hPa, '&#x202F;mbar'], // hPa and mbar are the same
+            },
+            cloudCover: {
+                metric: percent => [percent, '&#x202F;%'],
+                scientific: percent => [round(percent / 100, 2, true), ''],
+                imperial: percent => [percent, '&#x202F;%'],
+            },
+            rainGauge: {
+                metric: mm => [mm, '&#x202F;mm'],
+                scientific: mm => [round(mm / 1000, 3, true), '&#x202F;m'],
+                imperial: mm => [round(mm / 25.4, 2), '&#x202F;in'],
+            },
+        };
+
+        return unitConverter[key][units](data[key]);
+    };
+
+    const getWeatherEmoji = weatherType => {
+        return (
+            weatherType === 0 ? '❓'
+            : weatherType >= 200 && weatherType <= 202 ? '⛈️'
+            : weatherType >= 210 && weatherType <= 221 ? '🌩️'
+            : weatherType >= 230 && weatherType <= 302 ? '⛈️'
+            : weatherType >= 310 && weatherType <= 312 ? '🌧️'
+            : weatherType >= 313 && weatherType <= 321 ? '🌦️'
+            : weatherType >= 500 && weatherType <= 503 ? '🌧️'
+            : weatherType === 504 ? '🌊'
+            : weatherType === 511 ? '❄️'
+            : weatherType >= 520 && weatherType <= 531 ? '🌧️'
+            : weatherType >= 600 && weatherType <= 622 ? '🌨️'
+            : weatherType >= 701 && weatherType <= 761 ? '🌫️'
+            : weatherType === 762 ? '🌋'
+            : weatherType === 771 ? '💨'
+            : weatherType === 781 ? '🌪️'
+            : weatherType === 800 ? '☀️'
+            : weatherType === 801 ? '🌤️'
+            : weatherType === 802 ? '⛅'
+            : weatherType === 803 ? '🌥️'
+            : weatherType === 804 ? '☁️'
+            : '❓'
+        );
+    };
+    const windDirectionToArrow = deg => {
+        const arrows = ['↑', '↗', '→', '↘', '↓', '↙', '←', '↖'];
+        return arrows[Math.round(deg / 45) % 8];
+    };
+
+    const openWeatherDisplayModal = e => {
+        e.preventDefault();
+
+        require(['core/modal_factory'], ({ create, types }) =>
+            weatherProvider().then(data => {
+                create({
+                    type: types.ALERT,
+                    large: true,
+                    scrollable: true,
+                    title: `${getWeatherEmoji(
+                        data.weatherType
+                    )}\xa0${$t('weatherDisplay.title')}`,
+                    body: JSON.stringify(data), // TODO: display weather description here
+                }).then(modal => {
+                    modal.setButtonText(
+                        'cancel',
+                        `${$t('weatherDisplay.close')}`
+                    );
+                    modal.getBody()[0].classList.add('mform');
+
+                    const credits = document.createElement('span');
+                    credits.classList.add('text-muted', 'small', 'mr-auto');
+                    credits.innerHTML = `${$t(
+                        'weatherDisplay.credits._long'
+                    )} <a href="${$t(
+                        `weatherDisplay.credits.${provider}.url`
+                    )}">${$t(`weatherDisplay.credits.${provider}.name`)}</a>`;
+                    modal.getFooter().prepend(credits);
+
+                    modal.show();
+                });
+            }));
+    };
+
+    const weatherBtnWrapper = document.createElement('div');
+    weatherBtnWrapper.id = PREFIX('weather-button');
+    const weatherBtn = document.createElement('a');
+    weatherBtn.innerText = getWeatherEmoji(0);
+    weatherBtn.dataset.originalTitle = $t('weatherDisplay.weatherCodes.0');
+    weatherBtn.classList.add('nav-link', 'position-relative');
+    weatherBtn.href = '#';
+    weatherBtn.role = 'button';
+    weatherBtn.dataset.toggle = 'tooltip';
+    weatherBtn.dataset.placement = 'bottom';
+    weatherBtn.dataset.html = 'true';
+    weatherBtn.addEventListener('click', openWeatherDisplayModal);
+    weatherBtnWrapper.append(weatherBtn);
+
+    ready(() => {
+        document
+            .querySelector('#usernavigation .usermenu-container')
+            ?.before(weatherBtnWrapper);
+    });
+
+    animationInterval(
+        ONE_MINUTE,
+        () => {
+            weatherProvider().then(data => {
+                const weatherEmoji = getWeatherEmoji(data.weatherType);
+                weatherBtn.innerText = weatherEmoji;
+                weatherBtn.dataset.originalTitle = `<strong>${weatherEmoji}\xa0${$t(
+                    `weatherDisplay.weatherCodes.${data.weatherType}`
+                )}</strong><br>🌡️:&nbsp;${displayData('temperature', data).join(
+                    ''
+                )}<br>🪁:&nbsp;${displayData('windSpeed', data).join(
+                    ''
+                )}&nbsp;(${windDirectionToArrow(
+                    data.windDirection
+                )})<br>💦:&nbsp;${displayData('rainGauge', data).join(
+                    ''
+                )}<br><br><small>${$t('weatherDisplay.credits._short')}: ${$t(
+                    `weatherDisplay.credits.${provider}.name`
+                )}<br>${$t(
+                    'weatherDisplay.updated'
+                )}:&nbsp;${timeToString(data.time, false)}</small>`;
+            });
+        },
+        true
+    );
 }
 // endregion
 
