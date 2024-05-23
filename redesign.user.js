@@ -560,6 +560,11 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
                         imperial: 'Imperial (°F, mph, mi, in)', // for weird people
                     },
                 },
+                showTempInNavbar: {
+                    name: 'Temperatur in der Navigationsleiste anzeigen',
+                    description:
+                        'Zeige die aktuelle Temperatur in der Navigationsleiste an.',
+                },
             },
         },
     },
@@ -1087,6 +1092,11 @@ Better-Moodle never requires more than the free plan of the respective provider 
                         scientific: 'SI Units (K, m/s, m, m)',
                         imperial: 'Imperial (°F, mph, mi, in)', // for weird people
                     },
+                },
+                showTempInNavbar: {
+                    name: 'Show temperature in the navigation bar',
+                    description:
+                        'Show the current temperature in the navigation bar.',
                 },
             },
         },
@@ -2741,6 +2751,7 @@ const SETTINGS = [
         settings =>
             settings['weatherDisplay.provider'].inputValue !== 'pirateWeather'
     ),
+    new BooleanSetting('weatherDisplay.showTempInNavbar', false),
     $t('settings.messages._title'),
     new SelectSetting('messages.sendHotkey', '', [
         '',
@@ -4903,6 +4914,7 @@ if (getSetting('weatherDisplay.show')) {
     }; // TODO: Should this be configurable?
     const provider = getSetting('weatherDisplay.provider');
     const units = getSetting('weatherDisplay.units');
+    const showTempInNavbar = getSetting('weatherDisplay.showTempInNavbar');
     const ONE_MINUTE = 1000 * 60;
     const FIVE_MINUTES = ONE_MINUTE * 5;
 
@@ -4920,7 +4932,7 @@ if (getSetting('weatherDisplay.show')) {
 
     const fetchJSON = url =>
         new Promise((resolve, reject) => {
-            console.log('fetching', url);
+            console.log('fetching', url); // TODO: Remove this
             GM_xmlhttpRequest({
                 method: 'GET',
                 url,
@@ -5316,7 +5328,15 @@ if (getSetting('weatherDisplay.show')) {
         const round = (value, precision, fixed = false) => {
             const factor = 10 ** precision;
             const roundedValue = Math.round(value * factor) / factor;
-            return fixed ? roundedValue.toFixed(precision) : roundedValue;
+            return Intl.NumberFormat(
+                BETTER_MOODLE_LANG,
+                fixed ?
+                    {
+                        maximumFractionDigits: precision,
+                        minimumFractionDigits: precision,
+                    }
+                :   { maximumSignificantDigits: precision }
+            ).format(roundedValue);
         };
         const unitConverter = {
             temperature: {
@@ -5364,13 +5384,13 @@ if (getSetting('weatherDisplay.show')) {
             },
             humidity: {
                 metric: percent => [percent, '&#x202F;%'],
-                scientific: percent => [round(percent / 100, 2, true), ''],
+                scientific: percent => [round(percent / 100, 2, true), ''], // TODO: use real SI units (kg/m³)
                 imperial: percent => [percent, '&#x202F;%'],
             },
             pressure: {
                 metric: hPa => [hPa, '&#x202F;hPa'],
                 scientific: hPa => [hPa * 100, '&#x202F;Pa'],
-                imperial: hPa => [hPa, '&#x202F;mbar'], // hPa and mbar are the same
+                imperial: hPa => [hPa * 0.02952998751, '&#x202F;inHg'],
             },
             cloudCover: {
                 metric: percent => [percent, '&#x202F;%'],
@@ -5384,7 +5404,7 @@ if (getSetting('weatherDisplay.show')) {
             },
         };
 
-        return unitConverter[key][units](data[key]);
+        return unitConverter[key][units](Number(data[key])).join('');
     };
 
     const getWeatherEmoji = weatherType => {
@@ -5454,7 +5474,7 @@ if (getSetting('weatherDisplay.show')) {
     const weatherBtnWrapper = document.createElement('div');
     weatherBtnWrapper.id = PREFIX('weather-button');
     const weatherBtn = document.createElement('a');
-    weatherBtn.innerText = getWeatherEmoji(0);
+    weatherBtn.innerText = `${getWeatherEmoji(0)}`;
     weatherBtn.dataset.originalTitle = $t('weatherDisplay.weatherCodes.0');
     weatherBtn.classList.add('nav-link', 'position-relative');
     weatherBtn.href = '#';
@@ -5476,17 +5496,23 @@ if (getSetting('weatherDisplay.show')) {
         () => {
             weatherProvider().then(data => {
                 const weatherEmoji = getWeatherEmoji(data.weatherType);
-                weatherBtn.innerText = weatherEmoji;
+                weatherBtn.innerHTML =
+                    weatherEmoji + (showTempInNavbar ?
+                        ` ${displayData('temperature', data)}`
+                    :   '');
                 weatherBtn.dataset.originalTitle = `<strong>${weatherEmoji}\xa0${$t(
                     `weatherDisplay.weatherCodes.${data.weatherType}`
-                )}</strong><br>🌡️:&nbsp;${displayData('temperature', data).join(
-                    ''
-                )}<br>🪁:&nbsp;${displayData('windSpeed', data).join(
-                    ''
+                )}</strong><br>🌡️:&nbsp;${displayData(
+                    'temperature',
+                    data
+                )}<br>🪁:&nbsp;${displayData(
+                    'windSpeed',
+                    data
                 )}&nbsp;(${windDirectionToArrow(
                     data.windDirection
-                )})<br>💦:&nbsp;${displayData('rainGauge', data).join(
-                    ''
+                )})<br>💦:&nbsp;${displayData(
+                    'rainGauge',
+                    data
                 )}<br><br><small>${$t('weatherDisplay.credits._short')}: ${$t(
                     `weatherDisplay.credits.${provider}.name`
                 )}<br>${$t(
