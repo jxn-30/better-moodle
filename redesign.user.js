@@ -5328,19 +5328,14 @@ if (getSetting('weatherDisplay.show')) {
         const round = (value, precision, fixed = false) => {
             const factor = 10 ** precision;
             const roundedValue = Math.round(value * factor) / factor;
-            return Intl.NumberFormat(
-                BETTER_MOODLE_LANG,
-                fixed ?
-                    {
-                        maximumFractionDigits: precision,
-                        minimumFractionDigits: precision,
-                    }
-                :   { maximumSignificantDigits: precision }
-            ).format(roundedValue);
+            return Intl.NumberFormat(BETTER_MOODLE_LANG, {
+                maximumFractionDigits: precision,
+                minimumFractionDigits: fixed ? precision : 0,
+            }).format(roundedValue);
         };
         const unitConverter = {
             temperature: {
-                metric: celsius => [celsius, '&#x202F;°C'],
+                metric: celsius => [round(celsius, 2), '&#x202F;°C'],
                 scientific: celsius => [
                     round(celsius + 273.15, 2, true),
                     '&#x202F;K',
@@ -5351,7 +5346,7 @@ if (getSetting('weatherDisplay.show')) {
                 ],
             },
             temperatureFeelsLike: {
-                metric: celsius => [celsius, '&#x202F;°C'],
+                metric: celsius => [round(celsius, 2), '&#x202F;°C'],
                 scientific: celsius => [
                     round(celsius + 273.15, 2, true),
                     '&#x202F;K',
@@ -5362,15 +5357,15 @@ if (getSetting('weatherDisplay.show')) {
                 ],
             },
             windDirection: {
-                metric: deg => [deg, '°'],
+                metric: deg => [round(deg, 2), '°'],
                 scientific: deg => [
                     round((deg * Math.PI) / 180, 2, true),
                     '&#x202F;rad',
                 ],
-                imperial: deg => [deg, '°'],
+                imperial: deg => [round(deg, 2), '°'],
             },
             windSpeed: {
-                metric: kmh => [kmh, '&#x202F;km/h'],
+                metric: kmh => [round(kmh, 2), '&#x202F;km/h'],
                 scientific: kmh => [
                     round((kmh * 1000) / 3600, 2, true),
                     '&#x202F;m/s',
@@ -5378,27 +5373,30 @@ if (getSetting('weatherDisplay.show')) {
                 imperial: kmh => [round(kmh / 1.609344, 2), '&#x202F;mph'],
             },
             visibilityDistance: {
-                metric: km => [km, '&#x202F;km'],
-                scientific: km => [km * 1000, '&#x202F;m'],
+                metric: km => [round(km, 2), '&#x202F;km'],
+                scientific: km => [round(km * 1000, 0, true), '&#x202F;m'],
                 imperial: km => [round(km / 1.609344, 2), '&#x202F;mi'],
             },
             humidity: {
-                metric: percent => [percent, '&#x202F;%'],
+                metric: percent => [round(percent, 2), '&#x202F;%'],
                 scientific: percent => [round(percent / 100, 2, true), ''], // TODO: use real SI units (kg/m³)
-                imperial: percent => [percent, '&#x202F;%'],
+                imperial: percent => [round(percent, 2), '&#x202F;%'],
             },
             pressure: {
-                metric: hPa => [hPa, '&#x202F;hPa'],
-                scientific: hPa => [hPa * 100, '&#x202F;Pa'],
-                imperial: hPa => [hPa * 0.02952998751, '&#x202F;inHg'],
+                metric: hPa => [round(hPa, 2), '&#x202F;hPa'],
+                scientific: hPa => [round(hPa * 100, 2, true), '&#x202F;Pa'],
+                imperial: hPa => [
+                    round(hPa * 0.02952998751, 2),
+                    '&#x202F;inHg',
+                ],
             },
             cloudCover: {
-                metric: percent => [percent, '&#x202F;%'],
+                metric: percent => [round(percent, 2), '&#x202F;%'],
                 scientific: percent => [round(percent / 100, 2, true), ''],
-                imperial: percent => [percent, '&#x202F;%'],
+                imperial: percent => [round(percent, 2), '&#x202F;%'],
             },
             rainGauge: {
-                metric: mm => [mm, '&#x202F;mm'],
+                metric: mm => [round(mm, 2), '&#x202F;mm'],
                 scientific: mm => [round(mm / 1000, 3, true), '&#x202F;m'],
                 imperial: mm => [round(mm / 25.4, 2), '&#x202F;in'],
             },
@@ -5497,7 +5495,8 @@ if (getSetting('weatherDisplay.show')) {
             weatherProvider().then(data => {
                 const weatherEmoji = getWeatherEmoji(data.weatherType);
                 weatherBtn.innerHTML =
-                    weatherEmoji + (showTempInNavbar ?
+                    weatherEmoji +
+                    (showTempInNavbar ?
                         ` ${displayData('temperature', data)}`
                     :   '');
                 weatherBtn.dataset.originalTitle = `<strong>${weatherEmoji}\xa0${$t(
