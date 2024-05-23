@@ -565,6 +565,11 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
                     description:
                         'Zeige die aktuelle Temperatur in der Navigationsleiste an.',
                 },
+                toggleFeelsLike: {
+                    name: 'Gefühlte Temperatur anzeigen',
+                    description:
+                        'Ermöglicht das Umschalten zwischen der tatsächlichen Temperatur und der gefühlten Temperatur.',
+                },
             },
         },
     },
@@ -1097,6 +1102,11 @@ Better-Moodle never requires more than the free plan of the respective provider 
                     name: 'Show temperature in the navigation bar',
                     description:
                         'Show the current temperature in the navigation bar.',
+                },
+                toggleFeelsLike: {
+                    name: "Show 'feels like' temperature",
+                    description:
+                        "Allows you to switch between the actual temperature and the 'feels like' temperature.",
                 },
             },
         },
@@ -2752,6 +2762,7 @@ const SETTINGS = [
             settings['weatherDisplay.provider'].inputValue !== 'pirateWeather'
     ),
     new BooleanSetting('weatherDisplay.showTempInNavbar', false),
+    new BooleanSetting('weatherDisplay.toggleFeelsLike', false),
     $t('settings.messages._title'),
     new SelectSetting('messages.sendHotkey', '', [
         '',
@@ -4915,6 +4926,7 @@ if (getSetting('weatherDisplay.show')) {
     const provider = getSetting('weatherDisplay.provider');
     const units = getSetting('weatherDisplay.units');
     const showTempInNavbar = getSetting('weatherDisplay.showTempInNavbar');
+    const toggleFeelsLike = getSetting('weatherDisplay.toggleFeelsLike');
     const ONE_MINUTE = 1000 * 60;
     const FIVE_MINUTES = ONE_MINUTE * 5;
 
@@ -5497,14 +5509,21 @@ if (getSetting('weatherDisplay.show')) {
                 weatherBtn.innerHTML =
                     weatherEmoji +
                     (showTempInNavbar ?
-                        ` ${displayData('temperature', data)}`
+                        ` ${displayData(
+                            toggleFeelsLike ?
+                                'temperatureFeelsLike'
+                            :   'temperature',
+                            data
+                        )}`
                     :   '');
                 weatherBtn.dataset.originalTitle = `<strong>${weatherEmoji}\xa0${$t(
                     `weatherDisplay.weatherCodes.${data.weatherType}`
-                )}</strong><br>🌡️:&nbsp;${displayData(
-                    'temperature',
-                    data
-                )}<br>🪁:&nbsp;${displayData(
+                )}</strong><br>🌡️:&nbsp;${
+                    displayData('temperature', data) +
+                    (toggleFeelsLike ?
+                        ` (${displayData('temperatureFeelsLike', data)})`
+                    :   '')
+                }<br>🪁:&nbsp;${displayData(
                     'windSpeed',
                     data
                 )}&nbsp;(${windDirectionToArrow(
