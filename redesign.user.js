@@ -2373,7 +2373,7 @@ class SelectSetting extends Setting {
 
 /** @type {Array<Setting | string>} */
 const SETTINGS = [
-    $t('settings.general._title'),
+    'general',
     new BooleanSetting('general.updateNotification', true),
     new SelectSetting('general.language', 'auto', [
         'auto',
@@ -2389,7 +2389,7 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     new BooleanSetting('general.semesterzeiten', false),
-    $t('settings.darkmode._title'),
+    'darkmode',
     $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
         () => updateDarkReaderMode(true)
@@ -2414,7 +2414,7 @@ const SETTINGS = [
             settings => settings['darkmode.mode'].inputValue === 'off'
         )
         .onInput(debounce(() => updateDarkReaderMode(true))),
-    $t('settings.dashboard._title'),
+    'dashboard',
     // {Layout anpassen}
     new StringSetting(
         'dashboard.~layoutPlaceholder',
@@ -2427,7 +2427,7 @@ const SETTINGS = [
         getCourseGroupingOptions()
     ),
     new BooleanSetting('dashboard.courseListFavouritesAtTop', true),
-    $t('settings.myCourses._title'),
+    'myCourses',
     new SliderSetting('myCourses.boxesPerRow', 4, 1, 10),
     new BooleanSetting('myCourses.navbarDropdown', true),
     new SelectSetting(
@@ -2443,7 +2443,7 @@ const SETTINGS = [
     ).setDisabledFn(
         settings => !settings['myCourses.navbarDropdown'].inputValue
     ),
-    $t('settings.courses._title'),
+    'courses',
     new BooleanSetting('courses.grades', true),
     new BooleanSetting('courses.gradesNewTab', false).setDisabledFn(
         settings => !settings['courses.grades'].inputValue
@@ -2452,7 +2452,7 @@ const SETTINGS = [
     new BooleanSetting('courses.imgMaxWidth', true),
     new BooleanSetting('courses.imageZoom', true),
     new BooleanSetting('courses.hideSelfEnrolHint', false),
-    $t('settings.clock._title'),
+    'clock',
     new BooleanSetting('clock.clock', false),
     new BooleanSetting('clock.clock.seconds', true).setDisabledFn(
         settings => !settings['clock.clock'].inputValue
@@ -2465,7 +2465,7 @@ const SETTINGS = [
         'day',
         'week',
     ]).setDisabledFn(settings => !settings['clock.fuzzyClock'].inputValue),
-    $t('settings.messages._title'),
+    'messages',
     new SelectSetting('messages.sendHotkey', '', [
         '',
         'shiftEnter',
@@ -4724,7 +4724,7 @@ ready(() => {
      */
     const createSettingsFieldset = name => {
         const fieldset = createFieldset(
-            name,
+            $t(`settings.${name}._title`),
             `settings-collapseElement-${fieldsetCounter}`,
             `settings-containerElement-${fieldsetCounter}`
         );
