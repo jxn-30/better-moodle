@@ -4873,7 +4873,7 @@ ready(() => {
                 'pt-0'
             );
             const label = document.createElement('label');
-            label.classList.add('d-inline', 'word-break-all');
+            label.classList.add('d-inline', 'word-break');
             label.textContent = setting.title;
             setting.setLabel(label);
 
