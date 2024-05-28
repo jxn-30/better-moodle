@@ -2536,6 +2536,7 @@ if (seenSettings.size === 0) {
     // okay, we want to show those two as NEW to give users a hint for new settings and that there are settings
     seenSettings.delete('general.highlightNewSettings');
     seenSettings.delete('general.highlightNewSettings.navbar');
+    storeSeenSettings(); // need to store again
 }
 /** @type {Set<string>} */
 const unseenSettings =
