@@ -2402,7 +2402,12 @@ const SETTINGS = [
         ...Object.keys(TRANSLATIONS),
     ]),
     new BooleanSetting('general.highlightNewSettings', true),
-    new BooleanSetting('general.highlightNewSettings.navbar', true),
+    new BooleanSetting(
+        'general.highlightNewSettings.navbar',
+        true
+    ).setDisabledFn(
+        settings => !settings['general.highlightNewSettings'].inputValue
+    ),
     new BooleanSetting('general.fullwidth', true),
     new BooleanSetting('general.externalLinks', true),
     new BooleanSetting('general.truncatedTexts', true),
