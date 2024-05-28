@@ -2521,6 +2521,11 @@ const markAllSettingsAsSeen = () => {
 
     storeSeenSettings();
 };
+const newSettingBadgeAnimations = {
+    sparkling: PREFIX('new-setting-badge-sparkling'),
+    sparklePositions: PREFIX('new-setting-badge-sparkle-positions'),
+    shining: PREFIX('new-setting-badge-shining'),
+};
 GM_addStyle(`
 /* add a small margin for "NEW!"-Badges in settings */
 form fieldset h3 .${newSettingBadgeClass} {
@@ -2528,6 +2533,86 @@ form fieldset h3 .${newSettingBadgeClass} {
 }
 form .fitem label .${newSettingBadgeClass} {
     margin-right: 1ch;
+}
+
+/* nice effects on the \`New!\`-Badge, but only if user allows animations */
+@media (prefers-reduced-motion: no-preference) {
+    .${newSettingBadgeClass} {
+        position: relative;    
+        /* add a shining effect */
+        background-image: linear-gradient(-75deg, transparent 0%, rgba(255, 255, 255, 75%) 15%, transparent 30%, transparent 100%);
+        animation: ${newSettingBadgeAnimations.shining} 5s ease-in-out infinite;
+        background-size: 200%;
+        background-repeat: no-repeat
+    }
+    
+    /* add fancy sparkles ✨ to the \`New!\`-Badge */
+    .${newSettingBadgeClass}::before {
+        display: inline-block;
+        content: " ";
+        position: absolute;
+        background: linear-gradient(to top, gold 50%, white 100%);
+        --height: 1lh;
+        height: var(--height);
+        width: calc(var(--height) * 11 / 18);
+        /* stolen from https://css-shape.com/sparkle/ */
+        mask: radial-gradient(#0000 71%, #000 72%) 10000% 10000%/99.5% 99.5%;
+        transform: translate(-50%, -50%);
+        transform-origin: top left;
+        top: 0;
+        left: 0;
+        animation:
+            ${newSettingBadgeAnimations.sparkling} 1s ease-in-out infinite alternate,
+            ${newSettingBadgeAnimations.sparklePositions} 6s step-start infinite;
+    }
+}
+@keyframes ${newSettingBadgeAnimations.shining} {
+    0% {
+        background-position: 200% 0;
+    }
+    20% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+@keyframes ${newSettingBadgeAnimations.sparkling} {
+    0% { /* 1s => 0 ms, 2000ms */
+        scale: 0;
+    }
+    10% { /* 1s => 100ms, 1900ms */
+        scale: 0;
+    }
+    100% { /* 1s => 1000ms */
+        scale: 1;
+    }
+}
+@keyframes ${newSettingBadgeAnimations.sparklePositions} {
+    0% {
+        top: 4%;
+        left: 14%
+    }
+    32% {
+        top: 4%;
+        left: 14%
+    }
+    33% {
+        top: 85%;
+        left: 51%;
+    }
+    65% {
+        top: 85%;
+        left: 51%;
+    }
+    66% {
+        top: 32%;
+        left: 87%;
+    }
+    100% {
+        top: 32%;
+        left: 87%;
+    }
 }
 `);
 // let's add all current settings in first place
