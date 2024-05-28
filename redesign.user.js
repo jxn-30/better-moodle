@@ -2593,23 +2593,11 @@ form .fitem label .${newSettingBadgeClass} {
         top: 4%;
         left: 14%
     }
-    32% {
-        top: 4%;
-        left: 14%
-    }
     33% {
         top: 85%;
         left: 51%;
     }
-    65% {
-        top: 85%;
-        left: 51%;
-    }
     66% {
-        top: 32%;
-        left: 87%;
-    }
-    100% {
         top: 32%;
         left: 87%;
     }
