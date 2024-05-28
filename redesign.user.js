@@ -29,6 +29,7 @@
 // region translations
 const TRANSLATIONS = {
     de: {
+        new: 'Neu!',
         sidebar: {
             open: 'Blockleiste öffnen',
             close: 'Blockleiste schließen',
@@ -224,6 +225,11 @@ Viele Grüße
                     name: 'Benachrichtigung bei Better-Moodle Updates',
                     description:
                         'Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für Better-Moodle gibt.',
+                },
+                highlightNewSettings: {
+                    name: 'Neue Einstellungen hervorheben',
+                    description:
+                        'Informiert, welche Einstellungen neu sind, wenn es neue Einstellungen gibt.',
                 },
                 fullwidth: {
                     name: 'Volle Breite',
@@ -436,6 +442,7 @@ Viele Grüße
         },
     },
     en: {
+        new: 'New!',
         sidebar: {
             open: 'Open sidebar',
             close: 'Close sidebar',
@@ -2379,6 +2386,8 @@ const SETTINGS = [
         'auto',
         ...Object.keys(TRANSLATIONS),
     ]),
+    new BooleanSetting('general.highlightNewSettings', true),
+    new BooleanSetting('general.highlightNewSettings.navbar', true),
     new BooleanSetting('general.fullwidth', true),
     new BooleanSetting('general.externalLinks', true),
     new BooleanSetting('general.truncatedTexts', true),
@@ -2475,6 +2484,55 @@ const SETTINGS = [
 const settingsById = Object.fromEntries(
     SETTINGS.filter(s => typeof s !== 'string').map(s => [s.id, s])
 );
+
+const allSettingsIds = new Set(Object.keys(settingsById));
+const SEEN_SETTINGS_KEY = PREFIX('seen-settings');
+let settingsBtnNewTooltip;
+/** @type {Set<string>} */
+const seenSettings = new Set(GM_getValue(SEEN_SETTINGS_KEY, []));
+const storeSeenSettings = () =>
+    GM_setValue(SEEN_SETTINGS_KEY, Array.from(seenSettings));
+const markAllSettingsAsSeen = () => {
+    allSettingsIds.forEach(id => seenSettings.add(id));
+    document
+        .querySelectorAll('.new-settings-badge')
+        ?.forEach(el => el.remove());
+    settingsBtnNewTooltip?.dispose();
+
+    storeSeenSettings();
+};
+GM_addStyle(`
+/* add a small margin for "NEW!"-Badges in settings */
+form fieldset h3 .new-setting-badge {
+    margin-left: 1ch;
+}
+form .fitem label .new-setting-badge {
+    margin-right: 1ch;
+}
+`);
+// let's add all current settings in first place
+if (seenSettings.size === 0) {
+    markAllSettingsAsSeen();
+
+    // okay, we want to show those two as NEW to give users a hint for new settings and that there are settings
+    seenSettings.delete('general.highlightNewSettings');
+    seenSettings.delete('general.highlightNewSettings.navbar');
+}
+/** @type {Set<string>} */
+const unseenSettings =
+    allSettingsIds.difference?.(seenSettings) ?? // New Set methods are a stage 2 proposal and do have limited availability: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/difference
+    new Set(
+        ...Array.from(allSettingsIds.values()).filter(
+            id => !seenSettings.has(id)
+        )
+    );
+/** @type {Map<string, number>} */
+const unseenSettingsGroups = new Map();
+unseenSettings.forEach(id => {
+    const group = id.split('.')[0];
+    if (!unseenSettingsGroups.has(group)) unseenSettingsGroups.set(group, 0);
+    unseenSettingsGroups.set(group, unseenSettingsGroups.get(group) + 1);
+});
 // endregion
 
 // region Feature: general.fullwidth
@@ -4678,6 +4736,7 @@ ready(() => {
 
     const settingsBtnWrapper = document.createElement('div');
     const settingsBtn = document.createElement('a');
+    settingsBtn.id = PREFIX('settings-btn');
     settingsBtn.classList.add(
         'nav-link',
         'position-relative',
@@ -4686,10 +4745,11 @@ ready(() => {
     settingsBtn.href = '#';
     settingsBtn.role = 'button';
     const settingsIcon = document.createElement('i');
+    settingsIcon.title =
+        settingsBtn.title =
+        settingsBtn.ariaLabel =
+            `Better-Moodle:\xa0${$t('modals.settings.title').toString()}`;
     settingsIcon.classList.add('icon', 'fa', 'fa-gears', 'fa-fw');
-    settingsIcon.title = settingsBtn.ariaLabel = `Better-Moodle:\xa0${$t(
-        'modals.settings.title'
-    ).toString()}`;
     settingsIcon.role = 'img';
     settingsBtn.append(settingsIcon);
 
@@ -4730,6 +4790,22 @@ ready(() => {
         );
         currentFieldset = fieldset.fieldset;
         form.append(currentFieldset);
+
+        if (
+            unseenSettingsGroups.has(name) &&
+            getSetting('general.highlightNewSettings')
+        ) {
+            const newBadge = document.createElement('span');
+            newBadge.classList.add(
+                'badge',
+                'badge-success',
+                'text-uppercase',
+                'new-setting-badge'
+            );
+            newBadge.textContent = $t('new').toString();
+            newBadge.dataset.group = name;
+            fieldset.heading.append(newBadge);
+        }
 
         // on first fieldset, show the help button
         if (!fieldsetCounter) fieldset.heading.append(helpBtn);
@@ -4775,9 +4851,26 @@ ready(() => {
                 'pt-0'
             );
             const label = document.createElement('label');
-            label.classList.add('d-inline', 'word-break');
+            label.classList.add('d-inline', 'word-break-all');
             label.textContent = setting.title;
             setting.setLabel(label);
+
+            if (
+                unseenSettings.has(setting.id) &&
+                getSetting('general.highlightNewSettings')
+            ) {
+                const newBadge = document.createElement('span');
+                newBadge.classList.add(
+                    'badge',
+                    'badge-success',
+                    'text-uppercase',
+                    'd-inline',
+                    'new-setting-badge'
+                );
+                newBadge.textContent = $t('new').toString();
+                newBadge.dataset.setting = setting.id;
+                label.prepend(newBadge);
+            }
 
             const descWrapper = document.createElement('div');
             descWrapper.classList.add(
@@ -4866,6 +4959,22 @@ ready(() => {
     document
         .querySelector('#usernavigation .usermenu-container')
         ?.before(settingsBtnWrapper);
+    if (
+        unseenSettings.size &&
+        getSetting('general.highlightNewSettings.navbar')
+    ) {
+        require(['theme_boost/bootstrap/tooltip'], Tooltip => {
+            settingsIcon.title = $t('new').toString(); // otherwise it for some reason would use the original title although another title has been explicitely set
+            settingsBtnNewTooltip = new Tooltip(settingsIcon, {
+                trigger: 'manual',
+                title: $t('new'),
+                template:
+                    '<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner badge bg-success text-uppercase"></div></div>',
+            });
+            settingsBtnNewTooltip.show();
+        });
+    }
+
     require(['core/modal_factory', 'core/modal_events'], (
         { create, types },
         ModalEvents
@@ -4904,6 +5013,22 @@ ready(() => {
             // open the modal on click onto the settings button
             settingsBtnWrapper.addEventListener('click', () => {
                 updateCheck().then();
+                if (settingsBtnNewTooltip) {
+                    settingsBtnNewTooltip.hide();
+                    // now show and hide based on hovering / focusing settings btn (there doesn't seem to be a native way to do so)
+                    const show = () => settingsBtnNewTooltip.show();
+                    const hide = () => settingsBtnNewTooltip.hide();
+                    settingsBtn.addEventListener('mouseenter', show);
+                    settingsBtn.addEventListener('focusin', show);
+                    settingsBtn.addEventListener('mouseleave', hide);
+                    settingsBtn.addEventListener('focusout', hide);
+                    settingsBtnNewTooltip
+                        .getTipElement()
+                        .addEventListener('mouseenter', show);
+                    settingsBtnNewTooltip
+                        .getTipElement()
+                        .addEventListener('mouseleave', hide);
+                }
                 modal.show();
             });
 
@@ -4936,6 +5061,8 @@ ready(() => {
                     setting.saveInput();
                 });
 
+                markAllSettingsAsSeen();
+
                 window.location.reload();
             });
             modal.getRoot().on(ModalEvents.cancel, () => {
@@ -4944,6 +5071,7 @@ ready(() => {
 
                     setting.resetInput();
                 });
+                markAllSettingsAsSeen();
                 updateDarkReaderMode();
             });
             // endregion
