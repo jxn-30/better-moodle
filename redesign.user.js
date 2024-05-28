@@ -230,6 +230,11 @@ Viele Grüße
                     name: 'Neue Einstellungen hervorheben',
                     description:
                         'Informiert, welche Einstellungen neu sind, wenn es neue Einstellungen gibt.',
+                    navbar: {
+                        name: 'Hinweis zu neuen Einstellungen auf dem Einstellungs-Knopf',
+                        description:
+                            'Zeigt ein schickes Tooltip am Einstellungs-Knopf in der Navigationsleiste an, wenn es neue Einstellungen gibt.',
+                    },
                 },
                 fullwidth: {
                     name: 'Volle Breite',
@@ -641,6 +646,16 @@ Best regards
                     name: 'Notification for Better-Moodle updates',
                     description:
                         'Displays a small red dot by the cogs in the navigation bar when there is an update for Better-Moodle.',
+                },
+                highlightNewSettings: {
+                    name: 'Highlight new settings',
+                    description:
+                        'Highlights which settings are new, if there are any new settings.',
+                    navbar: {
+                        name: 'Note for new settings on settings button',
+                        description:
+                            'Shows a nice tooltip informing about new settings on the settings button in navbar if there are any unseen settings.',
+                    },
                 },
                 fullwidth: {
                     name: 'Full width',
