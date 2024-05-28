@@ -2541,9 +2541,7 @@ if (seenSettings.size === 0) {
 const unseenSettings =
     allSettingsIds.difference?.(seenSettings) ?? // New Set methods are a stage 2 proposal and do have limited availability: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/difference
     new Set(
-        ...Array.from(allSettingsIds.values()).filter(
-            id => !seenSettings.has(id)
-        )
+        Array.from(allSettingsIds.values()).filter(id => !seenSettings.has(id))
     );
 /** @type {Map<string, number>} */
 const unseenSettingsGroups = new Map();
