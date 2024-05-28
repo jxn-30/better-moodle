@@ -2519,6 +2519,8 @@ const markAllSettingsAsSeen = () => {
         ?.forEach(el => el.remove());
     settingsBtnNewTooltip?.dispose();
 
+    settingsBtnNewTooltip = null;
+
     storeSeenSettings();
 };
 GM_addStyle(`
@@ -5036,8 +5038,8 @@ ready(() => {
                 if (settingsBtnNewTooltip) {
                     settingsBtnNewTooltip.hide();
                     // now show and hide based on hovering / focusing settings btn (there doesn't seem to be a native way to do so)
-                    const show = () => settingsBtnNewTooltip.show();
-                    const hide = () => settingsBtnNewTooltip.hide();
+                    const show = () => settingsBtnNewTooltip?.show();
+                    const hide = () => settingsBtnNewTooltip?.hide();
                     settingsBtn.addEventListener('mouseenter', show);
                     settingsBtn.addEventListener('focusin', show);
                     settingsBtn.addEventListener('mouseleave', hide);
