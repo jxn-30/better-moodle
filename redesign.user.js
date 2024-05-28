@@ -4981,95 +4981,95 @@ if (getSetting('weatherDisplay.show')) {
                             data.current_condition[0].weatherCode
                         ).valueOf()
                     ) {
-                        case 113:
+                        case 113: // Clear/Sunny
                             return 800;
-                        case 116:
+                        case 116: // Partly Cloudy
                             return 802;
-                        case 119:
+                        case 119: // Cloudy
                             return 803;
-                        case 122:
+                        case 122: // Overcast
                             return 804;
-                        case 143:
+                        case 143: // Mist
                             return 701;
-                        case 176:
+                        case 176: // Patchy rain nearby
                             return 500;
-                        case 179:
+                        case 179: // Patchy snow nearby
                             return 600;
-                        case 182:
-                        case 185:
+                        case 182: // Patchy sleet nearby
+                        case 185: // Patchy freezing drizzle nearby
                             return 612;
-                        case 200:
+                        case 200: // Thundery outbreaks in nearby
                             return 210;
-                        case 227:
+                        case 227: // Blowing snow
                             return 601;
-                        case 230:
+                        case 230: // Blizzard
                             return 602;
-                        case 248:
-                        case 260:
+                        case 248: // Fog
+                        case 260: // Freezing fog
                             return 741;
-                        case 263:
-                        case 266:
+                        case 263: // Patchy light drizzle
+                        case 266: // Light drizzle
                             return 300;
-                        case 281:
+                        case 281: // Freezing drizzle
                             return 611;
-                        case 284:
+                        case 284: // Heavy freezing drizzle
                             return 511;
-                        case 293:
+                        case 293: // Patchy light rain
                             return 301;
-                        case 296:
+                        case 296: // Light rain
                             return 500;
-                        case 299:
+                        case 299: // Moderate rain at times
                             return 521;
-                        case 302:
+                        case 302: // Moderate rain
                             return 501;
-                        case 305:
+                        case 305: // Heavy rain at times
                             return 522;
-                        case 308:
+                        case 308: // Heavy rain
                             return 502;
-                        case 311:
+                        case 311: // Light freezing rain
                             return 611;
-                        case 314:
+                        case 314: // Moderate or Heavy freezing rain
                             return 511;
-                        case 317:
+                        case 317: // Light sleet
                             return 612;
-                        case 320:
+                        case 320: // Moderate or heavy sleet
                             return 613;
-                        case 323:
-                        case 326:
+                        case 323: // Patchy light snow
+                        case 326: // Light snow
                             return 600;
-                        case 329:
-                        case 332:
+                        case 329: // Patchy moderate snow
+                        case 332: // Moderate snow
                             return 601;
-                        case 335:
-                        case 338:
+                        case 335: // Patchy heavy snow
+                        case 338: // Heavy snow
                             return 602;
-                        case 350:
+                        case 350: // Ice pellets
                             return 511;
-                        case 353:
+                        case 353: // Light rain shower
                             return 520;
-                        case 356:
+                        case 356: // Moderate or heavy rain shower
                             return 521;
-                        case 359:
+                        case 359: // Torrential rain shower
                             return 504;
-                        case 362:
+                        case 362: // Light sleet showers
                             return 612;
-                        case 365:
+                        case 365: // Moderate or heavy sleet showers
                             return 613;
-                        case 368:
+                        case 368: // Light snow showers
                             return 620;
-                        case 371:
+                        case 371: // Moderate or heavy snow showers
                             return 621;
-                        case 374:
+                        case 374: // Light showers of ice pellets
                             return 511;
-                        case 377:
+                        case 377: // Moderate or heavy showers of ice pellets
                             return 511;
-                        case 386:
+                        case 386: // Patchy light rain in area with thunder
                             return 200;
-                        case 389:
+                        case 389: // Moderate or heavy rain in area with thunder
                             return 201;
-                        case 392:
+                        case 392: // Patchy light snow in area with thunder
                             return 200;
-                        case 395:
+                        case 395: // Moderate or heavy snow in area with thunder
                             return 202;
                         default:
                             console.warn(
@@ -5110,58 +5110,58 @@ if (getSetting('weatherDisplay.show')) {
             }
             const weatherType = (() => {
                 switch (data.current.weather_code) {
-                    case 0:
+                    case 0: // Clear
                         return 800;
-                    case 1:
+                    case 1: // Mostly Clear 
                         return 801;
-                    case 2:
+                    case 2: // Partly Cloudy
                         return 802;
-                    case 3:
+                    case 3: // Cloudy
                         return 804;
-                    case 45:
-                    case 48:
+                    case 45: // Fog
+                    case 48: // Freezing Fog
                         return 741;
-                    case 51:
+                    case 51: // Light Drizzle
                         return 300;
-                    case 53:
+                    case 53: // Drizzle
                         return 301;
-                    case 55:
+                    case 55: // Heavy Drizzle
                         return 302;
-                    case 56:
+                    case 56: // Light Freezing Drizzle
                         return 612;
-                    case 57:
+                    case 57: // Freezing Drizzle
                         return 613;
-                    case 61:
+                    case 61: // Light Rain
                         return 500;
-                    case 63:
+                    case 63: // Rain
                         return 501;
-                    case 65:
+                    case 65: // Heavy Rain
                         return 502;
-                    case 66:
-                    case 67:
+                    case 66: // Light Freezing Rain
+                    case 67: // Freezing Rain
                         return 511;
-                    case 71:
+                    case 71: // Light Snow
                         return 600;
-                    case 73:
+                    case 73: // Snow
                         return 601;
-                    case 75:
+                    case 75: // Heavy Snow
                         return 602;
-                    case 77:
+                    case 77: // Snow Grains
                         return 611;
-                    case 80:
+                    case 80: // Light Rain Shower
                         return 520;
-                    case 81:
+                    case 81: // Rain Shower
                         return 521;
-                    case 82:
+                    case 82: // Heavy Rain Shower
                         return 522;
-                    case 85:
+                    case 85: // Snow Shower
                         return 620;
-                    case 86:
+                    case 86: // Heavy Snow Shower
                         return 621;
-                    case 95:
+                    case 95: // Thunderstorm
                         return 211;
-                    case 96:
-                    case 99:
+                    case 96: // Hailstorm
+                    case 99: // Heavy Hailstorm
                         return 511;
                     default:
                         console.warn(
