@@ -2514,9 +2514,6 @@ const storeSeenSettings = () =>
     GM_setValue(SEEN_SETTINGS_KEY, Array.from(seenSettings));
 const markAllSettingsAsSeen = () => {
     allSettingsIds.forEach(id => seenSettings.add(id));
-    document
-        .querySelectorAll('.new-settings-badge')
-        ?.forEach(el => el.remove());
     settingsBtnNewTooltip?.dispose();
 
     settingsBtnNewTooltip = null;
