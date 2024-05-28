@@ -2507,6 +2507,7 @@ const settingsById = Object.fromEntries(
 
 const allSettingsIds = new Set(Object.keys(settingsById));
 const SEEN_SETTINGS_KEY = PREFIX('seen-settings');
+const newSettingBadgeClass = PREFIX('new-setting-badge');
 let settingsBtnNewTooltip;
 /** @type {Set<string>} */
 const seenSettings = new Set(GM_getValue(SEEN_SETTINGS_KEY, []));
@@ -2522,10 +2523,10 @@ const markAllSettingsAsSeen = () => {
 };
 GM_addStyle(`
 /* add a small margin for "NEW!"-Badges in settings */
-form fieldset h3 .new-setting-badge {
+form fieldset h3 .${newSettingBadgeClass} {
     margin-left: 1ch;
 }
-form .fitem label .new-setting-badge {
+form .fitem label .${newSettingBadgeClass} {
     margin-right: 1ch;
 }
 `);
@@ -4818,7 +4819,7 @@ ready(() => {
                 'badge',
                 'badge-success',
                 'text-uppercase',
-                'new-setting-badge'
+                newSettingBadgeClass
             );
             newBadge.textContent = $t('new').toString();
             newBadge.dataset.group = name;
@@ -4883,7 +4884,7 @@ ready(() => {
                     'badge-success',
                     'text-uppercase',
                     'd-inline',
-                    'new-setting-badge'
+                    newSettingBadgeClass
                 );
                 newBadge.textContent = $t('new').toString();
                 newBadge.dataset.setting = setting.id;
