@@ -5060,8 +5060,7 @@ ready(() => {
             settingsBtnNewTooltip = new Tooltip(settingsIcon, {
                 trigger: 'manual',
                 title: $t('new'),
-                template:
-                    '<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner badge bg-success text-uppercase"></div></div>',
+                template: `<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner badge bg-success text-uppercase ${newSettingBadgeClass}"></div></div>`,
             });
             settingsBtnNewTooltip.show();
         });
