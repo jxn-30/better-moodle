@@ -5230,6 +5230,10 @@ ready(() => {
                         )) {
                             const bottom = badge.getBoundingClientRect().bottom;
                             if (bottom > floatingBadgeBottom) {
+                                badge
+                                    .closest('.ftoggler')
+                                    ?.querySelector('a.fheader.collapsed')
+                                    ?.click();
                                 badge.scrollIntoView({
                                     block: 'center',
                                     behavior: 'smooth',
@@ -5241,15 +5245,14 @@ ready(() => {
                     });
 
                     if (lastNewSettingsBadge) {
+                        const debouncedUpdate = debounce(
+                            updateFloatingNewSettingsBadgeStyle,
+                            25
+                        );
                         modal
                             .getBody()[0]
-                            .addEventListener(
-                                'scroll',
-                                debounce(
-                                    updateFloatingNewSettingsBadgeStyle,
-                                    10
-                                )
-                            );
+                            .addEventListener('scroll', debouncedUpdate);
+                        new ResizeObserver(debouncedUpdate).observe(form);
                     }
 
                     modal.getBody()[0].append(floatingNewSettingsBadge);
