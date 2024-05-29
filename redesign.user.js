@@ -5160,6 +5160,100 @@ ready(() => {
                         .addEventListener('mouseleave', hide);
                 }
                 modal.show();
+
+                // there are unseen settings groups => show a floating `New!`-Badge
+                if (unseenSettingsGroups.size) {
+                    const floatingNewSettingsBadge =
+                        document.createElement('span');
+                    floatingNewSettingsBadge.classList.add(
+                        'badge',
+                        'badge-success',
+                        'text-uppercase',
+                        newSettingBadgeClass
+                    );
+                    floatingNewSettingsBadge.id = PREFIX(
+                        'new-settings-floating-badge'
+                    );
+                    floatingNewSettingsBadge.textContent = `\xa0⬇️\xa0${$t('new')}\xa0⬇️\xa0`;
+
+                    GM_addStyle(`
+                        #${floatingNewSettingsBadge.id} {
+                            position: sticky;
+                            left: 50%;
+                            bottom: 0;
+                            transform: translateX(-50%);
+                            z-index: 1;
+                            cursor: pointer;
+                            box-shadow: 2px 2px 2px rgba(50%, 50%, 50%, 50%);
+                        }
+                        #${floatingNewSettingsBadge.id}.invisible {
+                            visibility: hidden;
+                        }
+                    `);
+
+                    /** @type {HTMLSpanElement|null} */
+                    const lastNewSettingsBadge = Array.from(
+                        form.querySelectorAll(
+                            `fieldset h3 .${newSettingBadgeClass}`
+                        )
+                    )?.at(-1);
+
+                    const updateFloatingNewSettingsBadgeStyle = () => {
+                        const { top: lastBadgeTop, bottom: lastBadgeBottom } =
+                            lastNewSettingsBadge.getBoundingClientRect();
+                        const { bottom: floatingBadgeBottom } =
+                            floatingNewSettingsBadge.getBoundingClientRect();
+
+                        // calculate how much opacity needed
+                        const height = lastBadgeBottom - lastBadgeTop;
+                        const overlap = floatingBadgeBottom - lastBadgeTop;
+                        const opacity =
+                            floatingBadgeBottom < lastBadgeTop ? 1
+                            : floatingBadgeBottom > lastBadgeBottom ? 0
+                            : 1 - Math.min(1, overlap ? overlap / height : 0);
+                        floatingNewSettingsBadge.style.setProperty(
+                            'opacity',
+                            opacity.toString()
+                        );
+                        floatingNewSettingsBadge.classList.toggle(
+                            'invisible',
+                            !opacity
+                        );
+                    };
+
+                    floatingNewSettingsBadge.addEventListener('click', () => {
+                        const floatingBadgeBottom =
+                            floatingNewSettingsBadge.getBoundingClientRect()
+                                .bottom;
+                        for (const badge of form.querySelectorAll(
+                            `fieldset h3 .${newSettingBadgeClass}`
+                        )) {
+                            const bottom = badge.getBoundingClientRect().bottom;
+                            if (bottom > floatingBadgeBottom) {
+                                badge.scrollIntoView({
+                                    block: 'center',
+                                    behavior: 'smooth',
+                                    inline: 'nearest',
+                                });
+                                return;
+                            }
+                        }
+                    });
+
+                    if (lastNewSettingsBadge) {
+                        modal
+                            .getBody()[0]
+                            .addEventListener(
+                                'scroll',
+                                debounce(
+                                    updateFloatingNewSettingsBadgeStyle,
+                                    10
+                                )
+                            );
+                    }
+
+                    modal.getBody()[0].append(floatingNewSettingsBadge);
+                }
             });
 
             // region link to moodle settings
