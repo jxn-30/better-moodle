@@ -2511,8 +2511,46 @@ const allSettingsIds = new Set(Object.keys(settingsById));
 const SEEN_SETTINGS_KEY = PREFIX('seen-settings');
 const newSettingBadgeClass = PREFIX('new-setting-badge');
 let settingsBtnNewTooltip;
+// these are the settings that existed before "highlight new settings" was introduced
+const existingSettings = new Set([
+    'general.updateNotification',
+    'general.language',
+    'general.fullwidth',
+    'general.externalLinks',
+    'general.truncatedTexts',
+    'general.bookmarkManager',
+    'general.noDownload',
+    'general.eventAdvertisements',
+    'general.christmasCountdown',
+    'general.speiseplan',
+    'general.googlyEyes',
+    'general.semesterzeiten',
+    'darkmode.mode',
+    'darkmode.brightness',
+    'darkmode.contrast',
+    'darkmode.grayscale',
+    'darkmode.sepia',
+    'dashboard.~layoutPlaceholder',
+    'dashboard.courseListFilter',
+    'dashboard.courseListFavouritesAtTop',
+    'myCourses.boxesPerRow',
+    'myCourses.navbarDropdown',
+    'myCourses.navbarDropdownFilter',
+    'myCourses.navbarDropdownFavouritesAtTop',
+    'courses.grades',
+    'courses.gradesNewTab',
+    'courses.collapseAll',
+    'courses.imgMaxWidth',
+    'courses.imageZoom',
+    'courses.hideSelfEnrolHint',
+    'clock.clock',
+    'clock.clock.seconds',
+    'clock.fuzzyClock',
+    'clock.fuzzyClock.fuzziness',
+    'messages.sendHotkey',
+]);
 /** @type {Set<string>} */
-const seenSettings = new Set(GM_getValue(SEEN_SETTINGS_KEY, []));
+const seenSettings = new Set(GM_getValue(SEEN_SETTINGS_KEY, existingSettings));
 const storeSeenSettings = () =>
     GM_setValue(SEEN_SETTINGS_KEY, Array.from(seenSettings));
 const markAllSettingsAsSeen = () => {
@@ -2610,18 +2648,8 @@ form .fitem label .${newSettingBadgeClass} {
     }
 }
 `);
-// let's add all current settings in first place
-if (seenSettings.size === 0) {
-    markAllSettingsAsSeen();
-
-    // okay, we want to show those two as NEW to give users a hint for new settings and that there are settings
-    // but only if this is not a new installation.
-    if (!IS_NEW_INSTALLATION) {
-        seenSettings.delete('general.highlightNewSettings');
-        seenSettings.delete('general.highlightNewSettings.navbar');
-        storeSeenSettings(); // need to store again
-    }
-}
+// if this is a new installation, mark all settings as seen as we don't want to show the "NEW!"-badge on every single setting
+if (IS_NEW_INSTALLATION) markAllSettingsAsSeen();
 /** @type {Set<string>} */
 const unseenSettings =
     allSettingsIds.difference?.(seenSettings) ?? // New Set methods are a stage 3 proposal and do have limited availability: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/difference
