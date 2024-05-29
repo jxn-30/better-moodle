@@ -876,6 +876,8 @@ const getSettingKey = id => PREFIX(`settings.${id}`);
 const getSetting = (id, inputValue = false) =>
     inputValue ? settingsById[id].inputValue : settingsById[id].value;
 
+const IS_NEW_INSTALLATION = GM_listValues().length === 0;
+
 const MyCoursesFilterSyncChangeKey = PREFIX('myCourses.filterSyncChange');
 
 /**
@@ -2613,9 +2615,12 @@ if (seenSettings.size === 0) {
     markAllSettingsAsSeen();
 
     // okay, we want to show those two as NEW to give users a hint for new settings and that there are settings
-    seenSettings.delete('general.highlightNewSettings');
-    seenSettings.delete('general.highlightNewSettings.navbar');
-    storeSeenSettings(); // need to store again
+    // but only if this is not a new installation.
+    if (!IS_NEW_INSTALLATION) {
+        seenSettings.delete('general.highlightNewSettings');
+        seenSettings.delete('general.highlightNewSettings.navbar');
+        storeSeenSettings(); // need to store again
+    }
 }
 /** @type {Set<string>} */
 const unseenSettings =
@@ -5057,8 +5062,9 @@ ready(() => {
         .querySelector('#usernavigation .usermenu-container')
         ?.before(settingsBtnWrapper);
     if (
-        unseenSettings.size &&
-        getSetting('general.highlightNewSettings.navbar')
+        (unseenSettings.size &&
+            getSetting('general.highlightNewSettings.navbar')) ||
+        IS_NEW_INSTALLATION
     ) {
         require(['theme_boost/bootstrap/tooltip'], Tooltip => {
             settingsIcon.title = $t('new').toString(); // otherwise it for some reason would use the original title although another title has been explicitely set
