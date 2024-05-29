@@ -2535,6 +2535,11 @@ form .fitem label .${newSettingBadgeClass} {
     margin-right: 1ch;
 }
 
+/* the \`New!\`-Tooltip of settings btn needs to have a special z-index */
+.tooltip:has(.${newSettingBadgeClass}) {
+    z-index: 1035;
+}
+
 /* nice effects on the \`New!\`-Badge, but only if user allows animations */
 @media (prefers-reduced-motion: no-preference) {
     .${newSettingBadgeClass} {
