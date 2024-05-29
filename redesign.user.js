@@ -2509,6 +2509,7 @@ const settingsById = Object.fromEntries(
 
 const allSettingsIds = new Set(Object.keys(settingsById));
 const SEEN_SETTINGS_KEY = PREFIX('seen-settings');
+const EVER_OPENED_SETTINGS_KEY = PREFIX('ever-opened-settings');
 const newSettingBadgeClass = PREFIX('new-setting-badge');
 let settingsBtnNewTooltip;
 // these are the settings that existed before "highlight new settings" was introduced
@@ -5094,7 +5095,7 @@ ready(() => {
     if (
         (unseenSettings.size &&
             getSetting('general.highlightNewSettings.navbar')) ||
-        IS_NEW_INSTALLATION
+        !GM_getValue(EVER_OPENED_SETTINGS_KEY, false)
     ) {
         require(['theme_boost/bootstrap/tooltip'], Tooltip => {
             settingsIcon.title = $t('new').toString(); // otherwise it for some reason would use the original title although another title has been explicitely set
@@ -5148,6 +5149,7 @@ ready(() => {
 
             // open the modal on click onto the settings button
             settingsBtnWrapper.addEventListener('click', () => {
+                GM_setValue(EVER_OPENED_SETTINGS_KEY, true);
                 updateCheck().then();
                 if (settingsBtnNewTooltip) {
                     settingsBtnNewTooltip.hide();
