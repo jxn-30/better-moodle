@@ -2597,12 +2597,13 @@ form .fitem label .${newSettingBadgeClass} {
         display: inline-block;
         content: " ";
         position: absolute;
-        background: linear-gradient(to top, gold 50%, white 100%);
          --width: 10ch;
         width: var(--width);
         height: calc(var(--width) * 18 / 11);
-        /* stolen from https://css-shape.com/sparkle/ */
-        mask: radial-gradient(#0000 71%, #000 72%) 10000% 10000%/99.5% 99.5%;
+        /* this is a self designed sparkle as SVG :) */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 1800'%3E%3Cpath fill='gold' d='M 550 0 C 550 720 660 900 1100 900 C 660 900 550 1080 550 1800 C 550 1080 440 900 0 900 C 440 900 550 720 550 0'/%3E%3C/svg%3E");
+        background-size: 100%;
+        background-repeat: no-repeat;
         transform: translate(-50%, -50%);
         transform-origin: top left;
         top: 0;
