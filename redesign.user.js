@@ -29,6 +29,7 @@
 // region translations
 const TRANSLATIONS = {
     de: {
+        new: 'Neu!',
         sidebar: {
             open: 'Blockleiste öffnen',
             close: 'Blockleiste schließen',
@@ -224,6 +225,16 @@ Viele Grüße
                     name: 'Benachrichtigung bei Better-Moodle Updates',
                     description:
                         'Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für Better-Moodle gibt.',
+                },
+                highlightNewSettings: {
+                    name: 'Neue Einstellungen hervorheben',
+                    description:
+                        'Informiert, welche Einstellungen neu sind, wenn es neue Einstellungen gibt.',
+                    navbar: {
+                        name: 'Hinweis zu neuen Einstellungen auf dem Einstellungs-Knopf',
+                        description:
+                            'Zeigt ein schickes Tooltip am Einstellungs-Knopf in der Navigationsleiste an, wenn es neue Einstellungen gibt.',
+                    },
                 },
                 fullwidth: {
                     name: 'Volle Breite',
@@ -436,6 +447,7 @@ Viele Grüße
         },
     },
     en: {
+        new: 'New!',
         sidebar: {
             open: 'Open sidebar',
             close: 'Close sidebar',
@@ -634,6 +646,16 @@ Best regards
                     name: 'Notification for Better-Moodle updates',
                     description:
                         'Displays a small red dot by the cogs in the navigation bar when there is an update for Better-Moodle.',
+                },
+                highlightNewSettings: {
+                    name: 'Highlight new settings',
+                    description:
+                        'Highlights which settings are new, if there are any new settings.',
+                    navbar: {
+                        name: 'Note for new settings on settings button',
+                        description:
+                            'Shows a nice tooltip informing about new settings on the settings button in navbar if there are any unseen settings.',
+                    },
                 },
                 fullwidth: {
                     name: 'Full width',
@@ -853,6 +875,8 @@ const getSettingKey = id => PREFIX(`settings.${id}`);
  */
 const getSetting = (id, inputValue = false) =>
     inputValue ? settingsById[id].inputValue : settingsById[id].value;
+
+const IS_NEW_INSTALLATION = GM_listValues().length === 0;
 
 const MyCoursesFilterSyncChangeKey = PREFIX('myCourses.filterSyncChange');
 
@@ -2379,6 +2403,13 @@ const SETTINGS = [
         'auto',
         ...Object.keys(TRANSLATIONS),
     ]),
+    new BooleanSetting('general.highlightNewSettings', true),
+    new BooleanSetting(
+        'general.highlightNewSettings.navbar',
+        true
+    ).setDisabledFn(
+        settings => !settings['general.highlightNewSettings'].inputValue
+    ),
     new BooleanSetting('general.fullwidth', true),
     new BooleanSetting('general.externalLinks', true),
     new BooleanSetting('general.truncatedTexts', true),
@@ -2475,6 +2506,166 @@ const SETTINGS = [
 const settingsById = Object.fromEntries(
     SETTINGS.filter(s => typeof s !== 'string').map(s => [s.id, s])
 );
+
+const allSettingsIds = new Set(Object.keys(settingsById));
+const SEEN_SETTINGS_KEY = PREFIX('seen-settings');
+const EVER_OPENED_SETTINGS_KEY = PREFIX('ever-opened-settings');
+const newSettingBadgeClass = PREFIX('new-setting-badge');
+let settingsBtnNewTooltip;
+// these are the settings that existed before "highlight new settings" was introduced
+const existingSettings = new Set([
+    'general.updateNotification',
+    'general.language',
+    'general.fullwidth',
+    'general.externalLinks',
+    'general.truncatedTexts',
+    'general.bookmarkManager',
+    'general.noDownload',
+    'general.eventAdvertisements',
+    'general.christmasCountdown',
+    'general.speiseplan',
+    'general.googlyEyes',
+    'general.semesterzeiten',
+    'darkmode.mode',
+    'darkmode.brightness',
+    'darkmode.contrast',
+    'darkmode.grayscale',
+    'darkmode.sepia',
+    'dashboard.~layoutPlaceholder',
+    'dashboard.courseListFilter',
+    'dashboard.courseListFavouritesAtTop',
+    'myCourses.boxesPerRow',
+    'myCourses.navbarDropdown',
+    'myCourses.navbarDropdownFilter',
+    'myCourses.navbarDropdownFavouritesAtTop',
+    'courses.grades',
+    'courses.gradesNewTab',
+    'courses.collapseAll',
+    'courses.imgMaxWidth',
+    'courses.imageZoom',
+    'courses.hideSelfEnrolHint',
+    'clock.clock',
+    'clock.clock.seconds',
+    'clock.fuzzyClock',
+    'clock.fuzzyClock.fuzziness',
+    'messages.sendHotkey',
+]);
+/** @type {Set<string>} */
+const seenSettings = new Set(GM_getValue(SEEN_SETTINGS_KEY, existingSettings));
+const storeSeenSettings = () =>
+    GM_setValue(SEEN_SETTINGS_KEY, Array.from(seenSettings));
+const markAllSettingsAsSeen = () => {
+    allSettingsIds.forEach(id => seenSettings.add(id));
+    settingsBtnNewTooltip?.dispose();
+
+    settingsBtnNewTooltip = null;
+
+    storeSeenSettings();
+};
+const newSettingBadgeAnimations = {
+    sparkling: PREFIX('new-setting-badge-sparkling'),
+    sparklePositions: PREFIX('new-setting-badge-sparkle-positions'),
+    shining: PREFIX('new-setting-badge-shining'),
+};
+GM_addStyle(`
+/* add a small margin for "NEW!"-Badges in settings */
+form fieldset h3 .${newSettingBadgeClass} {
+    margin-left: 1ch;
+}
+form .fitem label .${newSettingBadgeClass} {
+    margin-right: 1ch;
+}
+
+/* the \`New!\`-Tooltip of settings btn needs to have a special z-index */
+.tooltip:has(.${newSettingBadgeClass}) {
+    z-index: 1035;
+    cursor: pointer;
+}
+
+/* nice effects on the \`New!\`-Badge, but only if user allows animations */
+@media (prefers-reduced-motion: no-preference) {
+    .${newSettingBadgeClass} {
+        position: relative;    
+        /* add a shining effect */
+        background-image: linear-gradient(-75deg, transparent 0%, rgba(255, 255, 255, 75%) 15%, transparent 30%, transparent 100%);
+        animation: ${newSettingBadgeAnimations.shining} 5s ease-in-out infinite;
+        background-size: 200%;
+        background-repeat: no-repeat
+    }
+    
+    /* add fancy sparkles ✨ to the \`New!\`-Badge */
+    .${newSettingBadgeClass}::before {
+        display: inline-block;
+        content: " ";
+        position: absolute;
+         --width: 10ch;
+        width: var(--width);
+        height: calc(var(--width) * 18 / 11);
+        /* this is a self designed sparkle as SVG :) */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 1800'%3E%3Cpath fill='gold' d='M 550 0 C 550 720 660 900 1100 900 C 660 900 550 1080 550 1800 C 550 1080 440 900 0 900 C 440 900 550 720 550 0'/%3E%3C/svg%3E");
+        background-size: 100%;
+        background-repeat: no-repeat;
+        transform: translate(-50%, -50%);
+        transform-origin: top left;
+        top: 0;
+        left: 0;
+        animation:
+            ${newSettingBadgeAnimations.sparkling} 1s ease-in-out infinite alternate,
+            ${newSettingBadgeAnimations.sparklePositions} 6s step-start infinite;
+    }
+}
+@keyframes ${newSettingBadgeAnimations.shining} {
+    0% {
+        background-position: 200% 0;
+    }
+    20% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+@keyframes ${newSettingBadgeAnimations.sparkling} {
+    0% { /* 1s => 0 ms, 2000ms */
+        scale: 0;
+    }
+    10% { /* 1s => 100ms, 1900ms */
+        scale: 0;
+    }
+    100% { /* 1s => 1000ms */
+        scale: 10%; /* for better results, we're creating large sparkles (width: 10ch), but to keep them rendered small, max scale is 10% */
+    }
+}
+@keyframes ${newSettingBadgeAnimations.sparklePositions} {
+    0% {
+        top: 4%;
+        left: 14%
+    }
+    33% {
+        top: 85%;
+        left: 51%;
+    }
+    66% {
+        top: 32%;
+        left: 87%;
+    }
+}
+`);
+// if this is a new installation, mark all settings as seen as we don't want to show the "NEW!"-badge on every single setting
+if (IS_NEW_INSTALLATION) markAllSettingsAsSeen();
+/** @type {Set<string>} */
+const unseenSettings =
+    allSettingsIds.difference?.(seenSettings) ?? // New Set methods are a stage 3 proposal and do have limited availability: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/difference
+    new Set(
+        Array.from(allSettingsIds.values()).filter(id => !seenSettings.has(id))
+    );
+/** @type {Map<string, number>} */
+const unseenSettingsGroups = new Map();
+unseenSettings.forEach(id => {
+    const group = id.split('.')[0];
+    if (!unseenSettingsGroups.has(group)) unseenSettingsGroups.set(group, 0);
+    unseenSettingsGroups.set(group, unseenSettingsGroups.get(group) + 1);
+});
 // endregion
 
 // region Feature: general.fullwidth
@@ -4678,6 +4869,7 @@ ready(() => {
 
     const settingsBtnWrapper = document.createElement('div');
     const settingsBtn = document.createElement('a');
+    settingsBtn.id = PREFIX('settings-btn');
     settingsBtn.classList.add(
         'nav-link',
         'position-relative',
@@ -4686,10 +4878,11 @@ ready(() => {
     settingsBtn.href = '#';
     settingsBtn.role = 'button';
     const settingsIcon = document.createElement('i');
+    settingsIcon.title =
+        settingsBtn.title =
+        settingsBtn.ariaLabel =
+            `Better-Moodle:\xa0${$t('modals.settings.title').toString()}`;
     settingsIcon.classList.add('icon', 'fa', 'fa-gears', 'fa-fw');
-    settingsIcon.title = settingsBtn.ariaLabel = `Better-Moodle:\xa0${$t(
-        'modals.settings.title'
-    ).toString()}`;
     settingsIcon.role = 'img';
     settingsBtn.append(settingsIcon);
 
@@ -4730,6 +4923,22 @@ ready(() => {
         );
         currentFieldset = fieldset.fieldset;
         form.append(currentFieldset);
+
+        if (
+            unseenSettingsGroups.has(name) &&
+            getSetting('general.highlightNewSettings')
+        ) {
+            const newBadge = document.createElement('span');
+            newBadge.classList.add(
+                'badge',
+                'badge-success',
+                'text-uppercase',
+                newSettingBadgeClass
+            );
+            newBadge.textContent = $t('new').toString();
+            newBadge.dataset.group = name;
+            fieldset.heading.append(newBadge);
+        }
 
         // on first fieldset, show the help button
         if (!fieldsetCounter) fieldset.heading.append(helpBtn);
@@ -4778,6 +4987,23 @@ ready(() => {
             label.classList.add('d-inline', 'word-break');
             label.textContent = setting.title;
             setting.setLabel(label);
+
+            if (
+                unseenSettings.has(setting.id) &&
+                getSetting('general.highlightNewSettings')
+            ) {
+                const newBadge = document.createElement('span');
+                newBadge.classList.add(
+                    'badge',
+                    'badge-success',
+                    'text-uppercase',
+                    'd-inline',
+                    newSettingBadgeClass
+                );
+                newBadge.textContent = $t('new').toString();
+                newBadge.dataset.setting = setting.id;
+                label.prepend(newBadge);
+            }
 
             const descWrapper = document.createElement('div');
             descWrapper.classList.add(
@@ -4866,6 +5092,26 @@ ready(() => {
     document
         .querySelector('#usernavigation .usermenu-container')
         ?.before(settingsBtnWrapper);
+    if (
+        (unseenSettings.size &&
+            getSetting('general.highlightNewSettings.navbar')) ||
+        !GM_getValue(EVER_OPENED_SETTINGS_KEY, false)
+    ) {
+        require(['theme_boost/bootstrap/tooltip'], Tooltip => {
+            settingsIcon.title = $t('new').toString(); // otherwise it for some reason would use the original title although another title has been explicitely set
+            settingsBtnNewTooltip = new Tooltip(settingsIcon, {
+                trigger: 'manual',
+                title: $t('new'),
+                template: `<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner badge bg-success text-uppercase ${newSettingBadgeClass}"></div></div>`,
+            });
+            settingsBtnNewTooltip
+                .getTipElement()
+                .addEventListener('click', () => settingsBtn.click());
+            settingsBtnNewTooltip.show();
+            settingsBtnNewTooltip.update();
+        });
+    }
+
     require(['core/modal_factory', 'core/modal_events'], (
         { create, types },
         ModalEvents
@@ -4903,8 +5149,125 @@ ready(() => {
 
             // open the modal on click onto the settings button
             settingsBtnWrapper.addEventListener('click', () => {
+                GM_setValue(EVER_OPENED_SETTINGS_KEY, true);
                 updateCheck().then();
+                if (settingsBtnNewTooltip) {
+                    settingsBtnNewTooltip.hide();
+                    // now show and hide based on hovering / focusing settings btn (there doesn't seem to be a native way to do so)
+                    const show = () => {
+                        settingsBtnNewTooltip?.show();
+                        settingsBtnNewTooltip?.update();
+                    };
+                    const hide = () => settingsBtnNewTooltip?.hide();
+                    settingsBtn.addEventListener('mouseenter', show);
+                    settingsBtn.addEventListener('focusin', show);
+                    settingsBtn.addEventListener('mouseleave', hide);
+                    settingsBtn.addEventListener('focusout', hide);
+                    settingsBtnNewTooltip
+                        .getTipElement()
+                        .addEventListener('mouseenter', show);
+                    settingsBtnNewTooltip
+                        .getTipElement()
+                        .addEventListener('mouseleave', hide);
+                }
                 modal.show();
+
+                // there are unseen settings groups => show a floating `New!`-Badge
+                if (unseenSettingsGroups.size) {
+                    const floatingNewSettingsBadge =
+                        document.createElement('span');
+                    floatingNewSettingsBadge.classList.add(
+                        'badge',
+                        'badge-success',
+                        'text-uppercase',
+                        newSettingBadgeClass
+                    );
+                    floatingNewSettingsBadge.id = PREFIX(
+                        'new-settings-floating-badge'
+                    );
+                    floatingNewSettingsBadge.textContent = `\xa0⬇️\xa0${$t('new')}\xa0⬇️\xa0`;
+
+                    GM_addStyle(`
+                        #${floatingNewSettingsBadge.id} {
+                            position: sticky;
+                            left: 50%;
+                            bottom: 0;
+                            transform: translateX(-50%);
+                            z-index: 1;
+                            cursor: pointer;
+                            box-shadow: 2px 2px 2px rgba(50%, 50%, 50%, 50%);
+                        }
+                        #${floatingNewSettingsBadge.id}.invisible {
+                            visibility: hidden;
+                        }
+                    `);
+
+                    /** @type {HTMLSpanElement|null} */
+                    const lastNewSettingsBadge = Array.from(
+                        form.querySelectorAll(
+                            `fieldset h3 .${newSettingBadgeClass}`
+                        )
+                    )?.at(-1);
+
+                    const updateFloatingNewSettingsBadgeStyle = () => {
+                        const { top: lastBadgeTop, bottom: lastBadgeBottom } =
+                            lastNewSettingsBadge.getBoundingClientRect();
+                        const { bottom: floatingBadgeBottom } =
+                            floatingNewSettingsBadge.getBoundingClientRect();
+
+                        // calculate how much opacity needed
+                        const height = lastBadgeBottom - lastBadgeTop;
+                        const overlap = floatingBadgeBottom - lastBadgeTop;
+                        const opacity =
+                            floatingBadgeBottom < lastBadgeTop ? 1
+                            : floatingBadgeBottom > lastBadgeBottom ? 0
+                            : 1 - Math.min(1, overlap ? overlap / height : 0);
+                        floatingNewSettingsBadge.style.setProperty(
+                            'opacity',
+                            opacity.toString()
+                        );
+                        floatingNewSettingsBadge.classList.toggle(
+                            'invisible',
+                            !opacity
+                        );
+                    };
+
+                    floatingNewSettingsBadge.addEventListener('click', () => {
+                        const floatingBadgeBottom =
+                            floatingNewSettingsBadge.getBoundingClientRect()
+                                .bottom;
+                        for (const badge of form.querySelectorAll(
+                            `fieldset h3 .${newSettingBadgeClass}`
+                        )) {
+                            const bottom = badge.getBoundingClientRect().bottom;
+                            if (bottom > floatingBadgeBottom) {
+                                badge
+                                    .closest('.ftoggler')
+                                    ?.querySelector('a.fheader.collapsed')
+                                    ?.click();
+                                badge.scrollIntoView({
+                                    block: 'center',
+                                    behavior: 'smooth',
+                                    inline: 'nearest',
+                                });
+                                return;
+                            }
+                        }
+                    });
+
+                    if (lastNewSettingsBadge) {
+                        const debouncedUpdate = debounce(
+                            updateFloatingNewSettingsBadgeStyle,
+                            25
+                        );
+                        modal
+                            .getBody()[0]
+                            .addEventListener('scroll', debouncedUpdate);
+                        new ResizeObserver(debouncedUpdate).observe(form);
+                    }
+
+                    modal.getBody()[0].append(floatingNewSettingsBadge);
+                }
             });
 
             // region link to moodle settings
@@ -4936,6 +5299,8 @@ ready(() => {
                     setting.saveInput();
                 });
 
+                markAllSettingsAsSeen();
+
                 window.location.reload();
             });
             modal.getRoot().on(ModalEvents.cancel, () => {
@@ -4944,6 +5309,7 @@ ready(() => {
 
                     setting.resetInput();
                 });
+                markAllSettingsAsSeen();
                 updateDarkReaderMode();
             });
             // endregion
