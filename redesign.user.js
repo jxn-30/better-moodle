@@ -2552,9 +2552,9 @@ form .fitem label .${newSettingBadgeClass} {
         content: " ";
         position: absolute;
         background: linear-gradient(to top, gold 50%, white 100%);
-        --height: 1lh;
-        height: var(--height);
-        width: calc(var(--height) * 11 / 18);
+         --width: 10ch;
+        width: var(--width);
+        height: calc(var(--width) * 18 / 11);
         /* stolen from https://css-shape.com/sparkle/ */
         mask: radial-gradient(#0000 71%, #000 72%) 10000% 10000%/99.5% 99.5%;
         transform: translate(-50%, -50%);
@@ -2585,7 +2585,7 @@ form .fitem label .${newSettingBadgeClass} {
         scale: 0;
     }
     100% { /* 1s => 1000ms */
-        scale: 1;
+        scale: 10%; /* for better results, we're creating large sparkles (width: 10ch), but to keep them rendered small, max scale is 10% */
     }
 }
 @keyframes ${newSettingBadgeAnimations.sparklePositions} {
