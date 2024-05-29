@@ -2578,6 +2578,7 @@ form .fitem label .${newSettingBadgeClass} {
 /* the \`New!\`-Tooltip of settings btn needs to have a special z-index */
 .tooltip:has(.${newSettingBadgeClass}) {
     z-index: 1035;
+    cursor: pointer;
 }
 
 /* nice effects on the \`New!\`-Badge, but only if user allows animations */
@@ -5101,6 +5102,9 @@ ready(() => {
                 title: $t('new'),
                 template: `<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner badge bg-success text-uppercase ${newSettingBadgeClass}"></div></div>`,
             });
+            settingsBtnNewTooltip
+                .getTipElement()
+                .addEventListener('click', () => settingsBtn.click());
             settingsBtnNewTooltip.show();
         });
     }
