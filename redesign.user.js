@@ -5491,7 +5491,9 @@ ready(() => {
             exportBtn.addEventListener('click', e => {
                 e.preventDefault();
                 const config = Object.fromEntries(
-                    GM_listValues().map(key => [key, GM_getValue(key)])
+                    GM_listValues()
+                        .toSorted()
+                        .map(key => [key, GM_getValue(key)])
                 );
                 const blob = new Blob([JSON.stringify(config)], {
                     type: 'application/json',
