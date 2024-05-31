@@ -2589,7 +2589,7 @@ form .fitem label .${newSettingBadgeClass} {
         position: relative;
         /* add a shining effect */
         background-image: linear-gradient(-75deg, transparent 0%, rgba(255, 255, 255, 75%) 15%, transparent 30%, transparent 100%);
-        animation: ${newSettingBadgeAnimations.shining} 5s ease-in-out infinite;
+        animation: ${newSettingBadgeAnimations.shining} 5s ease-in-out;
         background-size: 200%;
         background-repeat: no-repeat
     }
