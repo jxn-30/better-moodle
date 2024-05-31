@@ -2585,7 +2585,7 @@ form .fitem label .${newSettingBadgeClass} {
 /* nice effects on the \`New!\`-Badge, but only if user allows animations */
 @media (prefers-reduced-motion: no-preference) {
     .${newSettingBadgeClass} {
-        position: relative;    
+        position: relative;
         /* add a shining effect */
         background-image: linear-gradient(-75deg, transparent 0%, rgba(255, 255, 255, 75%) 15%, transparent 30%, transparent 100%);
         animation: ${newSettingBadgeAnimations.shining} 5s ease-in-out infinite;
@@ -3013,7 +3013,7 @@ if (getSetting('general.bookmarkManager')) {
 /* this will allow the bookmarks dropdown menu to be aligned to right viewport side and fullwidth on mobile devices */
 @media (max-width: 576px) {
     #${bookmarkBtnWrapper.id} {
-        position: inherit;   
+        position: inherit;
     }
     #${bookmarkBtnWrapper.id} .dropdown-menu {
         max-width: 100%;
