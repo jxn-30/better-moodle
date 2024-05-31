@@ -3560,8 +3560,9 @@ ${DARK_MODE_SELECTOR} .${nowAdditionsClass}.progress-bar {
 
 span.${nowAdditionsClass} {
     position: absolute;
-    transform: translateX(-50%) translateY(-100%);
-    font-size: .703125rem;
+    top: 0;
+    transform: translateX(-50%) translateY(calc(-1lh + 3px)); /* these numbers have been carefully */
+    font-size: .703125rem; /* this is font size of progress bars */
 }
 `);
 
@@ -3953,8 +3954,7 @@ span.${nowAdditionsClass} {
         cardContent.append(semesterDiv);
 
         if (isCurrentSemester) {
-            const nowPercentage =
-                ((now - semesterStart) / semesterDuration) * 100;
+            const nowPercentage = (now - semesterStart) / semesterDuration;
             const nowBar = document.createElement('div');
             nowBar.classList.add(
                 'progress-bar',
@@ -3962,18 +3962,23 @@ span.${nowAdditionsClass} {
                 'progress-bar-striped',
                 nowAdditionsClass
             );
-            nowBar.style.setProperty('width', `${nowPercentage}%`);
+            nowBar.style.setProperty('width', `${nowPercentage * 100}%`);
 
+            progressWrapper.prepend(nowBar);
+
+            const todaySpanWrapper = document.createElement('div');
+            todaySpanWrapper.classList.add('position-relative');
             const todaySpan = document.createElement('span');
             todaySpan.classList.add(nowAdditionsClass);
             todaySpan.textContent = dateToString(now);
             todaySpan.style.setProperty(
                 'margin-left',
-                `calc(${nowPercentage}% + 16px + .5rem)`
+                // 16px icon width and .5rem right margin. This calculation ensures that the correct position is calculated
+                `calc(${nowPercentage} * (100% - (16px + .5rem)) + 16px + .5rem)`
             );
 
-            progressWrapper.prepend(nowBar);
-            progressWrapper.before(todaySpan);
+            todaySpanWrapper.append(todaySpan);
+            topBar.before(todaySpanWrapper);
         }
     };
 
