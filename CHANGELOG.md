@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.34.1](https://github.com/jxn-30/better-moodle/compare/1.34.0...1.34.1) (2024-05-31)
+
+
+### Bug Fixes
+
+* **semesterzeiten:** fix progress bar ID not being unique ([8bddd9e](https://github.com/jxn-30/better-moodle/commit/8bddd9ed6f6564533a5186f00853cf09b2061d67))
+* **semesterzeiten:** fix today date being wrongly positioned ([da48a83](https://github.com/jxn-30/better-moodle/commit/da48a839fd92c04a0f8f2dd3c70e271122318da1))
+
 ## [1.34.0](https://github.com/jxn-30/better-moodle/compare/1.33.2...1.34.0) (2024-05-29)
 
 
