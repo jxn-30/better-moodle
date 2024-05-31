@@ -3747,7 +3747,9 @@ span.${nowAdditionsClass} {
 
         const progressWrapper = document.createElement('div');
         progressWrapper.classList.add('progress', 'w-100', 'position-relative');
-        progressWrapper.id = PREFIX('general-semesterzeiten-progress');
+        progressWrapper.id = PREFIX(
+            `general-semesterzeiten-progress-${cardContent.childElementCount}`
+        );
 
         const infoLink = document.createElement('a');
         infoLink.classList.add('mr-2');
