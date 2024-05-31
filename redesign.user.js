@@ -5,7 +5,8 @@
 // @version         1.34.1
 // @                x-release-please-end
 // @author          Jan (jxn_30)
-// @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
+// @description     Improves UzL-Moodle by cool features and design improvements.
+// @description:de  Verbessert UzL-Moodle durch coole Features und Designverbesserungen.
 // @homepage        https://github.com/jxn-30/better-moodle
 // @homepageURL     https://github.com/jxn-30/better-moodle
 // @icon            https://www.uni-luebeck.de/favicon.ico
