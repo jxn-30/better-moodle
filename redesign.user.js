@@ -2169,7 +2169,7 @@ input[type="range"] + output {
     border-radius: 4px;
     font-weight: bold;
     z-index: 1;
-    
+
     /* position the label correctly */
     left: calc(1% * var(--percentage));
     transform: translateX(calc(-1% * var(--percentage)));
@@ -2592,7 +2592,7 @@ form .fitem label .${newSettingBadgeClass} {
         background-size: 200%;
         background-repeat: no-repeat
     }
-    
+
     /* add fancy sparkles ✨ to the \`New!\`-Badge */
     .${newSettingBadgeClass}::before {
         display: inline-block;
