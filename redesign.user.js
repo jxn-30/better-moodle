@@ -4028,7 +4028,14 @@ if (getSetting('general.prideLogo')) {
             /* make the Logo rainbow colored */
             .navbar.fixed-top .navbar-brand .logo,
             #logoimage {
-                background-image: linear-gradient(rgb(254, 0, 0) 24.66%, rgb(253, 140, 0) 24.66%, 37.32%, rgb(255, 229, 0) 37.32%, 49.98%, rgb(17, 159, 11) 49.98%, 62.65%, rgb(6, 68, 179) 62.65%, 75.31%, rgb(194, 46, 220) 75.31%);
+                background-image: linear-gradient(
+                    #FE0000 24.7%, 
+                    #FD8C00 24.7%, 37.35%, 
+                    #FFE500 37.35%, 50%, 
+                    #119F0B 50%, 62.65%, 
+                    #0644B3 62.65%, 75.3%, 
+                    #C22EDC 75.3%
+                );
                 filter: brightness(0.9);
                 
                 object-position: -99999px -99999px; /* hide original image */
