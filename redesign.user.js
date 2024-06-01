@@ -328,6 +328,12 @@ Viele Grüße
                     description:
                         'Stelle einen Sepia-Wert für den Darkmodes ein.',
                 },
+                preview: {
+                    name: 'Vorschau',
+                    description:
+                        'Teste hier die aktuellen Einstellungen des Darkmodes bei geschlossenen Einstellungen aus. Vorsicht: Beim nächsten Neuladen oder Wechseln der Seite sind die Einstellungen zurückgesetzt.',
+                    btn: 'Einstellungen zur Vorschau ausblenden',
+                },
             },
             dashboard: {
                 '_title': 'Dashboard',
@@ -746,6 +752,12 @@ Best regards
                 sepia: {
                     name: 'Sepia',
                     description: 'Set the sepia value of the dark mode.',
+                },
+                preview: {
+                    name: 'Preview',
+                    description:
+                        'Test the current dark mode settings here with the settings closed. Caution: The next time you reload or change the page, the settings will be reset.',
+                    btn: 'Hide settings for preview',
                 },
             },
             dashboard: {
@@ -1901,6 +1913,7 @@ class Setting {
      * @param {ValueType} defaultValue
      */
     constructor(id, defaultValue) {
+        // this makes this class an abstract class
         if (this.constructor === Setting) {
             throw new TypeError(
                 'Cannot create instance of abstract class Setting'
@@ -2396,6 +2409,76 @@ class SelectSetting extends Setting {
     }
 }
 
+/** @extends {Setting<void>} */
+class ActionSetting extends Setting {
+    constructor(id) {
+        super(id, void 0);
+        // this makes this class an abstract class
+        if (this.constructor === ActionSetting) {
+            throw new TypeError(
+                'Cannot create instance of abstract class ActionSetting'
+            );
+        }
+    }
+}
+
+/** @extends {ActionSetting} */
+class BtnActionSetting extends ActionSetting {
+    /** @type {HTMLButtonElement} */
+    #btn = document.createElement('button');
+
+    constructor(id) {
+        super(id);
+
+        this.#btn.classList.add('btn', 'btn-primary');
+    }
+
+    get formControl() {
+        return this.#btn;
+    }
+
+    /**
+     * @param {Record<string, Setting>} settings
+     * @returns {boolean}
+     */
+    toggleDisabled(settings) {
+        const disabled = super.toggleDisabled(settings);
+        this.#btn.disabled = disabled;
+        if (disabled) {
+            this.#btn.classList.add('disabled');
+        } else {
+            this.#btn.classList.remove('disabled');
+        }
+        return disabled;
+    }
+
+    /**
+     * @param {string | HTMLElement} content
+     * @returns {this}
+     */
+    setContent(content) {
+        this.#btn.replaceChildren();
+        if (typeof content === 'string') {
+            this.#btn.textContent = content;
+        } else {
+            this.#btn.append(content);
+        }
+        return this;
+    }
+
+    /**
+     * @param {function(MouseEvent, BtnActionSetting): void} listener
+     * @returns {this}
+     */
+    setAction(listener) {
+        this.#btn.addEventListener('click', e => {
+            e.preventDefault();
+            listener(e, this);
+        });
+        return this;
+    }
+}
+
 /** @type {Array<Setting | string>} */
 const SETTINGS = [
     'general',
@@ -2446,6 +2529,16 @@ const SETTINGS = [
             settings => settings['darkmode.mode'].inputValue === 'off'
         )
         .onInput(debounce(() => updateDarkReaderMode(true))),
+    new BtnActionSetting('darkmode.preview')
+        .setContent($t('settings.darkmode.preview.btn'))
+        .setDisabledFn(
+            settings => settings['darkmode.mode'].inputValue === 'off'
+        )
+        .setAction((_, { formControl }) => {
+            formControl.dispatchEvent(
+                new Event(SETTINGS_PREVIEW_EVENT, { bubbles: true })
+            );
+        }),
     'dashboard',
     // {Layout anpassen}
     new StringSetting(
@@ -2511,6 +2604,7 @@ const settingsById = Object.fromEntries(
 const allSettingsIds = new Set(Object.keys(settingsById));
 const SEEN_SETTINGS_KEY = PREFIX('seen-settings');
 const EVER_OPENED_SETTINGS_KEY = PREFIX('ever-opened-settings');
+const SETTINGS_PREVIEW_EVENT = PREFIX('settings:preview');
 const newSettingBadgeClass = PREFIX('new-setting-badge');
 let settingsBtnNewTooltip;
 // these are the settings that existed before "highlight new settings" was introduced
@@ -5333,6 +5427,13 @@ ready(() => {
             modal.getRoot().on(ModalEvents.hidden, () => {
                 if (ignoreNextModalHide) return (ignoreNextModalHide = false);
                 cancelSettings();
+            });
+            // endregion
+
+            // region hide modal for preview
+            modal.getRoot()[0].addEventListener(SETTINGS_PREVIEW_EVENT, () => {
+                ignoreNextModalHide = true;
+                modal.hide();
             });
             // endregion
 
