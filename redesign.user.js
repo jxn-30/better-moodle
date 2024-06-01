@@ -4028,11 +4028,17 @@ if (getSetting('general.prideLogo')) {
             /* make the Logo rainbow colored */
             .navbar.fixed-top .navbar-brand .logo,
             #logoimage {
+                background-image: linear-gradient(rgb(254, 0, 0) 24.66%, rgb(253, 140, 0) 24.66%, 37.32%, rgb(255, 229, 0) 37.32%, 49.98%, rgb(17, 159, 11) 49.98%, 62.65%, rgb(6, 68, 179) 62.65%, 75.31%, rgb(194, 46, 220) 75.31%);
+                filter: brightness(0.9);
+                
                 object-position: -99999px -99999px; /* hide original image */
+                mask: url(${logoUrl.href}) center/contain no-repeat;
+                mask-origin: content-box;
+            }
 
-                background-image: linear-gradient(rgb(254, 0, 0) 16.66%, rgb(253, 140, 0) 16.66%, 33.32%, rgb(255, 229, 0) 33.32%, 49.98%, rgb(17, 159, 11) 49.98%, 66.64%, rgb(6, 68, 179) 66.64%, 83.3%, rgb(194, 46, 220) 83.3%);
-                mask-size: contain;
-                mask-image: url(${logoUrl.href});
+            ${DARK_MODE_SELECTOR} .navbar.fixed-top .navbar-brand .logo,
+            ${DARK_MODE_SELECTOR} #logoimage {
+                filter: saturate(2) !important;
             }
         `);
     });
