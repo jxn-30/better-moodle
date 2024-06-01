@@ -5135,6 +5135,7 @@ ready(() => {
         }).then(modal => {
             updateDisabledStates();
 
+            let ignoreNextModalHide = false;
             const updateBadge = document.createElement('div');
             updateBadge.classList.add('count-container');
 
@@ -5301,6 +5302,8 @@ ready(() => {
             // region save & cancel
             // handle the save & cancel buttons
             modal.getRoot().on(ModalEvents.save, () => {
+                ignoreNextModalHide = true;
+
                 SETTINGS.forEach(setting => {
                     if (typeof setting === 'string') return;
 
@@ -5311,7 +5314,7 @@ ready(() => {
 
                 window.location.reload();
             });
-            modal.getRoot().on(ModalEvents.cancel, () => {
+            const cancelSettings = () => {
                 SETTINGS.forEach(setting => {
                     if (!setting.id) return;
 
@@ -5319,6 +5322,17 @@ ready(() => {
                 });
                 markAllSettingsAsSeen();
                 updateDarkReaderMode();
+            };
+            modal.getRoot().on(ModalEvents.cancel, () => {
+                ignoreNextModalHide = true;
+                cancelSettings();
+            });
+            // endregion
+
+            // region modal hide via x btn
+            modal.getRoot().on(ModalEvents.hidden, () => {
+                if (ignoreNextModalHide) return (ignoreNextModalHide = false);
+                cancelSettings();
             });
             // endregion
 
