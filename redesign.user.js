@@ -4031,12 +4031,12 @@ if (getSetting('general.prideLogo')) {
                 background-image: linear-gradient(
                     #FE0000 24.7%, 
                     #FD8C00 24.7%, 37.35%, 
-                    #FFE500 37.35%, 50%, 
+                    #FFD000 37.35%, 50%, 
                     #119F0B 50%, 62.65%, 
-                    #0644B3 62.65%, 75.3%, 
+                    #457CDF 62.65%, 75.3%, 
                     #C22EDC 75.3%
                 );
-                filter: brightness(0.9);
+                filter: brightness(0.8) contrast(1.5);
                 
                 object-position: -99999px -99999px; /* hide original image */
                 mask: url(${logoUrl.href}) center/contain no-repeat;
