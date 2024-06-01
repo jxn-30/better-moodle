@@ -294,6 +294,10 @@ Viele Grüße
                         en: '🇬🇧 Englisch',
                     },
                 },
+                prideLogo: {
+                    name: 'Pride-Logo',
+                    description: '🏳️‍🌈',
+                },
             },
             darkmode: {
                 _title: 'Darkmode',
@@ -714,6 +718,10 @@ Best regards
                         de: '🇩🇪 German',
                         en: '🇬🇧 English',
                     },
+                },
+                prideLogo: {
+                    name: 'Pride-Logo',
+                    description: '🏳️‍🌈',
                 },
             },
             darkmode: {
@@ -2420,6 +2428,7 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     new BooleanSetting('general.semesterzeiten', false),
+    new BooleanSetting('general.prideLogo', true),
     'darkmode',
     $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
@@ -4003,6 +4012,29 @@ span.${nowAdditionsClass} {
             ?.classList.add('disabled');
 
         updateBarTypeStyle();
+    });
+}
+// endregion
+
+// region Feature: general.prideLogo
+if (getSetting('general.prideLogo')) {
+    ready(() => {
+        const logoImg =
+            document.querySelector('.navbar.fixed-top .navbar-brand img') ??
+            document.querySelector('#logoimage');
+        const logoUrl = new URL(logoImg.src);
+
+        GM_addStyle(`
+            /* make the Logo rainbow colored */
+            .navbar.fixed-top .navbar-brand .logo,
+            #logoimage {
+                object-position: -99999px -99999px; /* hide original image */
+
+                background-image: linear-gradient(rgb(254, 0, 0) 16.66%, rgb(253, 140, 0) 16.66%, 33.32%, rgb(255, 229, 0) 33.32%, 49.98%, rgb(17, 159, 11) 49.98%, 66.64%, rgb(6, 68, 179) 66.64%, 83.3%, rgb(194, 46, 220) 83.3%);
+                mask-size: contain;
+                mask-image: url(${logoUrl.href});
+            }
+        `);
     });
 }
 // endregion
