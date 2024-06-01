@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.35.0](https://github.com/jxn-30/better-moodle/compare/1.34.1...1.35.0) (2024-06-01)
+
+
+### Features
+
+* **darkmode:** add a btn to close settings for preview ([0fa2a2d](https://github.com/jxn-30/better-moodle/commit/0fa2a2dda7cbcfc33b4d8cc6684266f73cc4a842))
+* **settings:** closing settings via `x` button is equivalent to `cancel` ([b2b5c47](https://github.com/jxn-30/better-moodle/commit/b2b5c47db4ea18b0776488acf487284d6627b4ae))
+* **settings:** do not repeat shining effect on `New!`-Labels ([2aaa947](https://github.com/jxn-30/better-moodle/commit/2aaa9477b4b4af138a5b7e9d05fd92e2d9af4496))
+* **userscript:** update description ([7ea85bd](https://github.com/jxn-30/better-moodle/commit/7ea85bd33f6499ae67fca518c729425231838172))
+
 ## [1.34.1](https://github.com/jxn-30/better-moodle/compare/1.34.0...1.34.1) (2024-05-31)
 
 
