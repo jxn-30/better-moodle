@@ -295,6 +295,10 @@ Viele Grüße
                         en: '🇬🇧 Englisch',
                     },
                 },
+                prideLogo: {
+                    name: 'Pride-Logo',
+                    description: '🏳️‍🌈',
+                },
             },
             darkmode: {
                 _title: 'Darkmode',
@@ -721,6 +725,10 @@ Best regards
                         de: '🇩🇪 German',
                         en: '🇬🇧 English',
                     },
+                },
+                prideLogo: {
+                    name: 'Pride-Logo',
+                    description: '🏳️‍🌈',
                 },
             },
             darkmode: {
@@ -2504,6 +2512,7 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     new BooleanSetting('general.semesterzeiten', false),
+    new BooleanSetting('general.prideLogo', true),
     'darkmode',
     $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
@@ -4098,6 +4107,42 @@ span.${nowAdditionsClass} {
             ?.classList.add('disabled');
 
         updateBarTypeStyle();
+    });
+}
+// endregion
+
+// region Feature: general.prideLogo
+if (getSetting('general.prideLogo')) {
+    ready(() => {
+        const logoImg =
+            document.querySelector('.navbar.fixed-top .navbar-brand img') ??
+            document.querySelector('#logoimage');
+        const logoUrl = new URL(logoImg.src);
+
+        GM_addStyle(`
+            /* make the Logo rainbow colored */
+            .navbar.fixed-top .navbar-brand .logo,
+            #logoimage {
+                background-image: linear-gradient(
+                    #FE0000 24.7%, 
+                    #FD8C00 24.7%, 37.35%, 
+                    #FFD000 37.35%, 50%, 
+                    #119F0B 50%, 62.65%, 
+                    #457CDF 62.65%, 75.3%, 
+                    #C22EDC 75.3%
+                );
+                filter: brightness(0.8) contrast(1.5);
+                
+                object-position: -99999px -99999px; /* hide original image */
+                mask: url(${logoUrl.href}) center/contain no-repeat;
+                mask-origin: content-box;
+            }
+
+            ${DARK_MODE_SELECTOR} .navbar.fixed-top .navbar-brand .logo,
+            ${DARK_MODE_SELECTOR} #logoimage {
+                filter: saturate(2) !important;
+            }
+        `);
     });
 }
 // endregion
