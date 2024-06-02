@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.36.0](https://github.com/jxn-30/better-moodle/compare/1.35.0...1.36.0) (2024-06-02)
+
+
+### Features
+
+* **prideLogo:** Add a setting to 'prideify' the moodle logo ([#201](https://github.com/jxn-30/better-moodle/issues/201)) ([0719a49](https://github.com/jxn-30/better-moodle/commit/0719a494733b90ff9318447d6dd0eefa8ef3bfad))
+
 ## [1.35.0](https://github.com/jxn-30/better-moodle/compare/1.34.1...1.35.0) (2024-06-01)
 
 
