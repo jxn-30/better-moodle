@@ -897,6 +897,26 @@ const getSettingKey = id => PREFIX(`settings.${id}`);
 const getSetting = (id, inputValue = false) =>
     inputValue ? settingsById[id].inputValue : settingsById[id].value;
 
+const stringTemplate = (strings, ...expressions) =>
+    strings.flatMap((string, i) => [string, expressions[i] ?? '']).join('');
+const unindent = string => {
+    const minIndent = Math.min(
+        ...string
+            .trimEnd()
+            .match(/^[\t ]+/gm)
+            .map(line => line.length)
+    );
+    return string.replace(new RegExp(`^[\\t ]{${minIndent}}`, 'gm'), '').trim();
+};
+const css = (...args) =>
+    `
+/*
+ * This style has been injected by Better-Moodle (Version: ${GM_info.script.version}).
+ */
+
+${unindent(stringTemplate(...args))}
+`.trim();
+
 const IS_NEW_INSTALLATION = GM_listValues().length === 0;
 
 const MyCoursesFilterSyncChangeKey = PREFIX('myCourses.filterSyncChange');
@@ -1023,7 +1043,7 @@ const createSidebar = (id, position, icon, callback) => {
     });
 };
 
-GM_addStyle(`
+GM_addStyle(css`
     /* Sidebars */
     .drawer-toggles:has(#${PREFIX('drawer-toggles-right')}),
     .drawer-toggles:has(#${PREFIX('drawer-toggles-left')}) {
@@ -1035,8 +1055,7 @@ GM_addStyle(`
         margin-bottom: 0.7rem;
         z-index: 100;
     }
-    #${PREFIX('drawer-toggles-right')},
-    #${PREFIX('drawer-toggles-left')} {
+    #${PREFIX('drawer-toggles-right')}, #${PREFIX('drawer-toggles-left')} {
         display: flex;
         flex-direction: column;
         position: fixed;
@@ -1057,8 +1076,7 @@ GM_addStyle(`
         width: 16px; /* Reset to .icon default */
     }
     @media (max-width: 767.98px) {
-        #${PREFIX('drawer-toggles-right')},
-        #${PREFIX('drawer-toggles-left')} {
+        #${PREFIX('drawer-toggles-right')}, #${PREFIX('drawer-toggles-left')} {
             top: auto;
             bottom: calc(2.7rem + 36px);
             flex-direction: column-reverse;
@@ -1265,39 +1283,41 @@ const addMarqueeItems = (() => {
     const SCROLL_SPEED_MS_PER_PX = 100;
     const durationForPx = px => px * SCROLL_SPEED_MS_PER_PX;
 
-    GM_addStyle(`
-#${navLink.id} {
-    ${scrollStartVar}: 100%;
-    ${scrollEndVar}: 100%;
-    ${scrollDurationVar}: 10s;
-}
-#${navLink.id}.animated {
-    animation: ${keyFrames} var(${scrollDurationVar}) linear infinite;
-}
-#${navLink.id}:not(.animated) > .${textSpanClass}:nth-child(2) {
-    display: none;
-}
+    GM_addStyle(css`
+        #${navLink.id} {
+            ${scrollStartVar}: 100%;
+            ${scrollEndVar}: 100%;
+            ${scrollDurationVar}: 10s;
+        }
+        #${navLink.id}.animated {
+            animation: ${keyFrames} var(${scrollDurationVar}) linear infinite;
+        }
+        #${navLink.id}:not(.animated) > .${textSpanClass}:nth-child(2) {
+            display: none;
+        }
 
-#${navLink.id} > .${textSpanClass} > *::after {
-    content: "${'\xa0'.repeat(11)}";
-    background-image: url("https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-}
-#${navLink.id}:not(.animated) > .${textSpanClass} > *:last-child::after {
-    display: none;
-}
+        #${navLink.id} > .${textSpanClass} > *::after {
+            content: '${'\xa0'.repeat(11)}';
+            background-image: url('https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+        #${navLink.id}:not(.animated)
+            > .${textSpanClass}
+            > *:last-child::after {
+            display: none;
+        }
 
-@keyframes ${keyFrames} {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(var(${scrollEndVar}));
-    }
-}
-`);
+        @keyframes ${keyFrames} {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(var(${scrollEndVar}));
+            }
+        }
+    `);
 
     const updateScrollWidth = () => {
         const navLinkWidth = Math.floor(navLink.getBoundingClientRect().width);
@@ -1551,20 +1571,26 @@ const createFieldset = (
 };
 
 const appendableListFormClass = PREFIX('appendable-list-form');
-GM_addStyle(`
-.${appendableListFormClass} {
-    color: inherit;
-}
+GM_addStyle(css`
+    .${appendableListFormClass} {
+        color: inherit;
+    }
 
-.${appendableListFormClass} .fitem {
-    column-gap: 1em;
-}
+    .${appendableListFormClass} .fitem {
+        column-gap: 1em;
+    }
 
-.${appendableListFormClass} > .fcontainer :is(.fitem:first-child [data-button="up"], .fitem:last-child [data-button="down"]) {
-    opacity: 0.65;
-    pointer-events: none;
-    cursor: not-allowed;
-}`);
+    .${appendableListFormClass}
+        > .fcontainer
+        :is(
+            .fitem:first-child [data-button='up'],
+            .fitem:last-child [data-button='down']
+        ) {
+        opacity: 0.65;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+`);
 
 /**
  * @param {string} id
@@ -1868,38 +1894,40 @@ const animationInterval = (delay, callback) => {
 
 // region Global styles
 // some general style
-GM_addStyle(`
-/* disable the weird scroll behaviour on login page (background image shall not be moved) */
-#page-login-index {
-    overflow: hidden;
-}
+GM_addStyle(css`
+    /* disable the weird scroll behaviour on login page (background image shall not be moved) */
+    #page-login-index {
+        overflow: hidden;
+    }
 
-#page-login-index #page-wrapper {
-    overflow: auto;
-}
+    #page-login-index #page-wrapper {
+        overflow: auto;
+    }
 
-/* Use a pointer cursor on toggle buttons */
-.custom-control.custom-switch .custom-control-label {
-    cursor: pointer;
-}
+    /* Use a pointer cursor on toggle buttons */
+    .custom-control.custom-switch .custom-control-label {
+        cursor: pointer;
+    }
 
-/* avoid overflow of #usernavigation navigation bar */
-#usernavigation {
-    max-width: calc(100% - 1rem); /* 1rem is the padding of the navbar */
-}
+    /* avoid overflow of #usernavigation navigation bar */
+    #usernavigation {
+        max-width: calc(100% - 1rem); /* 1rem is the padding of the navbar */
+    }
 
-/* remove "external link" icon for specific classes (discouraged but sometimes it doesn't look good) */
-body.dir-ltr a.${noExternalLinkIconClass}::after,
-body.dir-rtl a.${noExternalLinkIconClass}::before {
-    display: none !important;
-}
+    /* remove "external link" icon for specific classes (discouraged but sometimes it doesn't look good) */
+    body.dir-ltr
+        a.${noExternalLinkIconClass}::after,
+        body.dir-rtl
+        a.${noExternalLinkIconClass}::before {
+        display: none !important;
+    }
 
-/* fix info-buttons next to form labels to be aligned left instead of centered */
-.form-label-addon [data-toggle="popover"] i.icon.fa {
-    margin-left: 0.25rem;
-    margin-right: 0.25rem;
-}
-    `);
+    /* fix info-buttons next to form labels to be aligned left instead of centered */
+    .form-label-addon [data-toggle='popover'] i.icon.fa {
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
+    }
+`);
 // endregion
 
 // region Settings
@@ -2147,60 +2175,64 @@ class NumberSetting extends Setting {
     }
 }
 
-GM_addStyle(`
-/* Some style to show tick-mark labels on range inputs */
-datalist[style*="--label-count"] {
-    display: grid;
-    grid-template-columns: repeat(var(--label-count), minmax(0, 1fr));
-    text-align: center;
-    /* WTF? idk how and why but it seems to work. It positions the labels almost correctly */
-    margin: 0 calc(50% - 0.5 * calc((1 + 1 / (var(--label-count) - 1)) * (100% - 1em)));
-}
-/* overlapping text is bad => hide with ellipsis */
-datalist[style*="--label-count"] > option {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-/* make first and last label have custom alignments for better visibility */
-datalist[style*="--label-count"] > option:first-child {
-    text-align: left;
-    padding-left: calc(50% - 4px);
-}
-datalist[style*="--label-count"] > option:last-child {
-    text-align: right;
-    padding-right: calc(50% - 4px);
-}
-/* add ticks to labels */
-datalist[style*="--label-count"] > option::after {
-    content: "";
-    position: absolute;
-    border: 1px solid grey;
-    height: 10px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    top: 0;
-}
+GM_addStyle(css`
+    /* Some style to show tick-mark labels on range inputs */
+    datalist[style*='--label-count'] {
+        display: grid;
+        grid-template-columns: repeat(var(--label-count), minmax(0, 1fr));
+        text-align: center;
+        /* WTF? idk how and why but it seems to work. It positions the labels almost correctly */
+        margin: 0
+            calc(
+                50% - 0.5 *
+                    calc((1 + 1 / (var(--label-count) - 1)) * (100% - 1em))
+            );
+    }
+    /* overlapping text is bad => hide with ellipsis */
+    datalist[style*='--label-count'] > option {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /* make first and last label have custom alignments for better visibility */
+    datalist[style*='--label-count'] > option:first-child {
+        text-align: left;
+        padding-left: calc(50% - 4px);
+    }
+    datalist[style*='--label-count'] > option:last-child {
+        text-align: right;
+        padding-right: calc(50% - 4px);
+    }
+    /* add ticks to labels */
+    datalist[style*='--label-count'] > option::after {
+        content: '';
+        position: absolute;
+        border: 1px solid grey;
+        height: 10px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        top: 0;
+    }
 
-/* style to show a bubble with current range input value */
-input[type="range"] + output {
-    position: absolute;
-    text-align: center;
-    padding: 2px;
-    background-color: var(--primary);
-    color: white;
-    border-radius: 4px;
-    font-weight: bold;
-    z-index: 1;
+    /* style to show a bubble with current range input value */
+    input[type='range'] + output {
+        position: absolute;
+        text-align: center;
+        padding: 2px;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+        z-index: 1;
 
-    /* position the label correctly */
-    left: calc(1% * var(--percentage));
-    transform: translateX(calc(-1% * var(--percentage)));
-}
+        /* position the label correctly */
+        left: calc(1% * var(--percentage));
+        transform: translateX(calc(-1% * var(--percentage)));
+    }
 
-/* adds transparency to tick-mark labels of disabled range inputs  */
-input:disabled[type="range"] + output {
-    background-color: color-mix(in srgb, var(--primary) 50%, transparent);
-}
+    /* adds transparency to tick-mark labels of disabled range inputs  */
+    input:disabled[type='range'] + output {
+        background-color: color-mix(in srgb, var(--primary) 50%, transparent);
+    }
 `);
 
 /** @extends {NumberSetting} */
@@ -2671,89 +2703,100 @@ const newSettingBadgeAnimations = {
     sparklePositions: PREFIX('new-setting-badge-sparkle-positions'),
     shining: PREFIX('new-setting-badge-shining'),
 };
-GM_addStyle(`
-/* add a small margin for "NEW!"-Badges in settings */
-form fieldset h3 .${newSettingBadgeClass} {
-    margin-left: 1ch;
-}
-form .fitem label .${newSettingBadgeClass} {
-    margin-right: 1ch;
-}
-
-/* the \`New!\`-Tooltip of settings btn needs to have a special z-index */
-.tooltip:has(.${newSettingBadgeClass}) {
-    z-index: 1035;
-    cursor: pointer;
-}
-
-/* nice effects on the \`New!\`-Badge, but only if user allows animations */
-@media (prefers-reduced-motion: no-preference) {
-    .${newSettingBadgeClass} {
-        position: relative;
-        /* add a shining effect */
-        background-image: linear-gradient(-75deg, transparent 0%, rgba(255, 255, 255, 75%) 15%, transparent 30%, transparent 100%);
-        animation: ${newSettingBadgeAnimations.shining} 5s ease-in-out;
-        background-size: 200%;
-        background-repeat: no-repeat
+GM_addStyle(css`
+    /* add a small margin for "NEW!"-Badges in settings */
+    form fieldset h3 .${newSettingBadgeClass} {
+        margin-left: 1ch;
+    }
+    form .fitem label .${newSettingBadgeClass} {
+        margin-right: 1ch;
     }
 
-    /* add fancy sparkles ✨ to the \`New!\`-Badge */
-    .${newSettingBadgeClass}::before {
-        display: inline-block;
-        content: " ";
-        position: absolute;
-         --width: 10ch;
-        width: var(--width);
-        height: calc(var(--width) * 18 / 11);
-        /* this is a self designed sparkle as SVG :) */
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 1800'%3E%3Cpath fill='gold' d='M 550 0 C 550 720 660 900 1100 900 C 660 900 550 1080 550 1800 C 550 1080 440 900 0 900 C 440 900 550 720 550 0'/%3E%3C/svg%3E");
-        background-size: 100%;
-        background-repeat: no-repeat;
-        transform: translate(-50%, -50%);
-        transform-origin: top left;
-        top: 0;
-        left: 0;
-        animation:
-            ${newSettingBadgeAnimations.sparkling} 1s ease-in-out infinite alternate,
-            ${newSettingBadgeAnimations.sparklePositions} 6s step-start infinite;
+    /* the \`New!\`-Tooltip of settings btn needs to have a special z-index */
+    .tooltip:has(.${newSettingBadgeClass}) {
+        z-index: 1035;
+        cursor: pointer;
     }
-}
-@keyframes ${newSettingBadgeAnimations.shining} {
-    0% {
-        background-position: 200% 0;
+
+    /* nice effects on the \`New!\`-Badge, but only if user allows animations */
+    @media (prefers-reduced-motion: no-preference) {
+        .${newSettingBadgeClass} {
+            position: relative;
+            /* add a shining effect */
+            background-image: linear-gradient(
+                -75deg,
+                transparent 0%,
+                rgba(255, 255, 255, 75%) 15%,
+                transparent 30%,
+                transparent 100%
+            );
+            animation: ${newSettingBadgeAnimations.shining} 5s ease-in-out;
+            background-size: 200%;
+            background-repeat: no-repeat;
+        }
+
+        /* add fancy sparkles ✨ to the \`New!\`-Badge */
+        .${newSettingBadgeClass}::before {
+            display: inline-block;
+            content: ' ';
+            position: absolute;
+            --width: 10ch;
+            width: var(--width);
+            height: calc(var(--width) * 18 / 11);
+            /* this is a self designed sparkle as SVG :) */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 1800'%3E%3Cpath fill='gold' d='M 550 0 C 550 720 660 900 1100 900 C 660 900 550 1080 550 1800 C 550 1080 440 900 0 900 C 440 900 550 720 550 0'/%3E%3C/svg%3E");
+            background-size: 100%;
+            background-repeat: no-repeat;
+            transform: translate(-50%, -50%);
+            transform-origin: top left;
+            top: 0;
+            left: 0;
+            animation:
+                ${newSettingBadgeAnimations.sparkling} 1s ease-in-out infinite
+                    alternate,
+                ${newSettingBadgeAnimations.sparklePositions} 6s step-start
+                    infinite;
+        }
     }
-    20% {
-        background-position: 0 0;
+    @keyframes ${newSettingBadgeAnimations.shining} {
+        0% {
+            background-position: 200% 0;
+        }
+        20% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 0 0;
+        }
     }
-    100% {
-        background-position: 0 0;
+    @keyframes ${newSettingBadgeAnimations.sparkling} {
+        0% {
+            /* 1s => 0 ms, 2000ms */
+            scale: 0;
+        }
+        10% {
+            /* 1s => 100ms, 1900ms */
+            scale: 0;
+        }
+        100% {
+            /* 1s => 1000ms */
+            scale: 10%; /* for better results, we're creating large sparkles (width: 10ch), but to keep them rendered small, max scale is 10% */
+        }
     }
-}
-@keyframes ${newSettingBadgeAnimations.sparkling} {
-    0% { /* 1s => 0 ms, 2000ms */
-        scale: 0;
+    @keyframes ${newSettingBadgeAnimations.sparklePositions} {
+        0% {
+            top: 4%;
+            left: 14%;
+        }
+        33% {
+            top: 85%;
+            left: 51%;
+        }
+        66% {
+            top: 32%;
+            left: 87%;
+        }
     }
-    10% { /* 1s => 100ms, 1900ms */
-        scale: 0;
-    }
-    100% { /* 1s => 1000ms */
-        scale: 10%; /* for better results, we're creating large sparkles (width: 10ch), but to keep them rendered small, max scale is 10% */
-    }
-}
-@keyframes ${newSettingBadgeAnimations.sparklePositions} {
-    0% {
-        top: 4%;
-        left: 14%
-    }
-    33% {
-        top: 85%;
-        left: 51%;
-    }
-    66% {
-        top: 32%;
-        left: 87%;
-    }
-}
 `);
 // if this is a new installation, mark all settings as seen as we don't want to show the "NEW!"-badge on every single setting
 if (IS_NEW_INSTALLATION) markAllSettingsAsSeen();
@@ -2775,11 +2818,12 @@ unseenSettings.forEach(id => {
 // region Feature: general.fullwidth
 // use full width if enabled
 if (getSetting('general.fullwidth')) {
-    GM_addStyle(`
-/* Use full width */
-#topofscroll, .header-maxwidth {
-    max-width: unset !important;
-}
+    GM_addStyle(css`
+        /* Use full width */
+        #topofscroll,
+        .header-maxwidth {
+            max-width: unset !important;
+        }
     `);
 }
 // endregion
@@ -3045,16 +3089,16 @@ if (getSetting('general.bookmarkManager')) {
             );
 
             if (!manageFormStyleAdded) {
-                GM_addStyle(`
-#${form.id} .felement:first-child {
-    flex-basis: calc(4 * (100% / 12) - 1em);
-    flex-grow: 1;
-}
-#${form.id} .felement:nth-child(2) {
-    flex-basis: calc(8 * (100% / 12) - 1em);
-    flex-grow: 1;
-}
-`);
+                GM_addStyle(css`
+                    #${form.id} .felement:first-child {
+                        flex-basis: calc(4 * (100% / 12) - 1em);
+                        flex-grow: 1;
+                    }
+                    #${form.id} .felement:nth-child(2) {
+                        flex-basis: calc(8 * (100% / 12) - 1em);
+                        flex-grow: 1;
+                    }
+                `);
                 manageFormStyleAdded = true;
             }
 
@@ -3108,33 +3152,33 @@ if (getSetting('general.bookmarkManager')) {
             .querySelector('#usernavigation .usermenu-container')
             ?.before(bookmarkBtnWrapper);
 
-        GM_addStyle(`
-/* bookmarks dropdown should not be greater than 400px */
-#${bookmarkBtnWrapper.id} .dropdown-menu {
-    max-width: 400px;
-}
+        GM_addStyle(css`
+            /* bookmarks dropdown should not be greater than 400px */
+            #${bookmarkBtnWrapper.id} .dropdown-menu {
+                max-width: 400px;
+            }
 
-/* this will allow the bookmarks dropdown menu to be aligned to right viewport side and fullwidth on mobile devices */
-@media (max-width: 576px) {
-    #${bookmarkBtnWrapper.id} {
-        position: inherit;
-    }
-    #${bookmarkBtnWrapper.id} .dropdown-menu {
-        max-width: 100%;
-    }
-    #${bookmarkBtnWrapper.id} .dropdown-menu .dropdown-item {
-        overflow: auto;
-    }
-}
+            /* this will allow the bookmarks dropdown menu to be aligned to right viewport side and fullwidth on mobile devices */
+            @media (max-width: 576px) {
+                #${bookmarkBtnWrapper.id} {
+                    position: inherit;
+                }
+                #${bookmarkBtnWrapper.id} .dropdown-menu {
+                    max-width: 100%;
+                }
+                #${bookmarkBtnWrapper.id} .dropdown-menu .dropdown-item {
+                    overflow: auto;
+                }
+            }
 
-/* show a placeholder text when there are no bookmarks */
-#${bookmarksWrapper.id}:empty::before {
-    display: block;
-    text-align: center;
-    content: ${JSON.stringify($t('bookmarks.empty'))};
-    padding: .25rem 1.5rem; /* this is the padding of .dropdown-item set by moodle */
-}
-`);
+            /* show a placeholder text when there are no bookmarks */
+            #${bookmarksWrapper.id}:empty::before {
+                display: block;
+                text-align: center;
+                content: ${JSON.stringify($t('bookmarks.empty'))};
+                padding: 0.25rem 1.5rem; /* this is the padding of .dropdown-item set by moodle */
+            }
+        `);
     });
 }
 // endregion
@@ -3272,66 +3316,83 @@ if (getSetting('general.speiseplan')) {
     const preiseClass = PREFIX('speiseplan-preise');
     const abkClass = PREFIX('speiseplan-abk');
 
-    GM_addStyle(`
-.${tableClass} .${speiseClass}[data-location]::before {
-    content: attr(data-location);
-    color: #e8e6e3;
-    background-color: #586e3b;
-    font-weight: bold;
-    font-size: smaller;
-    padding: 4px;
-    border-radius: 6px;
-    margin-right: .5em;
-}
+    GM_addStyle(css`
+        .${tableClass} .${speiseClass}[data-location]::before {
+            content: attr(data-location);
+            color: #e8e6e3;
+            background-color: #586e3b;
+            font-weight: bold;
+            font-size: smaller;
+            padding: 4px;
+            border-radius: 6px;
+            margin-right: 0.5em;
+        }
 
-.${tableClass} .${speiseClass}[data-location="Cafeteria"]::before {
-    background-color: #4b6669;
-}
+        .${tableClass} .${speiseClass}[data-location="Cafeteria"]::before {
+            background-color: #4b6669;
+        }
 
-.${tableClass} .${speiseClass} .${abkClass} {
-    font-size: smaller;
-}
+        .${tableClass} .${speiseClass} .${abkClass} {
+            font-size: smaller;
+        }
 
-.${tableClass} .${speiseClass} .${abkClass}::before {
-    margin-left: 1em;
-    content: "(";
-}
+        .${tableClass} .${speiseClass} .${abkClass}::before {
+            margin-left: 1em;
+            content: '(';
+        }
 
-.${tableClass} .${speiseClass} .${abkClass} > span:not(:last-child)::after {
-    content: "; ";
-}
+        .${tableClass}
+            .${speiseClass}
+            .${abkClass}
+            > span:not(:last-child)::after {
+            content: '; ';
+        }
 
-.${tableClass} .${speiseClass} .${abkClass}::after {
-    content: ")";
-}
+        .${tableClass} .${speiseClass} .${abkClass}::after {
+            content: ')';
+        }
 
-.${tableClass} .${artenClass} {
-    text-align: center;
-}
+        .${tableClass} .${artenClass} {
+            text-align: center;
+        }
 
-.${tableClass} .${artenClass} img {
-    max-width: 40px;
-    max-height: 40px;
-}
+        .${tableClass} .${artenClass} img {
+            max-width: 40px;
+            max-height: 40px;
+        }
 
-.${tableClass} .${preiseClass} > span:not(:last-child)::after {
-    content: "\xa0/\xa0";
-}
+        .${tableClass} .${preiseClass} > span:not(:last-child)::after {
+            content: '\xa0/\xa0';
+        }
 
-/* improve arten images in dark mode */
-${DARK_MODE_SELECTOR} .${artenClass} img {
-  --stroke-pos: 0.5px;
-  --stroke-neg: -0.5px;
-  --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
-  filter: drop-shadow(var(--stroke-pos) 0 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(0 var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-neg) 0 var(--stroke-color));
-}
-${DARK_MODE_SELECTOR} .${artenClass} img[src*="sh_teller"] {
-  filter: brightness(1.5);
-}
-${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
-  filter: brightness(0.9);
-}
-`);
+        /* improve arten images in dark mode */
+        ${DARK_MODE_SELECTOR} .${artenClass} img {
+            --stroke-pos: 0.5px;
+            --stroke-neg: -0.5px;
+            --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
+            filter: drop-shadow(var(--stroke-pos) 0 0 var(--stroke-color))
+                drop-shadow(var(--stroke-neg) 0 var(--stroke-color))
+                drop-shadow(0 var(--stroke-neg) 0 var(--stroke-color))
+                drop-shadow(
+                    var(--stroke-pos) var(--stroke-pos) 0 var(--stroke-color)
+                )
+                drop-shadow(
+                    var(--stroke-pos) var(--stroke-neg) 0 var(--stroke-color)
+                )
+                drop-shadow(
+                    var(--stroke-neg) var(--stroke-pos) 0 var(--stroke-color)
+                )
+                drop-shadow(
+                    var(--stroke-neg) var(--stroke-neg) 0 var(--stroke-color)
+                );
+        }
+        ${DARK_MODE_SELECTOR} .${artenClass} img[src*="sh_teller"] {
+            filter: brightness(1.5);
+        }
+        ${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
+            filter: brightness(0.9);
+        }
+    `);
 
     const createDayFieldset = (day, speisen, filter, firstFieldset) => {
         const date = new Date(day);
@@ -3490,69 +3551,77 @@ if (
     getSetting('general.googlyEyes') &&
     window.matchMedia('(hover: hover)').matches
 ) {
-    GM_addStyle(`
-/* This is the fancy style for googly Eyes 👀 */
-.eyes {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  --eye-width: 40%;
-  --eye-border-width: 2px;
-  --eye-height: 65%;
-  --pupil-width: max(1%, 4px);
-  --pupil-height: var(--pupil-width);
-}
+    GM_addStyle(css`
+        /* This is the fancy style for googly Eyes 👀 */
+        .eyes {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            --eye-width: 40%;
+            --eye-border-width: 2px;
+            --eye-height: 65%;
+            --pupil-width: max(1%, 4px);
+            --pupil-height: var(--pupil-width);
+        }
 
-.eye {
-  position: relative;
-  background-color: white;
-  border: var(--eye-border-width) solid black;
-  border-radius: 43%;
-  display: flex;
-  width: var(--eye-width);
-  height: var(--eye-height);
-  min-width: var(--eye-width);
-  min-height: var(--eye-height);
-  max-width: var(--eye-width);
-  max-height: var(--eye-height);
-  align-items: center;
-  justify-content: center;
-}
-.eye:not(:last-child) {
-  margin-right: calc(10% / 2);
-}
+        .eye {
+            position: relative;
+            background-color: white;
+            border: var(--eye-border-width) solid black;
+            border-radius: 43%;
+            display: flex;
+            width: var(--eye-width);
+            height: var(--eye-height);
+            min-width: var(--eye-width);
+            min-height: var(--eye-height);
+            max-width: var(--eye-width);
+            max-height: var(--eye-height);
+            align-items: center;
+            justify-content: center;
+        }
+        .eye:not(:last-child) {
+            margin-right: calc(10% / 2);
+        }
 
-.pupil {
-  background-color: black;
-  border: calc(var(--pupil-width) / 2) solid black;
-  border-radius: 50%;
-  display: block;
-  width: var(--pupil-width);
-  height: var(--pupil-height);
-  min-width: var(--pupil-width);
-  min-height: var(--pupil-height);
-  max-width: var(--pupil-width);
-  max-height: var(--pupil-height);
-}
+        .pupil {
+            background-color: black;
+            border: calc(var(--pupil-width) / 2) solid black;
+            border-radius: 50%;
+            display: block;
+            width: var(--pupil-width);
+            height: var(--pupil-height);
+            min-width: var(--pupil-width);
+            min-height: var(--pupil-height);
+            max-width: var(--pupil-width);
+            max-height: var(--pupil-height);
+        }
 
-/* Hey, don't look while I enter a password! Wait, are you peeking? 😨 */
-.eye::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  opacity: 0;
-  transition: opacity 0.5s linear;
-  background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgb(255, 255, 255) 49%, rgb(255, 255, 255) 51%, rgb(0, 0, 0) 65%, rgb(0, 0, 0) 100%);
-}
-body:has(input[type="password"]:focus) .eye::before {
-  opacity: 1;
-}
-`);
+        /* Hey, don't look while I enter a password! Wait, are you peeking? 😨 */
+        .eye::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s linear;
+            background: linear-gradient(
+                0deg,
+                rgb(0, 0, 0) 0%,
+                rgb(0, 0, 0) 35%,
+                rgb(255, 255, 255) 49%,
+                rgb(255, 255, 255) 51%,
+                rgb(0, 0, 0) 65%,
+                rgb(0, 0, 0) 100%
+            );
+        }
+        body:has(input[type='password']:focus) .eye::before {
+            opacity: 1;
+        }
+    `);
 
     const eyes = document.createElement('div');
     eyes.classList.add('eyes');
@@ -3650,25 +3719,34 @@ ${Array.from(shownBars)
 `);
 
     const nowAdditionsClass = PREFIX('semesterzeiten-now-additions');
-    GM_addStyle(`
-.${nowAdditionsClass}.progress-bar {
-    position: absolute;
-    height: 1rem;
-    pointer-events: none;
-    background-image: linear-gradient(45deg,rgba(255,255,255,.3) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.3) 75%,transparent 75%,transparent);
-    border-right: 1px solid black;
-}
-${DARK_MODE_SELECTOR} .${nowAdditionsClass}.progress-bar {
-    border-color: white;
-}
+    GM_addStyle(css`
+        .${nowAdditionsClass}.progress-bar {
+            position: absolute;
+            height: 1rem;
+            pointer-events: none;
+            background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.3) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0.3) 75%,
+                transparent 75%,
+                transparent
+            );
+            border-right: 1px solid black;
+        }
+        ${DARK_MODE_SELECTOR} .${nowAdditionsClass}.progress-bar {
+            border-color: white;
+        }
 
-span.${nowAdditionsClass} {
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%) translateY(calc(-1lh + 3px)); /* these numbers have been carefully */
-    font-size: .703125rem; /* this is font size of progress bars */
-}
-`);
+        span.${nowAdditionsClass} {
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%) translateY(calc(-1lh + 3px)); /* these numbers have been carefully */
+            font-size: 0.703125rem; /* this is font size of progress bars */
+        }
+    `);
 
     ready(() =>
         document
@@ -4119,20 +4197,24 @@ if (getSetting('general.prideLogo')) {
             document.querySelector('#logoimage');
         const logoUrl = new URL(logoImg.src);
 
-        GM_addStyle(`
+        GM_addStyle(css`
             /* make the Logo rainbow colored */
             .navbar.fixed-top .navbar-brand .logo,
             #logoimage {
                 background-image: linear-gradient(
-                    #FE0000 24.7%, 
-                    #FD8C00 24.7%, 37.35%, 
-                    #FFD000 37.35%, 50%, 
-                    #119F0B 50%, 62.65%, 
-                    #457CDF 62.65%, 75.3%, 
-                    #C22EDC 75.3%
+                    #fe0000 24.7%,
+                    #fd8c00 24.7%,
+                    37.35%,
+                    #ffd000 37.35%,
+                    50%,
+                    #119f0b 50%,
+                    62.65%,
+                    #457cdf 62.65%,
+                    75.3%,
+                    #c22edc 75.3%
                 );
                 filter: brightness(0.8) contrast(1.5);
-                
+
                 object-position: -99999px -99999px; /* hide original image */
                 mask: url(${logoUrl.href}) center/contain no-repeat;
                 mask-origin: content-box;
@@ -4148,12 +4230,12 @@ if (getSetting('general.prideLogo')) {
 // endregion
 
 // region Feature: Darkmode
-GM_addStyle(`
-/* make the UzL-Logo glow beautifully when using dark mode of darkreader */
-${DARK_MODE_SELECTOR} .navbar.fixed-top .navbar-brand .logo,
+GM_addStyle(css`
+    /* make the UzL-Logo glow beautifully when using dark mode of darkreader */
+    ${DARK_MODE_SELECTOR} .navbar.fixed-top .navbar-brand .logo,
 ${DARK_MODE_SELECTOR} #logoimage {
-    filter: brightness(500%);
-}
+        filter: brightness(500%);
+    }
 `);
 const updateDarkReaderMode = (live = false) => {
     const darkModeSetting = getSetting('darkmode.mode', live);
@@ -4196,16 +4278,17 @@ if (isDashboard) {
 
 // region Feature: myCourses.boxesPerRow
 const myCoursesBoxesPerRow = getSetting('myCourses.boxesPerRow');
-GM_addStyle(`
-/* ${myCoursesBoxesPerRow} boxes per row in the "my courses" view, instead of 3 plus increase margin a little */
-@media (min-width: 840px) {
-  .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
-    --margin: max(4px, min(10px, calc(100vw / 192)));
-    width: calc((100% / ${myCoursesBoxesPerRow}) - var(--margin) * 2);
-    margin-left: var(--margin);
-    margin-right: var(--margin);
-  }
-}`);
+GM_addStyle(css`
+    /* ${myCoursesBoxesPerRow} boxes per row in the "my courses" view, instead of 3 plus increase margin a little */
+    @media (min-width: 840px) {
+        .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
+            --margin: max(4px, min(10px, calc(100vw / 192)));
+            width: calc((100% / ${myCoursesBoxesPerRow}) - var(--margin) * 2);
+            margin-left: var(--margin);
+            margin-right: var(--margin);
+        }
+    }
+`);
 // endregion
 
 // region Features: courses.grades, courses.gradesNewTab, courses.collapseAll
@@ -4573,17 +4656,16 @@ ready(async () => {
                     updateSidebar(getSetting(settingId))
                 );
 
-                GM_addStyle(`
-#${dropdown.id} {
-    transform: unset !important;
-    position: sticky !important;
-}
+                GM_addStyle(css`
+                    #${dropdown.id} {
+                        transform: unset !important;
+                        position: sticky !important;
+                    }
 
-#${dropdown.id} a {
-    width: 100%;
-}
-
-`);
+                    #${dropdown.id} a {
+                        width: 100%;
+                    }
+                `);
 
                 header.append(myCoursesLink, dropdownToggle, dropdown);
             }
@@ -4727,11 +4809,11 @@ ready(async () => {
 
 // region Feature: courses.imgMaxWidth
 if (getSetting('courses.imgMaxWidth')) {
-    GM_addStyle(`
-/* prevent images from overflowing */
-#page-content .course-content img {
-    max-width: 100%;
-}
+    GM_addStyle(css`
+        /* prevent images from overflowing */
+        #page-content .course-content img {
+            max-width: 100%;
+        }
     `);
 }
 // endregion
@@ -4743,40 +4825,41 @@ if (getSetting('courses.imageZoom')) {
 
     let copyImage;
 
-    GM_addStyle(`
-#page-content .course-content img {
-    cursor: zoom-in;
-}
+    GM_addStyle(css`
+        #page-content .course-content img {
+            cursor: zoom-in;
+        }
 
-/* background for image zooming */
-#${overlay.id} {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 2000;
-    opacity: 0;
+        /* background for image zooming */
+        #${overlay.id} {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 2000;
+            opacity: 0;
 
-    background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.75);
 
-    cursor: zoom-out;
+            cursor: zoom-out;
 
-    transition: opacity 0.2s ease-in-out;
-    will-change: opacity;
+            transition: opacity 0.2s ease-in-out;
+            will-change: opacity;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-/* image zooming */
-#${overlay.id} > img {
-    cursor: zoom-out;
-    transform: scale(0);
-    transition: transform 0.2s ease-in-out;
-    will-change: transform;
-}`);
+        /* image zooming */
+        #${overlay.id} > img {
+            cursor: zoom-out;
+            transform: scale(0);
+            transition: transform 0.2s ease-in-out;
+            will-change: transform;
+        }
+    `);
 
     overlay.addEventListener('click', () => {
         overlay.remove();
@@ -4835,11 +4918,11 @@ if (getSetting('courses.imageZoom')) {
 
 // region Feature: courses.hideSelfEnrolHint
 if (getSetting('courses.hideSelfEnrolHint')) {
-    GM_addStyle(`
-.course-hint-selfenrol.alert.alert-info {
-    display: none !important;
-}
-`);
+    GM_addStyle(css`
+        .course-hint-selfenrol.alert.alert-info {
+            display: none !important;
+        }
+    `);
 }
 // endregion
 
@@ -5335,7 +5418,7 @@ ready(() => {
                     );
                     floatingNewSettingsBadge.textContent = `\xa0⬇️\xa0${$t('new')}\xa0⬇️\xa0`;
 
-                    GM_addStyle(`
+                    GM_addStyle(css`
                         #${floatingNewSettingsBadge.id} {
                             position: sticky;
                             left: 50%;
@@ -5560,16 +5643,16 @@ ready(() => {
 
             footerBtnGroup.id = PREFIX('settings-footer-btn-group');
 
-            GM_addStyle(`
-/* show button text only on hover */
-#${footerBtnGroup.id} > :where(button, a) > span {
-    font-size: 0;
-    transition: font-size 0.5s;
-}
-#${footerBtnGroup.id} > :where(button, a):hover > span {
-    font-size: unset;
-}
-`);
+            GM_addStyle(css`
+                /* show button text only on hover */
+                #${footerBtnGroup.id} > :where(button, a) > span {
+                    font-size: 0;
+                    transition: font-size 0.5s;
+                }
+                #${footerBtnGroup.id} > :where(button, a):hover > span {
+                    font-size: unset;
+                }
+            `);
 
             modal.getFooter()[0].prepend(footerBtnGroup);
 
