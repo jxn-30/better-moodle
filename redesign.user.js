@@ -5418,70 +5418,70 @@ if (getSetting('weatherDisplay.show')) {
         };
         const unitConverter = {
             temperature: {
-                metric: celsius => [round(celsius, 2), '&#x202F;°C'],
+                metric: celsius => [round(celsius, 1), '&#x202F;°C'],
                 scientific: celsius => [
                     round(celsius + 273.15, 2, true),
                     '&#x202F;K',
                 ],
                 imperial: celsius => [
-                    round((celsius * 9) / 5 + 32, 2),
+                    round((celsius * 9) / 5 + 32, 1),
                     '&#x202F;°F',
                 ],
             },
             temperatureFeelsLike: {
-                metric: celsius => [round(celsius, 2), '&#x202F;°C'],
+                metric: celsius => [round(celsius, 1), '&#x202F;°C'],
                 scientific: celsius => [
                     round(celsius + 273.15, 2, true),
                     '&#x202F;K',
                 ],
                 imperial: celsius => [
-                    round((celsius * 9) / 5 + 32, 2),
+                    round((celsius * 9) / 5 + 32, 1),
                     '&#x202F;°F',
                 ],
             },
             windDirection: {
-                metric: deg => [round(deg, 2), '°'],
+                metric: deg => [round(deg, 0), '°'],
                 scientific: deg => [
                     round((deg * Math.PI) / 180, 2, true),
                     '&#x202F;rad',
                 ],
-                imperial: deg => [round(deg, 2), '°'],
+                imperial: deg => [round(deg, 0), '°'],
             },
             windSpeed: {
-                metric: kmh => [round(kmh, 2), '&#x202F;km/h'],
+                metric: kmh => [round(kmh, 1), '&#x202F;km/h'],
                 scientific: kmh => [
                     round((kmh * 1000) / 3600, 2, true),
                     '&#x202F;m/s',
                 ],
-                imperial: kmh => [round(kmh / 1.609344, 2), '&#x202F;mph'],
+                imperial: kmh => [round(kmh / 1.609344, 1), '&#x202F;mph'],
             },
             visibilityDistance: {
-                metric: km => [round(km, 2), '&#x202F;km'],
+                metric: km => [round(km, 1), '&#x202F;km'],
                 scientific: km => [round(km * 1000, 0, true), '&#x202F;m'],
-                imperial: km => [round(km / 1.609344, 2), '&#x202F;mi'],
+                imperial: km => [round(km / 1.609344, 1), '&#x202F;mi'],
             },
             humidity: {
-                metric: percent => [round(percent, 2), '&#x202F;%'],
+                metric: percent => [round(percent, 1), '&#x202F;%'],
                 scientific: percent => [round(percent / 100, 2, true), ''], // TODO: use real SI units (kg/m³)
-                imperial: percent => [round(percent, 2), '&#x202F;%'],
+                imperial: percent => [round(percent, 1), '&#x202F;%'],
             },
             pressure: {
-                metric: hPa => [round(hPa, 2), '&#x202F;hPa'],
+                metric: hPa => [round(hPa, 1), '&#x202F;hPa'],
                 scientific: hPa => [round(hPa * 100, 2, true), '&#x202F;Pa'],
                 imperial: hPa => [
-                    round(hPa * 0.02952998751, 2),
+                    round(hPa * 0.02952998751, 1),
                     '&#x202F;inHg',
                 ],
             },
             cloudCover: {
-                metric: percent => [round(percent, 2), '&#x202F;%'],
+                metric: percent => [round(percent, 1), '&#x202F;%'],
                 scientific: percent => [round(percent / 100, 2, true), ''],
-                imperial: percent => [round(percent, 2), '&#x202F;%'],
+                imperial: percent => [round(percent, 1), '&#x202F;%'],
             },
             rainGauge: {
-                metric: mm => [round(mm, 2), '&#x202F;mm'],
+                metric: mm => [round(mm, 1), '&#x202F;mm'],
                 scientific: mm => [round(mm / 1000, 3, true), '&#x202F;m'],
-                imperial: mm => [round(mm / 25.4, 2), '&#x202F;in'],
+                imperial: mm => [round(mm / 25.4, 1), '&#x202F;in'],
             },
         };
 
