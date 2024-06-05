@@ -258,10 +258,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"darkreader@npm:4.9.85":
-  version: 4.9.85
-  resolution: "darkreader@npm:4.9.85"
-  checksum: 10c0/d2d62ea2cda4050572d1ca1cdf333c998e49df0a19801d9de0f944eb9d3e36de79c22c5fbb8e30b2a5da464d5c8fd709d44b3696e1cd6b8f6609407e6180e1fe
+"darkreader@npm:4.9.86":
+  version: 4.9.86
+  resolution: "darkreader@npm:4.9.86"
+  checksum: 10c0/8d8e42a1c2080181b54e6fcedbaa4a61afdc66bc6a185c5291fce733d8caa91b7262e193c57b6d75915083c167e6d6e4368ebb60546d4f23d3b7af5170a02971
   languageName: node
   linkType: hard
 
@@ -861,7 +861,7 @@ __metadata:
     "@eslint/js": "npm:9.4.0"
     "@types/eslint": "npm:8.56.10"
     "@types/tampermonkey": "npm:5.0.3"
-    darkreader: "npm:4.9.85"
+    darkreader: "npm:4.9.86"
     eslint: "npm:9.4.0"
     eslint-config-prettier: "npm:9.1.0"
     eslint-plugin-userscripts: "npm:0.5.3"
