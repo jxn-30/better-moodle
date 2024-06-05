@@ -88,7 +88,6 @@ const TRANSLATIONS = {
         },
         weatherDisplay: {
             title: 'Wetter-Moodle',
-            close: 'Schließen',
             updated: 'Zuletzt aktualisiert um',
             credits: {
                 _long: 'Wetterdaten von',
@@ -269,6 +268,24 @@ ich habe einen tollen Vorschlag für Better-Moodle:
 Viele Grüße
 [Dein Name]`,
                     },
+                },
+            },
+            weatherDisplay: {
+                close: 'Schließen',
+                tabs: {
+                    info: 'Wetterinformationen',
+                    windDetails: 'Windgeschwindigkeit und -richtung',
+                },
+                attributes: {
+                    temperature: 'Temperatur',
+                    feelsLike: 'Gefühlte Temperatur',
+                    windSpeed: 'Windgeschwindigkeit',
+                    windDirection: 'Windrichtung',
+                    visibility: 'Sichtweite',
+                    humidity: 'Feuchtigkeit',
+                    pressure: 'Luftdruck',
+                    cloudCover: 'Bewölkung',
+                    rainGauge: 'Niederschlagsmenge',
                 },
             },
         },
@@ -642,7 +659,6 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
         },
         weatherDisplay: {
             title: 'Weather-Moodle',
-            close: 'Close',
             updated: 'Last updated at',
             credits: {
                 _long: 'Weather data provided by',
@@ -824,6 +840,24 @@ I have a great suggestion for Better-Moodle:
 Best regards
 [your name]`,
                     },
+                },
+            },
+            weatherDisplay: {
+                close: 'Close',
+                tabs: {
+                    info: 'Weather information',
+                    windDetails: 'Wind speed and direction',
+                },
+                attributes: {
+                    temperature: 'Temperature',
+                    feelsLike: 'Feels like',
+                    windSpeed: 'Wind speed',
+                    windDirection: 'Wind direction',
+                    visibility: 'Visibility',
+                    humidity: 'Humidity',
+                    pressure: 'Pressure',
+                    cloudCover: 'Cloud cover',
+                    rainGauge: 'Rain gauge',
                 },
             },
         },
@@ -5462,7 +5496,7 @@ if (getSetting('weatherDisplay.show')) {
             },
             humidity: {
                 metric: percent => [round(percent, 1), '&#x202F;%'],
-                scientific: percent => [round(percent / 100, 2, true), ''], // TODO: use real SI units (kg/m³)
+                scientific: percent => [round(percent / 100, 2, true), ''],
                 imperial: percent => [round(percent, 1), '&#x202F;%'],
             },
             pressure: {
@@ -5598,34 +5632,108 @@ if (getSetting('weatherDisplay.show')) {
         return arrows[Math.round(deg / 45) % 8];
     };
 
+    let weatherModal = null;
+    const tabClass = prefix('tab');
+    const tabPaneClass = prefix('tab-pane');
+    const tabs = {
+        info: prefix('info'),
+        windDetails: prefix('wind-details'),
+    };
+
     const openWeatherDisplayModal = e => {
         e.preventDefault();
 
         require(['core/modal_factory'], ({ create, types }) =>
             weatherProvider().then(data => {
-                create({
-                    type: types.ALERT,
-                    large: true,
-                    scrollable: true,
-                    title: `${getWeatherEmoji(
-                        data.weatherType
-                    )}\xa0${$t('weatherDisplay.title')}`,
-                    body: JSON.stringify(data), // TODO: display weather description here
-                }).then(modal => {
-                    modal.setButtonText(
-                        'cancel',
-                        `${$t('weatherDisplay.close')}`
-                    );
-                    modal.getBody()[0].classList.add('mform');
+                new Promise(resolve => {
+                    if (weatherModal) {
+                        resolve(weatherModal);
+                        return;
+                    }
+                    create({
+                        type: types.ALERT,
+                        large: true,
+                        scrollable: true,
+                        title: `${getWeatherEmoji(
+                            data.weatherType
+                        )}\xa0${$t('weatherDisplay.title')}`,
+                        body: `
+                        <div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                ${Object.entries(tabs)
+                                    .map(
+                                        tab => `
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link ${tabClass}" id="${tab[1]}-tab" data-toggle="tab" data-target="#${tab[1]}" type="button" role="tab" aria-controls="${tab[1]}" aria-selected="false">${$t(`modals.weatherDisplay.tabs.${tab[0]}`)}</button>
+                                </li>
+                                `
+                                    )
+                                    .join('')}
+                            </ul>
+                            <div class="tab-content">
+                                ${Object.entries(tabs)
+                                    .map(
+                                        tab => `
+                                <div class="tab-pane ${tabPaneClass} pt-3 px-3" id="${tab[1]}" role="tabpanel" aria-labelledby="${tab[1]}-tab"></div>
+                                `
+                                    )
+                                    .join('')}
+                            </div>
+                        </div>
+                        `,
+                    }).then(modal => {
+                        modal.setButtonText(
+                            'cancel',
+                            `${$t('modals.weatherDisplay.close')}`
+                        );
 
-                    const credits = document.createElement('span');
-                    credits.classList.add('text-muted', 'small', 'mr-auto');
-                    credits.innerHTML = `${$t(
-                        'weatherDisplay.credits._long'
-                    )} <a href="${$t(
-                        `weatherDisplay.credits.${provider}.url`
-                    )}">${$t(`weatherDisplay.credits.${provider}.name`)}</a>`;
-                    modal.getFooter().prepend(credits);
+                        const credits = document.createElement('span');
+                        credits.classList.add('text-muted', 'small', 'mr-auto');
+                        credits.innerHTML = `${$t(
+                            'weatherDisplay.credits._long'
+                        )} <a href="${$t(
+                            `weatherDisplay.credits.${provider}.url`
+                        )}">${$t(`weatherDisplay.credits.${provider}.name`)}</a>`;
+                        modal.getFooter().prepend(credits);
+
+                        const modalBody = modal.getBody()[0];
+                        const firstTab = modalBody.querySelector(
+                            `.${tabClass}`
+                        );
+                        const firstTabPane = modalBody.querySelector(
+                            `.${tabPaneClass}`
+                        );
+                        firstTab.classList.add('active');
+                        firstTab.setAttribute('aria-selected', 'true');
+                        firstTabPane.classList.add('show', 'active');
+
+                        weatherModal = modal;
+                        resolve(modal);
+                    });
+                }).then(modal => {
+                    const modalBody = modal.getBody()[0];
+
+                    // TODO: Make this more beautiful
+                    modalBody.querySelector(`#${tabs.info}`).innerHTML = `
+                        <dl class="row">
+                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.temperature')}</dt>
+                            <dd class="col-sm-8">${displayData('temperature', data)}</dd>
+                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.feelsLike')}</dt>
+                            <dd class="col-sm-8">${displayData('temperatureFeelsLike', data)}</dd>
+                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.windSpeed')}</dt>
+                            <dd class="col-sm-8">${displayData('windSpeed', data)}</dd>
+                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.visibility')}</dt>
+                            <dd class="col-sm-8">${displayData('visibilityDistance', data)}</dd>
+                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.humidity')}</dt>
+                            <dd class="col-sm-8">${displayData('humidity', data)}</dd>
+                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.pressure')}</dt>
+                            <dd class="col-sm-8">${displayData('pressure', data)}</dd>
+                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.cloudCover')}</dt>
+                            <dd class="col-sm-8">${displayData('cloudCover', data)}</dd>
+                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.rainGauge')}</dt>
+                            <dd class="col-sm-8">${displayData('rainGauge', data)}</dd>
+                        </dl>
+                    `;
 
                     modal.show();
                 });
@@ -5637,7 +5745,7 @@ if (getSetting('weatherDisplay.show')) {
     const weatherBtn = document.createElement('a');
     weatherBtn.innerText = `${getWeatherEmoji(0)}`;
     weatherBtn.dataset.originalTitle = $t(
-        'weatherDisplay.weatherCodes.unknown'
+        `weatherDisplay.weatherCodes.${weatherCodes.UNKNOWN}`
     );
     weatherBtn.classList.add('nav-link', 'position-relative');
     weatherBtn.href = '#';
