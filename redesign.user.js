@@ -601,6 +601,11 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
                     description:
                         'Ermöglicht das Umschalten zwischen der tatsächlichen Temperatur und der gefühlten Temperatur.',
                 },
+                useDeviceOrientation: {
+                    name: 'Geräteorientierung verwenden',
+                    description:
+                        'Verwende die Geräteorientierung, um die Windrichtung anzuzeigen.',
+                },
             },
         },
     },
@@ -1167,6 +1172,11 @@ Better-Moodle never requires more than the free plan of the respective provider 
                     name: "Show 'feels like' temperature",
                     description:
                         "Allows you to switch between the actual temperature and the 'feels like' temperature.",
+                },
+                useDeviceOrientation: {
+                    name: 'Use device orientation',
+                    description:
+                        'Use the device orientation to display the wind direction.',
                 },
             },
         },
@@ -2801,28 +2811,43 @@ const SETTINGS = [
         'metric',
         'scientific',
         'imperial',
-    ]),
+    ]).setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
     new SelectSetting('weatherDisplay.provider', 'openMeteo', [
         'openMeteo',
         'wttrIn',
         'visualCrossing',
         'openWeatherMap',
         'pirateWeather',
-    ]),
+    ]).setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
     new StringSetting('weatherDisplay.visualCrossingAPIKey', '').setDisabledFn(
         settings =>
+            !settings['weatherDisplay.show'].inputValue ||
             settings['weatherDisplay.provider'].inputValue !== 'visualCrossing'
     ),
     new StringSetting('weatherDisplay.openWeatherMapAPIKey', '').setDisabledFn(
         settings =>
+            !settings['weatherDisplay.show'].inputValue ||
             settings['weatherDisplay.provider'].inputValue !== 'openWeatherMap'
     ),
     new StringSetting('weatherDisplay.pirateWeatherAPIKey', '').setDisabledFn(
         settings =>
+            !settings['weatherDisplay.show'].inputValue ||
             settings['weatherDisplay.provider'].inputValue !== 'pirateWeather'
     ),
-    new BooleanSetting('weatherDisplay.showTempInNavbar', false),
-    new BooleanSetting('weatherDisplay.toggleFeelsLike', false),
+    new BooleanSetting('weatherDisplay.showTempInNavbar', false).setDisabledFn(
+        settings => !settings['weatherDisplay.show'].inputValue
+    ),
+    new BooleanSetting('weatherDisplay.toggleFeelsLike', false).setDisabledFn(
+        settings => !settings['weatherDisplay.show'].inputValue
+    ),
+    new BooleanSetting(
+        'weatherDisplay.useDeviceOrientation',
+        true
+    ).setDisabledFn(
+        settings =>
+            !settings['weatherDisplay.show'].inputValue ||
+            window.DeviceOrientationEvent === undefined // TODO: This check does not what I want it to do
+    ),
     $t('settings.messages._title'),
     new SelectSetting('messages.sendHotkey', '', [
         '',
@@ -5643,6 +5668,9 @@ if (getSetting('weatherDisplay.show')) {
     const openWeatherDisplayModal = e => {
         e.preventDefault();
 
+        const compassRoseId = prefix('compass-rose');
+        const needleDirectionVar = prefix('compass-needle-direction');
+
         require(['core/modal_factory'], ({ create, types }) =>
             weatherProvider().then(data => {
                 new Promise(resolve => {
@@ -5707,6 +5735,142 @@ if (getSetting('weatherDisplay.show')) {
                         firstTab.setAttribute('aria-selected', 'true');
                         firstTabPane.classList.add('show', 'active');
 
+                        const compassNeedleId = prefix('compass-needle');
+                        const compassDirectionClass =
+                            prefix('compass-direction');
+                        const compassDirectionNorthId = prefix(
+                            'compass-direction-north'
+                        );
+                        const compassDirectionEastId = prefix(
+                            'compass-direction-east'
+                        );
+                        const compassDirectionSouthId = prefix(
+                            'compass-direction-south'
+                        );
+                        const compassDirectionWestId = prefix(
+                            'compass-direction-west'
+                        );
+                        const compassRadiusVar = prefix('compass-radius');
+                        const needleMarginVar = prefix('compass-needle-margin');
+                        const directionMarginVar = prefix(
+                            'compass-direction-margin'
+                        );
+                        const offsetVar = prefix('compass-offset');
+
+                        const compassOrientationVar = prefix(
+                            'compass-orientation'
+                        );
+
+                        const windDetailsTab = modalBody.querySelector(
+                            `#${tabs.windDetails}`
+                        );
+                        const compassWrapper = document.createElement('div');
+                        compassWrapper.classList.add(
+                            'd-flex',
+                            'justify-content-center'
+                        );
+                        compassWrapper.innerHTML = `
+                            <div id="${compassRoseId}">
+                                <span class="${compassDirectionClass}" id="${compassDirectionNorthId}">N</span>
+                                <span class="${compassDirectionClass}" id="${compassDirectionEastId}">E</span>
+                                <span class="${compassDirectionClass}" id="${compassDirectionSouthId}">S</span>
+                                <span class="${compassDirectionClass}" id="${compassDirectionWestId}">W</span>
+                                <div id="${compassNeedleId}"></div> <!-- TODO: Use an arrow, not just a dot -->
+                            </div>
+                        `;
+                        windDetailsTab.append(compassWrapper);
+
+                        GM_addStyle(`
+                            #${compassRoseId} {
+                                --${compassRadiusVar}: 100px;
+                                --${needleMarginVar}: 20px;
+                                --${directionMarginVar}: 15px;
+                
+                                position: relative;
+                                width: calc(2 * var(--${compassRadiusVar}));
+                                height: calc(2 * var(--${compassRadiusVar}));
+                                border: 1px solid black;
+                                border-radius: 50%;
+                                background: linear-gradient(45deg, #f0f0f0, #fff);
+                                box-sizing: border-box;
+
+                                --${compassOrientationVar}: 0deg;
+                            }
+                            #${compassRoseId} .${prefix('compass-direction')} {
+                                position: absolute;
+                                font-size: 2em;
+                                font-weight: bold;
+                                color: #333;
+                                
+                                transform: translate(-50%, -50%);
+                                
+                                top: calc(
+                                    var(--${compassRadiusVar}) - (
+                                        var(--${compassRadiusVar}) - var(--${directionMarginVar})
+                                    ) * cos(calc(
+                                        -1 * var(--${compassOrientationVar}) - var(--${offsetVar})
+                                    ))
+                                );
+                                left: calc(
+                                    var(--${compassRadiusVar}) - (
+                                        var(--${compassRadiusVar}) - var(--${directionMarginVar})
+                                    ) * sin(calc(
+                                        -1 * var(--${compassOrientationVar}) - var(--${offsetVar})
+                                    ))
+                                );
+                            }
+                
+                            #${compassRoseId} #${compassDirectionNorthId} {
+                                --${offsetVar}: 0deg;
+                            }
+                            #${compassRoseId} #${compassDirectionEastId} {
+                                --${offsetVar}: 90deg;
+                            }
+                            #${compassRoseId} #${compassDirectionSouthId} {
+                                --${offsetVar}: 180deg;
+                            }
+                            #${compassRoseId} #${compassDirectionWestId} {
+                                --${offsetVar}: 270deg;
+                            }
+                
+                            #${compassRoseId} #${compassNeedleId} {
+                                position: absolute;
+                                top: calc(
+                                    var(--${compassRadiusVar}) - (
+                                        var(--${compassRadiusVar}) - var(--${needleMarginVar})
+                                    ) * cos(calc(
+                                        var(--${needleDirectionVar}) - var(--${compassOrientationVar})
+                                    ))
+                                );
+                                left: calc(
+                                    var(--${compassRadiusVar}) - (
+                                        var(--${compassRadiusVar}) - var(--${needleMarginVar})
+                                    ) * sin(calc(
+                                        var(--${needleDirectionVar}) - var(--${compassOrientationVar})
+                                    ))
+                                );
+                                width: 10px;
+                                height: 10px;
+                                border-radius: 50%;
+                                background: red;
+                                transform: translate(-50%, -50%);
+                            }
+                        `);
+
+                        if (
+                            window.DeviceOrientationEvent && // TODO: This does not what I want it to do
+                            getSetting('weatherDisplay.useDeviceOrientation')
+                        ) {
+                            window.addEventListener('deviceorientation', e => {
+                                document
+                                    .getElementById(compassRoseId)
+                                    ?.style.setProperty(
+                                        `--${compassOrientationVar}`,
+                                        `${e.alpha}deg`
+                                    );
+                            });
+                        }
+
                         weatherModal = modal;
                         resolve(modal);
                     });
@@ -5734,6 +5898,13 @@ if (getSetting('weatherDisplay.show')) {
                             <dd class="col-sm-8">${displayData('rainGauge', data)}</dd>
                         </dl>
                     `;
+
+                    modalBody
+                        .querySelector(`#${compassRoseId}`)
+                        .style.setProperty(
+                            `--${needleDirectionVar}`,
+                            `${-data.windDirection}deg` // Note: The minus sign is necessary because of trigonometry
+                        );
 
                     modal.show();
                 });
