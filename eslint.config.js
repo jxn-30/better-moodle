@@ -5,12 +5,14 @@ import userscripts from 'eslint-plugin-userscripts';
 
 /** @type {FlatConfig[]} */
 export default [
+    {
+        ignores: ['node_modules/*', '.yarn/*', 'dist/*', 'src/style/*.d.ts'],
+    },
     js.configs.recommended,
     prettier,
     {
         name: 'better-moodle general ESLint config',
         files: ['**/*.js'],
-        ignores: ['node_modules/*', '.yarn/*'],
         languageOptions: {
             ecmaVersion: 'latest',
             sourceType: 'script',
