@@ -298,6 +298,23 @@ Viele Grüße
                 prideLogo: {
                     name: 'Pride-Logo',
                     description: '🏳️‍🌈',
+                    options: {
+                        off: 'Aus',
+                        default: 'Regenbogen - Horizontal',
+                        rotated: 'Regenbogen - Schräg',
+                        agender: 'Agender',
+                        aro: 'Aromantisch',
+                        ace: 'Asexuell',
+                        aroace: 'Asexuell-Aromantisch',
+                        bi: 'Bisexuell',
+                        genderfluid: 'Genderfluid',
+                        intersex: 'Intersex',
+                        lesbian: 'Lesbisch',
+                        enby: 'Nicht-binär',
+                        pan: 'Pansexuell',
+                        gay: 'Schwul',
+                        trans: 'Transgender',
+                    },
                 },
             },
             darkmode: {
@@ -729,6 +746,23 @@ Best regards
                 prideLogo: {
                     name: 'Pride-Logo',
                     description: '🏳️‍🌈',
+                    options: {
+                        off: 'Aus',
+                        default: 'Rainbow - Horizontal',
+                        rotated: 'Rainbow - Rotated',
+                        agender: 'Agender',
+                        aro: 'Aromantic',
+                        ace: 'Asexual',
+                        aroace: 'Asexual-Aromantic',
+                        bi: 'Bisexual',
+                        genderfluid: 'Genderfluid',
+                        intersex: 'Intersex',
+                        lesbian: 'Lesbian',
+                        enby: 'Non-binary',
+                        pan: 'Pansexual',
+                        gay: 'Gay',
+                        trans: 'Transgender',
+                    },
                 },
             },
             darkmode: {
@@ -2544,7 +2578,23 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     new BooleanSetting('general.semesterzeiten', false),
-    new BooleanSetting('general.prideLogo', true),
+    new SelectSetting('general.prideLogo', 'default', [
+        'off',
+        'default',
+        'rotated',
+        'agender',
+        'aro',
+        'ace',
+        'aroace',
+        'bi',
+        'genderfluid',
+        'intersex',
+        'lesbian',
+        'enby',
+        'pan',
+        'gay',
+        'trans',
+    ]),
     'darkmode',
     $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
@@ -4189,8 +4239,7 @@ ${Array.from(shownBars)
 }
 // endregion
 
-// region Feature: general.prideLogo
-if (getSetting('general.prideLogo')) {
+if (getSetting('general.prideLogo') !== 'off') {
     ready(() => {
         const logoImg =
             document.querySelector('.navbar.fixed-top .navbar-brand img') ??
@@ -4198,21 +4247,9 @@ if (getSetting('general.prideLogo')) {
         const logoUrl = new URL(logoImg.src);
 
         GM_addStyle(css`
-            /* make the Logo rainbow colored */
+            /* set image mask for any chosen flag style */
             .navbar.fixed-top .navbar-brand .logo,
             #logoimage {
-                background-image: linear-gradient(
-                    #fe0000 24.7%,
-                    #fd8c00 24.7%,
-                    37.35%,
-                    #ffd000 37.35%,
-                    50%,
-                    #119f0b 50%,
-                    62.65%,
-                    #457cdf 62.65%,
-                    75.3%,
-                    #c22edc 75.3%
-                );
                 filter: brightness(0.8) contrast(1.5);
 
                 object-position: -99999px -99999px; /* hide original image */
@@ -4225,6 +4262,148 @@ if (getSetting('general.prideLogo')) {
                 filter: saturate(2) !important;
             }
         `);
+
+        // set the flag style for the chosen setting
+        switch (getSetting('general.prideLogo')) {
+            case 'default':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: linear-gradient(
+                            #fe0000 24.7%,
+                            #fd8c00 24.7%,
+                            37.35%,
+                            #ffd000 37.35%,
+                            50%,
+                            #119f0b 50%,
+                            62.65%,
+                            #457cdf 62.65%,
+                            75.3%,
+                            #c22edc 75.3%
+                        );
+                    }
+                `);
+                break;
+            case 'rotated':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: linear-gradient(
+                            135deg,
+                            #fe0000 30%,
+                            #fd8c00 30%,
+                            40%,
+                            #ffd000 40%,
+                            50%,
+                            #119f0b 50%,
+                            60%,
+                            #457cdf 60%,
+                            70%,
+                            #c22edc 70%
+                        );
+                    }
+                `);
+                break;
+            case 'agender':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='55.631495,297.00002' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(-70.116495,282.63711)'%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.46743;stroke-linecap:square' id='rect1' width='199.99998' height='59.481289' x='70.116501' y='-282.63712' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='96' inkscape:export-ydpi='96' /%3E%3Crect style='fill:%23a3aaaf;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect2' width='199.99998' height='24.2075' x='70.116501' y='-223.15582' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect3' width='199.99998' height='24.2075' x='70.116501' y='-198.9483' ry='0' /%3E%3Crect style='fill:%239ee261;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect4' width='199.99998' height='24.2075' x='70.116501' y='-174.74089' ry='0' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.46743;stroke-linecap:square' id='rect5' width='199.99998' height='59.481289' x='-270.11649' y='42.637127' ry='0' transform='scale(-1)' /%3E%3Crect style='fill:%23a3aaaf;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect6' width='199.99998' height='24.2075' x='-270.11649' y='102.11838' ry='0' transform='scale(-1)' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect7' width='199.99998' height='24.2075' x='-270.11649' y='126.3259' ry='0' transform='scale(-1)' /%3E%3C/g%3E%3C/svg%3E%0A");}    
+                    }
+                `);
+                break;
+            case 'aro':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='-149.94974,297.00002' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(-275.69773,282.63711)'%3E%3Crect style='fill:%23008800;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect8' width='199.99998' height='72.390404' x='275.69775' y='-282.63712' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%236dc049;fill-opacity:1;stroke-width:1.728;stroke-linecap:square' id='rect9' width='199.99998' height='29.172922' x='275.69775' y='-210.2467' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.92211;stroke-linecap:square' id='rect10' width='199.99998' height='36.095203' x='275.69775' y='-181.07378' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23868686;fill-opacity:1;stroke-width:1.79859;stroke-linecap:square' id='rect11' width='199.99998' height='31.605076' x='275.69775' y='-144.97858' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect12' width='199.99998' height='72.390404' x='275.69775' y='-113.3735' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3C/g%3E%3C/svg%3E%0A");
+                    }
+                `);
+                break;
+            case 'ace':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='-355.15684,297.00002' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(-480.90483,282.63711)'%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect13' width='199.99998' height='72.390404' x='480.90482' y='-282.63712' ry='0' inkscape:export-filename='aro.svg' inkscape:export-xdpi='25.226149' inkscape:export-ydpi='25.226149' /%3E%3Crect style='fill:%2375005f;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect14' width='199.99998' height='72.390404' x='480.90482' y='-113.91502' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:2.21194;stroke-linecap:square' id='rect15' width='199.99998' height='47.801067' x='480.90482' y='-161.71609' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23868686;fill-opacity:1;stroke-width:2.22875;stroke-linecap:square' id='rect16' width='199.99998' height='48.530621' x='480.90482' y='-210.24672' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3C/g%3E%3C/svg%3E%0A");
+                    }
+                `);
+                break;
+            case 'aroace':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='-560.12239,297.00002' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(-685.87038,282.63711)'%3E%3Crect style='fill:%23ce6600;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect17' width='199.99998' height='72.390404' x='685.87042' y='-282.63712' ry='0' inkscape:export-filename='aro.svg' inkscape:export-xdpi='25.226149' inkscape:export-ydpi='25.226149' /%3E%3Crect style='fill:%23dbb600;fill-opacity:1;stroke-width:1.728;stroke-linecap:square' id='rect18' width='199.99998' height='29.172922' x='685.87042' y='-210.24673' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.92211;stroke-linecap:square' id='rect19' width='199.99998' height='36.095203' x='685.87042' y='-181.07381' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%233592ca;fill-opacity:1;stroke-width:1.79859;stroke-linecap:square' id='rect20' width='199.99998' height='31.605076' x='685.87042' y='-144.97861' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23000529;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect21' width='199.99998' height='72.390404' x='685.87042' y='-113.37354' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3C/g%3E%3C/svg%3E%0A");
+                    }
+                `);
+                break;
+            case 'bi':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='718.81154,542.86004' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3Csodipodi:guide position='-0.5291372,297' orientation='0,-1' id='guide22' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(593.06355,36.777087)'%3E%3Crect style='fill:%23d60270;fill-opacity:1;stroke-width:2.93573;stroke-linecap:square' id='rect22' width='199.99998' height='84.202209' x='-593.06354' y='-36.777088' ry='0' inkscape:export-filename='aro.svg' inkscape:export-xdpi='25.226149' inkscape:export-ydpi='25.226149' /%3E%3Crect style='fill:%239b4f96;fill-opacity:1;stroke-width:2.70705;stroke-linecap:square' id='rect23' width='199.99998' height='71.595581' x='-593.06354' y='47.425121' ry='0' inkscape:export-filename='aro.svg' inkscape:export-xdpi='25.226149' inkscape:export-ydpi='25.226149' /%3E%3Crect style='fill:%230038a8;fill-opacity:1;stroke-width:2.93573;stroke-linecap:square' id='rect24' width='199.99998' height='84.202209' x='-593.06354' y='119.02071' ry='0' inkscape:export-filename='bi.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3C/g%3E%3C/svg%3E%0A");}
+  
+                    }
+                `);
+                break;
+            case 'genderfluid':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='513.38597,542.86004' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3Csodipodi:guide position='-205.95471,297' orientation='0,-1' id='guide22' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(387.63798,36.777087)'%3E%3Crect style='fill:%23f04e83;fill-opacity:1;stroke-width:2.71271;stroke-linecap:square' id='rect25' width='199.99998' height='71.894936' x='-387.63797' y='-36.777088' ry='0' inkscape:export-filename='aroace.svg' inkscape:export-xdpi='25.226152' inkscape:export-ydpi='25.226152' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.72208;stroke-linecap:square' id='rect26' width='199.99998' height='28.973251' x='-387.63797' y='35.117825' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23ca00c7;fill-opacity:1;stroke-width:1.91552;stroke-linecap:square' id='rect27' width='199.99998' height='35.848152' x='-387.63797' y='64.091057' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:1.79242;stroke-linecap:square' id='rect28' width='199.99998' height='31.388758' x='-387.63797' y='99.939224' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%230007a8;fill-opacity:1;stroke-width:2.71271;stroke-linecap:square' id='rect29' width='199.99998' height='71.894936' x='-387.63797' y='131.32797' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3C/g%3E%3C/svg%3E%0A");
+                    }
+                `);
+                break;
+            case 'intersex':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='308.2266,542.86004' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3Csodipodi:guide position='-411.11408,297' orientation='0,-1' id='guide22' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(182.47861,36.777087)'%3E%3Crect style='opacity:1;fill:%23f3c500;fill-opacity:1;stroke-width:0.829;stroke-linecap:square' id='rect30' width='200' height='240' x='-182.47861' y='-36.777088' ry='0.45313862' /%3E%3Cpath d='m -82.478614,44.02763 a 39.195076,39.195076 0 0 0 -39.195026,39.19554 39.195076,39.195076 0 0 0 39.195026,39.19502 39.195076,39.195076 0 0 0 39.195024,-39.19502 39.195076,39.195076 0 0 0 -39.195024,-39.19554 z m 0,16.08997 a 23.105452,23.105452 0 0 1 23.105567,23.10557 23.105452,23.105452 0 0 1 -23.105567,23.10505 23.105452,23.105452 0 0 1 -23.105576,-23.10505 23.105452,23.105452 0 0 1 23.105576,-23.10557 z' style='opacity:1;fill:%23680088;fill-opacity:1;stroke-width:0.829;stroke-linecap:square' id='path33' /%3E%3C/g%3E%3C/svg%3E%0A");
+                    }
+                `);
+                break;
+            case 'lesbian':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='103.13337,542.86004' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3Csodipodi:guide position='-616.20731,297' orientation='0,-1' id='guide22' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(-22.614623,36.777087)'%3E%3Crect style='fill:%23c00000;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect33' width='199.99998' height='72.390404' x='22.614622' y='-36.777088' ry='0' inkscape:export-filename='aroace.svg' inkscape:export-xdpi='25.226152' inkscape:export-ydpi='25.226152' /%3E%3Crect style='fill:%23f07724;fill-opacity:1;stroke-width:1.728;stroke-linecap:square' id='rect34' width='199.99998' height='29.172922' x='22.614622' y='35.613293' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.92211;stroke-linecap:square' id='rect35' width='199.99998' height='36.095203' x='22.614622' y='64.786201' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23bb3586;fill-opacity:1;stroke-width:1.79859;stroke-linecap:square' id='rect36' width='199.99998' height='31.605076' x='22.614622' y='100.88142' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23860035;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect37' width='199.99998' height='72.390404' x='22.614622' y='132.4865' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3C/g%3E%3C/svg%3E%0A");
+                    }
+                `);
+                break;
+            case 'enby':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='-102.08289,542.86004' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3Csodipodi:guide position='-821.42357,297' orientation='0,-1' id='guide22' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(-227.83088,36.777087)'%3E%3Crect style='fill:%23ece22c;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect38' width='199.99998' height='72.390404' x='227.83087' y='-36.777088' ry='0' inkscape:export-filename='ace.svg' inkscape:export-xdpi='25.226149' inkscape:export-ydpi='25.226149' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect39' width='199.99998' height='72.390404' x='227.83087' y='131.94501' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%237035b6;fill-opacity:1;stroke-width:2.21194;stroke-linecap:square' id='rect40' width='199.99998' height='47.801067' x='227.83087' y='84.143913' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:2.22875;stroke-linecap:square' id='rect41' width='199.99998' height='48.530621' x='227.83087' y='35.613308' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3C/g%3E%3C/svg%3E%0A");
+                    }
+                `);
+                break;
+            case 'pan':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='-308.62345,542.86004' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3Csodipodi:guide position='-1027.9641,297' orientation='0,-1' id='guide22' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(-434.37144,36.777087)'%3E%3Crect style='fill:%23f3006d;fill-opacity:1;stroke-width:2.94658;stroke-linecap:square' id='rect42' width='199.99998' height='84.825821' x='434.37146' y='-36.777088' ry='0' inkscape:export-filename='aro.svg' inkscape:export-xdpi='25.226149' inkscape:export-ydpi='25.226149' /%3E%3Crect style='fill:%23f0c500;fill-opacity:1;stroke-width:2.71706;stroke-linecap:square' id='rect43' width='199.99998' height='72.125824' x='434.37146' y='48.048733' ry='0' inkscape:export-filename='aro.svg' inkscape:export-xdpi='25.226149' inkscape:export-ydpi='25.226149' /%3E%3Crect style='fill:%230097f0;fill-opacity:1;stroke-width:2.94658;stroke-linecap:square' id='rect44' width='199.99998' height='84.825821' x='434.37146' y='120.17456' ry='0' inkscape:export-filename='aro.svg' inkscape:export-xdpi='25.226149' inkscape:export-ydpi='25.226149' /%3E%3C/g%3E%3C/svg%3E%0A");
+                    }
+                `);
+                break;
+            case 'gay':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='-513.58809,543.04713' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3Csodipodi:guide position='-1232.9288,297.18709' orientation='0,-1' id='guide22' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(-639.33607,36.589999)'%3E%3Crect style='fill:%23006642;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect45' width='199.99998' height='72.390404' x='639.33612' y='-36.59' ry='0' inkscape:export-filename='aroace.svg' inkscape:export-xdpi='25.226152' inkscape:export-ydpi='25.226152' /%3E%3Crect style='fill:%236dc79b;fill-opacity:1;stroke-width:1.728;stroke-linecap:square' id='rect46' width='199.99998' height='29.172922' x='639.33612' y='35.800381' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.92211;stroke-linecap:square' id='rect47' width='199.99998' height='36.095203' x='639.33612' y='64.973289' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%235086c2;fill-opacity:1;stroke-width:1.79859;stroke-linecap:square' id='rect48' width='199.99998' height='31.605076' x='639.33612' y='101.0685' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%230f004b;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect49' width='199.99998' height='72.390404' x='639.33612' y='132.67358' ry='0' inkscape:export-filename='lesbian.svg' inkscape:export-xdpi='25.226152' inkscape:export-ydpi='25.226152' /%3E%3C/g%3E%3C/svg%3E%0A");
+                    }
+                `);
+                break;
+            case 'trans':
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='719.01101,789.0341' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3Csodipodi:guide position='-0.3296743,543.17406' orientation='0,-1' id='guide22' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(593.26301,-209.39697)'%3E%3Crect style='fill:%2300b9ee;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect50' width='199.99998' height='72.390404' x='-593.263' y='209.39697' ry='0' inkscape:export-filename='aroace.svg' inkscape:export-xdpi='25.226152' inkscape:export-ydpi='25.226152' /%3E%3Crect style='fill:%23ee86d8;fill-opacity:1;stroke-width:1.728;stroke-linecap:square' id='rect51' width='199.99998' height='29.172922' x='-593.263' y='281.78735' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.92211;stroke-linecap:square' id='rect52' width='199.99998' height='36.095203' x='-593.263' y='310.9603' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%23ee86d8;fill-opacity:1;stroke-width:1.79859;stroke-linecap:square' id='rect53' width='199.99998' height='31.605076' x='-593.263' y='347.05548' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3Crect style='fill:%2300b9ee;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect54' width='199.99998' height='72.390404' x='-593.263' y='378.66055' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='25.4' inkscape:export-ydpi='25.4' /%3E%3C/g%3E%3C/svg%3E%0A");
+                    }
+                `);
+                break;
+            default:
+                break;
+        }
     });
 }
 // endregion
