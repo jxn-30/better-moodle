@@ -1,0 +1,15 @@
+{
+    "uniName": "CAU",
+    "namespace": "https://better-moodle.yorik.dev",
+    "description": {
+        "": "Improves Moodle by cool features and design improvements.",
+        "de": "Verbessert Moodle durch coole Features und Designverbesserungen."
+    },
+    "github": {
+        "user": "YorikHansen",
+        "repo": "better-moodle"
+    },
+    "icon": "https://www.uni-kiel.de/favicon.ico",
+    "moodleUrl": "https://elearn.informatik.uni-kiel.de",
+    "connects": ["studentenwerk.sh", "cloud.rz.uni-kiel.de", "www.uni-kiel.de"]
+}

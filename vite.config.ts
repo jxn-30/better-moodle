@@ -2,6 +2,23 @@ import { defineConfig } from 'vite';
 import monkey from 'vite-plugin-monkey';
 import { version } from './package.json';
 import * as path from 'node:path';
+import * as fs from 'node:fs';
+import Config from './configs/_config';
+
+const configFile =
+    process.argv
+        .find(arg => arg.startsWith('--config='))
+        ?.replace('--config=', '') ??
+    new Error('No config specified. Please set a config with --config=...');
+
+if (configFile instanceof Error) throw configFile;
+
+const config = JSON.parse(
+    fs.readFileSync(`./configs/${configFile}.json`, 'utf-8')
+) as Config;
+
+const githubUrl = `https://github.com/${config.github.user}/${config.github.repo}`;
+const releaseDownloadUrl = `${githubUrl}/releases/latest/download`;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -39,24 +56,23 @@ export default defineConfig({
         monkey({
             entry: 'src/core.tsx',
             userscript: {
-                'name': '🎓️ UzL: better-moodle 2',
-                'namespace': 'https://uni-luebeck.de',
+                'name': `🎓️ ${config.uniName}: better-moodle 2`,
+                'namespace': config.namespace,
                 version,
-                'author': 'Jan (jxn_30)',
-                'description': {
-                    '': 'Improves UzL-Moodle by cool features and design improvements.',
-                    'de': 'Verbessert UzL-Moodle durch coole Features und Designverbesserungen.',
-                },
-                'homepage': 'https://github.com/jxn-30/better-moodle',
-                'homepageURL': 'https://github.com/jxn-30/better-moodle',
-                'icon': 'https://www.uni-luebeck.de/favicon.ico',
-                'updateURL':
-                    'https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.meta.js',
-                'downloadURL':
-                    'https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.user.js',
-                'match': 'https://moodle.uni-luebeck.de/*',
+                'author': [
+                    'Jan (jxn_30)', // core contributor
+                    'Yorik (YorikHansen)', // core contributor
+                    ...(config.additionalAuthors ?? []),
+                ].join(', '),
+                'description': config.description,
+                'homepage': githubUrl,
+                'homepageURL': githubUrl,
+                'icon': config.icon,
+                'updateURL': `${releaseDownloadUrl}/better-moodle.meta.js`,
+                'downloadURL': `${releaseDownloadUrl}/better-moodle.user.js`,
+                'match': `${config.moodleUrl}/*`,
                 'run-at': 'document-body',
-                'connect': 'studentenwerk.sh',
+                'connect': config.connects,
             },
             clientAlias: 'GM',
             build: {

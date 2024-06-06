@@ -1,7 +1,10 @@
-import './style/global.module.scss';
+import './style/global.scss';
+import style from './style/global.module.scss';
 
 // TODO
 const settingsBtnTitle = 'Settings';
+
+console.log(style);
 
 const settingsBtn = (
     <div>

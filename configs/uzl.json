@@ -1,0 +1,15 @@
+{
+    "uniName": "UzL",
+    "namespace": "https://uni-luebeck.de",
+    "description": {
+        "": "Improves UzL-Moodle by cool features and design improvements.",
+        "de": "Verbessert UzL-Moodle durch coole Features und Designverbesserungen."
+    },
+    "github": {
+        "user": "jxn-30",
+        "repo": "better-moodle"
+    },
+    "icon": "https://www.uni-luebeck.de/favicon.ico",
+    "moodleUrl": "https://moodle.uni-luebeck.de",
+    "connects": ["studentenwerk.sh"]
+}

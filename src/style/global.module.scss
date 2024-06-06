@@ -1,34 +1,9 @@
 @import '_lib/functions';
 
-/* disable the weird scroll behaviour on login page (background image shall not be moved) */
-#page-login-index {
-  overflow: hidden;
-}
-#page-login-index #page-wrapper {
-  overflow: auto;
-}
-
-/* Use a pointer cursor on toggle buttons */
-.custom-control.custom-switch .custom-control-label {
-  cursor: pointer;
-}
-
-/* avoid overflow of #usernavigation navigation bar */
-#usernavigation {
-  max-width: calc(100% - 1rem); /* 1rem is the padding of the navbar */
-}
-
-
 /* remove "external link" icon for specific classes (discouraged but sometimes it doesn't look good) */
 .#{local('no-external-link-icon')} {
-  body.dir-ltr &::after,
-  body.dir-rtl &::before {
-    display: none !important;
-  }
-}
-
-/* fix info-buttons next to form labels to be aligned left instead of centered */
-.form-label-addon [data-toggle='popover'] i.icon.fa {
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
+    body.dir-ltr &::after,
+    body.dir-rtl &::before {
+        display: none !important;
+    }
 }
