@@ -1,5 +1,7 @@
 import './style/global.scss';
 import style from './style/global.module.scss';
+import { ready } from './_lib/DOM';
+import { Modal } from './_lib/Modal';
 
 // TODO
 const settingsBtnTitle = 'Settings';
@@ -24,8 +26,10 @@ const settingsBtn = (
     </div>
 );
 
-console.log(settingsBtn);
+new Modal({ type: 'SAVE_CANCEL' });
 
-document
-    .querySelector('#usernavigation .usermenu-container')
-    ?.before(settingsBtn);
+ready(() =>
+    document
+        .querySelector('#usernavigation .usermenu-container')
+        ?.before(settingsBtn)
+);
