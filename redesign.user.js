@@ -299,8 +299,8 @@ Viele Grüße
                     name: 'Pride-Logo',
                     description: '🏳️‍🌈',
                     options: {
-                        off: 'Aus',
-                        default: 'Regenbogen - Horizontal',
+                        false: 'Aus',
+                        true: 'Regenbogen - Horizontal',
                         rotated: 'Regenbogen - Schräg',
                         agender: 'Agender',
                         aro: 'Aromantisch',
@@ -747,8 +747,8 @@ Best regards
                     name: 'Pride-Logo',
                     description: '🏳️‍🌈',
                     options: {
-                        off: 'Aus',
-                        default: 'Rainbow - Horizontal',
+                        false: 'Aus',
+                        true: 'Rainbow - Horizontal',
                         rotated: 'Rainbow - Rotated',
                         agender: 'Agender',
                         aro: 'Aromantic',
@@ -2579,8 +2579,8 @@ const SETTINGS = [
     new BooleanSetting('general.googlyEyes', true),
     new BooleanSetting('general.semesterzeiten', false),
     new SelectSetting('general.prideLogo', 'default', [
-        'off',
-        'default',
+        'false',
+        'true',
         'rotated',
         'agender',
         'aro',
@@ -4239,7 +4239,7 @@ ${Array.from(shownBars)
 }
 // endregion
 
-if (getSetting('general.prideLogo') !== 'off') {
+if (getSetting('general.prideLogo') !== 'false') {
     ready(() => {
         const logoImg =
             document.querySelector('.navbar.fixed-top .navbar-brand img') ??
@@ -4265,7 +4265,7 @@ if (getSetting('general.prideLogo') !== 'off') {
 
         // set the flag style for the chosen setting
         switch (getSetting('general.prideLogo')) {
-            case 'default':
+            case 'true':
                 GM_addStyle(css`
                     .navbar.fixed-top .navbar-brand .logo,
                     #logoimage {
@@ -4402,6 +4402,23 @@ if (getSetting('general.prideLogo') !== 'off') {
                 `);
                 break;
             default:
+                GM_addStyle(css`
+                    .navbar.fixed-top .navbar-brand .logo,
+                    #logoimage {
+                        background-image: linear-gradient(
+                            #fe0000 24.7%,
+                            #fd8c00 24.7%,
+                            37.35%,
+                            #ffd000 37.35%,
+                            50%,
+                            #119f0b 50%,
+                            62.65%,
+                            #457cdf 62.65%,
+                            75.3%,
+                            #c22edc 75.3%
+                        );
+                    }
+                `);
                 break;
         }
     });
