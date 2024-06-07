@@ -2578,7 +2578,7 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     new BooleanSetting('general.semesterzeiten', false),
-    new SelectSetting('general.prideLogo', 'default', [
+    new SelectSetting('general.prideLogo', GM_getValue(getSettingKey('general.prideLogo'), true).toString(), [
         'false',
         'true',
         'rotated',
