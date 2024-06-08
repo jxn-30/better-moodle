@@ -25,5 +25,5 @@ interface TypedRequire {
 }
 
 declare global {
-    declare const require: TypedRequire;
+    declare const requirejs: TypedRequire;
 }

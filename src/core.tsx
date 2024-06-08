@@ -6,8 +6,6 @@ import { Modal } from './_lib/Modal';
 // TODO
 const settingsBtnTitle = 'Settings';
 
-console.log(style);
-
 const settingsBtn = (
     <div>
         <a
@@ -26,7 +24,17 @@ const settingsBtn = (
     </div>
 );
 
-new Modal({ type: 'SAVE_CANCEL' });
+new Modal({
+    type: 'SAVE_CANCEL',
+    title: <p>Hello World!</p>,
+    body: (
+        <div>
+            <pre>{JSON.stringify(style, null, 4)}</pre>
+        </div>
+    ),
+})
+    .onShown(() => console.log('Modal shown!'))
+    .show();
 
 ready(() =>
     document

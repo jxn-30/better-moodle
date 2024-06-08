@@ -31,6 +31,7 @@ export default defineConfig({
     build: {
         minify: false,
         cssMinify: false,
+        target: 'es2022',
     },
     css: {
         modules: {

@@ -17,6 +17,7 @@
     "devDependencies": {
         "@eslint/js": "9.3.0",
         "@types/eslint": "8.56.10",
+        "@types/jquery": "3.5.30",
         "@types/node": "20.14.2",
         "@types/tampermonkey": "5.0.3",
         "darkreader": "4.9.85",
