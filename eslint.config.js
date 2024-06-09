@@ -2,7 +2,6 @@ import globals from 'globals';
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
 import tsEslint from 'typescript-eslint';
-import userscripts from 'eslint-plugin-userscripts';
 
 /** @type {FlatConfig[]} */
 export default [
@@ -28,6 +27,7 @@ export default [
             globals: {
                 ...globals.browser,
                 ...globals.es2024,
+                ...globals.greasemonkey,
                 // globals existing within moodle
                 requirejs: 'readonly',
                 // jQuery exposes its namespace globally
@@ -37,6 +37,7 @@ export default [
                 __GITHUB_REPO__: 'readonly',
                 __GITHUB_URL__: 'readonly',
                 __VERSION__: 'readonly',
+                __PREFIX__: 'readonly',
             },
             parserOptions: {
                 project: true,
@@ -135,45 +136,6 @@ export default [
         files: ['eslint.config.js'],
         languageOptions: {
             sourceType: 'module',
-        },
-    },
-    {
-        name: 'userscript extended config',
-        ...userscripts.configs.recommended,
-        files: ['*.user.js'],
-        plugins: {
-            userscripts,
-        },
-        languageOptions: {
-            globals: {
-                uneval: 'readonly',
-                unsafeWindow: 'readonly',
-                GM_info: 'readonly',
-                GM: 'readonly',
-                GM_addStyle: 'readonly',
-                GM_addElement: 'readonly',
-                GM_cookie: 'readonly',
-                GM_deleteValue: 'readonly',
-                GM_listValues: 'readonly',
-                GM_getValue: 'readonly',
-                GM_download: 'readonly',
-                GM_log: 'readonly',
-                GM_registerMenuCommand: 'readonly',
-                GM_unregisterMenuCommand: 'readonly',
-                GM_openInTab: 'readonly',
-                GM_setValue: 'readonly',
-                GM_addValueChangeListener: 'readonly',
-                GM_removeValueChangeListener: 'readonly',
-                GM_xmlhttpRequest: 'readonly',
-                GM_webRequest: 'readonly',
-                GM_getTab: 'readonly',
-                GM_saveTab: 'readonly',
-                GM_getTabs: 'readonly',
-                GM_setClipboard: 'readonly',
-                GM_notification: 'readonly',
-                GM_getResourceText: 'readonly',
-                GM_getResourceURL: 'readonly',
-            },
         },
     },
 ];

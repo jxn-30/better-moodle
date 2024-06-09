@@ -1,3 +1,6 @@
+export const PREFIX = (str: string) => `${__PREFIX__}-${str}`;
+export const getSettingKey = (id: string) => PREFIX(`settings.${id}`);
+
 export const githubPath = (path: string) => `${__GITHUB_URL__}${path}`;
 export const rawGithubPath = (path: string) =>
     `https://raw.githubusercontent.com/${__GITHUB_USER__}/${__GITHUB_REPO__}/main/${path}`;

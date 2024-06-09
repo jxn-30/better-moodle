@@ -1,11 +1,12 @@
 import { GithubLink } from './_lib/Components';
+import { LL } from './i18n/i18n';
 import { Modal } from './_lib/Modal';
 import { ready } from './_lib/DOM';
 import settingsStyle from './style/settings.module.scss';
 import { mdToHtml, rawGithubPath } from './_lib/helpers';
 
 // region trigger button for settings modal
-const settingsBtnTitle = 'Settings';
+const settingsBtnTitle = `Better-Moodle:\xa0${LL.settings.modal.title()}`;
 
 const SettingsBtn = (
     <div>
@@ -42,7 +43,7 @@ const ChangelogBtn = (
         class="btn btn-outline-primary"
     >
         <i class="fa fa-history fa-fw"></i>
-        <span>modals.changelog</span>
+        <span>{LL.settings.changelog()}</span>
     </GithubLink>
 );
 
@@ -80,8 +81,8 @@ ChangelogBtn.addEventListener('click', e => {
         large: true,
         title: (
             <>
-                <GithubLink path={changelogPath} />{' '}
-                Better-Moodle:&nbsp;modals.changelog
+                <GithubLink path={changelogPath} /> Better-Moodle:&nbsp;
+                {LL.settings.changelog()}
             </>
         ),
         body: getChangelogHtml(),
@@ -95,7 +96,7 @@ ChangelogBtn.addEventListener('click', e => {
 const ExportBtn = (
     <button className="btn btn-outline-primary">
         <i className="fa fa-download fa-fw"></i>
-        <span>modals.export</span>
+        <span>{LL.settings.modal.export()}</span>
     </button>
 );
 
@@ -109,7 +110,7 @@ ExportBtn.addEventListener('click', e => {
 const ImportBtn = (
     <button className="btn btn-outline-primary">
         <i className="fa fa-upload fa-fw"></i>
-        <span>modals.import</span>
+        <span>{LL.settings.modal.import()}</span>
     </button>
 );
 
@@ -127,7 +128,8 @@ const settingsModal = new Modal({
     scrollable: true,
     title: (
         <>
-            <GithubLink path="" /> Better-Moodle:&nbsp;modals.settings.title
+            <GithubLink path="" /> Better-Moodle:&nbsp;
+            {LL.settings.modal.title()}
         </>
     ),
     body: <form id={settingsStyle.settingsForm}>Hello world! ❤️</form>,
@@ -154,7 +156,7 @@ settingsModal
     .then(title => {
         title.after(
             <a href="/user/preferences.php" target="_blank">
-                modals.settings.moodleSettings
+                {LL.settings.modal.moodleSettings()}
             </a>
         );
     })

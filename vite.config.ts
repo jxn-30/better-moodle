@@ -5,6 +5,8 @@ import { defineConfig } from 'vite';
 import monkey from 'vite-plugin-monkey';
 import { version } from './package.json';
 
+const PREFIX = 'better-moodle';
+
 const configFile =
     process.argv
         .find(arg => arg.startsWith('--config='))
@@ -37,7 +39,7 @@ export default defineConfig({
     css: {
         modules: {
             scopeBehaviour: 'local',
-            hashPrefix: 'better-moodle',
+            hashPrefix: PREFIX,
             localsConvention: 'camelCaseOnly',
             generateScopedName: (name, filename) => {
                 // Skip global styles
@@ -50,7 +52,7 @@ export default defineConfig({
                     .replace(/[^a-zA-Z0-9_-]/, '-') // replace invalid characters with hyphen
                     .replace(/-+/g, '-'); // reduce multiple hyphens to a single one
 
-                return `better-moodle_${feat}__${name.replace(/^_/, '')}`;
+                return `${PREFIX}_${feat}__${name.replace(/^_/, '')}`;
             },
         },
     },
@@ -59,6 +61,7 @@ export default defineConfig({
         __GITHUB_REPO__: JSON.stringify(config.github.repo),
         __GITHUB_URL__: JSON.stringify(githubUrl),
         __VERSION__: JSON.stringify(version),
+        __PREFIX__: JSON.stringify(PREFIX),
     },
     plugins: [
         monkey({

@@ -3630,6 +3630,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typesafe-i18n@npm:5.26.2":
+  version: 5.26.2
+  resolution: "typesafe-i18n@npm:5.26.2"
+  peerDependencies:
+    typescript: ">=3.5.1"
+  bin:
+    typesafe-i18n: cli/typesafe-i18n.mjs
+  checksum: 10c0/f13b13d54bf121701c85424de2d677f3d3e61c6b7160dffa681e3ffcbb2843ea10931d5842fcc382faed78bac727b234259e9fc767a44cd9dc1d64ddd8ddf397
+  languageName: node
+  linkType: hard
+
 "typescript-eslint@npm:7.12.0":
   version: 7.12.0
   resolution: "typescript-eslint@npm:7.12.0"
@@ -3785,6 +3796,7 @@ __metadata:
     prettier: "npm:3.3.1"
     sass: "npm:1.77.4"
     typed-scss-modules: "npm:8.0.1"
+    typesafe-i18n: "npm:5.26.2"
     typescript: "npm:5.4.5"
     typescript-eslint: "npm:7.12.0"
     typescript-plugin-css-modules: "npm:5.1.0"

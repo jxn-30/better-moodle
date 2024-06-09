@@ -1,0 +1,9 @@
+{
+    "$schema": "https://unpkg.com/typesafe-i18n@5.26.2/schema/typesafe-i18n.json",
+    "adapters": [],
+    "baseLocale": "de",
+    "outputFormat": "TypeScript",
+    "esmImports": ".js",
+    "generateOnlyTypes": false,
+    "runAfterGenerator": "yarn prettier:i18n"
+}
