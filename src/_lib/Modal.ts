@@ -8,6 +8,7 @@ import CoreModalEvents from '../../types/require.js/core/modal_events';
 
 export class Modal {
     readonly #config: ModalConfig;
+    readonly #savedFooter: ModalConfig['footer'];
 
     #modal: MoodleModal | undefined;
     #modalEvents: CoreModalEvents | undefined;
@@ -17,6 +18,13 @@ export class Modal {
 
     constructor(config: ModalConfig) {
         this.#config = config;
+
+        // we cannot set footer on this type of modal, so we need to postpone prepending it
+        if (config.type === 'SAVE_CANCEL') {
+            this.#savedFooter = config.footer;
+            delete this.#config.footer;
+        }
+
         require(['core/modal_factory', 'core/modal_events'] as const, (
             { create, types },
             modalEvents
@@ -28,22 +36,31 @@ export class Modal {
         });
     }
 
-    #callWhenReady(callback: CallableFunction) {
+    #callWhenReady<Fn extends (...args: any[]) => any>(
+        callback: Fn
+    ): Promise<ReturnType<Fn>> {
         if (this.#isReady) {
-            callback();
+            return Promise.resolve(callback());
         } else {
-            this.#queue.push(callback);
+            return new Promise(resolve =>
+                this.#queue.push(() => resolve(callback()))
+            );
         }
     }
 
     #onReady() {
         this.#isReady = true;
         this.#queue.forEach(callback => callback());
+        this.#prependFooter().then();
+    }
+
+    async #prependFooter() {
+        if (!this.#savedFooter) return;
+        this.#modal!.getFooter().prepend(await this.#savedFooter);
     }
 
     #create(createFn: CoreModalFactory['create']) {
         createFn(this.#config).then(modal => {
-            console.log(modal);
             this.#modal = modal;
             this.#onReady();
         });
@@ -80,9 +97,12 @@ export class Modal {
     }
 
     setTrigger(trigger: Element) {
-        console.log(trigger);
         trigger.addEventListener('click', () => this.show());
 
         return this;
+    }
+
+    getTitle() {
+        return this.#callWhenReady(() => this.#modal!.getTitle());
     }
 }

@@ -2,7 +2,8 @@
 // may be incomplete at some points
 type ModalType = 'ALERT' | 'CANCEL' | 'DEFAULT' | 'SAVE_CANCEL';
 
-type Content = string | Element | Promise<Content>;
+type AwaitedContent = string | Element;
+type Content = AwaitedContent | Promise<AwaitedContent>;
 
 type ModalButtons = Record<string, string>;
 
@@ -21,6 +22,8 @@ export interface MoodleModal {
     show: () => void;
 
     getRoot: () => JQuery<HTMLDivElement>;
+    getTitle: () => JQuery<HTMLHeadingElement>;
+    getFooter: () => JQuery<HTMLDivElement>;
 }
 
 export default interface CoreModalFactory {

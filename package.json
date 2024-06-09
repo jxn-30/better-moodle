@@ -14,18 +14,21 @@
         "build": "yarn tsm && tsc && vite build -- --config=uzl && yarn prettier:dist",
         "preview": "vite preview"
     },
+    "dependencies": {
+        "classnames": "2.5.1",
+        "darkreader": "4.9.86",
+        "jsx-dom": "8.1.4"
+    },
     "devDependencies": {
         "@eslint/js": "9.4.0",
         "@types/eslint": "8.56.10",
         "@types/jquery": "3.5.30",
         "@types/node": "20.14.2",
         "@types/tampermonkey": "5.0.3",
-        "darkreader": "4.9.86",
         "eslint": "9.4.0",
         "eslint-config-prettier": "9.1.0",
         "eslint-plugin-userscripts": "0.5.3",
         "globals": "15.4.0",
-        "jsx-dom": "8.1.4",
         "prettier": "3.3.1",
         "sass": "1.77.4",
         "typed-scss-modules": "8.0.1",
