@@ -1,8 +1,8 @@
 // Definitions for the require.js module loader.
 // or at least the definitions required for Better-Moodle.
 
-import CoreModalFactory from './require.js/core/modal_factory';
 import CoreModalEvents from './require.js/core/modal_events';
+import CoreModalFactory from './require.js/core/modal_factory';
 
 interface ModuleMap {
     'core/modal_factory': CoreModalFactory;
@@ -17,12 +17,10 @@ type ModulesReturnType<M extends Module[]> =
         [ModuleReturnType<Mod>, ...ModulesReturnType<Tail>]
     :   [];
 
-interface TypedRequire {
-    <M extends Module[]>(
-        modules: M,
-        ready: (...args: ModulesReturnType<M>) => void
-    ): void;
-}
+type TypedRequire = <M extends Module[]>(
+    modules: M,
+    ready: (...args: ModulesReturnType<M>) => void
+) => void;
 
 declare global {
     declare const requirejs: TypedRequire;

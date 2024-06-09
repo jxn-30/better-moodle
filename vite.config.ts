@@ -1,9 +1,9 @@
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import Config from './configs/_config';
 import { defineConfig } from 'vite';
 import monkey from 'vite-plugin-monkey';
 import { version } from './package.json';
-import * as path from 'node:path';
-import * as fs from 'node:fs';
-import Config from './configs/_config';
 
 const configFile =
     process.argv
@@ -58,6 +58,7 @@ export default defineConfig({
         __GITHUB_USER__: JSON.stringify(config.github.user),
         __GITHUB_REPO__: JSON.stringify(config.github.repo),
         __GITHUB_URL__: JSON.stringify(githubUrl),
+        __VERSION__: JSON.stringify(version),
     },
     plugins: [
         monkey({

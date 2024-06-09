@@ -1,7 +1,7 @@
-import globalStyle from '../style/global.module.scss';
-import { githubPath } from './helpers';
-import type { JSX } from 'jsx-dom';
 import classNames from 'classnames';
+import { githubPath } from './helpers';
+import globalStyle from '../style/global.module.scss';
+import type { JSX } from 'jsx-dom';
 
 type IntrinsicElements = JSX.IntrinsicElements;
 type Anchor = IntrinsicElements['a'];

@@ -1,7 +1,7 @@
-import { Modal } from './_lib/Modal';
 import { GithubLink } from './_lib/Components';
-import settingsStyle from './style/settings.module.scss';
+import { Modal } from './_lib/Modal';
 import { ready } from './_lib/DOM';
+import settingsStyle from './style/settings.module.scss';
 
 // region trigger button for settings modal
 const settingsBtnTitle = 'Settings';
@@ -98,11 +98,14 @@ const settingsModal = new Modal({
     .setTrigger(SettingsBtn);
 
 // append the link to moodle settings to the modal header
-settingsModal.getTitle().then(title => {
-    title.after(
-        <a href="/user/preferences.php" target="_blank">
-            modals.settings.moodleSettings
-        </a>
-    );
-});
+settingsModal
+    .getTitle()
+    .then(title => {
+        title.after(
+            <a href="/user/preferences.php" target="_blank">
+                modals.settings.moodleSettings
+            </a>
+        );
+    })
+    .catch(console.error);
 // endregion

@@ -1,26 +1,46 @@
 import globals from 'globals';
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
+import tsEslint from 'typescript-eslint';
 import userscripts from 'eslint-plugin-userscripts';
 
 /** @type {FlatConfig[]} */
 export default [
     {
-        ignores: ['node_modules/*', '.yarn/*', 'dist/*', 'src/style/*.d.ts'],
+        ignores: [
+            'node_modules/*',
+            '.yarn/*',
+            'dist/*',
+            'src/style/*.d.ts',
+            'redesign.user.js', // this is the legacy userscript, no linting here anymore
+        ],
     },
     js.configs.recommended,
     prettier,
+    ...tsEslint.configs.recommendedTypeChecked,
+    ...tsEslint.configs.stylisticTypeChecked,
     {
         name: 'better-moodle general ESLint config',
-        files: ['**/*.js'],
+        files: ['**/*.{ts,tsx}'],
         languageOptions: {
             ecmaVersion: 'latest',
             sourceType: 'script',
             globals: {
                 ...globals.browser,
-                ...globals.es2021,
+                ...globals.es2024,
+                // globals existing within moodle
+                requirejs: 'readonly',
+                // jQuery exposes its namespace globally
+                JQuery: 'readonly',
+                // custom globals defined in vite config
+                __GITHUB_USER__: 'readonly',
+                __GITHUB_REPO__: 'readonly',
+                __GITHUB_URL__: 'readonly',
+                __VERSION__: 'readonly',
             },
             parserOptions: {
+                project: true,
+                tsconfigRootDir: import.meta.dirname,
                 ecmaFeatures: {
                     globalReturn: true,
                 },
@@ -101,7 +121,17 @@ export default [
         },
     },
     {
+        name: 'Allow node globals in vite config',
+        files: ['vite.config.ts'],
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
+        },
+    },
+    {
         name: 'set sourceType to module for eslint.config.js',
+        ...tsEslint.configs.disableTypeChecked,
         files: ['eslint.config.js'],
         languageOptions: {
             sourceType: 'module',

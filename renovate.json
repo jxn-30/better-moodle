@@ -22,6 +22,22 @@
             "matchDepNames": ["@eslint/js", "eslint"],
             "rangeStrategy": "pin",
             "separateMajorMinor": false
+        },
+        {
+            "groupName": "typescript-eslint",
+            "lockFileMaintenance": { "enabled": true },
+            "matchManagers": ["npm"],
+            "matchPackagePrefixes": ["@typescript-eslint"],
+            "rangeStrategy": "pin",
+            "separateMajorMinor": false
+        },
+        {
+            "groupName": "types",
+            "lockFileMaintenance": { "enabled": true },
+            "matchManagers": ["npm"],
+            "matchPackagePrefixes": ["@types/"],
+            "rangeStrategy": "pin",
+            "separateMajorMinor": false
         }
     ],
     "postUpdateOptions": ["yarnDedupeHighest"],
