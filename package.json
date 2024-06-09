@@ -28,7 +28,6 @@
         "jsx-dom": "8.1.4",
         "prettier": "3.3.1",
         "sass": "1.77.4",
-        "typed-html": "patch:typed-html@npm%3A3.0.1#~/.yarn/patches/typed-html-npm-3.0.1-ce10296e12.patch",
         "typed-scss-modules": "8.0.1",
         "typescript": "5.4.5",
         "typescript-plugin-css-modules": "5.1.0",

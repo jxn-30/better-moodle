@@ -16,6 +16,7 @@
         "noImplicitReturns": true,
         "skipLibCheck": true,
         "jsx": "preserve",
+        "jsxImportSource": "jsx-dom",
         "plugins": [
             {
                 "name": "typescript-plugin-css-modules",
@@ -25,5 +26,5 @@
             }
         ]
     },
-    "include": ["src", "types", "node_modules/typed-html/dist/src/elements.d.ts"]
+    "include": ["src", "types"]
 }
