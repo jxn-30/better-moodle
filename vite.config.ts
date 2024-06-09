@@ -23,9 +23,10 @@ const releaseDownloadUrl = `${githubUrl}/releases/latest/download`;
 // https://vitejs.dev/config/
 export default defineConfig({
     esbuild: {
-        jsxInject: 'import {createElement} from "jsx-dom";',
+        jsxInject:
+            'import {createElement, Fragment as createFragment} from "jsx-dom";',
         jsxFactory: 'createElement',
-        jsxFragment: 'createElement',
+        jsxFragment: 'createFragment',
         jsx: 'transform',
     },
     build: {
