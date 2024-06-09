@@ -78,4 +78,11 @@ export class Modal {
     onHidden(callback: (event: JQuery.Event) => void) {
         return this.on('hidden', callback);
     }
+
+    setTrigger(trigger: Element) {
+        console.log(trigger);
+        trigger.addEventListener('click', () => this.show());
+
+        return this;
+    }
 }

@@ -78,6 +78,7 @@ export default defineConfig({
             clientAlias: 'GM',
             build: {
                 fileName: 'better-moodle.user.js',
+                metaFileName: 'better-moodle.meta.js',
                 autoGrant: true,
             },
         }),

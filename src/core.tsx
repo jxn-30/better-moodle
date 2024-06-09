@@ -34,7 +34,7 @@ new Modal({
     ),
 })
     .onShown(() => console.log('Modal shown!'))
-    .show();
+    .setTrigger(settingsBtn);
 
 ready(() =>
     document
