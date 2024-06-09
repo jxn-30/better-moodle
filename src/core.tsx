@@ -1,7 +1,7 @@
 import './style/global.scss';
-import style from './style/global.module.scss';
 import { ready } from './_lib/DOM';
 import { Modal } from './_lib/Modal';
+import { GithubLink } from './_lib/Components';
 
 // TODO
 const settingsBtnTitle = 'Settings';
@@ -26,12 +26,12 @@ const settingsBtn = (
 
 new Modal({
     type: 'SAVE_CANCEL',
-    title: <p>Hello World!</p>,
-    body: (
-        <div>
-            <pre>{JSON.stringify(style, null, 4)}</pre>
-        </div>
+    title: (
+        <>
+            <GithubLink path="" /> Better-Moodle:&nbsp;modals.settings.title
+        </>
     ),
+    body: <div>Hello world! ❤️</div>,
 })
     .onShown(() => console.log('Modal shown!'))
     .setTrigger(settingsBtn);

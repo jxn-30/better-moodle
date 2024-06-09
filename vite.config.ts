@@ -54,6 +54,11 @@ export default defineConfig({
             },
         },
     },
+    define: {
+        __GITHUB_USER__: JSON.stringify(config.github.user),
+        __GITHUB_REPO__: JSON.stringify(config.github.repo),
+        __GITHUB_URL__: JSON.stringify(githubUrl),
+    },
     plugins: [
         monkey({
             entry: 'src/core.tsx',
