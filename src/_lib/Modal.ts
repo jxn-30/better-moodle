@@ -32,23 +32,23 @@ export class Modal {
             this.#config.type = types[config.type];
             this.#modalEvents = modalEvents;
 
-            await this.#create(create);
+            this.#create(create).catch(console.error);
         });
     }
 
-    #callWhenReady<Fn extends (...args: unknown[]) => unknown>(
-        callback: Fn
-    ): Promise<ReturnType<Fn>> {
+    #callWhenReady<Args extends unknown[], ReturnType>(
+        callback: (...args: Args[]) => ReturnType
+    ): Promise<ReturnType> {
         if (this.#isReady) {
-            return Promise.resolve(callback());
+            return Promise.resolve<ReturnType>(callback.call(this));
         } else {
-            return new Promise(resolve =>
-                this.#queue.push(() => resolve(callback()))
+            return new Promise<ReturnType>(resolve =>
+                this.#queue.push(() => resolve(callback.call(this)))
             );
         }
     }
 
-    #onReady() {
+    async #onReady() {
         this.#isReady = true;
         this.#queue.forEach(callback => callback());
         await this.#prependFooter();
@@ -59,23 +59,21 @@ export class Modal {
         this.#modal!.getFooter().prepend(await this.#savedFooter);
     }
 
-    #create(createFn: CoreModalFactory['create']) {
-        return createFn(this.#config).then(modal => {
-            this.#modal = modal;
-            this.#onReady();
-        });
+    async #create(createFn: CoreModalFactory['create']) {
+        this.#modal = await createFn(this.#config);
+        await this.#onReady();
     }
 
     show() {
-        await this.#callWhenReady(() => this.#modal!.show());
+        this.#callWhenReady(() => this.#modal!.show()).catch(console.error);
 
         return this;
     }
 
     on(Event: keyof CoreModalEvents, callback: (event: JQuery.Event) => void) {
-        await this.#callWhenReady(() =>
+        this.#callWhenReady(() =>
             this.#modal!.getRoot().on(this.#modalEvents![Event], callback)
-        );
+        ).catch(console.error);
 
         return this;
     }
@@ -97,7 +95,10 @@ export class Modal {
     }
 
     setTrigger(trigger: Element) {
-        trigger.addEventListener('click', () => this.show());
+        trigger.addEventListener('click', e => {
+            e.preventDefault();
+            this.show();
+        });
 
         return this;
     }

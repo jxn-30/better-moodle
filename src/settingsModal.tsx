@@ -2,6 +2,7 @@ import { GithubLink } from './_lib/Components';
 import { Modal } from './_lib/Modal';
 import { ready } from './_lib/DOM';
 import settingsStyle from './style/settings.module.scss';
+import { mdToHtml, rawGithubPath } from './_lib/helpers';
 
 // region trigger button for settings modal
 const settingsBtnTitle = 'Settings';
@@ -30,6 +31,63 @@ ready(() =>
         .querySelector('#usernavigation .usermenu-container')
         ?.before(SettingsBtn)
 );
+// endregion
+
+// region changelog button
+const changelogPath = '/blob/main/CHANGELOG.md';
+const ChangelogBtn = (
+    <GithubLink
+        path={changelogPath}
+        icon={false}
+        class="btn btn-outline-primary"
+    >
+        <i class="fa fa-history fa-fw"></i>
+        <span>modals.changelog</span>
+    </GithubLink>
+);
+
+let changelogHtml: string;
+const changelogCache = 1000 * 60 * 5; // 5 minutes
+
+const getChangelogHtml = () =>
+    changelogHtml ? changelogHtml : (
+        fetch(
+            rawGithubPath(
+                `CHANGELOG.md?_=${Math.floor(Date.now() / changelogCache)}`
+            )
+        )
+            .then(res => res.text())
+            .then(md =>
+                md
+                    // remove the title
+                    .replace(/^#\s.*/g, '')
+                    // add a horizontal rule before each heading except first
+                    .trim()
+                    .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n')
+            )
+            .then(md => mdToHtml(md, 3))
+            .then(html => {
+                changelogHtml = html;
+                setTimeout(() => (changelogHtml = ''), changelogCache);
+                return html;
+            })
+    );
+
+ChangelogBtn.addEventListener('click', e => {
+    e.preventDefault();
+    new Modal({
+        type: 'ALERT',
+        large: true,
+        title: (
+            <>
+                <GithubLink path={changelogPath} />{' '}
+                Better-Moodle:&nbsp;modals.changelog
+            </>
+        ),
+        body: getChangelogHtml(),
+        removeOnClose: true,
+    }).show();
+});
 // endregion
 
 // region export and import settings
@@ -76,14 +134,7 @@ const settingsModal = new Modal({
     footer: (
         <div class="btn-group mr-auto" id={settingsStyle.settingsFooterBtns}>
             {/* Changelog btn */}
-            <GithubLink
-                path="/blob/main/CHANGELOG.md"
-                icon={false}
-                class="btn btn-outline-primary"
-            >
-                <i class="fa fa-history fa-fw"></i>
-                <span>modals.changelog</span>
-            </GithubLink>
+            {ChangelogBtn}
 
             {/* Export settings btn */}
             {ExportBtn}

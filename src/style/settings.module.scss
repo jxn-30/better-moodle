@@ -19,7 +19,7 @@
     }
 }
 
-/* some special style needed for the settings modal: show button text only on hover */
+/* some special style needed for the settings modal footer: show button text only on hover */
 ##{local('settings-footer-btns')} > :where(button, a) {
     > span {
         font-size: 0;
