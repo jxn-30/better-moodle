@@ -106,7 +106,19 @@ const ExportBtn = (
 
 ExportBtn.addEventListener('click', e => {
     e.preventDefault();
-    alert('export not yet implemented');
+    const storage = Object.fromEntries(
+        GM_listValues()
+            .toSorted() // we want to sort the keys because why not
+            .map(key => [key, GM_getValue(key)])
+    );
+    const blob = new Blob([JSON.stringify(storage)], {
+        type: 'application/json',
+    });
+    // cannot use GM_download here as JSON is blocked by default (at least in Tampermonkey) and this would cause more confusion than it's worth
+    const link = document.createElement('a');
+    link.download = 'better-moodle-settings.json';
+    link.href = URL.createObjectURL(blob);
+    link.click();
 });
 // endregion
 
@@ -120,7 +132,25 @@ const ImportBtn = (
 
 ImportBtn.addEventListener('click', e => {
     e.preventDefault();
-    alert('import not yet implemented');
+    const importInput = document.createElement('input');
+    importInput.type = 'file';
+    importInput.accept = '.json';
+    importInput.addEventListener('change', () => {
+        const file = importInput.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
+            const config = JSON.parse(
+                reader.result?.toString() ?? '{}'
+            ) as Record<string, unknown>;
+            Object.entries(config)
+                .toSorted(([a], [b]) => a.localeCompare(b))
+                .forEach(([key, value]) => GM_setValue(key, value));
+            window.location.reload();
+        });
+        reader.readAsText(file);
+    });
+    importInput.click();
 });
 // endregion
 // endregion
