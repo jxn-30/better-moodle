@@ -2845,8 +2845,7 @@ const SETTINGS = [
         true
     ).setDisabledFn(
         settings =>
-            !settings['weatherDisplay.show'].inputValue ||
-            window.DeviceOrientationEvent === undefined // TODO: This check does not what I want it to do
+            !settings['weatherDisplay.show'].inputValue
     ),
     $t('settings.messages._title'),
     new SelectSetting('messages.sendHotkey', '', [
@@ -5858,17 +5857,37 @@ if (getSetting('weatherDisplay.show')) {
                         `);
 
                         if (
-                            window.DeviceOrientationEvent && // TODO: This does not what I want it to do
+                            window.DeviceOrientationEvent &&
                             getSetting('weatherDisplay.useDeviceOrientation')
                         ) {
-                            window.addEventListener('deviceorientation', e => {
-                                document
-                                    .getElementById(compassRoseId)
-                                    ?.style.setProperty(
-                                        `--${compassOrientationVar}`,
-                                        `${e.alpha}deg`
+                            new Promise((resolve, reject) => {
+                                if (window.DeviceOrientationEvent.requestPermission) {
+                                    window.DeviceOrientationEvent.requestPermission()
+                                        .then(response => {
+                                            if (response === 'granted') {
+                                                resolve();
+                                            } else {
+                                                reject();
+                                            }
+                                        })
+                                        .catch(reject);
+                                }
+                                resolve();
+                            }).then(
+                                () => {
+                                    window.addEventListener(
+                                        'deviceorientation',
+                                        e => {
+                                            document
+                                                .getElementById(compassRoseId)
+                                                ?.style.setProperty(
+                                                    `--${compassOrientationVar}`,
+                                                    `${e.alpha}deg`
+                                                );
+                                        }
                                     );
-                            });
+                                }
+                            );
                         }
 
                         weatherModal = modal;
