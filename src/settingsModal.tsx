@@ -10,8 +10,7 @@ const settingsBtnTitle = `Better-Moodle:\xa0${LL.settings.modal.title()}`;
 
 const SettingsBtn = (
     <div>
-        <a
-            href="#"
+        <div
             role="button"
             class="nav-link position-relative icon-no-margin"
             title={settingsBtnTitle}
@@ -22,7 +21,7 @@ const SettingsBtn = (
                 role="img"
                 title={settingsBtnTitle}
             ></i>
-        </a>
+        </div>
     </div>
 );
 

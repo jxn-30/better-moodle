@@ -1,6 +1,7 @@
 import globals from 'globals';
 import js from '@eslint/js';
 import jsdoc from 'eslint-plugin-jsdoc';
+import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-config-prettier';
 import tsEslint from 'typescript-eslint';
 
@@ -48,6 +49,7 @@ export default [
                 },
             },
         },
+        plugins: { 'jsx-a11y': pluginJsxA11y },
         rules: {
             'array-callback-return': ['error'],
             'block-scoped-var': 'warn',
@@ -140,6 +142,7 @@ export default [
             ],
             'jsdoc/require-throws': 'warn',
             'jsdoc/sort-tags': 'warn',
+            ...pluginJsxA11y.configs.recommended.rules,
         },
     },
     {

@@ -35,6 +35,7 @@
         "eslint": "9.4.0",
         "eslint-config-prettier": "9.1.0",
         "eslint-plugin-jsdoc": "48.2.9",
+        "eslint-plugin-jsx-a11y": "6.8.0",
         "eslint-plugin-userscripts": "0.5.3",
         "globals": "15.4.0",
         "prettier": "3.3.1",
