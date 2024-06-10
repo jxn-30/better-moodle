@@ -2578,23 +2578,27 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     new BooleanSetting('general.semesterzeiten', false),
-    new SelectSetting('general.prideLogo', GM_getValue(getSettingKey('general.prideLogo'), true).toString(), [
-        'false',
-        'true',
-        'rotated',
-        'agender',
-        'aro',
-        'ace',
-        'aroace',
-        'bi',
-        'genderfluid',
-        'intersex',
-        'lesbian',
-        'enby',
-        'pan',
-        'gay',
-        'trans',
-    ]),
+    new SelectSetting(
+        'general.prideLogo',
+        GM_getValue(getSettingKey('general.prideLogo'), true).toString(),
+        [
+            'false',
+            'true',
+            'rotated',
+            'agender',
+            'aro',
+            'ace',
+            'aroace',
+            'bi',
+            'genderfluid',
+            'intersex',
+            'lesbian',
+            'enby',
+            'pan',
+            'gay',
+            'trans',
+        ]
+    ),
     'darkmode',
     $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
@@ -4308,7 +4312,7 @@ if (getSetting('general.prideLogo') !== 'false') {
                 GM_addStyle(css`
                     .navbar.fixed-top .navbar-brand .logo,
                     #logoimage {
-                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='55.631495,297.00002' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(-70.116495,282.63711)'%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.46743;stroke-linecap:square' id='rect1' width='199.99998' height='59.481289' x='70.116501' y='-282.63712' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='96' inkscape:export-ydpi='96' /%3E%3Crect style='fill:%23a3aaaf;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect2' width='199.99998' height='24.2075' x='70.116501' y='-223.15582' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect3' width='199.99998' height='24.2075' x='70.116501' y='-198.9483' ry='0' /%3E%3Crect style='fill:%239ee261;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect4' width='199.99998' height='24.2075' x='70.116501' y='-174.74089' ry='0' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.46743;stroke-linecap:square' id='rect5' width='199.99998' height='59.481289' x='-270.11649' y='42.637127' ry='0' transform='scale(-1)' /%3E%3Crect style='fill:%23a3aaaf;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect6' width='199.99998' height='24.2075' x='-270.11649' y='102.11838' ry='0' transform='scale(-1)' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect7' width='199.99998' height='24.2075' x='-270.11649' y='126.3259' ry='0' transform='scale(-1)' /%3E%3C/g%3E%3C/svg%3E%0A");  
+                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='55.631495,297.00002' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(-70.116495,282.63711)'%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.46743;stroke-linecap:square' id='rect1' width='199.99998' height='59.481289' x='70.116501' y='-282.63712' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='96' inkscape:export-ydpi='96' /%3E%3Crect style='fill:%23a3aaaf;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect2' width='199.99998' height='24.2075' x='70.116501' y='-223.15582' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect3' width='199.99998' height='24.2075' x='70.116501' y='-198.9483' ry='0' /%3E%3Crect style='fill:%239ee261;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect4' width='199.99998' height='24.2075' x='70.116501' y='-174.74089' ry='0' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.46743;stroke-linecap:square' id='rect5' width='199.99998' height='59.481289' x='-270.11649' y='42.637127' ry='0' transform='scale(-1)' /%3E%3Crect style='fill:%23a3aaaf;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect6' width='199.99998' height='24.2075' x='-270.11649' y='102.11838' ry='0' transform='scale(-1)' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect7' width='199.99998' height='24.2075' x='-270.11649' y='126.3259' ry='0' transform='scale(-1)' /%3E%3C/g%3E%3C/svg%3E%0A");
                     }
                 `);
                 break;
@@ -4348,7 +4352,7 @@ if (getSetting('general.prideLogo') !== 'false') {
                 GM_addStyle(css`
                     .navbar.fixed-top .navbar-brand .logo,
                     #logoimage {
-                            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(387.63797,36.777088)'%3E%3Cg id='g6'%3E%3Crect style='fill:%23f04e83;fill-opacity:1;stroke-width:2.71271;stroke-linecap:square' id='rect25' width='199.99998' height='71.894936' x='-387.63797' y='-36.777088' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.72208;stroke-linecap:square' id='rect26' width='199.99998' height='28.973251' x='-387.63797' y='35.117825' ry='0' /%3E%3Crect style='fill:%23ca00c7;fill-opacity:1;stroke-width:1.91552;stroke-linecap:square' id='rect27' width='199.99998' height='35.848152' x='-387.63797' y='64.091057' ry='0' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:1.79242;stroke-linecap:square' id='rect28' width='199.99998' height='31.388758' x='-387.63797' y='99.939224' ry='0' /%3E%3Crect style='fill:%230007a8;fill-opacity:1;stroke-width:2.71271;stroke-linecap:square' id='rect29' width='199.99998' height='71.894936' x='-387.63797' y='131.32797' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(387.63797,36.777088)'%3E%3Cg id='g6'%3E%3Crect style='fill:%23f04e83;fill-opacity:1;stroke-width:2.71271;stroke-linecap:square' id='rect25' width='199.99998' height='71.894936' x='-387.63797' y='-36.777088' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.72208;stroke-linecap:square' id='rect26' width='199.99998' height='28.973251' x='-387.63797' y='35.117825' ry='0' /%3E%3Crect style='fill:%23ca00c7;fill-opacity:1;stroke-width:1.91552;stroke-linecap:square' id='rect27' width='199.99998' height='35.848152' x='-387.63797' y='64.091057' ry='0' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:1.79242;stroke-linecap:square' id='rect28' width='199.99998' height='31.388758' x='-387.63797' y='99.939224' ry='0' /%3E%3Crect style='fill:%230007a8;fill-opacity:1;stroke-width:2.71271;stroke-linecap:square' id='rect29' width='199.99998' height='71.894936' x='-387.63797' y='131.32797' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
                     }
                 `);
                 break;
@@ -4372,7 +4376,7 @@ if (getSetting('general.prideLogo') !== 'false') {
                 GM_addStyle(css`
                     .navbar.fixed-top .navbar-brand .logo,
                     #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(-227.83087,36.777088)'%3E%3Cg id='g9'%3E%3Crect style='fill:%23ece22c;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect38' width='199.99998' height='72.390404' x='227.83087' y='-36.777088' ry='0' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect39' width='199.99998' height='72.390404' x='227.83087' y='131.94501' ry='0' /%3E%3Crect style='fill:%237035b6;fill-opacity:1;stroke-width:2.21194;stroke-linecap:square' id='rect40' width='199.99998' height='47.801067' x='227.83087' y='84.143913' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:2.22875;stroke-linecap:square' id='rect41' width='199.99998' height='48.530621' x='227.83087' y='35.613308' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");    
+                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(-227.83087,36.777088)'%3E%3Cg id='g9'%3E%3Crect style='fill:%23ece22c;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect38' width='199.99998' height='72.390404' x='227.83087' y='-36.777088' ry='0' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect39' width='199.99998' height='72.390404' x='227.83087' y='131.94501' ry='0' /%3E%3Crect style='fill:%237035b6;fill-opacity:1;stroke-width:2.21194;stroke-linecap:square' id='rect40' width='199.99998' height='47.801067' x='227.83087' y='84.143913' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:2.22875;stroke-linecap:square' id='rect41' width='199.99998' height='48.530621' x='227.83087' y='35.613308' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
                     }
                 `);
                 break;
