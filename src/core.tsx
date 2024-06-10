@@ -1,2 +1,2 @@
-import './style/global.scss';
+import './style/global.module.scss';
 import './settingsModal';

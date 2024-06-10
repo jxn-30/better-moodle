@@ -1,7 +1,5 @@
-@import '_lib/functions';
-
 /* adjust style of settings modal header */
-.modal-content:has(##{local('settings-form')}) .modal-header {
+.modal-content:has(:local(#settings-form)) .modal-header {
     // all elements should have consistent padding and margin
     h5 ~ * {
         padding: 1rem;
@@ -20,7 +18,7 @@
 }
 
 /* some special style needed for the settings modal footer: show button text only on hover */
-##{local('settings-footer-btns')} > :where(button, a) {
+:local(#settings-footer-btns) > :where(button, a) {
     > span {
         font-size: 0;
         transition: font-size 0.5s;

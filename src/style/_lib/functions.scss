@@ -1,3 +1,0 @@
-@function local($selector) {
-    @return unquote('_#{$selector}');
-}

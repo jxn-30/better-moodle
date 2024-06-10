@@ -38,13 +38,11 @@ export default defineConfig({
     },
     css: {
         modules: {
-            scopeBehaviour: 'local',
+            scopeBehaviour: 'global',
+            exportGlobals: false,
             hashPrefix: PREFIX,
             localsConvention: 'camelCaseOnly',
             generateScopedName: (name, filename) => {
-                // Skip global styles
-                if (!name.startsWith('_')) return name;
-
                 // extract feature name from filename
                 const feat = path
                     .relative(__dirname, filename)
