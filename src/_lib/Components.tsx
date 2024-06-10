@@ -12,6 +12,16 @@ interface GithubLinkProps extends Anchor {
     externalIcon?: boolean;
 }
 
+/**
+ * A Component linking to a specific path in the Better-Moodle GitHub Repo
+ * @param attributes - any attributes the HTMLAnchorElement will have plus few additional
+ * @param attributes.path - the absolute path on GitHub beginning at the repos root
+ * @param attributes.icon - whether to show the GitHub icon
+ * @param attributes.externalIcon - whether to allow the icon indicating an external link to be shown
+ * @param attributes.class - additional classes
+ * @param attributes.children - any children of this component
+ * @returns HTMLAnchorElement
+ */
 export const GithubLink = ({
     path,
     icon = true,

@@ -42,6 +42,12 @@ export default defineConfig({
             exportGlobals: false,
             hashPrefix: PREFIX,
             localsConvention: 'camelCaseOnly',
+            /**
+             * Generates a scoped class or id based on filename (feature)
+             * @param name - the class or id that is to be scoped
+             * @param filename - the filename this class or id lives in to extract the feature from
+             * @returns the scoped class or id
+             */
             generateScopedName: (name, filename) => {
                 // extract feature name from filename
                 const feat = path

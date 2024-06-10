@@ -50,6 +50,11 @@ const ChangelogBtn = (
 let changelogHtml: string;
 const changelogCache = 1000 * 60 * 5; // 5 minutes
 
+/**
+ * Fetches the changelog from the GitHub repo and converts it to HTML.
+ * Uses the cached HTML if it is not older than 5 minutes.
+ * @returns the HTML string of the changelog
+ */
 const getChangelogHtml = () =>
     changelogHtml ? changelogHtml : (
         fetch(

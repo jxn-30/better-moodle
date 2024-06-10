@@ -1,9 +1,9 @@
 import globals from 'globals';
 import js from '@eslint/js';
+import jsdoc from 'eslint-plugin-jsdoc';
 import prettier from 'eslint-config-prettier';
 import tsEslint from 'typescript-eslint';
 
-/** @type {FlatConfig[]} */
 export default [
     {
         ignores: [
@@ -18,6 +18,7 @@ export default [
     prettier,
     ...tsEslint.configs.recommendedTypeChecked,
     ...tsEslint.configs.stylisticTypeChecked,
+    jsdoc.configs['flat/recommended-typescript'],
     {
         name: 'better-moodle general ESLint config',
         files: ['**/*.{ts,tsx}'],
@@ -119,6 +120,26 @@ export default [
                     exceptRange: true,
                 },
             ],
+            'jsdoc/require-asterisk-prefix': 'warn',
+            'jsdoc/no-blank-block-descriptions': 'warn',
+            'jsdoc/no-blank-blocks': 'warn',
+            'jsdoc/require-description': 'warn',
+            'jsdoc/require-hyphen-before-param-description': 'warn',
+            'jsdoc/require-jsdoc': [
+                'warn',
+                {
+                    require: {
+                        ArrowFunctionExpression: true,
+                        ClassDeclaration: true,
+                        ClassExpression: true,
+                        FunctionDeclaration: true,
+                        FunctionExpression: true,
+                        MethodDefinition: true,
+                    },
+                },
+            ],
+            'jsdoc/require-throws': 'warn',
+            'jsdoc/sort-tags': 'warn',
         },
     },
     {

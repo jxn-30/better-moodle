@@ -1,15 +1,51 @@
+/**
+ * Prefixes a given string with the global prefix.
+ * @param str - the string to be prefixed
+ * @returns the prefixed string
+ */
 export const PREFIX = (str: string) => `${__PREFIX__}-${str}`;
+/**
+ * Prefixes a given setting id to be used as a fully qualified setting key.
+ * @param id - the id of the setting
+ * @returns the fully qualified setting key
+ */
 export const getSettingKey = (id: string) => PREFIX(`settings.${id}`);
 
+/**
+ * Prefixes a given path with the GitHub URL (domain + user + repo).
+ * @param path - the absolute path on GitHub beginning at the repos root
+ * @returns the full URL as a string
+ */
 export const githubPath = (path: string) => `${__GITHUB_URL__}${path}`;
+/**
+ * Prefixes a given path with the GitHub URL (domain + user + repo) for RAW access.
+ * @param path - the absolute path on GitHub beginning at the repos root
+ * @returns the full URL as a string
+ */
 export const rawGithubPath = (path: string) =>
     `https://raw.githubusercontent.com/${__GITHUB_USER__}/${__GITHUB_REPO__}/main/${path}`;
 
-// this is adopted from https://github.com/p01/mmd.js
+/**
+ * Converts a markdown string to the matching HTML string.
+ * @param md - the markdown string to be converted
+ * @param headingStart - an optional number to start the heading levels at
+ * @returns the HTML string
+ * @see {@link https://github.com/p01/mmd.js} for where this is adopted from.
+ */
 export const mdToHtml = (md: string, headingStart = 1) => {
     let html = '';
 
+    /**
+     * Escapes a string to be used within HTML. HTML special chars are replaced by their entity equivalents.
+     * @param str - the string to be escaped
+     * @returns the escaped string
+     */
     const escape = (str: string) => new Option(str).innerHTML;
+    /**
+     * Replaces inline markdown with HTML (such as images, links, inline code, bold and italic).
+     * @param str - the markdown string to be replaced
+     * @returns the HTML string
+     */
     const inlineEscape = (str: string) =>
         escape(str)
             .replace(/!\[([^\]]*)]\(([^(]+)\)/g, '<img alt="$1" src="$2">') // image
