@@ -5721,7 +5721,12 @@ if (getSetting('weatherDisplay.show')) {
                     modal.show();
                 });
             }));
-    }
+
+        document
+            .getElementById(e.target.getAttribute('aria-describedby'))
+            .remove();
+        e.target.removeAttribute('aria-describedby');
+    };
 
     const weatherBtnWrapper = document.createElement('div');
     weatherBtnWrapper.id = PREFIX('weather-button');
