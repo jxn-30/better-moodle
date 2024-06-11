@@ -29,3 +29,10 @@
         display: none !important;
     }
 }
+
+/* navbar-height is a property set by Moodle */
+@property --navbar-height {
+    syntax: '<length>';
+    inherits: true;
+    initial-value: 60px;
+}
