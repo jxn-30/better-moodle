@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.37.0](https://github.com/jxn-30/better-moodle/compare/1.36.0...1.37.0) (2024-06-08)
+
+
+### Features
+
+* **expandedPrideLogo:** Adds more customization options to the moodle logo ([#208](https://github.com/jxn-30/better-moodle/issues/208)) ([bcd37f5](https://github.com/jxn-30/better-moodle/commit/bcd37f52aed3402c5c7d59208c2695549f94c4b7))
+
 ## [1.36.0](https://github.com/jxn-30/better-moodle/compare/1.35.0...1.36.0) (2024-06-02)
 
 
