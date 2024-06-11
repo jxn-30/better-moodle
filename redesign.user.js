@@ -272,10 +272,6 @@ Viele Grüße
             },
             weatherDisplay: {
                 close: 'Schließen',
-                tabs: {
-                    info: 'Wetterinformationen',
-                    windDetails: 'Windgeschwindigkeit und -richtung',
-                },
                 attributes: {
                     temperature: 'Temperatur',
                     feelsLike: 'Gefühlte Temperatur',
@@ -849,10 +845,6 @@ Best regards
             },
             weatherDisplay: {
                 close: 'Close',
-                tabs: {
-                    info: 'Weather information',
-                    windDetails: 'Wind speed and direction',
-                },
                 attributes: {
                     temperature: 'Temperature',
                     feelsLike: 'Feels like',
@@ -5123,8 +5115,11 @@ if (getSetting('weatherDisplay.show')) {
             GM_xmlhttpRequest({
                 method: 'GET',
                 url,
-                onload: ({ responseText }) => resolve(JSON.parse(responseText)),
-                onerror: reject, // TODO: reject if not 200 OK
+                onload: ({ status, responseText }) => {
+                    if (status !== 200) return reject({ status });
+                    resolve(JSON.parse(responseText));
+                },
+                onerror: reject,
             });
         });
 
@@ -5144,12 +5139,17 @@ if (getSetting('weatherDisplay.show')) {
         });
     };
 
+    const fallback = () => {
+        // TODO: Implement
+    };
+
     const wttrIn = () => {
         return manageRateLimit(
             ONE_MINUTE,
             `https://wttr.in/${city.name}?format=j1&lang`
         ) // The `&lang` removes the faulty german translation
             .then(data => {
+                const currentCondition = data.current_condition[0];
                 const weatherType =
                     {
                         113: weatherCodes.CLEAR,
@@ -5200,86 +5200,86 @@ if (getSetting('weatherDisplay.show')) {
                         389: weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN,
                         392: weatherCodes.LIGHT_THUNDERSTORM_WITH_SNOW,
                         395: weatherCodes.MODERATE_THUNDERSTORM_WITH_SNOW,
-                    }[
-                        new Number(
-                            data.current_condition[0].weatherCode
-                        ).valueOf()
-                    ] ?? weatherCodes.UNKNOWN;
+                    }[new Number(currentCondition.weatherCode).valueOf()] ??
+                    weatherCodes.UNKNOWN;
                 return {
-                    temperature: data.current_condition[0].temp_C,
-                    temperatureFeelsLike: data.current_condition[0].FeelsLikeC,
-                    windDirection: data.current_condition[0].winddirDegree,
-                    windSpeed: data.current_condition[0].windspeedKmph,
-                    visibilityDistance: data.current_condition[0].visibility,
-                    humidity: data.current_condition[0].humidity,
-                    pressure: data.current_condition[0].pressure,
-                    cloudCover: data.current_condition[0].cloudcover,
-                    rainGauge: data.current_condition[0].precipMM,
+                    temperature: currentCondition.temp_C,
+                    temperatureFeelsLike: currentCondition.FeelsLikeC,
+                    windDirection: currentCondition.winddirDegree,
+                    windSpeed: currentCondition.windspeedKmph,
+                    visibilityDistance: currentCondition.visibility,
+                    humidity: currentCondition.humidity,
+                    pressure: currentCondition.pressure,
+                    cloudCover: currentCondition.cloudcover,
+                    rainGauge: currentCondition.precipMM,
                     weatherType,
-                    time: new Date(data.current_condition[0].localObsDateTime), // TODO: check different time zones
+                    time: new Date(currentCondition.localObsDateTime), // TODO: check different time zones
                 };
-            });
+            })
+            .catch(fallback);
     };
 
     const openMeteo = () => {
         return manageRateLimit(
             FIVE_MINUTES,
             `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m&minutely_15=visibility&timeformat=unixtime&timezone=Europe%2FBerlin&forecast_days=1`
-        ).then(data => {
-            const now = Math.floor(Date.now() / 1000);
-            let visibilityIndex = 0;
-            for (let i = 0; i < data.minutely_15.length; i++) {
-                if (data.minutely_15.time[i] > now) {
-                    visibilityIndex = i;
-                    break;
+        )
+            .then(data => {
+                const now = Math.floor(Date.now() / 1000);
+                let visibilityIndex = 0;
+                for (let i = 0; i < data.minutely_15.length; i++) {
+                    if (data.minutely_15.time[i] > now) {
+                        visibilityIndex = i;
+                        break;
+                    }
                 }
-            }
-            const weatherType =
-                {
-                    0: weatherCodes.CLEAR,
-                    1: weatherCodes.FEW_CLOUDS,
-                    2: weatherCodes.BROKEN_CLOUDS,
-                    3: weatherCodes.OVERCAST_CLOUDS,
-                    45: weatherCodes.FOG,
-                    48: weatherCodes.FREEZING_FOG,
-                    51: weatherCodes.LIGHT_DRIZZLE,
-                    53: weatherCodes.MODERATE_DRIZZLE,
-                    55: weatherCodes.HEAVY_DRIZZLE,
-                    56: weatherCodes.LIGHT_FREEZING_DRIZZLE,
-                    57: weatherCodes.MODERATE_FREEZING_DRIZZLE,
-                    61: weatherCodes.LIGHT_RAIN,
-                    63: weatherCodes.MODERATE_RAIN,
-                    65: weatherCodes.HEAVY_RAIN,
-                    66: weatherCodes.LIGHT_FREEZING_RAIN,
-                    67: weatherCodes.MODERATE_FREEZING_RAIN,
-                    71: weatherCodes.LIGHT_SNOW,
-                    73: weatherCodes.MODERATE_SNOW,
-                    75: weatherCodes.HEAVY_SNOW,
-                    77: weatherCodes.MODERATE_FREEZING_DRIZZLE,
-                    80: weatherCodes.LIGHT_RAIN_SHOWERS,
-                    81: weatherCodes.MODERATE_RAIN_SHOWERS,
-                    82: weatherCodes.HEAVY_RAIN_SHOWERS,
-                    85: weatherCodes.MODERATE_SNOW_SHOWERS,
-                    86: weatherCodes.HEAVY_SNOW_SHOWERS,
-                    95: weatherCodes.MODERATE_THUNDERSTORM,
-                    96: weatherCodes.MODERATE_THUNDERSTORM_WITH_HAIL,
-                    99: weatherCodes.HEAVY_THUNDERSTORM_WITH_HAIL,
-                }[data.current.weather_code] ?? weatherCodes.UNKNOWN;
-            return {
-                temperature: data.current.temperature_2m,
-                temperatureFeelsLike: data.current.apparent_temperature,
-                windDirection: data.current.wind_direction_10m,
-                windSpeed: data.current.wind_speed_10m,
-                visibilityDistance:
-                    data.minutely_15.visibility[visibilityIndex] / 1000,
-                humidity: data.current.relative_humidity_2m,
-                pressure: data.current.surface_pressure,
-                cloudCover: data.current.cloud_cover,
-                rainGauge: data.current.precipitation,
-                weatherType,
-                time: new Date(data.current.time * 1000),
-            };
-        });
+                const weatherType =
+                    {
+                        0: weatherCodes.CLEAR,
+                        1: weatherCodes.FEW_CLOUDS,
+                        2: weatherCodes.BROKEN_CLOUDS,
+                        3: weatherCodes.OVERCAST_CLOUDS,
+                        45: weatherCodes.FOG,
+                        48: weatherCodes.FREEZING_FOG,
+                        51: weatherCodes.LIGHT_DRIZZLE,
+                        53: weatherCodes.MODERATE_DRIZZLE,
+                        55: weatherCodes.HEAVY_DRIZZLE,
+                        56: weatherCodes.LIGHT_FREEZING_DRIZZLE,
+                        57: weatherCodes.MODERATE_FREEZING_DRIZZLE,
+                        61: weatherCodes.LIGHT_RAIN,
+                        63: weatherCodes.MODERATE_RAIN,
+                        65: weatherCodes.HEAVY_RAIN,
+                        66: weatherCodes.LIGHT_FREEZING_RAIN,
+                        67: weatherCodes.MODERATE_FREEZING_RAIN,
+                        71: weatherCodes.LIGHT_SNOW,
+                        73: weatherCodes.MODERATE_SNOW,
+                        75: weatherCodes.HEAVY_SNOW,
+                        77: weatherCodes.MODERATE_FREEZING_DRIZZLE,
+                        80: weatherCodes.LIGHT_RAIN_SHOWERS,
+                        81: weatherCodes.MODERATE_RAIN_SHOWERS,
+                        82: weatherCodes.HEAVY_RAIN_SHOWERS,
+                        85: weatherCodes.MODERATE_SNOW_SHOWERS,
+                        86: weatherCodes.HEAVY_SNOW_SHOWERS,
+                        95: weatherCodes.MODERATE_THUNDERSTORM,
+                        96: weatherCodes.MODERATE_THUNDERSTORM_WITH_HAIL,
+                        99: weatherCodes.HEAVY_THUNDERSTORM_WITH_HAIL,
+                    }[data.current.weather_code] ?? weatherCodes.UNKNOWN;
+                return {
+                    temperature: data.current.temperature_2m,
+                    temperatureFeelsLike: data.current.apparent_temperature,
+                    windDirection: data.current.wind_direction_10m,
+                    windSpeed: data.current.wind_speed_10m,
+                    visibilityDistance:
+                        data.minutely_15.visibility[visibilityIndex] / 1000,
+                    humidity: data.current.relative_humidity_2m,
+                    pressure: data.current.surface_pressure,
+                    cloudCover: data.current.cloud_cover,
+                    rainGauge: data.current.precipitation,
+                    weatherType,
+                    time: new Date(data.current.time * 1000),
+                };
+            })
+            .catch(fallback);
     };
 
     const visualCrossing = () => {
@@ -5327,7 +5327,7 @@ if (getSetting('weatherDisplay.show')) {
                     time: new Date(data.currentConditions.datetimeEpoch * 1000),
                 };
             })
-            .catch(wttrIn); // TODO: fix fallback
+            .catch(fallback);
     };
 
     const openWeatherMap = () => {
@@ -5408,7 +5408,7 @@ if (getSetting('weatherDisplay.show')) {
                     time: new Date(data.dt * 1000),
                 };
             })
-            .catch(wttrIn); // TODO: fix fallback
+            .catch(fallback);
     };
 
     const pirateWeather = () => {
@@ -5444,7 +5444,7 @@ if (getSetting('weatherDisplay.show')) {
                     time: new Date(data.currently.time * 1000),
                 };
             })
-            .catch(wttrIn); // TODO: fix fallback
+            .catch(fallback);
     };
 
     const weatherProvider = (() => {
@@ -5654,18 +5654,9 @@ if (getSetting('weatherDisplay.show')) {
     };
 
     let weatherModal = null;
-    const tabClass = prefix('tab');
-    const tabPaneClass = prefix('tab-pane');
-    const tabs = {
-        info: prefix('info'),
-        windDetails: prefix('wind-details'),
-    };
 
     const openWeatherDisplayModal = e => {
         e.preventDefault();
-
-        const compassRoseId = prefix('compass-rose');
-        const needleDirectionVar = prefix('compass-needle-direction');
 
         require(['core/modal_factory'], ({ create, types }) =>
             weatherProvider().then(data => {
@@ -5681,30 +5672,7 @@ if (getSetting('weatherDisplay.show')) {
                         title: `${getWeatherEmoji(
                             data.weatherType
                         )}\xa0${$t('weatherDisplay.title')}`,
-                        body: `
-                        <div>
-                            <ul class="nav nav-tabs" role="tablist">
-                                ${Object.entries(tabs)
-                                    .map(
-                                        tab => `
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link ${tabClass}" id="${tab[1]}-tab" data-toggle="tab" data-target="#${tab[1]}" type="button" role="tab" aria-controls="${tab[1]}" aria-selected="false">${$t(`modals.weatherDisplay.tabs.${tab[0]}`)}</button>
-                                </li>
-                                `
-                                    )
-                                    .join('')}
-                            </ul>
-                            <div class="tab-content">
-                                ${Object.entries(tabs)
-                                    .map(
-                                        tab => `
-                                <div class="tab-pane ${tabPaneClass} pt-3 px-3" id="${tab[1]}" role="tabpanel" aria-labelledby="${tab[1]}-tab"></div>
-                                `
-                                    )
-                                    .join('')}
-                            </div>
-                        </div>
-                        `,
+                        body: '',
                     }).then(modal => {
                         modal.setButtonText(
                             'cancel',
@@ -5717,176 +5685,8 @@ if (getSetting('weatherDisplay.show')) {
                             'weatherDisplay.credits._long'
                         )} <a href="${$t(
                             `weatherDisplay.credits.${provider}.url`
-                        )}">${$t(`weatherDisplay.credits.${provider}.name`)}</a>`;
+                        )}">${$t(`weatherDisplay.credits.${provider}.name`)}</a>`; // TODO: Show used provider on fallback
                         modal.getFooter().prepend(credits);
-
-                        const modalBody = modal.getBody()[0];
-                        const firstTab = modalBody.querySelector(
-                            `.${tabClass}`
-                        );
-                        const firstTabPane = modalBody.querySelector(
-                            `.${tabPaneClass}`
-                        );
-                        firstTab.classList.add('active');
-                        firstTab.setAttribute('aria-selected', 'true');
-                        firstTabPane.classList.add('show', 'active');
-
-                        const compassNeedleId = prefix('compass-needle');
-                        const compassDirectionClass =
-                            prefix('compass-direction');
-                        const compassDirectionNorthId = prefix(
-                            'compass-direction-north'
-                        );
-                        const compassDirectionEastId = prefix(
-                            'compass-direction-east'
-                        );
-                        const compassDirectionSouthId = prefix(
-                            'compass-direction-south'
-                        );
-                        const compassDirectionWestId = prefix(
-                            'compass-direction-west'
-                        );
-                        const compassRadiusVar = prefix('compass-radius');
-                        const needleMarginVar = prefix('compass-needle-margin');
-                        const directionMarginVar = prefix(
-                            'compass-direction-margin'
-                        );
-                        const offsetVar = prefix('compass-offset');
-
-                        const compassOrientationVar = prefix(
-                            'compass-orientation'
-                        );
-
-                        const windDetailsTab = modalBody.querySelector(
-                            `#${tabs.windDetails}`
-                        );
-                        const compassWrapper = document.createElement('div');
-                        compassWrapper.classList.add(
-                            'd-flex',
-                            'justify-content-center'
-                        );
-                        compassWrapper.innerHTML = `
-                            <div id="${compassRoseId}">
-                                <span class="${compassDirectionClass}" id="${compassDirectionNorthId}">N</span>
-                                <span class="${compassDirectionClass}" id="${compassDirectionEastId}">E</span>
-                                <span class="${compassDirectionClass}" id="${compassDirectionSouthId}">S</span>
-                                <span class="${compassDirectionClass}" id="${compassDirectionWestId}">W</span>
-                                <div id="${compassNeedleId}"></div> <!-- TODO: Use an arrow, not just a dot -->
-                            </div>
-                        `;
-                        windDetailsTab.append(compassWrapper);
-
-                        GM_addStyle(`
-                            #${compassRoseId} {
-                                --${compassRadiusVar}: 100px;
-                                --${needleMarginVar}: 20px;
-                                --${directionMarginVar}: 15px;
-                
-                                position: relative;
-                                width: calc(2 * var(--${compassRadiusVar}));
-                                height: calc(2 * var(--${compassRadiusVar}));
-                                border: 1px solid black;
-                                border-radius: 50%;
-                                background: linear-gradient(45deg, #f0f0f0, #fff);
-                                box-sizing: border-box;
-
-                                --${compassOrientationVar}: 0deg;
-                            }
-                            #${compassRoseId} .${prefix('compass-direction')} {
-                                position: absolute;
-                                font-size: 2em;
-                                font-weight: bold;
-                                color: #333;
-                                
-                                transform: translate(-50%, -50%);
-                                
-                                top: calc(
-                                    var(--${compassRadiusVar}) - (
-                                        var(--${compassRadiusVar}) - var(--${directionMarginVar})
-                                    ) * cos(calc(
-                                        -1 * var(--${compassOrientationVar}) - var(--${offsetVar})
-                                    ))
-                                );
-                                left: calc(
-                                    var(--${compassRadiusVar}) - (
-                                        var(--${compassRadiusVar}) - var(--${directionMarginVar})
-                                    ) * sin(calc(
-                                        -1 * var(--${compassOrientationVar}) - var(--${offsetVar})
-                                    ))
-                                );
-                            }
-                
-                            #${compassRoseId} #${compassDirectionNorthId} {
-                                --${offsetVar}: 0deg;
-                            }
-                            #${compassRoseId} #${compassDirectionEastId} {
-                                --${offsetVar}: 90deg;
-                            }
-                            #${compassRoseId} #${compassDirectionSouthId} {
-                                --${offsetVar}: 180deg;
-                            }
-                            #${compassRoseId} #${compassDirectionWestId} {
-                                --${offsetVar}: 270deg;
-                            }
-                
-                            #${compassRoseId} #${compassNeedleId} {
-                                position: absolute;
-                                top: calc(
-                                    var(--${compassRadiusVar}) - (
-                                        var(--${compassRadiusVar}) - var(--${needleMarginVar})
-                                    ) * cos(calc(
-                                        var(--${needleDirectionVar}) - var(--${compassOrientationVar})
-                                    ))
-                                );
-                                left: calc(
-                                    var(--${compassRadiusVar}) - (
-                                        var(--${compassRadiusVar}) - var(--${needleMarginVar})
-                                    ) * sin(calc(
-                                        var(--${needleDirectionVar}) - var(--${compassOrientationVar})
-                                    ))
-                                );
-                                width: 10px;
-                                height: 10px;
-                                border-radius: 50%;
-                                background: red;
-                                transform: translate(-50%, -50%);
-                            }
-                        `);
-
-                        if (
-                            window.DeviceOrientationEvent &&
-                            getSetting('weatherDisplay.useDeviceOrientation')
-                        ) {
-                            new Promise((resolve, reject) => {
-                                if (
-                                    window.DeviceOrientationEvent
-                                        .requestPermission
-                                ) {
-                                    window.DeviceOrientationEvent.requestPermission()
-                                        .then(response => {
-                                            if (response === 'granted') {
-                                                resolve();
-                                            } else {
-                                                reject();
-                                            }
-                                        })
-                                        .catch(reject);
-                                }
-                                resolve();
-                            }).then(() => {
-                                window.addEventListener(
-                                    'deviceorientation',
-                                    e => {
-                                        document
-                                            .getElementById(compassRoseId)
-                                            ?.style.setProperty(
-                                                `--${compassOrientationVar}`,
-                                                `${e.absolute ? e.alpha : 0}deg`
-                                            );
-                                    }
-                                );
-                            });
-                        }
 
                         weatherModal = modal;
                         resolve(modal);
@@ -5895,38 +5695,33 @@ if (getSetting('weatherDisplay.show')) {
                     const modalBody = modal.getBody()[0];
 
                     // TODO: Make this more beautiful
-                    modalBody.querySelector(`#${tabs.info}`).innerHTML = `
-                        <dl class="row">
-                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.temperature')}</dt>
-                            <dd class="col-sm-8">${displayData('temperature', data)}</dd>
-                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.feelsLike')}</dt>
-                            <dd class="col-sm-8">${displayData('temperatureFeelsLike', data)}</dd>
-                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.windSpeed')}</dt>
-                            <dd class="col-sm-8">${displayData('windSpeed', data)}</dd>
-                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.visibility')}</dt>
-                            <dd class="col-sm-8">${displayData('visibilityDistance', data)}</dd>
-                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.humidity')}</dt>
-                            <dd class="col-sm-8">${displayData('humidity', data)}</dd>
-                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.pressure')}</dt>
-                            <dd class="col-sm-8">${displayData('pressure', data)}</dd>
-                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.cloudCover')}</dt>
-                            <dd class="col-sm-8">${displayData('cloudCover', data)}</dd>
-                            <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.rainGauge')}</dt>
-                            <dd class="col-sm-8">${displayData('rainGauge', data)}</dd>
-                        </dl>
+                    modalBody.innerHTML = `
+                        <div>
+                            <dl class="row">
+                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.temperature')}</dt>
+                                <dd class="col-sm-8">${displayData('temperature', data)}</dd>
+                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.feelsLike')}</dt>
+                                <dd class="col-sm-8">${displayData('temperatureFeelsLike', data)}</dd>
+                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.windSpeed')}</dt>
+                                <dd class="col-sm-8">${displayData('windSpeed', data)}</dd>
+                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.visibility')}</dt>
+                                <dd class="col-sm-8">${displayData('visibilityDistance', data)}</dd>
+                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.humidity')}</dt>
+                                <dd class="col-sm-8">${displayData('humidity', data)}</dd>
+                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.pressure')}</dt>
+                                <dd class="col-sm-8">${displayData('pressure', data)}</dd>
+                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.cloudCover')}</dt>
+                                <dd class="col-sm-8">${displayData('cloudCover', data)}</dd>
+                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.rainGauge')}</dt>
+                                <dd class="col-sm-8">${displayData('rainGauge', data)}</dd>
+                            </dl>
+                        </div>
                     `;
-
-                    modalBody
-                        .querySelector(`#${compassRoseId}`)
-                        .style.setProperty(
-                            `--${needleDirectionVar}`,
-                            `${-data.windDirection}deg` // Note: The minus sign is necessary because of trigonometry
-                        );
 
                     modal.show();
                 });
             }));
-    };
+    }
 
     const weatherBtnWrapper = document.createElement('div');
     weatherBtnWrapper.id = PREFIX('weather-button');
