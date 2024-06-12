@@ -4551,7 +4551,7 @@ if (getSetting('general.quickRoleChange')) {
                             <div class="items h-100 overflow-auto" role="menu" aria-labelledby=""${roleSelecotrItemId}-title">
                                 ${Object.entries(roles)
                                     .map(
-                                        ([_, role]) => `
+                                        ([, role]) => `
                                             <form method="post" action="/course/switchrole.php">
                                                 <input type="hidden" name="id" value="${role.id}">
                                                 <input type="hidden" name="switchrole" value="${role.switchrole}">
