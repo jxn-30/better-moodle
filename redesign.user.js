@@ -4557,7 +4557,7 @@ if (getSetting('general.quickRoleChange')) {
                                                 <input type="hidden" name="switchrole" value="${role.switchrole}">
                                                 <input type="hidden" name="returnurl" value="${role.returnurl}">
                                                 <input type="hidden" name="sesskey" value="${role.sesskey}">
-                                                <button type="submit" class="dropdown-item pl-5">${role.title}</button>
+                                                <button type="submit" class="dropdown-item text-truncate">${role.title}</button>
                                             </form>
                                         `
                                     )
