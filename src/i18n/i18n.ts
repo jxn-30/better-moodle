@@ -1,7 +1,7 @@
 import { getSettingKey } from '../_lib/helpers';
-import { i18nObject } from './i18n-util';
 import { loadAllLocales } from './i18n-util.sync';
-import { Locales } from './i18n-types';
+import { i18nObject, loadedLocales, locales } from './i18n-util';
+import { Locales, Translation } from './i18n-types';
 
 loadAllLocales();
 
@@ -16,3 +16,8 @@ const BETTER_MOODLE_LANG = (() => {
 })();
 
 export const LL = i18nObject(BETTER_MOODLE_LANG);
+
+export const languages = new Map<Locales, Translation['language']>();
+for (const locale of locales) {
+    languages.set(locale, loadedLocales[locale].language);
+}

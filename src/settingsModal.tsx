@@ -1,8 +1,8 @@
 import { GithubLink } from './_lib/Components';
-import { LL } from './i18n/i18n';
 import { Modal } from './_lib/Modal';
 import { ready } from './_lib/DOM';
 import settingsStyle from './style/settings.module.scss';
+import { languages, LL } from './i18n/i18n';
 import { mdToHtml, rawGithubPath } from './_lib/helpers';
 
 // region trigger button for settings modal
@@ -166,7 +166,19 @@ const settingsModal = new Modal({
             {LL.settings.modal.title()}
         </>
     ),
-    body: <form id={settingsStyle.settingsForm}>Hello world! ❤️</form>,
+    body: (
+        <form id={settingsStyle.settingsForm}>
+            Hello world! ❤️
+            <pre>
+                {Array.from(languages.entries())
+                    .map(
+                        ([locale, { name, flag }]) =>
+                            `${locale}: ${flag} ${name}`
+                    )
+                    .join('\n')}
+            </pre>
+        </form>
+    ),
     footer: (
         <div class="btn-group mr-auto" id={settingsStyle.settingsFooterBtns}>
             {/* Changelog btn */}

@@ -3,4 +3,8 @@ import settings from './settings';
 
 export default {
     settings,
+    language: {
+        flag: '🇩🇪',
+        name: 'Deutsch',
+    },
 } satisfies BaseTranslation;

@@ -55,6 +55,16 @@ type RootTranslation = {
          */
         changelog: string;
     };
+    language: {
+        /**
+         * �​�​�​�
+         */
+        flag: string;
+        /**
+         * D​e​u​t​s​c​h
+         */
+        name: string;
+    };
 };
 
 export type TranslationFunctions = {
@@ -97,6 +107,16 @@ export type TranslationFunctions = {
          * Changelog
          */
         changelog: () => LocalizedString;
+    };
+    language: {
+        /**
+         * 🇩🇪
+         */
+        flag: () => LocalizedString;
+        /**
+         * Deutsch
+         */
+        name: () => LocalizedString;
     };
 };
 
