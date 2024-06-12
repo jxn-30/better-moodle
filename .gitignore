@@ -1,4 +1,7 @@
 node_modules
+dist
+
+src/style/*.d.ts
 
 # Editor directories and files
 .idea
