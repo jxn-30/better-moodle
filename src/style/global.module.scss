@@ -22,7 +22,7 @@
     margin-right: 0.25rem;
 }
 
-/* remove "external link" icon for specific classes (discouraged but sometimes it doesn't look good) */
+/* remove "external link" icon for specific classes (discouraged, but sometimes it doesn't look good) */
 :local(.no-external-link-icon) {
     body.dir-ltr &::after,
     body.dir-rtl &::before {
