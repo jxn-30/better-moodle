@@ -4241,8 +4241,9 @@ ${Array.from(shownBars)
 
 // region Feature: general.prideLogo
 const prideLogoSetting = settingsById['general.prideLogo'];
-if (typeof prideLogoSetting.value === 'boolean') {
-    prideLogoSetting.value = prideLogoSetting.value ? 'horizontal' : 'off';
+if (['true', 'false'].includes(`${prideLogoSetting.value}`)) {
+    const oldValue = `${prideLogoSetting.value}` === 'true';
+    prideLogoSetting.value = oldValue ? 'horizontal' : 'off';
 }
 let prideLogoStyle = '';
 if (getSetting('general.prideLogo') !== 'off') {
