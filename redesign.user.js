@@ -300,7 +300,7 @@ Viele Grüße
                     description: '🏳️‍🌈',
                     options: {
                         off: 'Aus',
-                        horizontal: 'Regenbogen - Horizontal',
+                        rainbow: 'Regenbogen - Horizontal',
                         rotated: 'Regenbogen - Schräg',
                         agender: 'Agender',
                         aro: 'Aromantisch',
@@ -748,7 +748,7 @@ Best regards
                     description: '🏳️‍🌈',
                     options: {
                         off: 'Aus',
-                        horizontal: 'Rainbow - Horizontal',
+                        rainbow: 'Rainbow - Horizontal',
                         rotated: 'Rainbow - Rotated',
                         agender: 'Agender',
                         aro: 'Aromantic',
