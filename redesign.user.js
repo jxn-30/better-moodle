@@ -2578,9 +2578,9 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     new BooleanSetting('general.semesterzeiten', false),
-    new SelectSetting('general.prideLogo', 'horizontal', [
+    new SelectSetting('general.prideLogo', 'rainbow', [
         'off',
-        'horizontal',
+        'rainbow',
         'rotated',
         'agender',
         'aro',
@@ -4243,7 +4243,7 @@ ${Array.from(shownBars)
 const prideLogoSetting = settingsById['general.prideLogo'];
 if (['true', 'false'].includes(`${prideLogoSetting.value}`)) {
     const oldValue = `${prideLogoSetting.value}` === 'true';
-    prideLogoSetting.value = oldValue ? 'horizontal' : 'off';
+    prideLogoSetting.value = oldValue ? 'rainbow' : 'off';
 }
 let prideLogoStyle = '';
 if (getSetting('general.prideLogo') !== 'off') {
@@ -4289,7 +4289,7 @@ if (getSetting('general.prideLogo') !== 'off') {
                 );
             }
 
-            img[${prideLogoSelector}='horizontal'] {
+            img[${prideLogoSelector}='rainbow'] {
                 background-image: linear-gradient(
                     #fe0000 24.7%,
                     #fd8c00 24.7% 37.35%,
