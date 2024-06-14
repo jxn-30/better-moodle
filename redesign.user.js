@@ -84,7 +84,7 @@ const TRANSLATIONS = {
             },
         },
         quickRoleChange: {
-            defaultSwitchRole: 'Zu Moodle Rollenwechsel-Seite gehen',
+            defaultSwitchRole: 'Zur Moodle Rollenwechsel-Seite gehen',
             goBack: 'Zurück zum Nutzermenü',
             roleSelector: 'Rollen-Auswahl',
         },
@@ -324,7 +324,7 @@ Viele Grüße
                 quickRoleChange: {
                     name: 'Schneller Rollenwechsel',
                     description:
-                        'Ermöglicht es, die Rolle ähnlich zu der Sprache zu ändern (mit den passenden Berechtigungen).',
+                        'Ermöglicht es (mit den passenden Berechtigungen), die Betrachtung eines Kurses mit einer anderen Rolle direkt über das Profil-Dropdown zu ändern.',
                 },
             },
             darkmode: {
@@ -782,7 +782,7 @@ Best regards
                 quickRoleChange: {
                     name: 'Quick role change',
                     description:
-                        'Allows you to change your role like your language (with the right permissions).',
+                        'Allows (with the appropriate permissions) to change the view of a course with a different role directly via the profile dropdown.',
                 },
             },
             darkmode: {
