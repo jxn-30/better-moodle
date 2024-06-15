@@ -2737,6 +2737,7 @@ const existingSettings = new Set([
     'general.speiseplan',
     'general.googlyEyes',
     'general.semesterzeiten',
+    'general.quickRoleChange',
     'darkmode.mode',
     'darkmode.brightness',
     'darkmode.contrast',
