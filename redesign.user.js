@@ -83,6 +83,11 @@ const TRANSLATIONS = {
                 holiday: 'Feiertag',
             },
         },
+        quickRoleChange: {
+            defaultSwitchRole: 'Zur Moodle Rollenwechsel-Seite gehen',
+            goBack: 'Zurück zum Nutzermenü',
+            roleSelector: 'Rollen-Auswahl',
+        },
         modals: {
             settings: {
                 title: 'Einstellungen',
@@ -316,6 +321,11 @@ Viele Grüße
                         trans: 'Transgender',
                     },
                 },
+                quickRoleChange: {
+                    name: 'Schneller Rollenwechsel',
+                    description:
+                        'Ermöglicht es (mit den passenden Berechtigungen), die Betrachtung eines Kurses mit einer anderen Rolle direkt über das Profil-Dropdown zu ändern.',
+                },
             },
             darkmode: {
                 _title: 'Darkmode',
@@ -527,6 +537,11 @@ Viele Grüße
                 show: 'Show in Progress bar?',
                 holiday: 'Public Holiday',
             },
+        },
+        quickRoleChange: {
+            defaultSwitchRole: 'Go to Moodle switch role page',
+            goBack: 'Go back to user menu',
+            roleSelector: 'Role selector',
         },
         modals: {
             settings: {
@@ -763,6 +778,11 @@ Best regards
                         gay: 'Gay',
                         trans: 'Transgender',
                     },
+                },
+                quickRoleChange: {
+                    name: 'Quick role change',
+                    description:
+                        'Allows (with the appropriate permissions) to change the view of a course with a different role directly via the profile dropdown.',
                 },
             },
             darkmode: {
@@ -2595,6 +2615,7 @@ const SETTINGS = [
         'gay',
         'trans',
     ]),
+    new BooleanSetting('general.quickRoleChange', true),
     'darkmode',
     $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
@@ -2712,6 +2733,7 @@ const existingSettings = new Set([
     'general.speiseplan',
     'general.googlyEyes',
     'general.semesterzeiten',
+    'general.quickRoleChange',
     'darkmode.mode',
     'darkmode.brightness',
     'darkmode.contrast',
@@ -4470,6 +4492,98 @@ const updateDarkReaderMode = (live = false) => {
     }
 };
 updateDarkReaderMode();
+// endregion
+
+// region Feature: general.quickRoleChange
+if (getSetting('general.quickRoleChange')) {
+    ready(() => {
+        const usermenu = document.getElementById('usermenu-carousel');
+        const usermenuInner = usermenu?.querySelector('.carousel-inner');
+        const roleSelectBtn = usermenu?.querySelector(
+            '.dropdown-item[href*="switchrole.php"]'
+        );
+        if (!roleSelectBtn) return;
+
+        const rolesUrl = roleSelectBtn.href;
+        fetch(rolesUrl)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                return doc.querySelectorAll('form[action*="switchrole.php"]');
+            })
+            .then(forms => {
+                const roles = [];
+                forms.forEach(form => {
+                    const role = {
+                        id: form.querySelector('input[name="id"]').value,
+                        switchrole: form.querySelector(
+                            'input[name="switchrole"]'
+                        ).value,
+                        returnurl: form.querySelector('input[name="returnurl"]')
+                            .value,
+                        sesskey: form.querySelector('input[name="sesskey"]')
+                            .value,
+                        title: form.querySelector('button').textContent,
+                    };
+                    roles.push(role);
+                });
+                return roles;
+            })
+            .then(roles => {
+                if (roles.length === 0) return;
+
+                const roleSelecotrItemId = PREFIX('role-selector-item');
+                const roleSelectorItem = document.createElement('div');
+                roleSelectorItem.id = roleSelecotrItemId;
+                roleSelectorItem.classList.add('carousel-item', 'submenu');
+                roleSelectorItem.setAttribute('role', 'menu');
+                roleSelectorItem.setAttribute(
+                    'aria-label',
+                    $t('quickRoleChange.roleSelector')
+                );
+                roleSelectorItem.setAttribute('tabindex', -1);
+
+                roleSelectorItem.innerHTML = `
+                    <div class="d-flex flex-column h-100">
+                        <div class="header">
+                            <button type="button" class="btn btn-icon carousel-navigation-link text-decoration-none text-body" data-carousel-target-id="carousel-item-main" aria-label="${$t('quickRoleChange.goBack')}">
+                                <span class="dir-rtl-hide"><img class="icon " alt="" aria-hidden="true" src="/theme/image.php/boost/core/1718107763/i/arrow-left"></span>
+                                <span class="dir-ltr-hide"><img class="icon " alt="" aria-hidden="true" src="/theme/image.php/boost/core/1718107763/i/arrow-right"></span>
+                            </button>
+                            <span class="pl-2" id="${roleSelecotrItemId}-title">${$t('quickRoleChange.roleSelector')}</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="items h-100 overflow-auto" role="menu" aria-labelledby=""${roleSelecotrItemId}-title">
+                            ${Object.entries(roles)
+                                .map(
+                                    ([, role]) => `
+                                        <form method="post" action="/course/switchrole.php">
+                                            <input type="hidden" name="id" value="${role.id}">
+                                            <input type="hidden" name="switchrole" value="${role.switchrole}">
+                                            <input type="hidden" name="returnurl" value="${role.returnurl}">
+                                            <input type="hidden" name="sesskey" value="${role.sesskey}">
+                                            <button type="submit" class="dropdown-item text-truncate">${role.title}</button>
+                                        </form>
+                                    `
+                                )
+                                .join('')}
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="footer d-flex justify-content-center">
+                            <a href="${rolesUrl}" class="small">${$t('quickRoleChange.defaultSwitchRole')}</a>
+                        </div>
+                    </div>
+                `;
+
+                usermenuInner?.append(roleSelectorItem);
+
+                roleSelectBtn.href = '#';
+                roleSelectBtn.classList.add('carousel-navigation-link');
+                roleSelectBtn.dataset.carouselTargetId = roleSelecotrItemId;
+            });
+    });
+}
 // endregion
 
 // region Feature: Dashboard right sidebar
