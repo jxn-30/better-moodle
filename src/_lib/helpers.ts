@@ -12,6 +12,17 @@ export const PREFIX = (str: string) => `${__PREFIX__}-${str}`;
 export const getSettingKey = (id: string) => PREFIX(`settings.${id}`);
 
 /**
+ * Prefixes a given string and replaces invalid characters to be used as a DOM ID.
+ * @param id - the basic id un-prefixed and un-sanitized
+ * @returns the prefixed and sanitized id
+ */
+export const domID = (id: string) =>
+    PREFIX(id)
+        .replace(/ /gu, '_')
+        .replace(/["']/gu, '')
+        .replace(/[^\w-]/gu, '-');
+
+/**
  * Prefixes a given path with the GitHub URL (domain + user + repo).
  * @param path - the absolute path on GitHub beginning at the repos root
  * @returns the full URL as a string
