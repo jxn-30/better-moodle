@@ -1,9 +1,10 @@
 {
+    "$schema": "_schema.json",
     "uniName": "UzL",
     "namespace": "https://uni-luebeck.de",
     "description": {
         "": "Improves UzL-Moodle by cool features and design improvements.",
-        "de": "Verbessert UzL-Moodle durch coole Features und Designverbesserungen."
+        "de": "Verbessert das UzL-Moodle durch coole Features und Designverbesserungen."
     },
     "github": {
         "user": "jxn-30",

@@ -1,4 +1,4 @@
-.eslintignore
+configs/_schema.json
 .eslintcache
 .yarn/
 node_modules/

@@ -1,4 +1,5 @@
 {
+    "$schema": "_schema.json",
     "uniName": "CAU",
     "namespace": "https://better-moodle.yorik.dev",
     "description": {

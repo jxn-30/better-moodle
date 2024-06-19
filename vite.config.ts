@@ -23,6 +23,7 @@ const config = JSON.parse(
 const githubUrl = `https://github.com/${config.github.user}/${config.github.repo}`;
 const releaseDownloadUrl = `${githubUrl}/releases/latest/download`;
 
+// TODO improve this (always include general, load groups if feature of group is loaded)
 const includedFeatures =
     'includeFeatures' in config ? config.includeFeatures : [];
 const includedFeatureGroups = includedFeatures.filter(f => !f.includes('.'));
