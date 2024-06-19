@@ -1,4 +1,4 @@
-export default interface Config {
+interface BaseConfig {
     uniName: string;
     namespace: string;
     additionalAuthors?: string[];
@@ -10,4 +10,20 @@ export default interface Config {
     icon: string;
     moodleUrl: string;
     connects: string[];
+    fixes?: string[];
 }
+
+interface ConfigWithExplicitFeatures extends BaseConfig {
+    includeFeatures: string[];
+}
+
+interface ConfigWithExcludedFeatures extends BaseConfig {
+    excludeFeatures: string[];
+}
+
+export type Config =
+    | BaseConfig
+    | ConfigWithExplicitFeatures
+    | ConfigWithExcludedFeatures;
+
+export default Config;

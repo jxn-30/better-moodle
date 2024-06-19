@@ -2,6 +2,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import Config from './configs/_config';
 import { defineConfig } from 'vite';
+import dotenv from 'dotenv';
 import monkey from 'vite-plugin-monkey';
 import { version } from './package.json';
 
@@ -21,6 +22,26 @@ const config = JSON.parse(
 
 const githubUrl = `https://github.com/${config.github.user}/${config.github.repo}`;
 const releaseDownloadUrl = `${githubUrl}/releases/latest/download`;
+
+const includedFeatures =
+    'includeFeatures' in config ? config.includeFeatures : [];
+const includedFeatureGroups = includedFeatures.filter(f => !f.includes('.'));
+const excludedFeatures =
+    'excludeFeatures' in config ?
+        config.excludeFeatures.filter(f => f !== 'general') // disallow excluding the general group
+    :   [];
+const excludedFeatureGroups = excludedFeatures.filter(f => !f.includes('.'));
+
+const featuresImportGlob = `/src/features/${
+    includedFeatureGroups.length ? `@(${includedFeatureGroups.join('|')})`
+    : excludedFeatureGroups.length ? `!(${excludedFeatureGroups.join('|')})`
+    : '*'
+}/index.ts`;
+
+// @ts-expect-error because process.env may also include undefined values
+dotenv.populate(process.env, {
+    VITE_INCLUDE_FEATURES_GLOB: featuresImportGlob,
+});
 
 // https://vitejs.dev/config/
 export default defineConfig({
