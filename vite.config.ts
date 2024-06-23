@@ -23,7 +23,6 @@ const config = JSON.parse(
 const githubUrl = `https://github.com/${config.github.user}/${config.github.repo}`;
 const releaseDownloadUrl = `${githubUrl}/releases/latest/download`;
 
-// TODO improve this (always include general, load groups if feature of group is loaded)
 const includedFeatures =
     'includeFeatures' in config ? config.includeFeatures : [];
 const includedFeatureGroups = new Set<string>();
@@ -54,13 +53,20 @@ const featureGroupsImportGlob = `${featuresBase}${
 const getFeatureImports = (list: string[]) =>
     list
         .map(feature =>
-            feature.match(/\./) ? feature.replace('.', '/') : `${feature}/*`
+            feature.match(/\./) ?
+                feature.replace('.', '/')
+            :   `${feature}/!(index)`
         )
-        .join('|');
+        .join(',');
 const featuresImportGlob = `${featuresBase}${
-    includedFeatures.length ?
-        `@(general/*|${getFeatureImports(includedFeatures)})`
-    : excludedFeatures.length ? `@(${getFeatureImports(excludedFeatures)})`
+    // multiple features included => use brace expansion
+    includedFeatures.length > 1 ? `{${getFeatureImports(includedFeatures)}}`
+        // only a single feature included => brace expansion would not work at all
+    : includedFeatures.length === 1 ? getFeatureImports(includedFeatures)
+        // TODO: how can we create a glob that works for excluding specific features instead of only feature groups?
+        // this glob is 100% wrong atm
+        // maybe we have to read all files and then create a glob from the non-excluded?
+    : excludedFeatures.length ? `!(${getFeatureImports(excludedFeatures)})`
     : '*/!(index)'
 }.ts`;
 

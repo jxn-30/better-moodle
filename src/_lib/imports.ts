@@ -6,12 +6,6 @@ import FeatureGroup from './FeatureGroup';
 // which throws a
 // `ReferenceError: can't access lexical declaration 'FeatureGroup' before initialization`
 
-console.log(
-    import.meta.env.VITE_FEATURES_BASE,
-    import.meta.env.VITE_INCLUDE_FEATURE_GROUPS_GLOB,
-    import.meta.env.VITE_INCLUDE_FEATURES_GLOB
-);
-
 const featureGroupImports: Record<
     string,
     ReturnType<(typeof FeatureGroup)['register']>
