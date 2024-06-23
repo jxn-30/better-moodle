@@ -2,7 +2,11 @@ import FeatureGroup from '../../_lib/FeatureGroup';
 
 console.log("we're loading the general feature group");
 
+const features = new Set<string>();
+features.add('fullWidth');
+
 export default FeatureGroup.register({
+    features,
     /**
      * TODO
      */

@@ -26,21 +26,48 @@ const releaseDownloadUrl = `${githubUrl}/releases/latest/download`;
 // TODO improve this (always include general, load groups if feature of group is loaded)
 const includedFeatures =
     'includeFeatures' in config ? config.includeFeatures : [];
-const includedFeatureGroups = includedFeatures.filter(f => !f.includes('.'));
+const includedFeatureGroups = new Set<string>();
+includedFeatures.forEach(feature => {
+    if (feature.includes('.')) {
+        includedFeatureGroups.add(feature.split('.')[0]);
+    } else {
+        includedFeatureGroups.add(feature);
+    }
+});
 const excludedFeatures =
     'excludeFeatures' in config ?
         config.excludeFeatures.filter(f => f !== 'general') // disallow excluding the general group
     :   [];
 const excludedFeatureGroups = excludedFeatures.filter(f => !f.includes('.'));
 
-const featuresImportGlob = `/src/features/${
-    includedFeatureGroups.length ? `@(${includedFeatureGroups.join('|')})`
+const featuresBase = '/src/features/';
+const featureGroupsImportGlob = `${featuresBase}${
+    includedFeatureGroups.size ?
+        `@(general|${Array.from(includedFeatureGroups).join('|')})`
     : excludedFeatureGroups.length ? `!(${excludedFeatureGroups.join('|')})`
     : '*'
 }/index.ts`;
 
+/**
+ * @param list
+ */
+const getFeatureImports = (list: string[]) =>
+    list
+        .map(feature =>
+            feature.match(/\./) ? feature.replace('.', '/') : `${feature}/*`
+        )
+        .join('|');
+const featuresImportGlob = `${featuresBase}${
+    includedFeatures.length ?
+        `@(general/*|${getFeatureImports(includedFeatures)})`
+    : excludedFeatures.length ? `@(${getFeatureImports(excludedFeatures)})`
+    : '*/!(index)'
+}.ts`;
+
 // @ts-expect-error because process.env may also include undefined values
 dotenv.populate(process.env, {
+    VITE_FEATURES_BASE: featuresBase,
+    VITE_INCLUDE_FEATURE_GROUPS_GLOB: featureGroupsImportGlob,
     VITE_INCLUDE_FEATURES_GLOB: featuresImportGlob,
 });
 

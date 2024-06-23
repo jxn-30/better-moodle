@@ -1,8 +1,8 @@
-import { Feature } from './Feature';
+import Feature from './Feature';
+import Setting from './Setting';
 
-type FeatureGroupMethods = Record<
-    'init' | 'onload' | 'onunload',
-    (this: FeatureGroup) => void
+type FeatureGroupMethods = Partial<
+    Record<'init' | 'onload' | 'onunload', (this: FeatureGroup) => void>
 >;
 
 /**
@@ -13,14 +13,16 @@ export default abstract class FeatureGroup {
     /**
      * This registering workaround is necessary so that we can have readonly private id that is automatically generated from the filepath
      * @param args - the methods that are to be implemented
-     * @param args.features - a list of features this group contains
+     * @param args.settings - a list of settings for this group but not for the features
+     * @param args.features - a list of feature-IDs this group contains in order of appearance in settings
      * @returns a class that can be instantiated
      */
     static register({
-        features = [],
+        settings = [],
+        features = new Set<string>(),
         ...methods
-    }: { features?: Feature[] } & FeatureGroupMethods) {
-        console.log(features, methods);
+    }: { settings?: Setting[]; features?: Set<string> } & FeatureGroupMethods) {
+        console.log(settings, features, methods);
 
         /**
          * The instantiable version of the FeatureGroup class
@@ -34,6 +36,20 @@ export default abstract class FeatureGroup {
             constructor(id: string) {
                 super(id, methods);
             }
+
+            /**
+             * @param loadFn
+             */
+            loadFeatures(loadFn: (featureId: string) => Feature | undefined) {
+                if (this.#features.size) throw Error('Features already loaded');
+                console.log(features);
+                features.forEach(id => {
+                    const feature = loadFn(id);
+                    if (feature) {
+                        this.#features.add(feature);
+                    }
+                });
+            }
         };
     }
 
@@ -41,6 +57,8 @@ export default abstract class FeatureGroup {
     readonly #init: FeatureGroupMethods['init'];
     readonly #onload: FeatureGroupMethods['onload'];
     readonly #onunload: FeatureGroupMethods['onunload'];
+
+    readonly #features = new Set<Feature>();
 
     #initCalled = false;
     #loaded = false;
@@ -68,7 +86,6 @@ export default abstract class FeatureGroup {
     /**
      *  Initialize the feature group
      *  calls #init internally
-     *  @returns the result of the init method
      *  @throws {Error} if init is called multiple times
      */
     init() {
@@ -79,7 +96,7 @@ export default abstract class FeatureGroup {
         }
         this.#initCalled = true;
 
-        return this.#init();
+        this.#init?.();
     }
 
     /**
@@ -93,7 +110,7 @@ export default abstract class FeatureGroup {
         }
         this.#loaded = true;
 
-        this.#onload();
+        this.#onload?.();
     }
 
     /**
@@ -108,6 +125,6 @@ export default abstract class FeatureGroup {
         }
         this.#loaded = false;
 
-        this.#onunload();
+        this.#onunload?.();
     }
 }

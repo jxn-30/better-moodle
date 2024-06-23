@@ -1,11 +1,13 @@
+import Feature from './Feature';
 import { domID, PREFIX } from './helpers';
 
 /**
  * A base class
  */
-export abstract class Setting<Type> {
+export default abstract class Setting<Type = unknown> {
     readonly #id: string;
     readonly #default: Type;
+    #feature: Feature | undefined;
 
     /**
      * Constructor
@@ -27,7 +29,22 @@ export abstract class Setting<Type> {
         }
     }
 
+    /**
+     *
+     */
+    set feature(feature: Feature) {
+        if (this.#feature) throw new Error('Cannot reassign feature');
+        this.#feature = feature;
+    }
+
     abstract get formControl(): Element;
+
+    /**
+     *
+     */
+    get id() {
+        return `${this.#feature?.id ?? ''}.${this.#id}`;
+    }
 
     /**
      * The actual saved value of this setting or alternatively the default value
@@ -57,6 +74,6 @@ export abstract class Setting<Type> {
      * @returns the setting key
      */
     get settingKey() {
-        return `settings.${this.#id}`;
+        return `settings.${this.id}`;
     }
 }

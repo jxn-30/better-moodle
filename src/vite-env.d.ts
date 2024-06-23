@@ -11,6 +11,8 @@ declare const __PREFIX__: string;
 
 // env variables defined in the .env file or in vite config
 interface ImportMetaEnv {
+    readonly VITE_FEATURES_BASE: string;
+    readonly VITE_INCLUDE_FEATURE_GROUPS_GLOB: string;
     readonly VITE_INCLUDE_FEATURES_GLOB: string;
 }
 
