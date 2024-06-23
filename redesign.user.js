@@ -4278,17 +4278,18 @@ if (getSetting('general.prideLogo') !== 'off') {
 
         GM_addStyle(css`
             /* set image mask for any chosen flag style */
-            .navbar.fixed-top .navbar-brand .logo,
-            #logoimage {
+            img[${prideLogoSelector}] {
                 filter: brightness(0.8) contrast(1.5);
 
                 object-position: -99999px -99999px; /* hide original image */
-                mask: url(${logoUrl.href}) center/contain no-repeat;
+                mask:
+                    url(${logoUrl.href}) center/contain no-repeat exclude
+                        luminance,
+                    url(${logoUrl.href}) center/contain no-repeat add alpha;
                 mask-origin: content-box;
             }
 
-            ${DARK_MODE_SELECTOR} .navbar.fixed-top .navbar-brand .logo,
-            ${DARK_MODE_SELECTOR} #logoimage {
+            ${DARK_MODE_SELECTOR} img[${prideLogoSelector}] {
                 filter: saturate(2) !important;
             }
         `);
@@ -4297,161 +4298,151 @@ if (getSetting('general.prideLogo') !== 'off') {
             prideLogoSelector,
             getSetting('general.prideLogo')
         );
-        // set the flag style for the chosen setting
-        prideLogoStyle = css`
-            /* Fallback */
-            img[${prideLogoSelector}] {
-                background-image: linear-gradient(
-                    #fe0000 24.7%,
-                    #fd8c00 24.7% 37.35%,
-                    #ffd000 37.35% 50%,
-                    #119f0b 50% 62.65%,
-                    #457cdf 62.65% 75.3%,
-                    #c22edc 75.3%
-                );
-            }
-
-            img[${prideLogoSelector}='rainbow'] {
-                background-image: linear-gradient(
-                    #fe0000 24.7%,
-                    #fd8c00 24.7% 37.35%,
-                    #ffd000 37.35% 50%,
-                    #119f0b 50% 62.65%,
-                    #457cdf 62.65% 75.3%,
-                    #c22edc 75.3%
-                );
-            }
-
-            img[${prideLogoSelector}='rotated'] {
-                background-image: linear-gradient(
-                    135deg,
-                    #fe0000 30%,
-                    #fd8c00 30% 40%,
-                    #ffd000 40% 50%,
-                    #119f0b 50% 60%,
-                    #457cdf 60% 70%,
-                    #c22edc 70%
-                );
-            }
-
-            img[${prideLogoSelector}='agender'] {
-                background-image: linear-gradient(
-                    #000000 22.85%,
-                    #a3aaaf 22.85% 33.71%,
-                    #f3f3f3 33.71% 44.57%,
-                    #9ee261 44.57% 55.43%,
-                    #f3f3f3 55.43% 66.29%,
-                    #a3aaaf 66.29% 77.15%,
-                    #000000 77.15%
-                );
-            }
-
-            img[${prideLogoSelector}='aro'] {
-                background-image: linear-gradient(
-                    #008800 27.2%,
-                    #6dc049 27.2% 42.4%,
-                    #f3f3f3 42.4% 57.6%,
-                    #868686 57.6% 72.8%,
-                    #000000 72.8%
-                );
-            }
-
-            img[${prideLogoSelector}='ace'] {
-                background-image: linear-gradient(
-                    #000000 31%,
-                    #75005f 31% 50%,
-                    #f3f3f3 50% 69%,
-                    #868686 69%
-                );
-            }
-
-            img[${prideLogoSelector}='aroace'] {
-                background-image: linear-gradient(
-                    #ce6600 27.2%,
-                    #dbb600 27.2% 42.4%,
-                    #f3f3f3 42.4% 57.6%,
-                    #3592ca 57.6% 72.8%,
-                    #000529 72.8%
-                );
-            }
-
-            img[${prideLogoSelector}='bi'] {
-                background-image: linear-gradient(
-                    #d60270 37.33%,
-                    #9b4f96 37.33% 62.67%,
-                    #0038a8 62.67%
-                );
-            }
-
-            img[${prideLogoSelector}='genderfluid'] {
-                background-image: linear-gradient(
-                    #f04e83 27.2%,
-                    #f3f3f3 27.2% 42.4%,
-                    #ca00c7 42.4% 57.6%,
-                    #000000 57.6% 72.8%,
-                    #0007a8 72.8%
-                );
-            }
-
-            img[${prideLogoSelector}='intersex'] {
-                background-image: radial-gradient(
-                    circle at 50%,
-                    #f3c500 12%,
-                    #680088 12% 22%,
-                    #f3c500 22%
-                );
-            }
-
-            img[${prideLogoSelector}='lesbian'] {
-                background-image: linear-gradient(
-                    #c00000 27.2%,
-                    #f07724 27.2% 42.4%,
-                    #f3f3f3 42.4% 57.6%,
-                    #bb3586 57.6% 72.8%,
-                    #860035 72.8%
-                );
-            }
-
-            img[${prideLogoSelector}='enby'] {
-                background-image: linear-gradient(
-                    #ece22c 31%,
-                    #f3f3f3 31% 50%,
-                    #7035b6 50% 69%,
-                    #000000 69%
-                );
-            }
-
-            img[${prideLogoSelector}='pan'] {
-                background-image: linear-gradient(
-                    #f3006d 37.33%,
-                    #f0c500 37.33% 62.67%,
-                    #0097f0 62.67%
-                );
-            }
-
-            img[${prideLogoSelector}='gay'] {
-                background-image: linear-gradient(
-                    #006642 27.2%,
-                    #6dc79b 27.2% 42.4%,
-                    #f3f3f3 42.4% 57.6%,
-                    #5086c2 57.6% 72.8%,
-                    #0f004b 72.8%
-                );
-            }
-
-            img[${prideLogoSelector}='trans'] {
-                background-image: linear-gradient(
-                    #00b9ee 27.2%,
-                    #ee86d8 27.2% 42.4%,
-                    #f3f3f3 42.4% 57.6%,
-                    #ee86d8 57.6% 72.8%,
-                    #00b9ee 72.8%
-                );
-            }
-        `;
-
-        GM_addStyle(prideLogoStyle);
     });
+
+    // set the flag style for the chosen setting
+    prideLogoStyle = css`
+        img[${prideLogoSelector}], /* Fallback */
+            img[${prideLogoSelector}='rainbow'] {
+            background-image: linear-gradient(
+                #fe0000 24.7%,
+                #fd8c00 24.7% 37.35%,
+                #ffd000 37.35% 50%,
+                #119f0b 50% 62.65%,
+                #457cdf 62.65% 75.3%,
+                #c22edc 75.3%
+            );
+        }
+
+        img[${prideLogoSelector}='rotated'] {
+            background-image: linear-gradient(
+                135deg,
+                #fe0000 30%,
+                #fd8c00 30% 40%,
+                #ffd000 40% 50%,
+                #119f0b 50% 60%,
+                #457cdf 60% 70%,
+                #c22edc 70%
+            );
+        }
+
+        img[${prideLogoSelector}='agender'] {
+            background-image: linear-gradient(
+                #000000 22.85%,
+                #a3aaaf 22.85% 33.71%,
+                #f3f3f3 33.71% 44.57%,
+                #9ee261 44.57% 55.43%,
+                #f3f3f3 55.43% 66.29%,
+                #a3aaaf 66.29% 77.15%,
+                #000000 77.15%
+            );
+        }
+
+        img[${prideLogoSelector}='aro'] {
+            background-image: linear-gradient(
+                #008800 27.2%,
+                #6dc049 27.2% 42.4%,
+                #f3f3f3 42.4% 57.6%,
+                #868686 57.6% 72.8%,
+                #000000 72.8%
+            );
+        }
+
+        img[${prideLogoSelector}='ace'] {
+            background-image: linear-gradient(
+                #000000 31%,
+                #75005f 31% 50%,
+                #f3f3f3 50% 69%,
+                #868686 69%
+            );
+        }
+
+        img[${prideLogoSelector}='aroace'] {
+            background-image: linear-gradient(
+                #ce6600 27.2%,
+                #dbb600 27.2% 42.4%,
+                #f3f3f3 42.4% 57.6%,
+                #3592ca 57.6% 72.8%,
+                #000529 72.8%
+            );
+        }
+
+        img[${prideLogoSelector}='bi'] {
+            background-image: linear-gradient(
+                #d60270 37.33%,
+                #9b4f96 37.33% 62.67%,
+                #0038a8 62.67%
+            );
+        }
+
+        img[${prideLogoSelector}='genderfluid'] {
+            background-image: linear-gradient(
+                #f04e83 27.2%,
+                #f3f3f3 27.2% 42.4%,
+                #ca00c7 42.4% 57.6%,
+                #000000 57.6% 72.8%,
+                #0007a8 72.8%
+            );
+        }
+
+        img[${prideLogoSelector}='intersex'] {
+            background-image: radial-gradient(
+                circle at 50%,
+                #f3c500 12%,
+                #680088 12% 22%,
+                #f3c500 22%
+            );
+        }
+
+        img[${prideLogoSelector}='lesbian'] {
+            background-image: linear-gradient(
+                #c00000 27.2%,
+                #f07724 27.2% 42.4%,
+                #f3f3f3 42.4% 57.6%,
+                #bb3586 57.6% 72.8%,
+                #860035 72.8%
+            );
+        }
+
+        img[${prideLogoSelector}='enby'] {
+            background-image: linear-gradient(
+                #ece22c 31%,
+                #f3f3f3 31% 50%,
+                #7035b6 50% 69%,
+                #000000 69%
+            );
+        }
+
+        img[${prideLogoSelector}='pan'] {
+            background-image: linear-gradient(
+                #f3006d 37.33%,
+                #f0c500 37.33% 62.67%,
+                #0097f0 62.67%
+            );
+        }
+
+        img[${prideLogoSelector}='gay'] {
+            background-image: linear-gradient(
+                #006642 27.2%,
+                #6dc79b 27.2% 42.4%,
+                #f3f3f3 42.4% 57.6%,
+                #5086c2 57.6% 72.8%,
+                #0f004b 72.8%
+            );
+        }
+
+        img[${prideLogoSelector}='trans'] {
+            background-image: linear-gradient(
+                #00b9ee 27.2%,
+                #ee86d8 27.2% 42.4%,
+                #f3f3f3 42.4% 57.6%,
+                #ee86d8 57.6% 72.8%,
+                #00b9ee 72.8%
+            );
+        }
+    `;
+
+    GM_addStyle(prideLogoStyle);
 }
 // endregion
 
