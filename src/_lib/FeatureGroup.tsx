@@ -1,4 +1,5 @@
 import Feature from './Feature';
+import { FieldSet } from './Components';
 import Setting from './Setting';
 
 type FeatureGroupMethods = Partial<
@@ -13,17 +14,18 @@ export default abstract class FeatureGroup {
     /**
      * This registering workaround is necessary so that we can have readonly private id that is automatically generated from the filepath
      * @param args - the methods that are to be implemented
-     * @param args.settings - a list of settings for this group but not for the features
-     * @param args.features - a list of feature-IDs this group contains in order of appearance in settings
+     * @param args.settings - a set of settings for this group (but not settings for features)
+     * @param args.features - a set of feature-IDs this group contains in order of appearance in settings
      * @returns a class that can be instantiated
      */
     static register({
-        settings = [],
+        settings = new Set<Setting>(),
         features = new Set<string>(),
         ...methods
-    }: { settings?: Setting[]; features?: Set<string> } & FeatureGroupMethods) {
-        console.log(settings, features, methods);
-
+    }: {
+        settings?: Set<Setting>;
+        features?: Set<string>;
+    } & FeatureGroupMethods) {
         /**
          * The instantiable version of the FeatureGroup class
          */
@@ -34,19 +36,21 @@ export default abstract class FeatureGroup {
              * @param id - the ID of this feature group
              */
             constructor(id: string) {
-                super(id, methods);
+                super(id, settings ?? new Set<Setting>(), methods);
             }
 
             /**
-             * @param loadFn
+             * load the features for this group
+             * @param loadFn - a function that actually loads the feature
+             * @throws {Error} if the features are already loaded
              */
             loadFeatures(loadFn: (featureId: string) => Feature | undefined) {
                 if (this.#features.size) throw Error('Features already loaded');
-                console.log(features);
-                features.forEach(id => {
+                features?.forEach(id => {
                     const feature = loadFn(id);
                     if (feature) {
                         this.#features.add(feature);
+                        this.#FieldSet.container.append(...feature.formGroups);
                     }
                 });
             }
@@ -54,11 +58,14 @@ export default abstract class FeatureGroup {
     }
 
     readonly #id: string;
+    readonly #settings: Set<Setting>;
     readonly #init: FeatureGroupMethods['init'];
     readonly #onload: FeatureGroupMethods['onload'];
     readonly #onunload: FeatureGroupMethods['onunload'];
 
     readonly #features = new Set<Feature>();
+
+    readonly #FieldSet: ReturnType<typeof FieldSet>;
 
     #initCalled = false;
     #loaded = false;
@@ -66,13 +73,29 @@ export default abstract class FeatureGroup {
     /**
      * create a new feature group with a specific id
      * @param id - the id of this feature group
+     * @param settings - the settings for this feature group that are independent of a specific feature
      * @param methods - the methods that are to be implemented (init, onload, onunload)
      */
-    protected constructor(id: string, methods: FeatureGroupMethods) {
+    protected constructor(
+        id: string,
+        settings: Set<Setting>,
+        methods: FeatureGroupMethods
+    ) {
         this.#id = id;
+        this.#settings = settings;
         this.#init = methods.init;
         this.#onload = methods.onload;
         this.#onunload = methods.onunload;
+
+        this.#FieldSet = FieldSet({
+            id: `settings-fieldset-${this.id}`,
+            title: `Krup: ${this.id}`,
+            collapsed: id !== 'general',
+        });
+        this.#settings.forEach(setting => {
+            setting.feature = this;
+            this.#FieldSet.container.append(setting.formGroup);
+        });
     }
 
     /**
@@ -81,6 +104,14 @@ export default abstract class FeatureGroup {
      */
     get id() {
         return this.#id;
+    }
+
+    /**
+     * The <fieldset> Element containing all settings for this group
+     * @returns the <fieldset> Element containing all settings for this group
+     */
+    get FieldSet() {
+        return this.#FieldSet;
     }
 
     /**

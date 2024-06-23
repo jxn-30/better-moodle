@@ -19,7 +19,7 @@ export default abstract class Feature {
     static register({
         settings,
         ...methods
-    }: { settings?: Setting[] } & FeatureMethods) {
+    }: { settings?: Set<Setting> } & FeatureMethods) {
         console.log(settings, methods);
 
         /**
@@ -30,19 +30,22 @@ export default abstract class Feature {
              * The constructor for the Feature class
              * methods are not passed via constructor but via the register method
              * @param id - the ID of this feature
-             * @param group
+             * @param group - the group this feature belongs to
              */
             constructor(id: string, group: FeatureGroup) {
-                super(id, group, methods);
+                super(id, group, settings ?? new Set<Setting>(), methods);
             }
         };
     }
 
     readonly #id: string;
     readonly #group: FeatureGroup;
+    readonly #settings: Set<Setting>;
     readonly #init: FeatureMethods['init'];
     readonly #onload: FeatureMethods['onload'];
     readonly #onunload: FeatureMethods['onunload'];
+
+    readonly #FormGroups: Element[] = [];
 
     #initCalled = false;
     #loaded = false;
@@ -50,19 +53,27 @@ export default abstract class Feature {
     /**
      * create a new feature with a specific id
      * @param id - the id of this feature
-     * @param group
+     * @param group - the group this feature belongs to
+     * @param settings - the settings of this group
      * @param methods - the methods that are to be implemented (init, onload, onunload)
      */
     protected constructor(
         id: string,
         group: FeatureGroup,
+        settings: Set<Setting>,
         methods: FeatureMethods
     ) {
         this.#id = id;
         this.#group = group;
+        this.#settings = settings;
         this.#init = methods.init;
         this.#onload = methods.onload;
         this.#onunload = methods.onunload;
+
+        this.#settings.forEach(setting => {
+            setting.feature = this;
+            this.#FormGroups.push(setting.formGroup);
+        });
     }
 
     /**
@@ -71,6 +82,14 @@ export default abstract class Feature {
      */
     get id() {
         return `${this.#group.id}.${this.#id}`;
+    }
+
+    /**
+     * get the form groups of the settings of this feature
+     * @returns the form groups of the settings of this feature
+     */
+    get formGroups() {
+        return this.#FormGroups;
     }
 
     /**

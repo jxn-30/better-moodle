@@ -23,8 +23,10 @@ const featureImports: Record<
 });
 
 /**
- * @param group
- * @param featureId
+ * inits a feature by instantiating the feature class and calling its init method
+ * @param group - the group this feature belongs to
+ * @param featureId - the id of this feature
+ * @returns the instantiated feature
  */
 const initFeature = (group: FeatureGroup, featureId: string) => {
     const Feature =

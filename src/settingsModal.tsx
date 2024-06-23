@@ -1,9 +1,13 @@
+import featureGroups from './_lib/imports';
 import { GithubLink } from './_lib/Components';
 import { Modal } from './_lib/Modal';
 import { ready } from './_lib/DOM';
 import settingsStyle from './style/settings.module.scss';
 import { languages, LL } from './i18n/i18n';
 import { mdToHtml, rawGithubPath } from './_lib/helpers';
+
+// we need this to have some kind of sorting in settings
+const groups = ['general', 'darkmode', 'myCourses'] as const;
 
 // region trigger button for settings modal
 const settingsBtnTitle = `Better-Moodle:\xa0${LL.settings.modal.title()}`;
@@ -167,8 +171,10 @@ const settingsModal = new Modal({
         </>
     ),
     body: (
-        <form id={settingsStyle.settingsForm}>
-            Hello world! ❤️
+        <form id={settingsStyle.settingsForm} className="mform">
+            {groups
+                .map(group => featureGroups.get(group)?.FieldSet)
+                .filter(fieldset => fieldset !== undefined)}
             <pre>
                 {Array.from(languages.entries())
                     .map(

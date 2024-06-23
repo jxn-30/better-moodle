@@ -1,4 +1,6 @@
 import Feature from './Feature';
+import FeatureGroup from './FeatureGroup';
+import { JSX } from 'jsx-dom';
 import { domID, PREFIX } from './helpers';
 
 /**
@@ -7,7 +9,7 @@ import { domID, PREFIX } from './helpers';
 export default abstract class Setting<Type = unknown> {
     readonly #id: string;
     readonly #default: Type;
-    #feature: Feature | undefined;
+    #feature: Feature | FeatureGroup | undefined;
 
     /**
      * Constructor
@@ -30,17 +32,20 @@ export default abstract class Setting<Type = unknown> {
     }
 
     /**
-     *
+     * Set the feature this setting belongs to
+     * @param feature - the feature this setting belongs to
+     * @throws {Error} if the feature is already set
      */
-    set feature(feature: Feature) {
+    set feature(feature: Feature | FeatureGroup) {
         if (this.#feature) throw new Error('Cannot reassign feature');
         this.#feature = feature;
     }
 
-    abstract get formControl(): Element;
+    abstract get formControl(): JSX.Element;
 
     /**
-     *
+     * The ID of this setting
+     * @returns the full ID of this setting
      */
     get id() {
         return `${this.#feature?.id ?? ''}.${this.#id}`;
@@ -75,5 +80,43 @@ export default abstract class Setting<Type = unknown> {
      */
     get settingKey() {
         return `settings.${this.id}`;
+    }
+
+    /**
+     * The FormGroup for this setting
+     * @returns the form group
+     */
+    get formGroup() {
+        return (
+            <div className="form-group row fitem">
+                <div className="col-md-5 col-form-label d-flex pb-0 pt-0">
+                    <label
+                        className="d-inline word-break"
+                        htmlFor={this.inputID}
+                    >
+                        {this.id}
+                    </label>
+                    <div className="form-label-addon d-flex align-items-center align-self-start">
+                        <button
+                            className="btn btn-link p-0"
+                            data-container="body"
+                            data-toggle="popover"
+                            data-placement="right"
+                            data-content="Placeholder"
+                            data-trigger="focus"
+                            tabIndex={0}
+                        >
+                            <i className="icon fa fa-question-circle text-info fa-fw"></i>
+                        </button>
+                    </div>
+                </div>
+                <div
+                    className="col-md-7 form-inline align-items-start felement overflow-hidden"
+                    data-setting={this.id}
+                >
+                    {this.formControl}
+                </div>
+            </div>
+        );
     }
 }

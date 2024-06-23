@@ -1,8 +1,9 @@
 import FeatureGroup from '../../_lib/FeatureGroup';
 
-console.log("we're loading the myCourses feature group");
+const features = new Set<string>(['cardsPerRow', 'navbarDropdown']);
 
 export default FeatureGroup.register({
+    features,
     /**
      * TODO
      */

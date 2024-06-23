@@ -48,7 +48,9 @@ const featureGroupsImportGlob = `${featuresBase}${
 }/index.ts`;
 
 /**
- * @param list
+ * get a list of features that should be used in the brace expansion
+ * @param list - the list of features
+ * @returns the brace expansion string
  */
 const getFeatureImports = (list: string[]) =>
     list
