@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.38.1](https://github.com/jxn-30/better-moodle/compare/1.38.0...1.38.1) (2024-06-23)
+
+
+### Bug Fixes
+
+* **prideLogo:** Fix 'pridification' on logos that are not transparent ([#237](https://github.com/jxn-30/better-moodle/issues/237)) ([c4154ae](https://github.com/jxn-30/better-moodle/commit/c4154ae945b0b1d9270ec5504838b1594c649679))
+
 ## [1.38.0](https://github.com/jxn-30/better-moodle/compare/1.37.1...1.38.0) (2024-06-17)
 
 
