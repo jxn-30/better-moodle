@@ -130,6 +130,64 @@ export default defineConfig({
         cssMinify: false,
         target: 'es2022',
     },
+    resolve: {
+        alias: [
+            {
+                find: /^/,
+                replacement: '',
+                /**
+                 * replaces unused i18n imports with a path to a file exporting empty translations
+                 * @param source - the path imported exactly as written in the import statement
+                 * @param importer - the path of the file importing the source
+                 * @returns undefined if the import should be resolved by the default resolver, otherwise the path to the file with empty translations
+                 */
+                customResolver: (source, importer) => {
+                    // returning undefined will fall back to default resolver
+                    if (!importer) return undefined;
+
+                    const undefinedPath = 'src/i18n/undefined.ts';
+
+                    const sourcePath = path.relative(
+                        __dirname,
+                        path.resolve(path.dirname(importer), source)
+                    );
+                    const context = path.relative(__dirname, importer);
+
+                    if (
+                        sourcePath.match(
+                            /^src\/features\/.*\/i18n(\/index(\.ts)?)?$/
+                        )
+                    ) {
+                        // Ah! We're trying to load index translations for this feature group!
+                        // hmm, is this feature group included?
+                        const featureGroup = sourcePath.split('/')[2];
+                        // if not, return the undefined path
+                        if (!allIncludedFeatureGroups.has(featureGroup)) {
+                            return undefinedPath;
+                        }
+                    }
+
+                    if (context.match(/^src\/features\/.*\/i18n\/index\.ts$/)) {
+                        // Ah! We're loading from a translation index file!
+                        // hmm, is this feature included?
+                        const featureGroup = context.split('/')[2];
+                        const feature = sourcePath.split('/')[4];
+                        // if not, return the undefined path
+                        if (
+                            !allIncludedFeatures.has(
+                                `${featureGroup}.${feature}`
+                            )
+                        ) {
+                            return undefinedPath;
+                        }
+                    }
+
+                    // nothing special about the import, return undefined to fall back to default resolver
+                    return undefined;
+                },
+            },
+        ],
+    },
     css: {
         modules: {
             scopeBehaviour: 'global',
