@@ -87,6 +87,22 @@ export default abstract class Setting<Type = unknown> {
      * @returns the form group
      */
     get formGroup() {
+        const descriptionBtn = (
+            <button
+                className="btn btn-link p-0"
+                data-container="body"
+                data-toggle="popover"
+                data-placement="right"
+                data-content="Placeholder"
+                data-trigger="focus"
+                tabIndex={0}
+            >
+                <i className="icon fa fa-question-circle text-info fa-fw"></i>
+            </button>
+        );
+
+        descriptionBtn.addEventListener('click', e => e.preventDefault());
+
         return (
             <div className="form-group row fitem">
                 <div className="col-md-5 col-form-label d-flex pb-0 pt-0">
@@ -97,17 +113,7 @@ export default abstract class Setting<Type = unknown> {
                         {this.id}
                     </label>
                     <div className="form-label-addon d-flex align-items-center align-self-start">
-                        <button
-                            className="btn btn-link p-0"
-                            data-container="body"
-                            data-toggle="popover"
-                            data-placement="right"
-                            data-content="Placeholder"
-                            data-trigger="focus"
-                            tabIndex={0}
-                        >
-                            <i className="icon fa fa-question-circle text-info fa-fw"></i>
-                        </button>
+                        {descriptionBtn}
                     </div>
                 </div>
                 <div
