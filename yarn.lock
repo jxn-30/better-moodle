@@ -2160,7 +2160,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.9":
+"fast-glob@npm:3.3.2, fast-glob@npm:^3.2.9":
   version: 3.3.2
   resolution: "fast-glob@npm:3.3.2"
   dependencies:
@@ -4985,6 +4985,7 @@ __metadata:
     eslint-plugin-jsdoc: "npm:48.3.0"
     eslint-plugin-jsx-a11y: "npm:6.9.0"
     eslint-plugin-userscripts: "npm:0.5.3"
+    fast-glob: "npm:3.3.2"
     globals: "npm:15.6.0"
     jsx-dom: "npm:8.1.4"
     prettier: "npm:3.3.2"

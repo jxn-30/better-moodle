@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import Config from './configs/_config';
 import { defineConfig } from 'vite';
 import dotenv from 'dotenv';
+import fastGlob from 'fast-glob';
 import monkey from 'vite-plugin-monkey';
 import { version } from './package.json';
 
@@ -23,60 +24,96 @@ const config = JSON.parse(
 const githubUrl = `https://github.com/${config.github.user}/${config.github.repo}`;
 const releaseDownloadUrl = `${githubUrl}/releases/latest/download`;
 
-const includedFeatures =
-    'includeFeatures' in config ? config.includeFeatures : [];
-const includedFeatureGroups = new Set<string>();
-includedFeatures.forEach(feature => {
-    if (feature.includes('.')) {
-        includedFeatureGroups.add(feature.split('.')[0]);
-    } else {
-        includedFeatureGroups.add(feature);
-    }
-});
-const excludedFeatures =
-    'excludeFeatures' in config ?
-        config.excludeFeatures.filter(f => f !== 'general') // disallow excluding the general group
-    :   [];
-const excludedFeatureGroups = excludedFeatures.filter(f => !f.includes('.'));
-
 const featuresBase = '/src/features/';
-const featureGroupsImportGlob = `${featuresBase}${
-    includedFeatureGroups.size ?
-        `@(general|${Array.from(includedFeatureGroups).join('|')})`
-    : excludedFeatureGroups.length ? `!(${excludedFeatureGroups.join('|')})`
-    : '*'
-}/index.ts`;
+const allFeatureGroups = fastGlob
+    .sync(`.${featuresBase}*/index.ts`)
+    .map(f => f.replace(`.${featuresBase}`, '').replace('/index.ts', ''));
+const allFeatures = fastGlob
+    .sync(`.${featuresBase}*/!(index).ts`)
+    .map(f =>
+        f.replace(`.${featuresBase}`, '').replace('.ts', '').replace('/', '.')
+    );
 
-/**
- * get a list of features that should be used in the brace expansion
- * @param list - the list of features
- * @returns the brace expansion string
- */
-const getFeatureImports = (list: string[]) =>
-    list
-        .map(feature =>
-            feature.match(/\./) ?
-                feature.replace('.', '/')
-            :   `${feature}/!(index)`
-        )
-        .join(',');
-const featuresImportGlob = `${featuresBase}${
-    // multiple features included => use brace expansion
-    includedFeatures.length > 1 ? `{${getFeatureImports(includedFeatures)}}`
-        // only a single feature included => brace expansion would not work at all
-    : includedFeatures.length === 1 ? getFeatureImports(includedFeatures)
-        // TODO: how can we create a glob that works for excluding specific features instead of only feature groups?
-        // this glob is 100% wrong atm
-        // maybe we have to read all files and then create a glob from the non-excluded?
-    : excludedFeatures.length ? `!(${getFeatureImports(excludedFeatures)})`
-    : '*/!(index)'
-}.ts`;
+const allIncludedFeatureGroups = new Set<string>(['general']);
+const allFullyIncludedFeatureGroups = new Set<string>();
+const allIncludedFeatures = new Set<string>();
+
+const includedFeaturesByConfig =
+    'includeFeatures' in config ? config.includeFeatures : [];
+const excludedFeaturesByConfig =
+    'excludeFeatures' in config ? config.excludeFeatures : [];
+
+if (includedFeaturesByConfig.length) {
+    // add the features that are included by config
+    includedFeaturesByConfig.forEach(feature => {
+        if (feature.includes('.')) {
+            // this is a feature, not a group
+            allIncludedFeatures.add(feature);
+            const group = feature.split('.')[0];
+            allIncludedFeatureGroups.add(group);
+        } else {
+            // this is a group
+            allIncludedFeatureGroups.add(feature);
+            allFullyIncludedFeatureGroups.add(feature);
+        }
+    });
+} else {
+    // include all features
+    allFeatureGroups.forEach(group => {
+        allIncludedFeatureGroups.add(group);
+        allFullyIncludedFeatureGroups.add(group);
+    });
+    allFeatures.forEach(feature => allIncludedFeatures.add(feature));
+
+    // now exclude those excluded by config
+    excludedFeaturesByConfig.forEach(feature => {
+        // general group cannot be excluded
+        if (feature === 'general') return;
+        if (feature.includes('.')) {
+            // this is a feature, not a group
+            allIncludedFeatures.delete(feature);
+            const group = feature.split('.')[0];
+            allFullyIncludedFeatureGroups.delete(group);
+        } else {
+            // this is a group
+            allFullyIncludedFeatureGroups.delete(feature);
+            allIncludedFeatureGroups.delete(feature);
+            allIncludedFeatures.forEach(f => {
+                if (f.startsWith(`${feature}.`)) allIncludedFeatures.delete(f);
+            });
+        }
+    });
+}
+
+// brace expansion wouldn't work with a single element only
+if (allIncludedFeatureGroups.size === 1) {
+    allIncludedFeatureGroups.add(crypto.randomUUID());
+}
+
+const featureGroupsGlob = `${featuresBase}{${Array.from(allIncludedFeatureGroups.values()).join(',')}}/index.ts`;
+
+// this is a wörkaround as Set.prototype.union does not exist in Node < 22.0.0
+const includedFeaturesAndGroups = new Set<string>(
+    allFullyIncludedFeatureGroups
+);
+allIncludedFeatures.forEach(f => includedFeaturesAndGroups.add(f));
+
+// brace expansion wouldn't work with no elements or a single element only
+while (allIncludedFeatures.size <= 1) {
+    allIncludedFeatures.add(crypto.randomUUID());
+}
+
+const featureGlob = `${featuresBase}{${Array.from(
+    includedFeaturesAndGroups.values()
+)
+    .map(f => (f.includes('.') ? f.replace('.', '/') : `${f}/!(index)`))
+    .join(',')}}.ts`;
 
 // @ts-expect-error because process.env may also include undefined values
 dotenv.populate(process.env, {
     VITE_FEATURES_BASE: featuresBase,
-    VITE_INCLUDE_FEATURE_GROUPS_GLOB: featureGroupsImportGlob,
-    VITE_INCLUDE_FEATURES_GLOB: featuresImportGlob,
+    VITE_INCLUDE_FEATURE_GROUPS_GLOB: featureGroupsGlob,
+    VITE_INCLUDE_FEATURES_GLOB: featureGlob,
 });
 
 // https://vitejs.dev/config/
