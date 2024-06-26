@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import globalStyle from '../style/global.module.scss';
 import type { JSX } from 'jsx-dom';
-import { githubPath, PREFIX } from './helpers';
+import { githubPath, htmlToElements, mdToHtml, PREFIX } from './helpers';
 
 type IntrinsicElements = JSX.IntrinsicElements;
 type Anchor = IntrinsicElements['a'];
@@ -108,6 +108,7 @@ export const Switch = ({ id, value }: SwitchProps): Switch => {
 // region FieldSet
 interface FieldSetProps extends HTMLFieldSet {
     title: string;
+    description?: string;
     collapsed?: boolean;
 }
 
@@ -121,6 +122,7 @@ interface FieldSet extends HTMLFieldSetElement {
  * Creates a Fieldset (a collapsible container)
  * @param attributes - the fieldset attributes
  * @param attributes.title - title of the fieldset shown in a heading element
+ * @param attributes.description - optional description shown in a paragraph as first child
  * @param attributes.id - the id of the fieldset
  * @param attributes.collapsed - whether the fieldset is collapsed by default
  * @param attributes.children - any children of the fieldset
@@ -128,6 +130,7 @@ interface FieldSet extends HTMLFieldSetElement {
  */
 export const FieldSet = ({
     title,
+    description = '',
     id = crypto.randomUUID(),
     collapsed = true,
     children = document.createDocumentFragment().children, // this is a funny way to get an empty HTMLCollection
@@ -139,6 +142,9 @@ export const FieldSet = ({
             })}
             id={PREFIX(id)}
         >
+            {description && (
+                <p class="p-12">{htmlToElements(mdToHtml(description))}</p>
+            )}
             {children}
         </div>
     );

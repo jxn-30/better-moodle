@@ -1,6 +1,10 @@
 import Feature from './Feature';
 import { FieldSet } from './Components';
 import Setting from './Setting';
+import { Translation } from '../i18n/i18n-types';
+import { LL } from '../i18n/i18n';
+
+export type FeatureGroupID = keyof Translation['features'];
 
 type FeatureGroupMethods = Partial<
     Record<'init' | 'onload' | 'onunload', (this: FeatureGroup) => void>
@@ -10,7 +14,9 @@ type FeatureGroupMethods = Partial<
  * A class that represents a group of features
  * cannot be instantiated directly but using the register method will return an instantiable version of this class
  */
-export default abstract class FeatureGroup {
+export default abstract class FeatureGroup<
+    ID extends FeatureGroupID = FeatureGroupID,
+> {
     /**
      * This registering workaround is necessary so that we can have readonly private id that is automatically generated from the filepath
      * @param args - the methods that are to be implemented
@@ -18,7 +24,7 @@ export default abstract class FeatureGroup {
      * @param args.features - a set of feature-IDs this group contains in order of appearance in settings
      * @returns a class that can be instantiated
      */
-    static register({
+    static register<ID extends FeatureGroupID = FeatureGroupID>({
         settings = new Set<Setting>(),
         features = new Set<string>(),
         ...methods
@@ -29,13 +35,13 @@ export default abstract class FeatureGroup {
         /**
          * The instantiable version of the FeatureGroup class
          */
-        return class FeatureGroup extends this {
+        return class FeatureGroup extends this<ID> {
             /**
              * The constructor for the FeatureGroup class
              * methods are not passed via constructor but via the register method
              * @param id - the ID of this feature group
              */
-            constructor(id: string) {
+            constructor(id: ID) {
                 super(id, settings ?? new Set<Setting>(), methods);
             }
 
@@ -57,7 +63,7 @@ export default abstract class FeatureGroup {
         };
     }
 
-    readonly #id: string;
+    readonly #id: ID;
     readonly #settings: Set<Setting>;
     readonly #init: FeatureGroupMethods['init'];
     readonly #onload: FeatureGroupMethods['onload'];
@@ -77,7 +83,7 @@ export default abstract class FeatureGroup {
      * @param methods - the methods that are to be implemented (init, onload, onunload)
      */
     protected constructor(
-        id: string,
+        id: ID,
         settings: Set<Setting>,
         methods: FeatureGroupMethods
     ) {
@@ -89,7 +95,8 @@ export default abstract class FeatureGroup {
 
         this.#FieldSet = FieldSet({
             id: `settings-fieldset-${this.id}`,
-            title: `Krup: ${this.id}`,
+            title: this.title,
+            description: this.description,
             collapsed: id !== 'general',
         });
         this.#settings.forEach(setting => {
@@ -102,7 +109,7 @@ export default abstract class FeatureGroup {
      * The ID of this feature group
      * @returns the ID of this feature group
      */
-    get id() {
+    get id(): ID {
         return this.#id;
     }
 
@@ -112,6 +119,29 @@ export default abstract class FeatureGroup {
      */
     get FieldSet() {
         return this.#FieldSet;
+    }
+
+    /**
+     *
+     */
+    get Translation() {
+        return LL.features[this.id];
+    }
+
+    /**
+     *
+     */
+    get title() {
+        return this.Translation.name();
+    }
+
+    /**
+     *
+     */
+    get description() {
+        return 'description' in this.Translation ?
+                this.Translation.description()
+            :   '';
     }
 
     /**

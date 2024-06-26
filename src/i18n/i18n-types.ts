@@ -65,97 +65,99 @@ type RootTranslation = {
          */
         name: string;
     };
-    darkmode: {
-        /**
-         * D​a​r​k​m​o​d​e
-         */
-        name: string;
-        /**
-         * D​e​r​ ​i​n​ ​B​e​t​t​e​r​-​M​o​o​d​l​e​ ​i​n​t​e​g​r​i​e​r​t​e​ ​D​a​r​k​m​o​d​e​ ​w​i​r​d​ ​d​u​r​c​h​ ​[​D​a​r​k​ ​R​e​a​d​e​r​]​(​h​t​t​p​s​:​/​/​d​a​r​k​r​e​a​d​e​r​.​o​r​g​/​)​ ​g​e​n​e​r​i​e​r​t​.​ ​�​�
-         */
-        description: string;
-    };
-    general: {
-        /**
-         * A​l​l​g​e​m​e​i​n​e​ ​E​i​n​s​t​e​l​l​u​n​g​e​n
-         */
-        name: string;
-        features: {
-            fullWidth: {
-                settings: {
-                    enabled: {
-                        /**
-                         * V​o​l​l​e​ ​B​r​e​i​t​e
-                         */
-                        name: string;
-                        /**
-                         * E​n​t​f​e​r​n​t​ ​d​e​n​ ​s​e​l​t​s​a​m​e​n​ ​w​e​i​ß​e​n​ ​R​a​n​d​ ​u​n​d​ ​s​o​r​g​t​ ​d​a​f​ü​r​,​ ​d​a​s​s​ ​d​i​e​ ​S​e​i​t​e​n​ ​d​i​e​ ​v​o​l​l​e​ ​B​r​e​i​t​e​ ​n​u​t​z​e​n​.
-                         */
-                        description: string;
+    features: {
+        darkmode: {
+            /**
+             * D​a​r​k​m​o​d​e
+             */
+            name: string;
+            /**
+             * D​e​r​ ​i​n​ ​B​e​t​t​e​r​-​M​o​o​d​l​e​ ​i​n​t​e​g​r​i​e​r​t​e​ ​D​a​r​k​m​o​d​e​ ​w​i​r​d​ ​d​u​r​c​h​ ​[​D​a​r​k​ ​R​e​a​d​e​r​]​(​h​t​t​p​s​:​/​/​d​a​r​k​r​e​a​d​e​r​.​o​r​g​/​)​ ​g​e​n​e​r​i​e​r​t​.​ ​�​�
+             */
+            description: string;
+        };
+        general: {
+            /**
+             * A​l​l​g​e​m​e​i​n​e​ ​E​i​n​s​t​e​l​l​u​n​g​e​n
+             */
+            name: string;
+            features: {
+                fullWidth: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * V​o​l​l​e​ ​B​r​e​i​t​e
+                             */
+                            name: string;
+                            /**
+                             * E​n​t​f​e​r​n​t​ ​d​e​n​ ​s​e​l​t​s​a​m​e​n​ ​w​e​i​ß​e​n​ ​R​a​n​d​ ​u​n​d​ ​s​o​r​g​t​ ​d​a​f​ü​r​,​ ​d​a​s​s​ ​d​i​e​ ​S​e​i​t​e​n​ ​d​i​e​ ​v​o​l​l​e​ ​B​r​e​i​t​e​ ​n​u​t​z​e​n​.
+                             */
+                            description: string;
+                        };
                     };
                 };
-            };
-            externalLinks: {
-                settings: {
-                    enabled: {
-                        /**
-                         * E​x​t​e​r​n​e​ ​L​i​n​k​s
-                         */
-                        name: string;
-                        /**
-                         * S​o​r​g​t​ ​d​a​f​ü​r​,​ ​d​a​s​s​ ​e​x​t​e​r​n​e​ ​L​i​n​k​s​ ​i​m​m​e​r​ ​a​u​t​o​m​a​t​i​s​c​h​ ​i​n​ ​e​i​n​e​m​ ​n​e​u​e​n​ ​T​a​b​ ​g​e​ö​f​f​n​e​t​ ​w​e​r​d​e​n​.
-                         */
-                        description: string;
+                externalLinks: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * E​x​t​e​r​n​e​ ​L​i​n​k​s
+                             */
+                            name: string;
+                            /**
+                             * S​o​r​g​t​ ​d​a​f​ü​r​,​ ​d​a​s​s​ ​e​x​t​e​r​n​e​ ​L​i​n​k​s​ ​i​m​m​e​r​ ​a​u​t​o​m​a​t​i​s​c​h​ ​i​n​ ​e​i​n​e​m​ ​n​e​u​e​n​ ​T​a​b​ ​g​e​ö​f​f​n​e​t​ ​w​e​r​d​e​n​.
+                             */
+                            description: string;
+                        };
                     };
                 };
-            };
-            truncatedTexts: {
-                settings: {
-                    enabled: {
-                        /**
-                         * A​b​g​e​s​c​h​n​i​t​t​e​n​e​ ​T​e​x​t​e
-                         */
-                        name: string;
-                        /**
-                         * F​ü​g​t​ ​e​i​n​ ​T​i​t​l​e​-​A​t​t​r​i​b​u​t​ ​b​e​i​ ​p​o​t​e​n​t​i​e​l​l​ ​a​b​g​e​s​c​h​n​i​t​t​e​n​e​n​ ​T​e​x​t​e​n​ ​h​i​n​z​u​,​ ​d​a​m​i​t​ ​m​a​n​ ​p​e​r​ ​M​a​u​s​-​H​o​v​e​r​ ​d​e​n​ ​v​o​l​l​e​n​ ​T​e​x​t​ ​l​e​s​e​n​ ​k​a​n​n​.
-                         */
-                        description: string;
+                truncatedTexts: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * A​b​g​e​s​c​h​n​i​t​t​e​n​e​ ​T​e​x​t​e
+                             */
+                            name: string;
+                            /**
+                             * F​ü​g​t​ ​e​i​n​ ​T​i​t​l​e​-​A​t​t​r​i​b​u​t​ ​b​e​i​ ​p​o​t​e​n​t​i​e​l​l​ ​a​b​g​e​s​c​h​n​i​t​t​e​n​e​n​ ​T​e​x​t​e​n​ ​h​i​n​z​u​,​ ​d​a​m​i​t​ ​m​a​n​ ​p​e​r​ ​M​a​u​s​-​H​o​v​e​r​ ​d​e​n​ ​v​o​l​l​e​n​ ​T​e​x​t​ ​l​e​s​e​n​ ​k​a​n​n​.
+                             */
+                            description: string;
+                        };
                     };
                 };
             };
         };
-    };
-    myCourses: {
-        /**
-         * M​e​i​n​e​ ​K​u​r​s​e
-         */
-        name: string;
-        features: {
-            fullWidth: {
-                settings: {
-                    enabled: {
-                        /**
-                         * D​r​o​p​d​o​w​n​ ​i​n​ ​d​e​r​ ​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e
-                         */
-                        name: string;
-                        /**
-                         * F​u​n​k​t​i​o​n​i​e​r​t​ ​d​e​n​ ​"​M​e​i​n​e​ ​K​u​r​s​e​"​-​L​i​n​k​ ​i​n​ ​e​i​n​e​ ​D​r​o​p​d​o​w​n​ ​u​m​,​ ​u​m​ ​e​i​n​e​n​ ​s​c​h​n​e​l​l​e​n​ ​D​i​r​e​k​t​z​u​g​r​i​f​f​ ​a​u​f​ ​a​l​l​e​ ​e​i​g​e​n​e​n​ ​K​u​r​s​e​ ​z​u​ ​e​r​m​ö​g​l​i​c​h​e​n​.
-                         */
-                        description: string;
+        myCourses: {
+            /**
+             * M​e​i​n​e​ ​K​u​r​s​e
+             */
+            name: string;
+            features: {
+                fullWidth: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * D​r​o​p​d​o​w​n​ ​i​n​ ​d​e​r​ ​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e
+                             */
+                            name: string;
+                            /**
+                             * F​u​n​k​t​i​o​n​i​e​r​t​ ​d​e​n​ ​"​M​e​i​n​e​ ​K​u​r​s​e​"​-​L​i​n​k​ ​i​n​ ​e​i​n​e​ ​D​r​o​p​d​o​w​n​ ​u​m​,​ ​u​m​ ​e​i​n​e​n​ ​s​c​h​n​e​l​l​e​n​ ​D​i​r​e​k​t​z​u​g​r​i​f​f​ ​a​u​f​ ​a​l​l​e​ ​e​i​g​e​n​e​n​ ​K​u​r​s​e​ ​z​u​ ​e​r​m​ö​g​l​i​c​h​e​n​.
+                             */
+                            description: string;
+                        };
                     };
                 };
-            };
-            externalLinks: {
-                settings: {
-                    amount: {
-                        /**
-                         * K​a​c​h​e​l​n​ ​p​r​o​ ​Z​e​i​l​e
-                         */
-                        name: string;
-                        /**
-                         * Z​a​h​l​ ​d​e​r​ ​K​a​c​h​e​l​n​ ​p​r​o​ ​Z​e​i​l​e​ ​a​u​f​ ​d​e​r​ ​"​M​e​i​n​e​ ​K​u​r​s​e​"​-​S​e​i​t​e​,​ ​w​e​n​n​ ​d​i​e​ ​A​n​s​i​c​h​t​ ​a​u​f​ ​"​K​a​c​h​e​l​n​"​ ​g​e​s​t​e​l​l​t​ ​i​s​t​.​ ​(​I​s​t​ ​b​i​s​ ​z​u​ ​e​i​n​e​r​ ​F​e​n​s​t​e​r​-​/​B​i​l​d​s​c​h​i​r​m​b​r​e​i​t​e​ ​b​i​s​ ​8​4​0​p​x​ ​a​k​t​i​v​)
-                         */
-                        description: string;
+                externalLinks: {
+                    settings: {
+                        amount: {
+                            /**
+                             * K​a​c​h​e​l​n​ ​p​r​o​ ​Z​e​i​l​e
+                             */
+                            name: string;
+                            /**
+                             * Z​a​h​l​ ​d​e​r​ ​K​a​c​h​e​l​n​ ​p​r​o​ ​Z​e​i​l​e​ ​a​u​f​ ​d​e​r​ ​"​M​e​i​n​e​ ​K​u​r​s​e​"​-​S​e​i​t​e​,​ ​w​e​n​n​ ​d​i​e​ ​A​n​s​i​c​h​t​ ​a​u​f​ ​"​K​a​c​h​e​l​n​"​ ​g​e​s​t​e​l​l​t​ ​i​s​t​.​ ​(​I​s​t​ ​b​i​s​ ​z​u​ ​e​i​n​e​r​ ​F​e​n​s​t​e​r​-​/​B​i​l​d​s​c​h​i​r​m​b​r​e​i​t​e​ ​b​i​s​ ​8​4​0​p​x​ ​a​k​t​i​v​)
+                             */
+                            description: string;
+                        };
                     };
                 };
             };
@@ -214,97 +216,99 @@ export type TranslationFunctions = {
          */
         name: () => LocalizedString;
     };
-    darkmode: {
-        /**
-         * Darkmode
-         */
-        name: () => LocalizedString;
-        /**
-         * Der in Better-Moodle integrierte Darkmode wird durch [Dark Reader](https://darkreader.org/) generiert. 😊
-         */
-        description: () => LocalizedString;
-    };
-    general: {
-        /**
-         * Allgemeine Einstellungen
-         */
-        name: () => LocalizedString;
-        features: {
-            fullWidth: {
-                settings: {
-                    enabled: {
-                        /**
-                         * Volle Breite
-                         */
-                        name: () => LocalizedString;
-                        /**
-                         * Entfernt den seltsamen weißen Rand und sorgt dafür, dass die Seiten die volle Breite nutzen.
-                         */
-                        description: () => LocalizedString;
+    features: {
+        darkmode: {
+            /**
+             * Darkmode
+             */
+            name: () => LocalizedString;
+            /**
+             * Der in Better-Moodle integrierte Darkmode wird durch [Dark Reader](https://darkreader.org/) generiert. 😊
+             */
+            description: () => LocalizedString;
+        };
+        general: {
+            /**
+             * Allgemeine Einstellungen
+             */
+            name: () => LocalizedString;
+            features: {
+                fullWidth: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * Volle Breite
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Entfernt den seltsamen weißen Rand und sorgt dafür, dass die Seiten die volle Breite nutzen.
+                             */
+                            description: () => LocalizedString;
+                        };
                     };
                 };
-            };
-            externalLinks: {
-                settings: {
-                    enabled: {
-                        /**
-                         * Externe Links
-                         */
-                        name: () => LocalizedString;
-                        /**
-                         * Sorgt dafür, dass externe Links immer automatisch in einem neuen Tab geöffnet werden.
-                         */
-                        description: () => LocalizedString;
+                externalLinks: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * Externe Links
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Sorgt dafür, dass externe Links immer automatisch in einem neuen Tab geöffnet werden.
+                             */
+                            description: () => LocalizedString;
+                        };
                     };
                 };
-            };
-            truncatedTexts: {
-                settings: {
-                    enabled: {
-                        /**
-                         * Abgeschnittene Texte
-                         */
-                        name: () => LocalizedString;
-                        /**
-                         * Fügt ein Title-Attribut bei potentiell abgeschnittenen Texten hinzu, damit man per Maus-Hover den vollen Text lesen kann.
-                         */
-                        description: () => LocalizedString;
+                truncatedTexts: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * Abgeschnittene Texte
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Fügt ein Title-Attribut bei potentiell abgeschnittenen Texten hinzu, damit man per Maus-Hover den vollen Text lesen kann.
+                             */
+                            description: () => LocalizedString;
+                        };
                     };
                 };
             };
         };
-    };
-    myCourses: {
-        /**
-         * Meine Kurse
-         */
-        name: () => LocalizedString;
-        features: {
-            fullWidth: {
-                settings: {
-                    enabled: {
-                        /**
-                         * Dropdown in der Navigationsleiste
-                         */
-                        name: () => LocalizedString;
-                        /**
-                         * Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.
-                         */
-                        description: () => LocalizedString;
+        myCourses: {
+            /**
+             * Meine Kurse
+             */
+            name: () => LocalizedString;
+            features: {
+                fullWidth: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * Dropdown in der Navigationsleiste
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.
+                             */
+                            description: () => LocalizedString;
+                        };
                     };
                 };
-            };
-            externalLinks: {
-                settings: {
-                    amount: {
-                        /**
-                         * Kacheln pro Zeile
-                         */
-                        name: () => LocalizedString;
-                        /**
-                         * Zahl der Kacheln pro Zeile auf der "Meine Kurse"-Seite, wenn die Ansicht auf "Kacheln" gestellt ist. (Ist bis zu einer Fenster-/Bildschirmbreite bis 840px aktiv)
-                         */
-                        description: () => LocalizedString;
+                externalLinks: {
+                    settings: {
+                        amount: {
+                            /**
+                             * Kacheln pro Zeile
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Zahl der Kacheln pro Zeile auf der "Meine Kurse"-Seite, wenn die Ansicht auf "Kacheln" gestellt ist. (Ist bis zu einer Fenster-/Bildschirmbreite bis 840px aktiv)
+                             */
+                            description: () => LocalizedString;
+                        };
                     };
                 };
             };

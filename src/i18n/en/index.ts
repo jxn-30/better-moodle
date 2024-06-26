@@ -10,7 +10,9 @@ export default {
         flag: '🇬🇧',
         name: 'English',
     },
-    darkmode,
-    general,
-    myCourses,
+    features: {
+        darkmode,
+        general,
+        myCourses,
+    },
 } satisfies Translation;

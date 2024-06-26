@@ -21,3 +21,12 @@ export const languages = new Map<Locales, Translation['language']>();
 for (const locale of locales) {
     languages.set(locale, loadedLocales[locale].language);
 }
+
+/**
+ * Checks if a given id is the id of a feature group
+ * @param id - the id to check
+ * @returns true if the id is the id of a feature group otherwise false
+ */
+export const isFeatureGroup = (
+    id: string
+): id is keyof Translation['features'] => id in LL.features;

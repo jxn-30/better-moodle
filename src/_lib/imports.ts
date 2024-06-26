@@ -1,5 +1,6 @@
 import Feature from './Feature';
 import FeatureGroup from './FeatureGroup';
+import { isFeatureGroup } from '../i18n/i18n';
 
 // outsourcing this into an extra file has been necessary
 // as vite otherwise puts the glob imports above the definition of FeatureGroup
@@ -43,6 +44,7 @@ const featureGroups = new Map<string, FeatureGroup>();
 
 for (const [id, FeatureGroup] of Object.entries(featureGroupImports)) {
     const groupId = id.split('/')[3];
+    if (!isFeatureGroup(groupId)) continue;
     const featureGroup = new FeatureGroup(groupId);
     featureGroup.init();
     featureGroup.loadFeatures(id => initFeature(featureGroup, id));

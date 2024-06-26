@@ -106,3 +106,9 @@ export const mdToHtml = (md: string, headingStart = 1) => {
 
     return html;
 };
+
+/**
+ * @param html
+ */
+export const htmlToElements = (html: string) =>
+    new DOMParser().parseFromString(html, 'text/html').body.children;
