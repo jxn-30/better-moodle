@@ -37,8 +37,6 @@ export default abstract class Feature<
         settings,
         ...methods
     }: { settings?: Set<Setting<Group, ID>> } & FeatureMethods<Group, ID>) {
-        console.log(settings, methods);
-
         /**
          * The instantiable version of the Feature class
          */

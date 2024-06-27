@@ -7,10 +7,4 @@ settings.add(new BooleanSetting('enabled', true));
 
 export default Feature.register({
     settings,
-    /**
-     *  TODO
-     */
-    init(this) {
-        console.log('init', this.id);
-    },
 });

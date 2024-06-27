@@ -75,12 +75,86 @@ type RootTranslation = {
              * D​e​r​ ​i​n​ ​B​e​t​t​e​r​-​M​o​o​d​l​e​ ​i​n​t​e​g​r​i​e​r​t​e​ ​D​a​r​k​m​o​d​e​ ​w​i​r​d​ ​d​u​r​c​h​ ​[​D​a​r​k​ ​R​e​a​d​e​r​]​(​h​t​t​p​s​:​/​/​d​a​r​k​r​e​a​d​e​r​.​o​r​g​/​)​ ​g​e​n​e​r​i​e​r​t​.​ ​�​�
              */
             description: string;
+            settings: {
+                mode: {
+                    /**
+                     * M​o​d​u​s
+                     */
+                    name: string;
+                    /**
+                     * W​ä​h​l​e​ ​d​e​n​ ​M​o​d​u​s​ ​d​e​s​ ​D​a​r​k​m​o​d​e​s​ ​(​a​n​,​ ​a​u​s​,​ ​a​u​t​o​m​a​t​i​s​c​h​)
+                     */
+                    description: string;
+                };
+                brightness: {
+                    /**
+                     * H​e​l​l​i​g​k​e​i​t
+                     */
+                    name: string;
+                    /**
+                     * S​t​e​l​l​e​ ​d​i​e​ ​H​e​l​l​i​g​k​e​i​t​ ​d​e​s​ ​D​a​r​k​m​o​d​e​s​ ​e​i​n​.
+                     */
+                    description: string;
+                };
+                contrast: {
+                    /**
+                     * K​o​n​t​r​a​s​t
+                     */
+                    name: string;
+                    /**
+                     * S​t​e​l​l​e​ ​d​e​n​ ​K​o​n​t​r​a​s​t​ ​d​e​s​ ​D​a​r​k​m​o​d​e​s​ ​e​i​n​.
+                     */
+                    description: string;
+                };
+                grayscale: {
+                    /**
+                     * G​r​a​u​s​t​u​f​e​n
+                     */
+                    name: string;
+                    /**
+                     * S​t​e​l​l​e​ ​e​i​n​,​ ​w​i​e​ ​w​e​n​i​g​e​ ​F​a​r​b​e​n​ ​d​u​ ​i​m​ ​M​o​o​d​l​e​ ​h​a​b​e​n​ ​m​ö​c​h​t​e​s​t​.
+                     */
+                    description: string;
+                };
+                sepia: {
+                    /**
+                     * S​e​p​i​a
+                     */
+                    name: string;
+                    /**
+                     * S​t​e​l​l​e​ ​e​i​n​e​n​ ​S​e​p​i​a​-​W​e​r​t​ ​f​ü​r​ ​d​e​n​ ​D​a​r​k​m​o​d​e​s​ ​e​i​n​.
+                     */
+                    description: string;
+                };
+                preview: {
+                    /**
+                     * V​o​r​s​c​h​a​u
+                     */
+                    name: string;
+                    /**
+                     * T​e​s​t​e​ ​h​i​e​r​ ​d​i​e​ ​a​k​t​u​e​l​l​e​n​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​d​e​s​ ​D​a​r​k​m​o​d​e​s​ ​b​e​i​ ​g​e​s​c​h​l​o​s​s​e​n​e​n​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​a​u​s​.​ ​V​o​r​s​i​c​h​t​:​ ​B​e​i​m​ ​n​ä​c​h​s​t​e​n​ ​N​e​u​l​a​d​e​n​ ​o​d​e​r​ ​W​e​c​h​s​e​l​n​ ​d​e​r​ ​S​e​i​t​e​ ​s​i​n​d​ ​d​i​e​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​z​u​r​ü​c​k​g​e​s​e​t​z​t​.
+                     */
+                    description: string;
+                };
+            };
         };
         general: {
             /**
              * A​l​l​g​e​m​e​i​n​e​ ​E​i​n​s​t​e​l​l​u​n​g​e​n
              */
             name: string;
+            settings: {
+                updateNotification: {
+                    /**
+                     * B​e​n​a​c​h​r​i​c​h​t​i​g​u​n​g​ ​b​e​i​ ​B​e​t​t​e​r​-​M​o​o​d​l​e​ ​U​p​d​a​t​e​s
+                     */
+                    name: string;
+                    /**
+                     * Z​e​i​g​t​ ​e​i​n​e​n​ ​k​l​e​i​n​e​n​ ​r​o​t​e​n​ ​P​u​n​k​t​ ​b​e​i​ ​d​e​n​ ​Z​a​h​n​r​ä​d​e​r​n​ ​i​n​ ​d​e​r​ ​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e​ ​a​n​,​ ​w​e​n​n​ ​e​s​ ​e​i​n​ ​U​p​d​a​t​e​ ​f​ü​r​ ​B​e​t​t​e​r​-​M​o​o​d​l​e​ ​g​i​b​t​.
+                     */
+                    description: string;
+                };
+            };
             features: {
                 fullWidth: {
                     settings: {
@@ -226,12 +300,86 @@ export type TranslationFunctions = {
              * Der in Better-Moodle integrierte Darkmode wird durch [Dark Reader](https://darkreader.org/) generiert. 😊
              */
             description: () => LocalizedString;
+            settings: {
+                mode: {
+                    /**
+                     * Modus
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Wähle den Modus des Darkmodes (an, aus, automatisch)
+                     */
+                    description: () => LocalizedString;
+                };
+                brightness: {
+                    /**
+                     * Helligkeit
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Stelle die Helligkeit des Darkmodes ein.
+                     */
+                    description: () => LocalizedString;
+                };
+                contrast: {
+                    /**
+                     * Kontrast
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Stelle den Kontrast des Darkmodes ein.
+                     */
+                    description: () => LocalizedString;
+                };
+                grayscale: {
+                    /**
+                     * Graustufen
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Stelle ein, wie wenige Farben du im Moodle haben möchtest.
+                     */
+                    description: () => LocalizedString;
+                };
+                sepia: {
+                    /**
+                     * Sepia
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Stelle einen Sepia-Wert für den Darkmodes ein.
+                     */
+                    description: () => LocalizedString;
+                };
+                preview: {
+                    /**
+                     * Vorschau
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Teste hier die aktuellen Einstellungen des Darkmodes bei geschlossenen Einstellungen aus. Vorsicht: Beim nächsten Neuladen oder Wechseln der Seite sind die Einstellungen zurückgesetzt.
+                     */
+                    description: () => LocalizedString;
+                };
+            };
         };
         general: {
             /**
              * Allgemeine Einstellungen
              */
             name: () => LocalizedString;
+            settings: {
+                updateNotification: {
+                    /**
+                     * Benachrichtigung bei Better-Moodle Updates
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für Better-Moodle gibt.
+                     */
+                    description: () => LocalizedString;
+                };
+            };
             features: {
                 fullWidth: {
                     settings: {

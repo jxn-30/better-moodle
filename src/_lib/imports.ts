@@ -1,6 +1,6 @@
 import Feature from './Feature';
-import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
 import { isFeatureGroup } from '../i18n/i18n';
+import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
 
 // outsourcing this into an extra file has been necessary
 // as vite otherwise puts the glob imports above the definition of FeatureGroup
