@@ -32,7 +32,9 @@ const allFeatures = fastGlob
     .sync(`.${featuresBase}*/!(index).ts`)
     .map(f =>
         f.replace(`.${featuresBase}`, '').replace('.ts', '').replace('/', '.')
-    );
+    )
+    // anything with more than one dot is not a feature but an extra file
+    .filter(f => f.match(/^[^.]+\.[^.]+$/));
 
 const allIncludedFeatureGroups = new Set<string>(['general']);
 const allFullyIncludedFeatureGroups = new Set<string>();
@@ -92,20 +94,12 @@ if (allIncludedFeatureGroups.size === 1) {
 
 const featureGroupsGlob = `${featuresBase}{${Array.from(allIncludedFeatureGroups.values()).join(',')}}/index.ts`;
 
-// this is a wörkaround as Set.prototype.union does not exist in Node < 22.0.0
-const includedFeaturesAndGroups = new Set<string>(
-    allFullyIncludedFeatureGroups
-);
-allIncludedFeatures.forEach(f => includedFeaturesAndGroups.add(f));
-
 // brace expansion wouldn't work with no elements or a single element only
 while (allIncludedFeatures.size <= 1) {
     allIncludedFeatures.add(crypto.randomUUID());
 }
 
-const featureGlob = `${featuresBase}{${Array.from(
-    includedFeaturesAndGroups.values()
-)
+const featureGlob = `${featuresBase}{${Array.from(allIncludedFeatures.values())
     .map(f => (f.includes('.') ? f.replace('.', '/') : `${f}/!(index)`))
     .join(',')}}.ts`;
 
@@ -204,7 +198,10 @@ export default defineConfig({
                 // extract feature name from filename
                 const feat = path
                     .relative(__dirname, filename)
-                    .replace(/^src\/style\/|\.module\.(scss|sass)$/g, '') // extract feature name
+                    .replace(
+                        /^src\/(style|features)\/|\.module\.(scss|sass)$/g,
+                        ''
+                    ) // extract feature name
                     .replace(/[^a-zA-Z0-9_-]/, '-') // replace invalid characters with hyphen
                     .replace(/-+/g, '-'); // reduce multiple hyphens to a single one
 

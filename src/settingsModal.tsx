@@ -198,8 +198,8 @@ const settingsModal = new Modal({
         </div>
     ),
 })
-    .onShown(() => console.log('Modal shown!'))
-    .onCancel(() => console.log('Modal canceled!'))
+    .onCancel(() => alert('Cancelling is not yet implemented 😅'))
+    .onSave(() => alert('Saving is not yet implemented 😅'))
     .setTrigger(SettingsBtn);
 
 // append the link to moodle settings to the modal header

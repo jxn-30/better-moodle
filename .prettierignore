@@ -3,7 +3,8 @@ configs/_schema.json
 .yarn/
 node_modules/
 dist/
-src/style/*.d.ts
+src/style/**/*.d.ts
+src/features/**/*.scss.d.ts
 
 CHANGELOG.md
 
