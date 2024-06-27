@@ -1,49 +1,71 @@
-import FeatureGroup from './FeatureGroup';
 import Setting from './Setting';
+import FeatureGroup, {
+    FeatureGroupID,
+    FeatureGroupTranslations,
+} from './FeatureGroup';
 
-type FeatureMethods = Partial<
-    Record<'init' | 'onload' | 'onunload', (this: Feature) => void>
+export type FeatureTranslations<
+    Group extends FeatureGroupID,
+    T extends FeatureGroupTranslations<Group> = FeatureGroupTranslations<Group>,
+> = 'features' extends keyof T ? T['features'] : Record<string, never>;
+
+export type FeatureID<Group extends FeatureGroupID> =
+    keyof FeatureTranslations<Group>;
+
+type FeatureMethods<
+    Group extends FeatureGroupID,
+    ID extends FeatureID<Group>,
+> = Partial<
+    Record<'init' | 'onload' | 'onunload', (this: Feature<Group, ID>) => void>
 >;
 
 /**
  * A class that represents a single feature
  * cannot be instantiated directly but using the register method will return an instantiable version of this class
  */
-export default abstract class Feature {
+export default abstract class Feature<
+    Group extends FeatureGroupID,
+    ID extends FeatureID<Group> = FeatureID<Group>,
+> {
     /**
      * This registering workaround is necessary so that we can have readonly private id that is automatically generated from the filepath
      * @param args - the methods that are to be implemented
      * @param args.settings - the settings for this feature
      * @returns a class that can be instantiated
      */
-    static register({
+    static register<Group extends FeatureGroupID, ID extends FeatureID<Group>>({
         settings,
         ...methods
-    }: { settings?: Set<Setting> } & FeatureMethods) {
+    }: { settings?: Set<Setting<Group, ID>> } & FeatureMethods<Group, ID>) {
         console.log(settings, methods);
 
         /**
          * The instantiable version of the Feature class
          */
-        return class Feature extends this {
+        return class Feature extends this<Group, ID> {
             /**
              * The constructor for the Feature class
              * methods are not passed via constructor but via the register method
              * @param id - the ID of this feature
              * @param group - the group this feature belongs to
              */
-            constructor(id: string, group: FeatureGroup) {
-                super(id, group, settings ?? new Set<Setting>(), methods);
+            constructor(id: ID, group: FeatureGroup<Group>) {
+                super(
+                    id,
+                    group,
+                    settings ?? new Set<Setting<Group, ID>>(),
+                    methods
+                );
             }
         };
     }
 
-    readonly #id: string;
-    readonly #group: FeatureGroup;
-    readonly #settings: Set<Setting>;
-    readonly #init: FeatureMethods['init'];
-    readonly #onload: FeatureMethods['onload'];
-    readonly #onunload: FeatureMethods['onunload'];
+    readonly #id: ID;
+    readonly #group: FeatureGroup<Group>;
+    readonly #settings: Set<Setting<Group, ID>>;
+    readonly #init: FeatureMethods<Group, ID>['init'];
+    readonly #onload: FeatureMethods<Group, ID>['onload'];
+    readonly #onunload: FeatureMethods<Group, ID>['onunload'];
 
     readonly #FormGroups: Element[] = [];
 
@@ -58,10 +80,10 @@ export default abstract class Feature {
      * @param methods - the methods that are to be implemented (init, onload, onunload)
      */
     protected constructor(
-        id: string,
-        group: FeatureGroup,
-        settings: Set<Setting>,
-        methods: FeatureMethods
+        id: ID,
+        group: FeatureGroup<Group>,
+        settings: Set<Setting<Group, ID>>,
+        methods: FeatureMethods<Group, ID>
     ) {
         this.#id = id;
         this.#group = group;
@@ -81,7 +103,22 @@ export default abstract class Feature {
      * @returns the ID of this feature
      */
     get id() {
+        // @ts-expect-error as TS for some reason thinks that ID can be a symbol???
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         return `${this.#group.id}.${this.#id}`;
+    }
+
+    /**
+     * Get the translations for exactly this feature
+     * @returns the translations for this feature
+     */
+    get Translation() {
+        // TODO!
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return 'features' in this.#group.Translation ?
+                // @ts-expect-error TODO: is there a way to make this work without ts-expect-error?
+                this.#group.Translation.features[this.#id]
+            :   undefined;
     }
 
     /**

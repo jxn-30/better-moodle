@@ -1,3 +1,5 @@
+import { FeatureGroupID } from '../FeatureGroup';
+import { FeatureID } from '../Feature';
 import Setting from '../Setting';
 import { Switch } from '../Components';
 
@@ -5,7 +7,10 @@ import { Switch } from '../Components';
  * A setting that can be either true or false
  * displayed as a switch
  */
-export class BooleanSetting extends Setting<boolean> {
+export class BooleanSetting<
+    Group extends FeatureGroupID = FeatureGroupID,
+    Feat extends FeatureID<Group> = FeatureID<Group>,
+> extends Setting<Group, Feat, boolean> {
     readonly #formControl = Switch({ id: this.inputID, value: this.value });
 
     /**

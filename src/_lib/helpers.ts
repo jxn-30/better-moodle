@@ -108,7 +108,9 @@ export const mdToHtml = (md: string, headingStart = 1) => {
 };
 
 /**
- * @param html
+ * Converts an HTML string to collection of DOM elements.
+ * @param html - the raw HTML string
+ * @returns a collection of DOM elements created from this HTML
  */
 export const htmlToElements = (html: string) =>
     new DOMParser().parseFromString(html, 'text/html').body.children;

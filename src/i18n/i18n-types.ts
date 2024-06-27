@@ -132,7 +132,7 @@ type RootTranslation = {
              */
             name: string;
             features: {
-                fullWidth: {
+                navbarDropdown: {
                     settings: {
                         enabled: {
                             /**
@@ -146,7 +146,7 @@ type RootTranslation = {
                         };
                     };
                 };
-                externalLinks: {
+                cardsPerRow: {
                     settings: {
                         amount: {
                             /**
@@ -283,7 +283,7 @@ export type TranslationFunctions = {
              */
             name: () => LocalizedString;
             features: {
-                fullWidth: {
+                navbarDropdown: {
                     settings: {
                         enabled: {
                             /**
@@ -297,7 +297,7 @@ export type TranslationFunctions = {
                         };
                     };
                 };
-                externalLinks: {
+                cardsPerRow: {
                     settings: {
                         amount: {
                             /**

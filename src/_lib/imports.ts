@@ -1,5 +1,5 @@
 import Feature from './Feature';
-import FeatureGroup from './FeatureGroup';
+import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
 import { isFeatureGroup } from '../i18n/i18n';
 
 // outsourcing this into an extra file has been necessary
@@ -29,7 +29,10 @@ const featureImports: Record<
  * @param featureId - the id of this feature
  * @returns the instantiated feature
  */
-const initFeature = (group: FeatureGroup, featureId: string) => {
+const initFeature = (
+    group: FeatureGroup<FeatureGroupID>,
+    featureId: string
+) => {
     const Feature =
         featureImports[
             `${import.meta.env.VITE_FEATURES_BASE}${group.id}/${featureId}.ts`
@@ -40,7 +43,7 @@ const initFeature = (group: FeatureGroup, featureId: string) => {
     return feature;
 };
 
-const featureGroups = new Map<string, FeatureGroup>();
+const featureGroups = new Map<string, FeatureGroup<FeatureGroupID>>();
 
 for (const [id, FeatureGroup] of Object.entries(featureGroupImports)) {
     const groupId = id.split('/')[3];

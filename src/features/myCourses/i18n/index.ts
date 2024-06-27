@@ -5,16 +5,16 @@ import navbarDropdown from './navbarDropdown';
 export const de = {
     name: 'Meine Kurse',
     features: {
-        fullWidth: navbarDropdown.de,
-        externalLinks: cardsPerRow.de,
+        navbarDropdown: navbarDropdown.de,
+        cardsPerRow: cardsPerRow.de,
     },
 } satisfies FeatureGroupTranslation;
 
 export const en = {
     name: 'My Courses',
     features: {
-        fullWidth: navbarDropdown.en,
-        externalLinks: cardsPerRow.en,
+        navbarDropdown: navbarDropdown.en,
+        cardsPerRow: cardsPerRow.en,
     },
 } satisfies typeof de;
 

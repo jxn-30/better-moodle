@@ -1,22 +1,23 @@
 import Feature from './Feature';
 import { FieldSet } from './Components';
+import { LL } from '../i18n/i18n';
 import Setting from './Setting';
 import { Translation } from '../i18n/i18n-types';
-import { LL } from '../i18n/i18n';
 
 export type FeatureGroupID = keyof Translation['features'];
+export type FeatureGroupTranslations<
+    ID extends FeatureGroupID = FeatureGroupID,
+> = Translation['features'][ID];
 
-type FeatureGroupMethods = Partial<
-    Record<'init' | 'onload' | 'onunload', (this: FeatureGroup) => void>
+type FeatureGroupMethods<ID extends FeatureGroupID> = Partial<
+    Record<'init' | 'onload' | 'onunload', (this: FeatureGroup<ID>) => void>
 >;
 
 /**
  * A class that represents a group of features
  * cannot be instantiated directly but using the register method will return an instantiable version of this class
  */
-export default abstract class FeatureGroup<
-    ID extends FeatureGroupID = FeatureGroupID,
-> {
+export default abstract class FeatureGroup<ID extends FeatureGroupID> {
     /**
      * This registering workaround is necessary so that we can have readonly private id that is automatically generated from the filepath
      * @param args - the methods that are to be implemented
@@ -24,14 +25,14 @@ export default abstract class FeatureGroup<
      * @param args.features - a set of feature-IDs this group contains in order of appearance in settings
      * @returns a class that can be instantiated
      */
-    static register<ID extends FeatureGroupID = FeatureGroupID>({
-        settings = new Set<Setting>(),
+    static register<ID extends FeatureGroupID>({
+        settings = new Set<Setting<ID>>(),
         features = new Set<string>(),
         ...methods
     }: {
-        settings?: Set<Setting>;
+        settings?: Set<Setting<ID>>;
         features?: Set<string>;
-    } & FeatureGroupMethods) {
+    } & FeatureGroupMethods<ID>) {
         /**
          * The instantiable version of the FeatureGroup class
          */
@@ -42,7 +43,7 @@ export default abstract class FeatureGroup<
              * @param id - the ID of this feature group
              */
             constructor(id: ID) {
-                super(id, settings ?? new Set<Setting>(), methods);
+                super(id, settings ?? new Set<Setting<ID>>(), methods);
             }
 
             /**
@@ -50,7 +51,9 @@ export default abstract class FeatureGroup<
              * @param loadFn - a function that actually loads the feature
              * @throws {Error} if the features are already loaded
              */
-            loadFeatures(loadFn: (featureId: string) => Feature | undefined) {
+            loadFeatures(
+                loadFn: (featureId: string) => Feature<ID> | undefined
+            ) {
                 if (this.#features.size) throw Error('Features already loaded');
                 features?.forEach(id => {
                     const feature = loadFn(id);
@@ -64,12 +67,12 @@ export default abstract class FeatureGroup<
     }
 
     readonly #id: ID;
-    readonly #settings: Set<Setting>;
-    readonly #init: FeatureGroupMethods['init'];
-    readonly #onload: FeatureGroupMethods['onload'];
-    readonly #onunload: FeatureGroupMethods['onunload'];
+    readonly #settings: Set<Setting<ID>>;
+    readonly #init: FeatureGroupMethods<ID>['init'];
+    readonly #onload: FeatureGroupMethods<ID>['onload'];
+    readonly #onunload: FeatureGroupMethods<ID>['onunload'];
 
-    readonly #features = new Set<Feature>();
+    readonly #features = new Set<Feature<ID>>();
 
     readonly #FieldSet: ReturnType<typeof FieldSet>;
 
@@ -84,8 +87,8 @@ export default abstract class FeatureGroup<
      */
     protected constructor(
         id: ID,
-        settings: Set<Setting>,
-        methods: FeatureGroupMethods
+        settings: Set<Setting<ID>>,
+        methods: FeatureGroupMethods<ID>
     ) {
         this.#id = id;
         this.#settings = settings;
@@ -122,21 +125,24 @@ export default abstract class FeatureGroup<
     }
 
     /**
-     *
+     * Get the translations for exactly this feature group
+     * @returns the translations for this feature group
      */
     get Translation() {
         return LL.features[this.id];
     }
 
     /**
-     *
+     *  The title of the feature group
+     *  @returns the title of the feature group
      */
     get title() {
         return this.Translation.name();
     }
 
     /**
-     *
+     * The description of the feature group
+     * @returns the description of the feature group or an empty string otherwise
      */
     get description() {
         return 'description' in this.Translation ?

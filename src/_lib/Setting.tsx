@@ -1,15 +1,20 @@
-import Feature from './Feature';
-import FeatureGroup from './FeatureGroup';
 import { JSX } from 'jsx-dom';
+import { LocalizedString } from 'typesafe-i18n';
 import { domID, PREFIX } from './helpers';
+import Feature, { FeatureID } from './Feature';
+import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
 
 /**
  * A base class
  */
-export default abstract class Setting<Type = unknown> {
+export default abstract class Setting<
+    Group extends FeatureGroupID = FeatureGroupID,
+    Feat extends FeatureID<Group> = FeatureID<Group>,
+    Type = unknown,
+> {
     readonly #id: string;
     readonly #default: Type;
-    #feature: Feature | FeatureGroup | undefined;
+    #feature: Feature<Group, Feat> | FeatureGroup<Group> | undefined;
 
     /**
      * Constructor
@@ -36,7 +41,7 @@ export default abstract class Setting<Type = unknown> {
      * @param feature - the feature this setting belongs to
      * @throws {Error} if the feature is already set
      */
-    set feature(feature: Feature | FeatureGroup) {
+    set feature(feature: Feature<Group, Feat> | FeatureGroup<Group>) {
         if (this.#feature) throw new Error('Cannot reassign feature');
         this.#feature = feature;
     }
@@ -87,13 +92,26 @@ export default abstract class Setting<Type = unknown> {
      * @returns the form group
      */
     get formGroup() {
+        // TODO: remove typing issue suppressing comments once Feature.Translation is correctly typed
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const title: LocalizedString =
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+            this.#feature?.Translation.settings?.[this.#id]?.name() ?? this.#id;
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const description: LocalizedString =
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+            this.#feature?.Translation.settings?.[this.#id]?.description() ??
+            this.#id;
+
         const descriptionBtn = (
             <button
                 className="btn btn-link p-0"
                 data-container="body"
                 data-toggle="popover"
                 data-placement="right"
-                data-content="Placeholder"
+                data-content={description}
                 data-trigger="focus"
                 tabIndex={0}
             >
@@ -110,7 +128,7 @@ export default abstract class Setting<Type = unknown> {
                         className="d-inline word-break"
                         htmlFor={this.inputID}
                     >
-                        {this.id}
+                        {title}
                     </label>
                     <div className="form-label-addon d-flex align-items-center align-self-start">
                         {descriptionBtn}
