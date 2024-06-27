@@ -1944,9 +1944,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:48.3.0":
-  version: 48.3.0
-  resolution: "eslint-plugin-jsdoc@npm:48.3.0"
+"eslint-plugin-jsdoc@npm:48.5.0":
+  version: 48.5.0
+  resolution: "eslint-plugin-jsdoc@npm:48.5.0"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.43.1"
     are-docs-informative: "npm:^0.0.2"
@@ -1960,7 +1960,7 @@ __metadata:
     synckit: "npm:^0.9.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/2444f71114bf21edf4002be205adec60a47d03e6225420b8f44fe2f46738fe5301fe5596f2523b8394255992b1652922331564d25c699c8159fa8020bc7aec5e
+  checksum: 10c0/1c5eb83df06cb228e44ad2c9da5b31987347a45b99d9e7a68957d178487a81603ad3c4c7db1ecba7e8a62d7ae20d9de1aec18a8cf2aa0e9169731cec54f78ab7
   languageName: node
   linkType: hard
 
@@ -4982,7 +4982,7 @@ __metadata:
     darkreader: "npm:4.9.86"
     eslint: "npm:9.5.0"
     eslint-config-prettier: "npm:9.1.0"
-    eslint-plugin-jsdoc: "npm:48.3.0"
+    eslint-plugin-jsdoc: "npm:48.5.0"
     eslint-plugin-jsx-a11y: "npm:6.9.0"
     eslint-plugin-userscripts: "npm:0.5.3"
     fast-glob: "npm:3.3.2"
