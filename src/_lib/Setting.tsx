@@ -37,6 +37,14 @@ export default abstract class Setting<
     }
 
     /**
+     * The feature this setting belongs to
+     * @returns the feature this setting belongs to
+     */
+    get feature(): Feature<Group, Feat> | FeatureGroup<Group> | undefined {
+        return this.#feature;
+    }
+
+    /**
      * Set the feature this setting belongs to
      * @param feature - the feature this setting belongs to
      * @throws {Error} if the feature is already set
@@ -60,16 +68,21 @@ export default abstract class Setting<
      * The actual saved value of this setting or alternatively the default value
      * @returns the current value of this setting
      */
-    get value() {
+    get savedValue() {
         return GM_getValue(this.settingKey, this.#default);
     }
 
     /**
      * sets the value of the setting and saves it to storage
      */
-    set value(newVal: Type) {
+    set savedValue(newVal: Type) {
         GM_setValue(this.settingKey, newVal);
     }
+
+    /**
+     * The current (live) value of this setting
+     */
+    abstract get value(): Type;
 
     /**
      * The ID of the input element
@@ -142,5 +155,16 @@ export default abstract class Setting<
                 </div>
             </div>
         );
+    }
+
+    /**
+     * Adds an input event listener
+     * @param listener - the event listener
+     * @returns the setting itself
+     */
+    onInput(listener: EventListener) {
+        // TODO: bind this to the listener
+        this.formControl.addEventListener('input', listener);
+        return this;
     }
 }

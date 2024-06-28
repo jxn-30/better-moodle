@@ -11,7 +11,10 @@ export class BooleanSetting<
     Group extends FeatureGroupID = FeatureGroupID,
     Feat extends FeatureID<Group> = FeatureID<Group>,
 > extends Setting<Group, Feat, boolean> {
-    readonly #formControl = Switch({ id: this.inputID, value: this.value });
+    readonly #formControl = Switch({
+        id: this.inputID,
+        value: this.savedValue,
+    });
 
     /**
      * Constructor
@@ -23,7 +26,7 @@ export class BooleanSetting<
 
         this.#formControl.addEventListener(
             'change',
-            () => (this.value = this.#formControl.value)
+            () => (this.savedValue = this.#formControl.value)
         );
     }
 
@@ -40,16 +43,24 @@ export class BooleanSetting<
      * required as getter and setter both need to be overridden
      * @returns the current value of this setting
      */
-    get value() {
-        return super.value;
+    get savedValue() {
+        return super.savedValue;
     }
 
     /**
      * sets the value of the setting and saves it to storage
      * @param newVal - the new value of the setting
      */
-    set value(newVal: boolean) {
+    set savedValue(newVal: boolean) {
         this.#formControl.value = newVal;
-        super.value = newVal;
+        super.savedValue = newVal;
+    }
+
+    /**
+     * gets the current (live) value of this setting
+     * @returns the current value of this setting
+     */
+    get value() {
+        return this.#formControl.value;
     }
 }

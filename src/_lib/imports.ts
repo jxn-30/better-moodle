@@ -50,6 +50,7 @@ for (const [id, FeatureGroup] of Object.entries(featureGroupImports)) {
     if (!isFeatureGroup(groupId)) continue;
     const featureGroup = new FeatureGroup(groupId);
     featureGroup.init();
+    featureGroup.load();
     featureGroup.loadFeatures(id => initFeature(featureGroup, id));
     featureGroups.set(groupId, featureGroup);
 }

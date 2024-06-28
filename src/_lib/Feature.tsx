@@ -172,4 +172,12 @@ export default abstract class Feature<
 
         this.#onunload?.();
     }
+
+    /**
+     * Reload (unload and load) the feature
+     */
+    reload() {
+        this.unload();
+        this.load();
+    }
 }

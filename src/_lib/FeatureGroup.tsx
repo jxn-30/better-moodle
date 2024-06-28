@@ -58,6 +58,7 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
                 features?.forEach(id => {
                     const feature = loadFn(id);
                     if (feature) {
+                        feature.load();
                         this.#features.add(feature);
                         this.#FieldSet.container.append(...feature.formGroups);
                     }
@@ -193,5 +194,13 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
         this.#loaded = false;
 
         this.#onunload?.();
+    }
+
+    /**
+     * Reload (unload and load) the feature group
+     */
+    reload() {
+        this.unload();
+        this.load();
     }
 }
