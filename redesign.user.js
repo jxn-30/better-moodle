@@ -3257,18 +3257,31 @@ if (getSetting('general.bookmarkManager')) {
 
 // region Feature: general.noDownload
 if (getSetting('general.noDownload')) {
-    document.addEventListener('mousedown', e => {
-        const target = e.target;
-        if (!(target instanceof HTMLAnchorElement)) return;
+    const removeForceDownload = anchor => {
         try {
-            const url = new URL(target.href, window.location);
+            const url = new URL(anchor.href, window.location);
             if (url.searchParams.has('forcedownload')) {
                 url.searchParams.delete('forcedownload');
-                target.href = url.href;
+                anchor.href = url.href;
             }
         } catch {
             // if href is not a valid URL just ignore it
         }
+    };
+
+    ready(() => {
+        document
+            .querySelectorAll('a[href*="forcedownload"]')
+            .forEach(removeForceDownload);
+    });
+
+    document.addEventListener('mousedown', e => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const anchor = target?.closest('a[href*=forcedownload]');
+        if (!anchor) return;
+
+        removeForceDownload(anchor);
     });
 }
 // endregion
