@@ -3269,16 +3269,16 @@ if (getSetting('general.noDownload')) {
         }
     };
 
-    ready(() => {
+    ready(() =>
         document
             .querySelectorAll('a[href*="forcedownload"]')
-            .forEach(removeForceDownload);
-    });
+            .forEach(removeForceDownload)
+    );
 
     document.addEventListener('mousedown', e => {
         const target = e.target;
         if (!(target instanceof Element)) return;
-        const anchor = target?.closest('a[href*=forcedownload]');
+        const anchor = target?.closest('a[href*="forcedownload"]');
         if (!anchor) return;
 
         removeForceDownload(anchor);
