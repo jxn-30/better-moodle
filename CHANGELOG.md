@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.38.2](https://github.com/jxn-30/better-moodle/compare/1.38.1...1.38.2) (2024-07-01)
+
+
+### Bug Fixes
+
+* **noDownload:** Remove `forcedownload` param on page load ([#249](https://github.com/jxn-30/better-moodle/issues/249)) ([a34c1e2](https://github.com/jxn-30/better-moodle/commit/a34c1e212a1cc61a976f7b1f01e4177696fca5ee))
+
 ## [1.38.1](https://github.com/jxn-30/better-moodle/compare/1.38.0...1.38.1) (2024-06-23)
 
 
