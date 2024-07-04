@@ -42,7 +42,7 @@
         "eslint-plugin-jsx-a11y": "6.9.0",
         "eslint-plugin-userscripts": "0.5.3",
         "fast-glob": "3.3.2",
-        "globals": "15.6.0",
+        "globals": "15.8.0",
         "prettier": "3.3.2",
         "sass": "1.77.6",
         "ts-json-schema-generator": "2.3.0",
