@@ -4300,15 +4300,18 @@ if (getSetting('general.prideLogo') !== 'off') {
 
     const prideLogoGradientStartVar = `--${PREFIX('pride-logo-gradient-start')}`;
     const prideLogoGradientEndVar = `--${PREFIX('pride-logo-gradient-end')}`;
+    const prideLogoGradientRotationVar = `--${PREFIX('pride-logo-gradient-rotation')}`;
     GM_addStyle(css`
         img[${prideLogoSelector}] {
             ${prideLogoGradientStartVar}: 12%;
             ${prideLogoGradientEndVar}: 87%;
+            ${prideLogoGradientRotationVar}: 180deg;
         }
 
         img[${prideLogoSelector}][${prideLogoIsRotated}]:not([${prideLogoIsRotated}='false']) {
             ${prideLogoGradientStartVar}: 22%;
             ${prideLogoGradientEndVar}: 78%;
+            ${prideLogoGradientRotationVar}: 135deg;
         }
     `);
 
@@ -4348,15 +4351,9 @@ if (getSetting('general.prideLogo') !== 'off') {
 
     const prideLogoGradientSizeVar = `--${PREFIX('pride-logo-gradient-size')}`;
     const prideLogoStripeSizeVar = `--${PREFIX('pride-logo-stripe-size')}`;
-    const prideLogoGradientRotationVar = `--${PREFIX('pride-logo-gradient-rotation')}`;
     GM_addStyle(css`
         img[${prideLogoSelector}] {
             ${prideLogoGradientSizeVar}: calc(var(${prideLogoGradientEndVar}) - var(${prideLogoGradientStartVar}));
-            ${prideLogoGradientRotationVar}: 180deg;
-        }
-
-        img[${prideLogoSelector}][${prideLogoIsRotated}]:not([${prideLogoIsRotated}='false']) {
-            ${prideLogoGradientRotationVar}: 135deg;
         }
     `);
 
