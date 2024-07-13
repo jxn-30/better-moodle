@@ -4342,7 +4342,7 @@ if (getSetting('general.prideLogo') !== 'off') {
         );
         logoImg.setAttribute(
             prideLogoIsRotated,
-            getSetting('general.prideLogoRotated') // TODO: toString?
+            getSetting('general.prideLogoRotated')
         );
     });
 
