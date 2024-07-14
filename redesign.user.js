@@ -4360,7 +4360,7 @@ if (getSetting('general.prideLogo') !== 'off') {
     // set the flag style for the chosen setting
     prideLogoStyle = css`
         img[${prideLogoSelector}]:not([${prideLogoSelector}='off']), /* Fallback */
-        img[${prideLogoSelector}='rainbow']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='rainbow'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 6);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
@@ -4413,7 +4413,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='agender']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='agender']) {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 7);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
@@ -4475,7 +4475,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='aro']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='aro'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
@@ -4519,7 +4519,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='ace']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='ace'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 4);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
@@ -4554,7 +4554,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='aroace']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='aroace'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
@@ -4598,7 +4598,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='bi']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='bi'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 3);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
@@ -4624,9 +4624,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='genderfluid']:not(
-                [${prideLogoSelector}='off']
-            ) {
+        img[${prideLogoSelector}][${prideLogoSelector}='genderfluid'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
@@ -4670,7 +4668,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='intersex']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='intersex'] {
             /* TODO: Generalize this */
             background-image: radial-gradient(
                 circle at 50%,
@@ -4680,7 +4678,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='lesbian']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='lesbian'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
@@ -4724,7 +4722,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='enby']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='enby'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 4);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
@@ -4759,7 +4757,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='pan']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='pan'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 3);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
@@ -4785,7 +4783,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='gay']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='gay'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
@@ -4829,7 +4827,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='trans']:not([${prideLogoSelector}='off']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='trans'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
