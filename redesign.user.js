@@ -1136,6 +1136,10 @@ GM_addStyle(css`
             flex-direction: column-reverse;
         }
     }
+
+    [data-flexitour='container'] {
+        z-index: 100 !important;
+    }
 `);
 
 /** @type {[number, number, number]} */
