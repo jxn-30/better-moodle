@@ -1,6 +1,8 @@
 # Better-Moodle
 
-[![Aktuelle Version / Current Version](https://img.shields.io/github/v/release/jxn-30/better-moodle?label=Aktuellste%20Version%20/%20Current%20Version&color=004B5A&style=for-the-badge)](https://github.com/jxn-30/better-moodle/releases/latest)
+[![Hier drücken, um zu installieren / Click here to install](https://img.shields.io/badge/Jetzt%20installieren%20%2F%20Install%20now-004B5A?style=for-the-badge)][installation]
+
+[![Aktuelle Version / Current Version](https://img.shields.io/github/v/release/jxn-30/better-moodle?label=Aktuellste%20Version%20/%20Current%20Version&color=004B5A&style=for-the-badge)][latest release]&nbsp;[![File size in bytes](https://img.shields.io/github/size/jxn-30/better-moodle/redesign.user.js?branch=main&style=for-the-badge&label=Gr%C3%B6%C3%9Fe%20%2F%20Size&color=004b5a)](https://github.com/jxn-30/better-moodle/blob/main/redesign.user.js)&nbsp;[![GitHub Downloads latest release](https://img.shields.io/github/downloads/jxn-30/better-moodle/latest/better-moodle.user.js?style=for-the-badge&label=Downloads%20latest%20version&color=004b5a)][latest release]
 
 -   [Installation](#installation)
 -   [Disclaimer](#disclaimer)
@@ -234,3 +236,4 @@ Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar s
 </picture>
 
 [installation]: https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.user.js
+[latest release]: https://github.com/jxn-30/better-moodle/releases/latest

@@ -2,10 +2,11 @@
 // @name            🎓️ UzL: better-moodle
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
-// @version         1.32.0
+// @version         1.38.2
 // @                x-release-please-end
 // @author          Jan (jxn_30)
-// @description:de  Verbessert dieses seltsame Design, das Moodle 4 mit sich bringt
+// @description     Improves UzL-Moodle by cool features and design improvements.
+// @description:de  Verbessert UzL-Moodle durch coole Features und Designverbesserungen.
 // @homepage        https://github.com/jxn-30/better-moodle
 // @homepageURL     https://github.com/jxn-30/better-moodle
 // @icon            https://www.uni-luebeck.de/favicon.ico
@@ -26,7 +27,7 @@
 // @connect         api.pirateweather.net
 // @connect         weather.visualcrossing.com
 // @connect         wttr.in
-// @require         https://unpkg.com/darkreader@4.9.85/darkreader.js#sha512=6792b51c55273b96edc7d87f1180832cc321561d7f885004da58e660f53a7684f69e63d0aef1e2c5cc3313949ef1e16963ad420cec8595de391152156dc75b69
+// @require         https://unpkg.com/darkreader@4.9.87/darkreader.js#sha512=db6998940ba007c1cb2a05707928d0bb871078563194cb2825a4cb13f8f0d39550737a9496e5febf9ec23c53355eca144ccc999faa3c175ac8ffba48f1664aa2
 // ==/UserScript==
 
 /* global M, require, DarkReader */
@@ -34,6 +35,7 @@
 // region translations
 const TRANSLATIONS = {
     de: {
+        new: 'Neu!',
         sidebar: {
             open: 'Blockleiste öffnen',
             close: 'Blockleiste schließen',
@@ -85,6 +87,11 @@ const TRANSLATIONS = {
                 show: 'Im Balken anzeigen?',
                 holiday: 'Feiertag',
             },
+        },
+        quickRoleChange: {
+            defaultSwitchRole: 'Zur Moodle Rollenwechsel-Seite gehen',
+            goBack: 'Zurück zum Nutzermenü',
+            roleSelector: 'Rollen-Auswahl',
         },
         weatherDisplay: {
             title: 'Wetter-Moodle',
@@ -345,6 +352,16 @@ Viele Grüße
                     description:
                         'Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für Better-Moodle gibt.',
                 },
+                highlightNewSettings: {
+                    name: 'Neue Einstellungen hervorheben',
+                    description:
+                        'Informiert, welche Einstellungen neu sind, wenn es neue Einstellungen gibt.',
+                    navbar: {
+                        name: 'Hinweis zu neuen Einstellungen auf dem Einstellungs-Knopf',
+                        description:
+                            'Zeigt ein schickes Tooltip am Einstellungs-Knopf in der Navigationsleiste an, wenn es neue Einstellungen gibt.',
+                    },
+                },
                 fullwidth: {
                     name: 'Volle Breite',
                     description:
@@ -403,6 +420,32 @@ Viele Grüße
                         en: '🇬🇧 Englisch',
                     },
                 },
+                prideLogo: {
+                    name: 'Pride-Logo',
+                    description: '🏳️‍🌈',
+                    options: {
+                        off: 'Aus',
+                        rainbow: 'Regenbogen - Horizontal',
+                        rotated: 'Regenbogen - Schräg',
+                        agender: 'Agender',
+                        aro: 'Aromantisch',
+                        ace: 'Asexuell',
+                        aroace: 'Asexuell-Aromantisch',
+                        bi: 'Bisexuell',
+                        genderfluid: 'Genderfluid',
+                        intersex: 'Intersex',
+                        lesbian: 'Lesbisch',
+                        enby: 'Nicht-binär',
+                        pan: 'Pansexuell',
+                        gay: 'Schwul',
+                        trans: 'Transgender',
+                    },
+                },
+                quickRoleChange: {
+                    name: 'Schneller Rollenwechsel',
+                    description:
+                        'Ermöglicht es (mit den passenden Berechtigungen), die Betrachtung eines Kurses mit einer anderen Rolle direkt über das Profil-Dropdown zu ändern.',
+                },
             },
             darkmode: {
                 _title: 'Darkmode',
@@ -435,6 +478,12 @@ Viele Grüße
                     name: 'Sepia',
                     description:
                         'Stelle einen Sepia-Wert für den Darkmodes ein.',
+                },
+                preview: {
+                    name: 'Vorschau',
+                    description:
+                        'Teste hier die aktuellen Einstellungen des Darkmodes bei geschlossenen Einstellungen aus. Vorsicht: Beim nächsten Neuladen oder Wechseln der Seite sind die Einstellungen zurückgesetzt.',
+                    btn: 'Einstellungen zur Vorschau ausblenden',
                 },
             },
             dashboard: {
@@ -513,6 +562,15 @@ Viele Grüße
             },
             clock: {
                 _title: 'Uhr',
+                clock: {
+                    name: 'Uhr',
+                    description: 'Eine ganz normale Digitaluhr',
+                    seconds: {
+                        name: 'Sekunden anzeigen',
+                        description:
+                            'Sollen die Sekunden in der Digitaluhr angezeigt werden?',
+                    },
+                },
                 fuzzyClock: {
                     name: 'Umgangssprachliche Uhr',
                     description:
@@ -606,6 +664,7 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
         },
     },
     en: {
+        new: 'New!',
         sidebar: {
             open: 'Open sidebar',
             close: 'Close sidebar',
@@ -657,6 +716,11 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
                 show: 'Show in Progress bar?',
                 holiday: 'Public Holiday',
             },
+        },
+        quickRoleChange: {
+            defaultSwitchRole: 'Go to Moodle switch role page',
+            goBack: 'Go back to user menu',
+            roleSelector: 'Role selector',
         },
         weatherDisplay: {
             title: 'Weather-Moodle',
@@ -918,6 +982,16 @@ Best regards
                     description:
                         'Displays a small red dot by the cogs in the navigation bar when there is an update for Better-Moodle.',
                 },
+                highlightNewSettings: {
+                    name: 'Highlight new settings',
+                    description:
+                        'Highlights which settings are new, if there are any new settings.',
+                    navbar: {
+                        name: 'Note for new settings on settings button',
+                        description:
+                            'Shows a nice tooltip informing about new settings on the settings button in navbar if there are any unseen settings.',
+                    },
+                },
                 fullwidth: {
                     name: 'Full width',
                     description:
@@ -976,6 +1050,32 @@ Best regards
                         en: '🇬🇧 English',
                     },
                 },
+                prideLogo: {
+                    name: 'Pride-Logo',
+                    description: '🏳️‍🌈',
+                    options: {
+                        off: 'Aus',
+                        rainbow: 'Rainbow - Horizontal',
+                        rotated: 'Rainbow - Rotated',
+                        agender: 'Agender',
+                        aro: 'Aromantic',
+                        ace: 'Asexual',
+                        aroace: 'Asexual-Aromantic',
+                        bi: 'Bisexual',
+                        genderfluid: 'Genderfluid',
+                        intersex: 'Intersex',
+                        lesbian: 'Lesbian',
+                        enby: 'Non-binary',
+                        pan: 'Pansexual',
+                        gay: 'Gay',
+                        trans: 'Transgender',
+                    },
+                },
+                quickRoleChange: {
+                    name: 'Quick role change',
+                    description:
+                        'Allows (with the appropriate permissions) to change the view of a course with a different role directly via the profile dropdown.',
+                },
             },
             darkmode: {
                 _title: 'Darkmode',
@@ -1006,6 +1106,12 @@ Best regards
                 sepia: {
                     name: 'Sepia',
                     description: 'Set the sepia value of the dark mode.',
+                },
+                preview: {
+                    name: 'Preview',
+                    description:
+                        'Test the current dark mode settings here with the settings closed. Caution: The next time you reload or change the page, the settings will be reset.',
+                    btn: 'Hide settings for preview',
                 },
             },
             dashboard: {
@@ -1083,6 +1189,15 @@ Best regards
             },
             clock: {
                 _title: 'Clock',
+                clock: {
+                    name: 'Clock',
+                    description: 'A completely normal digital clock',
+                    seconds: {
+                        name: 'Show seconds',
+                        description:
+                            'Should the seconds be displayed in the digital clock?',
+                    },
+                },
                 fuzzyClock: {
                     name: 'Fuzzy Clock',
                     description: 'A fuzzy clock, known from KDE Plasma.',
@@ -1186,6 +1301,28 @@ const getSettingKey = id => PREFIX(`settings.${id}`);
  */
 const getSetting = (id, inputValue = false) =>
     inputValue ? settingsById[id].inputValue : settingsById[id].value;
+
+const stringTemplate = (strings, ...expressions) =>
+    strings.flatMap((string, i) => [string, expressions[i] ?? '']).join('');
+const unindent = string => {
+    const minIndent = Math.min(
+        ...string
+            .trimEnd()
+            .match(/^[\t ]+/gm)
+            .map(line => line.length)
+    );
+    return string.replace(new RegExp(`^[\\t ]{${minIndent}}`, 'gm'), '').trim();
+};
+const css = (...args) =>
+    `
+/*
+ * This style has been injected by Better-Moodle (Version: ${GM_info.script.version}).
+ */
+
+${unindent(stringTemplate(...args))}
+`.trim();
+
+const IS_NEW_INSTALLATION = GM_listValues().length === 0;
 
 const MyCoursesFilterSyncChangeKey = PREFIX('myCourses.filterSyncChange');
 
@@ -1311,7 +1448,7 @@ const createSidebar = (id, position, icon, callback) => {
     });
 };
 
-GM_addStyle(`
+GM_addStyle(css`
     /* Sidebars */
     .drawer-toggles:has(#${PREFIX('drawer-toggles-right')}),
     .drawer-toggles:has(#${PREFIX('drawer-toggles-left')}) {
@@ -1323,8 +1460,7 @@ GM_addStyle(`
         margin-bottom: 0.7rem;
         z-index: 100;
     }
-    #${PREFIX('drawer-toggles-right')},
-    #${PREFIX('drawer-toggles-left')} {
+    #${PREFIX('drawer-toggles-right')}, #${PREFIX('drawer-toggles-left')} {
         display: flex;
         flex-direction: column;
         position: fixed;
@@ -1345,8 +1481,7 @@ GM_addStyle(`
         width: 16px; /* Reset to .icon default */
     }
     @media (max-width: 767.98px) {
-        #${PREFIX('drawer-toggles-right')},
-        #${PREFIX('drawer-toggles-left')} {
+        #${PREFIX('drawer-toggles-right')}, #${PREFIX('drawer-toggles-left')} {
             top: auto;
             bottom: calc(2.7rem + 36px);
             flex-direction: column-reverse;
@@ -1553,39 +1688,41 @@ const addMarqueeItems = (() => {
     const SCROLL_SPEED_MS_PER_PX = 100;
     const durationForPx = px => px * SCROLL_SPEED_MS_PER_PX;
 
-    GM_addStyle(`
-#${navLink.id} {
-    ${scrollStartVar}: 100%;
-    ${scrollEndVar}: 100%;
-    ${scrollDurationVar}: 10s;
-}
-#${navLink.id}.animated {
-    animation: ${keyFrames} var(${scrollDurationVar}) linear infinite;
-}
-#${navLink.id}:not(.animated) > .${textSpanClass}:nth-child(2) {
-    display: none;
-}
+    GM_addStyle(css`
+        #${navLink.id} {
+            ${scrollStartVar}: 100%;
+            ${scrollEndVar}: 100%;
+            ${scrollDurationVar}: 10s;
+        }
+        #${navLink.id}.animated {
+            animation: ${keyFrames} var(${scrollDurationVar}) linear infinite;
+        }
+        #${navLink.id}:not(.animated) > .${textSpanClass}:nth-child(2) {
+            display: none;
+        }
 
-#${navLink.id} > .${textSpanClass} > *::after {
-    content: "${'\xa0'.repeat(11)}";
-    background-image: url("https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-}
-#${navLink.id}:not(.animated) > .${textSpanClass} > *:last-child::after {
-    display: none;
-}
+        #${navLink.id} > .${textSpanClass} > *::after {
+            content: '${'\xa0'.repeat(11)}';
+            background-image: url('https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+        #${navLink.id}:not(.animated)
+            > .${textSpanClass}
+            > *:last-child::after {
+            display: none;
+        }
 
-@keyframes ${keyFrames} {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(var(${scrollEndVar}));
-    }
-}
-`);
+        @keyframes ${keyFrames} {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(var(${scrollEndVar}));
+            }
+        }
+    `);
 
     const updateScrollWidth = () => {
         const navLinkWidth = Math.floor(navLink.getBoundingClientRect().width);
@@ -1839,20 +1976,26 @@ const createFieldset = (
 };
 
 const appendableListFormClass = PREFIX('appendable-list-form');
-GM_addStyle(`
-.${appendableListFormClass} {
-    color: inherit;
-}
+GM_addStyle(css`
+    .${appendableListFormClass} {
+        color: inherit;
+    }
 
-.${appendableListFormClass} .fitem {
-    column-gap: 1em;
-}
+    .${appendableListFormClass} .fitem {
+        column-gap: 1em;
+    }
 
-.${appendableListFormClass} > .fcontainer :is(.fitem:first-child [data-button="up"], .fitem:last-child [data-button="down"]) {
-    opacity: 0.65;
-    pointer-events: none;
-    cursor: not-allowed;
-}`);
+    .${appendableListFormClass}
+        > .fcontainer
+        :is(
+            .fitem:first-child [data-button='up'],
+            .fitem:last-child [data-button='down']
+        ) {
+        opacity: 0.65;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+`);
 
 /**
  * @param {string} id
@@ -2133,17 +2276,15 @@ const timeToString = (date, seconds = true) =>
  * @param {number} delay
  * @param {CallableFunction} callback
  */
-const animationInterval = (delay, callback, runImmediate = false) => {
-    if (runImmediate) {
-        callback();
-    }
-
-    let last = Date.now();
+const animationInterval = (delay, callback) => {
+    let last = 0;
     let currentId;
-    const intervalCallback = () => {
+    /**
+     * @param {DOMHighResTimeStamp} now
+     */
+    const intervalCallback = now => {
         currentId = requestAnimationFrame(intervalCallback);
 
-        const now = Date.now();
         const elapsed = now - last;
 
         if (elapsed >= delay) {
@@ -2158,38 +2299,40 @@ const animationInterval = (delay, callback, runImmediate = false) => {
 
 // region Global styles
 // some general style
-GM_addStyle(`
-/* disable the weird scroll behaviour on login page (background image shall not be moved) */
-#page-login-index {
-    overflow: hidden;
-}
+GM_addStyle(css`
+    /* disable the weird scroll behaviour on login page (background image shall not be moved) */
+    #page-login-index {
+        overflow: hidden;
+    }
 
-#page-login-index #page-wrapper {
-    overflow: auto;
-}
+    #page-login-index #page-wrapper {
+        overflow: auto;
+    }
 
-/* Use a pointer cursor on toggle buttons */
-.custom-control.custom-switch .custom-control-label {
-    cursor: pointer;
-}
+    /* Use a pointer cursor on toggle buttons */
+    .custom-control.custom-switch .custom-control-label {
+        cursor: pointer;
+    }
 
-/* avoid overflow of #usernavigation navigation bar */
-#usernavigation {
-    max-width: calc(100% - 1rem); /* 1rem is the padding of the navbar */
-}
+    /* avoid overflow of #usernavigation navigation bar */
+    #usernavigation {
+        max-width: calc(100% - 1rem); /* 1rem is the padding of the navbar */
+    }
 
-/* remove "external link" icon for specific classes (discouraged but sometimes it doesn't look good) */
-body.dir-ltr a.${noExternalLinkIconClass}::after,
-body.dir-rtl a.${noExternalLinkIconClass}::before {
-    display: none !important;
-}
+    /* remove "external link" icon for specific classes (discouraged but sometimes it doesn't look good) */
+    body.dir-ltr
+        a.${noExternalLinkIconClass}::after,
+        body.dir-rtl
+        a.${noExternalLinkIconClass}::before {
+        display: none !important;
+    }
 
-/* fix info-buttons next to form labels to be aligned left instead of centered */
-.form-label-addon [data-toggle="popover"] i.icon.fa {
-    margin-left: 0.25rem;
-    margin-right: 0.25rem;
-}
-    `);
+    /* fix info-buttons next to form labels to be aligned left instead of centered */
+    .form-label-addon [data-toggle='popover'] i.icon.fa {
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
+    }
+`);
 // endregion
 
 // region Settings
@@ -2211,6 +2354,7 @@ class Setting {
      * @param {ValueType} defaultValue
      */
     constructor(id, defaultValue) {
+        // this makes this class an abstract class
         if (this.constructor === Setting) {
             throw new TypeError(
                 'Cannot create instance of abstract class Setting'
@@ -2436,60 +2580,64 @@ class NumberSetting extends Setting {
     }
 }
 
-GM_addStyle(`
-/* Some style to show tick-mark labels on range inputs */
-datalist[style*="--label-count"] {
-    display: grid;
-    grid-template-columns: repeat(var(--label-count), minmax(0, 1fr));
-    text-align: center;
-    /* WTF? idk how and why but it seems to work. It positions the labels almost correctly */
-    margin: 0 calc(50% - 0.5 * calc((1 + 1 / (var(--label-count) - 1)) * (100% - 1em)));
-}
-/* overlapping text is bad => hide with ellipsis */
-datalist[style*="--label-count"] > option {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-/* make first and last label have custom alignments for better visibility */
-datalist[style*="--label-count"] > option:first-child {
-    text-align: left;
-    padding-left: calc(50% - 4px);
-}
-datalist[style*="--label-count"] > option:last-child {
-    text-align: right;
-    padding-right: calc(50% - 4px);
-}
-/* add ticks to labels */
-datalist[style*="--label-count"] > option::after {
-    content: "";
-    position: absolute;
-    border: 1px solid grey;
-    height: 10px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    top: 0;
-}
+GM_addStyle(css`
+    /* Some style to show tick-mark labels on range inputs */
+    datalist[style*='--label-count'] {
+        display: grid;
+        grid-template-columns: repeat(var(--label-count), minmax(0, 1fr));
+        text-align: center;
+        /* WTF? idk how and why but it seems to work. It positions the labels almost correctly */
+        margin: 0
+            calc(
+                50% - 0.5 *
+                    calc((1 + 1 / (var(--label-count) - 1)) * (100% - 1em))
+            );
+    }
+    /* overlapping text is bad => hide with ellipsis */
+    datalist[style*='--label-count'] > option {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /* make first and last label have custom alignments for better visibility */
+    datalist[style*='--label-count'] > option:first-child {
+        text-align: left;
+        padding-left: calc(50% - 4px);
+    }
+    datalist[style*='--label-count'] > option:last-child {
+        text-align: right;
+        padding-right: calc(50% - 4px);
+    }
+    /* add ticks to labels */
+    datalist[style*='--label-count'] > option::after {
+        content: '';
+        position: absolute;
+        border: 1px solid grey;
+        height: 10px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        top: 0;
+    }
 
-/* style to show a bubble with current range input value */
-input[type="range"] + output {
-    position: absolute;
-    text-align: center;
-    padding: 2px;
-    background-color: var(--primary);
-    color: white;
-    border-radius: 4px;
-    font-weight: bold;
-    z-index: 1;
-    
-    /* position the label correctly */
-    left: calc(1% * var(--percentage));
-    transform: translateX(calc(-1% * var(--percentage)));
-}
+    /* style to show a bubble with current range input value */
+    input[type='range'] + output {
+        position: absolute;
+        text-align: center;
+        padding: 2px;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+        z-index: 1;
 
-/* adds transparency to tick-mark labels of disabled range inputs  */
-input:disabled[type="range"] + output {
-    background-color: color-mix(in srgb, var(--primary) 50%, transparent);
-}
+        /* position the label correctly */
+        left: calc(1% * var(--percentage));
+        transform: translateX(calc(-1% * var(--percentage)));
+    }
+
+    /* adds transparency to tick-mark labels of disabled range inputs  */
+    input:disabled[type='range'] + output {
+        background-color: color-mix(in srgb, var(--primary) 50%, transparent);
+    }
 `);
 
 /** @extends {NumberSetting} */
@@ -2706,14 +2854,91 @@ class SelectSetting extends Setting {
     }
 }
 
+/** @extends {Setting<void>} */
+class ActionSetting extends Setting {
+    constructor(id) {
+        super(id, void 0);
+        // this makes this class an abstract class
+        if (this.constructor === ActionSetting) {
+            throw new TypeError(
+                'Cannot create instance of abstract class ActionSetting'
+            );
+        }
+    }
+}
+
+/** @extends {ActionSetting} */
+class BtnActionSetting extends ActionSetting {
+    /** @type {HTMLButtonElement} */
+    #btn = document.createElement('button');
+
+    constructor(id) {
+        super(id);
+
+        this.#btn.classList.add('btn', 'btn-primary');
+    }
+
+    get formControl() {
+        return this.#btn;
+    }
+
+    /**
+     * @param {Record<string, Setting>} settings
+     * @returns {boolean}
+     */
+    toggleDisabled(settings) {
+        const disabled = super.toggleDisabled(settings);
+        this.#btn.disabled = disabled;
+        if (disabled) {
+            this.#btn.classList.add('disabled');
+        } else {
+            this.#btn.classList.remove('disabled');
+        }
+        return disabled;
+    }
+
+    /**
+     * @param {string | HTMLElement} content
+     * @returns {this}
+     */
+    setContent(content) {
+        this.#btn.replaceChildren();
+        if (typeof content === 'string') {
+            this.#btn.textContent = content;
+        } else {
+            this.#btn.append(content);
+        }
+        return this;
+    }
+
+    /**
+     * @param {function(MouseEvent, BtnActionSetting): void} listener
+     * @returns {this}
+     */
+    setAction(listener) {
+        this.#btn.addEventListener('click', e => {
+            e.preventDefault();
+            listener(e, this);
+        });
+        return this;
+    }
+}
+
 /** @type {Array<Setting | string>} */
 const SETTINGS = [
-    $t('settings.general._title'),
+    'general',
     new BooleanSetting('general.updateNotification', true),
     new SelectSetting('general.language', 'auto', [
         'auto',
         ...Object.keys(TRANSLATIONS),
     ]),
+    new BooleanSetting('general.highlightNewSettings', true),
+    new BooleanSetting(
+        'general.highlightNewSettings.navbar',
+        true
+    ).setDisabledFn(
+        settings => !settings['general.highlightNewSettings'].inputValue
+    ),
     new BooleanSetting('general.fullwidth', true),
     new BooleanSetting('general.externalLinks', true),
     new BooleanSetting('general.truncatedTexts', true),
@@ -2724,7 +2949,25 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     new BooleanSetting('general.semesterzeiten', false),
-    $t('settings.darkmode._title'),
+    new SelectSetting('general.prideLogo', 'rainbow', [
+        'off',
+        'rainbow',
+        'rotated',
+        'agender',
+        'aro',
+        'ace',
+        'aroace',
+        'bi',
+        'genderfluid',
+        'intersex',
+        'lesbian',
+        'enby',
+        'pan',
+        'gay',
+        'trans',
+    ]),
+    new BooleanSetting('general.quickRoleChange', true),
+    'darkmode',
     $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
         () => updateDarkReaderMode(true)
@@ -2749,7 +2992,17 @@ const SETTINGS = [
             settings => settings['darkmode.mode'].inputValue === 'off'
         )
         .onInput(debounce(() => updateDarkReaderMode(true))),
-    $t('settings.dashboard._title'),
+    new BtnActionSetting('darkmode.preview')
+        .setContent($t('settings.darkmode.preview.btn'))
+        .setDisabledFn(
+            settings => settings['darkmode.mode'].inputValue === 'off'
+        )
+        .setAction((_, { formControl }) => {
+            formControl.dispatchEvent(
+                new Event(SETTINGS_PREVIEW_EVENT, { bubbles: true })
+            );
+        }),
+    'dashboard',
     // {Layout anpassen}
     new StringSetting(
         'dashboard.~layoutPlaceholder',
@@ -2762,7 +3015,7 @@ const SETTINGS = [
         getCourseGroupingOptions()
     ),
     new BooleanSetting('dashboard.courseListFavouritesAtTop', true),
-    $t('settings.myCourses._title'),
+    'myCourses',
     new SliderSetting('myCourses.boxesPerRow', 4, 1, 10),
     new BooleanSetting('myCourses.navbarDropdown', true),
     new SelectSetting(
@@ -2778,7 +3031,7 @@ const SETTINGS = [
     ).setDisabledFn(
         settings => !settings['myCourses.navbarDropdown'].inputValue
     ),
-    $t('settings.courses._title'),
+    'courses',
     new BooleanSetting('courses.grades', true),
     new BooleanSetting('courses.gradesNewTab', false).setDisabledFn(
         settings => !settings['courses.grades'].inputValue
@@ -2787,7 +3040,11 @@ const SETTINGS = [
     new BooleanSetting('courses.imgMaxWidth', true),
     new BooleanSetting('courses.imageZoom', true),
     new BooleanSetting('courses.hideSelfEnrolHint', false),
-    $t('settings.clock._title'),
+    'clock',
+    new BooleanSetting('clock.clock', false),
+    new BooleanSetting('clock.clock.seconds', true).setDisabledFn(
+        settings => !settings['clock.clock'].inputValue
+    ),
     new BooleanSetting('clock.fuzzyClock', false),
     new SliderSetting('clock.fuzzyClock.fuzziness', 10, 10, 50, 10, [
         '5min',
@@ -2796,8 +3053,7 @@ const SETTINGS = [
         'day',
         'week',
     ]).setDisabledFn(settings => !settings['clock.fuzzyClock'].inputValue),
-    $t('settings.weatherDisplay._title'),
-    $t('settings.weatherDisplay._description'),
+    'weatherDisplay',
     new BooleanSetting('weatherDisplay.show', false),
     new SelectSetting('weatherDisplay.units', 'metric', [
         'metric',
@@ -2836,7 +3092,7 @@ const SETTINGS = [
         'weatherDisplay.useDeviceOrientation',
         true
     ).setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
-    $t('settings.messages._title'),
+    'messages',
     new SelectSetting('messages.sendHotkey', '', [
         '',
         'shiftEnter',
@@ -2846,16 +3102,190 @@ const SETTINGS = [
 const settingsById = Object.fromEntries(
     SETTINGS.filter(s => typeof s !== 'string').map(s => [s.id, s])
 );
+
+const allSettingsIds = new Set(Object.keys(settingsById));
+const SEEN_SETTINGS_KEY = PREFIX('seen-settings');
+const EVER_OPENED_SETTINGS_KEY = PREFIX('ever-opened-settings');
+const SETTINGS_PREVIEW_EVENT = PREFIX('settings:preview');
+const newSettingBadgeClass = PREFIX('new-setting-badge');
+let settingsBtnNewTooltip;
+// these are the settings that existed before "highlight new settings" was introduced
+const existingSettings = new Set([
+    'general.updateNotification',
+    'general.language',
+    'general.fullwidth',
+    'general.externalLinks',
+    'general.truncatedTexts',
+    'general.bookmarkManager',
+    'general.noDownload',
+    'general.eventAdvertisements',
+    'general.christmasCountdown',
+    'general.speiseplan',
+    'general.googlyEyes',
+    'general.semesterzeiten',
+    'general.quickRoleChange',
+    'darkmode.mode',
+    'darkmode.brightness',
+    'darkmode.contrast',
+    'darkmode.grayscale',
+    'darkmode.sepia',
+    'dashboard.~layoutPlaceholder',
+    'dashboard.courseListFilter',
+    'dashboard.courseListFavouritesAtTop',
+    'myCourses.boxesPerRow',
+    'myCourses.navbarDropdown',
+    'myCourses.navbarDropdownFilter',
+    'myCourses.navbarDropdownFavouritesAtTop',
+    'courses.grades',
+    'courses.gradesNewTab',
+    'courses.collapseAll',
+    'courses.imgMaxWidth',
+    'courses.imageZoom',
+    'courses.hideSelfEnrolHint',
+    'clock.clock',
+    'clock.clock.seconds',
+    'clock.fuzzyClock',
+    'clock.fuzzyClock.fuzziness',
+    'messages.sendHotkey',
+]);
+/** @type {Set<string>} */
+const seenSettings = new Set(GM_getValue(SEEN_SETTINGS_KEY, existingSettings));
+const storeSeenSettings = () =>
+    GM_setValue(SEEN_SETTINGS_KEY, Array.from(seenSettings));
+const markAllSettingsAsSeen = () => {
+    allSettingsIds.forEach(id => seenSettings.add(id));
+    settingsBtnNewTooltip?.dispose();
+
+    settingsBtnNewTooltip = null;
+
+    storeSeenSettings();
+};
+const newSettingBadgeAnimations = {
+    sparkling: PREFIX('new-setting-badge-sparkling'),
+    sparklePositions: PREFIX('new-setting-badge-sparkle-positions'),
+    shining: PREFIX('new-setting-badge-shining'),
+};
+GM_addStyle(css`
+    /* add a small margin for "NEW!"-Badges in settings */
+    form fieldset h3 .${newSettingBadgeClass} {
+        margin-left: 1ch;
+    }
+    form .fitem label .${newSettingBadgeClass} {
+        margin-right: 1ch;
+    }
+
+    /* the \`New!\`-Tooltip of settings btn needs to have a special z-index */
+    .tooltip:has(.${newSettingBadgeClass}) {
+        z-index: 1035;
+        cursor: pointer;
+    }
+
+    /* nice effects on the \`New!\`-Badge, but only if user allows animations */
+    @media (prefers-reduced-motion: no-preference) {
+        .${newSettingBadgeClass} {
+            position: relative;
+            /* add a shining effect */
+            background-image: linear-gradient(
+                -75deg,
+                transparent 0%,
+                rgba(255, 255, 255, 75%) 15%,
+                transparent 30%,
+                transparent 100%
+            );
+            animation: ${newSettingBadgeAnimations.shining} 5s ease-in-out;
+            background-size: 200%;
+            background-repeat: no-repeat;
+        }
+
+        /* add fancy sparkles ✨ to the \`New!\`-Badge */
+        .${newSettingBadgeClass}::before {
+            display: inline-block;
+            content: ' ';
+            position: absolute;
+            --width: 10ch;
+            width: var(--width);
+            height: calc(var(--width) * 18 / 11);
+            /* this is a self designed sparkle as SVG :) */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 1800'%3E%3Cpath fill='gold' d='M 550 0 C 550 720 660 900 1100 900 C 660 900 550 1080 550 1800 C 550 1080 440 900 0 900 C 440 900 550 720 550 0'/%3E%3C/svg%3E");
+            background-size: 100%;
+            background-repeat: no-repeat;
+            transform: translate(-50%, -50%);
+            transform-origin: top left;
+            top: 0;
+            left: 0;
+            animation:
+                ${newSettingBadgeAnimations.sparkling} 1s ease-in-out infinite
+                    alternate,
+                ${newSettingBadgeAnimations.sparklePositions} 6s step-start
+                    infinite;
+        }
+    }
+    @keyframes ${newSettingBadgeAnimations.shining} {
+        0% {
+            background-position: 200% 0;
+        }
+        20% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 0 0;
+        }
+    }
+    @keyframes ${newSettingBadgeAnimations.sparkling} {
+        0% {
+            /* 1s => 0 ms, 2000ms */
+            scale: 0;
+        }
+        10% {
+            /* 1s => 100ms, 1900ms */
+            scale: 0;
+        }
+        100% {
+            /* 1s => 1000ms */
+            scale: 10%; /* for better results, we're creating large sparkles (width: 10ch), but to keep them rendered small, max scale is 10% */
+        }
+    }
+    @keyframes ${newSettingBadgeAnimations.sparklePositions} {
+        0% {
+            top: 4%;
+            left: 14%;
+        }
+        33% {
+            top: 85%;
+            left: 51%;
+        }
+        66% {
+            top: 32%;
+            left: 87%;
+        }
+    }
+`);
+// if this is a new installation, mark all settings as seen as we don't want to show the "NEW!"-badge on every single setting
+if (IS_NEW_INSTALLATION) markAllSettingsAsSeen();
+/** @type {Set<string>} */
+const unseenSettings =
+    allSettingsIds.difference?.(seenSettings) ?? // New Set methods are a stage 3 proposal and do have limited availability: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/difference
+    new Set(
+        Array.from(allSettingsIds.values()).filter(id => !seenSettings.has(id))
+    );
+/** @type {Map<string, number>} */
+const unseenSettingsGroups = new Map();
+unseenSettings.forEach(id => {
+    const group = id.split('.')[0];
+    if (!unseenSettingsGroups.has(group)) unseenSettingsGroups.set(group, 0);
+    unseenSettingsGroups.set(group, unseenSettingsGroups.get(group) + 1);
+});
 // endregion
 
 // region Feature: general.fullwidth
 // use full width if enabled
 if (getSetting('general.fullwidth')) {
-    GM_addStyle(`
-/* Use full width */
-#topofscroll, .header-maxwidth {
-    max-width: unset !important;
-}
+    GM_addStyle(css`
+        /* Use full width */
+        #topofscroll,
+        .header-maxwidth {
+            max-width: unset !important;
+        }
     `);
 }
 // endregion
@@ -3121,16 +3551,16 @@ if (getSetting('general.bookmarkManager')) {
             );
 
             if (!manageFormStyleAdded) {
-                GM_addStyle(`
-#${form.id} .felement:first-child {
-    flex-basis: calc(4 * (100% / 12) - 1em);
-    flex-grow: 1;
-}
-#${form.id} .felement:nth-child(2) {
-    flex-basis: calc(8 * (100% / 12) - 1em);
-    flex-grow: 1;
-}
-`);
+                GM_addStyle(css`
+                    #${form.id} .felement:first-child {
+                        flex-basis: calc(4 * (100% / 12) - 1em);
+                        flex-grow: 1;
+                    }
+                    #${form.id} .felement:nth-child(2) {
+                        flex-basis: calc(8 * (100% / 12) - 1em);
+                        flex-grow: 1;
+                    }
+                `);
                 manageFormStyleAdded = true;
             }
 
@@ -3184,51 +3614,64 @@ if (getSetting('general.bookmarkManager')) {
             .querySelector('#usernavigation .usermenu-container')
             ?.before(bookmarkBtnWrapper);
 
-        GM_addStyle(`
-/* bookmarks dropdown should not be greater than 400px */
-#${bookmarkBtnWrapper.id} .dropdown-menu {
-    max-width: 400px;
-}
+        GM_addStyle(css`
+            /* bookmarks dropdown should not be greater than 400px */
+            #${bookmarkBtnWrapper.id} .dropdown-menu {
+                max-width: 400px;
+            }
 
-/* this will allow the bookmarks dropdown menu to be aligned to right viewport side and fullwidth on mobile devices */
-@media (max-width: 576px) {
-    #${bookmarkBtnWrapper.id} {
-        position: inherit;   
-    }
-    #${bookmarkBtnWrapper.id} .dropdown-menu {
-        max-width: 100%;
-    }
-    #${bookmarkBtnWrapper.id} .dropdown-menu .dropdown-item {
-        overflow: auto;
-    }
-}
+            /* this will allow the bookmarks dropdown menu to be aligned to right viewport side and fullwidth on mobile devices */
+            @media (max-width: 576px) {
+                #${bookmarkBtnWrapper.id} {
+                    position: inherit;
+                }
+                #${bookmarkBtnWrapper.id} .dropdown-menu {
+                    max-width: 100%;
+                }
+                #${bookmarkBtnWrapper.id} .dropdown-menu .dropdown-item {
+                    overflow: auto;
+                }
+            }
 
-/* show a placeholder text when there are no bookmarks */
-#${bookmarksWrapper.id}:empty::before {
-    display: block;
-    text-align: center;
-    content: ${JSON.stringify($t('bookmarks.empty'))};
-    padding: .25rem 1.5rem; /* this is the padding of .dropdown-item set by moodle */
-}
-`);
+            /* show a placeholder text when there are no bookmarks */
+            #${bookmarksWrapper.id}:empty::before {
+                display: block;
+                text-align: center;
+                content: ${JSON.stringify($t('bookmarks.empty'))};
+                padding: 0.25rem 1.5rem; /* this is the padding of .dropdown-item set by moodle */
+            }
+        `);
     });
 }
 // endregion
 
 // region Feature: general.noDownload
 if (getSetting('general.noDownload')) {
-    document.addEventListener('mousedown', e => {
-        const target = e.target;
-        if (!(target instanceof HTMLAnchorElement)) return;
+    const removeForceDownload = anchor => {
         try {
-            const url = new URL(target.href, window.location);
+            const url = new URL(anchor.href, window.location);
             if (url.searchParams.has('forcedownload')) {
                 url.searchParams.delete('forcedownload');
-                target.href = url.href;
+                anchor.href = url.href;
             }
         } catch {
             // if href is not a valid URL just ignore it
         }
+    };
+
+    ready(() =>
+        document
+            .querySelectorAll('a[href*="forcedownload"]')
+            .forEach(removeForceDownload)
+    );
+
+    document.addEventListener('mousedown', e => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const anchor = target?.closest('a[href*="forcedownload"]');
+        if (!anchor) return;
+
+        removeForceDownload(anchor);
     });
 }
 // endregion
@@ -3348,66 +3791,83 @@ if (getSetting('general.speiseplan')) {
     const preiseClass = PREFIX('speiseplan-preise');
     const abkClass = PREFIX('speiseplan-abk');
 
-    GM_addStyle(`
-.${tableClass} .${speiseClass}[data-location]::before {
-    content: attr(data-location);
-    color: #e8e6e3;
-    background-color: #586e3b;
-    font-weight: bold;
-    font-size: smaller;
-    padding: 4px;
-    border-radius: 6px;
-    margin-right: .5em;
-}
+    GM_addStyle(css`
+        .${tableClass} .${speiseClass}[data-location]::before {
+            content: attr(data-location);
+            color: #e8e6e3;
+            background-color: #586e3b;
+            font-weight: bold;
+            font-size: smaller;
+            padding: 4px;
+            border-radius: 6px;
+            margin-right: 0.5em;
+        }
 
-.${tableClass} .${speiseClass}[data-location="Cafeteria"]::before {
-    background-color: #4b6669;
-}
+        .${tableClass} .${speiseClass}[data-location="Cafeteria"]::before {
+            background-color: #4b6669;
+        }
 
-.${tableClass} .${speiseClass} .${abkClass} {
-    font-size: smaller;
-}
+        .${tableClass} .${speiseClass} .${abkClass} {
+            font-size: smaller;
+        }
 
-.${tableClass} .${speiseClass} .${abkClass}::before {
-    margin-left: 1em;
-    content: "(";
-}
+        .${tableClass} .${speiseClass} .${abkClass}::before {
+            margin-left: 1em;
+            content: '(';
+        }
 
-.${tableClass} .${speiseClass} .${abkClass} > span:not(:last-child)::after {
-    content: "; ";
-}
+        .${tableClass}
+            .${speiseClass}
+            .${abkClass}
+            > span:not(:last-child)::after {
+            content: '; ';
+        }
 
-.${tableClass} .${speiseClass} .${abkClass}::after {
-    content: ")";
-}
+        .${tableClass} .${speiseClass} .${abkClass}::after {
+            content: ')';
+        }
 
-.${tableClass} .${artenClass} {
-    text-align: center;
-}
+        .${tableClass} .${artenClass} {
+            text-align: center;
+        }
 
-.${tableClass} .${artenClass} img {
-    max-width: 40px;
-    max-height: 40px;
-}
+        .${tableClass} .${artenClass} img {
+            max-width: 40px;
+            max-height: 40px;
+        }
 
-.${tableClass} .${preiseClass} > span:not(:last-child)::after {
-    content: "\xa0/\xa0";
-}
+        .${tableClass} .${preiseClass} > span:not(:last-child)::after {
+            content: '\xa0/\xa0';
+        }
 
-/* improve arten images in dark mode */
-${DARK_MODE_SELECTOR} .${artenClass} img {
-  --stroke-pos: 0.5px;
-  --stroke-neg: -0.5px;
-  --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
-  filter: drop-shadow(var(--stroke-pos) 0 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(0 var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-neg) 0 var(--stroke-color));
-}
-${DARK_MODE_SELECTOR} .${artenClass} img[src*="sh_teller"] {
-  filter: brightness(1.5);
-}
-${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
-  filter: brightness(0.9);
-}
-`);
+        /* improve arten images in dark mode */
+        ${DARK_MODE_SELECTOR} .${artenClass} img {
+            --stroke-pos: 0.5px;
+            --stroke-neg: -0.5px;
+            --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
+            filter: drop-shadow(var(--stroke-pos) 0 0 var(--stroke-color))
+                drop-shadow(var(--stroke-neg) 0 var(--stroke-color))
+                drop-shadow(0 var(--stroke-neg) 0 var(--stroke-color))
+                drop-shadow(
+                    var(--stroke-pos) var(--stroke-pos) 0 var(--stroke-color)
+                )
+                drop-shadow(
+                    var(--stroke-pos) var(--stroke-neg) 0 var(--stroke-color)
+                )
+                drop-shadow(
+                    var(--stroke-neg) var(--stroke-pos) 0 var(--stroke-color)
+                )
+                drop-shadow(
+                    var(--stroke-neg) var(--stroke-neg) 0 var(--stroke-color)
+                );
+        }
+        ${DARK_MODE_SELECTOR} .${artenClass} img[src*="sh_teller"] {
+            filter: brightness(1.5);
+        }
+        ${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
+            filter: brightness(0.9);
+        }
+    `);
 
     const createDayFieldset = (day, speisen, filter, firstFieldset) => {
         const date = new Date(day);
@@ -3566,69 +4026,77 @@ if (
     getSetting('general.googlyEyes') &&
     window.matchMedia('(hover: hover)').matches
 ) {
-    GM_addStyle(`
-/* This is the fancy style for googly Eyes 👀 */
-.eyes {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  --eye-width: 40%;
-  --eye-border-width: 2px;
-  --eye-height: 65%;
-  --pupil-width: max(1%, 4px);
-  --pupil-height: var(--pupil-width);
-}
+    GM_addStyle(css`
+        /* This is the fancy style for googly Eyes 👀 */
+        .eyes {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            --eye-width: 40%;
+            --eye-border-width: 2px;
+            --eye-height: 65%;
+            --pupil-width: max(1%, 4px);
+            --pupil-height: var(--pupil-width);
+        }
 
-.eye {
-  position: relative;
-  background-color: white;
-  border: var(--eye-border-width) solid black;
-  border-radius: 43%;
-  display: flex;
-  width: var(--eye-width);
-  height: var(--eye-height);
-  min-width: var(--eye-width);
-  min-height: var(--eye-height);
-  max-width: var(--eye-width);
-  max-height: var(--eye-height);
-  align-items: center;
-  justify-content: center;
-}
-.eye:not(:last-child) {
-  margin-right: calc(10% / 2);
-}
+        .eye {
+            position: relative;
+            background-color: white;
+            border: var(--eye-border-width) solid black;
+            border-radius: 43%;
+            display: flex;
+            width: var(--eye-width);
+            height: var(--eye-height);
+            min-width: var(--eye-width);
+            min-height: var(--eye-height);
+            max-width: var(--eye-width);
+            max-height: var(--eye-height);
+            align-items: center;
+            justify-content: center;
+        }
+        .eye:not(:last-child) {
+            margin-right: calc(10% / 2);
+        }
 
-.pupil {
-  background-color: black;
-  border: calc(var(--pupil-width) / 2) solid black;
-  border-radius: 50%;
-  display: block;
-  width: var(--pupil-width);
-  height: var(--pupil-height);
-  min-width: var(--pupil-width);
-  min-height: var(--pupil-height);
-  max-width: var(--pupil-width);
-  max-height: var(--pupil-height);
-}
+        .pupil {
+            background-color: black;
+            border: calc(var(--pupil-width) / 2) solid black;
+            border-radius: 50%;
+            display: block;
+            width: var(--pupil-width);
+            height: var(--pupil-height);
+            min-width: var(--pupil-width);
+            min-height: var(--pupil-height);
+            max-width: var(--pupil-width);
+            max-height: var(--pupil-height);
+        }
 
-/* Hey, don't look while I enter a password! Wait, are you peeking? 😨 */
-.eye::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  opacity: 0;
-  transition: opacity 0.5s linear;
-  background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgb(255, 255, 255) 49%, rgb(255, 255, 255) 51%, rgb(0, 0, 0) 65%, rgb(0, 0, 0) 100%);
-}
-body:has(input[type="password"]:focus) .eye::before {
-  opacity: 1;
-}
-`);
+        /* Hey, don't look while I enter a password! Wait, are you peeking? 😨 */
+        .eye::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s linear;
+            background: linear-gradient(
+                0deg,
+                rgb(0, 0, 0) 0%,
+                rgb(0, 0, 0) 35%,
+                rgb(255, 255, 255) 49%,
+                rgb(255, 255, 255) 51%,
+                rgb(0, 0, 0) 65%,
+                rgb(0, 0, 0) 100%
+            );
+        }
+        body:has(input[type='password']:focus) .eye::before {
+            opacity: 1;
+        }
+    `);
 
     const eyes = document.createElement('div');
     eyes.classList.add('eyes');
@@ -3726,24 +4194,34 @@ ${Array.from(shownBars)
 `);
 
     const nowAdditionsClass = PREFIX('semesterzeiten-now-additions');
-    GM_addStyle(`
-.${nowAdditionsClass}.progress-bar {
-    position: absolute;
-    height: 1rem;
-    pointer-events: none;
-    background-image: linear-gradient(45deg,rgba(255,255,255,.3) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.3) 75%,transparent 75%,transparent);
-    border-right: 1px solid black;
-}
-${DARK_MODE_SELECTOR} .${nowAdditionsClass}.progress-bar {
-    border-color: white;
-}
+    GM_addStyle(css`
+        .${nowAdditionsClass}.progress-bar {
+            position: absolute;
+            height: 1rem;
+            pointer-events: none;
+            background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.3) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0.3) 75%,
+                transparent 75%,
+                transparent
+            );
+            border-right: 1px solid black;
+        }
+        ${DARK_MODE_SELECTOR} .${nowAdditionsClass}.progress-bar {
+            border-color: white;
+        }
 
-span.${nowAdditionsClass} {
-    position: absolute;
-    transform: translateX(-50%) translateY(-100%);
-    font-size: .703125rem;
-}
-`);
+        span.${nowAdditionsClass} {
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%) translateY(calc(-1lh + 3px)); /* these numbers have been carefully */
+            font-size: 0.703125rem; /* this is font size of progress bars */
+        }
+    `);
 
     ready(() =>
         document
@@ -3927,7 +4405,9 @@ span.${nowAdditionsClass} {
 
         const progressWrapper = document.createElement('div');
         progressWrapper.classList.add('progress', 'w-100', 'position-relative');
-        progressWrapper.id = PREFIX('general-semesterzeiten-progress');
+        progressWrapper.id = PREFIX(
+            `general-semesterzeiten-progress-${cardContent.childElementCount}`
+        );
 
         const infoLink = document.createElement('a');
         infoLink.classList.add('mr-2');
@@ -4131,8 +4611,7 @@ span.${nowAdditionsClass} {
         cardContent.append(semesterDiv);
 
         if (isCurrentSemester) {
-            const nowPercentage =
-                ((now - semesterStart) / semesterDuration) * 100;
+            const nowPercentage = (now - semesterStart) / semesterDuration;
             const nowBar = document.createElement('div');
             nowBar.classList.add(
                 'progress-bar',
@@ -4140,18 +4619,23 @@ span.${nowAdditionsClass} {
                 'progress-bar-striped',
                 nowAdditionsClass
             );
-            nowBar.style.setProperty('width', `${nowPercentage}%`);
+            nowBar.style.setProperty('width', `${nowPercentage * 100}%`);
 
+            progressWrapper.prepend(nowBar);
+
+            const todaySpanWrapper = document.createElement('div');
+            todaySpanWrapper.classList.add('position-relative');
             const todaySpan = document.createElement('span');
             todaySpan.classList.add(nowAdditionsClass);
             todaySpan.textContent = dateToString(now);
             todaySpan.style.setProperty(
                 'margin-left',
-                `calc(${nowPercentage}% + 16px + .5rem)`
+                // 16px icon width and .5rem right margin. This calculation ensures that the correct position is calculated
+                `calc(${nowPercentage} * (100% - (16px + .5rem)) + 16px + .5rem)`
             );
 
-            progressWrapper.prepend(nowBar);
-            progressWrapper.before(todaySpan);
+            todaySpanWrapper.append(todaySpan);
+            topBar.before(todaySpanWrapper);
         }
     };
 
@@ -4180,13 +4664,198 @@ span.${nowAdditionsClass} {
 }
 // endregion
 
-// region Feature: Darkmode
-GM_addStyle(`
-/* make the UzL-Logo glow beautifully when using dark mode of darkreader */
-${DARK_MODE_SELECTOR} .navbar.fixed-top .navbar-brand .logo,
-${DARK_MODE_SELECTOR} #logoimage {
-    filter: brightness(500%);
+// region Feature: general.prideLogo
+const prideLogoSetting = settingsById['general.prideLogo'];
+if (['true', 'false'].includes(`${prideLogoSetting.value}`)) {
+    const oldValue = `${prideLogoSetting.value}` === 'true';
+    prideLogoSetting.value = oldValue ? 'rainbow' : 'off';
 }
+let prideLogoStyle = '';
+if (getSetting('general.prideLogo') !== 'off') {
+    const prideLogoSelector = `data-${PREFIX('pride-logo')}`;
+    ready(() => {
+        const logoImg =
+            document.querySelector('.navbar.fixed-top .navbar-brand img') ??
+            document.querySelector('#logoimage');
+        const logoUrl = new URL(logoImg.src);
+
+        GM_addStyle(css`
+            /* set image mask for any chosen flag style */
+            img[${prideLogoSelector}] {
+                filter: brightness(0.8) contrast(1.5);
+
+                object-position: -99999px -99999px; /* hide original image */
+                mask:
+                    url(${logoUrl.href}) center/contain no-repeat exclude
+                        luminance,
+                    url(${logoUrl.href}) center/contain no-repeat add alpha;
+                mask-origin: content-box;
+            }
+
+            ${DARK_MODE_SELECTOR} img[${prideLogoSelector}] {
+                filter: saturate(2) !important;
+            }
+        `);
+
+        logoImg.setAttribute(
+            prideLogoSelector,
+            getSetting('general.prideLogo')
+        );
+    });
+
+    // set the flag style for the chosen setting
+    prideLogoStyle = css`
+        img[${prideLogoSelector}], /* Fallback */
+            img[${prideLogoSelector}='rainbow'] {
+            background-image: linear-gradient(
+                #fe0000 24.7%,
+                #fd8c00 24.7% 37.35%,
+                #ffd000 37.35% 50%,
+                #119f0b 50% 62.65%,
+                #457cdf 62.65% 75.3%,
+                #c22edc 75.3%
+            );
+        }
+
+        img[${prideLogoSelector}='rotated'] {
+            background-image: linear-gradient(
+                135deg,
+                #fe0000 30%,
+                #fd8c00 30% 40%,
+                #ffd000 40% 50%,
+                #119f0b 50% 60%,
+                #457cdf 60% 70%,
+                #c22edc 70%
+            );
+        }
+
+        img[${prideLogoSelector}='agender'] {
+            background-image: linear-gradient(
+                #000000 22.85%,
+                #a3aaaf 22.85% 33.71%,
+                #f3f3f3 33.71% 44.57%,
+                #9ee261 44.57% 55.43%,
+                #f3f3f3 55.43% 66.29%,
+                #a3aaaf 66.29% 77.15%,
+                #000000 77.15%
+            );
+        }
+
+        img[${prideLogoSelector}='aro'] {
+            background-image: linear-gradient(
+                #008800 27.2%,
+                #6dc049 27.2% 42.4%,
+                #f3f3f3 42.4% 57.6%,
+                #868686 57.6% 72.8%,
+                #000000 72.8%
+            );
+        }
+
+        img[${prideLogoSelector}='ace'] {
+            background-image: linear-gradient(
+                #000000 31%,
+                #75005f 31% 50%,
+                #f3f3f3 50% 69%,
+                #868686 69%
+            );
+        }
+
+        img[${prideLogoSelector}='aroace'] {
+            background-image: linear-gradient(
+                #ce6600 27.2%,
+                #dbb600 27.2% 42.4%,
+                #f3f3f3 42.4% 57.6%,
+                #3592ca 57.6% 72.8%,
+                #000529 72.8%
+            );
+        }
+
+        img[${prideLogoSelector}='bi'] {
+            background-image: linear-gradient(
+                #d60270 37.33%,
+                #9b4f96 37.33% 62.67%,
+                #0038a8 62.67%
+            );
+        }
+
+        img[${prideLogoSelector}='genderfluid'] {
+            background-image: linear-gradient(
+                #f04e83 27.2%,
+                #f3f3f3 27.2% 42.4%,
+                #ca00c7 42.4% 57.6%,
+                #000000 57.6% 72.8%,
+                #0007a8 72.8%
+            );
+        }
+
+        img[${prideLogoSelector}='intersex'] {
+            background-image: radial-gradient(
+                circle at 50%,
+                #f3c500 12%,
+                #680088 12% 22%,
+                #f3c500 22%
+            );
+        }
+
+        img[${prideLogoSelector}='lesbian'] {
+            background-image: linear-gradient(
+                #c00000 27.2%,
+                #f07724 27.2% 42.4%,
+                #f3f3f3 42.4% 57.6%,
+                #bb3586 57.6% 72.8%,
+                #860035 72.8%
+            );
+        }
+
+        img[${prideLogoSelector}='enby'] {
+            background-image: linear-gradient(
+                #ece22c 31%,
+                #f3f3f3 31% 50%,
+                #7035b6 50% 69%,
+                #000000 69%
+            );
+        }
+
+        img[${prideLogoSelector}='pan'] {
+            background-image: linear-gradient(
+                #f3006d 37.33%,
+                #f0c500 37.33% 62.67%,
+                #0097f0 62.67%
+            );
+        }
+
+        img[${prideLogoSelector}='gay'] {
+            background-image: linear-gradient(
+                #006642 27.2%,
+                #6dc79b 27.2% 42.4%,
+                #f3f3f3 42.4% 57.6%,
+                #5086c2 57.6% 72.8%,
+                #0f004b 72.8%
+            );
+        }
+
+        img[${prideLogoSelector}='trans'] {
+            background-image: linear-gradient(
+                #00b9ee 27.2%,
+                #ee86d8 27.2% 42.4%,
+                #f3f3f3 42.4% 57.6%,
+                #ee86d8 57.6% 72.8%,
+                #00b9ee 72.8%
+            );
+        }
+    `;
+
+    GM_addStyle(prideLogoStyle);
+}
+// endregion
+
+// region Feature: Darkmode
+GM_addStyle(css`
+    /* make the UzL-Logo glow beautifully when using dark mode of darkreader */
+    ${DARK_MODE_SELECTOR} .navbar.fixed-top .navbar-brand .logo,
+${DARK_MODE_SELECTOR} #logoimage {
+        filter: brightness(500%);
+    }
 `);
 const updateDarkReaderMode = (live = false) => {
     const darkModeSetting = getSetting('darkmode.mode', live);
@@ -4198,10 +4867,13 @@ const updateDarkReaderMode = (live = false) => {
             sepia: getSetting('darkmode.sepia', live),
         };
         const fixes = {
-            css: `
-.eye {
-    background-color: white;
-}`,
+            css: css`
+                .eye {
+                    background-color: white;
+                }
+
+                ${prideLogoStyle}
+            `,
         };
         if (darkModeSetting === 'auto') DarkReader.auto(settings, fixes);
         else {
@@ -4214,6 +4886,98 @@ const updateDarkReaderMode = (live = false) => {
     }
 };
 updateDarkReaderMode();
+// endregion
+
+// region Feature: general.quickRoleChange
+if (getSetting('general.quickRoleChange')) {
+    ready(() => {
+        const usermenu = document.getElementById('usermenu-carousel');
+        const usermenuInner = usermenu?.querySelector('.carousel-inner');
+        const roleSelectBtn = usermenu?.querySelector(
+            '.dropdown-item[href*="switchrole.php"]'
+        );
+        if (!roleSelectBtn) return;
+
+        const rolesUrl = roleSelectBtn.href;
+        fetch(rolesUrl)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                return doc.querySelectorAll('form[action*="switchrole.php"]');
+            })
+            .then(forms => {
+                const roles = [];
+                forms.forEach(form => {
+                    const role = {
+                        id: form.querySelector('input[name="id"]').value,
+                        switchrole: form.querySelector(
+                            'input[name="switchrole"]'
+                        ).value,
+                        returnurl: form.querySelector('input[name="returnurl"]')
+                            .value,
+                        sesskey: form.querySelector('input[name="sesskey"]')
+                            .value,
+                        title: form.querySelector('button').textContent,
+                    };
+                    roles.push(role);
+                });
+                return roles;
+            })
+            .then(roles => {
+                if (roles.length === 0) return;
+
+                const roleSelecotrItemId = PREFIX('role-selector-item');
+                const roleSelectorItem = document.createElement('div');
+                roleSelectorItem.id = roleSelecotrItemId;
+                roleSelectorItem.classList.add('carousel-item', 'submenu');
+                roleSelectorItem.setAttribute('role', 'menu');
+                roleSelectorItem.setAttribute(
+                    'aria-label',
+                    $t('quickRoleChange.roleSelector')
+                );
+                roleSelectorItem.setAttribute('tabindex', -1);
+
+                roleSelectorItem.innerHTML = `
+                    <div class="d-flex flex-column h-100">
+                        <div class="header">
+                            <button type="button" class="btn btn-icon carousel-navigation-link text-decoration-none text-body" data-carousel-target-id="carousel-item-main" aria-label="${$t('quickRoleChange.goBack')}">
+                                <span class="dir-rtl-hide"><img class="icon " alt="" aria-hidden="true" src="/theme/image.php/boost/core/1718107763/i/arrow-left"></span>
+                                <span class="dir-ltr-hide"><img class="icon " alt="" aria-hidden="true" src="/theme/image.php/boost/core/1718107763/i/arrow-right"></span>
+                            </button>
+                            <span class="pl-2" id="${roleSelecotrItemId}-title">${$t('quickRoleChange.roleSelector')}</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="items h-100 overflow-auto" role="menu" aria-labelledby=""${roleSelecotrItemId}-title">
+                            ${Object.entries(roles)
+                                .map(
+                                    ([, role]) => `
+                                        <form method="post" action="/course/switchrole.php">
+                                            <input type="hidden" name="id" value="${role.id}">
+                                            <input type="hidden" name="switchrole" value="${role.switchrole}">
+                                            <input type="hidden" name="returnurl" value="${role.returnurl}">
+                                            <input type="hidden" name="sesskey" value="${role.sesskey}">
+                                            <button type="submit" class="dropdown-item text-truncate">${role.title}</button>
+                                        </form>
+                                    `
+                                )
+                                .join('')}
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="footer d-flex justify-content-center">
+                            <a href="${rolesUrl}" class="small">${$t('quickRoleChange.defaultSwitchRole')}</a>
+                        </div>
+                    </div>
+                `;
+
+                usermenuInner?.append(roleSelectorItem);
+
+                roleSelectBtn.href = '#';
+                roleSelectBtn.classList.add('carousel-navigation-link');
+                roleSelectBtn.dataset.carouselTargetId = roleSelecotrItemId;
+            });
+    });
+}
 // endregion
 
 // region Feature: Dashboard right sidebar
@@ -4229,16 +4993,17 @@ if (isDashboard) {
 
 // region Feature: myCourses.boxesPerRow
 const myCoursesBoxesPerRow = getSetting('myCourses.boxesPerRow');
-GM_addStyle(`
-/* ${myCoursesBoxesPerRow} boxes per row in the "my courses" view, instead of 3 plus increase margin a little */
-@media (min-width: 840px) {
-  .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
-    --margin: max(4px, min(10px, calc(100vw / 192)));
-    width: calc((100% / ${myCoursesBoxesPerRow}) - var(--margin) * 2);
-    margin-left: var(--margin);
-    margin-right: var(--margin);
-  }
-}`);
+GM_addStyle(css`
+    /* ${myCoursesBoxesPerRow} boxes per row in the "my courses" view, instead of 3 plus increase margin a little */
+    @media (min-width: 840px) {
+        .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
+            --margin: max(4px, min(10px, calc(100vw / 192)));
+            width: calc((100% / ${myCoursesBoxesPerRow}) - var(--margin) * 2);
+            margin-left: var(--margin);
+            margin-right: var(--margin);
+        }
+    }
+`);
 // endregion
 
 // region Features: courses.grades, courses.gradesNewTab, courses.collapseAll
@@ -4606,17 +5371,16 @@ ready(async () => {
                     updateSidebar(getSetting(settingId))
                 );
 
-                GM_addStyle(`
-#${dropdown.id} {
-    transform: unset !important;
-    position: sticky !important;
-}
+                GM_addStyle(css`
+                    #${dropdown.id} {
+                        transform: unset !important;
+                        position: sticky !important;
+                    }
 
-#${dropdown.id} a {
-    width: 100%;
-}
-
-`);
+                    #${dropdown.id} a {
+                        width: 100%;
+                    }
+                `);
 
                 header.append(myCoursesLink, dropdownToggle, dropdown);
             }
@@ -4760,11 +5524,11 @@ ready(async () => {
 
 // region Feature: courses.imgMaxWidth
 if (getSetting('courses.imgMaxWidth')) {
-    GM_addStyle(`
-/* prevent images from overflowing */
-#page-content .course-content img {
-    max-width: 100%;
-}
+    GM_addStyle(css`
+        /* prevent images from overflowing */
+        #page-content .course-content img {
+            max-width: 100%;
+        }
     `);
 }
 // endregion
@@ -4776,40 +5540,41 @@ if (getSetting('courses.imageZoom')) {
 
     let copyImage;
 
-    GM_addStyle(`
-#page-content .course-content img {
-    cursor: zoom-in;
-}
+    GM_addStyle(css`
+        #page-content .course-content img {
+            cursor: zoom-in;
+        }
 
-/* background for image zooming */
-#${overlay.id} {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 2000;
-    opacity: 0;
+        /* background for image zooming */
+        #${overlay.id} {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 2000;
+            opacity: 0;
 
-    background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.75);
 
-    cursor: zoom-out;
+            cursor: zoom-out;
 
-    transition: opacity 0.2s ease-in-out;
-    will-change: opacity;
+            transition: opacity 0.2s ease-in-out;
+            will-change: opacity;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-/* image zooming */
-#${overlay.id} > img {
-    cursor: zoom-out;
-    transform: scale(0);
-    transition: transform 0.2s ease-in-out;
-    will-change: transform;
-}`);
+        /* image zooming */
+        #${overlay.id} > img {
+            cursor: zoom-out;
+            transform: scale(0);
+            transition: transform 0.2s ease-in-out;
+            will-change: transform;
+        }
+    `);
 
     overlay.addEventListener('click', () => {
         overlay.remove();
@@ -4868,23 +5633,33 @@ if (getSetting('courses.imageZoom')) {
 
 // region Feature: courses.hideSelfEnrolHint
 if (getSetting('courses.hideSelfEnrolHint')) {
-    GM_addStyle(`
-.course-hint-selfenrol.alert.alert-info {
-    display: none !important;
-}
-`);
+    GM_addStyle(css`
+        .course-hint-selfenrol.alert.alert-info {
+            display: none !important;
+        }
+    `);
 }
 // endregion
 
-// region Feature: clock.fuzzyClock
-if (getSetting('clock.fuzzyClock')) {
-    /** @type {number} */
-    const fuzziness = getSetting('clock.fuzzyClock.fuzziness');
+// region Feature: clock.clock && clock.fuzzyClock
+const clockEnabled = getSetting('clock.clock');
+const fuzzyClockEnabled = getSetting('clock.fuzzyClock');
+if (clockEnabled || fuzzyClockEnabled) {
+    if (fuzzyClockEnabled) {
+        /** @type {number} */
+        const fuzziness = getSetting('clock.fuzzyClock.fuzziness');
+        const fuzzyClockSpan = document.createElement('span');
+        fuzzyClockSpan.dataset.clockFuzziness = fuzziness.toString();
 
-    const clockSpan = document.createElement('span');
-    clockSpan.dataset.clockFuzziness = fuzziness.toString();
+        addMarqueeItems(fuzzyClockSpan);
+    }
+    if (clockEnabled) {
+        const clockSpan = document.createElement('span');
+        clockSpan.dataset.clockFuzziness =
+            getSetting('clock.clock.seconds') ? '0' : '1';
 
-    addMarqueeItems(clockSpan);
+        addMarqueeItems(clockSpan);
+    }
 
     /** @type {Map<number, string>} */
     const timeStrings = new Map();
@@ -4899,6 +5674,7 @@ if (getSetting('clock.fuzzyClock')) {
         const exactMinutes = minutes + now.getSeconds() / 60;
 
         timeStrings.set(0, timeToString(now, true));
+        timeStrings.set(1, timeToString(now, false));
 
         document
             .querySelectorAll('[data-clock-fuzziness]')
@@ -4912,7 +5688,8 @@ if (getSetting('clock.fuzzyClock')) {
                 const timeString = [];
 
                 switch (fuzziness) {
-                    case 0: // 1 second, "normal" clock
+                    case 0: // 1 second, "normal" clock with seconds
+                    case 1: // 1 second, "normal" clock without seconds
                         clockSpan.textContent = timeStrings.get(fuzziness);
                         break;
                     case 10: // 5 minutes
@@ -4964,7 +5741,7 @@ if (getSetting('clock.fuzzyClock')) {
                         const weekString =
                             dayOfWeek === 1 ?
                                 0 // Monday
-                            : dayOfWeek <= 3 ?
+                            : dayOfWeek >= 2 && dayOfWeek <= 3 ?
                                 1 // Tuesday, Wednesday
                             : dayOfWeek <= 5 ?
                                 2 // Thursday, Friday
@@ -5786,8 +6563,7 @@ if (getSetting('weatherDisplay.show')) {
                     'weatherDisplay.updated'
                 )}:&nbsp;${timeToString(data.time, false)}</small>`;
             });
-        },
-        true
+        }
     );
 }
 // endregion
@@ -5841,6 +6617,7 @@ ready(() => {
 
     const settingsBtnWrapper = document.createElement('div');
     const settingsBtn = document.createElement('a');
+    settingsBtn.id = PREFIX('settings-btn');
     settingsBtn.classList.add(
         'nav-link',
         'position-relative',
@@ -5849,10 +6626,11 @@ ready(() => {
     settingsBtn.href = '#';
     settingsBtn.role = 'button';
     const settingsIcon = document.createElement('i');
+    settingsIcon.title =
+        settingsBtn.title =
+        settingsBtn.ariaLabel =
+            `Better-Moodle:\xa0${$t('modals.settings.title').toString()}`;
     settingsIcon.classList.add('icon', 'fa', 'fa-gears', 'fa-fw');
-    settingsIcon.title = settingsBtn.ariaLabel = `Better-Moodle:\xa0${$t(
-        'modals.settings.title'
-    ).toString()}`;
     settingsIcon.role = 'img';
     settingsBtn.append(settingsIcon);
 
@@ -5887,12 +6665,28 @@ ready(() => {
      */
     const createSettingsFieldset = name => {
         const fieldset = createFieldset(
-            name,
+            $t(`settings.${name}._title`),
             `settings-collapseElement-${fieldsetCounter}`,
             `settings-containerElement-${fieldsetCounter}`
         );
         currentFieldset = fieldset.fieldset;
         form.append(currentFieldset);
+
+        if (
+            unseenSettingsGroups.has(name) &&
+            getSetting('general.highlightNewSettings')
+        ) {
+            const newBadge = document.createElement('span');
+            newBadge.classList.add(
+                'badge',
+                'badge-success',
+                'text-uppercase',
+                newSettingBadgeClass
+            );
+            newBadge.textContent = $t('new').toString();
+            newBadge.dataset.group = name;
+            fieldset.heading.append(newBadge);
+        }
 
         // on first fieldset, show the help button
         if (!fieldsetCounter) fieldset.heading.append(helpBtn);
@@ -5941,6 +6735,23 @@ ready(() => {
             label.classList.add('d-inline', 'word-break');
             label.textContent = setting.title;
             setting.setLabel(label);
+
+            if (
+                unseenSettings.has(setting.id) &&
+                getSetting('general.highlightNewSettings')
+            ) {
+                const newBadge = document.createElement('span');
+                newBadge.classList.add(
+                    'badge',
+                    'badge-success',
+                    'text-uppercase',
+                    'd-inline',
+                    newSettingBadgeClass
+                );
+                newBadge.textContent = $t('new').toString();
+                newBadge.dataset.setting = setting.id;
+                label.prepend(newBadge);
+            }
 
             const descWrapper = document.createElement('div');
             descWrapper.classList.add(
@@ -6029,6 +6840,26 @@ ready(() => {
     document
         .querySelector('#usernavigation .usermenu-container')
         ?.before(settingsBtnWrapper);
+    if (
+        (unseenSettings.size &&
+            getSetting('general.highlightNewSettings.navbar')) ||
+        !GM_getValue(EVER_OPENED_SETTINGS_KEY, false)
+    ) {
+        require(['theme_boost/bootstrap/tooltip'], Tooltip => {
+            settingsIcon.title = $t('new').toString(); // otherwise it for some reason would use the original title although another title has been explicitely set
+            settingsBtnNewTooltip = new Tooltip(settingsIcon, {
+                trigger: 'manual',
+                title: $t('new'),
+                template: `<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner badge bg-success text-uppercase ${newSettingBadgeClass}"></div></div>`,
+            });
+            settingsBtnNewTooltip
+                .getTipElement()
+                .addEventListener('click', () => settingsBtn.click());
+            settingsBtnNewTooltip.show();
+            settingsBtnNewTooltip.update();
+        });
+    }
+
     require(['core/modal_factory', 'core/modal_events'], (
         { create, types },
         ModalEvents
@@ -6044,6 +6875,7 @@ ready(() => {
         }).then(modal => {
             updateDisabledStates();
 
+            let ignoreNextModalHide = false;
             const updateBadge = document.createElement('div');
             updateBadge.classList.add('count-container');
 
@@ -6066,8 +6898,125 @@ ready(() => {
 
             // open the modal on click onto the settings button
             settingsBtnWrapper.addEventListener('click', () => {
+                GM_setValue(EVER_OPENED_SETTINGS_KEY, true);
                 updateCheck().then();
+                if (settingsBtnNewTooltip) {
+                    settingsBtnNewTooltip.hide();
+                    // now show and hide based on hovering / focusing settings btn (there doesn't seem to be a native way to do so)
+                    const show = () => {
+                        settingsBtnNewTooltip?.show();
+                        settingsBtnNewTooltip?.update();
+                    };
+                    const hide = () => settingsBtnNewTooltip?.hide();
+                    settingsBtn.addEventListener('mouseenter', show);
+                    settingsBtn.addEventListener('focusin', show);
+                    settingsBtn.addEventListener('mouseleave', hide);
+                    settingsBtn.addEventListener('focusout', hide);
+                    settingsBtnNewTooltip
+                        .getTipElement()
+                        .addEventListener('mouseenter', show);
+                    settingsBtnNewTooltip
+                        .getTipElement()
+                        .addEventListener('mouseleave', hide);
+                }
                 modal.show();
+
+                // there are unseen settings groups => show a floating `New!`-Badge
+                if (unseenSettingsGroups.size) {
+                    const floatingNewSettingsBadge =
+                        document.createElement('span');
+                    floatingNewSettingsBadge.classList.add(
+                        'badge',
+                        'badge-success',
+                        'text-uppercase',
+                        newSettingBadgeClass
+                    );
+                    floatingNewSettingsBadge.id = PREFIX(
+                        'new-settings-floating-badge'
+                    );
+                    floatingNewSettingsBadge.textContent = `\xa0⬇️\xa0${$t('new')}\xa0⬇️\xa0`;
+
+                    GM_addStyle(css`
+                        #${floatingNewSettingsBadge.id} {
+                            position: sticky;
+                            left: 50%;
+                            bottom: 0;
+                            transform: translateX(-50%);
+                            z-index: 1;
+                            cursor: pointer;
+                            box-shadow: 2px 2px 2px rgba(50%, 50%, 50%, 50%);
+                        }
+                        #${floatingNewSettingsBadge.id}.invisible {
+                            visibility: hidden;
+                        }
+                    `);
+
+                    /** @type {HTMLSpanElement|null} */
+                    const lastNewSettingsBadge = Array.from(
+                        form.querySelectorAll(
+                            `fieldset h3 .${newSettingBadgeClass}`
+                        )
+                    )?.at(-1);
+
+                    const updateFloatingNewSettingsBadgeStyle = () => {
+                        const { top: lastBadgeTop, bottom: lastBadgeBottom } =
+                            lastNewSettingsBadge.getBoundingClientRect();
+                        const { bottom: floatingBadgeBottom } =
+                            floatingNewSettingsBadge.getBoundingClientRect();
+
+                        // calculate how much opacity needed
+                        const height = lastBadgeBottom - lastBadgeTop;
+                        const overlap = floatingBadgeBottom - lastBadgeTop;
+                        const opacity =
+                            floatingBadgeBottom < lastBadgeTop ? 1
+                            : floatingBadgeBottom > lastBadgeBottom ? 0
+                            : 1 - Math.min(1, overlap ? overlap / height : 0);
+                        floatingNewSettingsBadge.style.setProperty(
+                            'opacity',
+                            opacity.toString()
+                        );
+                        floatingNewSettingsBadge.classList.toggle(
+                            'invisible',
+                            !opacity
+                        );
+                    };
+
+                    floatingNewSettingsBadge.addEventListener('click', () => {
+                        const floatingBadgeBottom =
+                            floatingNewSettingsBadge.getBoundingClientRect()
+                                .bottom;
+                        for (const badge of form.querySelectorAll(
+                            `fieldset h3 .${newSettingBadgeClass}`
+                        )) {
+                            const bottom = badge.getBoundingClientRect().bottom;
+                            if (bottom > floatingBadgeBottom) {
+                                badge
+                                    .closest('.ftoggler')
+                                    ?.querySelector('a.fheader.collapsed')
+                                    ?.click();
+                                badge.scrollIntoView({
+                                    block: 'center',
+                                    behavior: 'smooth',
+                                    inline: 'nearest',
+                                });
+                                return;
+                            }
+                        }
+                    });
+
+                    if (lastNewSettingsBadge) {
+                        const debouncedUpdate = debounce(
+                            updateFloatingNewSettingsBadgeStyle,
+                            25
+                        );
+                        modal
+                            .getBody()[0]
+                            .addEventListener('scroll', debouncedUpdate);
+                        new ResizeObserver(debouncedUpdate).observe(form);
+                    }
+
+                    modal.getBody()[0].append(floatingNewSettingsBadge);
+                }
             });
 
             // region link to moodle settings
@@ -6093,21 +7042,44 @@ ready(() => {
             // region save & cancel
             // handle the save & cancel buttons
             modal.getRoot().on(ModalEvents.save, () => {
+                ignoreNextModalHide = true;
+
                 SETTINGS.forEach(setting => {
                     if (typeof setting === 'string') return;
 
                     setting.saveInput();
                 });
 
+                markAllSettingsAsSeen();
+
                 window.location.reload();
             });
-            modal.getRoot().on(ModalEvents.cancel, () => {
+            const cancelSettings = () => {
                 SETTINGS.forEach(setting => {
                     if (!setting.id) return;
 
                     setting.resetInput();
                 });
+                markAllSettingsAsSeen();
                 updateDarkReaderMode();
+            };
+            modal.getRoot().on(ModalEvents.cancel, () => {
+                ignoreNextModalHide = true;
+                cancelSettings();
+            });
+            // endregion
+
+            // region modal hide via x btn
+            modal.getRoot().on(ModalEvents.hidden, () => {
+                if (ignoreNextModalHide) return (ignoreNextModalHide = false);
+                cancelSettings();
+            });
+            // endregion
+
+            // region hide modal for preview
+            modal.getRoot()[0].addEventListener(SETTINGS_PREVIEW_EVENT, () => {
+                ignoreNextModalHide = true;
+                modal.hide();
             });
             // endregion
 
@@ -6189,16 +7161,16 @@ ready(() => {
 
             footerBtnGroup.id = PREFIX('settings-footer-btn-group');
 
-            GM_addStyle(`
-/* show button text only on hover */
-#${footerBtnGroup.id} > :where(button, a) > span {
-    font-size: 0;
-    transition: font-size 0.5s;
-}
-#${footerBtnGroup.id} > :where(button, a):hover > span {
-    font-size: unset;
-}
-`);
+            GM_addStyle(css`
+                /* show button text only on hover */
+                #${footerBtnGroup.id} > :where(button, a) > span {
+                    font-size: 0;
+                    transition: font-size 0.5s;
+                }
+                #${footerBtnGroup.id} > :where(button, a):hover > span {
+                    font-size: unset;
+                }
+            `);
 
             modal.getFooter()[0].prepend(footerBtnGroup);
 
@@ -6288,7 +7260,9 @@ ready(() => {
             exportBtn.addEventListener('click', e => {
                 e.preventDefault();
                 const config = Object.fromEntries(
-                    GM_listValues().map(key => [key, GM_getValue(key)])
+                    GM_listValues()
+                        .toSorted()
+                        .map(key => [key, GM_getValue(key)])
                 );
                 const blob = new Blob([JSON.stringify(config)], {
                     type: 'application/json',

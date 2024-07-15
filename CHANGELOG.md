@@ -1,5 +1,100 @@
 # Changelog
 
+## [1.38.2](https://github.com/jxn-30/better-moodle/compare/1.38.1...1.38.2) (2024-07-01)
+
+
+### Bug Fixes
+
+* **noDownload:** Remove `forcedownload` param on page load ([#249](https://github.com/jxn-30/better-moodle/issues/249)) ([a34c1e2](https://github.com/jxn-30/better-moodle/commit/a34c1e212a1cc61a976f7b1f01e4177696fca5ee))
+
+## [1.38.1](https://github.com/jxn-30/better-moodle/compare/1.38.0...1.38.1) (2024-06-23)
+
+
+### Bug Fixes
+
+* **prideLogo:** Fix 'pridification' on logos that are not transparent ([#237](https://github.com/jxn-30/better-moodle/issues/237)) ([c4154ae](https://github.com/jxn-30/better-moodle/commit/c4154ae945b0b1d9270ec5504838b1594c649679))
+
+## [1.38.0](https://github.com/jxn-30/better-moodle/compare/1.37.1...1.38.0) (2024-06-17)
+
+
+### Features
+
+* **quickRoleChange:** Make switching roles as easy as switching lang ([#215](https://github.com/jxn-30/better-moodle/issues/215)) ([6aac352](https://github.com/jxn-30/better-moodle/commit/6aac35237c4033964f159d5553ac15ad99aae01f))
+
+## [1.37.1](https://github.com/jxn-30/better-moodle/compare/1.37.0...1.37.1) (2024-06-13)
+
+
+### Code Refactoring
+
+* **prideLogo:** Use linear-gradients instead of svgs [#212](https://github.com/jxn-30/better-moodle/issues/212) ([#217](https://github.com/jxn-30/better-moodle/issues/217)) ([c35eadf](https://github.com/jxn-30/better-moodle/commit/c35eadf4fa221b285985e9505df083a877befeb1))
+
+## [1.37.0](https://github.com/jxn-30/better-moodle/compare/1.36.0...1.37.0) (2024-06-08)
+
+
+### Features
+
+* **expandedPrideLogo:** Adds more customization options to the moodle logo ([#208](https://github.com/jxn-30/better-moodle/issues/208)) ([bcd37f5](https://github.com/jxn-30/better-moodle/commit/bcd37f52aed3402c5c7d59208c2695549f94c4b7))
+
+## [1.36.0](https://github.com/jxn-30/better-moodle/compare/1.35.0...1.36.0) (2024-06-02)
+
+
+### Features
+
+* **prideLogo:** Add a setting to 'prideify' the moodle logo ([#201](https://github.com/jxn-30/better-moodle/issues/201)) ([0719a49](https://github.com/jxn-30/better-moodle/commit/0719a494733b90ff9318447d6dd0eefa8ef3bfad))
+
+## [1.35.0](https://github.com/jxn-30/better-moodle/compare/1.34.1...1.35.0) (2024-06-01)
+
+
+### Features
+
+* **darkmode:** add a btn to close settings for preview ([0fa2a2d](https://github.com/jxn-30/better-moodle/commit/0fa2a2dda7cbcfc33b4d8cc6684266f73cc4a842))
+* **settings:** closing settings via `x` button is equivalent to `cancel` ([b2b5c47](https://github.com/jxn-30/better-moodle/commit/b2b5c47db4ea18b0776488acf487284d6627b4ae))
+* **settings:** do not repeat shining effect on `New!`-Labels ([2aaa947](https://github.com/jxn-30/better-moodle/commit/2aaa9477b4b4af138a5b7e9d05fd92e2d9af4496))
+* **userscript:** update description ([7ea85bd](https://github.com/jxn-30/better-moodle/commit/7ea85bd33f6499ae67fca518c729425231838172))
+
+## [1.34.1](https://github.com/jxn-30/better-moodle/compare/1.34.0...1.34.1) (2024-05-31)
+
+
+### Bug Fixes
+
+* **semesterzeiten:** fix progress bar ID not being unique ([8bddd9e](https://github.com/jxn-30/better-moodle/commit/8bddd9ed6f6564533a5186f00853cf09b2061d67))
+* **semesterzeiten:** fix today date being wrongly positioned ([da48a83](https://github.com/jxn-30/better-moodle/commit/da48a839fd92c04a0f8f2dd3c70e271122318da1))
+
+## [1.34.0](https://github.com/jxn-30/better-moodle/compare/1.33.2...1.34.0) (2024-05-29)
+
+
+### Features
+
+* **settings:** add option to highlight new settings ([#152](https://github.com/jxn-30/better-moodle/issues/152)) ([#196](https://github.com/jxn-30/better-moodle/issues/196)) ([552037e](https://github.com/jxn-30/better-moodle/commit/552037eee095566437c1f3c594acd7036f1514ce))
+
+## [1.33.2](https://github.com/jxn-30/better-moodle/compare/1.33.1...1.33.2) (2024-05-19)
+
+
+### Bug Fixes
+
+* **clock:** fix clock not showing at all ([c221eed](https://github.com/jxn-30/better-moodle/commit/c221eedb8524e9fc9475ccb5e3b5467d0d0be65f))
+
+## [1.33.1](https://github.com/jxn-30/better-moodle/compare/1.33.0...1.33.1) (2024-05-19)
+
+
+### Bug Fixes
+
+* **settings:** remove accidental empty item ([9249382](https://github.com/jxn-30/better-moodle/commit/9249382102f4824d695cb97467db69e1bc89b7b0))
+
+## [1.33.0](https://github.com/jxn-30/better-moodle/compare/1.32.1...1.33.0) (2024-05-19)
+
+
+### Features
+
+* **clock:** add a normal clock ([096e47a](https://github.com/jxn-30/better-moodle/commit/096e47a0bf1c712f37e6ce685986d547c7b3dc9d))
+
+## [1.32.1](https://github.com/jxn-30/better-moodle/compare/1.32.0...1.32.1) (2024-05-19)
+
+
+### Bug Fixes
+
+* **fuzzyClock:** fix sundays showing up as 'middle of week' ([#184](https://github.com/jxn-30/better-moodle/issues/184)) ([f9530e1](https://github.com/jxn-30/better-moodle/commit/f9530e125759644290e49cfc0381334569c6ce8f))
+
 ## [1.32.0](https://github.com/jxn-30/better-moodle/compare/1.31.2...1.32.0) (2024-05-18)
 
 

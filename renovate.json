@@ -1,7 +1,7 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "assignees": ["jxn-30"],
-    "baseBranches": ["main"],
+    "baseBranches": ["main", "v2"],
     "dependencyDashboard": true,
     "dependencyDashboardFooter": "PRs will be created on weekdays before 3am (CEST) for any dependencies.",
     "dependencyDashboardHeader": "# ℹ️ Renovate Dependency-Dashboard ℹ\nScheduled and currently open dependency updates are listed here\n",
@@ -14,6 +14,17 @@
         "reviewers": ["jxn-30"],
         "schedule": ["before 3am on saturday"]
     },
+    "packageRules": [
+        {
+            "groupName": "ESLint",
+            "lockFileMaintenance": { "enabled": true },
+            "matchManagers": ["npm"],
+            "matchDepNames": ["@eslint/js", "eslint"],
+            "rangeStrategy": "pin",
+            "separateMajorMinor": false
+        }
+    ],
+    "postUpdateOptions": ["yarnDedupeHighest"],
     "rangeStrategy": "pin",
     "reviewers": ["jxn-30"],
     "schedule": ["before 3am every weekday"],
