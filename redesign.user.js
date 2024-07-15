@@ -281,10 +281,10 @@ Viele Grüße
                 close: 'Schließen',
                 attributes: {
                     temperature: 'Temperatur',
-                    feelsLike: 'Gefühlte Temperatur',
+                    temperatureFeelsLike: 'Gefühlte Temperatur',
                     windSpeed: 'Windgeschwindigkeit',
                     windDirection: 'Windrichtung',
-                    visibility: 'Sichtweite',
+                    visibilityDistance: 'Sichtweite',
                     humidity: 'Feuchtigkeit',
                     pressure: 'Luftdruck',
                     cloudCover: 'Bewölkung',
@@ -655,11 +655,6 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
                     description:
                         'Ermöglicht das Umschalten zwischen der tatsächlichen Temperatur und der gefühlten Temperatur.',
                 },
-                useDeviceOrientation: {
-                    name: 'Geräteorientierung verwenden',
-                    description:
-                        'Verwende die Geräteorientierung, um die Windrichtung anzuzeigen.',
-                },
             },
         },
     },
@@ -911,10 +906,10 @@ Best regards
                 close: 'Close',
                 attributes: {
                     temperature: 'Temperature',
-                    feelsLike: 'Feels like',
+                    temperatureFeelsLike: 'Feels like',
                     windSpeed: 'Wind speed',
                     windDirection: 'Wind direction',
-                    visibility: 'Visibility',
+                    visibilityDistance: 'Visibility',
                     humidity: 'Humidity',
                     pressure: 'Pressure',
                     cloudCover: 'Cloud cover',
@@ -1279,11 +1274,6 @@ Better-Moodle never requires more than the free plan of the respective provider 
                     name: "Show 'feels like' temperature",
                     description:
                         "Allows you to switch between the actual temperature and the 'feels like' temperature.",
-                },
-                useDeviceOrientation: {
-                    name: 'Use device orientation',
-                    description:
-                        'Use the device orientation to display the wind direction.',
                 },
             },
         },
@@ -2276,7 +2266,11 @@ const timeToString = (date, seconds = true) =>
  * @param {number} delay
  * @param {CallableFunction} callback
  */
-const animationInterval = (delay, callback) => {
+const animationInterval = (delay, callback, runImmediate = false) => {
+    if (runImmediate) {
+        callback();
+    }
+
     let last = 0;
     let currentId;
     /**
@@ -3082,16 +3076,16 @@ const SETTINGS = [
             !settings['weatherDisplay.show'].inputValue ||
             settings['weatherDisplay.provider'].inputValue !== 'pirateWeather'
     ),
-    new BooleanSetting('weatherDisplay.showTempInNavbar', false).setDisabledFn(
-        settings => !settings['weatherDisplay.show'].inputValue
-    ),
-    new BooleanSetting('weatherDisplay.toggleFeelsLike', false).setDisabledFn(
-        settings => !settings['weatherDisplay.show'].inputValue
-    ),
-    new BooleanSetting(
-        'weatherDisplay.useDeviceOrientation',
-        true
-    ).setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
+    new BooleanSetting('weatherDisplay.showTempInNavbar', false)
+        .setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue)
+        .setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
+    new BooleanSetting('weatherDisplay.toggleFeelsLike', false)
+        .setDisabledFn(
+            settings =>
+                !settings['weatherDisplay.show'].inputValue ||
+                !settings['weatherDisplay.showTempInNavbar'].inputValue
+        )
+        .setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
     'messages',
     new SelectSetting('messages.sendHotkey', '', [
         '',
@@ -5768,11 +5762,10 @@ if (clockEnabled || fuzzyClockEnabled) {
 // region Feature: weatherDisplay
 if (getSetting('weatherDisplay.show')) {
     const city = {
-        // TODO: Use coordinates more often
         name: 'luebeck',
-        lat: 53.8655, // TODO: Are these values correct?
+        lat: 53.8655,
         lon: 10.6866,
-    }; // TODO: Should this be configurable?
+    };
     const provider = getSetting('weatherDisplay.provider');
     const units = getSetting('weatherDisplay.units');
     const showTempInNavbar = getSetting('weatherDisplay.showTempInNavbar');
@@ -5888,7 +5881,6 @@ if (getSetting('weatherDisplay.show')) {
 
     const fetchJSON = url =>
         new Promise((resolve, reject) => {
-            console.log('fetching', url); // TODO: Remove this
             GM_xmlhttpRequest({
                 method: 'GET',
                 url,
@@ -5916,9 +5908,9 @@ if (getSetting('weatherDisplay.show')) {
         });
     };
 
-    const fallback = () => {
-        // TODO: Implement
-    };
+    const fallback = () => ({
+        weatherType: weatherCodes.UNKNOWN,
+    });
 
     const wttrIn = () => {
         return manageRateLimit(
@@ -5979,6 +5971,10 @@ if (getSetting('weatherDisplay.show')) {
                         395: weatherCodes.MODERATE_THUNDERSTORM_WITH_SNOW,
                     }[new Number(currentCondition.weatherCode).valueOf()] ??
                     weatherCodes.UNKNOWN;
+
+                const parseLocalObsDateTime = (isoDate, utcTime) =>
+                    new Date(`${isoDate} ${utcTime} +00:00`);
+
                 return {
                     temperature: currentCondition.temp_C,
                     temperatureFeelsLike: currentCondition.FeelsLikeC,
@@ -5990,7 +5986,10 @@ if (getSetting('weatherDisplay.show')) {
                     cloudCover: currentCondition.cloudcover,
                     rainGauge: currentCondition.precipMM,
                     weatherType,
-                    time: new Date(currentCondition.localObsDateTime), // TODO: check different time zones
+                    time: parseLocalObsDateTime(
+                        currentCondition.localObsDateTime.slice(0, 10),
+                        currentCondition.observation_time
+                    ),
                 };
             })
             .catch(fallback);
@@ -6430,6 +6429,16 @@ if (getSetting('weatherDisplay.show')) {
         return arrows[Math.round(deg / 45) % 8];
     };
 
+    const WEATHER_ATTRIBUTES = [
+        'temperature',
+        'temperatureFeelsLike',
+        'windSpeed',
+        'visibilityDistance',
+        'humidity',
+        'pressure',
+        'cloudCover',
+        'rainGauge',
+    ];
     let weatherModal = null;
 
     const openWeatherDisplayModal = e => {
@@ -6462,7 +6471,7 @@ if (getSetting('weatherDisplay.show')) {
                             'weatherDisplay.credits._long'
                         )} <a href="${$t(
                             `weatherDisplay.credits.${provider}.url`
-                        )}">${$t(`weatherDisplay.credits.${provider}.name`)}</a>`; // TODO: Show used provider on fallback
+                        )}">${$t(`weatherDisplay.credits.${provider}.name`)}</a>`;
                         modal.getFooter().prepend(credits);
 
                         weatherModal = modal;
@@ -6471,26 +6480,22 @@ if (getSetting('weatherDisplay.show')) {
                 }).then(modal => {
                     const modalBody = modal.getBody()[0];
 
-                    // TODO: Make this more beautiful
+                    if (data.weatherType === weatherCodes.UNKNOWN) {
+                        modalBody.innerHTML = `<div><p>${$t(
+                            `weatherDisplay.weatherCodes.${weatherCodes.UNKNOWN}`
+                        )}</p></div>`;
+                        modal.show();
+                        return;
+                    }
+
                     modalBody.innerHTML = `
                         <div>
                             <dl class="row">
-                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.temperature')}</dt>
-                                <dd class="col-sm-8">${displayData('temperature', data)}</dd>
-                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.feelsLike')}</dt>
-                                <dd class="col-sm-8">${displayData('temperatureFeelsLike', data)}</dd>
-                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.windSpeed')}</dt>
-                                <dd class="col-sm-8">${displayData('windSpeed', data)}</dd>
-                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.visibility')}</dt>
-                                <dd class="col-sm-8">${displayData('visibilityDistance', data)}</dd>
-                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.humidity')}</dt>
-                                <dd class="col-sm-8">${displayData('humidity', data)}</dd>
-                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.pressure')}</dt>
-                                <dd class="col-sm-8">${displayData('pressure', data)}</dd>
-                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.cloudCover')}</dt>
-                                <dd class="col-sm-8">${displayData('cloudCover', data)}</dd>
-                                <dt class="col-sm-4">${$t('modals.weatherDisplay.attributes.rainGauge')}</dt>
-                                <dd class="col-sm-8">${displayData('rainGauge', data)}</dd>
+                                ${WEATHER_ATTRIBUTES.map(
+                                    attr => `
+                                    <dt class="col-sm-4">${$t(`modals.weatherDisplay.attributes.${attr}`)}</dt>
+                                    <dd class="col-sm-8">${displayData(attr, data)}</dd>`
+                                ).join('')}
                             </dl>
                         </div>
                     `;
@@ -6532,6 +6537,15 @@ if (getSetting('weatherDisplay.show')) {
         () => {
             weatherProvider().then(data => {
                 const weatherEmoji = getWeatherEmoji(data.weatherType);
+
+                if (data.weatherType === weatherCodes.UNKNOWN) {
+                    weatherBtn.innerHTML = weatherEmoji;
+                    weatherBtn.dataset.originalTitle = $t(
+                        `weatherDisplay.weatherCodes.${weatherCodes.UNKNOWN}`
+                    );
+                    return;
+                }
+
                 weatherBtn.innerHTML =
                     weatherEmoji +
                     (showTempInNavbar ?
@@ -6563,7 +6577,8 @@ if (getSetting('weatherDisplay.show')) {
                     'weatherDisplay.updated'
                 )}:&nbsp;${timeToString(data.time, false)}</small>`;
             });
-        }
+        },
+        true
     );
 }
 // endregion
