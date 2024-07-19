@@ -4258,11 +4258,11 @@ __metadata:
   linkType: hard
 
 "semver@npm:^7.3.5, semver@npm:^7.3.8, semver@npm:^7.6.0, semver@npm:^7.6.2":
-  version: 7.6.2
-  resolution: "semver@npm:7.6.2"
+  version: 7.6.3
+  resolution: "semver@npm:7.6.3"
   bin:
     semver: bin/semver.js
-  checksum: 10c0/97d3441e97ace8be4b1976433d1c32658f6afaff09f143e52c593bae7eef33de19e3e369c88bd985ce1042c6f441c80c6803078d1de2a9988080b66684cbb30c
+  checksum: 10c0/88f33e148b210c153873cb08cfe1e281d518aaa9a666d4d148add6560db5cd3c582f3a08ccb91f38d5f379ead256da9931234ed122057f40bb5766e65e58adaf
   languageName: node
   linkType: hard
 
@@ -4611,12 +4611,12 @@ __metadata:
   linkType: hard
 
 "synckit@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "synckit@npm:0.9.0"
+  version: 0.9.1
+  resolution: "synckit@npm:0.9.1"
   dependencies:
     "@pkgr/core": "npm:^0.1.0"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/b5c1e7c03fefe3d36a9ab4e71dd21859cb32be4138712c31a893382a568fd00efc59ede8f521dd7e53d43a2fea92bdf717e987ea9ed6ad94f97ef28d71d0ba2f
+  checksum: 10c0/d8b89e1bf30ba3ffb469d8418c836ad9c0c062bf47028406b4d06548bc66af97155ea2303b96c93bf5c7c0f0d66153a6fbd6924c76521b434e6a9898982abc2e
   languageName: node
   linkType: hard
 
