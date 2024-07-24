@@ -22,6 +22,11 @@
 // @grant           GM_info
 // @grant           GM_xmlhttpRequest
 // @connect         studentenwerk.sh
+// @connect         api.open-meteo.com
+// @connect         api.openweathermap.org
+// @connect         api.pirateweather.net
+// @connect         weather.visualcrossing.com
+// @connect         wttr.in
 // @require         https://unpkg.com/darkreader@4.9.87/darkreader.js#sha512=db6998940ba007c1cb2a05707928d0bb871078563194cb2825a4cb13f8f0d39550737a9496e5febf9ec23c53355eca144ccc999faa3c175ac8ffba48f1664aa2
 // ==/UserScript==
 
@@ -87,6 +92,107 @@ const TRANSLATIONS = {
             defaultSwitchRole: 'Zur Moodle Rollenwechsel-Seite gehen',
             goBack: 'Zurück zum Nutzermenü',
             roleSelector: 'Rollen-Auswahl',
+        },
+        weatherDisplay: {
+            title: 'Wetter-Moodle',
+            updated: 'Zuletzt aktualisiert um',
+            credits: {
+                _long: 'Wetterdaten von',
+                _short: 'Quelle',
+                wttrIn: {
+                    name: 'wttr.in',
+                    url: 'https://wttr.in',
+                },
+                openMeteo: {
+                    name: 'Open-Meteo',
+                    url: 'https://open-meteo.com',
+                },
+                visualCrossing: {
+                    name: 'Visual Crossing',
+                    url: 'https://www.visualcrossing.com',
+                },
+                openWeatherMap: {
+                    name: 'OpenWeatherMap',
+                    url: 'https://openweathermap.org',
+                },
+                pirateWeather: {
+                    name: 'Pirate Weather',
+                    url: 'https://pirateweather.net',
+                },
+            },
+            weatherCodes: {
+                unknown: 'Wetter nicht verfügbar',
+                clear: 'Klarer Himmel',
+                fewClouds: 'Wenige Wolken',
+                scatteredClouds: 'Vereinzelte Wolken',
+                brokenClouds: 'Zerstreute Wolken',
+                overcastClouds: 'Bedeckter Himmel',
+                mist: 'Nebel',
+                fog: 'Nebel',
+                freezingFog: 'Gefrierender Nebel',
+                dust: 'Staub',
+                sand: 'Sand',
+                haze: 'Dunst',
+                smoke: 'Rauch',
+                volcanicAsh: 'Vulkanasche',
+                wind: 'Wind',
+                squalls: 'Windböen',
+                tornado: 'Tornado',
+                lightSnow: 'Leichter Schnee',
+                moderateSnow: 'Schnee',
+                heavySnow: 'Starker Schnee',
+                lightRain: 'Leichter Regen',
+                moderateRain: 'Regen',
+                heavyRain: 'Starker Regen',
+                lightDrizzle: 'Leichter Nieselregen',
+                moderateDrizzle: 'Nieselregen',
+                heavyDrizzle: 'Starker Nieselregen',
+                lightSleet: 'Leichter Schneeregen',
+                moderateSleet: 'Schneeregen',
+                lightThunderstorm: 'Leichtes Gewitter',
+                moderateThunderstorm: 'Gewitter',
+                heavyThunderstorm: 'Starkes Gewitter',
+                lightFreezingRain: 'Leichter gefrierender Regen',
+                moderateFreezingRain: 'Gefrierender Regen',
+                lightFreezingDrizzle: 'Leichter gefrierender Nieselregen',
+                moderateFreezingDrizzle: 'Gefrierender Nieselregen',
+                heavyFreezingDrizzle: 'Starker gefrierender Nieselregen',
+                lightRainShowers: 'Leichte Regenschauer',
+                moderateRainShowers: 'Regenschauer',
+                heavyRainShowers: 'Starke Regenschauer',
+                lightSleetShowers: 'Leichte Schneeregen-Schauer',
+                moderateSleetShowers: 'Schneeregen-Schauer',
+                lightDrizzleShowers: 'Leichte Nieselregen-Schauer',
+                moderateDrizzleShow: 'Nieselregen-Schauer',
+                heavyDrizzleShowers: 'Starke Nieselregen-Schauer',
+                lightSnowShowers: 'Leichte Schneeschauer',
+                moderateSnowShowers: 'Schneeschauer',
+                heavySnowShowers: 'Starke Schneeschauer',
+                lightHailShowers: 'Leichte Hagelschauer',
+                moderateHailShowers: 'Hagelschauer',
+                lightThunderstormWithDrizzle:
+                    'Leichtes Gewitter mit Nieselregen',
+                moderateThunderstormWithDrizzle: 'Gewitter mit Nieselregen',
+                heavyThunderstormWithDrizzle:
+                    'Starkes Gewitter mit Nieselregen',
+                lightThunderstormWithRain: 'Leichtes Gewitter mit Regen',
+                moderateThunderstormWithRain: 'Gewitter mit Regen',
+                heavyThunderstormWithRain: 'Starkes Gewitter mit Regen',
+                lightThunderstormWithSnow: 'Leichtes Gewitter mit Schnee',
+                moderateThunderstormWithSnow: 'Gewitter mit Schnee',
+                moderateThunderstormWithHail: 'Gewitter mit Hagel',
+                heavyThunderstormWithHail: 'Starkes Gewitter mit Hagel',
+                moderateThunderstormWithHailShowers:
+                    'Gewitter mit Hagelschauern',
+                extremeSnow: 'Schneesturm',
+                extremeRain: 'Extremer Regen',
+                patchyRainNearby: 'Vereinzelt Regen in der Nähe',
+                patchySnowNearby: 'Vereinzelt Schnee in der Nähe',
+                patchySleetNearby: 'Vereinzelt Schneeregen in der Nähe',
+                patchyFreezingDrizzleNearby:
+                    'Vereinzelt gefrierender Nieselregen in der Nähe',
+                thunderyOutbreaksNearby: 'Gewitter in der Nähe',
+            },
         },
         modals: {
             settings: {
@@ -169,6 +275,20 @@ ich habe einen tollen Vorschlag für Better-Moodle:
 Viele Grüße
 [Dein Name]`,
                     },
+                },
+            },
+            weatherDisplay: {
+                close: 'Schließen',
+                attributes: {
+                    temperature: 'Temperatur',
+                    temperatureFeelsLike: 'Gefühlte Temperatur',
+                    windSpeed: 'Windgeschwindigkeit',
+                    windDirection: 'Windrichtung',
+                    visibilityDistance: 'Sichtweite',
+                    humidity: 'Feuchtigkeit',
+                    pressure: 'Luftdruck',
+                    cloudCover: 'Bewölkung',
+                    rainGauge: 'Niederschlagsmenge',
                 },
             },
         },
@@ -486,6 +606,60 @@ Viele Grüße
                     },
                 },
             },
+            weatherDisplay: {
+                _title: 'Wetter-Moodle',
+                _description: `Um gute Wetterdaten zu erhalten, benötigst du bei einigen Anbietern einen API-Key. 
+Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen kostenlosen Optionen.`,
+                show: {
+                    name: 'Wetter anzeigen',
+                    description: 'Zeige das Wetter in Moodle an.',
+                },
+                provider: {
+                    name: 'Anbieter',
+                    description: 'Wähle den Anbieter für die Wetterdaten aus.',
+                    options: {
+                        wttrIn: 'wttr.in',
+                        openMeteo: 'Open-Meteo',
+                        visualCrossing: 'Visual Crossing (API-Key benötigt)',
+                        openWeatherMap: 'OpenWeatherMap (API-Key benötigt)',
+                        pirateWeather: 'Pirate Weather (API-Key benötigt)',
+                    },
+                },
+                openWeatherMapAPIKey: {
+                    name: 'API-Key für OpenWeatherMap',
+                    description:
+                        'Trage hier deinen API-Key für OpenWeatherMap ein (der Free-Plan ist ausreichend).',
+                },
+                pirateWeatherAPIKey: {
+                    name: 'API-Key für PirateWeather',
+                    description:
+                        'Trage hier deinen API-Key für PirateWeather ein (der Free-Plan ist ausreichend).',
+                },
+                visualCrossingAPIKey: {
+                    name: 'API-Key für Visual Crossing',
+                    description:
+                        'Trage hier deinen API-Key für Visual Crossing ein (der Free-Plan ist ausreichend).',
+                },
+                units: {
+                    name: 'Einheiten',
+                    description: 'Wähle die Einheiten für die Wetterdaten aus.',
+                    options: {
+                        metric: 'Metrisch (°C, km/h, km, mm)',
+                        scientific: 'SI Einheiten (K, m/s, m, m)',
+                        imperial: 'Imperial (°F, mph, mi, in)', // for weird people
+                    },
+                },
+                showTempInNavbar: {
+                    name: 'Temperatur in der Navigationsleiste anzeigen',
+                    description:
+                        'Zeige die aktuelle Temperatur in der Navigationsleiste an.',
+                },
+                toggleFeelsLike: {
+                    name: 'Gefühlte Temperatur anzeigen',
+                    description:
+                        'Ermöglicht das Umschalten zwischen der tatsächlichen Temperatur und der gefühlten Temperatur.',
+                },
+            },
         },
     },
     en: {
@@ -546,6 +720,105 @@ Viele Grüße
             defaultSwitchRole: 'Go to Moodle switch role page',
             goBack: 'Go back to user menu',
             roleSelector: 'Role selector',
+        },
+        weatherDisplay: {
+            title: 'Weather-Moodle',
+            updated: 'Last updated at',
+            credits: {
+                _long: 'Weather data provided by',
+                _short: 'Source',
+                wttrIn: {
+                    name: 'wttr.in',
+                    url: 'https://wttr.in',
+                },
+                openMeteo: {
+                    name: 'Open-Meteo',
+                    url: 'https://open-meteo.com',
+                },
+                visualCrossing: {
+                    name: 'Visual Crossing',
+                    url: 'https://www.visualcrossing.com',
+                },
+                openWeatherMap: {
+                    name: 'OpenWeatherMap',
+                    url: 'https://openweathermap.org',
+                },
+                pirateWeather: {
+                    name: 'Pirate Weather',
+                    url: 'https://pirateweather.net',
+                },
+            },
+            weatherCodes: {
+                unknown: 'Weather not available',
+                clear: 'Clear sky',
+                fewClouds: 'Few clouds',
+                scatteredClouds: 'Scattered clouds',
+                brokenClouds: 'Broken clouds',
+                overcastClouds: 'Overcast clouds',
+                mist: 'Mist',
+                fog: 'Fog',
+                freezingFog: 'Freezing fog',
+                dust: 'Dust',
+                sand: 'Sand',
+                haze: 'Haze',
+                smoke: 'Smoke',
+                volcanicAsh: 'Volcanic ash',
+                wind: 'Wind',
+                squalls: 'Squalls',
+                tornado: 'Tornado',
+                lightSnow: 'Light snow',
+                moderateSnow: 'Moderate snow',
+                heavySnow: 'Heavy snow',
+                lightRain: 'Light rain',
+                moderateRain: 'Moderate rain',
+                heavyRain: 'Heavy rain',
+                lightDrizzle: 'Light drizzle',
+                moderateDrizzle: 'Moderate drizzle',
+                heavyDrizzle: 'Heavy drizzle',
+                lightSleet: 'Light sleet',
+                moderateSleet: 'Moderate sleet',
+                lightThunderstorm: 'Light thunderstorm',
+                moderateThunderstorm: 'Moderate thunderstorm',
+                heavyThunderstorm: 'Heavy thunderstorm',
+                lightFreezingRain: 'Light freezing rain',
+                moderateFreezingRain: 'Moderate freezing rain',
+                lightFreezingDrizzle: 'Light freezing drizzle',
+                moderateFreezingDrizzle: 'Moderate freezing drizzle',
+                heavyFreezingDrizzle: 'Heavy freezing drizzle',
+                lightRainShowers: 'Light rain showers',
+                moderateRainShowers: 'Moderate rain showers',
+                heavyRainShowers: 'Heavy rain showers',
+                lightSleetShowers: 'Light sleet showers',
+                moderateSleetShowers: 'Moderate sleet showers',
+                lightDrizzleShowers: 'Light drizzle showers',
+                moderateDrizzleShow: 'Moderate drizzle showers',
+                heavyDrizzleShowers: 'Heavy drizzle showers',
+                lightSnowShowers: 'Light snow showers',
+                moderateSnowShowers: 'Moderate snow showers',
+                heavySnowShowers: 'Heavy snow showers',
+                lightHailShowers: 'Light hail showers',
+                moderateHailShowers: 'Moderate hail showers',
+                lightThunderstormWithDrizzle: 'Light thunderstorm with drizzle',
+                moderateThunderstormWithDrizzle:
+                    'Moderate thunderstorm with drizzle',
+                heavyThunderstormWithDrizzle: 'Heavy thunderstorm with drizzle',
+                lightThunderstormWithRain: 'Light thunderstorm with rain',
+                moderateThunderstormWithRain: 'Moderate thunderstorm with rain',
+                heavyThunderstormWithRain: 'Heavy thunderstorm with rain',
+                lightThunderstormWithSnow: 'Light thunderstorm with snow',
+                moderateThunderstormWithSnow: 'Moderate thunderstorm with snow',
+                moderateThunderstormWithHail: 'Moderate thunderstorm with hail',
+                heavyThunderstormWithHail: 'Heavy thunderstorm with hail',
+                moderateThunderstormWithHailShowers:
+                    'Moderate thunderstorm with hail showers',
+                extremeSnow: 'Blizzard',
+                extremeRain: 'Extreme rain',
+                patchyRainNearby: 'Patchy rain nearby',
+                patchySnowNearby: 'Patchy snow nearby',
+                patchySleetNearby: 'Patchy sleet nearby',
+                patchyFreezingDrizzleNearby: 'Patchy freezing drizzle nearby',
+                thunderyOutbreaksNearby: 'Thundery outbreaks nearby',
+            },
         },
         modals: {
             settings: {
@@ -631,6 +904,20 @@ I have a great suggestion for Better-Moodle:
 Best regards
 [your name]`,
                     },
+                },
+            },
+            weatherDisplay: {
+                close: 'Close',
+                attributes: {
+                    temperature: 'Temperature',
+                    temperatureFeelsLike: 'Feels like',
+                    windSpeed: 'Wind speed',
+                    windDirection: 'Wind direction',
+                    visibilityDistance: 'Visibility',
+                    humidity: 'Humidity',
+                    pressure: 'Pressure',
+                    cloudCover: 'Cloud cover',
+                    rainGauge: 'Rain gauge',
                 },
             },
         },
@@ -940,6 +1227,60 @@ Best regards
                         'shiftEnter': 'Shift + Enter',
                         'ctrlEnter': 'Ctrl + Enter',
                     },
+                },
+            },
+            weatherDisplay: {
+                _title: 'Weather-Moodle',
+                _description: `To get good weather data, you need an API key for some providers.
+Better-Moodle never requires more than the free plan of the respective provider to work.`,
+                show: {
+                    name: 'Show weather',
+                    description: 'Show the weather in Moodle.',
+                },
+                provider: {
+                    name: 'Provider',
+                    description: 'Choose the provider for the weather data.',
+                    options: {
+                        wttrIn: 'wttr.in',
+                        openMeteo: 'Open-Meteo',
+                        visualCrossing: 'Visual Crossing (requires API-Key)',
+                        openWeatherMap: 'OpenWeatherMap (requires API-Key)',
+                        pirateWeather: 'Pirate Weather (requires API-Key)',
+                    },
+                },
+                openWeatherMapAPIKey: {
+                    name: 'API-Key for OpenWeatherMap',
+                    description:
+                        'Put your API key for OpenWeatherMap here (the free plan is sufficient).',
+                },
+                pirateWeatherAPIKey: {
+                    name: 'API-Key for PirateWeather',
+                    description:
+                        'Put your API key for PirateWeather here (the free plan is sufficient).',
+                },
+                visualCrossingAPIKey: {
+                    name: 'API-Key for Visual Crossing',
+                    description:
+                        'Put your API key for Visual Crossing here (the free plan is sufficient).',
+                },
+                units: {
+                    name: 'Units',
+                    description: 'Select the units for the weather data.',
+                    options: {
+                        metric: 'Metric (°C, km/h, km, mm)',
+                        scientific: 'SI Units (K, m/s, m, m)',
+                        imperial: 'Imperial (°F, mph, mi, in)', // for weird people
+                    },
+                },
+                showTempInNavbar: {
+                    name: 'Show temperature in the navigation bar',
+                    description:
+                        'Show the current temperature in the navigation bar.',
+                },
+                toggleFeelsLike: {
+                    name: "Show 'feels like' temperature",
+                    description:
+                        "Allows you to switch between the actual temperature and the 'feels like' temperature.",
                 },
             },
         },
@@ -1936,7 +2277,11 @@ const timeToString = (date, seconds = true) =>
  * @param {number} delay
  * @param {CallableFunction} callback
  */
-const animationInterval = (delay, callback) => {
+const animationInterval = (delay, callback, runImmediate = false) => {
+    if (runImmediate) {
+        callback();
+    }
+
     let last = 0;
     let currentId;
     /**
@@ -2713,6 +3058,45 @@ const SETTINGS = [
         'day',
         'week',
     ]).setDisabledFn(settings => !settings['clock.fuzzyClock'].inputValue),
+    'weatherDisplay',
+    new BooleanSetting('weatherDisplay.show', false),
+    new SelectSetting('weatherDisplay.units', 'metric', [
+        'metric',
+        'scientific',
+        'imperial',
+    ]).setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
+    new SelectSetting('weatherDisplay.provider', 'openMeteo', [
+        'openMeteo',
+        'wttrIn',
+        'visualCrossing',
+        'openWeatherMap',
+        'pirateWeather',
+    ]).setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
+    new StringSetting('weatherDisplay.visualCrossingAPIKey', '').setDisabledFn(
+        settings =>
+            !settings['weatherDisplay.show'].inputValue ||
+            settings['weatherDisplay.provider'].inputValue !== 'visualCrossing'
+    ),
+    new StringSetting('weatherDisplay.openWeatherMapAPIKey', '').setDisabledFn(
+        settings =>
+            !settings['weatherDisplay.show'].inputValue ||
+            settings['weatherDisplay.provider'].inputValue !== 'openWeatherMap'
+    ),
+    new StringSetting('weatherDisplay.pirateWeatherAPIKey', '').setDisabledFn(
+        settings =>
+            !settings['weatherDisplay.show'].inputValue ||
+            settings['weatherDisplay.provider'].inputValue !== 'pirateWeather'
+    ),
+    new BooleanSetting('weatherDisplay.showTempInNavbar', false)
+        .setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue)
+        .setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
+    new BooleanSetting('weatherDisplay.toggleFeelsLike', false)
+        .setDisabledFn(
+            settings =>
+                !settings['weatherDisplay.show'].inputValue ||
+                !settings['weatherDisplay.showTempInNavbar'].inputValue
+        )
+        .setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
     'messages',
     new SelectSetting('messages.sendHotkey', '', [
         '',
@@ -5793,6 +6177,830 @@ if (clockEnabled || fuzzyClockEnabled) {
                 }
             });
     });
+}
+// endregion
+
+// region Feature: weatherDisplay
+if (getSetting('weatherDisplay.show')) {
+    const city = {
+        name: 'luebeck',
+        lat: 53.8655,
+        lon: 10.6866,
+    };
+    const provider = getSetting('weatherDisplay.provider');
+    const units = getSetting('weatherDisplay.units');
+    const showTempInNavbar = getSetting('weatherDisplay.showTempInNavbar');
+    const toggleFeelsLike = getSetting('weatherDisplay.toggleFeelsLike');
+
+    const ONE_MINUTE = 1000 * 60;
+    const FIVE_MINUTES = ONE_MINUTE * 5;
+
+    const VISUALCROSSING_API_KEY = getSetting(
+        'weatherDisplay.visualCrossingAPIKey'
+    );
+    const OPENWEATHERMAP_API_KEY = getSetting(
+        'weatherDisplay.openWeatherMapAPIKey'
+    );
+    const PIRATEWEATHER_API_KEY = getSetting(
+        'weatherDisplay.pirateWeatherAPIKey'
+    );
+
+    const prefix = str => PREFIX(`weather-display-${str}`);
+
+    const weatherCodes = Object.freeze({
+        UNKNOWN: 'unknown',
+
+        CLEAR: 'clear',
+        FEW_CLOUDS: 'fewClouds',
+        SCATTERED_CLOUDS: 'scatteredClouds',
+        BROKEN_CLOUDS: 'brokenClouds',
+        OVERCAST_CLOUDS: 'overcastClouds',
+
+        MIST: 'mist',
+        FOG: 'fog',
+        FREEZING_FOG: 'freezingFog',
+        DUST: 'dust',
+        SAND: 'sand',
+        HAZE: 'haze',
+        SMOKE: 'smoke',
+        VOLCANIC_ASH: 'volcanicAsh',
+
+        WIND: 'wind',
+        SQUALLS: 'squalls',
+        TORNADO: 'tornado',
+
+        LIGHT_SNOW: 'lightSnow',
+        MODERATE_SNOW: 'moderateSnow',
+        HEAVY_SNOW: 'heavySnow',
+
+        LIGHT_RAIN: 'lightRain',
+        MODERATE_RAIN: 'moderateRain',
+        HEAVY_RAIN: 'heavyRain',
+
+        LIGHT_DRIZZLE: 'lightDrizzle',
+        MODERATE_DRIZZLE: 'moderateDrizzle',
+        HEAVY_DRIZZLE: 'heavyDrizzle',
+
+        LIGHT_SLEET: 'lightSleet',
+        MODERATE_SLEET: 'moderateSleet',
+
+        LIGHT_THUNDERSTORM: 'lightThunderstorm',
+        MODERATE_THUNDERSTORM: 'moderateThunderstorm',
+        HEAVY_THUNDERSTORM: 'heavyThunderstorm',
+
+        LIGHT_FREEZING_RAIN: 'lightFreezingRain',
+        MODERATE_FREEZING_RAIN: 'moderateFreezingRain',
+
+        LIGHT_FREEZING_DRIZZLE: 'lightFreezingDrizzle',
+        MODERATE_FREEZING_DRIZZLE: 'moderateFreezingDrizzle',
+        HEAVY_FREEZING_DRIZZLE: 'heavyFreezingDrizzle',
+
+        LIGHT_RAIN_SHOWERS: 'lightRainShowers',
+        MODERATE_RAIN_SHOWERS: 'moderateRainShowers',
+        HEAVY_RAIN_SHOWERS: 'heavyRainShowers',
+
+        LIGHT_SLEET_SHOWERS: 'lightSleetShowers',
+        MODERATE_SLEET_SHOWERS: 'moderateSleetShowers',
+
+        LIGHT_DRIZZLE_SHOWERS: 'lightDrizzleShowers',
+        MODERATE_DRIZZLE_SHOWERS: 'moderateDrizzleShowers',
+        HEAVY_DRIZZLE_SHOWERS: 'heavyDrizzleShowers',
+
+        LIGHT_SNOW_SHOWERS: 'lightSnowShowers',
+        MODERATE_SNOW_SHOWERS: 'moderateSnowShowers',
+        HEAVY_SNOW_SHOWERS: 'heavySnowShowers',
+
+        LIGHT_HAIL_SHOWERS: 'lightHailShowers',
+        MODERATE_HAIL_SHOWERS: 'moderateHailShowers',
+
+        LIGHT_THUNDERSTORM_WITH_DRIZZLE: 'lightThunderstormWithDrizzle',
+        MODERATE_THUNDERSTORM_WITH_DRIZZLE: 'moderateThunderstormWithDrizzle',
+        HEAVY_THUNDERSTORM_WITH_DRIZZLE: 'heavyThunderstormWithDrizzle',
+
+        LIGHT_THUNDERSTORM_WITH_RAIN: 'lightThunderstormWithRain',
+        MODERATE_THUNDERSTORM_WITH_RAIN: 'moderateThunderstormWithRain',
+        HEAVY_THUNDERSTORM_WITH_RAIN: 'heavyThunderstormWithRain',
+
+        LIGHT_THUNDERSTORM_WITH_SNOW: 'lightThunderstormWithSnow',
+        MODERATE_THUNDERSTORM_WITH_SNOW: 'moderateThunderstormWithSnow',
+
+        MODERATE_THUNDERSTORM_WITH_HAIL: 'moderateThunderstormWithHail',
+        HEAVY_THUNDERSTORM_WITH_HAIL: 'heavyThunderstormWithHail',
+
+        MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS:
+            'moderateThunderstormWithRainShowers',
+
+        EXTREME_SNOW: 'extremeSnow',
+        EXTREME_RAIN: 'extremeRain',
+
+        PATCHY_RAIN_NEARBY: 'patchyRainNearby',
+        PATCHY_SNOW_NEARBY: 'patchySnowNearby',
+        PATCHY_SLEET_NEARBY: 'patchySleetNearby',
+        PATCHY_FREEZING_DRIZZLE_NEARBY: 'patchyFreezingDrizzleNearby',
+        THUNDERY_OUTBREAKS_NEARBY: 'thunderyOutbreaksNearby',
+    });
+
+    const fetchJSON = url =>
+        new Promise((resolve, reject) => {
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url,
+                onload: ({ status, responseText }) => {
+                    if (status !== 200) return reject({ status });
+                    resolve(JSON.parse(responseText));
+                },
+                onerror: reject,
+            });
+        });
+
+    const manageRateLimit = (rateLimit, url) => {
+        const now = Date.now();
+        const host = new URL(url).host;
+        const [lastRequest, cached] = JSON.parse(
+            atob(GM_getValue(prefix(host), btoa('[0, null]')))
+        );
+
+        if (lastRequest + rateLimit > now) {
+            return new Promise(resolve => resolve(cached));
+        }
+        return fetchJSON(url).then(data => {
+            GM_setValue(prefix(host), btoa(JSON.stringify([now, data])));
+            return data;
+        });
+    };
+
+    const fallback = () => ({
+        weatherType: weatherCodes.UNKNOWN,
+    });
+
+    const wttrIn = () => {
+        return manageRateLimit(
+            ONE_MINUTE,
+            `https://wttr.in/${city.name}?format=j1&lang`
+        ) // The `&lang` removes the faulty german translation
+            .then(data => {
+                const currentCondition = data.current_condition[0];
+                const weatherType =
+                    {
+                        113: weatherCodes.CLEAR,
+                        116: weatherCodes.FEW_CLOUDS,
+                        119: weatherCodes.BROKEN_CLOUDS,
+                        122: weatherCodes.OVERCAST_CLOUDS,
+                        143: weatherCodes.MIST,
+                        176: weatherCodes.PATCHY_RAIN_NEARBY,
+                        179: weatherCodes.PATCHY_SNOW_NEARBY,
+                        182: weatherCodes.PATCHY_SLEET_NEARBY,
+                        185: weatherCodes.PATCHY_FREEZING_DRIZZLE_NEARBY,
+                        200: weatherCodes.THUNDERY_OUTBREAKS_NEARBY,
+                        227: weatherCodes.HEAVY_SNOW,
+                        230: weatherCodes.EXTREME_SNOW,
+                        248: weatherCodes.FOG,
+                        260: weatherCodes.FREEZING_FOG,
+                        263: weatherCodes.LIGHT_DRIZZLE_SHOWERS,
+                        266: weatherCodes.LIGHT_DRIZZLE,
+                        281: weatherCodes.MODERATE_FREEZING_DRIZZLE,
+                        284: weatherCodes.HEAVY_FREEZING_DRIZZLE,
+                        293: weatherCodes.LIGHT_RAIN_SHOWERS,
+                        296: weatherCodes.LIGHT_RAIN,
+                        299: weatherCodes.MODERATE_RAIN_SHOWERS,
+                        302: weatherCodes.MODERATE_RAIN,
+                        305: weatherCodes.HEAVY_RAIN_SHOWERS,
+                        308: weatherCodes.HEAVY_RAIN,
+                        311: weatherCodes.LIGHT_FREEZING_RAIN,
+                        314: weatherCodes.MODERATE_FREEZING_RAIN,
+                        317: weatherCodes.LIGHT_SLEET,
+                        320: weatherCodes.MODERATE_SLEET,
+                        323: weatherCodes.LIGHT_SNOW_SHOWERS,
+                        326: weatherCodes.LIGHT_SNOW,
+                        329: weatherCodes.MODERATE_SNOW_SHOWERS,
+                        332: weatherCodes.MODERATE_SNOW,
+                        335: weatherCodes.HEAVY_SNOW_SHOWERS,
+                        338: weatherCodes.HEAVY_SNOW,
+                        350: weatherCodes.MODERATE_SLEET,
+                        353: weatherCodes.LIGHT_RAIN_SHOWERS,
+                        356: weatherCodes.MODERATE_RAIN_SHOWERS,
+                        359: weatherCodes.EXTREME_RAIN,
+                        362: weatherCodes.LIGHT_SLEET_SHOWERS,
+                        365: weatherCodes.MODERATE_SLEET_SHOWERS,
+                        368: weatherCodes.LIGHT_SNOW_SHOWERS,
+                        371: weatherCodes.MODERATE_SNOW_SHOWERS,
+                        374: weatherCodes.LIGHT_HAIL_SHOWERS,
+                        377: weatherCodes.MODERATE_HAIL_SHOWERS,
+                        386: weatherCodes.LIGHT_THUNDERSTORM_WITH_RAIN,
+                        389: weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN,
+                        392: weatherCodes.LIGHT_THUNDERSTORM_WITH_SNOW,
+                        395: weatherCodes.MODERATE_THUNDERSTORM_WITH_SNOW,
+                    }[new Number(currentCondition.weatherCode).valueOf()] ??
+                    weatherCodes.UNKNOWN;
+
+                const parseLocalObsDateTime = (isoDate, utcTime) =>
+                    new Date(`${isoDate} ${utcTime} +00:00`);
+
+                return {
+                    temperature: currentCondition.temp_C,
+                    temperatureFeelsLike: currentCondition.FeelsLikeC,
+                    windDirection: currentCondition.winddirDegree,
+                    windSpeed: currentCondition.windspeedKmph,
+                    visibilityDistance: currentCondition.visibility,
+                    humidity: currentCondition.humidity,
+                    pressure: currentCondition.pressure,
+                    cloudCover: currentCondition.cloudcover,
+                    rainGauge: currentCondition.precipMM,
+                    weatherType,
+                    time: parseLocalObsDateTime(
+                        currentCondition.localObsDateTime.slice(0, 10),
+                        currentCondition.observation_time
+                    ),
+                };
+            })
+            .catch(fallback);
+    };
+
+    const openMeteo = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m&minutely_15=visibility&timeformat=unixtime&timezone=Europe%2FBerlin&forecast_days=1`
+        )
+            .then(data => {
+                const now = Math.floor(Date.now() / 1000);
+                let visibilityIndex = 0;
+                for (let i = 0; i < data.minutely_15.length; i++) {
+                    if (data.minutely_15.time[i] > now) {
+                        visibilityIndex = i;
+                        break;
+                    }
+                }
+                const weatherType =
+                    {
+                        0: weatherCodes.CLEAR,
+                        1: weatherCodes.FEW_CLOUDS,
+                        2: weatherCodes.BROKEN_CLOUDS,
+                        3: weatherCodes.OVERCAST_CLOUDS,
+                        45: weatherCodes.FOG,
+                        48: weatherCodes.FREEZING_FOG,
+                        51: weatherCodes.LIGHT_DRIZZLE,
+                        53: weatherCodes.MODERATE_DRIZZLE,
+                        55: weatherCodes.HEAVY_DRIZZLE,
+                        56: weatherCodes.LIGHT_FREEZING_DRIZZLE,
+                        57: weatherCodes.MODERATE_FREEZING_DRIZZLE,
+                        61: weatherCodes.LIGHT_RAIN,
+                        63: weatherCodes.MODERATE_RAIN,
+                        65: weatherCodes.HEAVY_RAIN,
+                        66: weatherCodes.LIGHT_FREEZING_RAIN,
+                        67: weatherCodes.MODERATE_FREEZING_RAIN,
+                        71: weatherCodes.LIGHT_SNOW,
+                        73: weatherCodes.MODERATE_SNOW,
+                        75: weatherCodes.HEAVY_SNOW,
+                        77: weatherCodes.MODERATE_FREEZING_DRIZZLE,
+                        80: weatherCodes.LIGHT_RAIN_SHOWERS,
+                        81: weatherCodes.MODERATE_RAIN_SHOWERS,
+                        82: weatherCodes.HEAVY_RAIN_SHOWERS,
+                        85: weatherCodes.MODERATE_SNOW_SHOWERS,
+                        86: weatherCodes.HEAVY_SNOW_SHOWERS,
+                        95: weatherCodes.MODERATE_THUNDERSTORM,
+                        96: weatherCodes.MODERATE_THUNDERSTORM_WITH_HAIL,
+                        99: weatherCodes.HEAVY_THUNDERSTORM_WITH_HAIL,
+                    }[data.current.weather_code] ?? weatherCodes.UNKNOWN;
+                return {
+                    temperature: data.current.temperature_2m,
+                    temperatureFeelsLike: data.current.apparent_temperature,
+                    windDirection: data.current.wind_direction_10m,
+                    windSpeed: data.current.wind_speed_10m,
+                    visibilityDistance:
+                        data.minutely_15.visibility[visibilityIndex] / 1000,
+                    humidity: data.current.relative_humidity_2m,
+                    pressure: data.current.surface_pressure,
+                    cloudCover: data.current.cloud_cover,
+                    rainGauge: data.current.precipitation,
+                    weatherType,
+                    time: new Date(data.current.time * 1000),
+                };
+            })
+            .catch(fallback);
+    };
+
+    const visualCrossing = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city.name}?unitGroup=metric&lang=id&iconSet=icons2&include=current&key=${VISUALCROSSING_API_KEY}&contentType=json`
+        )
+            .then(data => {
+                const weatherType =
+                    {
+                        'snow': weatherCodes.MODERATE_SNOW,
+                        'snow-showers-day': weatherCodes.MODERATE_SNOW_SHOWERS,
+                        'snow-showers-night':
+                            weatherCodes.MODERATE_SNOW_SHOWERS,
+                        'thunder-rain':
+                            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN,
+                        'thunder-showers-day':
+                            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS,
+                        'thunder-showers-night':
+                            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS,
+                        'rain': weatherCodes.MODERATE_RAIN,
+                        'rain-showers-day': weatherCodes.MODERATE_RAIN_SHOWERS,
+                        'rain-showers-night':
+                            weatherCodes.MODERATE_RAIN_SHOWERS,
+                        'fog': weatherCodes.FOG,
+                        'wind': weatherCodes.WIND,
+                        'cloudy': weatherCodes.OVERCAST_CLOUDS,
+                        'partly-cloudy-day': weatherCodes.SCATTERED_CLOUDS,
+                        'partly-cloudy-night': weatherCodes.SCATTERED_CLOUDS,
+                        'clear-day': weatherCodes.CLEAR,
+                        'clear-night': weatherCodes.CLEAR,
+                    }[data.currentConditions.icon] ?? weatherCodes.UNKNOWN;
+
+                return {
+                    temperature: data.currentConditions.temp,
+                    temperatureFeelsLike: data.currentConditions.feelslike,
+                    windDirection: data.currentConditions.winddir,
+                    windSpeed: data.currentConditions.windspeed,
+                    visibilityDistance: data.currentConditions.visibility,
+                    humidity: data.currentConditions.humidity,
+                    pressure: data.currentConditions.pressure,
+                    cloudCover: data.currentConditions.cloudcover,
+                    rainGauge: data.currentConditions.precip,
+                    weatherType,
+                    time: new Date(data.currentConditions.datetimeEpoch * 1000),
+                };
+            })
+            .catch(fallback);
+    };
+
+    const openWeatherMap = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://api.openweathermap.org/data/2.5/weather?q=${city.name}&units=metric&appid=${OPENWEATHERMAP_API_KEY}`
+        )
+            .then(data => {
+                const weatherType =
+                    {
+                        200: weatherCodes.LIGHT_THUNDERSTORM_WITH_RAIN,
+                        201: weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN,
+                        202: weatherCodes.HEAVY_THUNDERSTORM_WITH_RAIN,
+                        210: weatherCodes.LIGHT_THUNDERSTORM,
+                        211: weatherCodes.MODERATE_THUNDERSTORM,
+                        212: weatherCodes.HEAVY_THUNDERSTORM,
+                        221: weatherCodes.MODERATE_THUNDERSTORM,
+                        230: weatherCodes.LIGHT_THUNDERSTORM_WITH_DRIZZLE,
+                        231: weatherCodes.MODERATE_THUNDERSTORM_WITH_DRIZZLE,
+                        232: weatherCodes.HEAVY_THUNDERSTORM_WITH_DRIZZLE,
+                        300: weatherCodes.LIGHT_DRIZZLE,
+                        301: weatherCodes.MODERATE_DRIZZLE,
+                        302: weatherCodes.HEAVY_DRIZZLE,
+                        310: weatherCodes.LIGHT_DRIZZLE,
+                        311: weatherCodes.MODERATE_DRIZZLE,
+                        312: weatherCodes.HEAVY_DRIZZLE,
+                        313: weatherCodes.LIGHT_DRIZZLE_SHOWERS,
+                        314: weatherCodes.MODERATE_DRIZZLE_SHOWERS,
+                        321: weatherCodes.HEAVY_DRIZZLE_SHOWERS,
+                        500: weatherCodes.LIGHT_RAIN,
+                        501: weatherCodes.MODERATE_RAIN,
+                        502: weatherCodes.HEAVY_RAIN,
+                        503: weatherCodes.HEAVY_RAIN,
+                        504: weatherCodes.EXTREME_RAIN,
+                        511: weatherCodes.MODERATE_FREEZING_RAIN,
+                        520: weatherCodes.LIGHT_RAIN_SHOWERS,
+                        521: weatherCodes.MODERATE_RAIN_SHOWERS,
+                        522: weatherCodes.HEAVY_RAIN_SHOWERS,
+                        531: weatherCodes.MODERATE_RAIN_SHOWERS,
+                        600: weatherCodes.LIGHT_SNOW,
+                        601: weatherCodes.MODERATE_SNOW,
+                        602: weatherCodes.HEAVY_SNOW,
+                        611: weatherCodes.MODERATE_SLEET,
+                        612: weatherCodes.LIGHT_SLEET_SHOWERS,
+                        613: weatherCodes.MODERATE_SLEET_SHOWERS,
+                        615: weatherCodes.LIGHT_SLEET,
+                        616: weatherCodes.MODERATE_SLEET,
+                        620: weatherCodes.LIGHT_SNOW_SHOWERS,
+                        621: weatherCodes.MODERATE_SNOW_SHOWERS,
+                        622: weatherCodes.HEAVY_SNOW_SHOWERS,
+                        701: weatherCodes.MIST,
+                        711: weatherCodes.SMOKE,
+                        721: weatherCodes.HAZE,
+                        731: weatherCodes.DUST,
+                        741: weatherCodes.FOG,
+                        751: weatherCodes.SAND,
+                        761: weatherCodes.DUST,
+                        762: weatherCodes.VOLCANIC_ASH,
+                        771: weatherCodes.SQUALLS,
+                        781: weatherCodes.TORNADO,
+                        800: weatherCodes.CLEAR,
+                        801: weatherCodes.FEW_CLOUDS,
+                        802: weatherCodes.SCATTERED_CLOUDS,
+                        803: weatherCodes.BROKEN_CLOUDS,
+                        804: weatherCodes.OVERCAST_CLOUDS,
+                    }[data.weather[0].id] ?? weatherCodes.UNKNOWN;
+                return {
+                    temperature: data.main.temp,
+                    temperatureFeelsLike: data.main.feels_like,
+                    windDirection: data.wind.deg,
+                    windSpeed: data.wind.speed,
+                    visibilityDistance: data.visibility / 1000,
+                    humidity: data.main.humidity,
+                    pressure: data.main.pressure,
+                    cloudCover: data.clouds.all,
+                    rainGauge: data.rain?.['1h'] ?? 0,
+                    weatherType,
+                    time: new Date(data.dt * 1000),
+                };
+            })
+            .catch(fallback);
+    };
+
+    const pirateWeather = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://api.pirateweather.net/forecast/${PIRATEWEATHER_API_KEY}/${city.lat},${city.lon}?units=si`
+        )
+            .then(data => {
+                const weatherType =
+                    {
+                        'clear-day': weatherCodes.CLEAR,
+                        'clear-night': weatherCodes.CLEAR,
+                        'rain': weatherCodes.MODERATE_RAIN,
+                        'snow': weatherCodes.MODERATE_SNOW,
+                        'sleet': weatherCodes.MODERATE_SLEET,
+                        'wind': weatherCodes.WIND,
+                        'fog': weatherCodes.FOG,
+                        'cloudy': weatherCodes.OVERCAST_CLOUDS,
+                        'partly-cloudy-day': weatherCodes.SCATTERED_CLOUDS,
+                        'partly-cloudy-night': weatherCodes.SCATTERED_CLOUDS,
+                    }[data.currently.icon] ?? weatherCodes.UNKNOWN;
+                return {
+                    temperature: data.currently.temperature,
+                    temperatureFeelsLike: data.currently.apparentTemperature,
+                    windDirection: data.currently.windBearing,
+                    windSpeed: data.currently.windSpeed,
+                    visibilityDistance: data.currently.visibility,
+                    humidity: data.currently.humidity * 100,
+                    pressure: data.currently.pressure,
+                    cloudCover: data.currently.cloudCover,
+                    rainGauge: data.currently.precipIntensity,
+                    weatherType,
+                    time: new Date(data.currently.time * 1000),
+                };
+            })
+            .catch(fallback);
+    };
+
+    const weatherProvider = (() => {
+        switch (provider) {
+            case 'wttrIn':
+                return wttrIn;
+            case 'openMeteo':
+                return openMeteo;
+            case 'visualCrossing':
+                return visualCrossing;
+            case 'openWeatherMap':
+                return openWeatherMap;
+            case 'pirateWeather':
+                return pirateWeather;
+        }
+    })();
+
+    const displayData = (key, data) => {
+        const round = (value, precision, fixed = false) => {
+            const factor = 10 ** precision;
+            const roundedValue = Math.round(value * factor) / factor;
+            return Intl.NumberFormat(BETTER_MOODLE_LANG, {
+                maximumFractionDigits: precision,
+                minimumFractionDigits: fixed ? precision : 0,
+            }).format(roundedValue);
+        };
+        const unitConverter = {
+            temperature: {
+                metric: celsius => [round(celsius, 1), '&#x202F;°C'],
+                scientific: celsius => [
+                    round(celsius + 273.15, 2, true),
+                    '&#x202F;K',
+                ],
+                imperial: celsius => [
+                    round((celsius * 9) / 5 + 32, 1),
+                    '&#x202F;°F',
+                ],
+            },
+            temperatureFeelsLike: {
+                metric: celsius => [round(celsius, 1), '&#x202F;°C'],
+                scientific: celsius => [
+                    round(celsius + 273.15, 2, true),
+                    '&#x202F;K',
+                ],
+                imperial: celsius => [
+                    round((celsius * 9) / 5 + 32, 1),
+                    '&#x202F;°F',
+                ],
+            },
+            windDirection: {
+                metric: deg => [round(deg, 0), '°'],
+                scientific: deg => [
+                    round((deg * Math.PI) / 180, 2, true),
+                    '&#x202F;rad',
+                ],
+                imperial: deg => [round(deg, 0), '°'],
+            },
+            windSpeed: {
+                metric: kmh => [round(kmh, 1), '&#x202F;km/h'],
+                scientific: kmh => [
+                    round((kmh * 1000) / 3600, 2, true),
+                    '&#x202F;m/s',
+                ],
+                imperial: kmh => [round(kmh / 1.609344, 1), '&#x202F;mph'],
+            },
+            visibilityDistance: {
+                metric: km => [round(km, 1), '&#x202F;km'],
+                scientific: km => [round(km * 1000, 0, true), '&#x202F;m'],
+                imperial: km => [round(km / 1.609344, 1), '&#x202F;mi'],
+            },
+            humidity: {
+                metric: percent => [round(percent, 1), '&#x202F;%'],
+                scientific: percent => [round(percent / 100, 2, true), ''],
+                imperial: percent => [round(percent, 1), '&#x202F;%'],
+            },
+            pressure: {
+                metric: hPa => [round(hPa, 1), '&#x202F;hPa'],
+                scientific: hPa => [round(hPa * 100, 2, true), '&#x202F;Pa'],
+                imperial: hPa => [
+                    round(hPa * 0.02952998751, 1),
+                    '&#x202F;inHg',
+                ],
+            },
+            cloudCover: {
+                metric: percent => [round(percent, 1), '&#x202F;%'],
+                scientific: percent => [round(percent / 100, 2, true), ''],
+                imperial: percent => [round(percent, 1), '&#x202F;%'],
+            },
+            rainGauge: {
+                metric: mm => [round(mm, 1), '&#x202F;mm'],
+                scientific: mm => [round(mm / 1000, 3, true), '&#x202F;m'],
+                imperial: mm => [round(mm / 25.4, 1), '&#x202F;in'],
+            },
+        };
+
+        return unitConverter[key][units](Number(data[key])).join('');
+    };
+
+    const weatherEmojiSets = {
+        '❓': new Set([weatherCodes.UNKNOWN]),
+
+        '☀️': new Set([weatherCodes.CLEAR]),
+        '🌤️': new Set([weatherCodes.FEW_CLOUDS]),
+        '⛅': new Set([weatherCodes.SCATTERED_CLOUDS]),
+        '🌥️': new Set([weatherCodes.BROKEN_CLOUDS]),
+        '☁️': new Set([weatherCodes.OVERCAST_CLOUDS]),
+
+        '🌫️': new Set([
+            weatherCodes.MIST,
+            weatherCodes.FOG,
+            weatherCodes.FREEZING_FOG,
+            weatherCodes.HAZE,
+            weatherCodes.SMOKE,
+        ]),
+        '🌪️': new Set([
+            weatherCodes.DUST,
+            weatherCodes.SAND,
+            weatherCodes.TORNADO,
+        ]),
+        '🌋': new Set([weatherCodes.VOLCANIC_ASH]),
+
+        '🌬️': new Set([weatherCodes.WIND, weatherCodes.SQUALLS]),
+
+        '🌨️': new Set([
+            weatherCodes.LIGHT_SNOW,
+            weatherCodes.MODERATE_SNOW,
+            weatherCodes.LIGHT_SLEET,
+            weatherCodes.MODERATE_SLEET,
+            weatherCodes.LIGHT_SNOW_SHOWERS,
+            weatherCodes.MODERATE_SNOW_SHOWERS,
+            weatherCodes.HEAVY_SNOW_SHOWERS,
+            weatherCodes.LIGHT_SLEET_SHOWERS,
+            weatherCodes.MODERATE_SLEET_SHOWERS,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_SNOW,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_SNOW,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_HAIL,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_HAIL,
+            weatherCodes.PATCHY_SNOW_NEARBY,
+        ]),
+        '❄️': new Set([weatherCodes.HEAVY_SNOW, weatherCodes.EXTREME_SNOW]),
+
+        '🌦️': new Set([
+            weatherCodes.LIGHT_RAIN,
+            weatherCodes.LIGHT_DRIZZLE,
+            weatherCodes.LIGHT_RAIN_SHOWERS,
+            weatherCodes.LIGHT_DRIZZLE_SHOWERS,
+            weatherCodes.PATCHY_RAIN_NEARBY,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_RAIN,
+        ]),
+        '🌧️': new Set([
+            weatherCodes.MODERATE_RAIN,
+            weatherCodes.HEAVY_RAIN,
+            weatherCodes.MODERATE_DRIZZLE,
+            weatherCodes.HEAVY_DRIZZLE,
+            weatherCodes.MODERATE_RAIN_SHOWERS,
+            weatherCodes.HEAVY_RAIN_SHOWERS,
+            weatherCodes.MODERATE_DRIZZLE_SHOWERS,
+            weatherCodes.HEAVY_DRIZZLE_SHOWERS,
+            weatherCodes.LIGHT_FREEZING_RAIN,
+            weatherCodes.MODERATE_FREEZING_RAIN,
+            weatherCodes.LIGHT_FREEZING_DRIZZLE,
+            weatherCodes.MODERATE_FREEZING_DRIZZLE,
+            weatherCodes.HEAVY_FREEZING_DRIZZLE,
+            weatherCodes.PATCHY_SLEET_NEARBY,
+            weatherCodes.PATCHY_FREEZING_DRIZZLE_NEARBY,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_RAIN,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS,
+            weatherCodes.LIGHT_HAIL_SHOWERS,
+            weatherCodes.MODERATE_HAIL_SHOWERS,
+        ]),
+
+        '🌩️': new Set([
+            weatherCodes.LIGHT_THUNDERSTORM,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_RAIN,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_SNOW,
+        ]),
+        '⛈️': new Set([
+            weatherCodes.MODERATE_THUNDERSTORM,
+            weatherCodes.HEAVY_THUNDERSTORM,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_RAIN,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_SNOW,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_HAIL,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_HAIL,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS,
+            weatherCodes.THUNDERY_OUTBREAKS_NEARBY,
+        ]),
+
+        '🌊': new Set([weatherCodes.EXTREME_RAIN]),
+    };
+
+    const getWeatherEmoji = weatherType =>
+        (Object.entries(weatherEmojiSets).find(([, weatherCodes]) =>
+            weatherCodes.has(weatherType)
+        ) ?? '❓')[0];
+
+    const windDirectionToArrow = deg => {
+        const arrows = ['↑', '↗', '→', '↘', '↓', '↙', '←', '↖'];
+        return arrows[Math.round(deg / 45) % 8];
+    };
+
+    const WEATHER_ATTRIBUTES = [
+        'temperature',
+        'temperatureFeelsLike',
+        'windSpeed',
+        'visibilityDistance',
+        'humidity',
+        'pressure',
+        'cloudCover',
+        'rainGauge',
+    ];
+    let weatherModal = null;
+
+    const openWeatherDisplayModal = e => {
+        e.preventDefault();
+
+        require(['core/modal_factory'], ({ create, types }) =>
+            weatherProvider().then(data => {
+                new Promise(resolve => {
+                    if (weatherModal) {
+                        resolve(weatherModal);
+                        return;
+                    }
+                    create({
+                        type: types.ALERT,
+                        large: true,
+                        scrollable: true,
+                        title: `${getWeatherEmoji(
+                            data.weatherType
+                        )}\xa0${$t('weatherDisplay.title')}`,
+                        body: '',
+                    }).then(modal => {
+                        modal.setButtonText(
+                            'cancel',
+                            `${$t('modals.weatherDisplay.close')}`
+                        );
+
+                        const credits = document.createElement('span');
+                        credits.classList.add('text-muted', 'small', 'mr-auto');
+                        credits.innerHTML = `${$t(
+                            'weatherDisplay.credits._long'
+                        )} <a href="${$t(
+                            `weatherDisplay.credits.${provider}.url`
+                        )}">${$t(`weatherDisplay.credits.${provider}.name`)}</a>`;
+                        modal.getFooter().prepend(credits);
+
+                        weatherModal = modal;
+                        resolve(modal);
+                    });
+                }).then(modal => {
+                    const modalBody = modal.getBody()[0];
+
+                    if (data.weatherType === weatherCodes.UNKNOWN) {
+                        modalBody.innerHTML = `<div><p>${$t(
+                            `weatherDisplay.weatherCodes.${weatherCodes.UNKNOWN}`
+                        )}</p></div>`;
+                        modal.show();
+                        return;
+                    }
+
+                    modalBody.innerHTML = `
+                        <div>
+                            <dl class="row">
+                                ${WEATHER_ATTRIBUTES.map(
+                                    attr => `
+                                    <dt class="col-sm-4">${$t(`modals.weatherDisplay.attributes.${attr}`)}</dt>
+                                    <dd class="col-sm-8">${displayData(attr, data)}</dd>`
+                                ).join('')}
+                            </dl>
+                        </div>
+                    `;
+
+                    modal.show();
+                });
+            }));
+
+        document
+            .getElementById(e.target.getAttribute('aria-describedby'))
+            .remove();
+        e.target.removeAttribute('aria-describedby');
+    };
+
+    const weatherBtnWrapper = document.createElement('div');
+    weatherBtnWrapper.id = PREFIX('weather-button');
+    const weatherBtn = document.createElement('a');
+    weatherBtn.innerText = `${getWeatherEmoji(0)}`;
+    weatherBtn.dataset.originalTitle = $t(
+        `weatherDisplay.weatherCodes.${weatherCodes.UNKNOWN}`
+    );
+    weatherBtn.classList.add('nav-link', 'position-relative');
+    weatherBtn.href = '#';
+    weatherBtn.role = 'button';
+    weatherBtn.dataset.toggle = 'tooltip';
+    weatherBtn.dataset.placement = 'bottom';
+    weatherBtn.dataset.html = 'true';
+    weatherBtn.addEventListener('click', openWeatherDisplayModal);
+    weatherBtnWrapper.append(weatherBtn);
+
+    ready(() => {
+        document
+            .querySelector('#usernavigation .usermenu-container')
+            ?.before(weatherBtnWrapper);
+    });
+
+    animationInterval(
+        ONE_MINUTE,
+        () => {
+            weatherProvider().then(data => {
+                const weatherEmoji = getWeatherEmoji(data.weatherType);
+
+                if (data.weatherType === weatherCodes.UNKNOWN) {
+                    weatherBtn.innerHTML = weatherEmoji;
+                    weatherBtn.dataset.originalTitle = $t(
+                        `weatherDisplay.weatherCodes.${weatherCodes.UNKNOWN}`
+                    );
+                    return;
+                }
+
+                weatherBtn.innerHTML =
+                    weatherEmoji +
+                    (showTempInNavbar ?
+                        ` ${displayData(
+                            toggleFeelsLike ?
+                                'temperatureFeelsLike'
+                            :   'temperature',
+                            data
+                        )}`
+                    :   '');
+                weatherBtn.dataset.originalTitle = `<strong>${weatherEmoji}\xa0${$t(
+                    `weatherDisplay.weatherCodes.${data.weatherType}`
+                )}</strong><br>🌡️:&nbsp;${
+                    displayData('temperature', data) +
+                    (toggleFeelsLike ?
+                        ` (${displayData('temperatureFeelsLike', data)})`
+                    :   '')
+                }<br>🪁:&nbsp;${displayData(
+                    'windSpeed',
+                    data
+                )}&nbsp;(${windDirectionToArrow(
+                    data.windDirection
+                )})<br>💦:&nbsp;${displayData(
+                    'rainGauge',
+                    data
+                )}<br><br><small>${$t('weatherDisplay.credits._short')}: ${$t(
+                    `weatherDisplay.credits.${provider}.name`
+                )}<br>${$t(
+                    'weatherDisplay.updated'
+                )}:&nbsp;${timeToString(data.time, false)}</small>`;
+            });
+        },
+        true
+    );
 }
 // endregion
 
