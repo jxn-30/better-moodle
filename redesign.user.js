@@ -425,8 +425,7 @@ Viele Grüße
                     description: '🏳️‍🌈',
                     options: {
                         off: 'Aus',
-                        rainbow: 'Regenbogen - Horizontal',
-                        rotated: 'Regenbogen - Schräg',
+                        rainbow: 'Regenbogen',
                         agender: 'Agender',
                         aro: 'Aromantisch',
                         ace: 'Asexuell',
@@ -440,6 +439,11 @@ Viele Grüße
                         gay: 'Schwul',
                         trans: 'Transgender',
                     },
+                },
+                prideLogoRotated: {
+                    name: 'Gedrehtes Pride-Logo',
+                    description:
+                        'Rotiert die Streifen der Pride-Flag, sodass sie schräg über auf dem Logo angezeigt wird.',
                 },
                 quickRoleChange: {
                     name: 'Schneller Rollenwechsel',
@@ -1050,8 +1054,7 @@ Best regards
                     description: '🏳️‍🌈',
                     options: {
                         off: 'Aus',
-                        rainbow: 'Rainbow - Horizontal',
-                        rotated: 'Rainbow - Rotated',
+                        rainbow: 'Rainbow',
                         agender: 'Agender',
                         aro: 'Aromantic',
                         ace: 'Asexual',
@@ -1065,6 +1068,10 @@ Best regards
                         gay: 'Gay',
                         trans: 'Transgender',
                     },
+                },
+                prideLogoRotated: {
+                    name: 'Rotated Pride-Logo',
+                    description: 'Rotates the stripes of the pride-flag.',
                 },
                 quickRoleChange: {
                     name: 'Quick role change',
@@ -1476,6 +1483,10 @@ GM_addStyle(css`
             bottom: calc(2.7rem + 36px);
             flex-direction: column-reverse;
         }
+    }
+
+    [data-flexitour='container'] {
+        z-index: 100 !important;
     }
 `);
 
@@ -2946,7 +2957,6 @@ const SETTINGS = [
     new SelectSetting('general.prideLogo', 'rainbow', [
         'off',
         'rainbow',
-        'rotated',
         'agender',
         'aro',
         'ace',
@@ -2960,6 +2970,7 @@ const SETTINGS = [
         'gay',
         'trans',
     ]),
+    new BooleanSetting('general.prideLogoRotated', false),
     new BooleanSetting('general.quickRoleChange', true),
     'darkmode',
     $t('settings.darkmode._description'),
@@ -4659,14 +4670,39 @@ ${Array.from(shownBars)
 // endregion
 
 // region Feature: general.prideLogo
+// TODO: Remove this code some day. It is only for backwards compatibility
 const prideLogoSetting = settingsById['general.prideLogo'];
+const prideLogoRotatedSetting = settingsById['general.prideLogoRotated'];
 if (['true', 'false'].includes(`${prideLogoSetting.value}`)) {
     const oldValue = `${prideLogoSetting.value}` === 'true';
     prideLogoSetting.value = oldValue ? 'rainbow' : 'off';
 }
+if (prideLogoSetting.value === 'rotated') {
+    prideLogoSetting.value = 'rainbow';
+    prideLogoRotatedSetting.value = true;
+}
 let prideLogoStyle = '';
 if (getSetting('general.prideLogo') !== 'off') {
     const prideLogoSelector = `data-${PREFIX('pride-logo')}`;
+    const prideLogoIsRotated = `data-${PREFIX('pride-logo-rotated')}`;
+
+    const prideLogoGradientStartVar = `--${PREFIX('pride-logo-gradient-start')}`;
+    const prideLogoGradientEndVar = `--${PREFIX('pride-logo-gradient-end')}`;
+    const prideLogoGradientRotationVar = `--${PREFIX('pride-logo-gradient-rotation')}`;
+    GM_addStyle(css`
+        img[${prideLogoSelector}] {
+            ${prideLogoGradientStartVar}: 12%;
+            ${prideLogoGradientEndVar}: 87%;
+            ${prideLogoGradientRotationVar}: 180deg;
+        }
+
+        img[${prideLogoSelector}][${prideLogoIsRotated}]:not([${prideLogoIsRotated}='false']) {
+            ${prideLogoGradientStartVar}: 22%;
+            ${prideLogoGradientEndVar}: 78%;
+            ${prideLogoGradientRotationVar}: 135deg;
+        }
+    `);
+
     ready(() => {
         const logoImg =
             document.querySelector('.navbar.fixed-top .navbar-brand img') ??
@@ -4675,7 +4711,7 @@ if (getSetting('general.prideLogo') !== 'off') {
 
         GM_addStyle(css`
             /* set image mask for any chosen flag style */
-            img[${prideLogoSelector}] {
+            img[${prideLogoSelector}]:not([${prideLogoSelector}='off']) {
                 filter: brightness(0.8) contrast(1.5);
 
                 object-position: -99999px -99999px; /* hide original image */
@@ -4686,7 +4722,7 @@ if (getSetting('general.prideLogo') !== 'off') {
                 mask-origin: content-box;
             }
 
-            ${DARK_MODE_SELECTOR} img[${prideLogoSelector}] {
+            ${DARK_MODE_SELECTOR} img[${prideLogoSelector}]:not([${prideLogoSelector}='off']) {
                 filter: saturate(2) !important;
             }
         `);
@@ -4695,94 +4731,333 @@ if (getSetting('general.prideLogo') !== 'off') {
             prideLogoSelector,
             getSetting('general.prideLogo')
         );
+        logoImg.setAttribute(
+            prideLogoIsRotated,
+            getSetting('general.prideLogoRotated')
+        );
     });
+
+    const prideLogoGradientSizeVar = `--${PREFIX('pride-logo-gradient-size')}`;
+    const prideLogoStripeSizeVar = `--${PREFIX('pride-logo-stripe-size')}`;
+    GM_addStyle(css`
+        img[${prideLogoSelector}] {
+            ${prideLogoGradientSizeVar}: calc(var(${prideLogoGradientEndVar}) - var(${prideLogoGradientStartVar}));
+        }
+    `);
 
     // set the flag style for the chosen setting
     prideLogoStyle = css`
-        img[${prideLogoSelector}], /* Fallback */
-            img[${prideLogoSelector}='rainbow'] {
+        img[${prideLogoSelector}]:not([${prideLogoSelector}='off']), /* Fallback */
+        img[${prideLogoSelector}][${prideLogoSelector}='rainbow'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 6);
             background-image: linear-gradient(
-                #fe0000 24.7%,
-                #fd8c00 24.7% 37.35%,
-                #ffd000 37.35% 50%,
-                #119f0b 50% 62.65%,
-                #457cdf 62.65% 75.3%,
-                #c22edc 75.3%
+                var(${prideLogoGradientRotationVar}),
+                #fe0000
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #fd8c00
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #ffd000
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #119f0b
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #457cdf
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 5 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #c22edc
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 5 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
 
-        img[${prideLogoSelector}='rotated'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='agender']) {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 7);
             background-image: linear-gradient(
-                135deg,
-                #fe0000 30%,
-                #fd8c00 30% 40%,
-                #ffd000 40% 50%,
-                #119f0b 50% 60%,
-                #457cdf 60% 70%,
-                #c22edc 70%
+                var(${prideLogoGradientRotationVar}),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #a3aaaf
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #9ee261
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 5 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #a3aaaf
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 5 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 6 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 6 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
 
-        img[${prideLogoSelector}='agender'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='aro'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
-                #000000 22.85%,
-                #a3aaaf 22.85% 33.71%,
-                #f3f3f3 33.71% 44.57%,
-                #9ee261 44.57% 55.43%,
-                #f3f3f3 55.43% 66.29%,
-                #a3aaaf 66.29% 77.15%,
-                #000000 77.15%
+                var(${prideLogoGradientRotationVar}),
+                #008800
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #6dc049
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #868686
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
 
-        img[${prideLogoSelector}='aro'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='ace'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 4);
             background-image: linear-gradient(
-                #008800 27.2%,
-                #6dc049 27.2% 42.4%,
-                #f3f3f3 42.4% 57.6%,
-                #868686 57.6% 72.8%,
-                #000000 72.8%
+                var(${prideLogoGradientRotationVar}),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #75005f
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #868686
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
 
-        img[${prideLogoSelector}='ace'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='aroace'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
-                #000000 31%,
-                #75005f 31% 50%,
-                #f3f3f3 50% 69%,
-                #868686 69%
+                var(${prideLogoGradientRotationVar}),
+                #ce6600
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #dbb600
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #3592ca
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #000529
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
 
-        img[${prideLogoSelector}='aroace'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='bi'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 3);
             background-image: linear-gradient(
-                #ce6600 27.2%,
-                #dbb600 27.2% 42.4%,
-                #f3f3f3 42.4% 57.6%,
-                #3592ca 57.6% 72.8%,
-                #000529 72.8%
+                var(${prideLogoGradientRotationVar}),
+                #d60270
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #9b4f96
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #0038a8
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
 
-        img[${prideLogoSelector}='bi'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='genderfluid'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
-                #d60270 37.33%,
-                #9b4f96 37.33% 62.67%,
-                #0038a8 62.67%
+                var(${prideLogoGradientRotationVar}),
+                #f04e83
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #ca00c7
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #0007a8
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
 
-        img[${prideLogoSelector}='genderfluid'] {
-            background-image: linear-gradient(
-                #f04e83 27.2%,
-                #f3f3f3 27.2% 42.4%,
-                #ca00c7 42.4% 57.6%,
-                #000000 57.6% 72.8%,
-                #0007a8 72.8%
-            );
-        }
-
-        img[${prideLogoSelector}='intersex'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='intersex'] {
+            /* TODO: Generalize this */
             background-image: radial-gradient(
                 circle at 50%,
                 #f3c500 12%,
@@ -4791,50 +5066,196 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}='lesbian'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='lesbian'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
-                #c00000 27.2%,
-                #f07724 27.2% 42.4%,
-                #f3f3f3 42.4% 57.6%,
-                #bb3586 57.6% 72.8%,
-                #860035 72.8%
+                var(${prideLogoGradientRotationVar}),
+                #c00000
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f07724
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #bb3586
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #860035
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
 
-        img[${prideLogoSelector}='enby'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='enby'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 4);
             background-image: linear-gradient(
-                #ece22c 31%,
-                #f3f3f3 31% 50%,
-                #7035b6 50% 69%,
-                #000000 69%
+                var(${prideLogoGradientRotationVar}),
+                #ece22c
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #7035b6
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
 
-        img[${prideLogoSelector}='pan'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='pan'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 3);
             background-image: linear-gradient(
-                #f3006d 37.33%,
-                #f0c500 37.33% 62.67%,
-                #0097f0 62.67%
+                var(${prideLogoGradientRotationVar}),
+                #f3006d
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f0c500
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #0097f0
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
 
-        img[${prideLogoSelector}='gay'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='gay'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
-                #006642 27.2%,
-                #6dc79b 27.2% 42.4%,
-                #f3f3f3 42.4% 57.6%,
-                #5086c2 57.6% 72.8%,
-                #0f004b 72.8%
+                var(${prideLogoGradientRotationVar}),
+                #006642
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #6dc79b
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #5086c2
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #0f004b
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
 
-        img[${prideLogoSelector}='trans'] {
+        img[${prideLogoSelector}][${prideLogoSelector}='trans'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
             background-image: linear-gradient(
-                #00b9ee 27.2%,
-                #ee86d8 27.2% 42.4%,
-                #f3f3f3 42.4% 57.6%,
-                #ee86d8 57.6% 72.8%,
-                #00b9ee 72.8%
+                var(${prideLogoGradientRotationVar}),
+                #00b9ee
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #ee86d8
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #ee86d8
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #00b9ee
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
             );
         }
     `;

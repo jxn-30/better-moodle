@@ -106,13 +106,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:8.56.10":
-  version: 8.56.10
-  resolution: "@types/eslint@npm:8.56.10"
+"@types/eslint@npm:9.6.0":
+  version: 9.6.0
+  resolution: "@types/eslint@npm:9.6.0"
   dependencies:
     "@types/estree": "npm:*"
     "@types/json-schema": "npm:*"
-  checksum: 10c0/674349d6c342c3864d70f4d5a9965f96fb253801532752c8c500ad6a1c2e8b219e01ccff5dc8791dcb58b5483012c495708bb9f3ff929f5c9322b3da126c15d3
+  checksum: 10c0/69301356bc73b85e381ae00931291de2e96d1cc49a112c592c74ee32b2f85412203dea6a333b4315fd9839bb14f364f265cbfe7743fc5a78492ee0326dd6a2c1
   languageName: node
   linkType: hard
 
@@ -773,11 +773,11 @@ __metadata:
   linkType: hard
 
 "semver@npm:^7.3.8":
-  version: 7.6.2
-  resolution: "semver@npm:7.6.2"
+  version: 7.6.3
+  resolution: "semver@npm:7.6.3"
   bin:
     semver: bin/semver.js
-  checksum: 10c0/97d3441e97ace8be4b1976433d1c32658f6afaff09f143e52c593bae7eef33de19e3e369c88bd985ce1042c6f441c80c6803078d1de2a9988080b66684cbb30c
+  checksum: 10c0/88f33e148b210c153873cb08cfe1e281d518aaa9a666d4d148add6560db5cd3c582f3a08ccb91f38d5f379ead256da9931234ed122057f40bb5766e65e58adaf
   languageName: node
   linkType: hard
 
@@ -859,7 +859,7 @@ __metadata:
   resolution: "uzl-better-moodle@workspace:."
   dependencies:
     "@eslint/js": "npm:9.7.0"
-    "@types/eslint": "npm:8.56.10"
+    "@types/eslint": "npm:9.6.0"
     "@types/tampermonkey": "npm:5.0.3"
     darkreader: "npm:4.9.87"
     eslint: "npm:9.7.0"
