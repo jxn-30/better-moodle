@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.39.1](https://github.com/jxn-30/better-moodle/compare/1.39.0...1.39.1) (2024-07-24)
+
+
+### Bug Fixes
+
+* **prideLogo:** Fix Agender flag not working ([#297](https://github.com/jxn-30/better-moodle/issues/297)) ([fedf65e](https://github.com/jxn-30/better-moodle/commit/fedf65ed82972ea0e2237d9ac825f0ac8d6b082c))
+
 ## [1.39.0](https://github.com/jxn-30/better-moodle/compare/1.38.2...1.39.0) (2024-07-24)
 
 
