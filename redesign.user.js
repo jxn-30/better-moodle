@@ -4801,7 +4801,7 @@ if (getSetting('general.prideLogo') !== 'off') {
             );
         }
 
-        img[${prideLogoSelector}][${prideLogoSelector}='agender']) {
+        img[${prideLogoSelector}][${prideLogoSelector}='agender'] {
             ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 7);
             background-image: linear-gradient(
                 var(${prideLogoGradientRotationVar}),
