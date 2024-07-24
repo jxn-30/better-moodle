@@ -2,7 +2,7 @@
 // @name            🎓️ UzL: better-moodle
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
-// @version         1.38.2
+// @version         1.39.0
 // @                x-release-please-end
 // @author          Jan (jxn_30)
 // @description     Improves UzL-Moodle by cool features and design improvements.
