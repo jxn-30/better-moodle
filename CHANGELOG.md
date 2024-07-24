@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.39.0](https://github.com/jxn-30/better-moodle/compare/1.38.2...1.39.0) (2024-07-24)
+
+
+### Features
+
+* **prideLogo:** Add setting to rotate the pride flag on the logo ([#271](https://github.com/jxn-30/better-moodle/issues/271)) by @YorikHansen ([50eca0f](https://github.com/jxn-30/better-moodle/commit/50eca0f0f0a04a3d054006c6229cd08a6dc4a385))
+* **weatherDisplay:** Add a weather display to moodle ([#194](https://github.com/jxn-30/better-moodle/issues/194)) by @YorikHansen ([73bfaf9](https://github.com/jxn-30/better-moodle/commit/73bfaf9b412d3daf063cd00af10eefc94cc37c24))
+
+
+### Bug Fixes
+
+* **sidebar:** Fix usertour modal being hidden ([#274](https://github.com/jxn-30/better-moodle/issues/274)) by @YorikHansen ([7514e4c](https://github.com/jxn-30/better-moodle/commit/7514e4c9e1ad37d7991dc7858e0786e068f7dfa5))
+
 ## [1.38.2](https://github.com/jxn-30/better-moodle/compare/1.38.1...1.38.2) (2024-07-01)
 
 
