@@ -16,7 +16,7 @@
         "darkreader": "4.9.87",
         "eslint": "9.8.0",
         "eslint-config-prettier": "9.1.0",
-        "eslint-plugin-userscripts": "0.5.3",
+        "eslint-plugin-userscripts": "0.5.4",
         "globals": "15.9.0",
         "prettier": "3.3.3",
         "userscript-meta": "1.0.1"
