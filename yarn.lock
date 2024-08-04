@@ -302,14 +302,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-userscripts@npm:0.5.3":
-  version: 0.5.3
-  resolution: "eslint-plugin-userscripts@npm:0.5.3"
+"eslint-plugin-userscripts@npm:0.5.4":
+  version: 0.5.4
+  resolution: "eslint-plugin-userscripts@npm:0.5.4"
   dependencies:
     semver: "npm:^7.3.8"
   peerDependencies:
     eslint: ">=8.40.0 <11"
-  checksum: 10c0/73dc70755c5b57e78b85437272ffecbb7a552a708df67824d33ad5e6c2cb78a76d6a03c0452a26851248990b210792ff3710e96796cfe58aca918ad845bf80d2
+  checksum: 10c0/94dcde848d59b90cadbc92466fb38ee07122bb45d70555cbc49a72561a594c5ca4905a9e173145b375421afe33206b022d41a5367999cdb360b3e9aa730db8cf
   languageName: node
   linkType: hard
 
@@ -864,7 +864,7 @@ __metadata:
     darkreader: "npm:4.9.87"
     eslint: "npm:9.8.0"
     eslint-config-prettier: "npm:9.1.0"
-    eslint-plugin-userscripts: "npm:0.5.3"
+    eslint-plugin-userscripts: "npm:0.5.4"
     globals: "npm:15.9.0"
     prettier: "npm:3.3.3"
     userscript-meta: "npm:1.0.1"
