@@ -1455,8 +1455,12 @@ GM_addStyle(css`
         width: 100vw;
         margin-top: 0.7rem;
         margin-bottom: 0.7rem;
-        z-index: 100;
     }
+
+    .drawer-toggles .drawer-toggler {
+        z-index: 1050;
+    }
+
     #${PREFIX('drawer-toggles-right')}, #${PREFIX('drawer-toggles-left')} {
         display: flex;
         flex-direction: column;
@@ -1483,10 +1487,6 @@ GM_addStyle(css`
             bottom: calc(2.7rem + 36px);
             flex-direction: column-reverse;
         }
-    }
-
-    [data-flexitour='container'] {
-        z-index: 100 !important;
     }
 `);
 
