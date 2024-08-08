@@ -38,7 +38,7 @@
         "@types/tampermonkey": "5.0.3",
         "eslint": "9.8.0",
         "eslint-config-prettier": "9.1.0",
-        "eslint-plugin-jsdoc": "48.10.2",
+        "eslint-plugin-jsdoc": "48.11.0",
         "eslint-plugin-jsx-a11y": "6.9.0",
         "eslint-plugin-userscripts": "0.5.4",
         "fast-glob": "3.3.2",
