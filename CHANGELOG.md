@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.39.2](https://github.com/jxn-30/better-moodle/compare/1.39.1...1.39.2) (2024-08-08)
+
+
+### Bug Fixes
+
+* **darkmode:** Fix hidden activities being unreadable ([#319](https://github.com/jxn-30/better-moodle/issues/319)) ([2e6777b](https://github.com/jxn-30/better-moodle/commit/2e6777be0362b5c2ae9d8a40306558df4d99d79f))
+* **sidebar:** Fix usertour z-index for courses ([#320](https://github.com/jxn-30/better-moodle/issues/320)) ([49c72f8](https://github.com/jxn-30/better-moodle/commit/49c72f808a33b850ebbc32712009a9ff73ade4a4))
+
 ## [1.39.1](https://github.com/jxn-30/better-moodle/compare/1.39.0...1.39.1) (2024-07-24)
 
 
