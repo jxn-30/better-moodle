@@ -5288,6 +5288,14 @@ const updateDarkReaderMode = (live = false) => {
                 }
 
                 ${prideLogoStyle}
+
+                /* fix for unreadable activities */
+                .activity-item.hiddenactivity .description .course-description-item, 
+                .activity-item.hiddenactivity .activityiconcontainer, 
+                .activity-item.hiddenactivity .badge,
+                .editing .activity-item:hover .activityiconcontainer {
+                    mix-blend-mode: hard-light !important;
+                }
             `,
         };
         if (darkModeSetting === 'auto') DarkReader.auto(settings, fixes);
