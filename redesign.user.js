@@ -9,7 +9,7 @@
 // @description:de  Verbessert UzL-Moodle durch coole Features und Designverbesserungen.
 // @homepage        https://github.com/jxn-30/better-moodle
 // @homepageURL     https://github.com/jxn-30/better-moodle
-// @icon            https://www.uni-luebeck.de/favicon.ico
+// @icon            https://raw.githubusercontent.com/jxn-30/better-moodle/main/img/moothel.png
 // @updateURL       https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.meta.js
 // @downloadURL     https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.user.js
 // @match           https://moodle.uni-luebeck.de/*
@@ -239,7 +239,13 @@ Das hilft, ihn schneller und effizienter zu beheben.
 
 ## Ich habe eine tolle Idee für ein neues Feature!
 
-Erstelle gerne ein Issue auf [GitHub]({{githubIssueFeature}}), reiche dort eine Contribution ein oder schreibe eine Mail an Jan: [{{mailAdress}}]({{mailLinkFeature}})`,
+Erstelle gerne ein Issue auf [GitHub]({{githubIssueFeature}}), reiche dort eine Contribution ein oder schreibe eine Mail an Jan: [{{mailAdress}}]({{mailLinkFeature}})
+
+## Wer ist denn dieses süße Mammut 🦣 da im Hintergrund der Einstellungen?
+
+Gut, dass du fragst! Das ist eine Zeichnung von Moothel, dem Better-Moodle Maskottchen. Um genau zu sein ist das sogar das Better-Moodle Logo!
+
+Übrigens: Moothel hat auch eine eigene Homepage: [moothel.pet](https://moothel.pet).`,
                 mails: {
                     help: {
                         subject: 'Ich benötige bitte Hilfe',
@@ -868,7 +874,13 @@ This helps to fix it faster and more efficiently.
 
 ## I have a great idea for a new feature!
 
-Feel free to create an issue on [GitHub]({{githubIssueFeature}}), submit a contribution there or write an email to Jan: [{{mailAdress}}]({{mailLinkFeature}})`,
+Feel free to create an issue on [GitHub]({{githubIssueFeature}}), submit a contribution there or write an email to Jan: [{{mailAdress}}]({{mailLinkFeature}})
+
+## Who is that cute mammoth 🦣 in the background of the settings?
+
+I'm glad you asked! That's a drawing of Moothel, the Better Moodle mascot. In fact, it's the Better Moodle logo!
+
+By the way: Moothel also has his own homepage: [moothel.pet](https://moothel.pet).`,
                 mails: {
                     help: {
                         subject: 'I need help please',
@@ -7598,6 +7610,30 @@ ready(() => {
                 updateSetting.classList.add('justify-content-between');
                 updateSetting.append(versionSpan);
             }
+            // endregion
+
+            // region moothel background image
+            const moothelImg = document.createElement('img');
+            moothelImg.src = rawGithubPath('img/moothel.png');
+            moothelImg.id = PREFIX('moothel');
+            modal.header[0].before(moothelImg);
+            GM_addStyle(css`
+                #${moothelImg.id} {
+                    position: absolute;
+                    width: 90%;
+                    height: 90%;
+                    opacity: 0.1;
+                    top: 5%;
+                    left: 5%;
+                    object-fit: contain;
+                }
+
+                @media (prefers-contrast: more) {
+                    #${moothelImg.id} {
+                        display: none;
+                    }
+                }
+            `);
             // endregion
 
             const footerBtnGroup = document.createElement('div');
