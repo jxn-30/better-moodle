@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.40.0](https://github.com/jxn-30/better-moodle/compare/1.39.2...1.40.0) (2024-08-29)
+
+
+### Features
+
+* **readme:** add Better-Moodle logo and link to moothel homepage https://moothel.pet ([6fe4eeb](https://github.com/jxn-30/better-moodle/commit/6fe4eeba54dcc42ac3f82e4daf3c7dd6a18638af))
+* **settings:** add Better-Moodle logo in background ([0a36266](https://github.com/jxn-30/better-moodle/commit/0a36266be5c079b864dd0e79d186d6cdfed85d7d))
+
 ## [1.39.2](https://github.com/jxn-30/better-moodle/compare/1.39.1...1.39.2) (2024-08-08)
 
 
