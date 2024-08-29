@@ -2,6 +2,23 @@
 
 ## [1.40.0](https://github.com/jxn-30/better-moodle/compare/1.39.2...1.40.0) (2024-08-29)
 
+### 1-Year Anniversary of Better-Moodle 🎉
+
+Hello, dear Better-Moodle user,
+
+Thank you so much for using Better-Moodle!
+Today, exactly one year ago, Better-Moodle was released for the first time.
+Since then, Better-Moodle has grown a lot and has become a quite userscript for Moodle at Universität zu Lübeck and in Kiel.
+I am very grateful for all the feedback and support I have received from you, and I am also looking forward to the future of Better-Moodle.
+At the moment, I am working on a complete rewrite as the current code is pretty messy and hard to maintain, meanwhile Yorik, a good friend, maintains and extends the current version.
+
+BTW: Did you know, that Better-Moodle now does have an official logo? Check it out in GitHub and in the Better-Moodle settings dialog.  
+Did you also know that Better-Moodle does have a Mascot called Moothel?
+Moothel is a super cute mammoth 🦣 and he even has his own homepage!
+Feel free to visit him at [moothel.pet](https://moothel.pet) and say hi!
+
+Thank you all for your loving support!  
+Jan <3
 
 ### Features
 
