@@ -3141,12 +3141,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsx-dom@npm:8.1.4":
-  version: 8.1.4
-  resolution: "jsx-dom@npm:8.1.4"
+"jsx-dom@npm:8.1.5":
+  version: 8.1.5
+  resolution: "jsx-dom@npm:8.1.5"
   dependencies:
     csstype: "npm:^3.1.3"
-  checksum: 10c0/8b26d3c5d6ec371b6042f84ced2288507df06e6e3214d66258f8f0a5f6427bd81f885917b1846c3326c61c297c50527f622396c53ba48e0b9d2ad687e81c86f7
+  checksum: 10c0/7a6e7b5536a956d19ef8bb05d4326b4e218e78ee8b4e03a8eba5cbd342c7151c5a92722fd7721d4cd7496103becd4e4f8395e2ded1455d7a1d4513b102a5685d
   languageName: node
   linkType: hard
 
@@ -4979,7 +4979,7 @@ __metadata:
     eslint-plugin-userscripts: "npm:0.5.4"
     fast-glob: "npm:3.3.2"
     globals: "npm:15.9.0"
-    jsx-dom: "npm:8.1.4"
+    jsx-dom: "npm:8.1.5"
     prettier: "npm:3.3.3"
     sass: "npm:1.77.8"
     ts-json-schema-generator: "npm:2.3.0"
