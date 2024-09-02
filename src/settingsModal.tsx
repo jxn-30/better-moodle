@@ -27,7 +27,7 @@ const SettingsBtn = (
             ></i>
         </div>
     </div>
-);
+) as HTMLDivElement;
 
 // append the Button to the navbar
 ready(() =>

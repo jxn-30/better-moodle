@@ -34,7 +34,7 @@ const allFeatures = fastGlob
         f.replace(`.${featuresBase}`, '').replace('.ts', '').replace('/', '.')
     )
     // anything with more than one dot is not a feature but an extra file
-    .filter(f => f.match(/^[^.]+\.[^.]+$/));
+    .filter(f => /^[^.]+\.[^.]+$/.test(f));
 
 const allIncludedFeatureGroups = new Set<string>(['general']);
 const allFullyIncludedFeatureGroups = new Set<string>();
@@ -148,8 +148,8 @@ export default defineConfig({
                     const context = path.relative(__dirname, importer);
 
                     if (
-                        sourcePath.match(
-                            /^src\/features\/.*\/i18n(\/index(\.ts)?)?$/
+                        /^src\/features\/.*\/i18n(\/index(\.ts)?)?$/.test(
+                            sourcePath
                         )
                     ) {
                         // Ah! We're trying to load index translations for this feature group!
@@ -161,7 +161,7 @@ export default defineConfig({
                         }
                     }
 
-                    if (context.match(/^src\/features\/.*\/i18n\/index\.ts$/)) {
+                    if (/^src\/features\/.*\/i18n\/index\.ts$/.test(context)) {
                         // Ah! We're loading from a translation index file!
                         // hmm, is this feature included?
                         const featureGroup = context.split('/')[2];

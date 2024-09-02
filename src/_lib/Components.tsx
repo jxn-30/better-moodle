@@ -147,7 +147,7 @@ export const FieldSet = ({
             )}
             {children}
         </div>
-    );
+    ) as HTMLDivElement;
 
     const collapseBtn = (
         <a

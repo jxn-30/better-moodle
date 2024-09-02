@@ -134,6 +134,7 @@ export default abstract class Setting<
 
         descriptionBtn.addEventListener('click', e => e.preventDefault());
 
+        // TODO: use Moodle mustache templates instead?
         return (
             <div className="form-group row fitem">
                 <div className="col-md-5 col-form-label d-flex pb-0 pt-0">
@@ -154,7 +155,7 @@ export default abstract class Setting<
                     {this.formControl}
                 </div>
             </div>
-        );
+        ) as HTMLDivElement;
     }
 
     /**

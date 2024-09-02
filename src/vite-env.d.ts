@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 /// <reference types="vite-plugin-monkey/client" />
 /// <reference types="vite-plugin-monkey/global" />
+/// <reference types="jsx-dom/index" />
 
 // constants defined in the config file
 declare const __GITHUB_USER__: string;

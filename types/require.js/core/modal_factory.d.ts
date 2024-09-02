@@ -1,8 +1,10 @@
 // types found out by reading the moodle source code
 // may be incomplete at some points
+import { JSX } from 'jsx-dom';
+
 type ModalType = 'ALERT' | 'CANCEL' | 'DEFAULT' | 'SAVE_CANCEL';
 
-type AwaitedContent = string | Element;
+type AwaitedContent = string | JSX.Element;
 type Content = AwaitedContent | Promise<AwaitedContent>;
 
 type ModalButtons = Record<string, string>;
