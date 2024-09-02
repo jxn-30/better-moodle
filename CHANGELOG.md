@@ -1,5 +1,86 @@
 # Changelog
 
+## [1.40.0](https://github.com/jxn-30/better-moodle/compare/1.39.2...1.40.0) (2024-08-29)
+
+### 1-Year Anniversary of Better-Moodle 🎉
+
+Hello, dear Better-Moodle user,
+
+Thank you so much for using Better-Moodle!
+Today, exactly one year ago, Better-Moodle was released for the first time.
+Since then, Better-Moodle has grown a lot and has become a quite userscript for Moodle at Universität zu Lübeck and in Kiel.
+I am very grateful for all the feedback and support I have received from you, and I am also looking forward to the future of Better-Moodle.
+At the moment, I am working on a complete rewrite as the current code is pretty messy and hard to maintain, meanwhile Yorik, a good friend, maintains and extends the current version.
+
+BTW: Did you know, that Better-Moodle now does have an official logo? Check it out in GitHub and in the Better-Moodle settings dialog.  
+Did you also know that Better-Moodle does have a Mascot called Moothel?
+Moothel is a super cute mammoth 🦣 and he even has his own homepage!
+Feel free to visit him at [moothel.pet](https://moothel.pet) and say hi!
+
+Thank you all for your loving support!  
+Jan <3
+
+### Features
+
+* **readme:** add Better-Moodle logo and link to moothel homepage https://moothel.pet ([6fe4eeb](https://github.com/jxn-30/better-moodle/commit/6fe4eeba54dcc42ac3f82e4daf3c7dd6a18638af))
+* **settings:** add Better-Moodle logo in background ([0a36266](https://github.com/jxn-30/better-moodle/commit/0a36266be5c079b864dd0e79d186d6cdfed85d7d))
+
+## [1.39.2](https://github.com/jxn-30/better-moodle/compare/1.39.1...1.39.2) (2024-08-08)
+
+
+### Bug Fixes
+
+* **darkmode:** Fix hidden activities being unreadable ([#319](https://github.com/jxn-30/better-moodle/issues/319)) ([2e6777b](https://github.com/jxn-30/better-moodle/commit/2e6777be0362b5c2ae9d8a40306558df4d99d79f))
+* **sidebar:** Fix usertour z-index for courses ([#320](https://github.com/jxn-30/better-moodle/issues/320)) ([49c72f8](https://github.com/jxn-30/better-moodle/commit/49c72f808a33b850ebbc32712009a9ff73ade4a4))
+
+## [1.39.1](https://github.com/jxn-30/better-moodle/compare/1.39.0...1.39.1) (2024-07-24)
+
+
+### Bug Fixes
+
+* **prideLogo:** Fix Agender flag not working ([#297](https://github.com/jxn-30/better-moodle/issues/297)) ([fedf65e](https://github.com/jxn-30/better-moodle/commit/fedf65ed82972ea0e2237d9ac825f0ac8d6b082c))
+
+## [1.39.0](https://github.com/jxn-30/better-moodle/compare/1.38.2...1.39.0) (2024-07-24)
+
+
+### Features
+
+* **prideLogo:** Add setting to rotate the pride flag on the logo ([#271](https://github.com/jxn-30/better-moodle/issues/271)) by @YorikHansen ([50eca0f](https://github.com/jxn-30/better-moodle/commit/50eca0f0f0a04a3d054006c6229cd08a6dc4a385))
+* **weatherDisplay:** Add a weather display to moodle ([#194](https://github.com/jxn-30/better-moodle/issues/194)) by @YorikHansen ([73bfaf9](https://github.com/jxn-30/better-moodle/commit/73bfaf9b412d3daf063cd00af10eefc94cc37c24))
+
+
+### Bug Fixes
+
+* **sidebar:** Fix usertour modal being hidden ([#274](https://github.com/jxn-30/better-moodle/issues/274)) by @YorikHansen ([7514e4c](https://github.com/jxn-30/better-moodle/commit/7514e4c9e1ad37d7991dc7858e0786e068f7dfa5))
+
+## [1.38.2](https://github.com/jxn-30/better-moodle/compare/1.38.1...1.38.2) (2024-07-01)
+
+
+### Bug Fixes
+
+* **noDownload:** Remove `forcedownload` param on page load ([#249](https://github.com/jxn-30/better-moodle/issues/249)) ([a34c1e2](https://github.com/jxn-30/better-moodle/commit/a34c1e212a1cc61a976f7b1f01e4177696fca5ee))
+
+## [1.38.1](https://github.com/jxn-30/better-moodle/compare/1.38.0...1.38.1) (2024-06-23)
+
+
+### Bug Fixes
+
+* **prideLogo:** Fix 'pridification' on logos that are not transparent ([#237](https://github.com/jxn-30/better-moodle/issues/237)) ([c4154ae](https://github.com/jxn-30/better-moodle/commit/c4154ae945b0b1d9270ec5504838b1594c649679))
+
+## [1.38.0](https://github.com/jxn-30/better-moodle/compare/1.37.1...1.38.0) (2024-06-17)
+
+
+### Features
+
+* **quickRoleChange:** Make switching roles as easy as switching lang ([#215](https://github.com/jxn-30/better-moodle/issues/215)) ([6aac352](https://github.com/jxn-30/better-moodle/commit/6aac35237c4033964f159d5553ac15ad99aae01f))
+
+## [1.37.1](https://github.com/jxn-30/better-moodle/compare/1.37.0...1.37.1) (2024-06-13)
+
+
+### Code Refactoring
+
+* **prideLogo:** Use linear-gradients instead of svgs [#212](https://github.com/jxn-30/better-moodle/issues/212) ([#217](https://github.com/jxn-30/better-moodle/issues/217)) ([c35eadf](https://github.com/jxn-30/better-moodle/commit/c35eadf4fa221b285985e9505df083a877befeb1))
+
 ## [1.37.0](https://github.com/jxn-30/better-moodle/compare/1.36.0...1.37.0) (2024-06-08)
 
 

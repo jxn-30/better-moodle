@@ -2,14 +2,14 @@
 // @name            🎓️ UzL: better-moodle
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
-// @version         1.37.0
+// @version         1.40.0
 // @                x-release-please-end
 // @author          Jan (jxn_30)
 // @description     Improves UzL-Moodle by cool features and design improvements.
 // @description:de  Verbessert UzL-Moodle durch coole Features und Designverbesserungen.
 // @homepage        https://github.com/jxn-30/better-moodle
 // @homepageURL     https://github.com/jxn-30/better-moodle
-// @icon            https://www.uni-luebeck.de/favicon.ico
+// @icon            https://raw.githubusercontent.com/jxn-30/better-moodle/main/img/moothel.png
 // @updateURL       https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.meta.js
 // @downloadURL     https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.user.js
 // @match           https://moodle.uni-luebeck.de/*
@@ -22,7 +22,12 @@
 // @grant           GM_info
 // @grant           GM_xmlhttpRequest
 // @connect         studentenwerk.sh
-// @require         https://unpkg.com/darkreader@4.9.86/darkreader.js#sha512=8dc63b1a2fc647c5658f06566bde24dd9454b34ed3dc4cc50f71035b9500a92d523249579fdabde1a0769ad9e53c0987f3c4321d107df98dab2d39db9fbd453b
+// @connect         api.open-meteo.com
+// @connect         api.openweathermap.org
+// @connect         api.pirateweather.net
+// @connect         weather.visualcrossing.com
+// @connect         wttr.in
+// @require         https://unpkg.com/darkreader@4.9.89/darkreader.js#sha512=15732894c8596b9ecd7360f88b3c41e84a04915f4dcc344eb008f10f9c3c419f6659223caa69db8df13c6dbf7a07d934f3f53afbff34b11b0cd1ed8614a79d0f
 // ==/UserScript==
 
 /* global M, require, DarkReader */
@@ -83,6 +88,112 @@ const TRANSLATIONS = {
                 holiday: 'Feiertag',
             },
         },
+        quickRoleChange: {
+            defaultSwitchRole: 'Zur Moodle Rollenwechsel-Seite gehen',
+            goBack: 'Zurück zum Nutzermenü',
+            roleSelector: 'Rollen-Auswahl',
+        },
+        weatherDisplay: {
+            title: 'Wetter-Moodle',
+            updated: 'Zuletzt aktualisiert um',
+            credits: {
+                _long: 'Wetterdaten von',
+                _short: 'Quelle',
+                wttrIn: {
+                    name: 'wttr.in',
+                    url: 'https://wttr.in',
+                },
+                openMeteo: {
+                    name: 'Open-Meteo',
+                    url: 'https://open-meteo.com',
+                },
+                visualCrossing: {
+                    name: 'Visual Crossing',
+                    url: 'https://www.visualcrossing.com',
+                },
+                openWeatherMap: {
+                    name: 'OpenWeatherMap',
+                    url: 'https://openweathermap.org',
+                },
+                pirateWeather: {
+                    name: 'Pirate Weather',
+                    url: 'https://pirateweather.net',
+                },
+            },
+            weatherCodes: {
+                unknown: 'Wetter nicht verfügbar',
+                clear: 'Klarer Himmel',
+                fewClouds: 'Wenige Wolken',
+                scatteredClouds: 'Vereinzelte Wolken',
+                brokenClouds: 'Zerstreute Wolken',
+                overcastClouds: 'Bedeckter Himmel',
+                mist: 'Nebel',
+                fog: 'Nebel',
+                freezingFog: 'Gefrierender Nebel',
+                dust: 'Staub',
+                sand: 'Sand',
+                haze: 'Dunst',
+                smoke: 'Rauch',
+                volcanicAsh: 'Vulkanasche',
+                wind: 'Wind',
+                squalls: 'Windböen',
+                tornado: 'Tornado',
+                lightSnow: 'Leichter Schnee',
+                moderateSnow: 'Schnee',
+                heavySnow: 'Starker Schnee',
+                lightRain: 'Leichter Regen',
+                moderateRain: 'Regen',
+                heavyRain: 'Starker Regen',
+                lightDrizzle: 'Leichter Nieselregen',
+                moderateDrizzle: 'Nieselregen',
+                heavyDrizzle: 'Starker Nieselregen',
+                lightSleet: 'Leichter Schneeregen',
+                moderateSleet: 'Schneeregen',
+                lightThunderstorm: 'Leichtes Gewitter',
+                moderateThunderstorm: 'Gewitter',
+                heavyThunderstorm: 'Starkes Gewitter',
+                lightFreezingRain: 'Leichter gefrierender Regen',
+                moderateFreezingRain: 'Gefrierender Regen',
+                lightFreezingDrizzle: 'Leichter gefrierender Nieselregen',
+                moderateFreezingDrizzle: 'Gefrierender Nieselregen',
+                heavyFreezingDrizzle: 'Starker gefrierender Nieselregen',
+                lightRainShowers: 'Leichte Regenschauer',
+                moderateRainShowers: 'Regenschauer',
+                heavyRainShowers: 'Starke Regenschauer',
+                lightSleetShowers: 'Leichte Schneeregen-Schauer',
+                moderateSleetShowers: 'Schneeregen-Schauer',
+                lightDrizzleShowers: 'Leichte Nieselregen-Schauer',
+                moderateDrizzleShow: 'Nieselregen-Schauer',
+                heavyDrizzleShowers: 'Starke Nieselregen-Schauer',
+                lightSnowShowers: 'Leichte Schneeschauer',
+                moderateSnowShowers: 'Schneeschauer',
+                heavySnowShowers: 'Starke Schneeschauer',
+                lightHailShowers: 'Leichte Hagelschauer',
+                moderateHailShowers: 'Hagelschauer',
+                lightThunderstormWithDrizzle:
+                    'Leichtes Gewitter mit Nieselregen',
+                moderateThunderstormWithDrizzle: 'Gewitter mit Nieselregen',
+                heavyThunderstormWithDrizzle:
+                    'Starkes Gewitter mit Nieselregen',
+                lightThunderstormWithRain: 'Leichtes Gewitter mit Regen',
+                moderateThunderstormWithRain: 'Gewitter mit Regen',
+                heavyThunderstormWithRain: 'Starkes Gewitter mit Regen',
+                lightThunderstormWithSnow: 'Leichtes Gewitter mit Schnee',
+                moderateThunderstormWithSnow: 'Gewitter mit Schnee',
+                moderateThunderstormWithHail: 'Gewitter mit Hagel',
+                heavyThunderstormWithHail: 'Starkes Gewitter mit Hagel',
+                moderateThunderstormWithHailShowers:
+                    'Gewitter mit Hagelschauern',
+                extremeSnow: 'Schneesturm',
+                extremeRain: 'Extremer Regen',
+                patchyRainNearby: 'Vereinzelt Regen in der Nähe',
+                patchySnowNearby: 'Vereinzelt Schnee in der Nähe',
+                patchySleetNearby: 'Vereinzelt Schneeregen in der Nähe',
+                patchyFreezingDrizzleNearby:
+                    'Vereinzelt gefrierender Nieselregen in der Nähe',
+                thunderyOutbreaksNearby: 'Gewitter in der Nähe',
+            },
+        },
         modals: {
             settings: {
                 title: 'Einstellungen',
@@ -128,7 +239,13 @@ Das hilft, ihn schneller und effizienter zu beheben.
 
 ## Ich habe eine tolle Idee für ein neues Feature!
 
-Erstelle gerne ein Issue auf [GitHub]({{githubIssueFeature}}), reiche dort eine Contribution ein oder schreibe eine Mail an Jan: [{{mailAdress}}]({{mailLinkFeature}})`,
+Erstelle gerne ein Issue auf [GitHub]({{githubIssueFeature}}), reiche dort eine Contribution ein oder schreibe eine Mail an Jan: [{{mailAdress}}]({{mailLinkFeature}})
+
+## Wer ist denn dieses süße Mammut 🦣 da im Hintergrund der Einstellungen?
+
+Gut, dass du fragst! Das ist eine Zeichnung von Moothel, dem Better-Moodle Maskottchen. Um genau zu sein ist das sogar das Better-Moodle Logo!
+
+Übrigens: Moothel hat auch eine eigene Homepage: [moothel.pet](https://moothel.pet).`,
                 mails: {
                     help: {
                         subject: 'Ich benötige bitte Hilfe',
@@ -164,6 +281,20 @@ ich habe einen tollen Vorschlag für Better-Moodle:
 Viele Grüße
 [Dein Name]`,
                     },
+                },
+            },
+            weatherDisplay: {
+                close: 'Schließen',
+                attributes: {
+                    temperature: 'Temperatur',
+                    temperatureFeelsLike: 'Gefühlte Temperatur',
+                    windSpeed: 'Windgeschwindigkeit',
+                    windDirection: 'Windrichtung',
+                    visibilityDistance: 'Sichtweite',
+                    humidity: 'Feuchtigkeit',
+                    pressure: 'Luftdruck',
+                    cloudCover: 'Bewölkung',
+                    rainGauge: 'Niederschlagsmenge',
                 },
             },
         },
@@ -299,9 +430,8 @@ Viele Grüße
                     name: 'Pride-Logo',
                     description: '🏳️‍🌈',
                     options: {
-                        false: 'Aus',
-                        true: 'Regenbogen - Horizontal',
-                        rotated: 'Regenbogen - Schräg',
+                        off: 'Aus',
+                        rainbow: 'Regenbogen',
                         agender: 'Agender',
                         aro: 'Aromantisch',
                         ace: 'Asexuell',
@@ -315,6 +445,16 @@ Viele Grüße
                         gay: 'Schwul',
                         trans: 'Transgender',
                     },
+                },
+                prideLogoRotated: {
+                    name: 'Gedrehtes Pride-Logo',
+                    description:
+                        'Rotiert die Streifen der Pride-Flag, sodass sie schräg über auf dem Logo angezeigt wird.',
+                },
+                quickRoleChange: {
+                    name: 'Schneller Rollenwechsel',
+                    description:
+                        'Ermöglicht es (mit den passenden Berechtigungen), die Betrachtung eines Kurses mit einer anderen Rolle direkt über das Profil-Dropdown zu ändern.',
                 },
             },
             darkmode: {
@@ -472,6 +612,60 @@ Viele Grüße
                     },
                 },
             },
+            weatherDisplay: {
+                _title: 'Wetter-Moodle',
+                _description: `Um gute Wetterdaten zu erhalten, benötigst du bei einigen Anbietern einen API-Key. 
+Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen kostenlosen Optionen.`,
+                show: {
+                    name: 'Wetter anzeigen',
+                    description: 'Zeige das Wetter in Moodle an.',
+                },
+                provider: {
+                    name: 'Anbieter',
+                    description: 'Wähle den Anbieter für die Wetterdaten aus.',
+                    options: {
+                        wttrIn: 'wttr.in',
+                        openMeteo: 'Open-Meteo',
+                        visualCrossing: 'Visual Crossing (API-Key benötigt)',
+                        openWeatherMap: 'OpenWeatherMap (API-Key benötigt)',
+                        pirateWeather: 'Pirate Weather (API-Key benötigt)',
+                    },
+                },
+                openWeatherMapAPIKey: {
+                    name: 'API-Key für OpenWeatherMap',
+                    description:
+                        'Trage hier deinen API-Key für OpenWeatherMap ein (der Free-Plan ist ausreichend).',
+                },
+                pirateWeatherAPIKey: {
+                    name: 'API-Key für PirateWeather',
+                    description:
+                        'Trage hier deinen API-Key für PirateWeather ein (der Free-Plan ist ausreichend).',
+                },
+                visualCrossingAPIKey: {
+                    name: 'API-Key für Visual Crossing',
+                    description:
+                        'Trage hier deinen API-Key für Visual Crossing ein (der Free-Plan ist ausreichend).',
+                },
+                units: {
+                    name: 'Einheiten',
+                    description: 'Wähle die Einheiten für die Wetterdaten aus.',
+                    options: {
+                        metric: 'Metrisch (°C, km/h, km, mm)',
+                        scientific: 'SI Einheiten (K, m/s, m, m)',
+                        imperial: 'Imperial (°F, mph, mi, in)', // for weird people
+                    },
+                },
+                showTempInNavbar: {
+                    name: 'Temperatur in der Navigationsleiste anzeigen',
+                    description:
+                        'Zeige die aktuelle Temperatur in der Navigationsleiste an.',
+                },
+                toggleFeelsLike: {
+                    name: 'Gefühlte Temperatur anzeigen',
+                    description:
+                        'Ermöglicht das Umschalten zwischen der tatsächlichen Temperatur und der gefühlten Temperatur.',
+                },
+            },
         },
     },
     en: {
@@ -528,6 +722,110 @@ Viele Grüße
                 holiday: 'Public Holiday',
             },
         },
+        quickRoleChange: {
+            defaultSwitchRole: 'Go to Moodle switch role page',
+            goBack: 'Go back to user menu',
+            roleSelector: 'Role selector',
+        },
+        weatherDisplay: {
+            title: 'Weather-Moodle',
+            updated: 'Last updated at',
+            credits: {
+                _long: 'Weather data provided by',
+                _short: 'Source',
+                wttrIn: {
+                    name: 'wttr.in',
+                    url: 'https://wttr.in',
+                },
+                openMeteo: {
+                    name: 'Open-Meteo',
+                    url: 'https://open-meteo.com',
+                },
+                visualCrossing: {
+                    name: 'Visual Crossing',
+                    url: 'https://www.visualcrossing.com',
+                },
+                openWeatherMap: {
+                    name: 'OpenWeatherMap',
+                    url: 'https://openweathermap.org',
+                },
+                pirateWeather: {
+                    name: 'Pirate Weather',
+                    url: 'https://pirateweather.net',
+                },
+            },
+            weatherCodes: {
+                unknown: 'Weather not available',
+                clear: 'Clear sky',
+                fewClouds: 'Few clouds',
+                scatteredClouds: 'Scattered clouds',
+                brokenClouds: 'Broken clouds',
+                overcastClouds: 'Overcast clouds',
+                mist: 'Mist',
+                fog: 'Fog',
+                freezingFog: 'Freezing fog',
+                dust: 'Dust',
+                sand: 'Sand',
+                haze: 'Haze',
+                smoke: 'Smoke',
+                volcanicAsh: 'Volcanic ash',
+                wind: 'Wind',
+                squalls: 'Squalls',
+                tornado: 'Tornado',
+                lightSnow: 'Light snow',
+                moderateSnow: 'Moderate snow',
+                heavySnow: 'Heavy snow',
+                lightRain: 'Light rain',
+                moderateRain: 'Moderate rain',
+                heavyRain: 'Heavy rain',
+                lightDrizzle: 'Light drizzle',
+                moderateDrizzle: 'Moderate drizzle',
+                heavyDrizzle: 'Heavy drizzle',
+                lightSleet: 'Light sleet',
+                moderateSleet: 'Moderate sleet',
+                lightThunderstorm: 'Light thunderstorm',
+                moderateThunderstorm: 'Moderate thunderstorm',
+                heavyThunderstorm: 'Heavy thunderstorm',
+                lightFreezingRain: 'Light freezing rain',
+                moderateFreezingRain: 'Moderate freezing rain',
+                lightFreezingDrizzle: 'Light freezing drizzle',
+                moderateFreezingDrizzle: 'Moderate freezing drizzle',
+                heavyFreezingDrizzle: 'Heavy freezing drizzle',
+                lightRainShowers: 'Light rain showers',
+                moderateRainShowers: 'Moderate rain showers',
+                heavyRainShowers: 'Heavy rain showers',
+                lightSleetShowers: 'Light sleet showers',
+                moderateSleetShowers: 'Moderate sleet showers',
+                lightDrizzleShowers: 'Light drizzle showers',
+                moderateDrizzleShow: 'Moderate drizzle showers',
+                heavyDrizzleShowers: 'Heavy drizzle showers',
+                lightSnowShowers: 'Light snow showers',
+                moderateSnowShowers: 'Moderate snow showers',
+                heavySnowShowers: 'Heavy snow showers',
+                lightHailShowers: 'Light hail showers',
+                moderateHailShowers: 'Moderate hail showers',
+                lightThunderstormWithDrizzle: 'Light thunderstorm with drizzle',
+                moderateThunderstormWithDrizzle:
+                    'Moderate thunderstorm with drizzle',
+                heavyThunderstormWithDrizzle: 'Heavy thunderstorm with drizzle',
+                lightThunderstormWithRain: 'Light thunderstorm with rain',
+                moderateThunderstormWithRain: 'Moderate thunderstorm with rain',
+                heavyThunderstormWithRain: 'Heavy thunderstorm with rain',
+                lightThunderstormWithSnow: 'Light thunderstorm with snow',
+                moderateThunderstormWithSnow: 'Moderate thunderstorm with snow',
+                moderateThunderstormWithHail: 'Moderate thunderstorm with hail',
+                heavyThunderstormWithHail: 'Heavy thunderstorm with hail',
+                moderateThunderstormWithHailShowers:
+                    'Moderate thunderstorm with hail showers',
+                extremeSnow: 'Blizzard',
+                extremeRain: 'Extreme rain',
+                patchyRainNearby: 'Patchy rain nearby',
+                patchySnowNearby: 'Patchy snow nearby',
+                patchySleetNearby: 'Patchy sleet nearby',
+                patchyFreezingDrizzleNearby: 'Patchy freezing drizzle nearby',
+                thunderyOutbreaksNearby: 'Thundery outbreaks nearby',
+            },
+        },
         modals: {
             settings: {
                 title: 'Preferences',
@@ -576,7 +874,13 @@ This helps to fix it faster and more efficiently.
 
 ## I have a great idea for a new feature!
 
-Feel free to create an issue on [GitHub]({{githubIssueFeature}}), submit a contribution there or write an email to Jan: [{{mailAdress}}]({{mailLinkFeature}})`,
+Feel free to create an issue on [GitHub]({{githubIssueFeature}}), submit a contribution there or write an email to Jan: [{{mailAdress}}]({{mailLinkFeature}})
+
+## Who is that cute mammoth 🦣 in the background of the settings?
+
+I'm glad you asked! That's a drawing of Moothel, the Better Moodle mascot. In fact, it's the Better Moodle logo!
+
+By the way: Moothel also has his own homepage: [moothel.pet](https://moothel.pet).`,
                 mails: {
                     help: {
                         subject: 'I need help please',
@@ -612,6 +916,20 @@ I have a great suggestion for Better-Moodle:
 Best regards
 [your name]`,
                     },
+                },
+            },
+            weatherDisplay: {
+                close: 'Close',
+                attributes: {
+                    temperature: 'Temperature',
+                    temperatureFeelsLike: 'Feels like',
+                    windSpeed: 'Wind speed',
+                    windDirection: 'Wind direction',
+                    visibilityDistance: 'Visibility',
+                    humidity: 'Humidity',
+                    pressure: 'Pressure',
+                    cloudCover: 'Cloud cover',
+                    rainGauge: 'Rain gauge',
                 },
             },
         },
@@ -747,9 +1065,8 @@ Best regards
                     name: 'Pride-Logo',
                     description: '🏳️‍🌈',
                     options: {
-                        false: 'Aus',
-                        true: 'Rainbow - Horizontal',
-                        rotated: 'Rainbow - Rotated',
+                        off: 'Aus',
+                        rainbow: 'Rainbow',
                         agender: 'Agender',
                         aro: 'Aromantic',
                         ace: 'Asexual',
@@ -763,6 +1080,15 @@ Best regards
                         gay: 'Gay',
                         trans: 'Transgender',
                     },
+                },
+                prideLogoRotated: {
+                    name: 'Rotated Pride-Logo',
+                    description: 'Rotates the stripes of the pride-flag.',
+                },
+                quickRoleChange: {
+                    name: 'Quick role change',
+                    description:
+                        'Allows (with the appropriate permissions) to change the view of a course with a different role directly via the profile dropdown.',
                 },
             },
             darkmode: {
@@ -913,6 +1239,60 @@ Best regards
                         'shiftEnter': 'Shift + Enter',
                         'ctrlEnter': 'Ctrl + Enter',
                     },
+                },
+            },
+            weatherDisplay: {
+                _title: 'Weather-Moodle',
+                _description: `To get good weather data, you need an API key for some providers.
+Better-Moodle never requires more than the free plan of the respective provider to work.`,
+                show: {
+                    name: 'Show weather',
+                    description: 'Show the weather in Moodle.',
+                },
+                provider: {
+                    name: 'Provider',
+                    description: 'Choose the provider for the weather data.',
+                    options: {
+                        wttrIn: 'wttr.in',
+                        openMeteo: 'Open-Meteo',
+                        visualCrossing: 'Visual Crossing (requires API-Key)',
+                        openWeatherMap: 'OpenWeatherMap (requires API-Key)',
+                        pirateWeather: 'Pirate Weather (requires API-Key)',
+                    },
+                },
+                openWeatherMapAPIKey: {
+                    name: 'API-Key for OpenWeatherMap',
+                    description:
+                        'Put your API key for OpenWeatherMap here (the free plan is sufficient).',
+                },
+                pirateWeatherAPIKey: {
+                    name: 'API-Key for PirateWeather',
+                    description:
+                        'Put your API key for PirateWeather here (the free plan is sufficient).',
+                },
+                visualCrossingAPIKey: {
+                    name: 'API-Key for Visual Crossing',
+                    description:
+                        'Put your API key for Visual Crossing here (the free plan is sufficient).',
+                },
+                units: {
+                    name: 'Units',
+                    description: 'Select the units for the weather data.',
+                    options: {
+                        metric: 'Metric (°C, km/h, km, mm)',
+                        scientific: 'SI Units (K, m/s, m, m)',
+                        imperial: 'Imperial (°F, mph, mi, in)', // for weird people
+                    },
+                },
+                showTempInNavbar: {
+                    name: 'Show temperature in the navigation bar',
+                    description:
+                        'Show the current temperature in the navigation bar.',
+                },
+                toggleFeelsLike: {
+                    name: "Show 'feels like' temperature",
+                    description:
+                        "Allows you to switch between the actual temperature and the 'feels like' temperature.",
                 },
             },
         },
@@ -1087,8 +1467,12 @@ GM_addStyle(css`
         width: 100vw;
         margin-top: 0.7rem;
         margin-bottom: 0.7rem;
-        z-index: 100;
     }
+
+    .drawer-toggles .drawer-toggler {
+        z-index: 1050;
+    }
+
     #${PREFIX('drawer-toggles-right')}, #${PREFIX('drawer-toggles-left')} {
         display: flex;
         flex-direction: column;
@@ -1905,7 +2289,11 @@ const timeToString = (date, seconds = true) =>
  * @param {number} delay
  * @param {CallableFunction} callback
  */
-const animationInterval = (delay, callback) => {
+const animationInterval = (delay, callback, runImmediate = false) => {
+    if (runImmediate) {
+        callback();
+    }
+
     let last = 0;
     let currentId;
     /**
@@ -2578,27 +2966,24 @@ const SETTINGS = [
     new BooleanSetting('general.speiseplan', false),
     new BooleanSetting('general.googlyEyes', true),
     new BooleanSetting('general.semesterzeiten', false),
-    new SelectSetting(
-        'general.prideLogo',
-        GM_getValue(getSettingKey('general.prideLogo'), true).toString(),
-        [
-            'false',
-            'true',
-            'rotated',
-            'agender',
-            'aro',
-            'ace',
-            'aroace',
-            'bi',
-            'genderfluid',
-            'intersex',
-            'lesbian',
-            'enby',
-            'pan',
-            'gay',
-            'trans',
-        ]
-    ),
+    new SelectSetting('general.prideLogo', 'rainbow', [
+        'off',
+        'rainbow',
+        'agender',
+        'aro',
+        'ace',
+        'aroace',
+        'bi',
+        'genderfluid',
+        'intersex',
+        'lesbian',
+        'enby',
+        'pan',
+        'gay',
+        'trans',
+    ]),
+    new BooleanSetting('general.prideLogoRotated', false),
+    new BooleanSetting('general.quickRoleChange', true),
     'darkmode',
     $t('settings.darkmode._description'),
     new SelectSetting('darkmode.mode', 'off', ['off', 'on', 'auto']).onInput(
@@ -2685,6 +3070,45 @@ const SETTINGS = [
         'day',
         'week',
     ]).setDisabledFn(settings => !settings['clock.fuzzyClock'].inputValue),
+    'weatherDisplay',
+    new BooleanSetting('weatherDisplay.show', false),
+    new SelectSetting('weatherDisplay.units', 'metric', [
+        'metric',
+        'scientific',
+        'imperial',
+    ]).setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
+    new SelectSetting('weatherDisplay.provider', 'openMeteo', [
+        'openMeteo',
+        'wttrIn',
+        'visualCrossing',
+        'openWeatherMap',
+        'pirateWeather',
+    ]).setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
+    new StringSetting('weatherDisplay.visualCrossingAPIKey', '').setDisabledFn(
+        settings =>
+            !settings['weatherDisplay.show'].inputValue ||
+            settings['weatherDisplay.provider'].inputValue !== 'visualCrossing'
+    ),
+    new StringSetting('weatherDisplay.openWeatherMapAPIKey', '').setDisabledFn(
+        settings =>
+            !settings['weatherDisplay.show'].inputValue ||
+            settings['weatherDisplay.provider'].inputValue !== 'openWeatherMap'
+    ),
+    new StringSetting('weatherDisplay.pirateWeatherAPIKey', '').setDisabledFn(
+        settings =>
+            !settings['weatherDisplay.show'].inputValue ||
+            settings['weatherDisplay.provider'].inputValue !== 'pirateWeather'
+    ),
+    new BooleanSetting('weatherDisplay.showTempInNavbar', false)
+        .setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue)
+        .setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
+    new BooleanSetting('weatherDisplay.toggleFeelsLike', false)
+        .setDisabledFn(
+            settings =>
+                !settings['weatherDisplay.show'].inputValue ||
+                !settings['weatherDisplay.showTempInNavbar'].inputValue
+        )
+        .setDisabledFn(settings => !settings['weatherDisplay.show'].inputValue),
     'messages',
     new SelectSetting('messages.sendHotkey', '', [
         '',
@@ -2716,6 +3140,7 @@ const existingSettings = new Set([
     'general.speiseplan',
     'general.googlyEyes',
     'general.semesterzeiten',
+    'general.quickRoleChange',
     'darkmode.mode',
     'darkmode.brightness',
     'darkmode.contrast',
@@ -3239,18 +3664,31 @@ if (getSetting('general.bookmarkManager')) {
 
 // region Feature: general.noDownload
 if (getSetting('general.noDownload')) {
-    document.addEventListener('mousedown', e => {
-        const target = e.target;
-        if (!(target instanceof HTMLAnchorElement)) return;
+    const removeForceDownload = anchor => {
         try {
-            const url = new URL(target.href, window.location);
+            const url = new URL(anchor.href, window.location);
             if (url.searchParams.has('forcedownload')) {
                 url.searchParams.delete('forcedownload');
-                target.href = url.href;
+                anchor.href = url.href;
             }
         } catch {
             // if href is not a valid URL just ignore it
         }
+    };
+
+    ready(() =>
+        document
+            .querySelectorAll('a[href*="forcedownload"]')
+            .forEach(removeForceDownload)
+    );
+
+    document.addEventListener('mousedown', e => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const anchor = target?.closest('a[href*="forcedownload"]');
+        if (!anchor) return;
+
+        removeForceDownload(anchor);
     });
 }
 // endregion
@@ -4243,7 +4681,40 @@ ${Array.from(shownBars)
 }
 // endregion
 
-if (getSetting('general.prideLogo') !== 'false') {
+// region Feature: general.prideLogo
+// TODO: Remove this code some day. It is only for backwards compatibility
+const prideLogoSetting = settingsById['general.prideLogo'];
+const prideLogoRotatedSetting = settingsById['general.prideLogoRotated'];
+if (['true', 'false'].includes(`${prideLogoSetting.value}`)) {
+    const oldValue = `${prideLogoSetting.value}` === 'true';
+    prideLogoSetting.value = oldValue ? 'rainbow' : 'off';
+}
+if (prideLogoSetting.value === 'rotated') {
+    prideLogoSetting.value = 'rainbow';
+    prideLogoRotatedSetting.value = true;
+}
+let prideLogoStyle = '';
+if (getSetting('general.prideLogo') !== 'off') {
+    const prideLogoSelector = `data-${PREFIX('pride-logo')}`;
+    const prideLogoIsRotated = `data-${PREFIX('pride-logo-rotated')}`;
+
+    const prideLogoGradientStartVar = `--${PREFIX('pride-logo-gradient-start')}`;
+    const prideLogoGradientEndVar = `--${PREFIX('pride-logo-gradient-end')}`;
+    const prideLogoGradientRotationVar = `--${PREFIX('pride-logo-gradient-rotation')}`;
+    GM_addStyle(css`
+        img[${prideLogoSelector}] {
+            ${prideLogoGradientStartVar}: 12%;
+            ${prideLogoGradientEndVar}: 87%;
+            ${prideLogoGradientRotationVar}: 180deg;
+        }
+
+        img[${prideLogoSelector}][${prideLogoIsRotated}]:not([${prideLogoIsRotated}='false']) {
+            ${prideLogoGradientStartVar}: 22%;
+            ${prideLogoGradientEndVar}: 78%;
+            ${prideLogoGradientRotationVar}: 135deg;
+        }
+    `);
+
     ready(() => {
         const logoImg =
             document.querySelector('.navbar.fixed-top .navbar-brand img') ??
@@ -4252,179 +4723,556 @@ if (getSetting('general.prideLogo') !== 'false') {
 
         GM_addStyle(css`
             /* set image mask for any chosen flag style */
-            .navbar.fixed-top .navbar-brand .logo,
-            #logoimage {
+            img[${prideLogoSelector}]:not([${prideLogoSelector}='off']) {
                 filter: brightness(0.8) contrast(1.5);
 
                 object-position: -99999px -99999px; /* hide original image */
-                mask: url(${logoUrl.href}) center/contain no-repeat;
+                mask:
+                    url(${logoUrl.href}) center/contain no-repeat exclude
+                        luminance,
+                    url(${logoUrl.href}) center/contain no-repeat add alpha;
                 mask-origin: content-box;
             }
 
-            ${DARK_MODE_SELECTOR} .navbar.fixed-top .navbar-brand .logo,
-            ${DARK_MODE_SELECTOR} #logoimage {
+            ${DARK_MODE_SELECTOR} img[${prideLogoSelector}]:not([${prideLogoSelector}='off']) {
                 filter: saturate(2) !important;
             }
         `);
 
-        // set the flag style for the chosen setting
-        switch (getSetting('general.prideLogo')) {
-            case 'true':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: linear-gradient(
-                            #fe0000 24.7%,
-                            #fd8c00 24.7%,
-                            37.35%,
-                            #ffd000 37.35%,
-                            50%,
-                            #119f0b 50%,
-                            62.65%,
-                            #457cdf 62.65%,
-                            75.3%,
-                            #c22edc 75.3%
-                        );
-                    }
-                `);
-                break;
-            case 'rotated':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: linear-gradient(
-                            135deg,
-                            #fe0000 30%,
-                            #fd8c00 30%,
-                            40%,
-                            #ffd000 40%,
-                            50%,
-                            #119f0b 50%,
-                            60%,
-                            #457cdf 60%,
-                            70%,
-                            #c22edc 70%
-                        );
-                    }
-                `);
-                break;
-            case 'agender':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Created with Inkscape (http://www.inkscape.org/) --%3E%3Csvg width='100%' height='100%' viewBox='0 0 200 240' version='1.1' id='svg1' xml:space='preserve' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Csodipodi:namedview id='namedview1' pagecolor='%23505050' bordercolor='%23ffffff' borderopacity='1' inkscape:showpageshadow='0' inkscape:pageopacity='0' inkscape:pagecheckerboard='1' inkscape:deskcolor='%23505050' inkscape:document-units='mm' showguides='true'%3E%3Csodipodi:guide position='55.631495,297.00002' orientation='0,-1' id='guide2' inkscape:locked='false' /%3E%3C/sodipodi:namedview%3E%3Cdefs id='defs1' /%3E%3Cg inkscape:label='Layer 1' inkscape:groupmode='layer' id='layer1' transform='translate(-70.116495,282.63711)'%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.46743;stroke-linecap:square' id='rect1' width='199.99998' height='59.481289' x='70.116501' y='-282.63712' ry='0' inkscape:export-filename='agender.svg' inkscape:export-xdpi='96' inkscape:export-ydpi='96' /%3E%3Crect style='fill:%23a3aaaf;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect2' width='199.99998' height='24.2075' x='70.116501' y='-223.15582' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect3' width='199.99998' height='24.2075' x='70.116501' y='-198.9483' ry='0' /%3E%3Crect style='fill:%239ee261;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect4' width='199.99998' height='24.2075' x='70.116501' y='-174.74089' ry='0' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.46743;stroke-linecap:square' id='rect5' width='199.99998' height='59.481289' x='-270.11649' y='42.637127' ry='0' transform='scale(-1)' /%3E%3Crect style='fill:%23a3aaaf;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect6' width='199.99998' height='24.2075' x='-270.11649' y='102.11838' ry='0' transform='scale(-1)' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.5741;stroke-linecap:square' id='rect7' width='199.99998' height='24.2075' x='-270.11649' y='126.3259' ry='0' transform='scale(-1)' /%3E%3C/g%3E%3C/svg%3E%0A");
-                    }
-                `);
-                break;
-            case 'aro':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(-275.69775,282.63712)'%3E%3Cg id='g2'%3E%3Crect style='fill:%23008800;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect8' width='199.99998' height='72.390404' x='275.69775' y='-282.63712' ry='0' /%3E%3Crect style='fill:%236dc049;fill-opacity:1;stroke-width:1.728;stroke-linecap:square' id='rect9' width='199.99998' height='29.172922' x='275.69775' y='-210.2467' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.92211;stroke-linecap:square' id='rect10' width='199.99998' height='36.095203' x='275.69775' y='-181.07378' ry='0' /%3E%3Crect style='fill:%23868686;fill-opacity:1;stroke-width:1.79859;stroke-linecap:square' id='rect11' width='199.99998' height='31.605076' x='275.69775' y='-144.97858' ry='0' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect12' width='199.99998' height='72.390404' x='275.69775' y='-113.3735' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                    }
-                `);
-                break;
-            case 'ace':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(-480.90482,282.63712)'%3E%3Cg id='g3'%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect13' width='199.99998' height='72.390404' x='480.90482' y='-282.63712' ry='0' /%3E%3Crect style='fill:%2375005f;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect14' width='199.99998' height='72.390404' x='480.90482' y='-113.91502' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:2.21194;stroke-linecap:square' id='rect15' width='199.99998' height='47.801067' x='480.90482' y='-161.71609' ry='0' /%3E%3Crect style='fill:%23868686;fill-opacity:1;stroke-width:2.22875;stroke-linecap:square' id='rect16' width='199.99998' height='48.530621' x='480.90482' y='-210.24672' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                    }
-                `);
-                break;
-            case 'aroace':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(-685.87042,282.63712)'%3E%3Cg id='g4'%3E%3Cg id='g14'%3E%3Crect style='fill:%2345bcee;fill-opacity:1;stroke-width:1.79859;stroke-linecap:square' id='rect20' width='199.99998' height='31.605076' x='685.87042' y='-144.97861' ry='0' /%3E%3Cg id='g13'%3E%3Crect style='fill:%23ef9007;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect17' width='199.99998' height='72.390404' x='685.87042' y='-282.63712' ry='0' /%3E%3Crect style='fill:%23f6d317;fill-opacity:1;stroke-width:1.728;stroke-linecap:square' id='rect18' width='199.99998' height='29.172922' x='685.87042' y='-210.24673' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.92211;stroke-linecap:square' id='rect19' width='199.99998' height='36.095203' x='685.87042' y='-181.07381' ry='0' /%3E%3Crect style='fill:%230b3451;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect21' width='199.99998' height='72.390404' x='685.87042' y='-113.37354' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                    }
-                `);
-                break;
-            case 'bi':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(593.06354,36.777088)'%3E%3Cg id='g5'%3E%3Crect style='fill:%23d60270;fill-opacity:1;stroke-width:2.93573;stroke-linecap:square' id='rect22' width='199.99998' height='84.202209' x='-593.06354' y='-36.777088' ry='0' /%3E%3Crect style='fill:%239b4f96;fill-opacity:1;stroke-width:2.70705;stroke-linecap:square' id='rect23' width='199.99998' height='71.595581' x='-593.06354' y='47.425121' ry='0' /%3E%3Crect style='fill:%230038a8;fill-opacity:1;stroke-width:2.93573;stroke-linecap:square' id='rect24' width='199.99998' height='84.202209' x='-593.06354' y='119.02071' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                    }
-                `);
-                break;
-            case 'genderfluid':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(387.63797,36.777088)'%3E%3Cg id='g6'%3E%3Crect style='fill:%23f04e83;fill-opacity:1;stroke-width:2.71271;stroke-linecap:square' id='rect25' width='199.99998' height='71.894936' x='-387.63797' y='-36.777088' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.72208;stroke-linecap:square' id='rect26' width='199.99998' height='28.973251' x='-387.63797' y='35.117825' ry='0' /%3E%3Crect style='fill:%23ca00c7;fill-opacity:1;stroke-width:1.91552;stroke-linecap:square' id='rect27' width='199.99998' height='35.848152' x='-387.63797' y='64.091057' ry='0' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:1.79242;stroke-linecap:square' id='rect28' width='199.99998' height='31.388758' x='-387.63797' y='99.939224' ry='0' /%3E%3Crect style='fill:%230007a8;fill-opacity:1;stroke-width:2.71271;stroke-linecap:square' id='rect29' width='199.99998' height='71.894936' x='-387.63797' y='131.32797' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                    }
-                `);
-                break;
-            case 'intersex':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(182.47861,36.777088)'%3E%3Cg id='g7'%3E%3Crect style='opacity:1;fill:%23f3c500;fill-opacity:1;stroke-width:0.829;stroke-linecap:square' id='rect30' width='200' height='240' x='-182.47861' y='-36.777088' ry='0.45313862' /%3E%3Cpath d='m -82.478614,44.02763 a 39.195076,39.195076 0 0 0 -39.195026,39.19554 39.195076,39.195076 0 0 0 39.195026,39.19502 39.195076,39.195076 0 0 0 39.195024,-39.19502 39.195076,39.195076 0 0 0 -39.195024,-39.19554 z m 0,16.08997 a 23.105452,23.105452 0 0 1 23.105567,23.10557 23.105452,23.105452 0 0 1 -23.105567,23.10505 23.105452,23.105452 0 0 1 -23.105576,-23.10505 23.105452,23.105452 0 0 1 23.105576,-23.10557 z' style='opacity:1;fill:%23680088;fill-opacity:1;stroke-width:0.829;stroke-linecap:square' id='path33' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                    }
-                `);
-                break;
-            case 'lesbian':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(-22.614622,36.777088)'%3E%3Cg id='g8'%3E%3Crect style='fill:%23c00000;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect33' width='199.99998' height='72.390404' x='22.614622' y='-36.777088' ry='0' /%3E%3Crect style='fill:%23f07724;fill-opacity:1;stroke-width:1.728;stroke-linecap:square' id='rect34' width='199.99998' height='29.172922' x='22.614622' y='35.613293' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.92211;stroke-linecap:square' id='rect35' width='199.99998' height='36.095203' x='22.614622' y='64.786201' ry='0' /%3E%3Crect style='fill:%23bb3586;fill-opacity:1;stroke-width:1.79859;stroke-linecap:square' id='rect36' width='199.99998' height='31.605076' x='22.614622' y='100.88142' ry='0' /%3E%3Crect style='fill:%23860035;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect37' width='199.99998' height='72.390404' x='22.614622' y='132.4865' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                    }
-                `);
-                break;
-            case 'enby':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(-227.83087,36.777088)'%3E%3Cg id='g9'%3E%3Crect style='fill:%23ece22c;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect38' width='199.99998' height='72.390404' x='227.83087' y='-36.777088' ry='0' /%3E%3Crect style='fill:%23000000;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect39' width='199.99998' height='72.390404' x='227.83087' y='131.94501' ry='0' /%3E%3Crect style='fill:%237035b6;fill-opacity:1;stroke-width:2.21194;stroke-linecap:square' id='rect40' width='199.99998' height='47.801067' x='227.83087' y='84.143913' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:2.22875;stroke-linecap:square' id='rect41' width='199.99998' height='48.530621' x='227.83087' y='35.613308' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                    }
-                `);
-                break;
-            case 'pan':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(-434.37146,36.777088)'%3E%3Cg id='g10'%3E%3Crect style='fill:%23f3006d;fill-opacity:1;stroke-width:2.94658;stroke-linecap:square' id='rect42' width='199.99998' height='84.825821' x='434.37146' y='-36.777088' ry='0' /%3E%3Crect style='fill:%23f0c500;fill-opacity:1;stroke-width:2.71706;stroke-linecap:square' id='rect43' width='199.99998' height='72.125824' x='434.37146' y='48.048733' ry='0' /%3E%3Crect style='fill:%230097f0;fill-opacity:1;stroke-width:2.94658;stroke-linecap:square' id='rect44' width='199.99998' height='84.825821' x='434.37146' y='120.17456' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                    }
-                `);
-                break;
-            case 'gay':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(-639.33612,36.59)'%3E%3Cg id='g11'%3E%3Cg id='g15'%3E%3Crect style='fill:%23006642;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect45' width='199.99998' height='72.390404' x='639.33612' y='-36.59' ry='0' /%3E%3Crect style='fill:%236dc79b;fill-opacity:1;stroke-width:1.728;stroke-linecap:square' id='rect46' width='199.99998' height='29.172922' x='639.33612' y='35.800381' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.92211;stroke-linecap:square' id='rect47' width='199.99998' height='36.095203' x='639.33612' y='64.973289' ry='0' /%3E%3Crect style='fill:%235086c2;fill-opacity:1;stroke-width:1.79859;stroke-linecap:square' id='rect48' width='199.99998' height='31.605076' x='639.33612' y='101.0685' ry='0' /%3E%3Crect style='fill:%233d1a78;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect49' width='199.99998' height='72.390404' x='639.33612' y='132.67358' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                    }
-                `);
-                break;
-            case 'trans':
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 240' id='svg1' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs1' /%3E%3Cg id='layer1' transform='translate(593.263,-209.39697)'%3E%3Cg id='g12'%3E%3Crect style='fill:%2300b9ee;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect50' width='199.99998' height='72.390404' x='-593.263' y='209.39697' ry='0' /%3E%3Crect style='fill:%23ee86d8;fill-opacity:1;stroke-width:1.728;stroke-linecap:square' id='rect51' width='199.99998' height='29.172922' x='-593.263' y='281.78735' ry='0' /%3E%3Crect style='fill:%23f3f3f3;fill-opacity:1;stroke-width:1.92211;stroke-linecap:square' id='rect52' width='199.99998' height='36.095203' x='-593.263' y='310.9603' ry='0' /%3E%3Crect style='fill:%23ee86d8;fill-opacity:1;stroke-width:1.79859;stroke-linecap:square' id='rect53' width='199.99998' height='31.605076' x='-593.263' y='347.05548' ry='0' /%3E%3Crect style='fill:%2300b9ee;fill-opacity:1;stroke-width:2.72204;stroke-linecap:square' id='rect54' width='199.99998' height='72.390404' x='-593.263' y='378.66055' ry='0' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                    }
-                `);
-                break;
-            default:
-                GM_addStyle(css`
-                    .navbar.fixed-top .navbar-brand .logo,
-                    #logoimage {
-                        background-image: linear-gradient(
-                            #fe0000 24.7%,
-                            #fd8c00 24.7%,
-                            37.35%,
-                            #ffd000 37.35%,
-                            50%,
-                            #119f0b 50%,
-                            62.65%,
-                            #457cdf 62.65%,
-                            75.3%,
-                            #c22edc 75.3%
-                        );
-                    }
-                `);
-                break;
-        }
+        logoImg.setAttribute(
+            prideLogoSelector,
+            getSetting('general.prideLogo')
+        );
+        logoImg.setAttribute(
+            prideLogoIsRotated,
+            getSetting('general.prideLogoRotated')
+        );
     });
+
+    const prideLogoGradientSizeVar = `--${PREFIX('pride-logo-gradient-size')}`;
+    const prideLogoStripeSizeVar = `--${PREFIX('pride-logo-stripe-size')}`;
+    GM_addStyle(css`
+        img[${prideLogoSelector}] {
+            ${prideLogoGradientSizeVar}: calc(var(${prideLogoGradientEndVar}) - var(${prideLogoGradientStartVar}));
+        }
+    `);
+
+    // set the flag style for the chosen setting
+    prideLogoStyle = css`
+        img[${prideLogoSelector}]:not([${prideLogoSelector}='off']), /* Fallback */
+        img[${prideLogoSelector}][${prideLogoSelector}='rainbow'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 6);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #fe0000
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #fd8c00
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #ffd000
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #119f0b
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #457cdf
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 5 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #c22edc
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 5 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='agender'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 7);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #a3aaaf
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #9ee261
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 5 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #a3aaaf
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 5 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 6 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 6 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='aro'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #008800
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #6dc049
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #868686
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='ace'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 4);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #75005f
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #868686
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='aroace'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #ce6600
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #dbb600
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #3592ca
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #000529
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='bi'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 3);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #d60270
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #9b4f96
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #0038a8
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='genderfluid'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #f04e83
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #ca00c7
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #0007a8
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='intersex'] {
+            /* TODO: Generalize this */
+            background-image: radial-gradient(
+                circle at 50%,
+                #f3c500 12%,
+                #680088 12% 22%,
+                #f3c500 22%
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='lesbian'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #c00000
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f07724
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #bb3586
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #860035
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='enby'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 4);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #ece22c
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #7035b6
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #000000
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='pan'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 3);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #f3006d
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f0c500
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #0097f0
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='gay'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #006642
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #6dc79b
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #5086c2
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #0f004b
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+
+        img[${prideLogoSelector}][${prideLogoSelector}='trans'] {
+            ${prideLogoStripeSizeVar}: calc(var(${prideLogoGradientSizeVar}) / 5);
+            background-image: linear-gradient(
+                var(${prideLogoGradientRotationVar}),
+                #00b9ee
+                    calc(
+                        var(${prideLogoGradientStartVar}) +
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #ee86d8
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 1 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #f3f3f3
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 2 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #ee86d8
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 3 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    ),
+                #00b9ee
+                    calc(
+                        var(${prideLogoGradientStartVar}) + 4 *
+                            var(${prideLogoStripeSizeVar})
+                    )
+            );
+        }
+    `;
+
+    GM_addStyle(prideLogoStyle);
 }
 // endregion
 
@@ -4446,10 +5294,21 @@ const updateDarkReaderMode = (live = false) => {
             sepia: getSetting('darkmode.sepia', live),
         };
         const fixes = {
-            css: `
-.eye {
-    background-color: white;
-}`,
+            css: css`
+                .eye {
+                    background-color: white;
+                }
+
+                ${prideLogoStyle}
+
+                /* fix for unreadable activities */
+                .activity-item.hiddenactivity .description .course-description-item, 
+                .activity-item.hiddenactivity .activityiconcontainer, 
+                .activity-item.hiddenactivity .badge,
+                .editing .activity-item:hover .activityiconcontainer {
+                    mix-blend-mode: hard-light !important;
+                }
+            `,
         };
         if (darkModeSetting === 'auto') DarkReader.auto(settings, fixes);
         else {
@@ -4462,6 +5321,98 @@ const updateDarkReaderMode = (live = false) => {
     }
 };
 updateDarkReaderMode();
+// endregion
+
+// region Feature: general.quickRoleChange
+if (getSetting('general.quickRoleChange')) {
+    ready(() => {
+        const usermenu = document.getElementById('usermenu-carousel');
+        const usermenuInner = usermenu?.querySelector('.carousel-inner');
+        const roleSelectBtn = usermenu?.querySelector(
+            '.dropdown-item[href*="switchrole.php"]'
+        );
+        if (!roleSelectBtn) return;
+
+        const rolesUrl = roleSelectBtn.href;
+        fetch(rolesUrl)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                return doc.querySelectorAll('form[action*="switchrole.php"]');
+            })
+            .then(forms => {
+                const roles = [];
+                forms.forEach(form => {
+                    const role = {
+                        id: form.querySelector('input[name="id"]').value,
+                        switchrole: form.querySelector(
+                            'input[name="switchrole"]'
+                        ).value,
+                        returnurl: form.querySelector('input[name="returnurl"]')
+                            .value,
+                        sesskey: form.querySelector('input[name="sesskey"]')
+                            .value,
+                        title: form.querySelector('button').textContent,
+                    };
+                    roles.push(role);
+                });
+                return roles;
+            })
+            .then(roles => {
+                if (roles.length === 0) return;
+
+                const roleSelecotrItemId = PREFIX('role-selector-item');
+                const roleSelectorItem = document.createElement('div');
+                roleSelectorItem.id = roleSelecotrItemId;
+                roleSelectorItem.classList.add('carousel-item', 'submenu');
+                roleSelectorItem.setAttribute('role', 'menu');
+                roleSelectorItem.setAttribute(
+                    'aria-label',
+                    $t('quickRoleChange.roleSelector')
+                );
+                roleSelectorItem.setAttribute('tabindex', -1);
+
+                roleSelectorItem.innerHTML = `
+                    <div class="d-flex flex-column h-100">
+                        <div class="header">
+                            <button type="button" class="btn btn-icon carousel-navigation-link text-decoration-none text-body" data-carousel-target-id="carousel-item-main" aria-label="${$t('quickRoleChange.goBack')}">
+                                <span class="dir-rtl-hide"><img class="icon " alt="" aria-hidden="true" src="/theme/image.php/boost/core/1718107763/i/arrow-left"></span>
+                                <span class="dir-ltr-hide"><img class="icon " alt="" aria-hidden="true" src="/theme/image.php/boost/core/1718107763/i/arrow-right"></span>
+                            </button>
+                            <span class="pl-2" id="${roleSelecotrItemId}-title">${$t('quickRoleChange.roleSelector')}</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="items h-100 overflow-auto" role="menu" aria-labelledby=""${roleSelecotrItemId}-title">
+                            ${Object.entries(roles)
+                                .map(
+                                    ([, role]) => `
+                                        <form method="post" action="/course/switchrole.php">
+                                            <input type="hidden" name="id" value="${role.id}">
+                                            <input type="hidden" name="switchrole" value="${role.switchrole}">
+                                            <input type="hidden" name="returnurl" value="${role.returnurl}">
+                                            <input type="hidden" name="sesskey" value="${role.sesskey}">
+                                            <button type="submit" class="dropdown-item text-truncate">${role.title}</button>
+                                        </form>
+                                    `
+                                )
+                                .join('')}
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="footer d-flex justify-content-center">
+                            <a href="${rolesUrl}" class="small">${$t('quickRoleChange.defaultSwitchRole')}</a>
+                        </div>
+                    </div>
+                `;
+
+                usermenuInner?.append(roleSelectorItem);
+
+                roleSelectBtn.href = '#';
+                roleSelectBtn.classList.add('carousel-navigation-link');
+                roleSelectBtn.dataset.carouselTargetId = roleSelecotrItemId;
+            });
+    });
+}
 // endregion
 
 // region Feature: Dashboard right sidebar
@@ -5249,6 +6200,830 @@ if (clockEnabled || fuzzyClockEnabled) {
 }
 // endregion
 
+// region Feature: weatherDisplay
+if (getSetting('weatherDisplay.show')) {
+    const city = {
+        name: 'luebeck',
+        lat: 53.8655,
+        lon: 10.6866,
+    };
+    const provider = getSetting('weatherDisplay.provider');
+    const units = getSetting('weatherDisplay.units');
+    const showTempInNavbar = getSetting('weatherDisplay.showTempInNavbar');
+    const toggleFeelsLike = getSetting('weatherDisplay.toggleFeelsLike');
+
+    const ONE_MINUTE = 1000 * 60;
+    const FIVE_MINUTES = ONE_MINUTE * 5;
+
+    const VISUALCROSSING_API_KEY = getSetting(
+        'weatherDisplay.visualCrossingAPIKey'
+    );
+    const OPENWEATHERMAP_API_KEY = getSetting(
+        'weatherDisplay.openWeatherMapAPIKey'
+    );
+    const PIRATEWEATHER_API_KEY = getSetting(
+        'weatherDisplay.pirateWeatherAPIKey'
+    );
+
+    const prefix = str => PREFIX(`weather-display-${str}`);
+
+    const weatherCodes = Object.freeze({
+        UNKNOWN: 'unknown',
+
+        CLEAR: 'clear',
+        FEW_CLOUDS: 'fewClouds',
+        SCATTERED_CLOUDS: 'scatteredClouds',
+        BROKEN_CLOUDS: 'brokenClouds',
+        OVERCAST_CLOUDS: 'overcastClouds',
+
+        MIST: 'mist',
+        FOG: 'fog',
+        FREEZING_FOG: 'freezingFog',
+        DUST: 'dust',
+        SAND: 'sand',
+        HAZE: 'haze',
+        SMOKE: 'smoke',
+        VOLCANIC_ASH: 'volcanicAsh',
+
+        WIND: 'wind',
+        SQUALLS: 'squalls',
+        TORNADO: 'tornado',
+
+        LIGHT_SNOW: 'lightSnow',
+        MODERATE_SNOW: 'moderateSnow',
+        HEAVY_SNOW: 'heavySnow',
+
+        LIGHT_RAIN: 'lightRain',
+        MODERATE_RAIN: 'moderateRain',
+        HEAVY_RAIN: 'heavyRain',
+
+        LIGHT_DRIZZLE: 'lightDrizzle',
+        MODERATE_DRIZZLE: 'moderateDrizzle',
+        HEAVY_DRIZZLE: 'heavyDrizzle',
+
+        LIGHT_SLEET: 'lightSleet',
+        MODERATE_SLEET: 'moderateSleet',
+
+        LIGHT_THUNDERSTORM: 'lightThunderstorm',
+        MODERATE_THUNDERSTORM: 'moderateThunderstorm',
+        HEAVY_THUNDERSTORM: 'heavyThunderstorm',
+
+        LIGHT_FREEZING_RAIN: 'lightFreezingRain',
+        MODERATE_FREEZING_RAIN: 'moderateFreezingRain',
+
+        LIGHT_FREEZING_DRIZZLE: 'lightFreezingDrizzle',
+        MODERATE_FREEZING_DRIZZLE: 'moderateFreezingDrizzle',
+        HEAVY_FREEZING_DRIZZLE: 'heavyFreezingDrizzle',
+
+        LIGHT_RAIN_SHOWERS: 'lightRainShowers',
+        MODERATE_RAIN_SHOWERS: 'moderateRainShowers',
+        HEAVY_RAIN_SHOWERS: 'heavyRainShowers',
+
+        LIGHT_SLEET_SHOWERS: 'lightSleetShowers',
+        MODERATE_SLEET_SHOWERS: 'moderateSleetShowers',
+
+        LIGHT_DRIZZLE_SHOWERS: 'lightDrizzleShowers',
+        MODERATE_DRIZZLE_SHOWERS: 'moderateDrizzleShowers',
+        HEAVY_DRIZZLE_SHOWERS: 'heavyDrizzleShowers',
+
+        LIGHT_SNOW_SHOWERS: 'lightSnowShowers',
+        MODERATE_SNOW_SHOWERS: 'moderateSnowShowers',
+        HEAVY_SNOW_SHOWERS: 'heavySnowShowers',
+
+        LIGHT_HAIL_SHOWERS: 'lightHailShowers',
+        MODERATE_HAIL_SHOWERS: 'moderateHailShowers',
+
+        LIGHT_THUNDERSTORM_WITH_DRIZZLE: 'lightThunderstormWithDrizzle',
+        MODERATE_THUNDERSTORM_WITH_DRIZZLE: 'moderateThunderstormWithDrizzle',
+        HEAVY_THUNDERSTORM_WITH_DRIZZLE: 'heavyThunderstormWithDrizzle',
+
+        LIGHT_THUNDERSTORM_WITH_RAIN: 'lightThunderstormWithRain',
+        MODERATE_THUNDERSTORM_WITH_RAIN: 'moderateThunderstormWithRain',
+        HEAVY_THUNDERSTORM_WITH_RAIN: 'heavyThunderstormWithRain',
+
+        LIGHT_THUNDERSTORM_WITH_SNOW: 'lightThunderstormWithSnow',
+        MODERATE_THUNDERSTORM_WITH_SNOW: 'moderateThunderstormWithSnow',
+
+        MODERATE_THUNDERSTORM_WITH_HAIL: 'moderateThunderstormWithHail',
+        HEAVY_THUNDERSTORM_WITH_HAIL: 'heavyThunderstormWithHail',
+
+        MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS:
+            'moderateThunderstormWithRainShowers',
+
+        EXTREME_SNOW: 'extremeSnow',
+        EXTREME_RAIN: 'extremeRain',
+
+        PATCHY_RAIN_NEARBY: 'patchyRainNearby',
+        PATCHY_SNOW_NEARBY: 'patchySnowNearby',
+        PATCHY_SLEET_NEARBY: 'patchySleetNearby',
+        PATCHY_FREEZING_DRIZZLE_NEARBY: 'patchyFreezingDrizzleNearby',
+        THUNDERY_OUTBREAKS_NEARBY: 'thunderyOutbreaksNearby',
+    });
+
+    const fetchJSON = url =>
+        new Promise((resolve, reject) => {
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url,
+                onload: ({ status, responseText }) => {
+                    if (status !== 200) return reject({ status });
+                    resolve(JSON.parse(responseText));
+                },
+                onerror: reject,
+            });
+        });
+
+    const manageRateLimit = (rateLimit, url) => {
+        const now = Date.now();
+        const host = new URL(url).host;
+        const [lastRequest, cached] = JSON.parse(
+            atob(GM_getValue(prefix(host), btoa('[0, null]')))
+        );
+
+        if (lastRequest + rateLimit > now) {
+            return new Promise(resolve => resolve(cached));
+        }
+        return fetchJSON(url).then(data => {
+            GM_setValue(prefix(host), btoa(JSON.stringify([now, data])));
+            return data;
+        });
+    };
+
+    const fallback = () => ({
+        weatherType: weatherCodes.UNKNOWN,
+    });
+
+    const wttrIn = () => {
+        return manageRateLimit(
+            ONE_MINUTE,
+            `https://wttr.in/${city.name}?format=j1&lang`
+        ) // The `&lang` removes the faulty german translation
+            .then(data => {
+                const currentCondition = data.current_condition[0];
+                const weatherType =
+                    {
+                        113: weatherCodes.CLEAR,
+                        116: weatherCodes.FEW_CLOUDS,
+                        119: weatherCodes.BROKEN_CLOUDS,
+                        122: weatherCodes.OVERCAST_CLOUDS,
+                        143: weatherCodes.MIST,
+                        176: weatherCodes.PATCHY_RAIN_NEARBY,
+                        179: weatherCodes.PATCHY_SNOW_NEARBY,
+                        182: weatherCodes.PATCHY_SLEET_NEARBY,
+                        185: weatherCodes.PATCHY_FREEZING_DRIZZLE_NEARBY,
+                        200: weatherCodes.THUNDERY_OUTBREAKS_NEARBY,
+                        227: weatherCodes.HEAVY_SNOW,
+                        230: weatherCodes.EXTREME_SNOW,
+                        248: weatherCodes.FOG,
+                        260: weatherCodes.FREEZING_FOG,
+                        263: weatherCodes.LIGHT_DRIZZLE_SHOWERS,
+                        266: weatherCodes.LIGHT_DRIZZLE,
+                        281: weatherCodes.MODERATE_FREEZING_DRIZZLE,
+                        284: weatherCodes.HEAVY_FREEZING_DRIZZLE,
+                        293: weatherCodes.LIGHT_RAIN_SHOWERS,
+                        296: weatherCodes.LIGHT_RAIN,
+                        299: weatherCodes.MODERATE_RAIN_SHOWERS,
+                        302: weatherCodes.MODERATE_RAIN,
+                        305: weatherCodes.HEAVY_RAIN_SHOWERS,
+                        308: weatherCodes.HEAVY_RAIN,
+                        311: weatherCodes.LIGHT_FREEZING_RAIN,
+                        314: weatherCodes.MODERATE_FREEZING_RAIN,
+                        317: weatherCodes.LIGHT_SLEET,
+                        320: weatherCodes.MODERATE_SLEET,
+                        323: weatherCodes.LIGHT_SNOW_SHOWERS,
+                        326: weatherCodes.LIGHT_SNOW,
+                        329: weatherCodes.MODERATE_SNOW_SHOWERS,
+                        332: weatherCodes.MODERATE_SNOW,
+                        335: weatherCodes.HEAVY_SNOW_SHOWERS,
+                        338: weatherCodes.HEAVY_SNOW,
+                        350: weatherCodes.MODERATE_SLEET,
+                        353: weatherCodes.LIGHT_RAIN_SHOWERS,
+                        356: weatherCodes.MODERATE_RAIN_SHOWERS,
+                        359: weatherCodes.EXTREME_RAIN,
+                        362: weatherCodes.LIGHT_SLEET_SHOWERS,
+                        365: weatherCodes.MODERATE_SLEET_SHOWERS,
+                        368: weatherCodes.LIGHT_SNOW_SHOWERS,
+                        371: weatherCodes.MODERATE_SNOW_SHOWERS,
+                        374: weatherCodes.LIGHT_HAIL_SHOWERS,
+                        377: weatherCodes.MODERATE_HAIL_SHOWERS,
+                        386: weatherCodes.LIGHT_THUNDERSTORM_WITH_RAIN,
+                        389: weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN,
+                        392: weatherCodes.LIGHT_THUNDERSTORM_WITH_SNOW,
+                        395: weatherCodes.MODERATE_THUNDERSTORM_WITH_SNOW,
+                    }[new Number(currentCondition.weatherCode).valueOf()] ??
+                    weatherCodes.UNKNOWN;
+
+                const parseLocalObsDateTime = (isoDate, utcTime) =>
+                    new Date(`${isoDate} ${utcTime} +00:00`);
+
+                return {
+                    temperature: currentCondition.temp_C,
+                    temperatureFeelsLike: currentCondition.FeelsLikeC,
+                    windDirection: currentCondition.winddirDegree,
+                    windSpeed: currentCondition.windspeedKmph,
+                    visibilityDistance: currentCondition.visibility,
+                    humidity: currentCondition.humidity,
+                    pressure: currentCondition.pressure,
+                    cloudCover: currentCondition.cloudcover,
+                    rainGauge: currentCondition.precipMM,
+                    weatherType,
+                    time: parseLocalObsDateTime(
+                        currentCondition.localObsDateTime.slice(0, 10),
+                        currentCondition.observation_time
+                    ),
+                };
+            })
+            .catch(fallback);
+    };
+
+    const openMeteo = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m&minutely_15=visibility&timeformat=unixtime&timezone=Europe%2FBerlin&forecast_days=1`
+        )
+            .then(data => {
+                const now = Math.floor(Date.now() / 1000);
+                let visibilityIndex = 0;
+                for (let i = 0; i < data.minutely_15.length; i++) {
+                    if (data.minutely_15.time[i] > now) {
+                        visibilityIndex = i;
+                        break;
+                    }
+                }
+                const weatherType =
+                    {
+                        0: weatherCodes.CLEAR,
+                        1: weatherCodes.FEW_CLOUDS,
+                        2: weatherCodes.BROKEN_CLOUDS,
+                        3: weatherCodes.OVERCAST_CLOUDS,
+                        45: weatherCodes.FOG,
+                        48: weatherCodes.FREEZING_FOG,
+                        51: weatherCodes.LIGHT_DRIZZLE,
+                        53: weatherCodes.MODERATE_DRIZZLE,
+                        55: weatherCodes.HEAVY_DRIZZLE,
+                        56: weatherCodes.LIGHT_FREEZING_DRIZZLE,
+                        57: weatherCodes.MODERATE_FREEZING_DRIZZLE,
+                        61: weatherCodes.LIGHT_RAIN,
+                        63: weatherCodes.MODERATE_RAIN,
+                        65: weatherCodes.HEAVY_RAIN,
+                        66: weatherCodes.LIGHT_FREEZING_RAIN,
+                        67: weatherCodes.MODERATE_FREEZING_RAIN,
+                        71: weatherCodes.LIGHT_SNOW,
+                        73: weatherCodes.MODERATE_SNOW,
+                        75: weatherCodes.HEAVY_SNOW,
+                        77: weatherCodes.MODERATE_FREEZING_DRIZZLE,
+                        80: weatherCodes.LIGHT_RAIN_SHOWERS,
+                        81: weatherCodes.MODERATE_RAIN_SHOWERS,
+                        82: weatherCodes.HEAVY_RAIN_SHOWERS,
+                        85: weatherCodes.MODERATE_SNOW_SHOWERS,
+                        86: weatherCodes.HEAVY_SNOW_SHOWERS,
+                        95: weatherCodes.MODERATE_THUNDERSTORM,
+                        96: weatherCodes.MODERATE_THUNDERSTORM_WITH_HAIL,
+                        99: weatherCodes.HEAVY_THUNDERSTORM_WITH_HAIL,
+                    }[data.current.weather_code] ?? weatherCodes.UNKNOWN;
+                return {
+                    temperature: data.current.temperature_2m,
+                    temperatureFeelsLike: data.current.apparent_temperature,
+                    windDirection: data.current.wind_direction_10m,
+                    windSpeed: data.current.wind_speed_10m,
+                    visibilityDistance:
+                        data.minutely_15.visibility[visibilityIndex] / 1000,
+                    humidity: data.current.relative_humidity_2m,
+                    pressure: data.current.surface_pressure,
+                    cloudCover: data.current.cloud_cover,
+                    rainGauge: data.current.precipitation,
+                    weatherType,
+                    time: new Date(data.current.time * 1000),
+                };
+            })
+            .catch(fallback);
+    };
+
+    const visualCrossing = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city.name}?unitGroup=metric&lang=id&iconSet=icons2&include=current&key=${VISUALCROSSING_API_KEY}&contentType=json`
+        )
+            .then(data => {
+                const weatherType =
+                    {
+                        'snow': weatherCodes.MODERATE_SNOW,
+                        'snow-showers-day': weatherCodes.MODERATE_SNOW_SHOWERS,
+                        'snow-showers-night':
+                            weatherCodes.MODERATE_SNOW_SHOWERS,
+                        'thunder-rain':
+                            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN,
+                        'thunder-showers-day':
+                            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS,
+                        'thunder-showers-night':
+                            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS,
+                        'rain': weatherCodes.MODERATE_RAIN,
+                        'rain-showers-day': weatherCodes.MODERATE_RAIN_SHOWERS,
+                        'rain-showers-night':
+                            weatherCodes.MODERATE_RAIN_SHOWERS,
+                        'fog': weatherCodes.FOG,
+                        'wind': weatherCodes.WIND,
+                        'cloudy': weatherCodes.OVERCAST_CLOUDS,
+                        'partly-cloudy-day': weatherCodes.SCATTERED_CLOUDS,
+                        'partly-cloudy-night': weatherCodes.SCATTERED_CLOUDS,
+                        'clear-day': weatherCodes.CLEAR,
+                        'clear-night': weatherCodes.CLEAR,
+                    }[data.currentConditions.icon] ?? weatherCodes.UNKNOWN;
+
+                return {
+                    temperature: data.currentConditions.temp,
+                    temperatureFeelsLike: data.currentConditions.feelslike,
+                    windDirection: data.currentConditions.winddir,
+                    windSpeed: data.currentConditions.windspeed,
+                    visibilityDistance: data.currentConditions.visibility,
+                    humidity: data.currentConditions.humidity,
+                    pressure: data.currentConditions.pressure,
+                    cloudCover: data.currentConditions.cloudcover,
+                    rainGauge: data.currentConditions.precip,
+                    weatherType,
+                    time: new Date(data.currentConditions.datetimeEpoch * 1000),
+                };
+            })
+            .catch(fallback);
+    };
+
+    const openWeatherMap = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://api.openweathermap.org/data/2.5/weather?q=${city.name}&units=metric&appid=${OPENWEATHERMAP_API_KEY}`
+        )
+            .then(data => {
+                const weatherType =
+                    {
+                        200: weatherCodes.LIGHT_THUNDERSTORM_WITH_RAIN,
+                        201: weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN,
+                        202: weatherCodes.HEAVY_THUNDERSTORM_WITH_RAIN,
+                        210: weatherCodes.LIGHT_THUNDERSTORM,
+                        211: weatherCodes.MODERATE_THUNDERSTORM,
+                        212: weatherCodes.HEAVY_THUNDERSTORM,
+                        221: weatherCodes.MODERATE_THUNDERSTORM,
+                        230: weatherCodes.LIGHT_THUNDERSTORM_WITH_DRIZZLE,
+                        231: weatherCodes.MODERATE_THUNDERSTORM_WITH_DRIZZLE,
+                        232: weatherCodes.HEAVY_THUNDERSTORM_WITH_DRIZZLE,
+                        300: weatherCodes.LIGHT_DRIZZLE,
+                        301: weatherCodes.MODERATE_DRIZZLE,
+                        302: weatherCodes.HEAVY_DRIZZLE,
+                        310: weatherCodes.LIGHT_DRIZZLE,
+                        311: weatherCodes.MODERATE_DRIZZLE,
+                        312: weatherCodes.HEAVY_DRIZZLE,
+                        313: weatherCodes.LIGHT_DRIZZLE_SHOWERS,
+                        314: weatherCodes.MODERATE_DRIZZLE_SHOWERS,
+                        321: weatherCodes.HEAVY_DRIZZLE_SHOWERS,
+                        500: weatherCodes.LIGHT_RAIN,
+                        501: weatherCodes.MODERATE_RAIN,
+                        502: weatherCodes.HEAVY_RAIN,
+                        503: weatherCodes.HEAVY_RAIN,
+                        504: weatherCodes.EXTREME_RAIN,
+                        511: weatherCodes.MODERATE_FREEZING_RAIN,
+                        520: weatherCodes.LIGHT_RAIN_SHOWERS,
+                        521: weatherCodes.MODERATE_RAIN_SHOWERS,
+                        522: weatherCodes.HEAVY_RAIN_SHOWERS,
+                        531: weatherCodes.MODERATE_RAIN_SHOWERS,
+                        600: weatherCodes.LIGHT_SNOW,
+                        601: weatherCodes.MODERATE_SNOW,
+                        602: weatherCodes.HEAVY_SNOW,
+                        611: weatherCodes.MODERATE_SLEET,
+                        612: weatherCodes.LIGHT_SLEET_SHOWERS,
+                        613: weatherCodes.MODERATE_SLEET_SHOWERS,
+                        615: weatherCodes.LIGHT_SLEET,
+                        616: weatherCodes.MODERATE_SLEET,
+                        620: weatherCodes.LIGHT_SNOW_SHOWERS,
+                        621: weatherCodes.MODERATE_SNOW_SHOWERS,
+                        622: weatherCodes.HEAVY_SNOW_SHOWERS,
+                        701: weatherCodes.MIST,
+                        711: weatherCodes.SMOKE,
+                        721: weatherCodes.HAZE,
+                        731: weatherCodes.DUST,
+                        741: weatherCodes.FOG,
+                        751: weatherCodes.SAND,
+                        761: weatherCodes.DUST,
+                        762: weatherCodes.VOLCANIC_ASH,
+                        771: weatherCodes.SQUALLS,
+                        781: weatherCodes.TORNADO,
+                        800: weatherCodes.CLEAR,
+                        801: weatherCodes.FEW_CLOUDS,
+                        802: weatherCodes.SCATTERED_CLOUDS,
+                        803: weatherCodes.BROKEN_CLOUDS,
+                        804: weatherCodes.OVERCAST_CLOUDS,
+                    }[data.weather[0].id] ?? weatherCodes.UNKNOWN;
+                return {
+                    temperature: data.main.temp,
+                    temperatureFeelsLike: data.main.feels_like,
+                    windDirection: data.wind.deg,
+                    windSpeed: data.wind.speed,
+                    visibilityDistance: data.visibility / 1000,
+                    humidity: data.main.humidity,
+                    pressure: data.main.pressure,
+                    cloudCover: data.clouds.all,
+                    rainGauge: data.rain?.['1h'] ?? 0,
+                    weatherType,
+                    time: new Date(data.dt * 1000),
+                };
+            })
+            .catch(fallback);
+    };
+
+    const pirateWeather = () => {
+        return manageRateLimit(
+            FIVE_MINUTES,
+            `https://api.pirateweather.net/forecast/${PIRATEWEATHER_API_KEY}/${city.lat},${city.lon}?units=si`
+        )
+            .then(data => {
+                const weatherType =
+                    {
+                        'clear-day': weatherCodes.CLEAR,
+                        'clear-night': weatherCodes.CLEAR,
+                        'rain': weatherCodes.MODERATE_RAIN,
+                        'snow': weatherCodes.MODERATE_SNOW,
+                        'sleet': weatherCodes.MODERATE_SLEET,
+                        'wind': weatherCodes.WIND,
+                        'fog': weatherCodes.FOG,
+                        'cloudy': weatherCodes.OVERCAST_CLOUDS,
+                        'partly-cloudy-day': weatherCodes.SCATTERED_CLOUDS,
+                        'partly-cloudy-night': weatherCodes.SCATTERED_CLOUDS,
+                    }[data.currently.icon] ?? weatherCodes.UNKNOWN;
+                return {
+                    temperature: data.currently.temperature,
+                    temperatureFeelsLike: data.currently.apparentTemperature,
+                    windDirection: data.currently.windBearing,
+                    windSpeed: data.currently.windSpeed,
+                    visibilityDistance: data.currently.visibility,
+                    humidity: data.currently.humidity * 100,
+                    pressure: data.currently.pressure,
+                    cloudCover: data.currently.cloudCover,
+                    rainGauge: data.currently.precipIntensity,
+                    weatherType,
+                    time: new Date(data.currently.time * 1000),
+                };
+            })
+            .catch(fallback);
+    };
+
+    const weatherProvider = (() => {
+        switch (provider) {
+            case 'wttrIn':
+                return wttrIn;
+            case 'openMeteo':
+                return openMeteo;
+            case 'visualCrossing':
+                return visualCrossing;
+            case 'openWeatherMap':
+                return openWeatherMap;
+            case 'pirateWeather':
+                return pirateWeather;
+        }
+    })();
+
+    const displayData = (key, data) => {
+        const round = (value, precision, fixed = false) => {
+            const factor = 10 ** precision;
+            const roundedValue = Math.round(value * factor) / factor;
+            return Intl.NumberFormat(BETTER_MOODLE_LANG, {
+                maximumFractionDigits: precision,
+                minimumFractionDigits: fixed ? precision : 0,
+            }).format(roundedValue);
+        };
+        const unitConverter = {
+            temperature: {
+                metric: celsius => [round(celsius, 1), '&#x202F;°C'],
+                scientific: celsius => [
+                    round(celsius + 273.15, 2, true),
+                    '&#x202F;K',
+                ],
+                imperial: celsius => [
+                    round((celsius * 9) / 5 + 32, 1),
+                    '&#x202F;°F',
+                ],
+            },
+            temperatureFeelsLike: {
+                metric: celsius => [round(celsius, 1), '&#x202F;°C'],
+                scientific: celsius => [
+                    round(celsius + 273.15, 2, true),
+                    '&#x202F;K',
+                ],
+                imperial: celsius => [
+                    round((celsius * 9) / 5 + 32, 1),
+                    '&#x202F;°F',
+                ],
+            },
+            windDirection: {
+                metric: deg => [round(deg, 0), '°'],
+                scientific: deg => [
+                    round((deg * Math.PI) / 180, 2, true),
+                    '&#x202F;rad',
+                ],
+                imperial: deg => [round(deg, 0), '°'],
+            },
+            windSpeed: {
+                metric: kmh => [round(kmh, 1), '&#x202F;km/h'],
+                scientific: kmh => [
+                    round((kmh * 1000) / 3600, 2, true),
+                    '&#x202F;m/s',
+                ],
+                imperial: kmh => [round(kmh / 1.609344, 1), '&#x202F;mph'],
+            },
+            visibilityDistance: {
+                metric: km => [round(km, 1), '&#x202F;km'],
+                scientific: km => [round(km * 1000, 0, true), '&#x202F;m'],
+                imperial: km => [round(km / 1.609344, 1), '&#x202F;mi'],
+            },
+            humidity: {
+                metric: percent => [round(percent, 1), '&#x202F;%'],
+                scientific: percent => [round(percent / 100, 2, true), ''],
+                imperial: percent => [round(percent, 1), '&#x202F;%'],
+            },
+            pressure: {
+                metric: hPa => [round(hPa, 1), '&#x202F;hPa'],
+                scientific: hPa => [round(hPa * 100, 2, true), '&#x202F;Pa'],
+                imperial: hPa => [
+                    round(hPa * 0.02952998751, 1),
+                    '&#x202F;inHg',
+                ],
+            },
+            cloudCover: {
+                metric: percent => [round(percent, 1), '&#x202F;%'],
+                scientific: percent => [round(percent / 100, 2, true), ''],
+                imperial: percent => [round(percent, 1), '&#x202F;%'],
+            },
+            rainGauge: {
+                metric: mm => [round(mm, 1), '&#x202F;mm'],
+                scientific: mm => [round(mm / 1000, 3, true), '&#x202F;m'],
+                imperial: mm => [round(mm / 25.4, 1), '&#x202F;in'],
+            },
+        };
+
+        return unitConverter[key][units](Number(data[key])).join('');
+    };
+
+    const weatherEmojiSets = {
+        '❓': new Set([weatherCodes.UNKNOWN]),
+
+        '☀️': new Set([weatherCodes.CLEAR]),
+        '🌤️': new Set([weatherCodes.FEW_CLOUDS]),
+        '⛅': new Set([weatherCodes.SCATTERED_CLOUDS]),
+        '🌥️': new Set([weatherCodes.BROKEN_CLOUDS]),
+        '☁️': new Set([weatherCodes.OVERCAST_CLOUDS]),
+
+        '🌫️': new Set([
+            weatherCodes.MIST,
+            weatherCodes.FOG,
+            weatherCodes.FREEZING_FOG,
+            weatherCodes.HAZE,
+            weatherCodes.SMOKE,
+        ]),
+        '🌪️': new Set([
+            weatherCodes.DUST,
+            weatherCodes.SAND,
+            weatherCodes.TORNADO,
+        ]),
+        '🌋': new Set([weatherCodes.VOLCANIC_ASH]),
+
+        '🌬️': new Set([weatherCodes.WIND, weatherCodes.SQUALLS]),
+
+        '🌨️': new Set([
+            weatherCodes.LIGHT_SNOW,
+            weatherCodes.MODERATE_SNOW,
+            weatherCodes.LIGHT_SLEET,
+            weatherCodes.MODERATE_SLEET,
+            weatherCodes.LIGHT_SNOW_SHOWERS,
+            weatherCodes.MODERATE_SNOW_SHOWERS,
+            weatherCodes.HEAVY_SNOW_SHOWERS,
+            weatherCodes.LIGHT_SLEET_SHOWERS,
+            weatherCodes.MODERATE_SLEET_SHOWERS,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_SNOW,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_SNOW,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_HAIL,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_HAIL,
+            weatherCodes.PATCHY_SNOW_NEARBY,
+        ]),
+        '❄️': new Set([weatherCodes.HEAVY_SNOW, weatherCodes.EXTREME_SNOW]),
+
+        '🌦️': new Set([
+            weatherCodes.LIGHT_RAIN,
+            weatherCodes.LIGHT_DRIZZLE,
+            weatherCodes.LIGHT_RAIN_SHOWERS,
+            weatherCodes.LIGHT_DRIZZLE_SHOWERS,
+            weatherCodes.PATCHY_RAIN_NEARBY,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_RAIN,
+        ]),
+        '🌧️': new Set([
+            weatherCodes.MODERATE_RAIN,
+            weatherCodes.HEAVY_RAIN,
+            weatherCodes.MODERATE_DRIZZLE,
+            weatherCodes.HEAVY_DRIZZLE,
+            weatherCodes.MODERATE_RAIN_SHOWERS,
+            weatherCodes.HEAVY_RAIN_SHOWERS,
+            weatherCodes.MODERATE_DRIZZLE_SHOWERS,
+            weatherCodes.HEAVY_DRIZZLE_SHOWERS,
+            weatherCodes.LIGHT_FREEZING_RAIN,
+            weatherCodes.MODERATE_FREEZING_RAIN,
+            weatherCodes.LIGHT_FREEZING_DRIZZLE,
+            weatherCodes.MODERATE_FREEZING_DRIZZLE,
+            weatherCodes.HEAVY_FREEZING_DRIZZLE,
+            weatherCodes.PATCHY_SLEET_NEARBY,
+            weatherCodes.PATCHY_FREEZING_DRIZZLE_NEARBY,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_RAIN,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS,
+            weatherCodes.LIGHT_HAIL_SHOWERS,
+            weatherCodes.MODERATE_HAIL_SHOWERS,
+        ]),
+
+        '🌩️': new Set([
+            weatherCodes.LIGHT_THUNDERSTORM,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_RAIN,
+            weatherCodes.LIGHT_THUNDERSTORM_WITH_SNOW,
+        ]),
+        '⛈️': new Set([
+            weatherCodes.MODERATE_THUNDERSTORM,
+            weatherCodes.HEAVY_THUNDERSTORM,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_DRIZZLE,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_RAIN,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_SNOW,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_HAIL,
+            weatherCodes.HEAVY_THUNDERSTORM_WITH_HAIL,
+            weatherCodes.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS,
+            weatherCodes.THUNDERY_OUTBREAKS_NEARBY,
+        ]),
+
+        '🌊': new Set([weatherCodes.EXTREME_RAIN]),
+    };
+
+    const getWeatherEmoji = weatherType =>
+        (Object.entries(weatherEmojiSets).find(([, weatherCodes]) =>
+            weatherCodes.has(weatherType)
+        ) ?? '❓')[0];
+
+    const windDirectionToArrow = deg => {
+        const arrows = ['↑', '↗', '→', '↘', '↓', '↙', '←', '↖'];
+        return arrows[Math.round(deg / 45) % 8];
+    };
+
+    const WEATHER_ATTRIBUTES = [
+        'temperature',
+        'temperatureFeelsLike',
+        'windSpeed',
+        'visibilityDistance',
+        'humidity',
+        'pressure',
+        'cloudCover',
+        'rainGauge',
+    ];
+    let weatherModal = null;
+
+    const openWeatherDisplayModal = e => {
+        e.preventDefault();
+
+        require(['core/modal_factory'], ({ create, types }) =>
+            weatherProvider().then(data => {
+                new Promise(resolve => {
+                    if (weatherModal) {
+                        resolve(weatherModal);
+                        return;
+                    }
+                    create({
+                        type: types.ALERT,
+                        large: true,
+                        scrollable: true,
+                        title: `${getWeatherEmoji(
+                            data.weatherType
+                        )}\xa0${$t('weatherDisplay.title')}`,
+                        body: '',
+                    }).then(modal => {
+                        modal.setButtonText(
+                            'cancel',
+                            `${$t('modals.weatherDisplay.close')}`
+                        );
+
+                        const credits = document.createElement('span');
+                        credits.classList.add('text-muted', 'small', 'mr-auto');
+                        credits.innerHTML = `${$t(
+                            'weatherDisplay.credits._long'
+                        )} <a href="${$t(
+                            `weatherDisplay.credits.${provider}.url`
+                        )}">${$t(`weatherDisplay.credits.${provider}.name`)}</a>`;
+                        modal.getFooter().prepend(credits);
+
+                        weatherModal = modal;
+                        resolve(modal);
+                    });
+                }).then(modal => {
+                    const modalBody = modal.getBody()[0];
+
+                    if (data.weatherType === weatherCodes.UNKNOWN) {
+                        modalBody.innerHTML = `<div><p>${$t(
+                            `weatherDisplay.weatherCodes.${weatherCodes.UNKNOWN}`
+                        )}</p></div>`;
+                        modal.show();
+                        return;
+                    }
+
+                    modalBody.innerHTML = `
+                        <div>
+                            <dl class="row">
+                                ${WEATHER_ATTRIBUTES.map(
+                                    attr => `
+                                    <dt class="col-sm-4">${$t(`modals.weatherDisplay.attributes.${attr}`)}</dt>
+                                    <dd class="col-sm-8">${displayData(attr, data)}</dd>`
+                                ).join('')}
+                            </dl>
+                        </div>
+                    `;
+
+                    modal.show();
+                });
+            }));
+
+        document
+            .getElementById(e.target.getAttribute('aria-describedby'))
+            .remove();
+        e.target.removeAttribute('aria-describedby');
+    };
+
+    const weatherBtnWrapper = document.createElement('div');
+    weatherBtnWrapper.id = PREFIX('weather-button');
+    const weatherBtn = document.createElement('a');
+    weatherBtn.innerText = `${getWeatherEmoji(0)}`;
+    weatherBtn.dataset.originalTitle = $t(
+        `weatherDisplay.weatherCodes.${weatherCodes.UNKNOWN}`
+    );
+    weatherBtn.classList.add('nav-link', 'position-relative');
+    weatherBtn.href = '#';
+    weatherBtn.role = 'button';
+    weatherBtn.dataset.toggle = 'tooltip';
+    weatherBtn.dataset.placement = 'bottom';
+    weatherBtn.dataset.html = 'true';
+    weatherBtn.addEventListener('click', openWeatherDisplayModal);
+    weatherBtnWrapper.append(weatherBtn);
+
+    ready(() => {
+        document
+            .querySelector('#usernavigation .usermenu-container')
+            ?.before(weatherBtnWrapper);
+    });
+
+    animationInterval(
+        ONE_MINUTE,
+        () => {
+            weatherProvider().then(data => {
+                const weatherEmoji = getWeatherEmoji(data.weatherType);
+
+                if (data.weatherType === weatherCodes.UNKNOWN) {
+                    weatherBtn.innerHTML = weatherEmoji;
+                    weatherBtn.dataset.originalTitle = $t(
+                        `weatherDisplay.weatherCodes.${weatherCodes.UNKNOWN}`
+                    );
+                    return;
+                }
+
+                weatherBtn.innerHTML =
+                    weatherEmoji +
+                    (showTempInNavbar ?
+                        ` ${displayData(
+                            toggleFeelsLike ?
+                                'temperatureFeelsLike'
+                            :   'temperature',
+                            data
+                        )}`
+                    :   '');
+                weatherBtn.dataset.originalTitle = `<strong>${weatherEmoji}\xa0${$t(
+                    `weatherDisplay.weatherCodes.${data.weatherType}`
+                )}</strong><br>🌡️:&nbsp;${
+                    displayData('temperature', data) +
+                    (toggleFeelsLike ?
+                        ` (${displayData('temperatureFeelsLike', data)})`
+                    :   '')
+                }<br>🪁:&nbsp;${displayData(
+                    'windSpeed',
+                    data
+                )}&nbsp;(${windDirectionToArrow(
+                    data.windDirection
+                )})<br>💦:&nbsp;${displayData(
+                    'rainGauge',
+                    data
+                )}<br><br><small>${$t('weatherDisplay.credits._short')}: ${$t(
+                    `weatherDisplay.credits.${provider}.name`
+                )}<br>${$t(
+                    'weatherDisplay.updated'
+                )}:&nbsp;${timeToString(data.time, false)}</small>`;
+            });
+        },
+        true
+    );
+}
+// endregion
+
 // region Feature messages.sendHotkey
 const messagesSendHotkey = getSetting('messages.sendHotkey');
 if (messagesSendHotkey) {
@@ -5835,6 +7610,30 @@ ready(() => {
                 updateSetting.classList.add('justify-content-between');
                 updateSetting.append(versionSpan);
             }
+            // endregion
+
+            // region moothel background image
+            const moothelImg = document.createElement('img');
+            moothelImg.src = rawGithubPath('img/moothel.png');
+            moothelImg.id = PREFIX('moothel');
+            modal.header[0].before(moothelImg);
+            GM_addStyle(css`
+                #${moothelImg.id} {
+                    position: absolute;
+                    width: 90%;
+                    height: 90%;
+                    opacity: 0.1;
+                    top: 5%;
+                    left: 5%;
+                    object-fit: contain;
+                }
+
+                @media (prefers-contrast: more) {
+                    #${moothelImg.id} {
+                        display: none;
+                    }
+                }
+            `);
             // endregion
 
             const footerBtnGroup = document.createElement('div');
