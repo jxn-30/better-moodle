@@ -12,7 +12,7 @@
 // @icon            https://raw.githubusercontent.com/jxn-30/better-moodle/main/img/moothel.png
 // @updateURL       https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.meta.js
 // @downloadURL     https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.user.js
-// @match           https://moodle.uni-luebeck.de/*
+// @match           https://moodlemootdach.org/*
 // @run-at          document-body
 // @grant           GM_addStyle
 // @grant           GM_getValue
