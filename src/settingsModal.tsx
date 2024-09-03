@@ -1,7 +1,7 @@
 import featureGroups from './_lib/imports';
 import { GithubLink } from './_lib/Components';
 import { Modal } from './_lib/Modal';
-import { ready } from './_lib/DOM';
+import { readyCallback } from './_lib/DOM';
 import settingsStyle from './style/settings.module.scss';
 import { languages, LL } from './i18n/i18n';
 import { mdToHtml, rawGithubPath } from './_lib/helpers';
@@ -30,7 +30,7 @@ const SettingsBtn = (
 ) as HTMLDivElement;
 
 // append the Button to the navbar
-ready(() =>
+readyCallback(() =>
     document
         .querySelector('#usernavigation .usermenu-container')
         ?.before(SettingsBtn)

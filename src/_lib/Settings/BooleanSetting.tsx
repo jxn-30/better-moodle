@@ -39,21 +39,10 @@ export class BooleanSetting<
     }
 
     /**
-     * gets the value of the setting
-     * required as getter and setter both need to be overridden
-     * @returns the current value of this setting
+     * Saves the current value of this setting
      */
-    get savedValue() {
-        return super.savedValue;
-    }
-
-    /**
-     * sets the value of the setting and saves it to storage
-     * @param newVal - the new value of the setting
-     */
-    set savedValue(newVal: boolean) {
-        this.#formControl.value = newVal;
-        super.savedValue = newVal;
+    public save() {
+        this.savedValue = this.#formControl.value;
     }
 
     /**

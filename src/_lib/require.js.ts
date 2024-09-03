@@ -1,4 +1,4 @@
-import { ready } from './DOM';
+import { readyCallback } from './DOM';
 
 /**
  * Awaits the DOM to be ready and then imports the modules. Imports the modules immediately if DOM is already ready and thus requirejs already available.
@@ -7,4 +7,4 @@ import { ready } from './DOM';
  * @returns void
  */
 export const require: typeof requirejs = (modules, callback) =>
-    ready(() => requirejs(modules, callback));
+    readyCallback(() => requirejs(modules, callback));
