@@ -1609,7 +1609,7 @@ const noExternalLinkIconClass = PREFIX('no-external-icon');
 
 const githubPath = path => `https://github.com/jxn-30/better-moodle${path}`;
 const rawGithubPath = path =>
-    `https://raw.githubusercontent.com/jxn-30/better-moodle/main/${path}`;
+    `https://raw.githubusercontent.com/jxn-30/better-moodle/moodlemoot/${path}`;
 const githubLink = (path, icon = true, externalIcon = false) => {
     const link = document.createElement('a');
     link.href = githubPath(path);
@@ -7662,7 +7662,7 @@ ready(() => {
             modal.getFooter()[0].prepend(footerBtnGroup);
 
             // region changelog
-            const changelogBtn = githubLink('/blob/main/CHANGELOG.md', false);
+            const changelogBtn = githubLink('/blob/moodlemoot/CHANGELOG.md', false);
             changelogBtn.classList.add('btn', 'btn-outline-primary');
             const changelogIcon = document.createElement('i');
             changelogIcon.classList.add('fa', 'fa-history', 'fa-fw');
@@ -7677,7 +7677,7 @@ ready(() => {
                     large: true,
                     scrollable: true,
                     title: `${
-                        githubLink('/blob/main/CHANGELOG.md').outerHTML
+                        githubLink('/blob/moodlemoot/CHANGELOG.md').outerHTML
                     } Better-Moodle:&nbsp;${$t('modals.changelog')}`,
                     body: getChangelogHtml(),
                 }).then(modal => modal.show());
