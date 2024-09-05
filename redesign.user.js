@@ -21,7 +21,7 @@
 // @grant           GM_addValueChangeListener
 // @grant           GM_info
 // @grant           GM_xmlhttpRequest
-// @connect         studentenwerk.sh
+// @connect         cvzi.github.io
 // @connect         api.open-meteo.com
 // @connect         api.openweathermap.org
 // @connect         api.pirateweather.net
@@ -68,12 +68,12 @@ const TRANSLATIONS = {
             },
         },
         speiseplan: {
-            title: 'Speiseplan der Mensa (Lübeck)',
+            title: 'Speiseplan der Mensa',
             close: 'Schließen',
-            toStudiwerkPage: 'Speiseplan auf der Seite des Studentenwerks',
+            toStudiwerkPage: 'Speiseplan auf der Seite von OpenMensa',
             table: {
                 speise: 'Gericht',
-                type: 'Art(en)',
+                type: 'Notiz(en)',
                 price: 'Preis',
             },
         },
@@ -224,7 +224,7 @@ Lies dir gerne zunächst einmal die FAQ von Better-Moodle durch: [Better-Moodle 
 
 ## Okay cool, aber da steht XY nicht mit dabei. Was nun?
 
-Schreib doch gerne eine Mail an Jan: [{{mailAdress}}]({{mailLinkHelp}}).
+Schreib doch gerne eine Mail an Jan und Yorik: [{{mailAdress}}]({{mailLinkHelp}}).
 
 Denke dabei bitte daran, über deine Uni-Mail-Adresse und nicht über deine Private Email zu schreiben.
 
@@ -232,14 +232,14 @@ Denke dabei bitte daran, über deine Uni-Mail-Adresse und nicht über deine Priv
 
 Huch, in Better-Moodle gibt es doch keine Fehler? 😱
 
-Spaß beiseite, auch in Better-Moodle kann es mal vorkommen, dass ein Fehler auftritt. Eröffne gerne ein neues Issue auf [GitHub]({{githubIssueBug}}) oder schreibe Jan eine Mail, wenn du kein GitHub nutzen möchtest: [{{mailAdress}}]({{mailLinkBug}}).
+Spaß beiseite, auch in Better-Moodle kann es mal vorkommen, dass ein Fehler auftritt. Eröffne gerne ein neues Issue auf [GitHub]({{githubIssueBug}}) oder schreibe Jan und Yorik eine Mail, wenn du kein GitHub nutzen möchtest: [{{mailAdress}}]({{mailLinkBug}}).
 
 Bitte gebe dabei auch immer so viele Informationen wie möglich an, damit der Fehler optimal nachvollzogen und reproduziert werden kann.
 Das hilft, ihn schneller und effizienter zu beheben.
 
 ## Ich habe eine tolle Idee für ein neues Feature!
 
-Erstelle gerne ein Issue auf [GitHub]({{githubIssueFeature}}), reiche dort eine Contribution ein oder schreibe eine Mail an Jan: [{{mailAdress}}]({{mailLinkFeature}})
+Erstelle gerne ein Issue auf [GitHub]({{githubIssueFeature}}), reiche dort eine Contribution ein oder schreibe eine Mail an Jan und Yorik: [{{mailAdress}}]({{mailLinkFeature}})
 
 ## Wer ist denn dieses süße Mammut 🦣 da im Hintergrund der Einstellungen?
 
@@ -249,7 +249,7 @@ Gut, dass du fragst! Das ist eine Zeichnung von Moothel, dem Better-Moodle Masko
                 mails: {
                     help: {
                         subject: 'Ich benötige bitte Hilfe',
-                        content: `Hallo Jan,
+                        content: `Hallo Jan und Yorik,
 
 ich habe eine Frage zu Better-Moodle, die ich aber leider nicht duch die FAQ beantwortet bekommen habe:
 
@@ -260,7 +260,7 @@ Vielen Dank und liebe Grüße
                     },
                     bug: {
                         subject: 'Bug-Report',
-                        content: `Hallo Jan,
+                        content: `Hallo Jan und Yorik,
 ich habe einen Bug in Better-Moodle gefunden!
 
 Ich nutze diesen Browser:
@@ -273,7 +273,7 @@ Viele Grüße
                     },
                     feature: {
                         subject: 'Feature-Idee',
-                        content: `Hallo Jan,
+                        content: `Hallo Jan und Yorik,
 ich habe einen tollen Vorschlag für Better-Moodle:
 
 [hier eine ausführliche Beschreibung des Vorschlags]
@@ -702,12 +702,12 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
             },
         },
         speiseplan: {
-            title: 'Menu of the canteen (Lübeck)',
+            title: 'Menu of the canteen',
             close: 'Close',
-            toStudiwerkPage: 'Menu on the website of Studentenwerk',
+            toStudiwerkPage: 'Menu on the website of OpenMensa',
             table: {
                 speise: 'Dish',
-                type: 'Type(s)',
+                type: 'Note(s)',
                 price: 'Price',
             },
         },
@@ -859,7 +859,7 @@ Please read the Better-Moodle FAQ first: [Better-Moodle FAQ]({{faqLink}}).
 
 ## Okay cool, but it doesn't say XY. What now?
 
-Why don't you write an email to Jan: [{{mailAdress}}]({{mailLinkHelp}}).
+Why don't you write an email to Jan and Yorik: [{{mailAdress}}]({{mailLinkHelp}}).
 
 Please remember to use your university e-mail address and not your private e-mail address.
 
@@ -867,14 +867,14 @@ Please remember to use your university e-mail address and not your private e-mai
 
 Oops? there are no errors in Better-Moodle?! 😱
 
-Joking aside, even in Better-Moodle it can happen that an error occurs. Feel free to open a new issue on [GitHub]({{githubIssueBug}}) or write Jan an email if you don't want to use GitHub: [{{mailAdress}}]({{mailLinkBug}}).
+Joking aside, even in Better-Moodle it can happen that an error occurs. Feel free to open a new issue on [GitHub]({{githubIssueBug}}) or write Jan and Yorik an email if you don't want to use GitHub: [{{mailAdress}}]({{mailLinkBug}}).
 
 Please always provide as much information as possible so that the bug can be traced and reproduced in the best possible way.
 This helps to fix it faster and more efficiently.
 
 ## I have a great idea for a new feature!
 
-Feel free to create an issue on [GitHub]({{githubIssueFeature}}), submit a contribution there or write an email to Jan: [{{mailAdress}}]({{mailLinkFeature}})
+Feel free to create an issue on [GitHub]({{githubIssueFeature}}), submit a contribution there or write an email to Jan and Yorik: [{{mailAdress}}]({{mailLinkFeature}})
 
 ## Who is that cute mammoth 🦣 in the background of the settings?
 
@@ -884,7 +884,7 @@ By the way: Moothel also has his own homepage: [moothel.pet](https://moothel.pet
                 mails: {
                     help: {
                         subject: 'I need help please',
-                        content: `Hello Jan,
+                        content: `Hello Jan and Yorik,
 
 I have a question about Better-Moodle, but unfortunately I didn't find an answer in the FAQ:
 
@@ -895,7 +895,7 @@ Many thanks and best regards
                     },
                     bug: {
                         subject: 'Bug-Report',
-                        content: `Hello Jan,
+                        content: `Hello Jan and Yorik,
 I have found a bug in Better-Moodle!
 
 I am using this browser:
@@ -908,7 +908,7 @@ Best regards
                     },
                     feature: {
                         subject: 'Feature idea',
-                        content: `Hello Jan,
+                        content: `Hello Jan and Yorik,
 I have a great suggestion for Better-Moodle:
 
 [here is a detailed description of the suggestion]
@@ -2142,37 +2142,19 @@ const getSpeiseplan = async () => {
      */
     const getSpeisen = doc => {
         const speisen = {};
-        doc.querySelectorAll('.mensa_menu_detail').forEach(speise => {
-            const day = speise.closest('[data-day]').dataset.day;
+        doc.querySelectorAll('meal').forEach(speise => {
+            const day = speise.closest('day').attributes.date.textContent;
             speisen[day] ??= [];
-            const items = [{ name: '' }];
-            speise.querySelector('.menu_name').childNodes.forEach(node => {
-                if (node.nodeType === Node.TEXT_NODE) {
-                    items.at(-1).name += node.textContent.trim();
-                }
-                if (node.nodeType === Node.ELEMENT_NODE) {
-                    if (node.tagName === 'BR') {
-                        items.push({ name: '' });
-                    } else if (node.classList.contains('mensa_zusatz')) {
-                        items.at(-1).zusatz = node.textContent.trim();
-                    }
-                }
-            });
+
+            
+            const category = speise.closest('category').attributes.name.textContent;
+            const name = speise.querySelector('name').textContent;
+            const notes = Array.from(speise.querySelectorAll('note')).map(n => n.textContent);
+            const price = parseFloat((speise.querySelector('price')?.textContent ?? '0.00').replace(',', '.'));
+
             speisen[day].push({
-                mensa: !!speise.querySelector('.mensatyp_mensa'),
-                items,
-                allergene: speise.dataset.allergene.split('|').filter(Boolean),
-                zusatzstoffe: speise.dataset.zusatzstoffe
-                    .split('|')
-                    .filter(Boolean),
-                arten: speise.dataset.arten.split('|').filter(Boolean),
-                preise: speise
-                    .querySelector('.menu_preis')
-                    ?.textContent?.trim()
-                    .split('/')
-                    .map(p => p.trim().replace(',', '.'))
-                    .map(p => parseFloat(p))
-                    .filter(Boolean),
+                mensa: 'TU Mensa Freihaus',
+                name, category, notes, price,
             });
         });
         return speisen;
@@ -2186,62 +2168,26 @@ const getSpeiseplan = async () => {
     Object.freeze(localizedPath);
 
     /**
-     * Fetches the speiseplan from the studentenwerk website and returns it as a document
+     * Fetches the speiseplan from the openmensa website and returns it as a document
      * @param {boolean} [nextWeek]
      * @returns {Promise<Document>}
      */
-    const getDoc = (nextWeek = false) =>
+    const getDoc = () =>
         new Promise(resolve =>
             GM_xmlhttpRequest({
-                url: `https://studentenwerk.sh/${BETTER_MOODLE_LANG}/${
-                    localizedPath[BETTER_MOODLE_LANG]
-                }?ort=3&mensa=8${nextWeek ? '&nw=1' : ''}`,
-                onload: ({ responseText }) =>
+                url: `https://cvzi.github.io/mensa/feed/mensenat_WiTUMensaFreihaus.xml`,
+                onload: ({ responseXML }) =>
                     resolve(
-                        new DOMParser().parseFromString(
-                            responseText,
-                            'text/html'
-                        )
+                        responseXML
                     ),
             })
         );
 
     const mensaplanDoc = await getDoc();
 
-    /** @type {Record<string, Record<string, SpeiseplanFilter>>} */
-    const filters = {
-        arten: {
-            SHT: {
-                // we need to define SH-Teller as it is not defined on english website
-                title: 'Schleswig-Holstein Teller',
-                abk: '',
-                img: 'https://studentenwerk.sh/upload/img/sh_teller1.png?h=80&t=2',
-            },
-        },
-    };
-    mensaplanDoc.querySelectorAll('.filterbutton').forEach(filter => {
-        const type = filterTypes[filter.dataset.typ];
-        filters[type] ??= {};
-        const img = filter.querySelector('img')?.src ?? undefined;
-        let imgUrl;
-        if (img) {
-            imgUrl = new URL(new URL(img).pathname, 'https://studentenwerk.sh');
-        }
-        filters[type][filter.dataset.wert] = {
-            title:
-                filter.querySelector('span:not(.abk)')?.textContent?.trim() ??
-                '',
-            abk: filter.querySelector('span.abk')?.textContent?.trim() ?? '',
-            ...(imgUrl ? { img: imgUrl.href } : {}),
-        };
-    });
-    Object.freeze(filters);
-
     return {
-        filters,
         speisen: {
             ...getSpeisen(mensaplanDoc),
-            ...getSpeisen(await getDoc(true)),
         },
     };
 };
@@ -3797,7 +3743,7 @@ if (getSetting('general.speiseplan')) {
 
     const tableClass = PREFIX('speiseplan-table');
     const speiseClass = PREFIX('speiseplan-speise');
-    const artenClass = PREFIX('speiseplan-arten');
+    const notesClass = PREFIX('speiseplan-arten');
     const preiseClass = PREFIX('speiseplan-preise');
     const abkClass = PREFIX('speiseplan-abk');
 
@@ -3837,11 +3783,11 @@ if (getSetting('general.speiseplan')) {
             content: ')';
         }
 
-        .${tableClass} .${artenClass} {
+        .${tableClass} .${notesClass} {
             text-align: center;
         }
 
-        .${tableClass} .${artenClass} img {
+        .${tableClass} .${notesClass} img {
             max-width: 40px;
             max-height: 40px;
         }
@@ -3851,7 +3797,7 @@ if (getSetting('general.speiseplan')) {
         }
 
         /* improve arten images in dark mode */
-        ${DARK_MODE_SELECTOR} .${artenClass} img {
+        ${DARK_MODE_SELECTOR} .${notesClass} img {
             --stroke-pos: 0.5px;
             --stroke-neg: -0.5px;
             --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
@@ -3871,10 +3817,10 @@ if (getSetting('general.speiseplan')) {
                     var(--stroke-neg) var(--stroke-neg) 0 var(--stroke-color)
                 );
         }
-        ${DARK_MODE_SELECTOR} .${artenClass} img[src*="sh_teller"] {
+        ${DARK_MODE_SELECTOR} .${notesClass} img[src*="sh_teller"] {
             filter: brightness(1.5);
         }
-        ${DARK_MODE_SELECTOR} .${artenClass} img[src*="iconprop_bio"] {
+        ${DARK_MODE_SELECTOR} .${notesClass} img[src*="iconprop_bio"] {
             filter: brightness(0.9);
         }
     `);
@@ -3910,66 +3856,25 @@ if (getSetting('general.speiseplan')) {
             const speiseCell = row.insertCell();
             speiseCell.classList.add(speiseClass);
             speiseCell.dataset.location = speise.mensa ? 'Mensa' : 'Cafeteria';
-            speise.items.forEach(({ name, zusatz }) => {
-                const speiseEl = document.createElement('span');
-                speiseEl.textContent = name;
-                if (zusatz) {
-                    const zusatzEl = document.createElement('span');
-                    zusatzEl.textContent = zusatz;
-                    zusatzEl.classList.add('text-muted');
-                    speiseEl.append('\xa0', zusatzEl);
-                }
-                speiseCell.append(speiseEl, document.createElement('br'));
-            });
 
-            const allergene = document.createElement('div');
-            allergene.classList.add(abkClass, 'text-muted');
-            speise.allergene.forEach(allergen => {
-                const allergenFilter = filter.allergene[allergen];
-                const allergenSpan = document.createElement('span');
-                allergenSpan.textContent +=
-                    allergenFilter ?
-                        `${allergenFilter.abk}:\xa0${allergenFilter.title}`
-                    :   allergen;
-                allergene.append(allergenSpan);
-            });
-            if (speise.allergene.length) speiseCell.append(allergene);
-            const zusatzstoffe = document.createElement('div');
-            zusatzstoffe.classList.add(abkClass, 'text-muted');
-            speise.zusatzstoffe.forEach(zusatzstoff => {
-                const zusatzstoffFilter = filter.zusatzstoffe[zusatzstoff];
-                const zusatzstoffSpan = document.createElement('span');
-                zusatzstoffSpan.textContent +=
-                    zusatzstoffFilter ?
-                        `${zusatzstoffFilter.abk}:\xa0${zusatzstoffFilter.title}`
-                    :   zusatzstoff;
-                zusatzstoffe.append(zusatzstoffSpan);
-            });
-            if (speise.zusatzstoffe.length) speiseCell.append(zusatzstoffe);
+            const speiseEl = document.createElement('span');
+            speiseEl.textContent = speise.name;
+            speiseCell.append(speiseEl, document.createElement('br'));
 
-            const artenCell = row.insertCell();
-            artenCell.classList.add(artenClass);
-            speise.arten.forEach(art => {
-                const artFilter = filter.arten[art];
-                if (!artFilter) {
-                    return artenCell.append(art, document.createElement('br'));
-                }
-                const img = document.createElement('img');
-                img.src = artFilter.img;
-                img.alt = img.title = artFilter.title;
-                artenCell.append(img);
-            });
+            const notesCell = row.insertCell();
+            notesCell.classList.add(notesClass);
+            const notesEl = document.createElement('span');
+            notesEl.innerText = speise.notes.join(', ');
+            notesCell.append(notesEl);
 
             const preiseCell = row.insertCell();
             preiseCell.classList.add(preiseClass);
-            speise.preise.forEach(preis => {
-                const preisEl = document.createElement('span');
-                preisEl.textContent = preis.toLocaleString(BETTER_MOODLE_LANG, {
-                    style: 'currency',
-                    currency: 'EUR',
-                });
-                preiseCell.append(preisEl);
+            const preisEl = document.createElement('span');
+            preisEl.textContent = speise.price.toLocaleString(BETTER_MOODLE_LANG, {
+                style: 'currency',
+                currency: 'EUR',
             });
+            preiseCell.append(preisEl);
         });
         container.append(table);
 
@@ -4005,11 +3910,7 @@ if (getSetting('general.speiseplan')) {
                 modal.getBody()[0].classList.add('mform');
 
                 const studiwerkLink = document.createElement('a');
-                studiwerkLink.href = `https://studentenwerk.sh/${BETTER_MOODLE_LANG}/${
-                    { de: 'mensen-in-luebeck', en: 'food-overview' }[
-                        BETTER_MOODLE_LANG
-                    ]
-                }?ort=3&mensa=8`;
+                studiwerkLink.href = 'https://openmensa.org/c/1098';
                 studiwerkLink.textContent = $t('speiseplan.toStudiwerkPage');
                 studiwerkLink.target = '_blank';
                 studiwerkLink.classList.add('mr-auto');
