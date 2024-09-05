@@ -1716,7 +1716,7 @@ const addMarqueeItems = (() => {
 
         #${navLink.id} > .${textSpanClass} > *::after {
             content: '${'\xa0'.repeat(11)}';
-            background-image: url('https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico');
+            background-image: url('https://www.tuwien.at/favicon.ico');
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
