@@ -2146,15 +2146,25 @@ const getSpeiseplan = async () => {
             const day = speise.closest('day').attributes.date.textContent;
             speisen[day] ??= [];
 
-            
-            const category = speise.closest('category').attributes.name.textContent;
+            const category =
+                speise.closest('category').attributes.name.textContent;
             const name = speise.querySelector('name').textContent;
-            const notes = Array.from(speise.querySelectorAll('note')).map(n => n.textContent);
-            const price = parseFloat((speise.querySelector('price')?.textContent ?? '0.00').replace(',', '.'));
+            const notes = Array.from(speise.querySelectorAll('note')).map(
+                n => n.textContent
+            );
+            const price = parseFloat(
+                (speise.querySelector('price')?.textContent ?? '0.00').replace(
+                    ',',
+                    '.'
+                )
+            );
 
             speisen[day].push({
                 mensa: 'TU Mensa Freihaus',
-                name, category, notes, price,
+                name,
+                category,
+                notes,
+                price,
             });
         });
         return speisen;
@@ -2176,10 +2186,7 @@ const getSpeiseplan = async () => {
         new Promise(resolve =>
             GM_xmlhttpRequest({
                 url: `https://cvzi.github.io/mensa/feed/mensenat_WiTUMensaFreihaus.xml`,
-                onload: ({ responseXML }) =>
-                    resolve(
-                        responseXML
-                    ),
+                onload: ({ responseXML }) => resolve(responseXML),
             })
         );
 
@@ -3870,10 +3877,13 @@ if (getSetting('general.speiseplan')) {
             const preiseCell = row.insertCell();
             preiseCell.classList.add(preiseClass);
             const preisEl = document.createElement('span');
-            preisEl.textContent = speise.price.toLocaleString(BETTER_MOODLE_LANG, {
-                style: 'currency',
-                currency: 'EUR',
-            });
+            preisEl.textContent = speise.price.toLocaleString(
+                BETTER_MOODLE_LANG,
+                {
+                    style: 'currency',
+                    currency: 'EUR',
+                }
+            );
             preiseCell.append(preisEl);
         });
         container.append(table);
@@ -7556,7 +7566,10 @@ ready(() => {
             modal.getFooter()[0].prepend(footerBtnGroup);
 
             // region changelog
-            const changelogBtn = githubLink('/blob/moodlemoot/CHANGELOG.md', false);
+            const changelogBtn = githubLink(
+                '/blob/moodlemoot/CHANGELOG.md',
+                false
+            );
             changelogBtn.classList.add('btn', 'btn-outline-primary');
             const changelogIcon = document.createElement('i');
             changelogIcon.classList.add('fa', 'fa-history', 'fa-fw');
