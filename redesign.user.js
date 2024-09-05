@@ -1845,15 +1845,8 @@ const addMarqueeItems = (() => {
     return addItems;
 })();
 
-// that is the contact mail of Jan but encoded a little so that it is not easily readable by bots
-const cntctAdr = `${atob(
-    'LTE5MjUsLTE5MTIsLTE5MjIsLTE5MTksLTE5MTQsLTE5MjIsLTE5MDksLTE5MTUsLTE5MjI='
-)
-    .split(',')
-    .map(c => String.fromCharCode(Number(c) + 2023))
-    .join('')}@${['fsmain', ...location.hostname.split('.').slice(-2)].join(
-    '.'
-)}`;
+// that is the contact mail of the better-moodle team but encoded a little so that it is not easily readable by bots
+const cntctAdr = 'moin@better-moodle.dev';
 
 const getEmail = (subject = '', body = '') => {
     const url = new URL(`mailto:${cntctAdr}`);
