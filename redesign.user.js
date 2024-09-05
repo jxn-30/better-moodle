@@ -1,17 +1,17 @@
 // ==UserScript==
-// @name            🎓️ UzL: better-moodle
-// @namespace       https://uni-luebeck.de
+// @name            🎓️ moodlemoot DACH: better-moodle
+// @namespace       https://mmd.better-moodle.dev
 // @                x-release-please-start-version
 // @version         1.40.0
 // @                x-release-please-end
-// @author          Jan (jxn_30)
-// @description     Improves UzL-Moodle by cool features and design improvements.
-// @description:de  Verbessert UzL-Moodle durch coole Features und Designverbesserungen.
-// @homepage        https://github.com/jxn-30/better-moodle
-// @homepageURL     https://github.com/jxn-30/better-moodle
-// @icon            https://raw.githubusercontent.com/jxn-30/better-moodle/main/img/moothel.png
-// @updateURL       https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.meta.js
-// @downloadURL     https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.user.js
+// @author          Jan (jxn_30), Yorik (YorikHansen)
+// @description     Improves Moodle by cool features and design improvements.
+// @description:de  Verbessert Moodle durch coole Features und Designverbesserungen.
+// @homepage        https://github.com/jxn-30/better-moodle/tree/moodlemoot
+// @homepageURL     https://github.com/jxn-30/better-moodle/tree/moodlemoot
+// @icon            https://raw.githubusercontent.com/jxn-30/better-moodle/moodlemoot/img/moothel.png
+// @updateURL       https://github.com/jxn-30/better-moodle/raw/moodlemoot/redesign.user.js
+// @downloadURL     https://github.com/jxn-30/better-moodle/raw/moodlemoot/redesign.user.js
 // @match           https://moodlemootdach.org/*
 // @run-at          document-body
 // @grant           GM_addStyle
@@ -68,7 +68,7 @@ const TRANSLATIONS = {
             },
         },
         speiseplan: {
-            title: 'Speiseplan der Mensa',
+            title: 'Speiseplan der Mensa (Lübeck)',
             close: 'Schließen',
             toStudiwerkPage: 'Speiseplan auf der Seite des Studentenwerks',
             table: {
@@ -702,7 +702,7 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
             },
         },
         speiseplan: {
-            title: 'Menu of the canteen',
+            title: 'Menu of the canteen (Lübeck)',
             close: 'Close',
             toStudiwerkPage: 'Menu on the website of Studentenwerk',
             table: {
@@ -1716,7 +1716,7 @@ const addMarqueeItems = (() => {
 
         #${navLink.id} > .${textSpanClass} > *::after {
             content: '${'\xa0'.repeat(11)}';
-            background-image: url('https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico');
+            background-image: url('https://www.tuwien.at/favicon.ico');
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
@@ -5909,44 +5909,51 @@ ready(async () => {
                 )
             :   JSON.parse(dropdownGroupingSetting);
 
-        // fetch the courses
-        require(['block_myoverview/repository'], ({
-            getEnrolledCoursesByTimeline,
-        }) =>
-            getEnrolledCoursesByTimeline({
-                classification: dropdownGrouping.classification,
-                customfieldname: dropdownGrouping.customfieldname,
-                customfieldvalue: dropdownGrouping.customfieldvalue,
-                limit: 0,
-                offset: 0,
-                sort: 'shortname',
-            }).then(({ courses }) => {
-                dropdownLoadingSpan.remove();
-                mobileLoadingSpan.remove();
+        if (dropdownGrouping) {
+            // fetch the courses
+            require(['block_myoverview/repository'], ({
+                getEnrolledCoursesByTimeline,
+            }) =>
+                getEnrolledCoursesByTimeline({
+                    classification: dropdownGrouping.classification,
+                    customfieldname: dropdownGrouping.customfieldname,
+                    customfieldvalue: dropdownGrouping.customfieldvalue,
+                    limit: 0,
+                    offset: 0,
+                    sort: 'shortname',
+                }).then(({ courses }) => {
+                    dropdownLoadingSpan.remove();
+                    mobileLoadingSpan.remove();
 
-                if (myCoursesA) {
-                    addDropdownItem({
-                        fullname: `[${$t('myCourses.lists.myCoursesLink')}]`,
-                        shortname: '',
-                        viewurl: '/my/courses.php',
-                    });
-                }
+                    if (myCoursesA) {
+                        addDropdownItem({
+                            fullname: `[${$t('myCourses.lists.myCoursesLink')}]`,
+                            shortname: '',
+                            viewurl: '/my/courses.php',
+                        });
+                    }
 
-                if (getSetting('myCourses.navbarDropdownFavouritesAtTop')) {
-                    courses.sort((a, b) => b.isfavourite - a.isfavourite);
-                }
-                courses.forEach(addDropdownItem);
+                    if (getSetting('myCourses.navbarDropdownFavouritesAtTop')) {
+                        courses.sort((a, b) => b.isfavourite - a.isfavourite);
+                    }
+                    courses.forEach(addDropdownItem);
 
-                if (!courses.length) {
-                    const noCoursesSpan = document.createElement('span');
-                    noCoursesSpan.classList.add('text-muted', 'text-center');
-                    noCoursesSpan.textContent = $t(
-                        'myCourses.lists.empty'
-                    ).toString();
-                    dropdownMenu?.append(noCoursesSpan);
-                    mobileDropdownMenu?.append(noCoursesSpan.cloneNode(true));
-                }
-            }));
+                    if (!courses.length) {
+                        const noCoursesSpan = document.createElement('span');
+                        noCoursesSpan.classList.add(
+                            'text-muted',
+                            'text-center'
+                        );
+                        noCoursesSpan.textContent = $t(
+                            'myCourses.lists.empty'
+                        ).toString();
+                        dropdownMenu?.append(noCoursesSpan);
+                        mobileDropdownMenu?.append(
+                            noCoursesSpan.cloneNode(true)
+                        );
+                    }
+                }));
+        }
     };
 
     GM_addValueChangeListener(MyCoursesFilterSyncChangeKey, () =>
@@ -5961,7 +5968,7 @@ ready(async () => {
 if (getSetting('courses.imgMaxWidth')) {
     GM_addStyle(css`
         /* prevent images from overflowing */
-        #page-content .course-content img {
+        #page-content .course-content img:not(.activityicon) {
             max-width: 100%;
         }
     `);
@@ -6203,9 +6210,9 @@ if (clockEnabled || fuzzyClockEnabled) {
 // region Feature: weatherDisplay
 if (getSetting('weatherDisplay.show')) {
     const city = {
-        name: 'luebeck',
-        lat: 53.8655,
-        lon: 10.6866,
+        name: 'wien',
+        lat: 48.2083,
+        lon: 16.3725,
     };
     const provider = getSetting('weatherDisplay.provider');
     const units = getSetting('weatherDisplay.units');
