@@ -43,6 +43,15 @@ export default abstract class Setting<
     get feature(): Feature<Group, Feat> | FeatureGroup<Group> | undefined {
         return this.#feature;
     }
+    /**
+     * Set the feature this setting belongs to
+     * @param feature - the feature this setting belongs to
+     * @throws {Error} if the feature is already set
+     */
+    set feature(feature: Feature<Group, Feat> | FeatureGroup<Group>) {
+        if (this.#feature) throw new Error('Cannot reassign feature');
+        this.#feature = feature;
+    }
 
     abstract get formControl(): JSX.Element;
 
