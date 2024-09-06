@@ -203,4 +203,20 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
         this.unload();
         this.load();
     }
+
+    /**
+     * Reset all settings of this feature group and of it's features
+     */
+    resetSettings() {
+        this.#settings.forEach(setting => setting.reset());
+        this.#features.forEach(feature => feature.resetSettings());
+    }
+
+    /**
+     * Undo all settings of this feature group and of it's features
+     */
+    undoSettings() {
+        this.#settings.forEach(setting => setting.undo());
+        this.#features.forEach(feature => feature.undoSettings());
+    }
 }

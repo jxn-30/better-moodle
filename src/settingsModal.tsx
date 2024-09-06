@@ -198,7 +198,7 @@ const settingsModal = new Modal({
         </div>
     ),
 })
-    .onCancel(() => alert('Cancelling is not yet implemented 😅'))
+    .onCancel(() => featureGroups.forEach(group => group.undoSettings()))
     .onSave(() => alert('Saving is not yet implemented 😅'))
     .setTrigger(SettingsBtn);
 

@@ -29,9 +29,18 @@ export class BooleanSetting<
 
             this.#formControl.addEventListener(
                 'change',
-                () => (this.savedValue = this.#formControl!.value)
+                () => (this.unsafedValue = this.#formControl!.value)
             );
         });
+    }
+
+    /**
+     * Do the undo action
+     */
+    undo() {
+        super.undo();
+        this.#formControl!.value = this.savedValue;
+        this.#formControl!.dispatchEvent(new Event('input'));
     }
 
     /**
@@ -41,13 +50,6 @@ export class BooleanSetting<
     get formControl() {
         if (!this.#formControl) throw new Error('Form control not ready');
         return this.#formControl;
-    }
-
-    /**
-     * Saves the current value of this setting
-     */
-    public save() {
-        this.savedValue = this.#formControl!.value;
     }
 
     /**

@@ -180,4 +180,18 @@ export default abstract class Feature<
         this.unload();
         this.load();
     }
+
+    /**
+     * Reset all settings of this feature
+     */
+    resetSettings() {
+        this.#settings.forEach(setting => setting.reset());
+    }
+
+    /**
+     * Undo all settings of this feature
+     */
+    undoSettings() {
+        this.#settings.forEach(setting => setting.undo());
+    }
 }

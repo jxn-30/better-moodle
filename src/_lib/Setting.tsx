@@ -17,6 +17,8 @@ export default abstract class Setting<
     readonly #default: Type;
     #feature: Feature<Group, Feat> | FeatureGroup<Group> | undefined;
 
+    protected unsafedValue: Type;
+
     /**
      * Constructor
      * @param id - the setting id
@@ -34,9 +36,13 @@ export default abstract class Setting<
         const undefinedValue = crypto.randomUUID();
         const oldValue = GM_getValue(prefixedKey, undefinedValue);
         if (oldValue !== undefinedValue) {
-            GM_setValue(this.settingKey, oldValue);
+            if (!GM_listValues().includes(this.settingKey)) {
+                GM_setValue(this.settingKey, oldValue);
+            }
             GM_deleteValue(prefixedKey);
         }
+
+        this.unsafedValue = this.savedValue;
     }
 
     /**
@@ -159,6 +165,27 @@ export default abstract class Setting<
                 </div>
             </div>
         ) as HTMLDivElement;
+    }
+
+    /**
+     * Saves the current value of this setting
+     */
+    public save() {
+        this.savedValue = this.unsafedValue;
+    }
+
+    /**
+     * Resets the setting to its default value
+     */
+    reset() {
+        this.savedValue = this.#default;
+    }
+
+    /**
+     * Undoes the last change to the setting
+     */
+    undo() {
+        this.unsafedValue = this.savedValue;
     }
 
     /**
