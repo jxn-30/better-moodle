@@ -219,4 +219,12 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
         this.#settings.forEach(setting => setting.undo());
         this.#features.forEach(feature => feature.undoSettings());
     }
+
+    /**
+     * Save all settings of this feature group and of it's features
+     */
+    saveSettings() {
+        this.#settings.forEach(setting => setting.save());
+        this.#features.forEach(feature => feature.saveSettings());
+    }
 }

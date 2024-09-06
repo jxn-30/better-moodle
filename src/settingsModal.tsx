@@ -199,7 +199,7 @@ const settingsModal = new Modal({
     ),
 })
     .onCancel(() => featureGroups.forEach(group => group.undoSettings()))
-    .onSave(() => alert('Saving is not yet implemented 😅'))
+    .onSave(() => featureGroups.forEach(group => group.saveSettings()))
     .setTrigger(SettingsBtn);
 
 // append the link to moodle settings to the modal header

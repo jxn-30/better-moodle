@@ -194,4 +194,11 @@ export default abstract class Feature<
     undoSettings() {
         this.#settings.forEach(setting => setting.undo());
     }
+
+    /**
+     * Save all settings of this feature
+     */
+    saveSettings() {
+        this.#settings.forEach(setting => setting.save());
+    }
 }
