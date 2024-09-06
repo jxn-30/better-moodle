@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.40.1](https://github.com/jxn-30/better-moodle/compare/1.40.0...1.40.1) (2024-09-06)
+
+
+### Bug Fixes
+
+* **settings:** fix settings buttons not being clickable partially ([04f537a](https://github.com/jxn-30/better-moodle/commit/04f537a4533909870d57b9cd3f7c1573c28fb11a))
+
 ## [1.40.0](https://github.com/jxn-30/better-moodle/compare/1.39.2...1.40.0) (2024-08-29)
 
 ### 1-Year Anniversary of Better-Moodle 🎉
