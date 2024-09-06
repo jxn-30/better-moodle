@@ -7626,6 +7626,7 @@ ready(() => {
                     top: 5%;
                     left: 5%;
                     object-fit: contain;
+                    pointer-events: none;
                 }
 
                 @media (prefers-contrast: more) {
