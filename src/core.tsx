@@ -1,5 +1,6 @@
 import './style/global.module.scss';
-import './settingsModal';
 import featureGroups from './_lib/imports';
+
+import './settingsModal';
 
 console.log(featureGroups);

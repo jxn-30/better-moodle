@@ -1,3 +1,4 @@
+import CanBeReady from './CanBeReady';
 import { JSX } from 'jsx-dom';
 import { LocalizedString } from 'typesafe-i18n';
 import { domID, PREFIX } from './helpers';
@@ -11,7 +12,7 @@ export default abstract class Setting<
     Group extends FeatureGroupID = FeatureGroupID,
     Feat extends FeatureID<Group> = FeatureID<Group>,
     Type = unknown,
-> {
+> extends CanBeReady {
     readonly #id: string;
     readonly #default: Type;
     #feature: Feature<Group, Feat> | FeatureGroup<Group> | undefined;
@@ -22,6 +23,8 @@ export default abstract class Setting<
      * @param defaultValue - the default value of this setting
      */
     protected constructor(id: string, defaultValue: Type) {
+        super();
+
         this.#id = id;
         this.#default = defaultValue;
 
@@ -51,6 +54,7 @@ export default abstract class Setting<
     set feature(feature: Feature<Group, Feat> | FeatureGroup<Group>) {
         if (this.#feature) throw new Error('Cannot reassign feature');
         this.#feature = feature;
+        this.instanceReady();
     }
 
     abstract get formControl(): JSX.Element;
@@ -163,8 +167,10 @@ export default abstract class Setting<
      * @returns the setting itself
      */
     onInput(listener: EventListener) {
-        // TODO: bind this to the listener
-        this.formControl.addEventListener('input', listener);
+        void this.callWhenReady(() => {
+            // TODO: bind this to the listener
+            this.formControl.addEventListener('input', listener);
+        });
         return this;
     }
 }

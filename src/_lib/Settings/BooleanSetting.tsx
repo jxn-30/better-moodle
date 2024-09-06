@@ -11,10 +11,7 @@ export class BooleanSetting<
     Group extends FeatureGroupID = FeatureGroupID,
     Feat extends FeatureID<Group> = FeatureID<Group>,
 > extends Setting<Group, Feat, boolean> {
-    readonly #formControl = Switch({
-        id: this.inputID,
-        value: this.savedValue,
-    });
+    #formControl: ReturnType<typeof Switch> | undefined;
 
     /**
      * Constructor
@@ -24,10 +21,17 @@ export class BooleanSetting<
     constructor(id: string, defaultValue: boolean) {
         super(id, defaultValue);
 
-        this.#formControl.addEventListener(
-            'change',
-            () => (this.savedValue = this.#formControl.value)
-        );
+        void this.callWhenReady(() => {
+            this.#formControl = Switch({
+                id: this.inputID,
+                value: this.savedValue,
+            });
+
+            this.#formControl.addEventListener(
+                'change',
+                () => (this.savedValue = this.#formControl!.value)
+            );
+        });
     }
 
     /**
@@ -35,6 +39,7 @@ export class BooleanSetting<
      * @returns the form control element
      */
     get formControl() {
+        if (!this.#formControl) throw new Error('Form control not ready');
         return this.#formControl;
     }
 
@@ -42,7 +47,7 @@ export class BooleanSetting<
      * Saves the current value of this setting
      */
     public save() {
-        this.savedValue = this.#formControl.value;
+        this.savedValue = this.#formControl!.value;
     }
 
     /**
@@ -50,6 +55,6 @@ export class BooleanSetting<
      * @returns the current value of this setting
      */
     get value() {
-        return this.#formControl.value;
+        return this.#formControl!.value;
     }
 }
