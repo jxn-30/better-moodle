@@ -2,7 +2,7 @@
  * A helper class that provides methods to call functions as soon as the instance is ready
  */
 export default class CanBeReady {
-    #isReady = false;
+    #instanceIsReady = false;
     #instanceReadyCallbacks: ((...args: unknown[]) => unknown)[] = [];
 
     /**
@@ -13,7 +13,7 @@ export default class CanBeReady {
     protected callWhenReady<Args extends unknown[], ReturnType>(
         callback: (...args: Args[]) => ReturnType
     ): Promise<ReturnType> {
-        if (this.#isReady) {
+        if (this.#instanceIsReady) {
             return Promise.resolve<ReturnType>(callback.call(this));
         } else {
             return new Promise<ReturnType>(resolve =>
@@ -25,11 +25,19 @@ export default class CanBeReady {
     }
 
     /**
+     * Gets the instance's ready state
+     * @returns the instance's ready state
+     */
+    get instanceIsReady() {
+        return this.#instanceIsReady;
+    }
+
+    /**
      * Mark the instance as ready and execute all queued callbacks
      */
     protected instanceReady() {
-        if (this.#isReady) return;
-        this.#isReady = true;
+        if (this.#instanceIsReady) return;
+        this.#instanceIsReady = true;
         this.#instanceReadyCallbacks.forEach(callback => callback());
     }
 

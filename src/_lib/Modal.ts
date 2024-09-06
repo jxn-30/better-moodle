@@ -1,3 +1,4 @@
+import CanBeReady from './CanBeReady';
 import CoreModalEvents from '../../types/require.js/core/modal_events';
 import { require } from './require.js';
 import type {
@@ -9,21 +10,20 @@ import type {
 /**
  * A wrapper around Moodle's modal factory.
  */
-export class Modal {
+export class Modal extends CanBeReady {
     readonly #config: ModalConfig;
     readonly #savedFooter: ModalConfig['footer'];
 
     #modal: MoodleModal | undefined;
     #modalEvents: CoreModalEvents | undefined;
 
-    #queue: ((...args: unknown[]) => unknown)[] = [];
-    #isReady = false;
-
     /**
      * Create a new modal with the given configuration.
      * @param config - the modals config that is passed almost the same to Moodle's modal factory (required changes are made automatically)
      */
     constructor(config: ModalConfig) {
+        super();
+
         this.#config = config;
 
         // we cannot set footer on this type of modal, so we need to postpone prepending it
@@ -44,30 +44,12 @@ export class Modal {
     }
 
     /**
-     * Call the given callback when the modal is ready or immediately if it is already ready.
-     * @param callback - the function that is to be called
-     * @returns a promise that resolves to the return value of the callback
-     */
-    #callWhenReady<Args extends unknown[], ReturnType>(
-        callback: (...args: Args[]) => ReturnType
-    ): Promise<ReturnType> {
-        if (this.#isReady) {
-            return Promise.resolve<ReturnType>(callback.call(this));
-        } else {
-            return new Promise<ReturnType>(resolve =>
-                this.#queue.push(() => resolve(callback.call(this)))
-            );
-        }
-    }
-
-    /**
      * This method is called once the modal is ready. It is only called a single time.
      * It resolves all promises that were created before the modal was ready.
      * It also prepends the footer to the modal if it was saved before the modal was ready.
      */
     async #onReady() {
-        this.#isReady = true;
-        this.#queue.forEach(callback => callback());
+        super.instanceReady();
         await this.#prependFooter();
     }
 
@@ -75,7 +57,7 @@ export class Modal {
      * Prepends the saved footer to the modal's footer.
      */
     async #prependFooter() {
-        if (!this.#savedFooter || !this.#isReady) return;
+        if (!this.#savedFooter || !this.instanceIsReady) return;
         this.#modal!.getFooter().prepend(await this.#savedFooter);
     }
 
@@ -94,7 +76,7 @@ export class Modal {
      * @returns the modal instance itself
      */
     show() {
-        this.#callWhenReady(() => this.#modal!.show()).catch(console.error);
+        this.callWhenReady(() => this.#modal!.show()).catch(console.error);
 
         return this;
     }
@@ -107,9 +89,9 @@ export class Modal {
      * @returns the modal instance itself
      */
     on(Event: keyof CoreModalEvents, callback: (event: JQuery.Event) => void) {
-        this.#callWhenReady(() =>
+        void this.callWhenReady(() =>
             this.#modal!.getRoot().on(this.#modalEvents![Event], callback)
-        ).catch(console.error);
+        );
 
         return this;
     }
@@ -170,6 +152,6 @@ export class Modal {
      * @returns the title element of the modal
      */
     getTitle() {
-        return this.#callWhenReady(() => this.#modal!.getTitle());
+        return this.callWhenReady(() => this.#modal!.getTitle());
     }
 }
