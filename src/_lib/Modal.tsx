@@ -1,5 +1,6 @@
 import CanBeReady from './CanBeReady';
 import CoreModalEvents from '../../types/require.js/core/modal_events';
+import modalStyle from '../style/modal.module.scss';
 import { require } from './require.js';
 import type {
     default as CoreModalFactory,
@@ -7,12 +8,16 @@ import type {
     MoodleModal,
 } from '../../types/require.js/core/modal_factory';
 
+interface Config extends ModalConfig {
+    backgroundImage?: string;
+}
+
 /**
  * A wrapper around Moodle's modal factory.
  */
 export class Modal extends CanBeReady {
-    readonly #config: ModalConfig;
-    readonly #savedFooter: ModalConfig['footer'];
+    readonly #config: Config;
+    readonly #savedFooter: Config['footer'];
 
     #modal: MoodleModal | undefined;
     #modalEvents: CoreModalEvents | undefined;
@@ -21,7 +26,7 @@ export class Modal extends CanBeReady {
      * Create a new modal with the given configuration.
      * @param config - the modals config that is passed almost the same to Moodle's modal factory (required changes are made automatically)
      */
-    constructor(config: ModalConfig) {
+    constructor(config: Config) {
         super();
 
         this.#config = config;
@@ -41,6 +46,10 @@ export class Modal extends CanBeReady {
 
             this.#create(create).catch(console.error);
         });
+
+        if (config.backgroundImage) {
+            this.setBackgroundImage();
+        }
     }
 
     /**
@@ -153,5 +162,32 @@ export class Modal extends CanBeReady {
      */
     getTitle() {
         return this.callWhenReady(() => this.#modal!.getTitle());
+    }
+
+    /**
+     * Returns the header element of the modal once the modal is ready.
+     * It returns not a jQuery Element but an HTMLElement
+     * @returns the header element of the modal
+     */
+    getHeader() {
+        return this.callWhenReady(() => this.#modal!.header[0]);
+    }
+
+    /**
+     * Set a background image for this modal
+     * @param src - the image src
+     */
+    setBackgroundImage(src = this.#config.backgroundImage) {
+        if (!src) return;
+        void this.getHeader().then(header =>
+            header.before(
+                <img
+                    class={modalStyle.modalBackgroundImage}
+                    src={src}
+                    aria-hidden={true}
+                    alt=""
+                />
+            )
+        );
     }
 }

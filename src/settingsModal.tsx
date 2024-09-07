@@ -164,6 +164,7 @@ const settingsModal = new Modal({
     type: 'SAVE_CANCEL',
     large: true,
     scrollable: true,
+    backgroundImage: rawGithubPath('img/moothel.png'),
     title: (
         <>
             <GithubLink path="" /> Better-Moodle:&nbsp;

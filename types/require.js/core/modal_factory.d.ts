@@ -23,6 +23,8 @@ export interface ModalConfig {
 export interface MoodleModal {
     show: () => void;
 
+    header: JQuery<HTMLDivElement>;
+
     getRoot: () => JQuery<HTMLDivElement>;
     getTitle: () => JQuery<HTMLHeadingElement>;
     getFooter: () => JQuery<HTMLDivElement>;

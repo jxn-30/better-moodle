@@ -1,0 +1,13 @@
+.modal-background-image {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    opacity: 0.1;
+    top: 5%;
+    left: 5%;
+    object-fit: contain;
+
+    @media (prefers-contrast: more) {
+        display: none;
+    }
+}
