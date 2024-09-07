@@ -44,15 +44,7 @@ export default abstract class Setting<
 
         // in V1, setting keys in storage were prefixed
         // this migrates the old storage key for this setting
-        const prefixedKey = PREFIX(this.settingKey);
-        const undefinedValue = crypto.randomUUID();
-        const oldValue = GM_getValue(prefixedKey, undefinedValue);
-        if (oldValue !== undefinedValue) {
-            if (!GM_listValues().includes(this.settingKey)) {
-                GM_setValue(this.settingKey, oldValue);
-            }
-            GM_deleteValue(prefixedKey);
-        }
+        this.#migrateSettingStorage();
 
         this.unsavedValue = this.savedValue;
 
@@ -67,6 +59,34 @@ export default abstract class Setting<
                 () => (this.unsavedValue = this.#formControl!.value)
             );
         });
+    }
+
+    /**
+     * This migrates a settings storage from an old key to a new one.
+     * It tries both, a prefixed (V1) and a non-prefixed version of the key
+     * @param key - the old key of this setting
+     */
+    #migrateSettingStorage(key = PREFIX(this.settingKey)) {
+        const undefinedValue = crypto.randomUUID();
+        const oldValue = GM_getValue(key, undefinedValue);
+        if (oldValue !== undefinedValue) {
+            if (!GM_listValues().includes(this.settingKey)) {
+                GM_setValue(this.settingKey, oldValue);
+            }
+            GM_deleteValue(key);
+        } else if (!key.startsWith(__PREFIX__)) {
+            this.#migrateSettingStorage(PREFIX(key));
+        }
+    }
+
+    /**
+     * Sets an alias for this setting (e.g. if the key has been renamed) to allow migrating the storage
+     * @param key - the alias key of this setting
+     * @returns the setting itself
+     */
+    addAlias(key: string) {
+        this.#migrateSettingStorage(key);
+        return this;
     }
 
     /**
