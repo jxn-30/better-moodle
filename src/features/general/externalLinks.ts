@@ -6,7 +6,7 @@ const enabled = new BooleanSetting('enabled', true).onInput(() => {
     enabled.feature?.reload();
 });
 
-const modifiedTargets = new Map<HTMLAnchorElement, string>();
+const modifiedElements = new Map<HTMLAnchorElement, string>();
 
 /**
  * An event listener setting the target to '_blank' for clicked links of their targets origin does not match the current origin.
@@ -22,7 +22,7 @@ const openInNewTabListener = (event: MouseEvent) => {
         origin !== window.location.origin &&
         target.target !== '_blank'
     ) {
-        modifiedTargets.set(target, target.target);
+        modifiedElements.set(target, target.target);
         target.target = '_blank';
     }
 };
@@ -35,14 +35,14 @@ const onload = () => {
 };
 
 /**
- * Removes the event listener that handles mouse clicks
+ * Removes the event listener that handles mouse clicks and cleans up modifications
  */
 const onunload = () => {
     document.removeEventListener('click', openInNewTabListener);
-    modifiedTargets.forEach(
+    modifiedElements.forEach(
         (origTarget, anchor) => (anchor.target = origTarget)
     );
-    modifiedTargets.clear();
+    modifiedElements.clear();
 };
 
 export default Feature.register({
