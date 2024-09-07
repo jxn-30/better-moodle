@@ -49,14 +49,24 @@ export const GithubLink = ({
 );
 // endregion
 
-// region Switch
-interface SwitchProps extends Omit<Input, 'value'> {
-    value: boolean;
+// region Settings inputs
+interface GenericSettingProps<Type> extends Omit<Input, 'value'> {
+    value: Type;
+}
+type GenericSettingElement<Type, Base extends JSX.Element> = Base & {
+    value: Type;
+};
+export interface GenericSetting<Type, Base extends JSX.Element> {
+    create: (
+        props: GenericSettingProps<Type>
+    ) => GenericSettingElement<Type, Base>;
+    props: GenericSettingProps<Type>;
+    element: GenericSettingElement<Type, Base>;
 }
 
-interface Switch extends HTMLDivElement {
-    value: boolean;
-}
+// region Switch
+export type SwitchSetting = GenericSetting<boolean, HTMLDivElement>;
+type Switch = SwitchSetting['element'];
 
 /**
  * creates a Moodle switch
@@ -65,7 +75,7 @@ interface Switch extends HTMLDivElement {
  * @param attributes.value - the initial value of the input element
  * @returns the switch element
  */
-export const Switch = ({ id, value }: SwitchProps): Switch => {
+export const Switch = ({ id, value }: SwitchSetting['props']): Switch => {
     const Input = (
         <input
             className="custom-control-input"
@@ -103,6 +113,7 @@ export const Switch = ({ id, value }: SwitchProps): Switch => {
 
     return Switch;
 };
+// endregion
 // endregion
 
 // region FieldSet

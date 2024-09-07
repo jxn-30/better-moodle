@@ -1,4 +1,5 @@
 import CanBeReady from './CanBeReady';
+import { GenericSetting } from './Components';
 import { JSX } from 'jsx-dom';
 import { LocalizedString } from 'typesafe-i18n';
 import { domID, PREFIX } from './helpers';
@@ -12,19 +13,30 @@ export default abstract class Setting<
     Group extends FeatureGroupID = FeatureGroupID,
     Feat extends FeatureID<Group> = FeatureID<Group>,
     Type = unknown,
+    Component extends GenericSetting<Type, JSX.Element> = GenericSetting<
+        Type,
+        JSX.Element
+    >,
 > extends CanBeReady {
     readonly #id: string;
     readonly #default: Type;
     #feature: Feature<Group, Feat> | FeatureGroup<Group> | undefined;
 
-    protected unsafedValue: Type;
+    #formControl: Component['element'] | undefined;
+
+    protected unsavedValue: Type;
 
     /**
      * Constructor
      * @param id - the setting id
      * @param defaultValue - the default value of this setting
+     * @param createComponent - the function that creates the component
      */
-    protected constructor(id: string, defaultValue: Type) {
+    protected constructor(
+        id: string,
+        defaultValue: Type,
+        createComponent: Component['create']
+    ) {
         super();
 
         this.#id = id;
@@ -42,7 +54,19 @@ export default abstract class Setting<
             GM_deleteValue(prefixedKey);
         }
 
-        this.unsafedValue = this.savedValue;
+        this.unsavedValue = this.savedValue;
+
+        void this.callWhenReady(() => {
+            this.#formControl = createComponent({
+                id: this.inputID,
+                value: this.savedValue,
+            });
+
+            this.#formControl.addEventListener(
+                'change',
+                () => (this.unsavedValue = this.#formControl!.value)
+            );
+        });
     }
 
     /**
@@ -63,7 +87,14 @@ export default abstract class Setting<
         this.instanceReady();
     }
 
-    abstract get formControl(): JSX.Element;
+    /**
+     * The form control element used in the settings modal
+     * @returns the form control element
+     */
+    get formControl() {
+        if (!this.#formControl) throw new Error('Form control not ready');
+        return this.#formControl;
+    }
 
     /**
      * The ID of this setting
@@ -90,8 +121,11 @@ export default abstract class Setting<
 
     /**
      * The current (live) value of this setting
+     * @returns the current value of this setting
      */
-    abstract get value(): Type;
+    get value(): Type {
+        return this.#formControl!.value;
+    }
 
     /**
      * The ID of the input element
@@ -171,7 +205,7 @@ export default abstract class Setting<
      * Saves the current value of this setting
      */
     public save() {
-        this.savedValue = this.unsafedValue;
+        this.savedValue = this.unsavedValue;
     }
 
     /**
@@ -179,13 +213,21 @@ export default abstract class Setting<
      */
     reset() {
         this.savedValue = this.#default;
+        if (this.#formControl) {
+            this.#formControl.value = this.savedValue;
+            this.#formControl.dispatchEvent(new Event('input'));
+        }
     }
 
     /**
      * Undoes the last change to the setting
      */
     undo() {
-        this.unsafedValue = this.savedValue;
+        this.unsavedValue = this.savedValue;
+        if (this.#formControl) {
+            this.#formControl.value = this.savedValue;
+            this.#formControl.dispatchEvent(new Event('input'));
+        }
     }
 
     /**
