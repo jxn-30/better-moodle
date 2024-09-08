@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import globalStyle from '../style/global.module.scss';
 import type { JSX } from 'jsx-dom';
+import sliderStyle from '../style/settings/SliderSetting.module.scss';
 import { githubPath, htmlToElements, mdToHtml, PREFIX } from './helpers';
 
 type IntrinsicElements = JSX.IntrinsicElements;
@@ -50,18 +51,27 @@ export const GithubLink = ({
 // endregion
 
 // region Settings inputs
-interface GenericSettingProps<Type> extends Omit<Input, 'value'> {
-    value: Type;
-}
+type GenericSettingProps<Type, Props extends Record<string, unknown>> = Omit<
+    Input,
+    'value'
+> &
+    Props & {
+        value: Type;
+    };
 type GenericSettingElement<Type, Base extends JSX.Element> = Base & {
     value: Type;
 };
-export interface GenericSetting<Type, Base extends JSX.Element> {
+export interface GenericSetting<
+    Type,
+    Base extends JSX.Element,
+    Props extends Record<string, unknown> = Record<string, unknown>,
+> {
     create: (
-        props: GenericSettingProps<Type>
+        props: GenericSettingProps<Type, Props>
     ) => GenericSettingElement<Type, Base>;
-    props: GenericSettingProps<Type>;
+    props: GenericSettingProps<Type, Props>;
     element: GenericSettingElement<Type, Base>;
+    params: Props;
 }
 
 // region Switch
@@ -112,6 +122,153 @@ export const Switch = ({ id, value }: SwitchSetting['props']): Switch => {
     });
 
     return Switch;
+};
+// endregion
+
+// region Slider
+export type SliderSetting = GenericSetting<
+    number,
+    HTMLDivElement,
+    {
+        min: number;
+        max: number;
+        step: number;
+        labels: number | string[];
+    }
+>;
+type Slider = SliderSetting['element'];
+
+/**
+ * creates a Moodle switch
+ * @param attributes - the input element attributes
+ * @param attributes.id - the id of the input element
+ * @param attributes.value - the initial value of the input element
+ * @param attributes.min - the minimum value of the slider
+ * @param attributes.max - the maximum value of the slider
+ * @param attributes.step - the step size of the slider
+ * @param attributes.labels - the amount of labels to show below the slider or an array of label keys
+ * @returns the switch element
+ */
+export const Slider = ({
+    id,
+    value,
+    min,
+    max,
+    step = 1,
+    labels = (max - min + 1) / step,
+}: SliderSetting['props']): Slider => {
+    const datalistId = `${id}-datalist`;
+
+    const Input = (
+        <input
+            className="form-control-range custom-range"
+            id={id}
+            type="range"
+            min={min}
+            max={max}
+            step={step}
+            list={datalistId}
+            value={value}
+        />
+    ) as HTMLInputElement;
+
+    // create the output element and a function that updates it.
+    const Output = (<output htmlFor={id}>{value}</output>) as HTMLOutputElement;
+    /**
+     * Updates the output element with the current value of the slider.
+     * Set's both the text content and the position of the output element.
+     */
+    const setOutput = () => {
+        const value = Number(Input.value);
+        const percentageValue = ((value - min) / (max - min)) * 100;
+        // TODO: toLocaleString => use a helper and/or lang
+        Output.textContent = valueToLabel.get(value) ?? value.toLocaleString();
+        Output.style.setProperty('--percentage', percentageValue.toString());
+    };
+
+    // create and fill the datalist specifying the possible values
+    const datalist = <datalist id={datalistId}></datalist>;
+    const steps = (max - min + 1) / step;
+    for (
+        let currentStep = min;
+        currentStep <= max;
+        currentStep += (max - min + 1) / steps
+    ) {
+        datalist.append(<option value={currentStep}>{currentStep}</option>);
+    }
+
+    // create and fill the datalist specifying the labels shown below the data list
+    const fixLabels = Array.isArray(labels);
+    const labelCount =
+        fixLabels ? labels.length : Math.max(2, Math.min(10, labels)); // minimum 2, maximum 10 labels
+    const valueToLabel = new Map<number, string>();
+    const labelDatalist = (
+        // @ts-expect-error as the types do not allow css variables / custom properties yet.
+        <datalist style={{ '--label-count': labelCount }}></datalist>
+    );
+
+    for (
+        let currentStep = min;
+        currentStep <= max;
+        currentStep += (max - min) / (labelCount - 1)
+    ) {
+        if (fixLabels) {
+            valueToLabel.set(
+                currentStep,
+                // TODO: Translations
+                `settings.${id}.labels.${labels.shift()}`
+            );
+        }
+
+        const title =
+            valueToLabel.get(currentStep) ??
+            // TODO: toLocaleString => use a helper and/or lang
+            currentStep.toLocaleString();
+
+        labelDatalist.append(
+            <option value={currentStep} title={title} label={title}></option>
+        );
+    }
+
+    const Slider = (
+        <div
+            className={classNames(
+                'w-100 position-relative',
+                sliderStyle.sliderSetting
+            )}
+        >
+            {Input}
+            {Output}
+            {datalist}
+            {labelDatalist}
+        </div>
+    ) as Slider;
+
+    Object.defineProperty(Slider, 'value', {
+        /**
+         * getter for the current value of the slider
+         * @returns the current value of the slider
+         */
+        get(): number {
+            return Number(Input.value);
+        },
+        /**
+         * setter for the current value of the slider
+         * @param newVal - the new value of the slider
+         */
+        set(newVal: number) {
+            Input.value = newVal.toString();
+            setOutput();
+        },
+    });
+
+    // we want to update the output element whenever the slider is moved
+    Input.addEventListener('input', setOutput);
+
+    // initially set the value
+    Slider.value = value;
+
+    return Slider;
 };
 // endregion
 // endregion

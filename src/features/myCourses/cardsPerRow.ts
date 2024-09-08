@@ -1,16 +1,30 @@
-import { BooleanSetting } from '../../_lib/Settings/BooleanSetting';
+import './cardsPerRow.scss';
 import Feature from '../../_lib/Feature';
-import Setting from '../../_lib/Setting';
+import { SliderSetting } from '../../_lib/Settings/SliderSetting';
 
-const settings = new Set<Setting>();
-settings.add(new BooleanSetting('amount', true));
+/**
+ *
+ */
+const setAmount = () =>
+    document
+        .querySelector<HTMLDivElement>('.dashboard-card-deck')
+        ?.style.setProperty('--boxes-per-row', amount.value.toString());
+
+const amount = new SliderSetting('amount', 4, {
+    min: 1,
+    max: 10,
+    step: 1,
+    labels: 10,
+})
+    .addAlias('settings.myCourses.boxesPerRow')
+    .onInput(setAmount);
+
+/**
+ *
+ */
+const onload = () => setAmount();
 
 export default Feature.register({
-    settings,
-    /**
-     * TODO
-     */
-    init(this) {
-        console.log('init', this.id);
-    },
+    settings: new Set([amount]),
+    onload,
 });

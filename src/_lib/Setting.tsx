@@ -2,6 +2,7 @@ import CanBeReady from './CanBeReady';
 import { GenericSetting } from './Components';
 import { JSX } from 'jsx-dom';
 import { LocalizedString } from 'typesafe-i18n';
+import { UUID } from 'node:crypto';
 import { domID, PREFIX } from './helpers';
 import Feature, { FeatureID } from './Feature';
 import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
@@ -13,10 +14,12 @@ export default abstract class Setting<
     Group extends FeatureGroupID = FeatureGroupID,
     Feat extends FeatureID<Group> = FeatureID<Group>,
     Type = unknown,
-    Component extends GenericSetting<Type, JSX.Element> = GenericSetting<
+    Params extends Record<string, unknown> = Record<string, unknown>,
+    Component extends GenericSetting<
         Type,
-        JSX.Element
-    >,
+        JSX.Element,
+        Params
+    > = GenericSetting<Type, JSX.Element, Params>,
 > extends CanBeReady {
     readonly #id: string;
     readonly #default: Type;
@@ -31,11 +34,13 @@ export default abstract class Setting<
      * @param id - the setting id
      * @param defaultValue - the default value of this setting
      * @param createComponent - the function that creates the component
+     * @param params - further parameters for this setting
      */
     protected constructor(
         id: string,
         defaultValue: Type,
-        createComponent: Component['create']
+        createComponent: Component['create'],
+        params: Component['params']
     ) {
         super();
 
@@ -52,6 +57,7 @@ export default abstract class Setting<
             this.#formControl = createComponent({
                 id: this.inputID,
                 value: this.savedValue,
+                ...params,
             });
 
             this.#formControl.addEventListener(
@@ -68,11 +74,16 @@ export default abstract class Setting<
      */
     #migrateSettingStorage(key = PREFIX(this.settingKey)) {
         const undefinedValue = crypto.randomUUID();
-        const oldValue = GM_getValue(key, undefinedValue);
+        const oldValue: UUID | Type = GM_getValue(key, undefinedValue);
         if (oldValue !== undefinedValue) {
-            if (!GM_listValues().includes(this.settingKey)) {
-                GM_setValue(this.settingKey, oldValue);
-            }
+            void this.callWhenReady(() => {
+                if (!GM_listValues().includes(this.settingKey)) {
+                    GM_setValue(this.settingKey, oldValue);
+                    this.#formControl!.value = this.unsavedValue =
+                        oldValue as Type;
+                    this.save();
+                }
+            });
             GM_deleteValue(key);
         } else if (!key.startsWith(__PREFIX__)) {
             this.#migrateSettingStorage(PREFIX(key));
@@ -85,7 +96,7 @@ export default abstract class Setting<
      * @returns the setting itself
      */
     addAlias(key: string) {
-        this.#migrateSettingStorage(key);
+        void this.callWhenReady(() => this.#migrateSettingStorage(key));
         return this;
     }
 
