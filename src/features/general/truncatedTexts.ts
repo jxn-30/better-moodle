@@ -1,10 +1,9 @@
 import { BooleanSetting } from '../../_lib/Settings/BooleanSetting';
 import Feature from '../../_lib/Feature';
 
-const enabled = new BooleanSetting('enabled', true).onInput(() => {
-    // TODO: this.feature.reload() once `this` set
-    enabled.feature?.reload();
-});
+const enabled = new BooleanSetting('enabled', true).onInput(() =>
+    enabled.feature?.reload()
+);
 
 const modifiedElements = new Set<HTMLElement>();
 

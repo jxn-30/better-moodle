@@ -208,7 +208,6 @@ export default abstract class Setting<
 
         descriptionBtn.addEventListener('click', e => e.preventDefault());
 
-        // TODO: use Moodle mustache templates instead?
         return (
             <div className="form-group row fitem">
                 <div className="col-md-5 col-form-label d-flex pb-0 pt-0">
@@ -267,10 +266,9 @@ export default abstract class Setting<
      * @returns the setting itself
      */
     onInput(listener: EventListener) {
-        void this.callWhenReady(() => {
-            // TODO: bind this to the listener
-            this.formControl.addEventListener('input', listener);
-        });
+        void this.callWhenReady(() =>
+            this.formControl.addEventListener('input', listener)
+        );
         return this;
     }
 }

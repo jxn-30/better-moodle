@@ -2,10 +2,9 @@ import { BooleanSetting } from '../../_lib/Settings/BooleanSetting';
 import Feature from '../../_lib/Feature';
 import fullWidthStyle from './fullWidth.module.scss';
 
-const enabled = new BooleanSetting('enabled', true).onInput(() => {
-    // TODO: this.feature.reload() once `this` set
-    enabled.feature?.reload();
-});
+const enabled = new BooleanSetting('enabled', true).onInput(() =>
+    enabled.feature?.reload()
+);
 
 /**
  * Adds a class to the body that enables full-width mode.

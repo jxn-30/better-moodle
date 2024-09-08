@@ -2,8 +2,6 @@ import { BooleanSetting } from '../../_lib/Settings/BooleanSetting';
 import FeatureGroup from '../../_lib/FeatureGroup';
 import Setting from '../../_lib/Setting';
 
-console.log("we're loading the general feature group");
-
 const settings = new Set<Setting>();
 settings.add(new BooleanSetting('updateNotification', true));
 
