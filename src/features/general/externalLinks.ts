@@ -16,7 +16,7 @@ const openInNewTabListener = (event: MouseEvent) => {
     const target = event.target;
     if (!(target instanceof HTMLAnchorElement) || target.target) return;
     const { origin, protocol } = new URL(target.href, window.location.origin);
-    if (protocol === 'javascript:') return;
+    if (['javascript:', 'vbscript:'].includes(protocol)) return;
     if (
         origin &&
         origin !== window.location.origin &&
