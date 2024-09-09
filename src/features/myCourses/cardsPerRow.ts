@@ -3,7 +3,8 @@ import Feature from '../../_lib/Feature';
 import { SliderSetting } from '../../_lib/Settings/SliderSetting';
 
 /**
- *
+ * This function updates the style based on the current input value
+ * @returns nothing relevant
  */
 const setAmount = () =>
     document
@@ -20,7 +21,8 @@ const amount = new SliderSetting('amount', 4, {
     .onInput(setAmount);
 
 /**
- *
+ * when loading the feature, style should be updated once
+ * @returns nothing relevant
  */
 const onload = () => setAmount();
 

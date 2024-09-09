@@ -1,7 +1,7 @@
 import { FeatureGroupID } from '../FeatureGroup';
 import { FeatureID } from '../Feature';
 import Setting from '../Setting';
-import { Slider, SliderSetting as SliderSettingType } from '../Components';
+import { Slider, SliderComponent } from '../Components';
 
 /**
  * A setting that can be either true or false
@@ -14,8 +14,8 @@ export class SliderSetting<
     Group,
     Feat,
     number,
-    SliderSettingType['params'],
-    SliderSettingType
+    SliderComponent['params'],
+    SliderComponent
 > {
     /**
      * Constructor
@@ -26,7 +26,7 @@ export class SliderSetting<
     constructor(
         id: string,
         defaultValue: number,
-        params: SliderSettingType['params']
+        params: SliderComponent['params']
     ) {
         super(id, defaultValue, Slider, params);
     }

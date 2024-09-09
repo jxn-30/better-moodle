@@ -154,6 +154,22 @@ type RootTranslation = {
                      */
                     description: string;
                 };
+                language: {
+                    /**
+                     * B​e​t​t​e​r​-​M​o​o​d​l​e​ ​S​p​r​a​c​h​e
+                     */
+                    name: string;
+                    /**
+                     * W​ä​h​l​e​ ​d​i​e​ ​S​p​r​a​c​h​e​ ​v​o​n​ ​B​e​t​t​e​r​-​M​o​o​d​l​e​ ​a​u​s​.
+                     */
+                    description: string;
+                    options: {
+                        /**
+                         * �​�​ ​A​u​t​o​ ​(​M​o​o​d​l​e​ ​S​p​r​a​c​h​e​)
+                         */
+                        auto: string;
+                    };
+                };
             };
             features: {
                 fullWidth: {
@@ -378,6 +394,22 @@ export type TranslationFunctions = {
                      * Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für Better-Moodle gibt.
                      */
                     description: () => LocalizedString;
+                };
+                language: {
+                    /**
+                     * Better-Moodle Sprache
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Wähle die Sprache von Better-Moodle aus.
+                     */
+                    description: () => LocalizedString;
+                    options: {
+                        /**
+                         * 🌐 Auto (Moodle Sprache)
+                         */
+                        auto: () => LocalizedString;
+                    };
                 };
             };
             features: {

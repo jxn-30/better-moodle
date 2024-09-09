@@ -11,6 +11,13 @@ export const de = {
             description:
                 'Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für Better-Moodle gibt.',
         },
+        language: {
+            name: 'Better-Moodle Sprache',
+            description: 'Wähle die Sprache von Better-Moodle aus.',
+            options: {
+                auto: '🌐 Auto (Moodle Sprache)',
+            },
+        },
     },
     features: {
         fullWidth: fullWidth.de,
@@ -26,6 +33,13 @@ export const en = {
             name: 'Notification for Better-Moodle updates',
             description:
                 'Displays a small red dot by the cogs in the navigation bar when there is an update for Better-Moodle.',
+        },
+        language: {
+            name: 'Better-Moodle Language',
+            description: 'Choose the language of Better-Moodle.',
+            options: {
+                auto: '🌐 Auto (Moodle language)',
+            },
         },
     },
     features: {

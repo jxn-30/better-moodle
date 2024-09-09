@@ -14,4 +14,5 @@ export interface FeatureTranslation extends BaseTranslation {
 export interface SettingTranslation extends BaseTranslation {
     name: string;
     description: string;
+    options?: Record<string, string>;
 }

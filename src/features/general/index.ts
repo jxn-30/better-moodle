@@ -1,9 +1,16 @@
 import { BooleanSetting } from '../../_lib/Settings/BooleanSetting';
 import FeatureGroup from '../../_lib/FeatureGroup';
-import Setting from '../../_lib/Setting';
+import { languages } from '../../i18n/i18n';
+import { SelectSetting } from '../../_lib/Settings/SelectSetting';
 
-const settings = new Set<Setting>();
-settings.add(new BooleanSetting('updateNotification', true));
+const updateNotification = new BooleanSetting('updateNotification', true);
+const languageSetting = new SelectSetting('language', 'auto', [
+    'auto',
+    ...Array.from(languages.entries()).map(([locale, { name, flag }]) => ({
+        key: locale,
+        title: `${flag} ${name}`,
+    })),
+]);
 
 const features = new Set<string>([
     'fullWidth',
@@ -12,6 +19,6 @@ const features = new Set<string>([
 ]);
 
 export default FeatureGroup.register({
-    settings,
+    settings: new Set([updateNotification, languageSetting]),
     features,
 });

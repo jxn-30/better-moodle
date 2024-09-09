@@ -1,9 +1,9 @@
 import featureGroups from './_lib/imports';
 import { GithubLink } from './_lib/Components';
+import { LL } from './i18n/i18n';
 import { Modal } from './_lib/Modal';
 import { readyCallback } from './_lib/DOM';
 import settingsStyle from './style/settings.module.scss';
-import { languages, LL } from './i18n/i18n';
 import { mdToHtml, rawGithubPath } from './_lib/helpers';
 
 // we need this to have some kind of sorting in settings
@@ -176,14 +176,6 @@ const settingsModal = new Modal({
             {groups
                 .map(group => featureGroups.get(group)?.FieldSet)
                 .filter(fieldset => fieldset !== undefined)}
-            <pre>
-                {Array.from(languages.entries())
-                    .map(
-                        ([locale, { name, flag }]) =>
-                            `${locale}: ${flag} ${name}`
-                    )
-                    .join('\n')}
-            </pre>
         </form>
     ),
     footer: (

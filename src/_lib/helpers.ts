@@ -9,7 +9,7 @@ export const PREFIX = (str: string) => `${__PREFIX__}-${str}`;
  * @param id - the id of the setting
  * @returns the fully qualified setting key
  */
-export const getSettingKey = (id: string) => PREFIX(`settings.${id}`);
+export const getSettingKey = (id: string) => `settings.${id}`;
 
 /**
  * Prefixes a given string and replaces invalid characters to be used as a DOM ID.

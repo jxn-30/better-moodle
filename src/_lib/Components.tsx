@@ -75,8 +75,8 @@ export interface GenericSetting<
 }
 
 // region Switch
-export type SwitchSetting = GenericSetting<boolean, HTMLDivElement>;
-type Switch = SwitchSetting['element'];
+export type SwitchComponent = GenericSetting<boolean, HTMLDivElement>;
+type Switch = SwitchComponent['element'];
 
 /**
  * creates a Moodle switch
@@ -85,11 +85,11 @@ type Switch = SwitchSetting['element'];
  * @param attributes.value - the initial value of the input element
  * @returns the switch element
  */
-export const Switch = ({ id, value }: SwitchSetting['props']): Switch => {
+export const Switch = ({ id, value }: SwitchComponent['props']): Switch => {
     const Input = (
         <input
-            className="custom-control-input"
             id={id}
+            className="custom-control-input"
             type="checkbox"
             checked={value}
         />
@@ -125,8 +125,66 @@ export const Switch = ({ id, value }: SwitchSetting['props']): Switch => {
 };
 // endregion
 
+// region Select
+type SelectOption = string | { key: string; title: string };
+export type SelectComponent = GenericSetting<
+    string,
+    HTMLSelectElement,
+    {
+        options: SelectOption[] | Promise<SelectOption[]>;
+    }
+>;
+type Select = SelectComponent['element'];
+
+/**
+ * creates a Select input
+ * @param attributes - the input element attributes
+ * @param attributes.id - the id of the input element
+ * @param attributes.value - the initial value of the input element
+ * @param attributes.options - the options of this select
+ * @returns the switch element
+ */
+export const Select = ({
+    id,
+    value,
+    options,
+}: SelectComponent['props']): Select => {
+    const Select = (
+        <select id={id} className="custom-select col-12 col-md-auto"></select>
+    ) as HTMLSelectElement;
+
+    const optionsPromise =
+        options instanceof Promise ? options : Promise.resolve(options);
+
+    void optionsPromise.then(options =>
+        options.forEach(option => {
+            let optionValue: string;
+            let title: string;
+            if (typeof option === 'string') {
+                optionValue = option;
+                // TODO: Translation
+                title = `settings.${id}.options.${option}`;
+            } else {
+                optionValue = option.key;
+                title = option.title;
+            }
+            const selected = optionValue === value;
+            Select.append(
+                (
+                    <option value={optionValue} selected={selected}>
+                        {title}
+                    </option>
+                ) as HTMLOptionElement
+            );
+        })
+    );
+
+    return Select;
+};
+// endregion
+
 // region Slider
-export type SliderSetting = GenericSetting<
+export type SliderComponent = GenericSetting<
     number,
     HTMLDivElement,
     {
@@ -136,10 +194,10 @@ export type SliderSetting = GenericSetting<
         labels: number | string[];
     }
 >;
-type Slider = SliderSetting['element'];
+type Slider = SliderComponent['element'];
 
 /**
- * creates a Moodle switch
+ * creates a Slider component
  * @param attributes - the input element attributes
  * @param attributes.id - the id of the input element
  * @param attributes.value - the initial value of the input element
@@ -156,13 +214,13 @@ export const Slider = ({
     max,
     step = 1,
     labels = (max - min + 1) / step,
-}: SliderSetting['props']): Slider => {
+}: SliderComponent['props']): Slider => {
     const datalistId = `${id}-datalist`;
 
     const Input = (
         <input
-            className="form-control-range custom-range"
             id={id}
+            className="form-control-range custom-range"
             type="range"
             min={min}
             max={max}
