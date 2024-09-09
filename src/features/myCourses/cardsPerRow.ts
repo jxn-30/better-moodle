@@ -8,7 +8,7 @@ import { SliderSetting } from '../../_lib/Settings/SliderSetting';
  */
 const setAmount = () =>
     document
-        .querySelector<HTMLDivElement>('.dashboard-card-deck')
+        .querySelector<HTMLDivElement>('[data-region="courses-view"]')
         ?.style.setProperty('--boxes-per-row', amount.value.toString());
 
 const amount = new SliderSetting('amount', 4, {
