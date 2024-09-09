@@ -12,4 +12,6 @@ export default {
         export: 'export preferences',
     },
     changelog: 'Changelog',
+    requireReload:
+        'The changes of this setting will only take effect after reloading the page.<br/>Saving the settings will therefore automatically reload the page.',
 } satisfies Translation['settings'];

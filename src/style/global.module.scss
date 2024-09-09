@@ -30,6 +30,11 @@
     }
 }
 
+/* Toasts do have a z-index of 1051 while modals z-index is 1052, although moodle states in their code that 1051 is because of modals: https://github.com/moodle/moodle/blob/1938c438ea1385eb2f62be4df5581e3458588e66/theme/boost/scss/moodle/core.scss#L2615 This snippet fixes this. */
+.toast-wrapper {
+    z-index: 1053;
+}
+
 /* navbar-height is a property set by Moodle */
 @property --navbar-height {
     syntax: '<length>';

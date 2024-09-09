@@ -54,6 +54,10 @@ type RootTranslation = {
          * C​h​a​n​g​e​l​o​g
          */
         changelog: string;
+        /**
+         * D​i​e​ ​Ä​n​d​e​r​u​n​g​e​n​ ​d​i​e​s​e​r​ ​E​i​n​s​t​e​l​l​u​n​g​ ​w​e​r​d​e​n​ ​e​r​s​t​ ​n​a​c​h​ ​e​i​n​e​m​ ​N​e​u​l​a​d​e​n​ ​d​e​r​ ​S​e​i​t​e​ ​ü​b​e​r​n​o​m​m​e​n​.​<​b​r​/​>​D​a​s​ ​S​p​e​i​c​h​e​r​n​ ​d​e​r​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​f​ü​h​r​t​ ​d​a​h​e​r​ ​a​u​t​o​m​a​t​i​s​c​h​ ​z​u​ ​e​i​n​e​m​ ​N​e​u​l​a​d​e​n​ ​d​e​r​ ​S​e​i​t​e​.
+         */
+        requireReload: string;
     };
     language: {
         /**
@@ -295,6 +299,10 @@ export type TranslationFunctions = {
          * Changelog
          */
         changelog: () => LocalizedString;
+        /**
+         * Die Änderungen dieser Einstellung werden erst nach einem Neuladen der Seite übernommen.<br/>Das Speichern der Einstellungen führt daher automatisch zu einem Neuladen der Seite.
+         */
+        requireReload: () => LocalizedString;
     };
     language: {
         /**

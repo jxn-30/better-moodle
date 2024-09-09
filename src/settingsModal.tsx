@@ -4,6 +4,7 @@ import { LL } from './i18n/i18n';
 import { Modal } from './_lib/Modal';
 import { readyCallback } from './_lib/DOM';
 import settingsStyle from './style/settings.module.scss';
+import TempStorage from './_lib/TempStorage';
 import { mdToHtml, rawGithubPath } from './_lib/helpers';
 
 // we need this to have some kind of sorting in settings
@@ -192,7 +193,15 @@ const settingsModal = new Modal({
     ),
 })
     .onCancel(() => featureGroups.forEach(group => group.undoSettings()))
-    .onSave(() => featureGroups.forEach(group => group.saveSettings()))
+    .onSave(event => {
+        featureGroups.forEach(group => group.saveSettings());
+        // reload the page if required
+        if (TempStorage.settingsRequireReload) {
+            // do not close the modal
+            event.preventDefault();
+            window.location.reload();
+        }
+    })
     .setTrigger(SettingsBtn);
 
 // append the link to moodle settings to the modal header

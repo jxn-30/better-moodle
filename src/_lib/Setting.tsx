@@ -1,7 +1,10 @@
 import CanBeReady from './CanBeReady';
 import { GenericSetting } from './Components';
 import { JSX } from 'jsx-dom';
+import { LL } from '../i18n/i18n';
 import { LocalizedString } from 'typesafe-i18n';
+import { require } from './require.js';
+import TempStorage from './TempStorage';
 import { UUID } from 'node:crypto';
 import { domID, PREFIX } from './helpers';
 import Feature, { FeatureID } from './Feature';
@@ -27,7 +30,7 @@ export default abstract class Setting<
 
     #formControl: Component['element'] | undefined;
 
-    protected unsavedValue: Type;
+    #unsavedValue: Type;
 
     /**
      * Constructor
@@ -51,7 +54,7 @@ export default abstract class Setting<
         // this migrates the old storage key for this setting
         this.#migrateSettingStorage();
 
-        this.unsavedValue = this.savedValue;
+        this.#unsavedValue = this.savedValue;
 
         void this.callWhenReady(() => {
             this.#formControl = createComponent({
@@ -62,7 +65,7 @@ export default abstract class Setting<
 
             this.#formControl.addEventListener(
                 'change',
-                () => (this.unsavedValue = this.#formControl!.value)
+                () => (this.#unsavedValue = this.#formControl!.value)
             );
         });
     }
@@ -79,7 +82,7 @@ export default abstract class Setting<
             void this.callWhenReady(() => {
                 if (!GM_listValues().includes(this.settingKey)) {
                     GM_setValue(this.settingKey, oldValue);
-                    this.#formControl!.value = this.unsavedValue =
+                    this.#formControl!.value = this.#unsavedValue =
                         oldValue as Type;
                     this.save();
                 }
@@ -235,7 +238,7 @@ export default abstract class Setting<
      * Saves the current value of this setting
      */
     public save() {
-        this.savedValue = this.unsavedValue;
+        this.savedValue = this.#unsavedValue;
     }
 
     /**
@@ -253,11 +256,46 @@ export default abstract class Setting<
      * Undoes the last change to the setting
      */
     undo() {
-        this.unsavedValue = this.savedValue;
+        this.#unsavedValue = this.savedValue;
         if (this.#formControl) {
             this.#formControl.value = this.savedValue;
             this.#formControl.dispatchEvent(new Event('input'));
         }
+    }
+
+    /**
+     * Tell the user that a reload is required to apply the changes of this setting.
+     * This is used for settings that require a reload to apply the changes because live changes would be to complex to implement.
+     * @returns the setting itself
+     */
+    requireReload() {
+        this.onChange(() => {
+            // we don't want to show or set if the value stays the same (e.g. after an undo operation)
+            if (this.#unsavedValue === this.savedValue) return;
+            // show a toast notification
+            require(['core/toast'] as const, ({ add }) => {
+                void add(LL.settings.requireReload(), {
+                    type: 'info',
+                    autohide: false,
+                    closeButton: true,
+                });
+            });
+            // remember that a reload is required
+            TempStorage.settingsRequireReload = true;
+        });
+        return this;
+    }
+
+    /**
+     * Adds a change event listener. Do NOT update the setting value in the listener, otherwise this may result in infinite loops!
+     * @param listener - the event listener
+     * @returns the setting itself
+     */
+    onChange(listener: EventListener) {
+        void this.callWhenReady(() =>
+            this.formControl.addEventListener('change', listener)
+        );
+        return this;
     }
 
     /**

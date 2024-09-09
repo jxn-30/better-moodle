@@ -10,7 +10,7 @@ const languageSetting = new SelectSetting('language', 'auto', [
         key: locale,
         title: `${flag} ${name}`,
     })),
-]);
+]).requireReload();
 
 const features = new Set<string>([
     'fullWidth',

@@ -3,10 +3,12 @@
 
 import CoreModalEvents from './require.js/core/modal_events';
 import CoreModalFactory from './require.js/core/modal_factory';
+import CoreToast from './require.js/core/toast';
 
 interface ModuleMap {
     'core/modal_factory': CoreModalFactory;
     'core/modal_events': CoreModalEvents;
+    'core/toast': CoreToast;
 }
 
 type Module = keyof ModuleMap;

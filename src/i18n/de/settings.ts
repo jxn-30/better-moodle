@@ -12,4 +12,6 @@ export default {
         export: 'Einstellungen exportieren',
     },
     changelog: 'Changelog',
+    requireReload:
+        'Die Änderungen dieser Einstellung werden erst nach einem Neuladen der Seite übernommen.<br/>Das Speichern der Einstellungen führt daher automatisch zu einem Neuladen der Seite.',
 } satisfies BaseTranslation;
