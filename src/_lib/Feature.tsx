@@ -110,11 +110,11 @@ export default abstract class Feature<
      * Get the translations for exactly this feature
      * @returns the translations for this feature
      */
-    get Translation() {
-        // TODO!
+    get Translation(): FeatureTranslations<Group>[ID] {
+        // TODO: See if we can find a way to type this correctly
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return 'features' in this.#group.Translation ?
-                // @ts-expect-error TODO: is there a way to make this work without ts-expect-error?
+                // @ts-expect-error as we probably need the `extends oneof` operator?
                 this.#group.Translation.features[this.#id]
             :   undefined;
     }
