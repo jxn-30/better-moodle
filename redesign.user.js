@@ -20,7 +20,9 @@
 // @grant           GM_listValues
 // @grant           GM_addValueChangeListener
 // @grant           GM_info
+// @grant           GM_notification
 // @grant           GM_xmlhttpRequest
+// @connect         nina.api.proxy.bund.dev
 // @connect         studentenwerk.sh
 // @connect         api.open-meteo.com
 // @connect         api.openweathermap.org
@@ -66,6 +68,73 @@ const TRANSLATIONS = {
                 empty: 'Keine Kurse im aktuellen Filter vorhanden.',
                 myCoursesLink: 'Meine Kurse',
             },
+        },
+        nina: {
+            activeWarnings: 'Aktuelle Warnmeldungen',
+            bbkLink: 'Meldung auf der Seite des BBK',
+            categories: 'Kategorien',
+            category: {
+                geo: 'Geophysikalisch (einschl. Erdrutsch)',
+                met: 'Meteorologisch (einschl. Hochwasser)',
+                safety: 'Allgemeine Notfälle und öffentliche Sicherheit',
+                security:
+                    'Strafverfolgung, Militär, Heimatschutz und lokale/private Sicherheit',
+                rescue: 'Rettung und Bergung',
+                fire: 'Brandbekämpfung und Rettung',
+                health: 'Medizinische und öffentliche Gesundheit',
+                env: 'Verschmutzung und andere Umweltprobleme',
+                transport: 'Öffentlicher und privater Transport',
+                infra: 'Versorgungs-, Telekommunikations- und andere Nicht-Verkehrsinfrastruktur',
+                cbrne: 'Chemisch, biologisch, radiologisch, nuklear und explosiv',
+                other: 'Andere Ereignisse',
+            },
+            close: 'Schließen',
+            description: 'Beschreibung',
+            instruction: 'Handlungsempfehlung',
+            notFound: {
+                title: 'MELDUNG NICHT MEHR VORHANDEN',
+                description:
+                    'Die von Ihnen abgerufene Warnmeldung ist nicht mehr vorhanden. Es liegt ggf. eine Entwarnung für diese Meldung vor.',
+            },
+            panic: 'PANIK!!!!',
+            providedBy: 'Herausgegeben von',
+            severity: {
+                name: 'Warnstufe',
+                3: 'Extreme Gefahr',
+                2: 'Gefahr',
+                1: 'Gefahreninformation',
+                0: 'Keine Gefahr',
+                [-1]: 'Unbekannt',
+            },
+            severityWeather: {
+                name: 'Warnstufe',
+                3: 'Amtliche Warnung vor extremem Unwetter',
+                2: 'Amtliche Unwetterwarnung',
+                1: 'Amtliche Warnung vor markantem Wetter',
+                0: 'Keine Gefahr',
+                [-1]: 'Unbekannt',
+            },
+            showMore: 'Mehr anzeigen',
+            status: {
+                name: 'Status',
+                actual: 'Echte Warnung',
+                exercise: 'Übung',
+                system: 'System',
+                test: 'Testwarnung',
+                draft: 'Entwurf',
+            },
+            testWarning: {
+                title: 'WARNUNG: Süßes Mammut gesichtet!',
+                description:
+                    'Ein süßes Mammut wurde in der Nähe der Uni gesichtet. Seien Sie wachsam!',
+                instruction:
+                    'Wenn du das Mammut siehst, streichle es bitte und gib ihm einen Keks.',
+                event: 'Süßes Mammut gesichtet',
+                web: 'https://moothel.pet/',
+                provider: 'Better-Moodle',
+                senderName: 'Moothel',
+            },
+            via: 'via',
         },
         speiseplan: {
             title: 'Speiseplan der Mensa',
@@ -612,6 +681,59 @@ Viele Grüße
                     },
                 },
             },
+            nina: {
+                _title: 'NINA Warnungen',
+                _description: '',
+                enabled: {
+                    name: 'NINA Warnungen aktivieren',
+                    description:
+                        '⚠️ Zeigt Warnungen der NINA-App in der Navigationsleiste an.',
+                },
+                notification: {
+                    name: 'Push Benachrichtigungen für NINA Warnungen',
+                    description:
+                        'Zeigt Push Benachrichtigungen für NINA Warnungen an.',
+                },
+
+                civilProtectionWarnings: {
+                    name: 'Benachrichtigungen für Bevölerungsschutz-Warnungen',
+                    description:
+                        'Hier kann eingestellt werden, ab welcher Warnstufe eine Benachrichtigung angezeigt werden soll.',
+                    labels: {
+                        off: 'Nie',
+                        extreme: 'Extreme Gefahr',
+                        severe: 'Gefahr',
+                        moderate: 'Gefahreninformation',
+                    },
+                },
+                weatherWarnings: {
+                    name: 'Benachrichtigungen für Wetterwarnungen',
+                    description:
+                        'Hier kann eingestellt werden, ab welcher Warnstufe des Deutschen Wetterdienstes eine Benachrichtigung angezeigt werden soll.',
+                    labels: {
+                        off: 'Nie',
+                        extreme: 'Extremes Unwetter',
+                        severe: 'Unwetter',
+                        moderate: 'Markantes Wetter',
+                    },
+                },
+                floodWarnings: {
+                    name: 'Hochwasserwarnungen',
+                    description:
+                        'Benachrichtigungen zu Hochwasserereignissen an Binnengewässern (Flüsse, Kanöle, Binnenseen).',
+                },
+                megaAlarm: {
+                    name: 'Erlaube den Mega-Alarm Modus',
+                    description:
+                        '🚨🚨🚨 DU WIRST WICHTIGE WARNUNGEN NIE WIEDER ÜBERSEHEN!!! 🚨🚨🚨',
+                },
+                test: {
+                    name: 'Teste die NINA Warnungen',
+                    description:
+                        'Sende eine Test-Warnung, um zu sehen, wie die Benachrichtigungen aussehen.',
+                    btn: 'Test Warnung senden',
+                },
+            },
             weatherDisplay: {
                 _title: 'Wetter-Moodle',
                 _description: `Um gute Wetterdaten zu erhalten, benötigst du bei einigen Anbietern einen API-Key. 
@@ -700,6 +822,74 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
                 empty: 'No courses with currently selected filter available.',
                 myCoursesLink: 'My courses',
             },
+        },
+        nina: {
+            activeWarnings: 'Current warnings',
+            bbkLink:
+                'More information on the website of the Federal Office for Civil Protection and Disaster Assistance',
+            categories: 'Categories',
+            category: {
+                geo: 'Geophysical (inc. landslide)',
+                met: 'Meteorological (inc. flood)',
+                safety: 'General emergency and public safety',
+                security:
+                    'Law enforcement, military, homeland and local/private security',
+                rescue: 'Rescue and recovery',
+                fire: 'Fire suppression and rescue',
+                health: 'Medical and public health',
+                env: 'Pollution and other environmental threats',
+                transport: 'Public and private transportation',
+                infra: 'Utility, telecommunication, other non-transport infrastructure',
+                cbrne: 'Chemical, Biological, Radiological, Nuclear or High-Yield Explosive threat or attack',
+                other: 'Other events',
+            },
+            close: 'Close',
+            description: 'Description',
+            instruction: 'Instruction',
+            notFound: {
+                title: 'MESSAGE NO LONGER AVAILABLE',
+                description:
+                    'The warning message you have called up no longer exists. There may be an all-clear for this message.',
+            },
+            panic: 'PANIC!!!!',
+            providedBy: 'Provided by',
+            severity: {
+                name: 'Severity',
+                3: 'Extreme',
+                2: 'Severe',
+                1: 'Moderate',
+                0: 'Minor',
+                [-1]: 'Unknown',
+            },
+            severityWeather: {
+                name: 'Severity',
+                3: 'Extreme storm',
+                2: 'Storm',
+                1: 'Significant weather',
+                0: 'Minor',
+                [-1]: 'Unknown',
+            },
+            showMore: 'Show more',
+            status: {
+                name: 'Status',
+                actual: 'Actual',
+                exercise: 'Exercise',
+                system: 'System',
+                test: 'Test',
+                draft: 'Draft',
+            },
+            testWarning: {
+                title: 'WARNING: Cute mammoth spotted!',
+                description:
+                    'A cute mammoth has been spotted near the university. Be vigilant!',
+                instruction:
+                    'If you see the mammoth, please pet it and give it a cookie.',
+                event: 'Cute mammoth sighting',
+                web: 'https://moothel.pet/',
+                provider: 'Better-Moodle',
+                senderName: 'Moothel',
+            },
+            via: 'via',
         },
         speiseplan: {
             title: 'Menu of the canteen',
@@ -1239,6 +1429,62 @@ Best regards
                         'shiftEnter': 'Shift + Enter',
                         'ctrlEnter': 'Ctrl + Enter',
                     },
+                },
+            },
+            nina: {
+                _title: 'NINA Warnings',
+                _description:
+                    'Note: This feature might not always work in english as the BBK often only provides warnings in german.',
+                enabled: {
+                    name: 'Enable NINA warnings',
+                    description:
+                        '⚠️ Displays warnings from the NINA app in the navigation bar.',
+                },
+
+                civilProtectionWarnings: {
+                    name: 'Civil protection warnings',
+                    description:
+                        'Here you can set the warning lebel from which you want to receive a notification.',
+                    labels: {
+                        off: 'Never',
+                        extreme: 'Extreme danger',
+                        severe: 'Danger',
+                        moderate: 'Hazard information',
+                    },
+                },
+                weatherWarnings: {
+                    name: 'Weather warnings',
+                    description:
+                        'Here you can set the Deutscher Wetterdienst warning level from which you want to receive a notification.',
+                    labels: {
+                        off: 'Never',
+                        extreme: 'Extreme storm',
+                        severe: 'Storm',
+                        moderate: 'Severe weather',
+                    },
+                },
+
+                floodWarnings: {
+                    name: 'Flood warnings',
+                    description:
+                        'Notifications about flooding events on inland waters (rivers, canals, inland lakes).',
+                },
+
+                notification: {
+                    name: 'Push notifications for NINA warnings',
+                    description:
+                        'Displays push notifications for NINA warnings.',
+                },
+                megaAlarm: {
+                    name: 'Allow Mega-Alarm mode',
+                    description:
+                        '🚨🚨🚨 YOU WILL NEVER MISS IMPORTANT WARNINGS AGAIN!!! 🚨🚨🚨',
+                },
+                test: {
+                    name: 'Test the NINA warnings',
+                    description:
+                        'Send a test warning to see what the notifications look like.',
+                    btn: 'Send test warning',
                 },
             },
             weatherDisplay: {
@@ -3115,7 +3361,63 @@ const SETTINGS = [
         'shiftEnter',
         'ctrlEnter',
     ]),
+    'nina',
+    $t('settings.nina._description'),
+    new BooleanSetting('nina.enabled', true),
+    new SliderSetting('nina.civilProtectionWarnings', 2, 0, 3, 1, [
+        'off',
+        'extreme',
+        'severe',
+        'moderate',
+    ]).setDisabledFn(settings => !settings['nina.enabled'].inputValue),
+    new SliderSetting('nina.weatherWarnings', 2, 0, 3, 1, [
+        'off',
+        'extreme',
+        'severe',
+        'moderate',
+    ]).setDisabledFn(settings => !settings['nina.enabled'].inputValue),
+    new BooleanSetting('nina.floodWarnings', false).setDisabledFn(
+        settings => !settings['nina.enabled'].inputValue
+    ),
+    new BooleanSetting('nina.notification', true).setDisabledFn(
+        settings => !settings['nina.enabled'].inputValue
+    ),
+    new BooleanSetting('nina.megaAlarm', false).setDisabledFn(
+        settings => !settings['nina.enabled'].inputValue
+    ),
+    new BtnActionSetting('nina.test')
+        .setContent($t('settings.nina.test.btn'))
+        .setDisabledFn(settings => !settings['nina.enabled'].inputValue)
+        .setAction(() => {
+            const betterMoodleTestWarning = `better-moodle:${Math.ceil(Math.random() * 1000)}`;
+            NINA.addWarning(
+                betterMoodleTestWarning,
+                {
+                    title: $t('nina.testWarning.title'),
+                    description: $t('nina.testWarning.description'),
+                    instruction: $t('nina.testWarning.instruction'),
+                    categories: [CommonAlertingProtocol.Category.OTHER],
+                    severity: CommonAlertingProtocol.Severity.EXTREME,
+                    urgency: CommonAlertingProtocol.Urgency.IMMEDIATE,
+                    certainty: CommonAlertingProtocol.Certainty.OBSERVED,
+                    event: $t('nina.testWarning.event'),
+                    web: $t('nina.testWarning.web'),
+                    msgType: CommonAlertingProtocol.MsgType.ALERT,
+                    provider: $t('nina.testWarning.provider'),
+                    senderName: $t('nina.testWarning.senderName'),
+                    valid: true,
+                    sent: new Date(),
+                    effective: new Date(),
+                    onset: new Date(),
+                    expires: new Date(Date.now() + 1000 * 30),
+                    status: CommonAlertingProtocol.Status.TEST,
+                },
+                Date.now() + 1000 * 30
+            );
+            NINA.pushWarning(betterMoodleTestWarning);
+        }),
 ];
+
 const settingsById = Object.fromEntries(
     SETTINGS.filter(s => typeof s !== 'string').map(s => [s.id, s])
 );
@@ -7062,6 +7364,613 @@ if (messagesSendHotkey) {
                     break;
             }
         });
+    });
+}
+// endregion
+
+// region Feature: NINA integration
+const alarmBtnWrapperId = PREFIX('alarm-button');
+const alarmBackgroundClass = PREFIX('modal-backdrop-alarming');
+const keepUntilVar = PREFIX('keepUntil');
+
+GM_addStyle(css`
+    .${alarmBackgroundClass} {
+        background-color: rgba(255, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1040;
+        pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .${alarmBackgroundClass} {
+            animation: blink 1s infinite;
+        }
+    }
+
+    @keyframes blink {
+        0% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+`);
+// Common Alerting Protocol
+const CommonAlertingProtocol = {
+    Severity: {
+        MINOR: 0,
+        MODERATE: 1,
+        SEVERE: 2,
+        EXTREME: 3,
+        UNKNOWN: -1,
+    },
+    Urgency: {
+        IMMEDIATE: 3,
+        EXPECTED: 2,
+        FUTURE: 1,
+        PAST: 0,
+        UNKNOWN: -1,
+    },
+    Certainty: {
+        OBSERVED: 3,
+        LIKELY: 2,
+        POSSIBLE: 1,
+        UNLIKELY: 0,
+        UNKNOWN: -1,
+    },
+    MsgType: {
+        ACK: 'ack',
+        ALERT: 'alert',
+        CANCEL: 'cancel',
+        ERROR: 'error',
+        UPDATE: 'update',
+    },
+    Category: {
+        GEO: 'geo',
+        MET: 'met',
+        SAFETY: 'safety',
+        SECURITY: 'security',
+        RESCUE: 'rescue',
+        FIRE: 'fire',
+        HEALTH: 'health',
+        ENV: 'env',
+        TRANSPORT: 'transport',
+        INFRA: 'infra',
+        CBRNE: 'cbrne',
+        OTHER: 'other',
+    },
+    Status: {
+        ACTUAL: 'actual',
+        EXERCISE: 'exercise',
+        SYSTEM: 'system',
+        TEST: 'test',
+        DRAFT: 'draft',
+    },
+};
+
+const severityEmojis = {
+    [CommonAlertingProtocol.Severity.EXTREME]: '🟣',
+    [CommonAlertingProtocol.Severity.SEVERE]: '🔴',
+    [CommonAlertingProtocol.Severity.MODERATE]: '🟠',
+    [CommonAlertingProtocol.Severity.MINOR]: '⚪',
+    [CommonAlertingProtocol.Severity.UNKNOWN]: '⚪',
+};
+
+const NINA = {
+    defaultValues: {
+        title: $t('nina.notFound.title'),
+        description: $t('nina.notFound.description'),
+        instruction: undefined,
+        categories: [],
+        severity: CommonAlertingProtocol.Severity.UNKNOWN,
+        urgency: CommonAlertingProtocol.Urgency.UNKNOWN,
+        certainty: CommonAlertingProtocol.Certainty.UNKNOWN,
+        event: undefined,
+        web: undefined,
+        msgType: CommonAlertingProtocol.MsgType.ERROR,
+        provider: undefined,
+        senderName: undefined,
+        valid: false,
+        sent: new Date(),
+        effective: new Date(),
+        onset: undefined,
+        expires: undefined,
+        status: CommonAlertingProtocol.Status.SYSTEM,
+    },
+    /**
+     * Returns the warning with the given ID.
+     *
+     * @param {*} str
+     * @returns
+     */
+    settingPrefix: str => `${PREFIX('nina')}.${str}`,
+    /**
+     * Sends a push notification for a warning (if the settings allow for that).
+     *
+     * @param {string} id The ID of the warning
+     * @param {object} options Additional options
+     */
+    pushWarning: (id, options = {}) => {
+        const {
+            title,
+            description,
+            severity,
+            provider,
+            expires,
+            valid,
+            status,
+        } = NINA.getWarning(id) ?? NINA.defaultValues;
+
+        if (
+            (expires && new Date(expires) < new Date()) ||
+            !valid ||
+            status === CommonAlertingProtocol.Status.DRAFT
+        ) {
+            return;
+        }
+
+        const {
+            // Options
+            image,
+        } = Object.assign({}, options, {
+            image: 'https://www.bbk.bund.de/SiteGlobals/Frontend/Images/favicons/android-chrome-256x256.png?__blob=normal&v=1',
+        });
+
+        if (
+            (getSetting('nina.notification') &&
+                provider !== 'DWD' &&
+                provider !== 'LHP' &&
+                getSetting('nina.civilProtectionWarnings') -
+                    severity +
+                    CommonAlertingProtocol.Severity.EXTREME >
+                    0) ||
+            (provider === 'DWD' &&
+                severity -
+                    getSetting('nina.weatherWarnings') +
+                    CommonAlertingProtocol.Severity.EXTREME >
+                    0) ||
+            (provider === 'LHP' && getSetting('nina.floodWarnings'))
+        ) {
+            GM_notification({
+                title,
+                text: description,
+                image,
+                onclick: () => NINA.showWarning(id),
+            });
+        }
+    },
+    /**
+     * Shows detailed information about a warning in a modal.
+     *
+     * @param {string} id The ID of the warning
+     */
+    showWarning: id => {
+        const {
+            title,
+            description,
+            instruction,
+            categories,
+            severity,
+            web,
+            provider,
+            senderName,
+            onset,
+            expires,
+            status,
+        } = NINA.getWarning(id) ?? NINA.defaultValues;
+
+        const severityEmoji =
+            severityEmojis[severity ?? CommonAlertingProtocol.Severity.UNKNOWN];
+
+        const modalTitle = `<span data-toggle="tooltip" data-original-title="${$t(
+            'nina.severity.name'
+        )}: ${
+            provider === 'DWD' ?
+                $t(`nina.severityWeather.${severity}`)
+            :   $t(`nina.severity.${severity}`)
+        }">${severityEmoji}</span> ${
+            title
+        } <span class="small"><span class="badge badge-pill badge-secondary">${$t(
+            `nina.status.${status}`
+        )}</span></span>`;
+
+        let modalBody = '';
+        if (onset && expires) {
+            modalBody += `<span class="small">${onset.toLocaleString(
+                BETTER_MOODLE_LANG
+            )} - ${expires.toLocaleString(BETTER_MOODLE_LANG)}</span><br>`;
+        }
+        if (description) {
+            modalBody += `<h5>${$t('nina.description')}</h5><p>${description}</p>`;
+        }
+        if (instruction) {
+            modalBody += `<h5>${$t('nina.instruction')}</h5><p>${instruction}</p>`;
+        }
+        if (categories.length) {
+            modalBody += `<div class="small"><b>${$t('nina.categories')}:</b> ${categories
+                .map(
+                    category =>
+                        `<span>${$t(`nina.category.${category}`)}</span>`
+                )
+                .join(', ')}</div>`;
+        }
+
+        let modalFooter = '';
+        if (web) {
+            modalFooter += `<a href="${web}" target="_blank"><i class="fa fa-globe"></i></a>`;
+        }
+        modalFooter += '<div class="ml-2 small">';
+        if (senderName || provider) {
+            modalFooter += `<span>${$t('nina.providedBy')} ${
+                senderName ?
+                    `${senderName} ${$t('nina.via')} ${provider}`
+                :   provider
+            }</span><br>`;
+        }
+        modalFooter += `<a href="https://warnung.bund.de/meldungen/${id}/">${$t(
+            `nina.bbkLink`
+        )}</a></div>`;
+
+        require(['core/modal_factory'], ({ create, types }) =>
+            create({
+                type: types.ALERT,
+                large: true,
+                scrollable: true,
+                title: modalTitle,
+                body: modalBody,
+            })
+                .then(modal => {
+                    modal.setButtonText(
+                        'cancel',
+                        NINA.inMegaAlarm() ? $t('nina.panic') : $t('nina.close')
+                    );
+                    const source = document.createElement('span');
+                    source.classList.add(
+                        'd-flex',
+                        'align-items-center',
+                        'text-muted',
+                        'mr-auto'
+                    );
+                    source.innerHTML = modalFooter;
+                    modal.getFooter().prepend(source);
+                    return modal;
+                })
+                .then(modal => modal.show()));
+    },
+    /**
+     * Shows the alarm button if there are active warnings.
+     */
+    showAlarmButton: () => {
+        const alarmButtonWrapper = document.getElementById(alarmBtnWrapperId);
+        const alarmBackground = document.querySelector(
+            `.${alarmBackgroundClass}`
+        );
+        if (NINA.hasActiveWarnings()) {
+            const alarmButton = alarmButtonWrapper?.querySelector('a');
+            if (alarmButton) {
+                alarmButton.innerText = NINA.inMegaAlarm() ? '🚨' : '⚠️';
+            }
+            alarmButtonWrapper?.classList.remove('d-none');
+            alarmBackground?.classList.remove('d-none');
+        } else {
+            alarmButtonWrapper?.classList.add('d-none');
+            alarmBackground?.classList.add('d-none');
+        }
+    },
+    /**
+     * Returns the active warnings
+     *
+     * @returns {object} The active warnings
+     */
+    getActiveWarnings: () => {
+        const dateTimeKeys = ['sent', 'effective', 'onset', 'expires'];
+
+        const activeWarnings = GM_getValue(
+            NINA.settingPrefix('activeWarnings'),
+            {}
+        );
+        Object.keys(activeWarnings).forEach(id => {
+            activeWarnings[id] = JSON.parse(activeWarnings[id]);
+            dateTimeKeys.forEach(
+                key =>
+                    (activeWarnings[id][key] =
+                        activeWarnings[id][key] ?
+                            new Date(activeWarnings[id][key])
+                        :   undefined)
+            );
+        });
+        return activeWarnings;
+    },
+    /**
+     * Saves the active warnings
+     *
+     * @param {object} activeWarnings The active warnings to save
+     */
+    saveActiveWarnings: activeWarnings => {
+        Object.keys(activeWarnings).forEach(
+            id => (activeWarnings[id] = JSON.stringify(activeWarnings[id]))
+        );
+        GM_setValue(NINA.settingPrefix('activeWarnings'), activeWarnings);
+        NINA.showAlarmButton();
+    },
+    /**
+     * Returns the warning with the given ID
+     *
+     * @param {string} id The ID of the warning
+     * @returns {object} The warning with the given ID
+     */
+    getWarning: id => NINA.getActiveWarnings()[id],
+    /**
+     * Adds a warning to the active warnings
+     *
+     * @param {string} id The ID of the warning
+     * @param {object} warning The warning to add
+     * @param {int} keepUntil The timestamp until the warning should be kept (even if it is not in the response anymore)
+     */
+    addWarning: (id, warning, keepUntil = 0) => {
+        const activeWarnings = NINA.getActiveWarnings();
+        activeWarnings[id] = warning;
+        activeWarnings[id][keepUntilVar] = keepUntil;
+        NINA.saveActiveWarnings(activeWarnings);
+    },
+    /**
+     * Removes a warning from the active warnings
+     *
+     * @param {string} id The ID of the warning to remove
+     */
+    removeWarning: id => {
+        const activeWarnings = NINA.getActiveWarnings();
+        delete activeWarnings[id];
+        NINA.saveActiveWarnings(activeWarnings);
+    },
+    /**
+     * Removes all warnings (except those, that are marked with a keepUntil timestamp in the future)
+     */
+    clearWarnings: () => {
+        const activeWarnings = NINA.getActiveWarnings();
+        Object.keys(activeWarnings)
+            .filter(id => activeWarnings[id][keepUntilVar] < Date.now())
+            .forEach(id => delete activeWarnings[id]);
+        NINA.saveActiveWarnings(activeWarnings);
+    },
+    /**
+     * Checks if there are active warnings
+     *
+     * @returns {boolean} Whether there are active warnings
+     */
+    hasActiveWarnings: () => {
+        return Object.keys(NINA.getActiveWarnings()).length > 0;
+    },
+    /**
+     * Checks if there are active warnings that are in a mega alarm state
+     *
+     * @returns {boolean} Whether there are active warnings that are in a mega alarm state
+     */
+    inMegaAlarm: () =>
+        getSetting('nina.megaAlarm') &&
+        Object.values(NINA.getActiveWarnings()).some(
+            ({ provider, severity }) =>
+                (getSetting('nina.notification') &&
+                    provider !== 'DWD' &&
+                    provider !== 'LHP' &&
+                    getSetting('nina.civilProtectionWarnings') -
+                        severity +
+                        CommonAlertingProtocol.Severity.EXTREME >
+                        0) ||
+                (provider === 'DWD' &&
+                    severity -
+                        getSetting('nina.weatherWarnings') +
+                        CommonAlertingProtocol.Severity.EXTREME >
+                        0) ||
+                (provider === 'LHP' && getSetting('nina.floodWarnings'))
+        ),
+};
+if (getSetting('nina.enabled')) {
+    const ONE_SECOND = 1000;
+    const THIRTY_SECONDS = 30 * ONE_SECOND;
+    const ARS = '010030000000'; // Lübeck
+
+    const api = 'https://nina.api.proxy.bund.dev/api31';
+
+    /* Note: This is not a full replacement for fetch, but should be compatible to GM_fetch */
+    const GM_fetch = url =>
+        new Promise((resolve, reject) => {
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url,
+                onload: ({ status, responseText }) => {
+                    resolve({
+                        status,
+                        ok: status >= 200 && status < 300,
+                        json: () => JSON.parse(responseText),
+                        text: () => responseText,
+                    });
+                },
+                onerror: () => reject(new TypeError('Network request failed')),
+            });
+        });
+
+    const checkForWarnings = () => {
+        // Handle multiple tabs
+        const ninaLastUpdate = GM_getValue('nina.lastUpdate', 0);
+        if (Date.now() - ninaLastUpdate < THIRTY_SECONDS) return;
+        GM_setValue(NINA.settingPrefix('lastUpdate'), Date.now());
+
+        const activeWarnings = NINA.getActiveWarnings();
+        NINA.clearWarnings();
+
+        GM_fetch(`${api}/dashboard/${ARS}.json`)
+            .then(resp => resp.json())
+            .then(data =>
+                data.forEach(({ id, payload, sent }) => {
+                    if (
+                        activeWarnings[id] &&
+                        CommonAlertingProtocol.Severity[
+                            payload.data.severity.toUpperCase()
+                        ] === activeWarnings[id].severity &&
+                        CommonAlertingProtocol.Urgency[
+                            payload.data.urgency.toUpperCase()
+                        ] === activeWarnings[id].urgency &&
+                        CommonAlertingProtocol.MsgType[
+                            payload.data.msgType.toUpperCase()
+                        ] === activeWarnings[id].msgType &&
+                        payload.data.valid === activeWarnings[id].valid
+                    ) {
+                        NINA.addWarning(id, activeWarnings[id]);
+                        return;
+                    }
+
+                    GM_fetch(`${api}/warnings/${id}.json`)
+                        .then(resp => resp.json())
+                        .then(({ status, msgType, info }) => {
+                            const langInfo = Object.assign(
+                                {},
+                                info.find(
+                                    ({ language }) =>
+                                        language === BETTER_MOODLE_LANG
+                                ),
+                                info[0]
+                            );
+
+                            const warnData = {
+                                title: langInfo.headline,
+                                description: langInfo.description,
+                                instruction: langInfo.instruction,
+                                categories: langInfo.category.map(
+                                    cat =>
+                                        CommonAlertingProtocol.Category[
+                                            cat.toUpperCase()
+                                        ]
+                                ),
+                                severity:
+                                    CommonAlertingProtocol.Severity[
+                                        langInfo.severity.toUpperCase()
+                                    ],
+                                urgency:
+                                    CommonAlertingProtocol.Urgency[
+                                        langInfo.urgency.toUpperCase()
+                                    ],
+                                certainty:
+                                    CommonAlertingProtocol.Certainty[
+                                        langInfo.certainty.toUpperCase()
+                                    ],
+                                event: langInfo.event,
+                                web: langInfo.web,
+                                msgType:
+                                    CommonAlertingProtocol.MsgType[
+                                        msgType.toUpperCase()
+                                    ],
+                                provider: payload.data.provider,
+                                senderName: langInfo.senderName,
+                                valid: payload.data.valid,
+                                sent,
+                                effective: new Date(langInfo.effective),
+                                onset: new Date(langInfo.onset),
+                                expires: new Date(langInfo.expires),
+                                status: CommonAlertingProtocol.Status[
+                                    status.toUpperCase()
+                                ],
+                            };
+                            NINA.addWarning(id, warnData);
+                            NINA.pushWarning(id);
+                        });
+                })
+            );
+    };
+    checkForWarnings();
+    setInterval(checkForWarnings, THIRTY_SECONDS);
+
+    const warningId = PREFIX('warning');
+
+    const alarmBtnWrapper = document.createElement('div');
+    alarmBtnWrapper.id = alarmBtnWrapperId;
+    const alarmBtn = document.createElement('a');
+    alarmBtn.innerText = '⚠️';
+    alarmBtn.title = $t('nina.activeWarnings');
+    alarmBtn.classList.add('nav-link', 'position-relative');
+    alarmBtn.href = '#';
+    alarmBtn.role = 'button';
+    alarmBtn.addEventListener('click', () => {
+        require(['core/modal_factory'], ({ create, types }) =>
+            create({
+                type: types.ALERT,
+                large: true,
+                scrollable: true,
+                title: $t('nina.activeWarnings'),
+                body: Object.keys(NINA.getActiveWarnings())
+                    .filter(id => NINA.getActiveWarnings()[id].valid)
+                    .sort(id => -NINA.getActiveWarnings()[id].severity)
+                    .map(id => {
+                        const {
+                            title,
+                            description,
+                            severity,
+                            status,
+                            provider,
+                        } = NINA.getWarning(id);
+                        const severityEmoji =
+                            severityEmojis[
+                                severity ??
+                                    CommonAlertingProtocol.Severity.UNKNOWN
+                            ];
+
+                        const warnTitle = `<span data-toggle="tooltip" data-original-title="${$t(
+                            'nina.severity.name'
+                        )}: ${
+                            provider === 'DWD' ?
+                                $t(`nina.severityWeather.${severity}`)
+                            :   $t(`nina.severity.${severity}`)
+                        }">${severityEmoji}</span> ${
+                            title
+                        } <span class="small"><span class="badge badge-pill badge-secondary">${$t(
+                            `nina.status.${status}`
+                        )}</span></span>`;
+                        return `<div>
+                            <h5>${warnTitle ?? ''}</h5>
+                            <p>${description ?? ''}</p>
+                            <div class="small">
+                                <a href="#" data-${warningId}="${id}">${$t('nina.showMore')}</a>
+                            </div>
+                        </div>`;
+                    })
+                    .join('<hr>'),
+            })
+                .then(modal => {
+                    modal.setButtonText('cancel', $t('nina.close'));
+                    modal.getBody()[0].addEventListener('click', e => {
+                        const target = e.target.closest(`a[data-${warningId}]`);
+                        if (!target) return;
+                        e.preventDefault();
+                        NINA.showWarning(
+                            target.getAttribute(`data-${warningId}`)
+                        );
+                    });
+                    return modal;
+                })
+                .then(modal => modal.show()));
+    });
+    alarmBtnWrapper.append(alarmBtn);
+
+    const alarmBackground = document.createElement('div');
+    alarmBackground.classList.add(alarmBackgroundClass, 'd-none');
+
+    ready(() => {
+        document
+            .querySelector('#usernavigation .usermenu-container')
+            ?.before(alarmBtnWrapper);
+
+        if (getSetting('nina.megaAlarm')) {
+            document.body.append(alarmBackground);
+        }
+        NINA.showAlarmButton();
     });
 }
 // endregion
