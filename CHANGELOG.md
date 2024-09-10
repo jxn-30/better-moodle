@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.41.0](https://github.com/jxn-30/better-moodle/compare/1.40.2...1.41.0) (2024-09-10)
+
+
+### Features
+
+* **ninaIntegration:** Add NINA warn app integration ([#376](https://github.com/jxn-30/better-moodle/issues/376)) ([fa21640](https://github.com/jxn-30/better-moodle/commit/fa21640686d18600c0e59de455b5241940123c7a))
+
 ## [1.40.2](https://github.com/jxn-30/better-moodle/compare/1.40.1...1.40.2) (2024-09-10)
 
 
