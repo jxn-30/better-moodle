@@ -2,7 +2,7 @@
 // @name            🎓️ UzL: better-moodle
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
-// @version         1.40.0
+// @version         1.40.2
 // @                x-release-please-end
 // @author          Jan (jxn_30)
 // @description     Improves UzL-Moodle by cool features and design improvements.
@@ -5935,7 +5935,7 @@ ready(async () => {
         if (getSetting('myCourses.navbarDropdown')) {
             myCoursesA.classList.add('dropdown-toggle');
             myCoursesA.dataset.toggle = 'dropdown';
-            myCoursesA.href = '#';
+            myCoursesA.href = myCoursesLink;
             myCoursesA.id = PREFIX('my-courses-dropdown-toggle');
 
             dropdownMenu = document.createElement('div');
@@ -8535,6 +8535,7 @@ ready(() => {
                     top: 5%;
                     left: 5%;
                     object-fit: contain;
+                    pointer-events: none;
                 }
 
                 @media (prefers-contrast: more) {
