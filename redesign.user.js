@@ -7808,22 +7808,22 @@ const NINA = {
      */
     inMegaAlarm: () =>
         getSetting('nina.megaAlarm') &&
-        NINA.hasUnseenWarnings() &&
         Object.values(NINA.getActiveWarnings()).some(
-            ({ provider, severity }) =>
-                (getSetting('nina.notification') &&
+            ({ provider, severity, [seenVar]: seen }) =>
+                !seen &&
+                ((getSetting('nina.notification') &&
                     provider !== 'DWD' &&
                     provider !== 'LHP' &&
                     getSetting('nina.civilProtectionWarnings') -
                         severity +
                         CommonAlertingProtocol.Severity.EXTREME >
                         0) ||
-                (provider === 'DWD' &&
-                    severity -
-                        getSetting('nina.weatherWarnings') +
-                        CommonAlertingProtocol.Severity.EXTREME >
-                        0) ||
-                (provider === 'LHP' && getSetting('nina.floodWarnings'))
+                    (provider === 'DWD' &&
+                        severity -
+                            getSetting('nina.weatherWarnings') +
+                            CommonAlertingProtocol.Severity.EXTREME >
+                            0) ||
+                    (provider === 'LHP' && getSetting('nina.floodWarnings')))
         ),
 };
 if (getSetting('nina.enabled')) {
