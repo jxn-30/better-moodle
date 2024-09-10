@@ -186,11 +186,13 @@ export default abstract class Setting<
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const title: LocalizedString =
+            // @ts-expect-error we need to find a way to type this correctly
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
             this.#feature?.Translation.settings?.[this.#id]?.name() ?? this.#id;
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const description: LocalizedString =
+            // @ts-expect-error we need to find a way to type this correctly
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
             this.#feature?.Translation.settings?.[this.#id]?.description() ??
             this.#id;
