@@ -7372,6 +7372,9 @@ if (messagesSendHotkey) {
 const alarmBtnWrapperId = PREFIX('alarm-button');
 const alarmBackgroundClass = PREFIX('modal-backdrop-alarming');
 const keepUntilVar = PREFIX('keepUntil');
+const seenVar = PREFIX('seen');
+const unseenClass = PREFIX('unseen');
+const warningId = PREFIX('warning');
 
 GM_addStyle(css`
     .${alarmBackgroundClass} {
@@ -7401,6 +7404,15 @@ GM_addStyle(css`
         100% {
             opacity: 1;
         }
+    }
+
+    .${unseenClass}::before {
+        content: '';
+        position: absolute;
+        left: -8px;
+        top: 0;
+        bottom: 0;
+        border-left: var(--primary) 3px solid;
     }
 `);
 // Common Alerting Protocol
@@ -7619,7 +7631,10 @@ const NINA = {
             `nina.bbkLink`
         )}</a></div>`;
 
-        require(['core/modal_factory'], ({ create, types }) =>
+        require(['core/modal_factory', 'core/modal_events'], (
+            { create, types },
+            ModalEvents
+        ) =>
             create({
                 type: types.ALERT,
                 large: true,
@@ -7641,6 +7656,11 @@ const NINA = {
                     );
                     source.innerHTML = modalFooter;
                     modal.getFooter().prepend(source);
+
+                    modal
+                        .getRoot()
+                        .on(ModalEvents.hidden, () => NINA.markAsSeen(id));
+
                     return modal;
                 })
                 .then(modal => modal.show()));
@@ -7654,14 +7674,20 @@ const NINA = {
             `.${alarmBackgroundClass}`
         );
         if (NINA.hasActiveWarnings()) {
-            const alarmButton = alarmButtonWrapper?.querySelector('a');
-            if (alarmButton) {
-                alarmButton.innerText = NINA.inMegaAlarm() ? '🚨' : '⚠️';
-            }
             alarmButtonWrapper?.classList.remove('d-none');
-            alarmBackground?.classList.remove('d-none');
         } else {
             alarmButtonWrapper?.classList.add('d-none');
+        }
+        const alarmButton = alarmButtonWrapper?.querySelector('a');
+        if (NINA.inMegaAlarm()) {
+            if (alarmButton) {
+                alarmButton.innerText = '🚨';
+            }
+            alarmBackground?.classList.remove('d-none');
+        } else {
+            if (alarmButton) {
+                alarmButton.innerText = '⚠️';
+            }
             alarmBackground?.classList.add('d-none');
         }
     },
@@ -7719,6 +7745,7 @@ const NINA = {
         const activeWarnings = NINA.getActiveWarnings();
         activeWarnings[id] = warning;
         activeWarnings[id][keepUntilVar] = keepUntil;
+        activeWarnings[id][seenVar] = false;
         NINA.saveActiveWarnings(activeWarnings);
     },
     /**
@@ -7742,6 +7769,21 @@ const NINA = {
         NINA.saveActiveWarnings(activeWarnings);
     },
     /**
+     * Marks a warning as seen
+     *
+     * @param {string} id The ID of the warning to mark as seen
+     */
+    markAsSeen: id => {
+        document
+            .querySelector(`.${unseenClass}:has([data-${warningId}="${id}"])`)
+            ?.classList.remove(unseenClass);
+
+        const activeWarnings = NINA.getActiveWarnings();
+        if (!activeWarnings[id]) return;
+        activeWarnings[id][seenVar] = true;
+        NINA.saveActiveWarnings(activeWarnings);
+    },
+    /**
      * Checks if there are active warnings
      *
      * @returns {boolean} Whether there are active warnings
@@ -7750,12 +7792,23 @@ const NINA = {
         return Object.keys(NINA.getActiveWarnings()).length > 0;
     },
     /**
+     * Checks if there are unseen warnings
+     *
+     * @returns {boolean} Whether there are unseen warnings
+     */
+    hasUnseenWarnings: () => {
+        return Object.keys(NINA.getActiveWarnings()).some(
+            id => !NINA.getActiveWarnings()[id][seenVar]
+        );
+    },
+    /**
      * Checks if there are active warnings that are in a mega alarm state
      *
      * @returns {boolean} Whether there are active warnings that are in a mega alarm state
      */
     inMegaAlarm: () =>
         getSetting('nina.megaAlarm') &&
+        NINA.hasUnseenWarnings() &&
         Object.values(NINA.getActiveWarnings()).some(
             ({ provider, severity }) =>
                 (getSetting('nina.notification') &&
@@ -7888,8 +7941,6 @@ if (getSetting('nina.enabled')) {
     checkForWarnings();
     setInterval(checkForWarnings, THIRTY_SECONDS);
 
-    const warningId = PREFIX('warning');
-
     const alarmBtnWrapper = document.createElement('div');
     alarmBtnWrapper.id = alarmBtnWrapperId;
     const alarmBtn = document.createElement('a');
@@ -7899,49 +7950,16 @@ if (getSetting('nina.enabled')) {
     alarmBtn.href = '#';
     alarmBtn.role = 'button';
     alarmBtn.addEventListener('click', () => {
-        require(['core/modal_factory'], ({ create, types }) =>
+        require(['core/modal_factory', 'core/modal_events'], (
+            { create, types },
+            ModalEvents
+        ) =>
             create({
                 type: types.ALERT,
                 large: true,
                 scrollable: true,
                 title: $t('nina.activeWarnings'),
-                body: Object.keys(NINA.getActiveWarnings())
-                    .filter(id => NINA.getActiveWarnings()[id].valid)
-                    .sort(id => -NINA.getActiveWarnings()[id].severity)
-                    .map(id => {
-                        const {
-                            title,
-                            description,
-                            severity,
-                            status,
-                            provider,
-                        } = NINA.getWarning(id);
-                        const severityEmoji =
-                            severityEmojis[
-                                severity ??
-                                    CommonAlertingProtocol.Severity.UNKNOWN
-                            ];
-
-                        const warnTitle = `<span data-toggle="tooltip" data-original-title="${$t(
-                            'nina.severity.name'
-                        )}: ${
-                            provider === 'DWD' ?
-                                $t(`nina.severityWeather.${severity}`)
-                            :   $t(`nina.severity.${severity}`)
-                        }">${severityEmoji}</span> ${
-                            title
-                        } <span class="small"><span class="badge badge-pill badge-secondary">${$t(
-                            `nina.status.${status}`
-                        )}</span></span>`;
-                        return `<div>
-                            <h5>${warnTitle ?? ''}</h5>
-                            <p>${description ?? ''}</p>
-                            <div class="small">
-                                <a href="#" data-${warningId}="${id}">${$t('nina.showMore')}</a>
-                            </div>
-                        </div>`;
-                    })
-                    .join('<hr>'),
+                body: '',
             })
                 .then(modal => {
                     modal.setButtonText('cancel', $t('nina.close'));
@@ -7953,6 +7971,69 @@ if (getSetting('nina.enabled')) {
                             target.getAttribute(`data-${warningId}`)
                         );
                     });
+
+                    modal
+                        .getRoot()
+                        .on(ModalEvents.hidden, () =>
+                            Object.keys(NINA.getActiveWarnings()).forEach(
+                                NINA.markAsSeen
+                            )
+                        );
+
+                    modal.getRoot().on(
+                        ModalEvents.shown,
+                        () =>
+                            (modal.getBody()[0].innerHTML = Object.keys(
+                                NINA.getActiveWarnings()
+                            )
+                                .filter(
+                                    id => NINA.getActiveWarnings()[id].valid
+                                )
+                                .sort(
+                                    id =>
+                                        100 *
+                                            !NINA.getActiveWarnings()[id].seen -
+                                        NINA.getActiveWarnings()[id].severity
+                                )
+                                .map(id => {
+                                    const {
+                                        title,
+                                        description,
+                                        severity,
+                                        status,
+                                        provider,
+                                        [seenVar]: seen,
+                                    } = NINA.getWarning(id);
+                                    const severityEmoji =
+                                        severityEmojis[
+                                            severity ??
+                                                CommonAlertingProtocol.Severity
+                                                    .UNKNOWN
+                                        ];
+
+                                    const warnTitle = `<span data-toggle="tooltip" data-original-title="${$t(
+                                        'nina.severity.name'
+                                    )}: ${
+                                        provider === 'DWD' ?
+                                            $t(
+                                                `nina.severityWeather.${severity}`
+                                            )
+                                        :   $t(`nina.severity.${severity}`)
+                                    }">${severityEmoji}</span> ${
+                                        title
+                                    } <span class="small"><span class="badge badge-pill badge-secondary">${$t(
+                                        `nina.status.${status}`
+                                    )}</span></span>`;
+                                    return `<div class="card p-3 ${!seen ? unseenClass : ''}">
+                                <h5>${warnTitle ?? ''}</h5>
+                                <p>${description ?? ''}</p>
+                                <div class="small">
+                                    <a href="#" data-${warningId}="${id}">${$t('nina.showMore')}</a>
+                                </div>
+                            </div>`;
+                                })
+                                .join('<hr>'))
+                    );
                     return modal;
                 })
                 .then(modal => modal.show()));
