@@ -5633,7 +5633,7 @@ ready(async () => {
         if (getSetting('myCourses.navbarDropdown')) {
             myCoursesA.classList.add('dropdown-toggle');
             myCoursesA.dataset.toggle = 'dropdown';
-            myCoursesA.href = '#';
+            myCoursesA.href = myCoursesLink;
             myCoursesA.id = PREFIX('my-courses-dropdown-toggle');
 
             dropdownMenu = document.createElement('div');
