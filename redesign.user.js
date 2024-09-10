@@ -1435,7 +1435,7 @@ Best regards
             nina: {
                 _title: 'NINA Warnings',
                 _description:
-                    'Find out more about warnings by clicking on the notifications. <br>Note: This feature might not always work in english as the BBK often only provides warnings in german.',
+                    '<p>Find out more about warnings by clicking on the notifications. <br>Note: This feature might not always work in english as the BBK often only provides warnings in german.</p>',
                 enabled: {
                     name: 'Enable NINA warnings',
                     description:
