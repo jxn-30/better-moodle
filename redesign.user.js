@@ -32,7 +32,7 @@
 // @require         https://unpkg.com/darkreader@4.9.89/darkreader.js#sha512=15732894c8596b9ecd7360f88b3c41e84a04915f4dcc344eb008f10f9c3c419f6659223caa69db8df13c6dbf7a07d934f3f53afbff34b11b0cd1ed8614a79d0f
 // ==/UserScript==
 
-/* global M, require, DarkReader */
+/* global M, require, DarkReader, MathJax */
 
 // region translations
 const TRANSLATIONS = {
@@ -679,6 +679,11 @@ Viele Grüße
                         'shiftEnter': 'Umschalt + Enter',
                         'ctrlEnter': 'Strg + Enter',
                     },
+                },
+                markdown: {
+                    name: 'Markdown in Mitteilungen',
+                    description:
+                        'Erlaubt die Verwendung von Markdown in Mitteilungen.',
                 },
             },
             nina: {
@@ -1431,6 +1436,10 @@ Best regards
                         'ctrlEnter': 'Ctrl + Enter',
                     },
                 },
+                markdown: {
+                    name: 'Markdown in messages',
+                    description: 'Allows the use of Markdown in messages.',
+                },
             },
             nina: {
                 _title: 'NINA Warnings',
@@ -1800,13 +1809,14 @@ const updateAvailable = () =>
  * converts a Markdown text into HTML
  * @param {string} md
  * @param {number} [headingStart]
+ * @param {boolean} [escaped] whether to escape the HTML
  */
-const mdToHtml = (md, headingStart = 1) => {
+const mdToHtml = (md, headingStart = 1, escaped = true) => {
     let html = '';
 
     const escape = string => new Option(string).innerHTML;
     const inlineEscape = string =>
-        escape(string)
+        (escaped ? escape(string) : string)
             .replace(/!\[([^\]]*)]\(([^(]+)\)/g, '<img alt="$1" src="$2">') // image
             .replace(/\[([^\]]+)]\(([^(]+?)\)/g, '<a href="$2">$1</a>') // link
             .replace(/`([^`]+)`/g, '<code>$1</code>') // code
@@ -1828,7 +1838,11 @@ const mdToHtml = (md, headingStart = 1) => {
         .split(/\n\n+/)
         .forEach(b => {
             const firstChar = b[0];
-            const replacement = replacements[firstChar];
+            const secondChar = b[1];
+            const replacement =
+                firstChar === '1' || secondChar === ' ' ?
+                    replacements[firstChar]
+                :   undefined;
             let i;
             html +=
                 replacement ?
@@ -3362,6 +3376,7 @@ const SETTINGS = [
         'shiftEnter',
         'ctrlEnter',
     ]),
+    new BooleanSetting('messages.markdown', true),
     'nina',
     $t('settings.nina._description'),
     new BooleanSetting('nina.enabled', true),
@@ -7356,14 +7371,83 @@ if (messagesSendHotkey) {
 
             switch (messagesSendHotkey) {
                 case 'shiftEnter':
-                    if (e.shiftKey) sendBtn.click();
-                    e.preventDefault();
+                    if (e.shiftKey) {
+                        sendBtn.click();
+                        e.preventDefault();
+                    }
                     break;
                 case 'ctrlEnter':
-                    if (e.ctrlKey) sendBtn.click();
-                    e.preventDefault();
+                    if (e.ctrlKey) {
+                        sendBtn.click();
+                        e.preventDefault();
+                    }
                     break;
             }
+        });
+    });
+}
+// endregion
+
+// region Feature messages.markdown
+if (getSetting('messages.markdown')) {
+    const awaitMathJax = () =>
+        new Promise(resolve => {
+            const interval = setInterval(() => {
+                if (unsafeWindow.MathJax) {
+                    clearInterval(interval);
+                    resolve(unsafeWindow.MathJax);
+                }
+            }, 10);
+        });
+
+    const inputFieldRegion = PREFIX('send-message-txt');
+
+    const dummyField = document.createElement('textarea');
+    dummyField.dataset.region = 'send-message-txt';
+    dummyField.classList.add('d-none');
+
+    ready(() => {
+        const messageApp = document.querySelector('.message-app');
+        const sendBtn = messageApp.querySelector(
+            '[data-action="send-message"]'
+        );
+        const inputField = messageApp.querySelector(
+            'textarea[data-region="send-message-txt"]'
+        );
+
+        inputField.dataset.region = inputFieldRegion;
+        inputField.after(dummyField);
+
+        dummyField.addEventListener('focus', () => {
+            inputField.focus();
+        });
+        sendBtn.addEventListener('click', () => {
+            inputField.value = '';
+        });
+
+        awaitMathJax().then(MathJax => {
+            const parseMarkdown = inputElem => {
+                const raw = inputElem.value;
+
+                const dummy = document.createElement('span');
+                dummy.innerText = raw.replace(
+                    /(?<!\\)\$(.*?)(?<!\\)\$/g,
+                    '\\($1\\)'
+                );
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub, dummy]);
+                const mathJaxed = dummy.innerHTML;
+
+                const markdowned = mdToHtml('\n' + mathJaxed, 1, false);
+
+                // Moodle does weird stuff with spaces (for 15 years...)
+                const spacecaped = markdowned.replaceAll('> <', '>&#32;<');
+
+                return raw.length > 0 ? spacecaped : '';
+            };
+            inputField.addEventListener('input', () => {
+                dummyField.value = parseMarkdown(inputField);
+            });
+            dummyField.value = parseMarkdown(inputField);
         });
     });
 }
