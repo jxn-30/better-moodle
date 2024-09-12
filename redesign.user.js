@@ -7746,7 +7746,7 @@ const NINA = {
         const activeWarnings = NINA.getActiveWarnings();
         activeWarnings[id] = warning;
         activeWarnings[id][keepUntilVar] = keepUntil;
-        activeWarnings[id][seenVar] = false;
+        activeWarnings[id][seenVar] ??= false;
         NINA.saveActiveWarnings(activeWarnings);
     },
     /**
