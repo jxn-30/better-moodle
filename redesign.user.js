@@ -29,7 +29,7 @@
 // @connect         api.pirateweather.net
 // @connect         weather.visualcrossing.com
 // @connect         wttr.in
-// @require         https://unpkg.com/darkreader@4.9.89/darkreader.js#sha512=15732894c8596b9ecd7360f88b3c41e84a04915f4dcc344eb008f10f9c3c419f6659223caa69db8df13c6dbf7a07d934f3f53afbff34b11b0cd1ed8614a79d0f
+// @require         https://unpkg.com/darkreader@4.9.92/darkreader.js#sha512=420e83f65829445bfaa38c8418c23054ece8b82e0129a594e420dd3f086c250d351fee9b29fa057a704ee6e288d77f81e1c3468cb54c8ccbb7f939a85065fc11
 // ==/UserScript==
 
 /* global M, require, DarkReader */
