@@ -91,6 +91,13 @@ const TRANSLATIONS = {
             close: 'Schließen',
             description: 'Beschreibung',
             instruction: 'Handlungsempfehlung',
+            msgType: {
+                ack: 'Bestätigung',
+                alert: 'Warnung',
+                cancel: 'Entwarnung',
+                error: 'Fehler',
+                update: 'Aktualisierung',
+            },
             notFound: {
                 title: 'MELDUNG NICHT MEHR VORHANDEN',
                 description:
@@ -847,6 +854,13 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
             close: 'Close',
             description: 'Description',
             instruction: 'Instruction',
+            msgType: {
+                ack: 'Acknowledgement',
+                alert: 'Alert',
+                cancel: 'Cancel',
+                error: 'Error',
+                update: 'Update',
+            },
             notFound: {
                 title: 'MESSAGE NO LONGER AVAILABLE',
                 description:
@@ -7578,18 +7592,10 @@ const NINA = {
             onset,
             expires,
             status,
+            msgType,
         } = NINA.getWarning(id) ?? NINA.defaultValues;
 
-        const severityEmoji =
-            severityEmojis[severity ?? CommonAlertingProtocol.Severity.UNKNOWN];
-
-        const modalTitle = `<span data-toggle="tooltip" data-original-title="${$t(
-            'nina.severity.name'
-        )}: ${
-            provider === 'DWD' ?
-                $t(`nina.severityWeather.${severity}`)
-            :   $t(`nina.severity.${severity}`)
-        }">${severityEmoji}</span> ${
+        const modalTitle = `${NINA.getSeverityBadge(severity, msgType)} ${
             title
         } <span class="small"><span class="badge badge-pill badge-secondary">${$t(
             `nina.status.${status}`
@@ -7793,16 +7799,6 @@ const NINA = {
         return Object.keys(NINA.getActiveWarnings()).length > 0;
     },
     /**
-     * Checks if there are unseen warnings
-     *
-     * @returns {boolean} Whether there are unseen warnings
-     */
-    hasUnseenWarnings: () => {
-        return Object.keys(NINA.getActiveWarnings()).some(
-            id => !NINA.getActiveWarnings()[id][seenVar]
-        );
-    },
-    /**
      * Checks if there are active warnings that are in a mega alarm state
      *
      * @returns {boolean} Whether there are active warnings that are in a mega alarm state
@@ -7810,8 +7806,9 @@ const NINA = {
     inMegaAlarm: () =>
         getSetting('nina.megaAlarm') &&
         Object.values(NINA.getActiveWarnings()).some(
-            ({ provider, severity, [seenVar]: seen }) =>
+            ({ provider, severity, msgType, [seenVar]: seen }) =>
                 !seen &&
+                msgType === CommonAlertingProtocol.MsgType.ALERT &&
                 ((getSetting('nina.notification') &&
                     provider !== 'DWD' &&
                     provider !== 'LHP' &&
@@ -7826,6 +7823,28 @@ const NINA = {
                             0) ||
                     (provider === 'LHP' && getSetting('nina.floodWarnings')))
         ),
+    /**
+     * Returns the HTML for a severity badge
+     *
+     * @param {int} severity The severity
+     * @param {string} provider The provider
+     * @param {string} msgType The message type
+     * @returns {string} The HTML for a severity badge
+     */
+    getSeverityBadge: (severity, provider, msgType) =>
+        `<span data-original-title="${
+            msgType === CommonAlertingProtocol.MsgType.CANCEL ?
+                $t('nina.msgType.cancel')
+            :   `${$t('nina.severity.name')}: ${
+                    provider === 'DWD' ?
+                        $t(`nina.severityWeather.${severity}`)
+                    :   $t(`nina.severity.${severity}`)
+                }`
+        }"data-toggle="tooltip">${
+            msgType === CommonAlertingProtocol.MsgType.CANCEL ?
+                '🟢'
+            :   severityEmojis[severity]
+        }</span>`,
 };
 if (getSetting('nina.enabled')) {
     const ONE_SECOND = 1000;
@@ -8002,25 +8021,15 @@ if (getSetting('nina.enabled')) {
                                         description,
                                         severity,
                                         status,
+                                        msgType,
                                         provider,
                                         [seenVar]: seen,
                                     } = NINA.getWarning(id);
-                                    const severityEmoji =
-                                        severityEmojis[
-                                            severity ??
-                                                CommonAlertingProtocol.Severity
-                                                    .UNKNOWN
-                                        ];
-
-                                    const warnTitle = `<span data-toggle="tooltip" data-original-title="${$t(
-                                        'nina.severity.name'
-                                    )}: ${
-                                        provider === 'DWD' ?
-                                            $t(
-                                                `nina.severityWeather.${severity}`
-                                            )
-                                        :   $t(`nina.severity.${severity}`)
-                                    }">${severityEmoji}</span> ${
+                                    const warnTitle = `${NINA.getSeverityBadge(
+                                        severity,
+                                        provider,
+                                        msgType
+                                    )} ${
                                         title
                                     } <span class="small"><span class="badge badge-pill badge-secondary">${$t(
                                         `nina.status.${status}`
