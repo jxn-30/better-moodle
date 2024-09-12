@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.41.1](https://github.com/jxn-30/better-moodle/compare/1.41.0...1.41.1) (2024-09-12)
+
+
+### Bug Fixes
+
+* **ninaIntegration:** fix updates marking warning as new ([3fe4a2c](https://github.com/jxn-30/better-moodle/commit/3fe4a2c9ad430f5ab33f09141a5a41ef3ccfd635))
+
 ## [1.41.0](https://github.com/jxn-30/better-moodle/compare/1.40.2...1.41.0) (2024-09-10)
 
 
