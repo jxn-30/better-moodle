@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.42.0](https://github.com/jxn-30/better-moodle/compare/1.41.1...1.42.0) (2024-09-12)
+
+
+### Features
+
+* **messages.markdown:** Add markdown support to messages ([#380](https://github.com/jxn-30/better-moodle/issues/380)) ([39b66c1](https://github.com/jxn-30/better-moodle/commit/39b66c1277f97ce7c22244bf1e85f091518b80c0))
+
+
+### Bug Fixes
+
+* **ninaIntegration:** Fix  mega alarm triggering for cancelations ([#384](https://github.com/jxn-30/better-moodle/issues/384)) ([c4bcbca](https://github.com/jxn-30/better-moodle/commit/c4bcbca8b51dc17fc124d2513536c833205e8458))
+
 ## [1.41.1](https://github.com/jxn-30/better-moodle/compare/1.41.0...1.41.1) (2024-09-12)
 
 
