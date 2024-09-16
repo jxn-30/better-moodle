@@ -2,7 +2,7 @@
     "name": "uzl-better-moodle",
     "description": "Improves the new weird Moodle 4 UI on UzL-Moodle",
     "version": "1.42.0",
-    "packageManager": "yarn@4.4.1",
+    "packageManager": "yarn@4.5.0",
     "type": "module",
     "private": true,
     "scripts": {
