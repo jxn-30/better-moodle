@@ -7679,7 +7679,7 @@ const NINA = {
             msgType,
         } = NINA.getWarning(id) ?? NINA.defaultValues;
 
-        const modalTitle = `${NINA.getSeverityBadge(severity, msgType)} ${
+        const modalTitle = `${NINA.getSeverityBadge(severity, provider, msgType)} ${
             title
         } <span class="small"><span class="badge badge-pill badge-secondary">${$t(
             `nina.status.${status}`
