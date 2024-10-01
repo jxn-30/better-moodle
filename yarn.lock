@@ -2438,10 +2438,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:15.9.0":
-  version: 15.9.0
-  resolution: "globals@npm:15.9.0"
-  checksum: 10c0/de4b553e412e7e830998578d51b605c492256fb2a9273eaeec6ec9ee519f1c5aa50de57e3979911607fd7593a4066420e01d8c3d551e7a6a236e96c521aee36c
+"globals@npm:15.10.0":
+  version: 15.10.0
+  resolution: "globals@npm:15.10.0"
+  checksum: 10c0/fef8f320e88f01f1492fef1b04b056908e1f6726eeaffe3bca03247237300c2d86e71585ee641b62ba71460a6eaff0d6ca7fca284e61bd1b3f833c7ad68b160a
   languageName: node
   linkType: hard
 
@@ -4983,7 +4983,7 @@ __metadata:
     eslint-plugin-jsx-a11y: "npm:6.10.0"
     eslint-plugin-userscripts: "npm:0.5.5"
     fast-glob: "npm:3.3.2"
-    globals: "npm:15.9.0"
+    globals: "npm:15.10.0"
     jsx-dom: "npm:8.1.5"
     prettier: "npm:3.3.3"
     sass: "npm:1.79.3"
