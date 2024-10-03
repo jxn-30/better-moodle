@@ -1218,12 +1218,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"darkreader@npm:4.9.92":
-  version: 4.9.92
-  resolution: "darkreader@npm:4.9.92"
+"darkreader@npm:4.9.95":
+  version: 4.9.95
+  resolution: "darkreader@npm:4.9.95"
   dependencies:
     malevic: "npm:0.20.2"
-  checksum: 10c0/3910b4fcf443c4fa9abf941ceff3dcc1fdabca6834e52f4dcd3bfc00c67dca725d65b4784a19e720dbaee45455320a830ec192e162f606807afa7ee9642d73b5
+  checksum: 10c0/47b4e71076384b11fc95e0485cec4cfe9e90a074f9317ae1a12fbd1a05e38e47a9a621e726aaae632d449378572dbeaecf3d3a8aed7447603b9536de50fb3cdb
   languageName: node
   linkType: hard
 
@@ -4976,7 +4976,7 @@ __metadata:
     "@types/node": "npm:22.7.1"
     "@types/tampermonkey": "npm:5.0.3"
     classnames: "npm:2.5.1"
-    darkreader: "npm:4.9.92"
+    darkreader: "npm:4.9.95"
     eslint: "npm:9.11.1"
     eslint-config-prettier: "npm:9.1.0"
     eslint-plugin-jsdoc: "npm:50.2.4"
