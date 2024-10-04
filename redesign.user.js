@@ -5633,11 +5633,15 @@ const updateDarkReaderMode = (live = false) => {
 
                 ${prideLogoStyle}
 
-                /* fix for unreadable activities */
+                /* Replace mix-blend-mode: multiply with mix-blend-mode: hard-light */
                 .activity-item.hiddenactivity .description .course-description-item, 
                 .activity-item.hiddenactivity .activityiconcontainer, 
                 .activity-item.hiddenactivity .badge,
-                .editing .activity-item:hover .activityiconcontainer {
+                .editing .activity-item:hover .activityiconcontainer,
+                .editing .activity-item:hover .description .course-description-item, 
+                .editing .activity-item:hover .activityiconcontainer, 
+                .editing .activity-item:hover .badge,
+                .path-mod .automatic-completion-conditions .badge {
                     mix-blend-mode: hard-light !important;
                 }
             `,
