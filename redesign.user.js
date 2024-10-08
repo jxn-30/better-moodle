@@ -7422,6 +7422,8 @@ if (getSetting('messages.markdown')) {
 
     ready(() => {
         const messageApp = document.querySelector('.message-app');
+        if (!messageApp) return;
+
         const sendBtn = messageApp.querySelector(
             '[data-action="send-message"]'
         );
