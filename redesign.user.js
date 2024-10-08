@@ -7444,7 +7444,7 @@ if (getSetting('messages.markdown')) {
                 const raw = inputElem.value;
 
                 const dummy = document.createElement('span');
-                dummy.innerText = raw.replace(
+                dummy.innerHTML = raw.replace(
                     /(?<!\\)\$(.*?)(?<!\\)\$/g,
                     '\\($1\\)'
                 );
