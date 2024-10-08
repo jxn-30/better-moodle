@@ -34,7 +34,7 @@
         "@types/eslint": "9.6.1",
         "@types/eslint__js": "8.42.3",
         "@types/jquery": "3.5.31",
-        "@types/node": "22.7.1",
+        "@types/node": "22.7.5",
         "@types/tampermonkey": "5.0.3",
         "eslint": "9.11.1",
         "eslint-config-prettier": "9.1.0",
