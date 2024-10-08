@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.42.1](https://github.com/jxn-30/better-moodle/compare/1.42.0...1.42.1) (2024-10-08)
+
+
+### Bug Fixes
+
+* **darkmode:** Fix some unreadable texts ([#419](https://github.com/jxn-30/better-moodle/issues/419)) ([72e9370](https://github.com/jxn-30/better-moodle/commit/72e9370c2396363943def71c4ab8a136e25ac59b))
+* **markdownMessages:** Allow HTML inputs in markdown mode ([#412](https://github.com/jxn-30/better-moodle/issues/412)) ([e75f1d8](https://github.com/jxn-30/better-moodle/commit/e75f1d8909934dc3abfac70949dccf5c1fd1a6b7))
+* **markdownMessages:** Fix sometimes crashing when using Moodle as guest ([#413](https://github.com/jxn-30/better-moodle/issues/413)) ([19c2677](https://github.com/jxn-30/better-moodle/commit/19c267750e2e1ca8bffe502d756bea01507657a5))
+* **ninaIntegration:** Fix canceled events not showing as canceled on details page ([#414](https://github.com/jxn-30/better-moodle/issues/414)) ([8e24e30](https://github.com/jxn-30/better-moodle/commit/8e24e3009521765aa277b24e30fd12ef543bbb20))
+
 ## [1.42.0](https://github.com/jxn-30/better-moodle/compare/1.41.1...1.42.0) (2024-09-12)
 
 
