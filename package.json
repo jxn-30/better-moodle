@@ -30,13 +30,13 @@
         "typesafe-i18n": "5.26.2"
     },
     "devDependencies": {
-        "@eslint/js": "9.11.1",
+        "@eslint/js": "9.12.0",
         "@types/eslint": "9.6.1",
         "@types/eslint__js": "8.42.3",
         "@types/jquery": "3.5.31",
         "@types/node": "22.7.5",
         "@types/tampermonkey": "5.0.3",
-        "eslint": "9.11.1",
+        "eslint": "9.12.0",
         "eslint-config-prettier": "9.1.0",
         "eslint-plugin-jsdoc": "50.3.1",
         "eslint-plugin-jsx-a11y": "6.10.0",
