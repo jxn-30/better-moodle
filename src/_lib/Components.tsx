@@ -1,6 +1,10 @@
 import classNames from 'classnames';
+import { FeatureGroupID } from './FeatureGroup';
+import { FeatureID } from './Feature';
 import globalStyle from '../style/global.module.scss';
 import type { JSX } from 'jsx-dom';
+import { SettingTranslations } from './Setting';
+import { SimpleReady } from './CanBeReady';
 import sliderStyle from '../style/settings/SliderSetting.module.scss';
 import { githubPath, htmlToElements, mdToHtml, PREFIX } from './helpers';
 
@@ -127,14 +131,22 @@ export const Switch = ({ id, value }: SwitchComponent['props']): Switch => {
 
 // region Select
 type SelectOption = string | { key: string; title: string };
-export type SelectComponent = GenericSetting<
+export type SelectComponent<
+    Group extends FeatureGroupID,
+    Feat extends FeatureID<Group>,
+> = GenericSetting<
     string,
-    HTMLSelectElement,
+    Select<Group, Feat>,
     {
         options: SelectOption[] | Promise<SelectOption[]>;
     }
 >;
-type Select = SelectComponent['element'];
+type Select<
+    Group extends FeatureGroupID,
+    Feat extends FeatureID<Group>,
+> = HTMLSelectElement & {
+    applyTranslations: (translations: SettingTranslations<Group, Feat>) => void;
+};
 
 /**
  * creates a Select input
@@ -144,40 +156,75 @@ type Select = SelectComponent['element'];
  * @param attributes.options - the options of this select
  * @returns the switch element
  */
-export const Select = ({
+export const Select = <
+    Group extends FeatureGroupID,
+    Feat extends FeatureID<Group>,
+>({
     id,
     value,
     options,
-}: SelectComponent['props']): Select => {
+}: SelectComponent<Group, Feat>['props']): Select<Group, Feat> => {
     const Select = (
         <select id={id} className="custom-select col-12 col-md-auto"></select>
-    ) as HTMLSelectElement;
+    ) as Select<Group, Feat>;
 
     const optionsPromise =
         options instanceof Promise ? options : Promise.resolve(options);
 
-    void optionsPromise.then(options =>
-        options.forEach(option => {
-            let optionValue: string;
-            let title: string;
-            if (typeof option === 'string') {
-                optionValue = option;
-                // TODO: Translation
-                title = `settings.${id}.options.${option}`;
-            } else {
-                optionValue = option.key;
-                title = option.title;
-            }
-            const selected = optionValue === value;
-            Select.append(
-                (
+    const optionsToBeTranslated = new Set<HTMLOptionElement>();
+
+    const waitForOptions = new SimpleReady();
+
+    void optionsPromise
+        .then(options =>
+            options.forEach(option => {
+                let optionValue: string;
+                let title: string;
+                if (typeof option === 'string') {
+                    optionValue = option;
+                    title = `settings.${id}.options.${option}`;
+                } else {
+                    optionValue = option.key;
+                    title = option.title;
+                }
+                const selected = optionValue === value;
+                const el = (
                     <option value={optionValue} selected={selected}>
                         {title}
                     </option>
-                ) as HTMLOptionElement
-            );
-        })
-    );
+                ) as HTMLOptionElement;
+                Select.append(el);
+
+                if (typeof option === 'string') {
+                    optionsToBeTranslated.add(el);
+                }
+            })
+        )
+        .then(() => waitForOptions.ready());
+
+    /**
+     * Modifies the options of the select element to be translated if necessary
+     * @param translations - the translations object for this setting
+     * @returns undefined
+     */
+    const translate = (translations: SettingTranslations<Group, Feat>) =>
+        optionsToBeTranslated.forEach(option => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            option.textContent =
+                // @ts-expect-error still some issues with translation types
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+                translations.options[option.value]() ?? option.textContent;
+        });
+
+    Object.defineProperty(Select, 'applyTranslations', {
+        /**
+         * Modifies the options of the select element to be translated if necessary
+         * @param translations - the translations object for this setting
+         * @returns undefined
+         */
+        value: (translations: SettingTranslations<Group, Feat>) =>
+            waitForOptions.awaitReady().then(() => translate(translations)),
+    });
 
     return Select;
 };

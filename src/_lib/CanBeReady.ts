@@ -1,7 +1,7 @@
 /**
  * A helper class that provides methods to call functions as soon as the instance is ready
  */
-export default class CanBeReady {
+export default abstract class CanBeReady {
     #instanceIsReady = false;
     #instanceReadyCallbacks: ((...args: unknown[]) => unknown)[] = [];
 
@@ -47,5 +47,17 @@ export default class CanBeReady {
      */
     awaitReady() {
         return this.callWhenReady(() => this);
+    }
+}
+
+/**
+ * A simple implementation of CanBeReady
+ */
+export class SimpleReady extends CanBeReady {
+    /**
+     * Mark the instance as ready
+     */
+    ready() {
+        this.instanceReady();
     }
 }

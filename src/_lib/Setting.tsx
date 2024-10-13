@@ -7,8 +7,15 @@ import { require } from './require.js';
 import TempStorage from './TempStorage';
 import { UUID } from 'node:crypto';
 import { domID, PREFIX } from './helpers';
-import Feature, { FeatureID } from './Feature';
+import Feature, { FeatureID, FeatureTranslations } from './Feature';
 import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
+
+export type SettingTranslations<
+    Group extends FeatureGroupID,
+    Feat extends FeatureID<Group>,
+    T extends
+        FeatureTranslations<Group>[Feat] = FeatureTranslations<Group>[Feat],
+> = 'settings' extends keyof T ? T['settings'] : Record<string, never>;
 
 /**
  * A base class
@@ -178,6 +185,16 @@ export default abstract class Setting<
     }
 
     /**
+     * The translation of this setting
+     * @returns the translation of this setting
+     */
+    get Translation(): SettingTranslations<Group, Feat> {
+        // @ts-expect-error we need to find a way to type this correctly
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
+        return this.#feature?.Translation.settings[this.#id];
+    }
+
+    /**
      * The FormGroup for this setting
      * @returns the form group
      */
@@ -187,15 +204,14 @@ export default abstract class Setting<
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const title: LocalizedString =
             // @ts-expect-error we need to find a way to type this correctly
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
-            this.#feature?.Translation.settings?.[this.#id]?.name() ?? this.#id;
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            this.Translation?.name() ?? this.#id;
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const description: LocalizedString =
             // @ts-expect-error we need to find a way to type this correctly
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
-            this.#feature?.Translation.settings?.[this.#id]?.description() ??
-            this.#id;
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            this.Translation?.description() ?? this.#id;
 
         const descriptionBtn = (
             <button

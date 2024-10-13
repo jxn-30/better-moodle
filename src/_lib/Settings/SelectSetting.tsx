@@ -14,8 +14,8 @@ export class SelectSetting<
     Group,
     Feat,
     string,
-    SelectComponent['params'],
-    SelectComponent
+    SelectComponent<Group, Feat>['params'],
+    SelectComponent<Group, Feat>
 > {
     /**
      * Constructor
@@ -26,8 +26,12 @@ export class SelectSetting<
     constructor(
         id: string,
         defaultValue: string,
-        options: SelectComponent['params']['options']
+        options: SelectComponent<Group, Feat>['params']['options']
     ) {
         super(id, defaultValue, Select, { options });
+
+        void this.callWhenReady(() =>
+            this.formControl.applyTranslations(this.Translation)
+        );
     }
 }
