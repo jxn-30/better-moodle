@@ -1,11 +1,12 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import Config from './configs/_config';
+import { createHash } from 'crypto';
 import { defineConfig } from 'vite';
 import dotenv from 'dotenv';
 import fastGlob from 'fast-glob';
 import monkey from 'vite-plugin-monkey';
-import { version } from './package.json';
+import { dependencies, version } from './package.json';
 
 const PREFIX = 'better-moodle';
 
@@ -242,6 +243,9 @@ export default defineConfig({
                 'match': `${config.moodleUrl}/*`,
                 'run-at': 'document-body',
                 'connect': config.connects,
+                'require': [
+                    `https://unpkg.com/darkreader@${dependencies.darkreader}/darkreader.js#sha512=${createHash('sha512').update(fs.readFileSync('./node_modules/darkreader/darkreader.js')).digest('hex')}`,
+                ],
             },
             clientAlias: 'GM',
             build: {
