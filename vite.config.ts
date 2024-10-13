@@ -183,6 +183,11 @@ export default defineConfig({
         ],
     },
     css: {
+        preprocessorOptions: {
+            scss: {
+                api: 'modern-compiler',
+            },
+        },
         modules: {
             scopeBehaviour: 'global',
             exportGlobals: false,
