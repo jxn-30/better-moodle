@@ -7,6 +7,7 @@ import { requirePromise } from './require.js';
 import { SettingTranslations } from './Setting';
 import { SimpleReady } from './CanBeReady';
 import sliderStyle from '../style/settings/SliderSetting.module.scss';
+import { stringify } from '../i18n/i18n';
 import { githubPath, htmlToElements, mdToHtml, PREFIX } from './helpers';
 
 type IntrinsicElements = JSX.IntrinsicElements;
@@ -287,8 +288,7 @@ export const Slider = ({
     const setOutput = () => {
         const value = Number(Input.value);
         const percentageValue = ((value - min) / (max - min)) * 100;
-        // TODO: toLocaleString => use a helper and/or lang
-        Output.textContent = valueToLabel.get(value) ?? value.toLocaleString();
+        Output.textContent = valueToLabel.get(value) ?? stringify(value);
         Output.style.setProperty('--percentage', percentageValue.toString());
     };
 
@@ -326,10 +326,7 @@ export const Slider = ({
             );
         }
 
-        const title =
-            valueToLabel.get(currentStep) ??
-            // TODO: toLocaleString => use a helper and/or lang
-            currentStep.toLocaleString();
+        const title = valueToLabel.get(currentStep) ?? stringify(currentStep);
 
         labelDatalist.append(
             <option value={currentStep} title={title} label={title}></option>

@@ -30,3 +30,11 @@ for (const locale of locales) {
 export const isFeatureGroup = (
     id: string
 ): id is keyof Translation['features'] => id in LL.features;
+
+/**
+ * Turns a number into a string, localized to the current language
+ * @param num - the number to localize
+ * @returns the localized number
+ */
+export const stringify = (num: number) =>
+    num.toLocaleString(BETTER_MOODLE_LANG);
