@@ -24,10 +24,10 @@
             "separateMajorMinor": false
         },
         {
-            "groupName": "typescript-eslint",
+            "groupName": "sass",
             "lockFileMaintenance": { "enabled": true },
             "matchManagers": ["npm"],
-            "matchPackagePrefixes": ["@typescript-eslint"],
+            "matchDepNames": ["sass", "sass-embedded"],
             "rangeStrategy": "pin",
             "separateMajorMinor": false
         },
