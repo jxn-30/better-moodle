@@ -57,10 +57,6 @@ export default abstract class Setting<
         this.#id = id;
         this.#default = defaultValue;
 
-        // in V1, setting keys in storage were prefixed
-        // this migrates the old storage key for this setting
-        this.#migrateSettingStorage();
-
         this.#unsavedValue = this.savedValue;
 
         void this.callWhenReady(() => {
@@ -74,6 +70,10 @@ export default abstract class Setting<
                 'change',
                 () => (this.#unsavedValue = this.#formControl!.value)
             );
+
+            // in V1, setting keys in storage were prefixed
+            // this migrates the old storage key for this setting
+            this.#migrateSettingStorage();
         });
     }
 
@@ -96,16 +96,13 @@ export default abstract class Setting<
         const undefinedValue = crypto.randomUUID();
         const oldValue: UUID | Type = GM_getValue(key, undefinedValue);
         if (oldValue !== undefinedValue) {
-            void this.callWhenReady(() => {
-                if (!GM_listValues().includes(this.settingKey)) {
-                    const migratedValue =
-                        this.migrateStoredValue(oldValue) ?? (oldValue as Type);
-                    GM_setValue(this.settingKey, migratedValue);
-                    this.#formControl!.value = this.#unsavedValue =
-                        migratedValue;
-                    this.save();
-                }
-            });
+            if (!GM_listValues().includes(this.settingKey)) {
+                const migratedValue =
+                    this.migrateStoredValue(oldValue) ?? (oldValue as Type);
+                GM_setValue(this.settingKey, migratedValue);
+                this.#formControl!.value = this.#unsavedValue = migratedValue;
+                this.save();
+            }
             GM_deleteValue(key);
         } else if (!key.startsWith(__PREFIX__)) {
             this.#migrateSettingStorage(PREFIX(key));
