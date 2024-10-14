@@ -111,6 +111,14 @@ dotenv.populate(process.env, {
     VITE_INCLUDE_FEATURES_GLOB: featureGlob,
 });
 
+const requires: string[] = [];
+
+if (allIncludedFeatureGroups.has('darkmode')) {
+    requires.push(
+        `https://unpkg.com/darkreader@${dependencies.darkreader}/darkreader.js#sha512=${createHash('sha512').update(fs.readFileSync('./node_modules/darkreader/darkreader.js')).digest('hex')}`
+    );
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
     esbuild: {
@@ -243,9 +251,7 @@ export default defineConfig({
                 'match': `${config.moodleUrl}/*`,
                 'run-at': 'document-body',
                 'connect': config.connects,
-                'require': [
-                    `https://unpkg.com/darkreader@${dependencies.darkreader}/darkreader.js#sha512=${createHash('sha512').update(fs.readFileSync('./node_modules/darkreader/darkreader.js')).digest('hex')}`,
-                ],
+                'require': requires,
             },
             clientAlias: 'GM',
             build: {
