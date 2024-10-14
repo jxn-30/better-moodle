@@ -28,6 +28,10 @@ type TypedRequire = <M extends Module[]>(
     ready: (...args: ModulesReturnType<M>) => void
 ) => void;
 
+export type PromisedRequire = <M extends Module[]>(
+    modules: M
+) => Promise<ModulesReturnType<M>>;
+
 declare global {
     declare const requirejs: TypedRequire;
 }
