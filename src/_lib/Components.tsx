@@ -3,6 +3,7 @@ import { FeatureGroupID } from './FeatureGroup';
 import { FeatureID } from './Feature';
 import globalStyle from '../style/global.module.scss';
 import type { JSX } from 'jsx-dom';
+import { requirePromise } from './require.js';
 import { SettingTranslations } from './Setting';
 import { SimpleReady } from './CanBeReady';
 import sliderStyle from '../style/settings/SliderSetting.module.scss';
@@ -422,6 +423,47 @@ export const FieldSet = ({
         </div>
     ) as HTMLDivElement;
 
+    const expandedSpan = (
+        <span class="expanded-icon icon-no-margin p-2"></span>
+    ) as HTMLSpanElement;
+
+    const collapsedChevron = (
+        <span class="dir-rtl-hide"></span>
+    ) as HTMLSpanElement;
+    const collapsedRtlChevron = (
+        <span class="dir-ltr-hide"></span>
+    ) as HTMLSpanElement;
+    const collapsedSpan = (
+        <span class="collapsed-icon icon-no-margin p-2">
+            {collapsedChevron}
+            {collapsedRtlChevron}
+        </span>
+    ) as HTMLSpanElement;
+
+    void requirePromise(['core/templates', 'core/str'] as const).then(
+        ([templates, str]) => {
+            void str
+                .get_strings([
+                    { key: 'expand', component: 'core' },
+                    { key: 'collapse', component: 'core' },
+                ])
+                .then(([expand, collapse]) => {
+                    expandedSpan.title = expand;
+                    collapsedSpan.title = collapse;
+                });
+
+            void templates
+                .renderPix('t/expandedchevron', 'core')
+                .then(icon => (expandedSpan.innerHTML = icon));
+            void templates
+                .renderPix('t/collapsedchevron', 'core')
+                .then(icon => (collapsedChevron.innerHTML = icon));
+            void templates
+                .renderPix('t/collapsedchevron_rtl', 'core')
+                .then(icon => (collapsedRtlChevron.innerHTML = icon));
+        }
+    );
+
     const collapseBtn = (
         <a
             class={classNames(
@@ -431,28 +473,8 @@ export const FieldSet = ({
             href={`#${container.id}`}
             data-toggle="collapse"
         >
-            {/* TODO: Add translated "Einklappen" and "Ausklappen" to spans */}
-            <span className="expanded-icon icon-no-margin p-2">
-                <i className="icon fa fa-chevron-down fa-fw"></i>
-            </span>
-            <span
-                className="collapsed-icon icon-no-margin p-2"
-                title="Ausklappen"
-            >
-                <span className="dir-rtl-hide">
-                    <i
-                        className="icon fa fa-chevron-right fa-fw "
-                        aria-hidden="true"
-                    ></i>
-                </span>
-                <span className="dir-ltr-hide">
-                    <i
-                        className="icon fa fa-chevron-left fa-fw "
-                        aria-hidden="true"
-                    ></i>
-                </span>
-            </span>
-            <span className="sr-only">{title}</span>
+            {expandedSpan}
+            {collapsedSpan}
         </a>
     ) as HTMLAnchorElement;
 
