@@ -30,4 +30,13 @@ export class SliderSetting<
     ) {
         super(id, defaultValue, Slider, params);
     }
+
+    /**
+     * Turns the old storage format (string) into the new format (number)
+     * @param oldValue - the old value
+     * @returns the numbered value
+     */
+    migrateStoredValue(oldValue: unknown): number {
+        return Number(oldValue);
+    }
 }

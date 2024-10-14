@@ -78,6 +78,16 @@ export default abstract class Setting<
     }
 
     /**
+     * Migrates the stored value of this setting from an old format to the new one
+     * Extending classes should override this method if they need to migrate the stored value
+     * @param oldValue - the old stored value
+     * @returns the new value
+     */
+    migrateStoredValue(oldValue: unknown): Type {
+        return oldValue as Type;
+    }
+
+    /**
      * This migrates a settings storage from an old key to a new one.
      * It tries both, a prefixed (V1) and a non-prefixed version of the key
      * @param key - the old key of this setting
@@ -88,9 +98,11 @@ export default abstract class Setting<
         if (oldValue !== undefinedValue) {
             void this.callWhenReady(() => {
                 if (!GM_listValues().includes(this.settingKey)) {
-                    GM_setValue(this.settingKey, oldValue);
+                    const migratedValue =
+                        this.migrateStoredValue(oldValue) ?? (oldValue as Type);
+                    GM_setValue(this.settingKey, migratedValue);
                     this.#formControl!.value = this.#unsavedValue =
-                        oldValue as Type;
+                        migratedValue;
                     this.save();
                 }
             });

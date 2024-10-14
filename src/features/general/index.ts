@@ -3,6 +3,7 @@ import FeatureGroup from '../../_lib/FeatureGroup';
 import { languages } from '../../i18n/i18n';
 import { SelectSetting } from '../../_lib/Settings/SelectSetting';
 
+// TODO: Implement updateNotification
 const updateNotification = new BooleanSetting('updateNotification', true);
 const languageSetting = new SelectSetting('language', 'auto', [
     'auto',
