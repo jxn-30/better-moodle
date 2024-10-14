@@ -3,11 +3,15 @@
 
 import CoreModalEvents from './require.js/core/modal_events';
 import CoreModalFactory from './require.js/core/modal_factory';
+import CoreStr from './require.js/core/str';
+import CoreTemplates from './require.js/core/templates';
 import CoreToast from './require.js/core/toast';
 
 interface ModuleMap {
     'core/modal_factory': CoreModalFactory;
     'core/modal_events': CoreModalEvents;
+    'core/str': CoreStr;
+    'core/templates': CoreTemplates;
     'core/toast': CoreToast;
 }
 
