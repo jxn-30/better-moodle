@@ -89,6 +89,20 @@ type RootTranslation = {
                      * W​ä​h​l​e​ ​d​e​n​ ​M​o​d​u​s​ ​d​e​s​ ​D​a​r​k​m​o​d​e​s​ ​(​a​n​,​ ​a​u​s​,​ ​a​u​t​o​m​a​t​i​s​c​h​)
                      */
                     description: string;
+                    options: {
+                        /**
+                         * A​n
+                         */
+                        on: string;
+                        /**
+                         * A​u​s
+                         */
+                        off: string;
+                        /**
+                         * A​u​t​o​m​a​t​i​s​c​h​ ​(​S​y​s​t​e​m​e​i​n​s​t​e​l​l​u​n​g​ ​b​e​f​o​l​g​e​n​)
+                         */
+                        auto: string;
+                    };
                 };
                 brightness: {
                     /**
@@ -334,6 +348,20 @@ export type TranslationFunctions = {
                      * Wähle den Modus des Darkmodes (an, aus, automatisch)
                      */
                     description: () => LocalizedString;
+                    options: {
+                        /**
+                         * An
+                         */
+                        on: () => LocalizedString;
+                        /**
+                         * Aus
+                         */
+                        off: () => LocalizedString;
+                        /**
+                         * Automatisch (Systemeinstellung befolgen)
+                         */
+                        auto: () => LocalizedString;
+                    };
                 };
                 brightness: {
                     /**

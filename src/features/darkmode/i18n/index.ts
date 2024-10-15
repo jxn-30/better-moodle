@@ -8,11 +8,11 @@ export const de = {
         mode: {
             name: 'Modus',
             description: 'Wähle den Modus des Darkmodes (an, aus, automatisch)',
-            // options: {
-            //     on: 'An',
-            //     off: 'Aus',
-            //     auto: 'Automatisch (Systemeinstellung befolgen)',
-            // },
+            options: {
+                on: 'An',
+                off: 'Aus',
+                auto: 'Automatisch (Systemeinstellung befolgen)',
+            },
         },
         brightness: {
             name: 'Helligkeit',
@@ -48,11 +48,11 @@ export const en = {
         mode: {
             name: 'Mode',
             description: 'Select a mode for Darkmode (on, off, auto)',
-            // options: {
-            //     on: 'On',
-            //     off: 'Off',
-            //     auto: 'Auto (follow system setting)',
-            // },
+            options: {
+                on: 'On',
+                off: 'Off',
+                auto: 'Auto (follow system setting)',
+            },
         },
         brightness: {
             name: 'Brightness',
