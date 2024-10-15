@@ -40,6 +40,8 @@ export default [
                 __GITHUB_URL__: 'readonly',
                 __VERSION__: 'readonly',
                 __PREFIX__: 'readonly',
+                // DarkReader is included via @require
+                DarkReader: 'readonly',
             },
             parserOptions: {
                 project: true,

@@ -114,3 +114,20 @@ export const mdToHtml = (md: string, headingStart = 1) => {
  */
 export const htmlToElements = (html: string) =>
     new DOMParser().parseFromString(html, 'text/html').body.children;
+
+/**
+ * Debounces a function to be called after a certain delay.
+ * @param fn - the function to be debounced
+ * @param delay - the delay in milliseconds
+ * @returns the debounced function
+ */
+export const debounce = <Args extends unknown[]>(
+    fn: (...args: Args) => void,
+    delay = 100
+) => {
+    let timeout: ReturnType<typeof setTimeout>;
+    return (...args: Args) => {
+        if (timeout) clearTimeout(timeout);
+        timeout = setTimeout(() => fn.apply(this, args), delay);
+    };
+};
