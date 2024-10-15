@@ -66,6 +66,7 @@ type GenericSettingProps<Type, Props extends Record<string, unknown>> = Omit<
     };
 type GenericSettingElement<Type, Base extends JSX.Element> = Base & {
     value: Type;
+    disabled: boolean;
 };
 export interface GenericSetting<
     Type,
@@ -124,6 +125,23 @@ export const Switch = ({ id, value }: SwitchComponent['props']): Switch => {
          */
         set(newVal: boolean) {
             Input.checked = newVal;
+        },
+    });
+
+    Object.defineProperty(Switch, 'disabled', {
+        /**
+         * getter for the current disabled state of the switch
+         * @returns the current disabled state of the switch
+         */
+        get() {
+            return Input.disabled;
+        },
+        /**
+         * setter for the disabled state of the switch
+         * @param newVal - the new disabled state of the switch
+         */
+        set(newVal: boolean) {
+            Input.disabled = newVal;
         },
     });
 
@@ -362,6 +380,23 @@ export const Slider = ({
         set(newVal: number) {
             Input.value = newVal.toString();
             setOutput();
+        },
+    });
+
+    Object.defineProperty(Slider, 'disabled', {
+        /**
+         * getter for the current disabled state of the slider
+         * @returns the current disabled state of the slider
+         */
+        get() {
+            return Input.disabled;
+        },
+        /**
+         * setter for the disabled state of the slider
+         * @param newVal - the new disabled state of the slider
+         */
+        set(newVal: boolean) {
+            Input.disabled = newVal;
         },
     });
 

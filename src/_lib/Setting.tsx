@@ -17,6 +17,8 @@ export type SettingTranslations<
         FeatureTranslations<Group>[Feat] = FeatureTranslations<Group>[Feat],
 > = 'settings' extends keyof T ? T['settings'] : Record<string, never>;
 
+type ComparisonCondition = '==' | '!=' | '>' | '<';
+
 /**
  * A base class
  */
@@ -38,6 +40,8 @@ export default abstract class Setting<
     #formControl: Component['element'] | undefined;
 
     #unsavedValue: Type;
+
+    #conditionalDisabledStates = new Map<string, boolean>();
 
     /**
      * Constructor
@@ -334,6 +338,50 @@ export default abstract class Setting<
         void this.callWhenReady(() =>
             this.formControl.addEventListener('input', listener)
         );
+        return this;
+    }
+
+    /**
+     * Conditionally disables this setting based on the value of another setting
+     * @param otherSetting - the other setting to check the value of
+     * @param condition - the condition to use for comparison
+     * @param comparisonValue - the value to compare against
+     * @returns the setting itself
+     */
+    disabledIf<S extends Setting>(
+        otherSetting: S,
+        condition: ComparisonCondition,
+        comparisonValue: S['value']
+    ) {
+        const uuid = crypto.randomUUID();
+
+        /**
+         * Check if the setting should be disabled.
+         * Disabled if the condition is met.
+         */
+        const check = () => {
+            if (!this.#formControl) return;
+
+            const currentValue = otherSetting.#unsavedValue;
+            let isDisabled = false;
+            switch (condition) {
+                case '==':
+                    isDisabled = currentValue === comparisonValue;
+                    break;
+                case '!=':
+                    isDisabled = currentValue !== comparisonValue;
+                    break;
+            }
+            this.#conditionalDisabledStates.set(uuid, isDisabled);
+
+            this.#formControl.disabled = Array.from(
+                this.#conditionalDisabledStates.values()
+            ).some(s => s);
+        };
+
+        otherSetting.onChange(check);
+        void this.callWhenReady(() => otherSetting.callWhenReady(check));
+
         return this;
     }
 }
