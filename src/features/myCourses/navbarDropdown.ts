@@ -1,12 +1,21 @@
 import { BooleanSetting } from '../../_lib/Settings/BooleanSetting';
 import Feature from '../../_lib/Feature';
-import Setting from '../../_lib/Setting';
+import { getAvailableCourseFiltersAsOptions } from '../../_lib/myCourses';
+import { SelectSetting } from '../../_lib/Settings/SelectSetting';
 
-const settings = new Set<Setting>();
-settings.add(new BooleanSetting('enabled', true));
+const enabled = new BooleanSetting('enabled', true).addAlias(
+    'myCourses.navbarDropdown'
+);
+const filter = new SelectSetting(
+    'filter',
+    '_sync',
+    getAvailableCourseFiltersAsOptions()
+)
+    .addAlias('myCourses.navbarDropdownFilter')
+    .disabledIf(enabled, '==', false);
 
 export default Feature.register({
-    settings,
+    settings: new Set([enabled, filter]),
     /**
      * TODO
      */

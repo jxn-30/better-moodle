@@ -59,6 +59,7 @@ export class Modal extends CanBeReady {
      */
     async #onReady() {
         super.instanceReady();
+        console.log('modal ready!');
         await this.#prependFooter();
     }
 

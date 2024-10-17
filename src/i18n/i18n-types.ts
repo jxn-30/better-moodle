@@ -252,6 +252,22 @@ type RootTranslation = {
                              */
                             description: string;
                         };
+                        filter: {
+                            /**
+                             * F​i​l​t​e​r​ ​d​e​r​ ​K​u​r​s​-​D​r​o​p​d​o​w​n
+                             */
+                            name: string;
+                            /**
+                             * W​e​l​c​h​e​ ​K​u​r​s​e​ ​s​o​l​l​e​n​ ​i​n​ ​d​e​r​ ​D​r​o​p​d​o​w​n​ ​a​n​g​e​z​e​i​g​t​ ​w​e​r​d​e​n​?​ ​E​s​ ​s​t​e​h​e​n​ ​d​i​e​ ​F​i​l​t​e​r​ ​d​e​r​ ​"​M​e​i​n​e​ ​K​u​r​s​e​"​-​S​e​i​t​e​ ​z​u​r​ ​V​e​r​f​ü​g​u​n​g​.
+                             */
+                            description: string;
+                            options: {
+                                /**
+                                 * [​M​i​t​ ​A​u​s​w​a​h​l​ ​a​u​f​ ​"​M​e​i​n​e​ ​K​u​r​s​e​"​-​S​e​i​t​e​ ​s​y​n​c​h​r​o​n​i​s​i​e​r​e​n​]
+                                 */
+                                _sync: string;
+                            };
+                        };
                     };
                 };
                 cardsPerRow: {
@@ -510,6 +526,22 @@ export type TranslationFunctions = {
                              * Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.
                              */
                             description: () => LocalizedString;
+                        };
+                        filter: {
+                            /**
+                             * Filter der Kurs-Dropdown
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Welche Kurse sollen in der Dropdown angezeigt werden? Es stehen die Filter der "Meine Kurse"-Seite zur Verfügung.
+                             */
+                            description: () => LocalizedString;
+                            options: {
+                                /**
+                                 * [Mit Auswahl auf "Meine Kurse"-Seite synchronisieren]
+                                 */
+                                _sync: () => LocalizedString;
+                            };
                         };
                     };
                 };

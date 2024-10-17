@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { FeatureGroupID } from './FeatureGroup';
 import { FeatureID } from './Feature';
+import { getLoadingSpinner } from './DOM';
 import globalStyle from '../style/global.module.scss';
 import type { JSX } from 'jsx-dom';
 import { requirePromise } from './require.js';
@@ -150,7 +151,7 @@ export const Switch = ({ id, value }: SwitchComponent['props']): Switch => {
 // endregion
 
 // region Select
-type SelectOption = string | { key: string; title: string };
+export type SelectOption = string | { key: string; title: string };
 export type SelectComponent<
     Group extends FeatureGroupID,
     Feat extends FeatureID<Group>,
@@ -195,6 +196,14 @@ export const Select = <
 
     const waitForOptions = new SimpleReady();
 
+    const loadingOption = (
+        <option selected disabled>
+            Loading...
+        </option>
+    ) as HTMLOptionElement;
+    void getLoadingSpinner().then(spinner => loadingOption.append(spinner));
+    Select.append(loadingOption);
+
     void optionsPromise
         .then(options =>
             options.forEach(option => {
@@ -220,6 +229,7 @@ export const Select = <
                 }
             })
         )
+        .then(() => loadingOption.remove())
         .then(() => waitForOptions.ready());
 
     /**
