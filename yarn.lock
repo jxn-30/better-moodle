@@ -73,11 +73,11 @@ __metadata:
   linkType: hard
 
 "@eslint/plugin-kit@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "@eslint/plugin-kit@npm:0.2.0"
+  version: 0.2.1
+  resolution: "@eslint/plugin-kit@npm:0.2.1"
   dependencies:
     levn: "npm:^0.4.1"
-  checksum: 10c0/00b92bc52ad09b0e2bbbb30591c02a895f0bec3376759562590e8a57a13d096b22f8c8773b6bf791a7cf2ea614123b3d592fd006c51ac5fd0edbb90ea6d8760c
+  checksum: 10c0/34b1ecb35df97b0adeb6a43366fc1b8aa1a54d23fc9753019277e80a7295724fddb547a795fd59c9eb56d690bbf0d76d7f2286cb0f5db367a86a763d5acbde5f
   languageName: node
   linkType: hard
 
@@ -153,11 +153,11 @@ __metadata:
   linkType: hard
 
 "acorn@npm:^8.12.0":
-  version: 8.12.1
-  resolution: "acorn@npm:8.12.1"
+  version: 8.13.0
+  resolution: "acorn@npm:8.13.0"
   bin:
     acorn: bin/acorn
-  checksum: 10c0/51fb26cd678f914e13287e886da2d7021f8c2bc0ccc95e03d3e0447ee278dd3b40b9c57dc222acd5881adcf26f3edc40901a4953403232129e3876793cd17386
+  checksum: 10c0/f35dd53d68177c90699f4c37d0bb205b8abe036d955d0eb011ddb7f14a81e6fd0f18893731c457c1b5bd96754683f4c3d80d9a5585ddecaa53cdf84e0b3d68f7
   languageName: node
   linkType: hard
 
