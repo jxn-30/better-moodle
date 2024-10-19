@@ -1,25 +1,30 @@
 import { BooleanSetting } from '../../_lib/Settings/BooleanSetting';
 import Feature from '../../_lib/Feature';
-import fullWidthStyle from './fullWidth.module.scss';
 
 const enabled = new BooleanSetting('enabled', true).onInput(() =>
     enabled.feature?.reload()
 );
 
 /**
- * Adds a class to the body that enables full-width mode.
+ * Do the DOM operations required to set or unset full width.
+ * @param state - Whether to set full width or not.
  */
-const onload = () => {
-    if (enabled.value) {
-        document.body.classList.add(fullWidthStyle.fullWidth);
-    }
+const setFullWidth = (state: boolean) => {
+    document.body.classList.toggle('limitedwidth', !state);
+    window.dispatchEvent(new Event('resize'));
 };
 
 /**
- * Removes a class to the body that enables full-width mode.
- * @returns the result of the operation
+ * Sets or removes the classes that limit width.
+ * @returns void
  */
-const onunload = () => document.body.classList.remove(fullWidthStyle.fullWidth);
+const onload = () => setFullWidth(enabled.value);
+
+/**
+ * Disables fullwidth-mode.
+ * @returns void
+ */
+const onunload = () => setFullWidth(false);
 
 export default Feature.register({
     settings: new Set([enabled]),
