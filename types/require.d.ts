@@ -1,6 +1,7 @@
 // Definitions for the require.js module loader.
 // or at least the definitions required for Better-Moodle.
 
+import BlockMyOverviewRepository from './require.js/block/myoverview/repository';
 import BlockMyOverviewSelectors from './require.js/block/myoverview/selectors';
 import CoreModalEvents from './require.js/core/modal_events';
 import CoreModalFactory from './require.js/core/modal_factory';
@@ -16,6 +17,7 @@ interface ModuleMap {
     'core/toast': CoreToast;
 
     'block_myoverview/selectors': BlockMyOverviewSelectors;
+    'block_myoverview/repository': BlockMyOverviewRepository;
 }
 
 type Module = keyof ModuleMap;
