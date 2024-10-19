@@ -27,12 +27,15 @@ const releaseDownloadUrl = `${githubUrl}/releases/latest/download`;
 
 const featuresBase = '/src/features/';
 const allFeatureGroups = fastGlob
-    .sync(`.${featuresBase}*/index.ts`)
-    .map(f => f.replace(`.${featuresBase}`, '').replace('/index.ts', ''));
+    .sync(`.${featuresBase}*/index.{ts,tsx}`)
+    .map(f => f.replace(`.${featuresBase}`, '').replace(/\/index\.tsx?$/, ''));
 const allFeatures = fastGlob
-    .sync(`.${featuresBase}*/!(index).ts`)
+    .sync(`.${featuresBase}*/!(index).{ts,tsx}`)
     .map(f =>
-        f.replace(`.${featuresBase}`, '').replace('.ts', '').replace('/', '.')
+        f
+            .replace(`.${featuresBase}`, '')
+            .replace(/\.tsx?$/, '')
+            .replace('/', '.')
     )
     // anything with more than one dot is not a feature but an extra file
     .filter(f => /^[^.]+\.[^.]+$/.test(f));
@@ -93,7 +96,7 @@ if (allIncludedFeatureGroups.size === 1) {
     allIncludedFeatureGroups.add(crypto.randomUUID());
 }
 
-const featureGroupsGlob = `${featuresBase}{${Array.from(allIncludedFeatureGroups.values()).join(',')}}/index.ts`;
+const featureGroupsGlob = `${featuresBase}{${Array.from(allIncludedFeatureGroups.values()).join(',')}}/index.{ts,tsx}`;
 
 // brace expansion wouldn't work with no elements or a single element only
 while (allIncludedFeatures.size <= 1) {
@@ -102,7 +105,7 @@ while (allIncludedFeatures.size <= 1) {
 
 const featureGlob = `${featuresBase}{${Array.from(allIncludedFeatures.values())
     .map(f => (f.includes('.') ? f.replace('.', '/') : `${f}/!(index)`))
-    .join(',')}}.ts`;
+    .join(',')}}.{ts,tsx}`;
 
 // @ts-expect-error because process.env may also include undefined values
 dotenv.populate(process.env, {

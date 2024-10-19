@@ -7,21 +7,23 @@ import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
 // which throws a
 // `ReferenceError: can't access lexical declaration 'FeatureGroup' before initialization`
 
-const featureGroupImports: Record<
-    string,
-    ReturnType<(typeof FeatureGroup)['register']>
-> = import.meta.glob(import.meta.env.VITE_INCLUDE_FEATURE_GROUPS_GLOB, {
-    import: 'default',
-    eager: true,
-});
+const featureGroupImports = Object.fromEntries(
+    Object.entries<ReturnType<(typeof FeatureGroup)['register']>>(
+        import.meta.glob(import.meta.env.VITE_INCLUDE_FEATURE_GROUPS_GLOB, {
+            import: 'default',
+            eager: true,
+        })
+    ).map(([key, value]) => [key.replace(/\.tsx?$/, ''), value])
+);
 
-const featureImports: Record<
-    string,
-    ReturnType<(typeof Feature)['register']>
-> = import.meta.glob(import.meta.env.VITE_INCLUDE_FEATURES_GLOB, {
-    import: 'default',
-    eager: true,
-});
+const featureImports = Object.fromEntries(
+    Object.entries<ReturnType<(typeof Feature)['register']>>(
+        import.meta.glob(import.meta.env.VITE_INCLUDE_FEATURES_GLOB, {
+            import: 'default',
+            eager: true,
+        })
+    ).map(([key, value]) => [key.replace(/\.tsx?$/, ''), value])
+);
 
 /**
  * inits a feature by instantiating the feature class and calling its init method
@@ -35,7 +37,7 @@ const initFeature = (
 ) => {
     const Feature =
         featureImports[
-            `${import.meta.env.VITE_FEATURES_BASE}${group.id}/${featureId}.ts`
+            `${import.meta.env.VITE_FEATURES_BASE}${group.id}/${featureId}`
         ];
     if (!Feature) return;
     const feature = new Feature(featureId, group);
