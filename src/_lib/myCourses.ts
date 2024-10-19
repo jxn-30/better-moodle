@@ -2,7 +2,7 @@ import { getDocument } from './network';
 import { requirePromise } from './require.js';
 import { SelectOption } from './Components';
 
-interface CourseFilter {
+export interface CourseFilter {
     classification: string;
     customfieldname: string;
     customfieldvalue: string;
@@ -11,6 +11,7 @@ interface CourseFilter {
 }
 
 const availableFilters: CourseFilter[] = [];
+let activeFilter: CourseFilter | null = null;
 
 /**
  * Gets all available course filters / groupings from the myCourses page.
@@ -36,13 +37,18 @@ export const getAvailableCourseFilters = async (): Promise<CourseFilter[]> => {
         doc.querySelectorAll<HTMLAnchorElement>(
             '#groupingdropdown + .dropdown-menu [data-filter="grouping"]'
         )
-    ).map(group => ({
-        classification: group.dataset.pref ?? '',
-        customfieldname,
-        customfieldvalue: group.dataset.customfieldvalue ?? '',
-        active: group.ariaCurrent === 'true',
-        name: group.textContent?.trim() ?? '',
-    }));
+    ).map(filterEl => {
+        const active = filterEl.ariaCurrent === 'true';
+        const filter = {
+            classification: filterEl.dataset.pref ?? '',
+            customfieldname,
+            customfieldvalue: filterEl.dataset.customfieldvalue ?? '',
+            active: filterEl.ariaCurrent === 'true',
+            name: filterEl.textContent?.trim() ?? '',
+        };
+        if (active) activeFilter = filter;
+        return filter;
+    });
     availableFilters.splice(0, availableFilters.length, ...filters);
     return availableFilters;
 };
@@ -64,3 +70,9 @@ export const getAvailableCourseFiltersAsOptions = (): Promise<SelectOption[]> =>
             // add a sync option as first item
             .toSpliced(0, 0, '_sync')
     );
+
+/**
+ * Gets the currently active course filter / grouping from the myCourses page.
+ * @returns the active course filter
+ */
+export const getActiveFilter = () => activeFilter;
