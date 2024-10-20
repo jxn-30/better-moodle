@@ -14,4 +14,7 @@ export default {
     changelog: 'Changelog',
     requireReload:
         'The changes of this setting will only take effect after reloading the page.<br/>Saving the settings will therefore automatically reload the page.',
+    tags: {
+        fun: 'Fun setting',
+    },
 } satisfies Translation['settings'];

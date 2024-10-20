@@ -23,6 +23,11 @@ export const de = {
             description:
                 'Blendet Einstellungen aus, die gerade deaktiviert sind (z.\xa0B. weil sie von einer anderen Einstellung abhängig sind).',
         },
+        hideFunSettings: {
+            name: 'Spaß-Einstellungen ausblenden',
+            description:
+                'Blendet Einstellungen aus, die nur für mehr Spaß im Moodle da sind.',
+        },
     },
     features: {
         fullWidth: fullWidth.de,
@@ -50,6 +55,10 @@ export const en = {
             name: 'Hide disabled settings',
             description:
                 'Hides settings that are currently disabled (e.g. because they depend on another setting).',
+        },
+        hideFunSettings: {
+            name: 'Hide fun settings',
+            description: 'Hides settings that are just for more fun in Moodle.',
         },
     },
     features: {

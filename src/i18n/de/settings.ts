@@ -1,4 +1,5 @@
 import type { BaseTranslation } from '../i18n-types';
+import { Tag } from '../../_lib/Setting';
 
 export default {
     newBadge: 'Neu!',
@@ -14,4 +15,7 @@ export default {
     changelog: 'Changelog',
     requireReload:
         'Die Änderungen dieser Einstellung werden erst nach einem Neuladen der Seite übernommen.<br/>Das Speichern der Einstellungen führt daher automatisch zu einem Neuladen der Seite.',
+    tags: {
+        fun: 'Spaßeinstellung',
+    } satisfies Record<Tag, string>,
 } satisfies BaseTranslation;

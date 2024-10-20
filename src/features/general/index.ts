@@ -33,19 +33,45 @@ const hideDisabledSettings = new BooleanSetting(
     true
 ).onInput(updateDisabledHiddenState);
 
+/**
+ * Updates the hidden state of fun settings.
+ * @returns void
+ */
+const updateFunSettingsHiddenState = () =>
+    void hideFunSettings
+        .awaitReady()
+        .then(() =>
+            document.body.classList.toggle(
+                settingsStyle.hideFunSettings,
+                hideFunSettings.value
+            )
+        );
+const hideFunSettings = new BooleanSetting('hideFunSettings', true).onInput(
+    updateFunSettingsHiddenState
+);
+
 const features = new Set<string>([
     'fullWidth',
     'externalLinks',
     'truncatedTexts',
 ]);
 
+/**
+ * Updates the hidden state of all settings.
+ */
+const updateAllStates = () => {
+    updateDisabledHiddenState();
+    updateFunSettingsHiddenState();
+};
+
 export default FeatureGroup.register({
     settings: new Set([
         updateNotification,
         languageSetting,
         hideDisabledSettings,
+        hideFunSettings,
     ]),
     features,
-    onload: updateDisabledHiddenState,
-    onunload: updateDisabledHiddenState,
+    onload: updateAllStates,
+    onunload: updateAllStates,
 });

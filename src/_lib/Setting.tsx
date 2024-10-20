@@ -19,6 +19,22 @@ export type SettingTranslations<
 
 type ComparisonCondition = '==' | '!=' | '>' | '<';
 
+const tags = {
+    fun: '🎡',
+} as const;
+
+type Tags = typeof tags;
+export type Tag = keyof Tags;
+
+/**
+ * Create a span element for a tag
+ * @param tag - the tag to display
+ * @returns the tag element
+ */
+const Tag = (tag: Tag) => (
+    <span title={`${tags[tag]}: ${LL.settings.tags[tag]()}`}>{tags[tag]}</span>
+);
+
 /**
  * A base class
  */
@@ -35,6 +51,7 @@ export default abstract class Setting<
 > extends CanBeReady {
     readonly #id: string;
     readonly #default: Type;
+    readonly #tags = new Set<Tag>();
     #feature: Feature<Group, Feat> | FeatureGroup<Group> | undefined;
 
     #formControl: Component['element'] | undefined;
@@ -242,13 +259,21 @@ export default abstract class Setting<
 
         descriptionBtn.addEventListener('click', e => e.preventDefault());
 
+        const tags = Array.from(this.#tags.values());
+
         return (
-            <div className="form-group row fitem">
+            <div
+                className="form-group row fitem"
+                data-tags={JSON.stringify(tags)}
+            >
                 <div className="col-md-5 col-form-label d-flex pb-0 pt-0">
                     <label
                         className="d-inline word-break"
                         htmlFor={this.inputID}
                     >
+                        {this.#tags.size ?
+                            <>[{tags.map(tag => Tag(tag))}]&nbsp;</>
+                        :   ''}
                         {title}
                     </label>
                     <div className="form-label-addon d-flex align-items-center align-self-start">
@@ -382,6 +407,16 @@ export default abstract class Setting<
         otherSetting.onChange(check);
         void this.callWhenReady(() => otherSetting.callWhenReady(check));
 
+        return this;
+    }
+
+    /**
+     * Adds a tag to this setting.
+     * @param tag - the tag to add
+     * @returns the setting itself
+     */
+    addTag(tag: Tag) {
+        this.#tags.add(tag);
         return this;
     }
 }

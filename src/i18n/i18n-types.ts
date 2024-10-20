@@ -58,6 +58,12 @@ type RootTranslation = {
          * D​i​e​ ​Ä​n​d​e​r​u​n​g​e​n​ ​d​i​e​s​e​r​ ​E​i​n​s​t​e​l​l​u​n​g​ ​w​e​r​d​e​n​ ​e​r​s​t​ ​n​a​c​h​ ​e​i​n​e​m​ ​N​e​u​l​a​d​e​n​ ​d​e​r​ ​S​e​i​t​e​ ​ü​b​e​r​n​o​m​m​e​n​.​<​b​r​/​>​D​a​s​ ​S​p​e​i​c​h​e​r​n​ ​d​e​r​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​f​ü​h​r​t​ ​d​a​h​e​r​ ​a​u​t​o​m​a​t​i​s​c​h​ ​z​u​ ​e​i​n​e​m​ ​N​e​u​l​a​d​e​n​ ​d​e​r​ ​S​e​i​t​e​.
          */
         requireReload: string;
+        tags: {
+            /**
+             * S​p​a​ß​e​i​n​s​t​e​l​l​u​n​g
+             */
+            fun: string;
+        };
     };
     language: {
         /**
@@ -195,6 +201,16 @@ type RootTranslation = {
                     name: string;
                     /**
                      * B​l​e​n​d​e​t​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​a​u​s​,​ ​d​i​e​ ​g​e​r​a​d​e​ ​d​e​a​k​t​i​v​i​e​r​t​ ​s​i​n​d​ ​(​z​.​ ​B​.​ ​w​e​i​l​ ​s​i​e​ ​v​o​n​ ​e​i​n​e​r​ ​a​n​d​e​r​e​n​ ​E​i​n​s​t​e​l​l​u​n​g​ ​a​b​h​ä​n​g​i​g​ ​s​i​n​d​)​.
+                     */
+                    description: string;
+                };
+                hideFunSettings: {
+                    /**
+                     * S​p​a​ß​-​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​a​u​s​b​l​e​n​d​e​n
+                     */
+                    name: string;
+                    /**
+                     * B​l​e​n​d​e​t​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​a​u​s​,​ ​d​i​e​ ​n​u​r​ ​f​ü​r​ ​m​e​h​r​ ​S​p​a​ß​ ​i​m​ ​M​o​o​d​l​e​ ​d​a​ ​s​i​n​d​.
                      */
                     description: string;
                 };
@@ -343,6 +359,12 @@ export type TranslationFunctions = {
          * Die Änderungen dieser Einstellung werden erst nach einem Neuladen der Seite übernommen.<br/>Das Speichern der Einstellungen führt daher automatisch zu einem Neuladen der Seite.
          */
         requireReload: () => LocalizedString;
+        tags: {
+            /**
+             * Spaßeinstellung
+             */
+            fun: () => LocalizedString;
+        };
     };
     language: {
         /**
@@ -480,6 +502,16 @@ export type TranslationFunctions = {
                     name: () => LocalizedString;
                     /**
                      * Blendet Einstellungen aus, die gerade deaktiviert sind (z. B. weil sie von einer anderen Einstellung abhängig sind).
+                     */
+                    description: () => LocalizedString;
+                };
+                hideFunSettings: {
+                    /**
+                     * Spaß-Einstellungen ausblenden
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Blendet Einstellungen aus, die nur für mehr Spaß im Moodle da sind.
                      */
                     description: () => LocalizedString;
                 };
