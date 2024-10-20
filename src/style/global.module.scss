@@ -1,42 +1,43 @@
-/* disable the weird scroll behaviour on login page (background image shall not be moved) */
 #page-login-index {
+    /* disable the weird scroll behaviour on login page (background image shall not be moved) */
     overflow: hidden;
-}
-#page-login-index #page-wrapper {
-    overflow: auto;
+
+    #page-wrapper {
+        overflow: auto;
+    }
 }
 
-/* Use a pointer cursor on toggle buttons */
 .custom-control.custom-switch .custom-control-label {
+    /* Use a pointer cursor on toggle buttons */
     cursor: pointer;
 }
 
-/* avoid overflow of #usernavigation navigation bar */
 #usernavigation {
+    /* avoid overflow of #usernavigation navigation bar */
     max-width: calc(100% - 1rem); /* 1rem is the padding of the navbar */
 }
 
-/* fix info-buttons next to form labels to be aligned left instead of centered */
 .form-label-addon [data-toggle='popover'] i.icon.fa {
+    /* fix info-buttons next to form labels to be aligned left instead of centered */
     margin-left: 0.25rem;
     margin-right: 0.25rem;
 }
 
-/* remove "external link" icon for specific classes (discouraged, but sometimes it doesn't look good) */
 :local(.no-external-link-icon) {
+    /* remove "external link" icon for specific classes (discouraged, but sometimes it doesn't look good) */
     body.dir-ltr &::after,
     body.dir-rtl &::before {
         display: none !important;
     }
 }
 
-/* Toasts do have a z-index of 1051 while modals z-index is 1052, although moodle states in their code that 1051 is because of modals: https://github.com/moodle/moodle/blob/1938c438ea1385eb2f62be4df5581e3458588e66/theme/boost/scss/moodle/core.scss#L2615 This snippet fixes this. */
 .toast-wrapper {
+    /* Toasts do have a z-index of 1051 while modals z-index is 1052, although moodle states in their code that 1051 is because of modals: https://github.com/moodle/moodle/blob/1938c438ea1385eb2f62be4df5581e3458588e66/theme/boost/scss/moodle/core.scss#L2615 This snippet fixes this. */
     z-index: 1053;
 }
 
-/* navbar-height is a property set by Moodle */
 @property --navbar-height {
+    /* navbar-height is a property set by Moodle */
     syntax: '<length>';
     inherits: true;
     initial-value: 60px;

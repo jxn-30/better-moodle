@@ -1,5 +1,5 @@
-/* Styling the background image of modals */
 :local(.modal-background-image) {
+    /* Styling the background image of modals */
     position: absolute;
     width: 90%;
     height: 90%;
@@ -9,8 +9,8 @@
     object-fit: contain;
     pointer-events: none;
 
-    /* for users that prefer more contrast, modal background images should not be shown. */
     @media (prefers-contrast: more) {
+        /* for users that prefer more contrast, modal background images should not be shown. */
         display: none;
     }
 }
