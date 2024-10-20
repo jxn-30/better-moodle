@@ -18,4 +18,11 @@ interface ContextMap extends Record<string, Context> {
     'core/loading': Record<string, never>;
     'core/moremenu_children': CoreMoreMenuChildren;
     'core_course/favouriteicon': { isfavourite: boolean; id: number };
+    'core_form/element-header': {
+        header: string;
+        id: string;
+        collapseable?: boolean;
+        collapsed?: boolean;
+        helpbutton?: string;
+    };
 }

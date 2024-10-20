@@ -429,9 +429,11 @@ interface FieldSetProps extends HTMLFieldSet {
 }
 
 interface FieldSet extends HTMLFieldSetElement {
-    container: HTMLDivElement;
-    heading: HTMLHeadingElement;
+    heading: Promise<HTMLHeadingElement | null>;
     toggle: () => void;
+    appendToContainer: (
+        ...args: Parameters<typeof HTMLFieldSetElement.prototype.append>
+    ) => Promise<void>;
 }
 
 /**
@@ -451,100 +453,54 @@ export const FieldSet = ({
     collapsed = true,
     children = document.createDocumentFragment().children, // this is a funny way to get an empty HTMLCollection
 }: FieldSetProps): FieldSet => {
-    const container = (
-        <div
-            class={classNames('fcontainer collapseable collapse', {
-                show: !collapsed,
-            })}
-            id={PREFIX(id)}
-        >
-            {description && (
-                <p class="p-12">{htmlToElements(mdToHtml(description))}</p>
-            )}
-            {children}
-        </div>
-    ) as HTMLDivElement;
+    const FieldSet = (<fieldset></fieldset>) as FieldSet;
+    let container: HTMLDivElement | null;
+    let heading: HTMLHeadingElement | null;
+    const waitForContainer = new SimpleReady();
 
-    const expandedSpan = (
-        <span class="expanded-icon icon-no-margin p-2"></span>
-    ) as HTMLSpanElement;
-
-    const collapsedChevron = (
-        <span class="dir-rtl-hide"></span>
-    ) as HTMLSpanElement;
-    const collapsedRtlChevron = (
-        <span class="dir-ltr-hide"></span>
-    ) as HTMLSpanElement;
-    const collapsedSpan = (
-        <span class="collapsed-icon icon-no-margin p-2">
-            {collapsedChevron}
-            {collapsedRtlChevron}
-        </span>
-    ) as HTMLSpanElement;
-
-    void requirePromise(['core/templates', 'core/str'] as const).then(
-        ([templates, str]) => {
-            void str
-                .get_strings([
-                    { key: 'expand', component: 'core' },
-                    { key: 'collapse', component: 'core' },
-                ])
-                .then(([expand, collapse]) => {
-                    expandedSpan.title = expand;
-                    collapsedSpan.title = collapse;
-                });
-
-            void templates
-                .renderPix('t/expandedchevron', 'core')
-                .then(icon => (expandedSpan.innerHTML = icon));
-            void templates
-                .renderPix('t/collapsedchevron', 'core')
-                .then(icon => (collapsedChevron.innerHTML = icon));
-            void templates
-                .renderPix('t/collapsedchevron_rtl', 'core')
-                .then(icon => (collapsedRtlChevron.innerHTML = icon));
-        }
+    void requirePromise(['core/templates'] as const).then(([templates]) =>
+        templates
+            .renderForPromise('core_form/element-header', {
+                header: title,
+                id: PREFIX(id),
+                collapseable: true,
+                collapsed,
+            })
+            .then(({ html }) =>
+                FieldSet.append(...Array.from(htmlToElements(html)))
+            )
+            .then(() => {
+                container =
+                    FieldSet.querySelector<HTMLDivElement>('.fcontainer');
+                container?.append(
+                    <>
+                        {description && (
+                            <p class="p-12">
+                                {htmlToElements(mdToHtml(description))}
+                            </p>
+                        )}
+                        {children}
+                    </>
+                );
+                heading = FieldSet.querySelector<HTMLHeadingElement>('h3');
+                waitForContainer.ready();
+            })
     );
 
-    const collapseBtn = (
-        <a
-            class={classNames(
-                'btn btn-icon mr-1 icons-collapse-expand stretched-link fheader',
-                { collapsed }
-            )}
-            href={`#${container.id}`}
-            data-toggle="collapse"
-        >
-            {expandedSpan}
-            {collapsedSpan}
-        </a>
-    ) as HTMLAnchorElement;
-
-    const heading = (
-        <h3 className="d-flex align-self-stretch align-items-center mb-0 w-100">
-            {title}
-        </h3>
-    );
-
-    const FieldSet = (
-        <fieldset>
-            <legend class="sr-only">{title}</legend>
-            <div className="d-flex align-items-center mb-2">
-                <div class="position-relative d-flex ftoggler align-items-center w-100">
-                    {collapseBtn}
-                    {heading}
-                </div>
-            </div>
-            {container}
-        </fieldset>
-    ) as FieldSet;
-
-    Object.defineProperty(FieldSet, 'container', {
-        value: container,
+    Object.defineProperty(FieldSet, 'appendToContainer', {
+        /**
+         * Appends elements to the container of the fieldset.
+         * @param args - the elements to append to the container
+         * @returns a promise that resolves when the elements are appended
+         */
+        value: (...args: Parameters<FieldSet['appendToContainer']>) =>
+            waitForContainer
+                .awaitReady()
+                .then(() => container?.append(...args)),
     });
 
     Object.defineProperty(FieldSet, 'heading', {
-        value: heading,
+        value: waitForContainer.awaitReady().then(() => heading),
     });
 
     Object.defineProperty(FieldSet, 'toggle', {
@@ -552,7 +508,10 @@ export const FieldSet = ({
          * Toggle the fieldset
          * @returns undefined
          */
-        value: () => collapseBtn.click(),
+        value: () =>
+            FieldSet.querySelector<HTMLAnchorElement>(
+                '[data-toggle="collapse"]'
+            )?.click(),
     });
 
     return FieldSet;

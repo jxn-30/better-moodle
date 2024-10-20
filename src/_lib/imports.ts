@@ -53,7 +53,7 @@ for (const [id, FeatureGroup] of Object.entries(featureGroupImports)) {
     const featureGroup = new FeatureGroup(groupId);
     featureGroup.init();
     featureGroup.load();
-    featureGroup.loadFeatures(id => initFeature(featureGroup, id));
+    void featureGroup.loadFeatures(id => initFeature(featureGroup, id));
     featureGroups.set(groupId, featureGroup);
 }
 

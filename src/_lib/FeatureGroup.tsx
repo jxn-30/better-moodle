@@ -51,18 +51,21 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
              * @param loadFn - a function that actually loads the feature
              * @throws {Error} if the features are already loaded
              */
-            loadFeatures(
+            async loadFeatures(
                 loadFn: (featureId: string) => Feature<ID> | undefined
             ) {
                 if (this.#features.size) throw Error('Features already loaded');
-                features?.forEach(id => {
+                if (!features) return;
+                for (const id of features) {
                     const feature = loadFn(id);
                     if (feature) {
                         feature.load();
                         this.#features.add(feature);
-                        this.#FieldSet.container.append(...feature.formGroups);
+                        await this.#FieldSet.appendToContainer(
+                            ...feature.formGroups
+                        );
                     }
-                });
+                }
             }
         };
     }
@@ -103,10 +106,17 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
             description: this.description,
             collapsed: id !== 'general',
         });
-        this.#settings.forEach(setting => {
+        void this.#loadSettingFormGroups();
+    }
+
+    /**
+     * Append the setting form groups to the fieldset.
+     */
+    async #loadSettingFormGroups() {
+        for (const setting of this.#settings) {
             setting.feature = this;
-            this.#FieldSet.container.append(setting.formGroup);
-        });
+            await this.#FieldSet.appendToContainer(setting.formGroup);
+        }
     }
 
     /**
