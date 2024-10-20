@@ -51,6 +51,7 @@ for (const [id, FeatureGroup] of Object.entries(featureGroupImports)) {
     const groupId = id.split('/')[3];
     if (!isFeatureGroup(groupId)) continue;
     const featureGroup = new FeatureGroup(groupId);
+    await featureGroup.loadSettings();
     featureGroup.init();
     featureGroup.load();
     void featureGroup.loadFeatures(id => initFeature(featureGroup, id));

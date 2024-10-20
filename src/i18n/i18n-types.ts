@@ -188,6 +188,16 @@ type RootTranslation = {
                         auto: string;
                     };
                 };
+                hideDisabledSettings: {
+                    /**
+                     * D​e​a​k​t​i​v​i​e​r​t​e​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​a​u​s​b​l​e​n​d​e​n
+                     */
+                    name: string;
+                    /**
+                     * B​l​e​n​d​e​t​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​a​u​s​,​ ​d​i​e​ ​g​e​r​a​d​e​ ​d​e​a​k​t​i​v​i​e​r​t​ ​s​i​n​d​ ​(​z​.​ ​B​.​ ​w​e​i​l​ ​s​i​e​ ​v​o​n​ ​e​i​n​e​r​ ​a​n​d​e​r​e​n​ ​E​i​n​s​t​e​l​l​u​n​g​ ​a​b​h​ä​n​g​i​g​ ​s​i​n​d​)​.
+                     */
+                    description: string;
+                };
             };
             features: {
                 fullWidth: {
@@ -462,6 +472,16 @@ export type TranslationFunctions = {
                          */
                         auto: () => LocalizedString;
                     };
+                };
+                hideDisabledSettings: {
+                    /**
+                     * Deaktivierte Einstellungen ausblenden
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Blendet Einstellungen aus, die gerade deaktiviert sind (z. B. weil sie von einer anderen Einstellung abhängig sind).
+                     */
+                    description: () => LocalizedString;
                 };
             };
             features: {

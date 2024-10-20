@@ -17,6 +17,18 @@
         }
     }
 
+    .fitem:has(input[disabled]) {
+        .col-form-label label {
+            /* disabled settings should have a grayed out label (similar to text-muted class) */
+            color: var(--gray);
+        }
+
+        :local(.hide-disabled-settings) & {
+            /* hide disabled settings if the user prefers */
+            display: none;
+        }
+    }
+
     :local(#settings-footer-btns) > :where(button, a) {
         /* some special style needed for the settings modal footer: show button text only on hover */
         > span {

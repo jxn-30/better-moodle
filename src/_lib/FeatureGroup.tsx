@@ -81,6 +81,7 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
     readonly #FieldSet: ReturnType<typeof FieldSet>;
 
     #initCalled = false;
+    #settingsLoaded = false;
     #loaded = false;
 
     /**
@@ -106,13 +107,18 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
             description: this.description,
             collapsed: id !== 'general',
         });
-        void this.#loadSettingFormGroups();
     }
 
     /**
      * Append the setting form groups to the fieldset.
      */
-    async #loadSettingFormGroups() {
+    async loadSettings() {
+        if (this.#settingsLoaded) {
+            throw new Error(
+                'Settings for this FeatureGroup are already loaded!'
+            );
+        }
+        this.#settingsLoaded = true;
         for (const setting of this.#settings) {
             setting.feature = this;
             await this.#FieldSet.appendToContainer(setting.formGroup);

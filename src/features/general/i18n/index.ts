@@ -18,6 +18,11 @@ export const de = {
                 auto: '🌐 Auto (Moodle Sprache)',
             },
         },
+        hideDisabledSettings: {
+            name: 'Deaktivierte Einstellungen ausblenden',
+            description:
+                'Blendet Einstellungen aus, die gerade deaktiviert sind (z.\xa0B. weil sie von einer anderen Einstellung abhängig sind).',
+        },
     },
     features: {
         fullWidth: fullWidth.de,
@@ -40,6 +45,11 @@ export const en = {
             options: {
                 auto: '🌐 Auto (Moodle language)',
             },
+        },
+        hideDisabledSettings: {
+            name: 'Hide disabled settings',
+            description:
+                'Hides settings that are currently disabled (e.g. because they depend on another setting).',
         },
     },
     features: {
