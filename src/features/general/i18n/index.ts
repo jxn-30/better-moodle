@@ -1,6 +1,7 @@
 import externalLinks from './externalLinks';
 import type { FeatureGroupTranslation } from '../../../../types/i18n';
 import fullWidth from './fullWidth';
+import googlyEyes from './googlyEyes';
 import truncatedTexts from './truncatedTexts';
 
 export const de = {
@@ -33,6 +34,7 @@ export const de = {
         fullWidth: fullWidth.de,
         externalLinks: externalLinks.de,
         truncatedTexts: truncatedTexts.de,
+        googlyEyes: googlyEyes.de,
     },
 } satisfies FeatureGroupTranslation;
 
@@ -65,6 +67,7 @@ export const en = {
         fullWidth: fullWidth.en,
         externalLinks: externalLinks.en,
         truncatedTexts: truncatedTexts.en,
+        googlyEyes: googlyEyes.en,
     },
 } satisfies typeof de;
 

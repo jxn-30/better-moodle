@@ -54,6 +54,7 @@ const features = new Set<string>([
     'fullWidth',
     'externalLinks',
     'truncatedTexts',
+    'googlyEyes',
 ]);
 
 /**

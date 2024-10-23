@@ -258,6 +258,20 @@ type RootTranslation = {
                         };
                     };
                 };
+                googlyEyes: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * x​E​y​e​s​ ​f​ü​r​ ​B​e​t​t​e​r​-​M​o​o​d​l​e
+                             */
+                            name: string;
+                            /**
+                             * �​�
+                             */
+                            description: string;
+                        };
+                    };
+                };
             };
         };
         myCourses: {
@@ -554,6 +568,20 @@ export type TranslationFunctions = {
                             name: () => LocalizedString;
                             /**
                              * Fügt ein Title-Attribut bei potentiell abgeschnittenen Texten hinzu, damit man per Maus-Hover den vollen Text lesen kann.
+                             */
+                            description: () => LocalizedString;
+                        };
+                    };
+                };
+                googlyEyes: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * xEyes für Better-Moodle
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * 👀
                              */
                             description: () => LocalizedString;
                         };
