@@ -8995,6 +8995,17 @@ if (getSetting('customWelcomebackText.enabled')) {
      * @typedef {{name: string, predicate: occasionPredicate, probability: occasionProbability, variants: occasionBranch[]} | string} occasionBranch
      */
 
+    const loadingSkeletonSelector = '#page-header h1:first-of-type';
+    const loadingDoneClass = PREFIX('loading-done');
+
+    GM_addStyle(css`
+        ${loadingSkeletonSelector}:not(.${loadingDoneClass}) {
+            color: transparent;
+            width: 100% !important;
+            animation: bg-pulse-grey 2s infinite linear;
+        }
+    `);
+
     /**
      * @type {occasionBranch[]}
      */
@@ -9131,7 +9142,7 @@ if (getSetting('customWelcomebackText.enabled')) {
     const regExpEscape = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
     ready(() => {
-        const welcomeBack = document.querySelector('#page-header h1');
+        const welcomeBack = document.querySelector(loadingSkeletonSelector);
         if (!welcomeBack) return;
 
         require(['core/str'], ({ get_string: getString }) =>
@@ -9149,7 +9160,8 @@ if (getSetting('customWelcomebackText.enabled')) {
                 .then(matches =>
                     matches ? getWelcome(matches.groups) : welcomeBack.innerText
                 )
-                .then(welcome => (welcomeBack.textContent = welcome)));
+                .then(welcome => (welcomeBack.textContent = welcome))
+                .then(() => welcomeBack.classList.add(loadingDoneClass)));
     });
 }
 // endregion
