@@ -8995,13 +8995,13 @@ if (getSetting('customWelcomebackText.enabled')) {
      * @typedef {{name: string, predicate: occasionPredicate, probability: occasionProbability, variants: occasionBranch[]} | string} occasionBranch
      */
 
-    const loadingSkeletonSelector = '#page-header h1:first-of-type';
+    const loadingSkeletonSelector =
+        '#page-header h1.h2.mb-3.mt-3:first-of-type';
     const loadingDoneClass = PREFIX('loading-done');
 
     GM_addStyle(css`
         ${loadingSkeletonSelector}:not(.${loadingDoneClass}) {
             color: transparent;
-            width: 100% !important;
             animation: bg-pulse-grey 2s infinite linear;
         }
     `);
