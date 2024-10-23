@@ -83,7 +83,6 @@ const TRANSLATIONS = {
             },
             dayTime: {
                 morning: 'Guten Morgen, {{name}}! 🌄',
-                afternoon: 'Guten Tag, {{name}}! 🌅',
                 evening: 'Guten Abend, {{name}}! 🌇',
                 night: 'Gute Nacht, {{name}}! 🌃',
             },
@@ -889,7 +888,6 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
             },
             dayTime: {
                 morning: 'Good morning, {{name}}! 🌄',
-                afternoon: 'Good afternoon, {{name}}! 🌅',
                 evening: 'Good evening, {{name}}! 🌇',
                 night: 'Good night, {{name}}! 🌃',
             },
@@ -8995,8 +8993,7 @@ if (getSetting('customWelcomebackText.enabled')) {
      * @typedef {{name: string, predicate: occasionPredicate, probability: occasionProbability, variants: occasionBranch[]} | string} occasionBranch
      */
 
-    const loadingSkeletonSelector =
-        '#page-header h1.h2.mb-3.mt-3:first-of-type';
+    const loadingSkeletonSelector = '#page-header h1.h2.mb-3.mt-3:first-of-type';
     const loadingDoneClass = PREFIX('loading-done');
 
     GM_addStyle(css`
@@ -9043,11 +9040,6 @@ if (getSetting('customWelcomebackText.enabled')) {
                     name: 'morning',
                     predicate: now =>
                         now.getHours() >= 5 && now.getHours() < 12,
-                },
-                {
-                    name: 'afternoon',
-                    predicate: now =>
-                        now.getHours() >= 12 && now.getHours() < 18,
                 },
                 {
                     name: 'evening',
