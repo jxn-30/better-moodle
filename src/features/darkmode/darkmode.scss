@@ -1,6 +1,6 @@
-@import '/src/style/mixins';
+@use '/src/style/mixins';
 
-@include darkmode {
+@include mixins.darkmode {
     .navbar.fixed-top .navbar-brand .logo,
     #logoimage {
         filter: brightness(500%);
