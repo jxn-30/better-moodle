@@ -1,11 +1,11 @@
-import featureGroups from './_lib/imports';
-import { GithubLink } from './_lib/Components';
+import featureGroups from '@/imports';
+import { GithubLink } from '@/Components';
 import { LL } from './i18n/i18n';
-import { Modal } from './_lib/Modal';
-import { readyCallback } from './_lib/DOM';
+import { Modal } from '@/Modal';
+import { readyCallback } from '@/DOM';
 import settingsStyle from './style/settings.module.scss';
-import TempStorage from './_lib/TempStorage';
-import { mdToHtml, rawGithubPath } from './_lib/helpers';
+import TempStorage from '@/TempStorage';
+import { mdToHtml, rawGithubPath } from '@/helpers';
 
 // we need this to have some kind of sorting in settings
 const groups = ['general', 'darkmode', 'myCourses'] as const;

@@ -1,4 +1,4 @@
-import { getSettingKey } from '../_lib/helpers';
+import { getSettingKey } from '@/helpers';
 import { loadAllLocales } from './i18n-util.sync';
 import { i18nObject, loadedLocales, locales } from './i18n-util';
 import { Locales, Translation } from './i18n-types';

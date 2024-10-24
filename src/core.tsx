@@ -1,5 +1,5 @@
 import './style/global.module.scss';
-import featureGroups from './_lib/imports';
+import featureGroups from '@/imports';
 
 import './settingsModal';
 

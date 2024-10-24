@@ -1,5 +1,5 @@
-import { BooleanSetting } from '../../_lib/Settings/BooleanSetting';
-import Feature from '../../_lib/Feature';
+import { BooleanSetting } from '@/Settings/BooleanSetting';
+import Feature from '@/Feature';
 
 const enabled = new BooleanSetting('enabled', true).onInput(() =>
     enabled.feature?.reload()

@@ -1,7 +1,7 @@
-import { BooleanSetting } from '../../_lib/Settings/BooleanSetting';
-import FeatureGroup from '../../_lib/FeatureGroup';
+import { BooleanSetting } from '@/Settings/BooleanSetting';
+import FeatureGroup from '@/FeatureGroup';
 import { languages } from '../../i18n/i18n';
-import { SelectSetting } from '../../_lib/Settings/SelectSetting';
+import { SelectSetting } from '@/Settings/SelectSetting';
 import settingsStyle from '../../style/settings.module.scss';
 
 // TODO: Implement updateNotification

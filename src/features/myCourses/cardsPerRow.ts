@@ -1,6 +1,6 @@
 import './cardsPerRow.scss';
-import Feature from '../../_lib/Feature';
-import { SliderSetting } from '../../_lib/Settings/SliderSetting';
+import Feature from '@/Feature';
+import { SliderSetting } from '@/Settings/SliderSetting';
 
 /**
  * This function updates the style based on the current input value

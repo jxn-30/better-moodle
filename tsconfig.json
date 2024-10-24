@@ -17,6 +17,9 @@
         "skipLibCheck": true,
         "jsx": "preserve",
         "jsxImportSource": "jsx-dom",
+        "paths": {
+            "@/*": ["./src/_lib/*"]
+        },
         "plugins": [
             {
                 "name": "typescript-plugin-css-modules",

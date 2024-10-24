@@ -1,7 +1,7 @@
-import { BooleanSetting } from '../../_lib/Settings/BooleanSetting';
-import { debounce } from '../../_lib/helpers';
-import Feature from '../../_lib/Feature';
-import { ready } from '../../_lib/DOM';
+import { BooleanSetting } from '@/Settings/BooleanSetting';
+import { debounce } from '@/helpers';
+import Feature from '@/Feature';
+import { ready } from '@/DOM';
 import styles from './googlyEyes.module.scss';
 
 const enabled = new BooleanSetting('enabled', false).addTag('fun');

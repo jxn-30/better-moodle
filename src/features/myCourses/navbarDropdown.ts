@@ -1,7 +1,7 @@
-import { BooleanSetting } from '../../_lib/Settings/BooleanSetting';
-import Feature from '../../_lib/Feature';
-import { getAvailableCourseFiltersAsOptions } from '../../_lib/myCourses';
-import { SelectSetting } from '../../_lib/Settings/SelectSetting';
+import { BooleanSetting } from '@/Settings/BooleanSetting';
+import Feature from '@/Feature';
+import { getAvailableCourseFiltersAsOptions } from '@/myCourses';
+import { SelectSetting } from '@/Settings/SelectSetting';
 
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'myCourses.navbarDropdown'

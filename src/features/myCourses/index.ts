@@ -1,4 +1,4 @@
-import FeatureGroup from '../../_lib/FeatureGroup';
+import FeatureGroup from '@/FeatureGroup';
 
 const features = new Set<string>(['cardsPerRow', 'navbarDropdown']);
 
