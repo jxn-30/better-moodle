@@ -3,7 +3,7 @@
 
 import CoreMoreMenuChildren from './_templates/core/moremenu_children';
 
-type Context = string | number | Context[] | Record<string, Context>;
+export type Context = string | number | Context[] | Record<string, Context>;
 
 export default interface CoreTemplates {
     renderForPromise<Template extends keyof ContextMap>(

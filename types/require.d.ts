@@ -3,6 +3,8 @@
 
 import BlockMyOverviewRepository from './require.js/block/myoverview/repository';
 import BlockMyOverviewSelectors from './require.js/block/myoverview/selectors';
+import CoreConfig from './require.js/core/config';
+import CoreLocalstorage from './require.js/core/localstorage';
 import CoreModalEvents from './require.js/core/modal_events';
 import CoreModalFactory from './require.js/core/modal_factory';
 import CoreStr from './require.js/core/str';
@@ -10,6 +12,8 @@ import CoreTemplates from './require.js/core/templates';
 import CoreToast from './require.js/core/toast';
 
 interface ModuleMap {
+    'core/config': CoreConfig;
+    'core/localstorage': CoreLocalstorage;
     'core/modal_factory': CoreModalFactory;
     'core/modal_events': CoreModalEvents;
     'core/str': CoreStr;
