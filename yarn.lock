@@ -2108,14 +2108,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-userscripts@npm:0.5.5":
-  version: 0.5.5
-  resolution: "eslint-plugin-userscripts@npm:0.5.5"
+"eslint-plugin-userscripts@npm:0.5.6":
+  version: 0.5.6
+  resolution: "eslint-plugin-userscripts@npm:0.5.6"
   dependencies:
     semver: "npm:^7.3.8"
   peerDependencies:
     eslint: ">=8.40.0 <11"
-  checksum: 10c0/6ad14e35bc7d0a6647cbf28d44dbcbc03cee5e8c06da3d21e3bf42147ee3bf21170e96bf3a6f7fb63f97f52963800424c2c641c68bd0b1dd9669d6deec2ee514
+  checksum: 10c0/b678c70012eec6cdc37d21d53ca70f021148cc3e740132e330047d82db7db5233b23bffb5dff6dc00e59cb45f0109990836861f7d95d721694c647595cb0afb2
   languageName: node
   linkType: hard
 
@@ -5217,7 +5217,7 @@ __metadata:
     eslint-config-prettier: "npm:9.1.0"
     eslint-plugin-jsdoc: "npm:50.4.3"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
-    eslint-plugin-userscripts: "npm:0.5.5"
+    eslint-plugin-userscripts: "npm:0.5.6"
     fast-glob: "npm:3.3.2"
     globals: "npm:15.11.0"
     jsx-dom: "npm:8.1.5"
