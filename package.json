@@ -25,7 +25,7 @@
     },
     "dependencies": {
         "classnames": "2.5.1",
-        "darkreader": "4.9.95",
+        "darkreader": "4.9.96",
         "jsx-dom": "8.1.5",
         "typesafe-i18n": "5.26.2"
     },
