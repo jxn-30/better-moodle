@@ -52,7 +52,7 @@
         "typescript-eslint": "8.8.1",
         "typescript-plugin-css-modules": "5.1.0",
         "userscript-meta": "1.0.1",
-        "vite": "5.4.9",
+        "vite": "5.4.10",
         "vite-plugin-monkey": "4.0.6"
     }
 }
