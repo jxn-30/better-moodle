@@ -4,14 +4,20 @@
 import BlockMyOverviewRepository from './require.js/block/myoverview/repository';
 import BlockMyOverviewSelectors from './require.js/block/myoverview/selectors';
 import CoreConfig from './require.js/core/config';
+import CoreFiltersEvents from './require.js/core_filters/event';
 import CoreLocalstorage from './require.js/core/localstorage';
 import CoreModalEvents from './require.js/core/modal_events';
 import CoreModalFactory from './require.js/core/modal_factory';
 import CoreStr from './require.js/core/str';
 import CoreTemplates from './require.js/core/templates';
 import CoreToast from './require.js/core/toast';
+import ThemeBoostDrawer from './require.js/theme_boost/drawer';
+import ThemeBoostDrawers from './require.js/theme_boost/drawers';
 
 interface ModuleMap {
+    'block_myoverview/selectors': BlockMyOverviewSelectors;
+    'block_myoverview/repository': BlockMyOverviewRepository;
+
     'core/config': CoreConfig;
     'core/localstorage': CoreLocalstorage;
     'core/modal_factory': CoreModalFactory;
@@ -20,8 +26,10 @@ interface ModuleMap {
     'core/templates': CoreTemplates;
     'core/toast': CoreToast;
 
-    'block_myoverview/selectors': BlockMyOverviewSelectors;
-    'block_myoverview/repository': BlockMyOverviewRepository;
+    'core_filters/events': CoreFiltersEvents;
+
+    'theme_boost/drawer': ThemeBoostDrawer;
+    'theme_boost/drawers': typeof ThemeBoostDrawers;
 }
 
 type Module = keyof ModuleMap;

@@ -12,6 +12,7 @@ export default interface CoreTemplates {
         themeName?: string
     ): Promise<{ html: string; js: string }>;
     renderPix(key: string, component: string, title?: string): Promise<string>;
+    runTemplateJS(js: string): void;
 }
 
 interface ContextMap extends Record<string, Context> {

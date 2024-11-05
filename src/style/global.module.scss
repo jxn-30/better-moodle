@@ -36,6 +36,11 @@
     z-index: 1053;
 }
 
+.drawer-toggles .drawer-toggler .btn .icon.fa-fw {
+    /* Reset width to .icon default to maintain consistent toggler sizes */
+    width: 16px;
+}
+
 @property --navbar-height {
     /* navbar-height is a property set by Moodle */
     syntax: '<length>';
