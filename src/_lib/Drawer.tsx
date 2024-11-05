@@ -1,8 +1,9 @@
 import DrawerTemplate from './Drawer/Drawer.mustache?raw';
 import { PREFIX } from '@/helpers';
-import { putTemplate } from '@/DOM';
 import { renderCustomTemplate } from '@/templates';
 import { requirePromise } from '@/require.js';
+import ThemeBoostDrawers from '../../types/require.js/theme_boost/drawers';
+import { getDocumentFragmentHtml, putTemplate } from '@/DOM';
 
 enum Side {
     Left = 'left',
@@ -20,7 +21,8 @@ export default class Drawer {
     #classes = new Set<string>();
     #icon = '';
     #toggleTitle = '';
-    #content = (<></>) as HTMLElement;
+    #content = (<></>) as DocumentFragment;
+    #instance: ThemeBoostDrawers | null = null;
 
     /**
      * creates a new drawer instance
@@ -89,9 +91,15 @@ export default class Drawer {
      * @param content - the content to use
      * @returns this
      */
-    setContent(content: HTMLElement) {
-        this.#throwOnRendered();
-        this.#content = content;
+    setContent(content: DocumentFragment) {
+        if (this.#instance) {
+            this.#instance.drawerNode
+                .querySelector('.drawercontent')
+                ?.replaceChildren(content);
+        } else {
+            this.#throwOnRendered();
+            this.#content = content;
+        }
         return this;
     }
 
@@ -123,12 +131,13 @@ export default class Drawer {
             id: this.#id,
             tooltip: this.#oppositeSide,
             state: `show-drawer-${this.#side}`,
-            content: this.#content.outerHTML,
+            content: getDocumentFragmentHtml(this.#content),
         });
     }
 
     /**
      * creates the drawer
+     * @returns a Promise with the created drawer instance
      */
     async create() {
         this.#throwOnRendered();
@@ -164,17 +173,19 @@ export default class Drawer {
             </div>
         );
         Drawer.init();
-        const drawerInstance = Drawers.getDrawerInstanceForNode(elements[0]);
+        this.#instance = Drawers.getDrawerInstanceForNode(elements[0]);
         if (GM_getValue(this.#storageKey, false)) {
-            drawerInstance.openDrawer();
+            this.#instance.openDrawer();
         }
-        drawerInstance.drawerNode.addEventListener(
+        this.#instance.drawerNode.addEventListener(
             Drawers.eventTypes.drawerShown,
-            () => GM_setValue(this.#storageKey, drawerInstance.isOpen)
+            () => GM_setValue(this.#storageKey, this.#instance?.isOpen)
         );
-        drawerInstance.drawerNode.addEventListener(
+        this.#instance.drawerNode.addEventListener(
             Drawers.eventTypes.drawerHidden,
-            () => GM_setValue(this.#storageKey, drawerInstance.isOpen)
+            () => GM_setValue(this.#storageKey, this.#instance?.isOpen)
         );
+
+        return this;
     }
 }

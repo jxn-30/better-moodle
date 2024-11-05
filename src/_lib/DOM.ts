@@ -67,3 +67,14 @@ export const putTemplate = async (
     filterEvents.notifyFilterContentUpdated(templateElements);
     return templateElements;
 };
+
+/**
+ * Get's the HTML of a document fragment.
+ * @param fragment - the document fragment
+ * @returns the HTML of the document fragment
+ */
+export const getDocumentFragmentHtml = (fragment: DocumentFragment) => {
+    const div = document.createElement('div');
+    div.append(fragment);
+    return div.innerHTML;
+};
