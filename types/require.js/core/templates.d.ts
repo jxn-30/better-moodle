@@ -16,6 +16,23 @@ export default interface CoreTemplates {
 }
 
 interface ContextMap extends Record<string, Context> {
+    'core/block': {
+        showskiplink: boolean;
+        title: string;
+        skipid: string;
+        id: string;
+        hidden: boolean;
+        class: string;
+        hascontrols: boolean;
+        ariarole: string;
+        type: string;
+        blockinstanceid: number;
+        arialabel: string;
+        controls: string;
+        content: string;
+        footer: string;
+        annotation: string;
+    };
     'core/loading': Record<string, never>;
     'core/moremenu_children': CoreMoreMenuChildren;
     'core_course/favouriteicon': { isfavourite: boolean; id: number };
