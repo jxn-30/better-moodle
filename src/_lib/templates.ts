@@ -1,4 +1,4 @@
-import { Context } from '../../types/require.js/core/templates';
+import { Context } from '#/require.js/core/templates';
 import { requirePromise } from '@/require.js';
 
 /**

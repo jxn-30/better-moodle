@@ -1,4 +1,4 @@
-import { PromisedRequire } from '../../types/require';
+import { PromisedRequire } from '#/require';
 import { readyCallback } from './DOM';
 
 /**

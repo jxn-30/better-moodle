@@ -1,4 +1,4 @@
-import { FeatureTranslation } from '../../../../types/i18n';
+import { FeatureTranslation } from '#/i18n';
 
 export const de = {
     settings: {

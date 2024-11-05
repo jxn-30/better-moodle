@@ -139,8 +139,12 @@ export default defineConfig({
     resolve: {
         alias: [
             {
-                find: /^@/,
+                find: /^@(?=\/)/,
                 replacement: path.resolve(__dirname, './src/_lib'),
+            },
+            {
+                find: /^#(?=\/)/,
+                replacement: path.resolve(__dirname, './types'),
             },
             {
                 find: /^/,

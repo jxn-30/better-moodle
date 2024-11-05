@@ -18,7 +18,8 @@
         "jsx": "preserve",
         "jsxImportSource": "jsx-dom",
         "paths": {
-            "@/*": ["./src/_lib/*"]
+            "@/*": ["./src/_lib/*"],
+            "#/*": ["./types/*"]
         },
         "plugins": [
             {

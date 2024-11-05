@@ -1,5 +1,5 @@
 import type { BaseTranslation } from '../i18n-types';
-import { Tag } from '../../_lib/Setting';
+import { Tag } from '@/Setting';
 
 export default {
     newBadge: 'Neu!',

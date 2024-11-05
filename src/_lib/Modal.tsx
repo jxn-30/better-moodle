@@ -1,12 +1,12 @@
 import CanBeReady from './CanBeReady';
-import CoreModalEvents from '../../types/require.js/core/modal_events';
+import CoreModalEvents from '#/require.js/core/modal_events';
 import modalStyle from '../style/modal.module.scss';
 import { require } from './require.js';
 import type {
     default as CoreModalFactory,
     ModalConfig,
     MoodleModal,
-} from '../../types/require.js/core/modal_factory';
+} from '#/require.js/core/modal_factory';
 
 interface Config extends ModalConfig {
     backgroundImage?: string;

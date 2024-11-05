@@ -1,5 +1,5 @@
 import cardsPerRow from './cardsPerRow';
-import type { FeatureGroupTranslation } from '../../../../types/i18n';
+import type { FeatureGroupTranslation } from '#/i18n';
 import navbarDropdown from './navbarDropdown';
 
 export const de = {
