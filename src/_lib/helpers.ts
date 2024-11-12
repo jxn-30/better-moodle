@@ -131,3 +131,15 @@ export const debounce = <Args extends unknown[]>(
         timeout = setTimeout(() => fn.apply(this, args), delay);
     };
 };
+
+/**
+ * Checks if the user is logged in by checking the current URL.
+ */
+export const isLoggedIn = !window.location.pathname.startsWith('/login');
+
+/**
+ * Checks if the current page is the dashboard by checking the current URL.
+ */
+export const isDashboard = /^\/my\/(index\.php)?$/.test(
+    window.location.pathname
+);

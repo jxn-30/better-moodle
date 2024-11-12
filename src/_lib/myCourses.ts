@@ -1,4 +1,5 @@
 import { getDocument } from './network';
+import { isLoggedIn } from './helpers';
 import { requirePromise } from './require.js';
 import { SelectOption } from './Components';
 
@@ -20,10 +21,7 @@ let activeFilter: CourseFilter | null = null;
 export const getAvailableCourseFilters = async (): Promise<CourseFilter[]> => {
     if (availableFilters.length) return availableFilters;
 
-    // TODO is there a better check to see if we're logged in?
-    if (window.location.pathname.startsWith('/login')) {
-        return [];
-    }
+    if (!isLoggedIn) return [];
 
     const result0 = await Promise.all([
         requirePromise(['block_myoverview/selectors'] as const),

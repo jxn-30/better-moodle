@@ -1,6 +1,6 @@
-import { getDocumentFragmentHtml, putTemplate } from '@/DOM';
 import { PREFIX } from '@/helpers';
 import { render } from '@/templates';
+import { getDocumentFragmentHtml, putTemplate } from '@/DOM';
 
 /**
  * A utility class to create a fully working block / sidebar.
@@ -57,7 +57,8 @@ export default class Block {
 
     /**
      * Sets the title of the block
-     * @param title
+     * @param title - the title to use
+     * @returns this
      */
     setTitle(title: string) {
         this.#throwOnRendered();
@@ -90,8 +91,8 @@ export default class Block {
         return render('core/block', {
             showskiplink: true,
             title: this.#title,
-            skipid: this.#id,
-            id: this.#id,
+            skipid: `${this.#id}-${this.#instanceId}`,
+            id: `${this.#id}-${this.#instanceId}`,
             hidden: this.#hidden,
             class: Array.from(this.#classes).join(' '),
             hascontrols: this.#controls !== null,

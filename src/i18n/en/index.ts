@@ -1,4 +1,5 @@
 import { en as darkmode } from '../../features/darkmode/i18n';
+import { en as dashboard } from '../../features/dashboard/i18n';
 import { en as general } from '../../features/general/i18n';
 import { en as myCourses } from '../../features/myCourses/i18n';
 import settings from './settings';
@@ -12,6 +13,7 @@ export default {
     },
     features: {
         darkmode,
+        dashboard,
         general,
         myCourses,
     },

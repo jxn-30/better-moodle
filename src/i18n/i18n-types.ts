@@ -162,6 +162,38 @@ type RootTranslation = {
                 };
             };
         };
+        dashboard: {
+            /**
+             * D​a​s​h​b​o​a​r​d
+             */
+            name: string;
+            features: {
+                layout: {
+                    settings: {
+                        leftSidebar: {
+                            /**
+                             * L​i​n​k​e​ ​S​e​i​t​e​n​l​e​i​s​t​e
+                             */
+                            name: string;
+                            /**
+                             * A​k​t​i​v​i​e​r​t​ ​e​i​n​e​ ​l​i​n​k​e​ ​S​e​i​t​e​n​l​e​i​s​t​e​ ​i​m​ ​D​a​s​h​b​o​a​r​d​,​ ​i​n​ ​d​i​e​ ​B​l​ö​c​k​e​ ​v​e​r​s​c​h​o​b​e​n​ ​w​e​r​d​e​n​ ​k​ö​n​n​e​n​.
+                             */
+                            description: string;
+                        };
+                        rightSidebar: {
+                            /**
+                             * R​e​c​h​t​e​ ​S​e​i​t​e​n​l​e​i​s​t​e
+                             */
+                            name: string;
+                            /**
+                             * A​k​t​i​v​i​e​r​t​ ​e​i​n​e​ ​r​e​c​h​t​e​ ​S​e​i​t​e​n​l​e​i​s​t​e​ ​i​m​ ​D​a​s​h​b​o​a​r​d​,​ ​i​n​ ​d​i​e​ ​B​l​ö​c​k​e​ ​v​e​r​s​c​h​o​b​e​n​ ​w​e​r​d​e​n​ ​k​ö​n​n​e​n​.
+                             */
+                            description: string;
+                        };
+                    };
+                };
+            };
+        };
         general: {
             /**
              * A​l​l​g​e​m​e​i​n​e​ ​E​i​n​s​t​e​l​l​u​n​g​e​n
@@ -474,6 +506,38 @@ export type TranslationFunctions = {
                      * Teste hier die aktuellen Einstellungen des Darkmodes bei geschlossenen Einstellungen aus. Vorsicht: Beim nächsten Neuladen oder Wechseln der Seite sind die Einstellungen zurückgesetzt.
                      */
                     description: () => LocalizedString;
+                };
+            };
+        };
+        dashboard: {
+            /**
+             * Dashboard
+             */
+            name: () => LocalizedString;
+            features: {
+                layout: {
+                    settings: {
+                        leftSidebar: {
+                            /**
+                             * Linke Seitenleiste
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Aktiviert eine linke Seitenleiste im Dashboard, in die Blöcke verschoben werden können.
+                             */
+                            description: () => LocalizedString;
+                        };
+                        rightSidebar: {
+                            /**
+                             * Rechte Seitenleiste
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Aktiviert eine rechte Seitenleiste im Dashboard, in die Blöcke verschoben werden können.
+                             */
+                            description: () => LocalizedString;
+                        };
+                    };
                 };
             };
         };
