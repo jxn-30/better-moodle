@@ -8,44 +8,14 @@ on:
             - v2
 
 jobs:
+    setup:
+        name: 🎛️ Setup
+        uses: ./.github/workflows/_setup.yml
+
     build:
         runs-on: ubuntu-latest
         name: 🏗️ Build
         steps:
-            - name: 📥️ checkout
-              uses: actions/checkout@v4
-
-            - name: 🔎 get Node and yarn versions
-              run: |
-                  echo "NODE_VERSION=$(grep '"node":' ./package.json | awk -F: '{ print $2 }' | sed 's/[",]//g' | sed 's/\^v//g' | tr -d '[:space:]')"  >> $GITHUB_ENV
-                  echo "YARN_VERSION=$(grep '"packageManager":' ./package.json | awk -F: '{ print $2 }' | sed 's/[",]//g' | sed 's/yarn@//g' | tr -d '[:space:]')"  >> $GITHUB_ENV
-
-            - name: 🛠️ setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-
-            - name: 🛠️ setup yarn
-              run: |
-                  corepack enable
-                  yarn set version "${{ env.YARN_VERSION }}"
-
-            - name: 🔎 get yarn cache directory
-              run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-
-            - name: 💿️ restore cache
-              uses: actions/cache@v4
-              with:
-                  path: |
-                      ${{ steps.yarn_cache_dir.outputs.dir }}
-                      **/node_modules
-                      **/.eslintcache
-                  key: ${{ runner.os }}-cache-${{ hashFiles('**/yarn.lock', '.yarnrc.yml', '.eslintcache') }}
-                  restore-keys: ${{ runner.os }}-cache-
-
-            - name: 🍱 install dependencies
-              run: yarn install --immutable
-
             - name: 🏗️ build Better-Moodle for UzL
               run: yarn build uzl
 
