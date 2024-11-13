@@ -3,9 +3,6 @@ jobs:
         runs-on: ubuntu-latest
         name: 🎛️ Setup CI
         steps:
-            - name: 📥️ checkout
-              uses: actions/checkout@v4
-
             - name: 🔎 get Node and yarn versions
               run: |
                   echo "NODE_VERSION=$(grep '"node":' ./package.json | awk -F: '{ print $2 }' | sed 's/[",]//g' | sed 's/\^v//g' | tr -d '[:space:]')"  >> $GITHUB_ENV
