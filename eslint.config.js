@@ -38,6 +38,7 @@ export default [
                 __GITHUB_USER__: 'readonly',
                 __GITHUB_REPO__: 'readonly',
                 __GITHUB_URL__: 'readonly',
+                __GITHUB_BRANCH__: 'readonly',
                 __VERSION__: 'readonly',
                 __PREFIX__: 'readonly',
                 // DarkReader is included via @require

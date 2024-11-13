@@ -51,6 +51,10 @@
                 "user": {
                   "description": "The GitHub user hosting the repository.",
                   "type": "string"
+                },
+                "branch": {
+                  "description": "If this version of Better-Moodle is in a special branch (e.g. for testing purposes or for special releases), this can be specified here.",
+                  "type": "string"
                 }
               },
               "required": [

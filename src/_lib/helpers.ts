@@ -34,7 +34,7 @@ export const githubPath = (path: string) => `${__GITHUB_URL__}${path}`;
  * @returns the full URL as a string
  */
 export const rawGithubPath = (path: string) =>
-    `https://raw.githubusercontent.com/${__GITHUB_USER__}/${__GITHUB_REPO__}/main/${path}`;
+    `https://raw.githubusercontent.com/${__GITHUB_USER__}/${__GITHUB_REPO__}/${__GITHUB_BRANCH__}/${path}`;
 
 /**
  * Converts a markdown string to the matching HTML string.

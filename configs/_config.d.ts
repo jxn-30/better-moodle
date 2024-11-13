@@ -24,6 +24,8 @@ interface BaseConfig {
         user: string;
         /** The actual repository name. */
         repo: string;
+        /** The branch this instance ist developed on. */
+        branch?: string;
     };
     /** A URL that is resolved to the Better-Moodle icon. */
     icon: string;

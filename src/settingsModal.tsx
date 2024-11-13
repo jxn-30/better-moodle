@@ -39,7 +39,7 @@ readyCallback(() =>
 // endregion
 
 // region changelog button
-const changelogPath = '/blob/main/CHANGELOG.md';
+const changelogPath = `/blob/${__GITHUB_BRANCH__}/CHANGELOG.md`;
 const ChangelogBtn = (
     <GithubLink
         path={changelogPath}
@@ -168,7 +168,8 @@ const settingsModal = new Modal({
     backgroundImage: rawGithubPath('img/moothel.png'),
     title: (
         <>
-            <GithubLink path="" /> Better-Moodle:&nbsp;
+            <GithubLink path={`/tree/${__GITHUB_BRANCH__}`} />{' '}
+            Better-Moodle:&nbsp;
             {LL.settings.modal.title()}
         </>
     ),
