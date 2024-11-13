@@ -46,6 +46,8 @@ export const rawGithubPath = (path: string) =>
 export const mdToHtml = (md: string, headingStart = 1) => {
     let html = '';
 
+    const referenceLinks = new Map<string, string>();
+
     /**
      * Escapes a string to be used within HTML. HTML special chars are replaced by their entity equivalents.
      * @param str - the string to be escaped
@@ -61,6 +63,7 @@ export const mdToHtml = (md: string, headingStart = 1) => {
         escape(str)
             .replace(/!\[([^\]]*)]\(([^(]+)\)/g, '<img alt="$1" src="$2">') // image
             .replace(/\[([^\]]+)]\(([^(]+?)\)/g, '<a href="$2">$1</a>') // link
+            .replace(/\[([^\]]+)]\[([^[]+?)]/g, '<a data-link="$2">$1</a>') // reference link
             .replace(/`([^`]+)`/g, '<code>$1</code>') // code
             .replace(
                 /(\*\*|__)(?=\S)([^\r]*?\S[*_]*)\1/g,
@@ -80,6 +83,11 @@ export const mdToHtml = (md: string, headingStart = 1) => {
 
     md.replace(/^\s+|\r|\s+$/g, '')
         .replace(/\t/g, '    ')
+        // find reference definitions, store them and remove them from the text
+        .replace(/^\[(.+?)]:\s*(.+)$/gm, (_, id: string, url: string) => {
+            referenceLinks.set(id, url);
+            return '';
+        })
         .split(/\n\n+/)
         .forEach(b => {
             const firstChar = b[0];
@@ -103,6 +111,11 @@ export const mdToHtml = (md: string, headingStart = 1) => {
                 : b.startsWith('---') ? '<hr />'
                 : `<p>${inlineEscape(b)}</p>`;
         });
+
+    referenceLinks.forEach(
+        (url, id) =>
+            (html = html.replaceAll(`data-link="${id}"`, `href="${url}"`))
+    );
 
     return html;
 };
