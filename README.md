@@ -10,7 +10,7 @@
     -   [Changelog](#changelog)
 -   [Hochschulen](#hochschulen)
 -   [Features](#features)
--   [FAQ](#faq)
+-   [Support & FAQ](#support--faq)
 -   [Alte Bilder und Impressionen](#alte-bilder-und-impressionen)
 -   [Verlauf der GitHub Stars](#verlauf-der-github-stars)
 
@@ -187,35 +187,9 @@ In manchen Kursen zeigt Moodle einen Hinweis an, dass die Selbsteinschreibung oh
 
 Bist du einer der Menschen, die das "Mitteilungen"-Feature von Moodle nutzt? Man kann leider Mitteilungen im Moodle nur über den "Absenden"-Knopf abzusenden und nicht per Tastatur. Diese Einstellung ermöglicht es dir, per Strg+Enter oder per Shift+Enter die Mitteilung abzusenden. Welcher der beiden Hotkeys aktiviert sein soll, kannst du selbst entscheiden.
 
-## FAQ
+## Support & FAQ
 
-### XY funktioniert nicht. Was tun?
-
-It's not a bug, it's a feature! In allen anderen Fällen kannst du einfach auf [GitHub](https://github.com/jxn-30/better-moodle/issues/new?labels=bug&template=bug.yml&title=%5BBUG%5D%3A+) ein Issue eröffnen. Alternativ geht auch eine Mail an Jan. Die E-Mail-Adresse findest du direkt im "Hilfe zu Better-Moodle"-Bereich, welchen du über die Einstellungen erreichen kannst. Bitte gebe auch immer an, welche Version von Better-Moodle ihr verwendet. Diese Information kann in den Better-Moodle-Einstellungen über die Zahnräder in der Navigationsleiste von Moodle gefunden werden.
-
-### Ich habe eine tolle Idee für ein neues Feature
-
-Erstelle gerne ein Issue auf [GitHub](https://github.com/jxn-30/better-moodle/issues/new?template=feature.yml&title=%5BFeature+request%5D%3A+), reiche eine Contribution ein oder schreibe eine Mail an Jan. Die E-Mail-Adresse findest du direkt im "Hilfe zu Better-Moodle"-Bereich, welchen du über die Einstellungen erreichen kannst.
-
-### Ich habe plötzlich mehrere Knöpfe zu den Better-Moodle Einstellungen. Was ist passiert?
-
-Hoppla, da scheint wohl versehentlich Better-Moodle mehrfach installiert zu sein. Keine Sorge, das kann passieren und lässt sich einfach beheben: Öffne einfach die Scriptübersicht deines Userscript-Managers (Bei Tampermonkey klickst du einfach auf das Tampermonkey-Icon in deinem Browser (ein schwarzes oder rotes Quadrat mit zwei Löchern drin), ggf. ist es hinter einem Puzzleteil oder einem Paket-Icon versteckt, und klickst anschließend auf "Übersicht") und lösche einmal alle Installationen von Better-Moodle. Anschließend kannst du die aktuellste Version von Better-Moodle einfach über den [Installationslink][installation] neu installieren.
-
-### Welche Userscript-Manager funktionieren?
-
-Prinzipiell sollten alle gängigen Userscript-Manager funktionieren, allerdings wurde Better-Moodle primär mit Tampermonkey getestet.
-
-### Kann ich Better-Moodle auch auf meinem Handy nutzen?
-
-Jein: Unserer Kenntnis nach ist Firefox für Android aktuell der einzige mobile Browser, der Tampermonkey als Add-On unterstützt. Better-Moodle wird auch regelmäßig in der mobilen Umgebung getestet und sollte dort problemlos funktionieren.
-
-### Was ist Tampermonkey (bzw. ein Userscript-Manager) eigentlich?
-
-Userscript-Manager ermöglichen es, beliebige Scripte (in JavaScript geschrieben) auf Webseiten auszuführen und diese somit anzupassen und die Anzeige im Browser zu verändern.
-
-### Ist Tampermonkey nicht gefährlich?
-
-Es ist potenziell möglich, gefährliche Userscripte zu installieren, die Nutzerdaten abgreifen können. Userscript-Manager verbieten daher die Ausführung von Userscripten z. B. auf gängigen Online-Banking Seiten. Achtet bei der Installation und dem Aktualisieren von Userscripten immer darauf, dass ihr der Herkunft des Scripts vertraut. Better-Moodle ist Open-Source, das heißt, jede/r kann den Quellcode einsehen und sich somit selbst davon überzeugen, dass Better-Moodle keinen bösartigen Code enthält. Außerdem könnt ihr uns vertrauen ;)
+Konkrete Informationen zum Support und unsere FAQ findest du in der Datei [support/de.md](./support/de.md). For english support and FAQ, please refer to the file [support/en.md](./support/en.md).
 
 ## Alte Bilder und Impressionen
 
