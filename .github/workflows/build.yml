@@ -9,7 +9,6 @@ on:
 
 jobs:
     build:
-        needs: [setup]
         runs-on: ubuntu-latest
         name: 🏗️ Build
         steps:
