@@ -49,6 +49,10 @@ type RootTranslation = {
              * E​i​n​s​t​e​l​l​u​n​g​e​n​ ​e​x​p​o​r​t​i​e​r​e​n
              */
             export: string;
+            /**
+             * H​i​l​f​e​ ​z​u​ ​B​e​t​t​e​r​-​M​o​o​d​l​e
+             */
+            support: string;
         };
         /**
          * C​h​a​n​g​e​l​o​g
@@ -396,6 +400,10 @@ export type TranslationFunctions = {
              * Einstellungen exportieren
              */
             export: () => LocalizedString;
+            /**
+             * Hilfe zu Better-Moodle
+             */
+            support: () => LocalizedString;
         };
         /**
          * Changelog

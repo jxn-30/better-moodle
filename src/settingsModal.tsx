@@ -1,10 +1,10 @@
 import featureGroups from '@/imports';
 import { GithubLink } from '@/Components';
-import { LL } from './i18n/i18n';
 import { Modal } from '@/Modal';
 import { readyCallback } from '@/DOM';
 import settingsStyle from './style/settings.module.scss';
 import TempStorage from '@/TempStorage';
+import { BETTER_MOODLE_LANG, LL } from './i18n/i18n';
 import { mdToHtml, rawGithubPath } from '@/helpers';
 
 // we need this to have some kind of sorting in settings
@@ -100,6 +100,73 @@ ChangelogBtn.addEventListener('click', e => {
 });
 // endregion
 
+// region support button and information
+const supportPath = `/blob/${__GITHUB_BRANCH__}/support/${BETTER_MOODLE_LANG}.md`;
+let supportHtml: string;
+const supportCache = 1000 * 60 * 60 * 24; // 24 hours
+
+/**
+ * Fetches the support document from the GitHub repo and converts it to HTML.
+ * Uses the cached HTML if it is not older than 24 hours.
+ * @returns the HTML string of the support document
+ */
+const getSupportHtml = () =>
+    supportHtml ? supportHtml : (
+        fetch(
+            rawGithubPath(
+                `support/${BETTER_MOODLE_LANG}.md?_=${Math.floor(Date.now() / supportCache)}`
+            )
+        )
+            .then(res => res.text())
+            .then(md => mdToHtml(md, 3))
+            .then(html => {
+                supportHtml = html;
+                setTimeout(() => (supportHtml = ''), supportCache);
+                return html;
+            })
+    );
+
+const SupportBtn = (
+    <button className="btn btn-link btn-sm">
+        <i className="fa fa-question-circle fa-fw"></i>
+        {LL.settings.modal.support()}
+    </button>
+);
+
+SupportBtn.addEventListener('click', e => {
+    e.preventDefault();
+    // TODO: close button translation?
+    new Modal({
+        type: 'ALERT',
+        large: true,
+        title: (
+            <>
+                <GithubLink path={supportPath} /> {LL.settings.modal.support()}
+            </>
+        ),
+        body: getSupportHtml(),
+        removeOnClose: true,
+    }).show();
+});
+
+const SupportWrapper = (
+    <div
+        id={settingsStyle.supportWrapper}
+        className="position-absolute z-index-1 d-flex flex-column small card border-light"
+    >
+        {SupportBtn}
+        <span>
+            {LL.settings.modal.installedVersion()}:{' '}
+            <code>{GM_info.script.version}</code>
+        </span>
+        <span>
+            {LL.settings.modal.latestVersion()}: <code></code>
+        </span>
+        {/* TODO: Btn for installing updates */}
+    </div>
+);
+// endregion
+
 // region export and import settings
 // region export settings
 const ExportBtn = (
@@ -174,11 +241,14 @@ const settingsModal = new Modal({
         </>
     ),
     body: (
-        <form id={settingsStyle.settingsForm} className="mform">
-            {groups
-                .map(group => featureGroups.get(group)?.FieldSet)
-                .filter(fieldset => fieldset !== undefined)}
-        </form>
+        <>
+            {SupportWrapper}
+            <form id={settingsStyle.settingsForm} className="mform">
+                {groups
+                    .map(group => featureGroups.get(group)?.FieldSet)
+                    .filter(fieldset => fieldset !== undefined)}
+            </form>
+        </>
     ),
     footer: (
         <div class="btn-group mr-auto" id={settingsStyle.settingsFooterBtns}>

@@ -19,6 +19,16 @@
         }
     }
 
+    :local(#support-wrapper) {
+        top: 0.5rem;
+        right: 0.5rem;
+
+        > span {
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+        }
+    }
+
     .fitem:has(input[disabled]) {
         .col-form-label label {
             /* disabled settings should have a grayed out label (similar to text-muted class) */

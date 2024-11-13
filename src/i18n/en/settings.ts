@@ -10,6 +10,7 @@ export default {
         updateBtn: 'install update',
         import: 'import preferences',
         export: 'export preferences',
+        support: 'Support for Better-Moodle',
     },
     changelog: 'Changelog',
     requireReload:
