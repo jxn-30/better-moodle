@@ -8,15 +8,14 @@ on:
             - v2
 
 jobs:
-    setup:
-        name: 🎛️ Setup
-        uses: ./.github/workflows/_setup.yml
-
     build:
         needs: [setup]
         runs-on: ubuntu-latest
         name: 🏗️ Build
         steps:
+            - name: 🎛️ setup
+              uses: ./.github/actions/setup
+
             - name: 🏗️ build Better-Moodle for UzL
               run: yarn build uzl
 

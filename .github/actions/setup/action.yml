@@ -1,11 +1,7 @@
-name: _setup.yml
-on:
-    workflow_call:
-
 jobs:
     setup:
         runs-on: ubuntu-latest
-        name: 🎛️ Setup
+        name: 🎛️ Setup CI
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4
