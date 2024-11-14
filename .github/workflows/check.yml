@@ -1,0 +1,45 @@
+name: check.yml
+on:
+    push:
+        branches:
+            - v2
+    pull_request:
+        branches:
+            - v2
+
+jobs:
+    prettier:
+        runs-on: ubuntu-latest
+        name: 🍱 Prettier
+        steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v4
+
+            - name: 🎛️ setup
+              uses: ./.github/actions/setup
+
+            - name: 🍱 run prettier
+              run: yarn prettier:write
+
+            - name: 🔢 count changes
+              run: echo "CHANGES_COUNT=$(git status -s | wc -l)" >> $GITHUB_ENV
+
+            - name: ✅ approve prettier result
+              if: ${{ env.CHANGES_COUNT == 0 }}
+              run: |
+                  echo "# ✅ Prettier approves code" >> $GITHUB_STEP_SUMMARY
+                  echo "Running prettier on ${{ github.sha }} did not result in any changes. 🎉  " >> $GITHUB_STEP_SUMMARY
+
+            - name: 🖨️ print diff introduced by prettier
+              if: ${{ env.CHANGES_COUNT > 0 }}
+              run: git diff
+
+            - name: ⚠️ warn over prettier result
+              if: ${{ env.CHANGES_COUNT > 0 }}
+              run: |
+                  echo "# ⚠️ Prettier changed some code" >> $GITHUB_STEP_SUMMARY
+                  echo "There were a total of **${{ env.CHANGES_COUNT }}** files affected by running prettier on ${{ github.sha }}:  " >> $GITHUB_STEP_SUMMARY
+                  echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+                  git diff --compact-summary >> $GITHUB_STEP_SUMMARY
+                  echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+                  echo "For a complete diff introduced by prettier, please see the workflow logs." >> $GITHUB_STEP_SUMMARY
