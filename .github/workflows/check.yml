@@ -37,9 +37,9 @@ jobs:
             - name: ⚠️ warn over prettier result
               if: ${{ env.CHANGES_COUNT > 0 }}
               run: |
-                   echo "# ⚠️ Prettier changed some code" >> $GITHUB_STEP_SUMMARY
-                   echo "There were a total of **${{ env.CHANGES_COUNT }}** files affected by running prettier on $(echo ${{ github.sha }} | head -c 7):" >> $GITHUB_STEP_SUMMARY
-                   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-                   git diff --compact-summary >> $GITHUB_STEP_SUMMARY
-                   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-                   echo "For a complete diff introduced by prettier, please see the workflow logs." >> $GITHUB_STEP_SUMMARY
+                  echo "# ⚠️ Prettier changed some code" >> $GITHUB_STEP_SUMMARY
+                  echo "There were a total of **${{ env.CHANGES_COUNT }}** files affected by running prettier on $(echo ${{ github.sha }} | head -c 7):" >> $GITHUB_STEP_SUMMARY
+                  echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+                  git diff --compact-summary >> $GITHUB_STEP_SUMMARY
+                  echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+                  echo "For a complete diff introduced by prettier, please see the workflow logs." >> $GITHUB_STEP_SUMMARY
