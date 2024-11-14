@@ -1,5 +1,55 @@
 # Changelog
 
+## [1.42.1](https://github.com/jxn-30/better-moodle/compare/1.42.0...1.42.1) (2024-10-08)
+
+
+### Bug Fixes
+
+* **darkmode:** Fix some unreadable texts ([#419](https://github.com/jxn-30/better-moodle/issues/419)) ([72e9370](https://github.com/jxn-30/better-moodle/commit/72e9370c2396363943def71c4ab8a136e25ac59b))
+* **markdownMessages:** Allow HTML inputs in markdown mode ([#412](https://github.com/jxn-30/better-moodle/issues/412)) ([e75f1d8](https://github.com/jxn-30/better-moodle/commit/e75f1d8909934dc3abfac70949dccf5c1fd1a6b7))
+* **markdownMessages:** Fix sometimes crashing when using Moodle as guest ([#413](https://github.com/jxn-30/better-moodle/issues/413)) ([19c2677](https://github.com/jxn-30/better-moodle/commit/19c267750e2e1ca8bffe502d756bea01507657a5))
+* **ninaIntegration:** Fix canceled events not showing as canceled on details page ([#414](https://github.com/jxn-30/better-moodle/issues/414)) ([8e24e30](https://github.com/jxn-30/better-moodle/commit/8e24e3009521765aa277b24e30fd12ef543bbb20))
+
+## [1.42.0](https://github.com/jxn-30/better-moodle/compare/1.41.1...1.42.0) (2024-09-12)
+
+
+### Features
+
+* **messages.markdown:** Add markdown support to messages ([#380](https://github.com/jxn-30/better-moodle/issues/380)) ([39b66c1](https://github.com/jxn-30/better-moodle/commit/39b66c1277f97ce7c22244bf1e85f091518b80c0))
+
+
+### Bug Fixes
+
+* **ninaIntegration:** Fix  mega alarm triggering for cancelations ([#384](https://github.com/jxn-30/better-moodle/issues/384)) ([c4bcbca](https://github.com/jxn-30/better-moodle/commit/c4bcbca8b51dc17fc124d2513536c833205e8458))
+
+## [1.41.1](https://github.com/jxn-30/better-moodle/compare/1.41.0...1.41.1) (2024-09-12)
+
+
+### Bug Fixes
+
+* **ninaIntegration:** fix updates marking warning as new ([3fe4a2c](https://github.com/jxn-30/better-moodle/commit/3fe4a2c9ad430f5ab33f09141a5a41ef3ccfd635))
+
+## [1.41.0](https://github.com/jxn-30/better-moodle/compare/1.40.2...1.41.0) (2024-09-10)
+
+
+### Features
+
+* **ninaIntegration:** Add NINA warn app integration ([#376](https://github.com/jxn-30/better-moodle/issues/376)) ([fa21640](https://github.com/jxn-30/better-moodle/commit/fa21640686d18600c0e59de455b5241940123c7a))
+
+## [1.40.2](https://github.com/jxn-30/better-moodle/compare/1.40.1...1.40.2) (2024-09-10)
+
+
+### Bug Fixes
+
+* **myCourses:** allow opening "my courses" page in a new tab via middle-click ([6a653df](https://github.com/jxn-30/better-moodle/commit/6a653dfaef716f3b7d5e59f1a2c75a180aa1dcb5))
+
+## [1.40.1](https://github.com/jxn-30/better-moodle/compare/1.40.0...1.40.1) (2024-09-06)
+
+
+### Bug Fixes
+
+* **settings:** fix settings buttons not being clickable partially ([04f537a](https://github.com/jxn-30/better-moodle/commit/04f537a4533909870d57b9cd3f7c1573c28fb11a))
+
 ## [1.40.0](https://github.com/jxn-30/better-moodle/compare/1.39.2...1.40.0) (2024-08-29)
 
 ### 1-Year Anniversary of Better-Moodle 🎉
