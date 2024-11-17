@@ -37,13 +37,28 @@ export const rawGithubPath = (path: string) =>
     `https://raw.githubusercontent.com/${__GITHUB_USER__}/${__GITHUB_REPO__}/${__GITHUB_BRANCH__}/${path}`;
 
 /**
+ * Turns the textContent of a markdown string into a valid DOM-ID.
+ * @param md - the markdown string to generate the ID from
+ * @param idPrefix - a prefix used in the ID to achieve a scoped ID if necessary
+ * @returns the ID based on text content
+ */
+export const mdID = (md: string, idPrefix = '') =>
+    domID(
+        (idPrefix ? `${idPrefix}__` : '') +
+            Array.from(htmlToElements(mdToHtml(md, 1, idPrefix)))
+                .map(el => el.textContent)
+                .join('')
+    );
+
+/**
  * Converts a markdown string to the matching HTML string.
  * @param md - the markdown string to be converted
  * @param headingStart - an optional number to start the heading levels at
+ * @param idPrefix - a prefix used in IDs to achieve scoped IDs
  * @returns the HTML string
  * @see {@link https://github.com/p01/mmd.js} for where this is adopted from.
  */
-export const mdToHtml = (md: string, headingStart = 1) => {
+export const mdToHtml = (md: string, headingStart = 1, idPrefix = '') => {
     let html = '';
 
     const referenceLinks = new Map<string, string>();
@@ -103,10 +118,14 @@ export const mdToHtml = (md: string, headingStart = 1) => {
                         .join(replacement[3] ?? '</li>\n<li>') +
                     replacement[2]
                 : firstChar === '#' ?
-                    `<h${(i =
-                        b.indexOf(' ') + (headingStart - 1))}>${inlineEscape(
-                        b.slice(i + 1 - (headingStart - 1))
-                    )}</h${i}>`
+                    `<h${(i = b.indexOf(' ') + (headingStart - 1))}
+                      id="${mdID(
+                          b.slice(i + 1 - (headingStart - 1)),
+                          idPrefix
+                      )}"
+                      >${inlineEscape(
+                          b.slice(i + 1 - (headingStart - 1))
+                      )}</h${i}>`
                 : firstChar === '<' ? b
                 : b.startsWith('---') ? '<hr />'
                 : `<p>${inlineEscape(b)}</p>`;

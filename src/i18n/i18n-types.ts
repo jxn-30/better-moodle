@@ -38,10 +38,6 @@ type RootTranslation = {
              */
             latestVersion: string;
             /**
-             * U​p​d​a​t​e​ ​i​n​s​t​a​l​l​i​e​r​e​n
-             */
-            updateBtn: string;
-            /**
              * E​i​n​s​t​e​l​l​u​n​g​e​n​ ​i​m​p​o​r​t​i​e​r​e​n
              */
             import: string;
@@ -49,10 +45,6 @@ type RootTranslation = {
              * E​i​n​s​t​e​l​l​u​n​g​e​n​ ​e​x​p​o​r​t​i​e​r​e​n
              */
             export: string;
-            /**
-             * H​i​l​f​e​ ​z​u​ ​B​e​t​t​e​r​-​M​o​o​d​l​e
-             */
-            support: string;
         };
         /**
          * C​h​a​n​g​e​l​o​g
@@ -68,6 +60,42 @@ type RootTranslation = {
              */
             fun: string;
         };
+    };
+    update: {
+        /**
+         * U​p​d​a​t​e​ ​i​n​s​t​a​l​l​i​e​r​e​n
+         */
+        btn: string;
+        /**
+         * B​e​t​t​e​r​-​M​o​o​d​l​e​ ​a​k​t​u​a​l​i​s​i​e​r​e​n
+         */
+        title: string;
+        /**
+         * O​h​n​e​ ​N​e​u​l​a​d​e​n​ ​s​c​h​l​i​e​ß​e​n
+         */
+        close: string;
+        /**
+         * M​o​o​d​l​e​ ​n​e​u​l​a​d​e​n
+         */
+        reload: string;
+        /**
+		 * U​i​i​i​i​,​ ​e​i​n​ ​U​p​d​a​t​e​ ​f​ü​r​ ​B​e​t​t​e​r​-​M​o​o​d​l​e​ ​i​s​t​ ​b​e​r​e​i​t​ ​z​u​r​ ​I​n​s​t​a​l​l​a​t​i​o​n​ ​�​�​
+	​
+	​F​a​l​l​s​ ​n​o​c​h​ ​n​i​c​h​t​ ​g​e​s​c​h​e​h​e​n​,​ ​b​e​f​o​l​g​e​ ​b​i​t​t​e​ ​d​i​e​ ​A​n​w​e​i​s​u​n​g​e​n​ ​d​e​i​n​e​s​ ​U​s​e​r​s​c​r​i​p​t​-​M​a​n​a​g​e​r​s​,​ ​u​m​ ​d​a​s​ ​U​p​d​a​t​e​ ​z​u​ ​i​n​s​t​a​l​l​i​e​r​e​n​.​ ​G​g​f​.​ ​w​u​r​d​e​ ​e​i​n​ ​n​e​u​e​r​ ​T​a​b​ ​i​m​ ​H​i​n​t​e​r​g​r​u​n​d​ ​g​e​ö​f​f​n​e​t​.​ ​U​m​ ​d​a​s​ ​U​p​d​a​t​e​ ​a​b​z​u​s​c​h​l​i​e​ß​e​n​,​ ​l​a​d​e​ ​b​i​t​t​e​ ​M​o​o​d​l​e​ ​n​a​c​h​ ​d​e​r​ ​I​n​s​t​a​l​l​a​t​i​o​n​ ​e​i​n​m​a​l​ ​n​e​u​.​
+	​
+	​U​m​ ​z​u​ ​e​r​f​a​h​r​e​n​,​ ​w​a​s​ ​s​i​c​h​ ​s​e​i​t​ ​d​e​i​n​e​m​ ​l​e​t​z​t​e​n​ ​U​p​d​a​t​e​ ​g​e​t​a​n​ ​h​a​t​,​ ​h​i​e​r​ ​d​e​r​ ​r​e​l​e​v​a​n​t​e​ ​A​u​s​z​u​g​ ​a​u​s​ ​d​e​m​ ​C​h​a​n​g​e​l​o​g​:
+		 */
+        body: string;
+    };
+    support: {
+        /**
+         * H​i​l​f​e​ ​z​u​ ​B​e​t​t​e​r​-​M​o​o​d​l​e
+         */
+        title: string;
+        /**
+         * V​i​e​l​e​n​ ​D​a​n​k​ ​f​ü​r​ ​d​i​e​ ​H​i​l​f​e​!​ ​�​�
+         */
+        close: string;
     };
     language: {
         /**
@@ -389,10 +417,6 @@ export type TranslationFunctions = {
              */
             latestVersion: () => LocalizedString;
             /**
-             * Update installieren
-             */
-            updateBtn: () => LocalizedString;
-            /**
              * Einstellungen importieren
              */
             import: () => LocalizedString;
@@ -400,10 +424,6 @@ export type TranslationFunctions = {
              * Einstellungen exportieren
              */
             export: () => LocalizedString;
-            /**
-             * Hilfe zu Better-Moodle
-             */
-            support: () => LocalizedString;
         };
         /**
          * Changelog
@@ -419,6 +439,42 @@ export type TranslationFunctions = {
              */
             fun: () => LocalizedString;
         };
+    };
+    update: {
+        /**
+         * Update installieren
+         */
+        btn: () => LocalizedString;
+        /**
+         * Better-Moodle aktualisieren
+         */
+        title: () => LocalizedString;
+        /**
+         * Ohne Neuladen schließen
+         */
+        close: () => LocalizedString;
+        /**
+         * Moodle neuladen
+         */
+        reload: () => LocalizedString;
+        /**
+		 * Uiiii, ein Update für Better-Moodle ist bereit zur Installation 👀
+
+	Falls noch nicht geschehen, befolge bitte die Anweisungen deines Userscript-Managers, um das Update zu installieren. Ggf. wurde ein neuer Tab im Hintergrund geöffnet. Um das Update abzuschließen, lade bitte Moodle nach der Installation einmal neu.
+
+	Um zu erfahren, was sich seit deinem letzten Update getan hat, hier der relevante Auszug aus dem Changelog:
+		 */
+        body: () => LocalizedString;
+    };
+    support: {
+        /**
+         * Hilfe zu Better-Moodle
+         */
+        title: () => LocalizedString;
+        /**
+         * Vielen Dank für die Hilfe! 😊
+         */
+        close: () => LocalizedString;
     };
     language: {
         /**

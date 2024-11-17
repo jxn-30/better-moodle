@@ -1,5 +1,12 @@
 @use 'sass:string';
 
+:local(#open-settings-btn) {
+    /* if settings modal is not ready yet, settings btn should be in a loading state */
+    &.loading {
+        opacity: 0.5;
+    }
+}
+
 .modal-content:has(:local(#settings-form)) {
     .modal-header {
         h5 ~ * {
@@ -23,9 +30,24 @@
         top: 0.5rem;
         right: 0.5rem;
 
-        > span {
-            margin-left: 0.5rem;
-            margin-right: 0.5rem;
+        @media (max-width: 991.98px) {
+            position: unset !important;
+
+            > span {
+                padding: 0.25rem 0.5rem;
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 992px) {
+            > span {
+                margin-left: 0.5rem;
+                margin-right: 0.5rem;
+
+                &:last-of-type {
+                    margin-bottom: 0.25rem;
+                }
+            }
         }
     }
 

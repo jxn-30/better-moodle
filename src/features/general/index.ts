@@ -5,7 +5,10 @@ import { SelectSetting } from '@/Settings/SelectSetting';
 import settingsStyle from '../../style/settings.module.scss';
 
 // TODO: Implement updateNotification
-const updateNotification = new BooleanSetting('updateNotification', true);
+export const updateNotification = new BooleanSetting(
+    'updateNotification',
+    true
+);
 const languageSetting = new SelectSetting('language', 'auto', [
     'auto',
     ...Array.from(languages.entries()).map(([locale, { name, flag }]) => ({

@@ -1,11 +1,19 @@
 import featureGroups from '@/imports';
 import { GithubLink } from '@/Components';
 import { Modal } from '@/Modal';
-import { readyCallback } from '@/DOM';
+import { request } from '@/network';
 import settingsStyle from './style/settings.module.scss';
 import TempStorage from '@/TempStorage';
+import { updateNotification as updateNotificationSetting } from './features/general';
 import { BETTER_MOODLE_LANG, LL } from './i18n/i18n';
-import { mdToHtml, rawGithubPath } from '@/helpers';
+import { getLoadingSpinner, readyCallback } from '@/DOM';
+import {
+    htmlToElements,
+    mdID,
+    mdToHtml,
+    PREFIX,
+    rawGithubPath,
+} from '@/helpers';
 
 // we need this to have some kind of sorting in settings
 const groups = ['general', 'darkmode', 'dashboard', 'myCourses'] as const;
@@ -16,8 +24,9 @@ const settingsBtnTitle = `Better-Moodle:\xa0${LL.settings.modal.title()}`;
 const SettingsBtn = (
     <div>
         <div
+            id={settingsStyle.openSettingsBtn}
             role="button"
-            class="nav-link position-relative icon-no-margin"
+            class="nav-link position-relative icon-no-margin loading"
             title={settingsBtnTitle}
             aria-label={settingsBtnTitle}
         >
@@ -29,6 +38,7 @@ const SettingsBtn = (
         </div>
     </div>
 ) as HTMLDivElement;
+const UpdateAvailableBadge = <div class="count-container"></div>;
 
 // append the Button to the navbar
 readyCallback(() =>
@@ -53,6 +63,7 @@ const ChangelogBtn = (
 
 let changelogHtml: string;
 const changelogCache = 1000 * 60 * 5; // 5 minutes
+const changelogIdPrefix = 'changelog';
 
 /**
  * Fetches the changelog from the GitHub repo and converts it to HTML.
@@ -60,8 +71,9 @@ const changelogCache = 1000 * 60 * 5; // 5 minutes
  * @returns the HTML string of the changelog
  */
 const getChangelogHtml = () =>
-    changelogHtml ? changelogHtml : (
-        fetch(
+    changelogHtml ?
+        Promise.resolve(changelogHtml)
+    :   request(
             rawGithubPath(
                 `CHANGELOG.md?_=${Math.floor(Date.now() / changelogCache)}`
             )
@@ -75,13 +87,12 @@ const getChangelogHtml = () =>
                     .trim()
                     .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n')
             )
-            .then(md => mdToHtml(md, 3))
+            .then(md => mdToHtml(md, 3, changelogIdPrefix))
             .then(html => {
                 changelogHtml = html;
                 setTimeout(() => (changelogHtml = ''), changelogCache);
                 return html;
-            })
-    );
+            });
 
 ChangelogBtn.addEventListener('click', e => {
     e.preventDefault();
@@ -112,7 +123,7 @@ const supportCache = 1000 * 60 * 60 * 24; // 24 hours
  */
 const getSupportHtml = () =>
     supportHtml ? supportHtml : (
-        fetch(
+        request(
             rawGithubPath(
                 `support/${BETTER_MOODLE_LANG}.md?_=${Math.floor(Date.now() / supportCache)}`
             )
@@ -129,30 +140,36 @@ const getSupportHtml = () =>
 const SupportBtn = (
     <button className="btn btn-link btn-sm">
         <i className="fa fa-question-circle fa-fw"></i>
-        {LL.settings.modal.support()}
+        {LL.support.title()}
     </button>
 );
 
 SupportBtn.addEventListener('click', e => {
     e.preventDefault();
-    // TODO: close button translation?
     new Modal({
         type: 'ALERT',
         large: true,
         title: (
             <>
-                <GithubLink path={supportPath} /> {LL.settings.modal.support()}
+                <GithubLink path={supportPath} /> {LL.support.title()}
             </>
         ),
         body: getSupportHtml(),
+        buttons: {
+            cancel: LL.support.close(),
+        },
         removeOnClose: true,
     }).show();
 });
 
+const latestVersionEl = (
+    <code id={PREFIX('settings_latest-version')}></code>
+) as HTMLElement;
+
 const SupportWrapper = (
     <div
         id={settingsStyle.supportWrapper}
-        className="position-absolute z-index-1 d-flex flex-column small card border-light"
+        className="position-absolute z-index-1 d-flex flex-row flex-lg-column small card border-light mb-3"
     >
         {SupportBtn}
         <span>
@@ -160,11 +177,99 @@ const SupportWrapper = (
             <code>{GM_info.script.version}</code>
         </span>
         <span>
-            {LL.settings.modal.latestVersion()}: <code></code>
+            {LL.settings.modal.latestVersion()}: {latestVersionEl}
         </span>
-        {/* TODO: Btn for installing updates */}
     </div>
 );
+
+const UpdateBtn = (
+    <button className="btn btn-primary btn-sm">{LL.update.btn()}</button>
+);
+UpdateBtn.addEventListener('click', e => {
+    e.preventDefault();
+
+    new Modal({
+        type: 'SAVE_CANCEL',
+        title: LL.update.title(),
+        body: getChangelogHtml().then(changelogHtml => {
+            const body = <></>;
+            body.append(
+                ...Array.from(htmlToElements(mdToHtml(LL.update.body()))),
+                ...Array.from(htmlToElements(changelogHtml))
+            );
+            const currentId = mdID(
+                `* ${GM_info.script.version}`,
+                changelogIdPrefix
+            );
+            body.querySelectorAll(
+                `[id^="${currentId}"], [id^="${currentId}"] ~ *`
+            ).forEach(el => el.remove());
+            return body;
+        }),
+        buttons: {
+            save: LL.update.reload(),
+            cancel: LL.update.close(),
+        },
+        removeOnClose: true,
+    })
+        .onSave(() => window.location.reload())
+        .on('bodyRendered', () => {
+            if (GM_info.script.downloadURL) {
+                open(GM_info.script.downloadURL, '_self');
+            }
+        })
+        .show();
+});
+
+/**
+ * Checks if there is a newer version of Better-Moodle available.
+ * If yes, an update button is added to settings modal.
+ * The latest available version is shown in settings modal.
+ * If enabled, a red dot is appended to the settings trigger button.
+ * @returns void
+ */
+const checkForUpdates = () =>
+    getLoadingSpinner()
+        .then(spinner =>
+            document.getElementById(latestVersionEl.id)?.append(spinner)
+        )
+        .then(() =>
+            request(
+                `https://api.github.com/repos/${__GITHUB_USER__}/${__GITHUB_REPO__}/releases/latest`
+            )
+        )
+        .then(res => res.json())
+        .then(({ tag_name: latestVersion }: { tag_name: string }) => {
+            const [latestMajor, latestMinor, latestPatch] = latestVersion
+                .split('.')
+                .map(p => parseInt(p));
+            const [currentMajor, currentMinor, currentPatch] =
+                GM_info.script.version.split('.').map(p => parseInt(p));
+
+            latestVersionEl.replaceChildren(latestVersion);
+
+            return (
+                latestMajor > currentMajor || // major update
+                (latestMajor === currentMajor && latestMinor > currentMinor) || // minor update
+                (latestMajor === currentMajor && // patch update
+                    latestMinor === currentMinor &&
+                    latestPatch > currentPatch)
+            );
+        })
+        .then(updateAvailable => {
+            if (!updateAvailable) return;
+            document
+                .getElementById(settingsStyle.supportWrapper)
+                ?.append(UpdateBtn);
+            if (updateNotificationSetting.value) {
+                document
+                    .getElementById(settingsStyle.openSettingsBtn)
+                    ?.append(UpdateAvailableBadge);
+            }
+        });
+
+void checkForUpdates();
+
 // endregion
 
 // region export and import settings
@@ -263,6 +368,7 @@ const settingsModal = new Modal({
         </div>
     ),
 })
+    .onShown(() => void checkForUpdates())
     .onCancel(() => featureGroups.forEach(group => group.undoSettings()))
     .onSave(event => {
         featureGroups.forEach(group => group.saveSettings());
@@ -273,6 +379,11 @@ const settingsModal = new Modal({
             window.location.reload();
         }
     })
+    .onReady(() =>
+        document
+            .getElementById(settingsStyle.openSettingsBtn)
+            ?.classList.remove('loading')
+    )
     .setTrigger(SettingsBtn);
 
 // append the link to moodle settings to the modal header

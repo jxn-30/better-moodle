@@ -8,10 +8,8 @@ export default {
         moodleSettings: 'Zu den Moodle Einstellungen',
         installedVersion: 'installierte Version',
         latestVersion: 'aktuellste Version',
-        updateBtn: 'Update installieren',
         import: 'Einstellungen importieren',
         export: 'Einstellungen exportieren',
-        support: 'Hilfe zu Better-Moodle',
     },
     changelog: 'Changelog',
     requireReload:

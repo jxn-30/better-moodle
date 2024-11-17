@@ -7,6 +7,23 @@ import type { Translation } from '../i18n-types';
 
 export default {
     settings,
+    update: {
+        btn: 'Install update',
+        title: 'Update Better-Moodle',
+        close: 'Close without reload',
+        reload: 'Reload moodle',
+        body: `
+Uh, an update for Better-Moodle is ready for installation 👀
+
+If you haven't already done so, please follow the instructions of your userscript manager to install the update. A new tab may have been opened in the background. To complete the update, please reload Moodle once after the installation.
+
+To find out what has changed since your last update, here is the relevant extract from the changelog:
+`.trim(),
+    },
+    support: {
+        title: 'Support for Better-Moodle',
+        close: 'Thanks for the great support! 😊',
+    },
     language: {
         flag: '🇬🇧',
         name: 'English',

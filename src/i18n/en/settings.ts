@@ -7,10 +7,8 @@ export default {
         moodleSettings: 'Go to Moodle-Preferences',
         installedVersion: 'installed version',
         latestVersion: 'latest Version',
-        updateBtn: 'install update',
         import: 'import preferences',
         export: 'export preferences',
-        support: 'Support for Better-Moodle',
     },
     changelog: 'Changelog',
     requireReload:

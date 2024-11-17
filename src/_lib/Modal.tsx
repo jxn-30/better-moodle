@@ -59,7 +59,6 @@ export class Modal extends CanBeReady {
      */
     async #onReady() {
         super.instanceReady();
-        console.log('modal ready!');
         await this.#prependFooter();
     }
 
@@ -87,6 +86,15 @@ export class Modal extends CanBeReady {
      */
     show() {
         this.callWhenReady(() => this.#modal!.show()).catch(console.error);
+
+        return this;
+    }
+
+    /**
+     * @param callback
+     */
+    onReady(callback: () => void) {
+        void this.callWhenReady(callback);
 
         return this;
     }
