@@ -38,7 +38,9 @@ const SettingsBtn = (
         </div>
     </div>
 ) as HTMLDivElement;
-const UpdateAvailableBadge = <div class="count-container"></div>;
+const UpdateAvailableBadge = (
+    <div class="count-container"></div>
+) as HTMLDivElement;
 
 // append the Button to the navbar
 readyCallback(() =>
@@ -231,7 +233,9 @@ UpdateBtn.addEventListener('click', e => {
 const checkForUpdates = () =>
     getLoadingSpinner()
         .then(spinner =>
-            document.getElementById(latestVersionEl.id)?.append(spinner)
+            document
+                .getElementById(latestVersionEl.id)
+                ?.replaceChildren(spinner)
         )
         .then(() =>
             request(
@@ -257,7 +261,10 @@ const checkForUpdates = () =>
             );
         })
         .then(updateAvailable => {
-            if (!updateAvailable) return;
+            if (!updateAvailable) {
+                UpdateAvailableBadge.remove();
+                return;
+            }
             document
                 .getElementById(settingsStyle.supportWrapper)
                 ?.append(UpdateBtn);
@@ -265,10 +272,11 @@ const checkForUpdates = () =>
                 document
                     .getElementById(settingsStyle.openSettingsBtn)
                     ?.append(UpdateAvailableBadge);
-            }
+            } else UpdateAvailableBadge.remove();
         });
 
 void checkForUpdates();
+updateNotificationSetting.onChange(() => void checkForUpdates());
 
 // endregion
 

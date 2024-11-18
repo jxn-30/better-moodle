@@ -4,7 +4,6 @@ import { languages } from '../../i18n/i18n';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import settingsStyle from '../../style/settings.module.scss';
 
-// TODO: Implement updateNotification
 export const updateNotification = new BooleanSetting(
     'updateNotification',
     true
