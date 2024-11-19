@@ -1,0 +1,71 @@
+:local(#eyes) {
+    /* This is the fancy style for googly Eyes 👀 */
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    $width: 40%;
+    $border-width: 2px;
+    $height: 65%;
+    $pupil-width: max(1%, 4px);
+    $pupil-height: $pupil-width;
+
+    :local(.eye) {
+        position: relative;
+        background-color: white;
+        border: $border-width solid black;
+        border-radius: 43%;
+        display: flex;
+        width: $width;
+        height: $height;
+        min-width: $width;
+        min-height: $height;
+        max-width: $width;
+        max-height: $height;
+        align-items: center;
+        justify-content: center;
+
+        &:not(:last-child) {
+            margin-right: calc(10% / 2);
+        }
+
+        :local(.pupil) {
+            background-color: black;
+            border: calc($pupil-width / 2) solid black;
+            border-radius: 50%;
+            display: block;
+            width: $pupil-width;
+            height: $pupil-height;
+            min-width: $pupil-width;
+            min-height: $pupil-height;
+            max-width: $pupil-width;
+            max-height: $pupil-height;
+        }
+
+        &::before {
+            /* Hey, don't look while I enter a password! Wait, are you peeking? 😨 */
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s linear;
+            background: linear-gradient(
+                0deg,
+                rgb(0, 0, 0) 0%,
+                rgb(0, 0, 0) 35%,
+                rgb(255, 255, 255) 49%,
+                rgb(255, 255, 255) 51%,
+                rgb(0, 0, 0) 65%,
+                rgb(0, 0, 0) 100%
+            );
+
+            body:has(input[type='password']:focus) & {
+                opacity: 1;
+            }
+        }
+    }
+}

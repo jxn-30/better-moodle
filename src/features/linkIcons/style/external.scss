@@ -1,0 +1,18 @@
+a:not([href^='#{$_moodleUrl}']) {
+    &[href^="https://"],
+  &[href^="http://"]
+    {
+        body.dir-ltr &::after,
+        body.dir-rtl &::before {
+            font-family: 'FontAwesome';
+            content: '' !important;
+        }
+
+        body.dir-ltr &::after {
+            padding-left: 0.25rem;
+        }
+        body.dir-rtl &::after {
+            padding-right: 0.25rem;
+        }
+    }
+}

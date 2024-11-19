@@ -1,0 +1,24 @@
+name: build.yml
+on:
+    push:
+        branches:
+            - v2
+    pull_request:
+        branches:
+            - v2
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        name: 🏗️ Build
+        steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v4
+
+            - name: 🎛️ setup
+              uses: ./.github/actions/setup
+
+            - name: 🏗️ build Better-Moodle for UzL
+              run: yarn build uzl
+
+            # TODO: Run not only UzL but also other configs?

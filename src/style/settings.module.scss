@@ -1,0 +1,85 @@
+@use 'sass:string';
+
+:local(#open-settings-btn) {
+    /* if settings modal is not ready yet, settings btn should be in a loading state */
+    &.loading {
+        opacity: 0.5;
+    }
+}
+
+.modal-content:has(:local(#settings-form)) {
+    .modal-header {
+        h5 ~ * {
+            /* all elements in settings header should have consistent padding and margin */
+            padding: 1rem;
+            margin: -0.8rem -0.8rem -0.8rem 0;
+        }
+
+        h5 ~ :not(button.close) {
+            /* use small font size but not for the button in settings header */
+            font-size: small;
+        }
+
+        h5 + * {
+            /* first sibling of the h5 should pull itself and next siblings to the right */
+            margin-left: auto;
+        }
+    }
+
+    :local(#support-wrapper) {
+        top: 0.5rem;
+        right: 0.5rem;
+
+        @media (max-width: 991.98px) {
+            position: unset !important;
+
+            > span {
+                padding: 0.25rem 0.5rem;
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 992px) {
+            > span {
+                margin-left: 0.5rem;
+                margin-right: 0.5rem;
+
+                &:last-of-type {
+                    margin-bottom: 0.25rem;
+                }
+            }
+        }
+    }
+
+    .fitem:has(input[disabled]) {
+        .col-form-label label {
+            /* disabled settings should have a grayed out label (similar to text-muted class) */
+            color: var(--gray);
+        }
+
+        :local(.hide-disabled-settings) & {
+            /* hide disabled settings if the user prefers */
+            display: none;
+        }
+    }
+
+    $tags: [ 'fun'];
+    @each $tag in $tags {
+        :local(.hide-#{$tag}-settings) & .fitem[data-tags*='#{$tag}'] {
+            /* hide settings with tag #{$tag} if the user prefers */
+            display: none;
+        }
+    }
+
+    :local(#settings-footer-btns) > :where(button, a) {
+        /* some special style needed for the settings modal footer: show button text only on hover */
+        > span {
+            font-size: 0;
+            transition: font-size 0.5s;
+        }
+
+        &:hover > span {
+            font-size: unset;
+        }
+    }
+}
