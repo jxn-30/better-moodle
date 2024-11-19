@@ -1,5 +1,6 @@
 import featureGroups from '@/imports';
 import { GithubLink } from '@/Components';
+import { lt as semverLt } from '@/semver';
 import { Modal } from '@/Modal';
 import { request } from '@/network';
 import settingsStyle from './style/settings.module.scss';
@@ -244,21 +245,9 @@ const checkForUpdates = () =>
         )
         .then(res => res.json())
         .then(({ tag_name: latestVersion }: { tag_name: string }) => {
-            const [latestMajor, latestMinor, latestPatch] = latestVersion
-                .split('.')
-                .map(p => parseInt(p));
-            const [currentMajor, currentMinor, currentPatch] =
-                GM_info.script.version.split('.').map(p => parseInt(p));
-
             latestVersionEl.replaceChildren(latestVersion);
 
-            return (
-                latestMajor > currentMajor || // major update
-                (latestMajor === currentMajor && latestMinor > currentMinor) || // minor update
-                (latestMajor === currentMajor && // patch update
-                    latestMinor === currentMinor &&
-                    latestPatch > currentPatch)
-            );
+            return semverLt(GM_info.script.version, latestVersion);
         })
         .then(updateAvailable => {
             if (!updateAvailable) {
