@@ -176,6 +176,13 @@ export default abstract class Setting<
     }
 
     /**
+     *
+     */
+    get name() {
+        return this.#id;
+    }
+
+    /**
      * The actual saved value of this setting or alternatively the default value
      * @returns the current value of this setting
      */

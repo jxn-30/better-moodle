@@ -11,6 +11,7 @@ declare const __GITHUB_URL__: string;
 declare const __GITHUB_BRANCH__: string;
 declare const __VERSION__: string;
 declare const __PREFIX__: string;
+declare const __UNI__: string;
 
 // DarkReader is included via @require and thus globally available
 declare const DarkReader: DarkReader;

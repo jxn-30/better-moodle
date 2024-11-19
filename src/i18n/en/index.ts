@@ -1,6 +1,7 @@
 import { en as darkmode } from '../../features/darkmode/i18n';
 import { en as dashboard } from '../../features/dashboard/i18n';
 import { en as general } from '../../features/general/i18n';
+import { en as linkIcons } from '../../features/linkIcons/i18n';
 import { en as myCourses } from '../../features/myCourses/i18n';
 import settings from './settings';
 import type { Translation } from '../i18n-types';
@@ -32,6 +33,7 @@ To find out what has changed since your last update, here is the relevant extrac
         darkmode,
         dashboard,
         general,
+        linkIcons,
         myCourses,
     },
 } satisfies Translation;

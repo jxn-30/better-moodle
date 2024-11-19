@@ -338,6 +338,34 @@ type RootTranslation = {
                 };
             };
         };
+        linkIcons: {
+            /**
+             * L​i​n​k​s​ ​k​e​n​n​z​e​i​c​h​n​e​n
+             */
+            name: string;
+            settings: {
+                external: {
+                    /**
+                     * E​x​t​e​r​n​e​ ​L​i​n​k​s
+                     */
+                    name: string;
+                    /**
+                     * Z​e​i​g​t​ ​e​i​n​ ​k​l​e​i​n​e​s​ ​I​c​o​n​ ​a​n​,​ ​w​e​n​n​ ​e​i​n​ ​L​i​n​k​ ​e​x​t​e​r​n​ ​i​s​t​,​ ​a​l​s​o​ ​a​u​s​ ​M​o​o​d​l​e​ ​h​e​r​a​u​s​ ​f​ü​h​r​t​.
+                     */
+                    description: string;
+                };
+                mail: {
+                    /**
+                     * E​m​a​i​l​s
+                     */
+                    name: string;
+                    /**
+                     * Z​e​i​g​t​ ​e​i​n​ ​k​l​e​i​n​e​s​ ​I​c​o​n​ ​a​n​,​ ​w​e​n​n​ ​e​i​n​ ​L​i​n​k​ ​d​e​i​n​e​n​ ​E​m​a​i​l​-​C​l​i​e​n​t​ ​ö​f​f​n​e​n​ ​k​a​n​n​.
+                     */
+                    description: string;
+                };
+            };
+        };
         myCourses: {
             /**
              * M​e​i​n​e​ ​K​u​r​s​e
@@ -714,6 +742,34 @@ export type TranslationFunctions = {
                             description: () => LocalizedString;
                         };
                     };
+                };
+            };
+        };
+        linkIcons: {
+            /**
+             * Links kennzeichnen
+             */
+            name: () => LocalizedString;
+            settings: {
+                external: {
+                    /**
+                     * Externe Links
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Zeigt ein kleines Icon an, wenn ein Link extern ist, also aus Moodle heraus führt.
+                     */
+                    description: () => LocalizedString;
+                };
+                mail: {
+                    /**
+                     * Emails
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Zeigt ein kleines Icon an, wenn ein Link deinen Email-Client öffnen kann.
+                     */
+                    description: () => LocalizedString;
                 };
             };
         };

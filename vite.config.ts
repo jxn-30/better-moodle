@@ -206,6 +206,7 @@ export default defineConfig({
         preprocessorOptions: {
             scss: {
                 api: 'modern-compiler',
+                additionalData: `$_moodleUrl: ${JSON.stringify(config.moodleUrl)};`,
             },
         },
         modules: {
@@ -241,6 +242,7 @@ export default defineConfig({
         __GITHUB_BRANCH__: JSON.stringify(config.github.branch ?? 'main'),
         __VERSION__: JSON.stringify(version),
         __PREFIX__: JSON.stringify(PREFIX),
+        __UNI__: JSON.stringify(configFile),
     },
     plugins: [
         monkey({

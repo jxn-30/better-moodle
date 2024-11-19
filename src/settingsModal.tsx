@@ -17,7 +17,13 @@ import {
 } from '@/helpers';
 
 // we need this to have some kind of sorting in settings
-const groups = ['general', 'darkmode', 'dashboard', 'myCourses'] as const;
+const groups = [
+    'general',
+    'darkmode',
+    'dashboard',
+    'myCourses',
+    'linkIcons',
+] as const;
 
 // region trigger button for settings modal
 const settingsBtnTitle = `Better-Moodle:\xa0${LL.settings.modal.title()}`;

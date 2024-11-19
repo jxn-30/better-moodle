@@ -1,0 +1,14 @@
+a[href^='mailto:'] {
+    body.dir-ltr &::before,
+    body.dir-rtl &::after {
+        font-family: 'FontAwesome';
+        content: '\f003' !important;
+    }
+
+    body.dir-ltr &::before {
+        padding-right: 0.25rem;
+    }
+    body.dir-rtl &::after {
+        padding-left: 0.25rem;
+    }
+}
