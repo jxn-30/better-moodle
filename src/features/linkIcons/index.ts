@@ -1,11 +1,13 @@
 import FeatureGroup from '@/FeatureGroup';
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import type Setting from '@/Setting';
+import externalCSS from './style/external.scss?inline';
+import mailCSS from './style/mail.scss?inline';
 
 const settings = new Set<Setting>();
 
 let external: BooleanSetting;
-if (__UNI__ !== 'uzl') {
+if (__UNI__ !== 'uzl') { // this feature exists natively in UzL-Moodle.
     external = new BooleanSetting('external', true).onInput(() => onload());
     settings.add(external);
 }
@@ -23,21 +25,13 @@ const onload = () => {
     // external
     if (external?.value) {
         if (externalStyle) document.head.append(externalStyle);
-        else {
-            void import('./style/external.scss?inline').then(
-                ({ default: style }) => (externalStyle = GM_addStyle(style))
-            );
-        }
+        else externalStyle = GM_addStyle(externalCSS);
     } else externalStyle?.remove();
 
     // mail
     if (mail.value) {
         if (mailStyle) document.head.append(mailStyle);
-        else {
-            void import('./style/mail.scss?inline').then(
-                ({ default: style }) => (mailStyle = GM_addStyle(style))
-            );
-        }
+        else mailStyle = GM_addStyle(mailCSS);
     } else mailStyle?.remove();
 };
 
