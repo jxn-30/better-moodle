@@ -71,6 +71,10 @@
               "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
               "type": "string"
             },
+            "moodleVersion": {
+              "description": "The version, the Moodle instance is running on. Used for enabling compatibility patches.",
+              "enum": [400, 401, 402, 403, 404, 405],
+            },
             "namespace": {
               "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
               "type": "string"
@@ -88,6 +92,7 @@
             "github",
             "icon",
             "moodleUrl",
+            "moodleVersion",
             "connects"
           ],
           "type": "object"

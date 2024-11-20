@@ -243,6 +243,7 @@ export default defineConfig({
         __VERSION__: JSON.stringify(version),
         __PREFIX__: JSON.stringify(PREFIX),
         __UNI__: JSON.stringify(configFile),
+        __MOODLE_VERSION__: JSON.stringify(config.moodleVersion),
     },
     plugins: [
         monkey({

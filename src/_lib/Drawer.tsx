@@ -5,7 +5,7 @@ import { requirePromise } from '@/require.js';
 import ThemeBoostDrawers from '#/require.js/theme_boost/drawers';
 import { getDocumentFragmentHtml, putTemplate } from '@/DOM';
 
-enum Side {
+export enum Side {
     Left = 'left',
     Right = 'right',
 }
@@ -22,6 +22,7 @@ export default class Drawer {
     #icon = '';
     #toggleTitle = '';
     #content = (<></>) as DocumentFragment;
+    #heading = (<></>) as DocumentFragment;
     #instance: ThemeBoostDrawers | null = null;
 
     /**
@@ -29,7 +30,7 @@ export default class Drawer {
      * @param id - the id of the drawer for DOM ID and storage
      */
     constructor(id: string) {
-        this.#id = PREFIX(id);
+        this.#id = PREFIX(`drawer__${id}`);
     }
 
     /**
@@ -87,6 +88,26 @@ export default class Drawer {
     }
 
     /**
+     * sets the heading of the drawer
+     * @param heading - the heading to use
+     * @returns this
+     */
+    setHeading(heading: DocumentFragment) {
+        if (this.#instance) {
+            const header =
+                this.#instance.drawerNode.querySelector('.drawerheader');
+            const toggler = header?.querySelector('.drawertoggle');
+            if (toggler && this.#side === Side.Left) {
+                header?.replaceChildren(toggler, heading);
+            } else if (toggler) header?.replaceChildren(heading, toggler);
+        } else {
+            this.#throwOnRendered();
+            this.#heading = heading;
+        }
+        return this;
+    }
+
+    /**
      * sets the content of the drawer
      * @param content - the content to use
      * @returns this
@@ -132,6 +153,7 @@ export default class Drawer {
             tooltip: this.#oppositeSide,
             state: `show-drawer-${this.#side}`,
             content: getDocumentFragmentHtml(this.#content),
+            drawerheading: getDocumentFragmentHtml(this.#heading),
         });
     }
 
@@ -142,13 +164,23 @@ export default class Drawer {
     async create() {
         this.#throwOnRendered();
         const template = await this.#render();
-        const [elements, [Drawer, Drawers]] = await Promise.all([
+        const [[element], [Drawer, Drawers]] = await Promise.all([
             putTemplate('#page', template, 'before'),
             requirePromise([
                 'theme_boost/drawer',
                 'theme_boost/drawers',
             ] as const),
         ]);
+
+        // for Moodle 4.2+ this is not needed anymore but all Moodles before need this
+        if (__MOODLE_VERSION__ < 402 && this.#heading) {
+            element
+                .querySelector('.drawertoggle')
+                ?.[
+                    this.#side === Side.Left ? 'after' : 'before'
+                ](this.#heading);
+        }
+
         document.querySelector('#page .drawer-toggles')?.append(
             <div
                 className={`drawer-toggler drawer-${this.#side}-toggle ml-auto d-print-none`}
@@ -173,7 +205,7 @@ export default class Drawer {
             </div>
         );
         Drawer.init();
-        this.#instance = Drawers.getDrawerInstanceForNode(elements[0]);
+        this.#instance = Drawers.getDrawerInstanceForNode(element);
         if (GM_getValue(this.#storageKey, false)) {
             this.#instance.openDrawer();
         }

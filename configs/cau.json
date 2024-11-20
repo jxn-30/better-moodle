@@ -12,5 +12,6 @@
     },
     "icon": "https://www.uni-kiel.de/favicon.ico",
     "moodleUrl": "https://elearn.informatik.uni-kiel.de",
+    "moodleVersion": 401,
     "connects": ["studentenwerk.sh", "cloud.rz.uni-kiel.de", "www.uni-kiel.de"]
 }

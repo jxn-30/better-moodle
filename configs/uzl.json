@@ -13,5 +13,6 @@
     },
     "icon": "https://www.uni-luebeck.de/favicon.ico",
     "moodleUrl": "https://moodle.uni-luebeck.de",
+    "moodleVersion": 401,
     "connects": ["studentenwerk.sh"]
 }

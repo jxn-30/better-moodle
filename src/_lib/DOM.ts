@@ -75,6 +75,6 @@ export const putTemplate = async (
  */
 export const getDocumentFragmentHtml = (fragment: DocumentFragment) => {
     const div = document.createElement('div');
-    div.append(fragment);
+    div.append(fragment.cloneNode(true));
     return div.innerHTML;
 };
