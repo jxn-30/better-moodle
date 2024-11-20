@@ -1,13 +1,14 @@
-import FeatureGroup from '@/FeatureGroup';
 import { BooleanSetting } from '@/Settings/BooleanSetting';
-import type Setting from '@/Setting';
 import externalCSS from './style/external.scss?inline';
+import FeatureGroup from '@/FeatureGroup';
 import mailCSS from './style/mail.scss?inline';
+import type Setting from '@/Setting';
 
 const settings = new Set<Setting>();
 
 let external: BooleanSetting;
-if (__UNI__ !== 'uzl') { // this feature exists natively in UzL-Moodle.
+// this feature exists natively in UzL-Moodle.
+if (__UNI__ !== 'uzl') {
     external = new BooleanSetting('external', true).onInput(() => onload());
     settings.add(external);
 }

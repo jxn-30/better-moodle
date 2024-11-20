@@ -176,7 +176,8 @@ export default abstract class Setting<
     }
 
     /**
-     *
+     * The setting name without any prefixes
+     * @returns the plain setting name
      */
     get name() {
         return this.#id;

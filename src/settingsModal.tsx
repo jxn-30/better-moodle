@@ -1,8 +1,8 @@
 import featureGroups from '@/imports';
 import { GithubLink } from '@/Components';
-import { lt as semverLt } from '@/semver';
 import { Modal } from '@/Modal';
 import { request } from '@/network';
+import { lt as semverLt } from '@/semver';
 import settingsStyle from './style/settings.module.scss';
 import TempStorage from '@/TempStorage';
 import { updateNotification as updateNotificationSetting } from './features/general';

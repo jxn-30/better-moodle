@@ -1,6 +1,8 @@
 /**
- * @param version
- * @param other
+ * compares two semver versions against each other
+ * @param version - left side
+ * @param other - right side
+ * @returns version < other
  */
 export const lt = (version: string, other: string) => {
     const [firstMajor, firstMinor, firstPatch] = version

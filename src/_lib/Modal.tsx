@@ -91,7 +91,9 @@ export class Modal extends CanBeReady {
     }
 
     /**
-     * @param callback
+     * The callback is called once the modal instance is ready;
+     * @param callback - the function that is called
+     * @returns the modal instance itself
      */
     onReady(callback: () => void) {
         void this.callWhenReady(callback);
