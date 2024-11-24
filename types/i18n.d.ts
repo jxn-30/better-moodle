@@ -9,6 +9,7 @@ export interface FeatureGroupTranslation extends BaseTranslation {
 
 export interface FeatureTranslation extends BaseTranslation {
     settings?: Record<string, SettingTranslation>;
+    [key: string]: BaseTranslation;
 }
 
 export interface SettingTranslation extends BaseTranslation {

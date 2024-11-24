@@ -21,8 +21,8 @@ export default class Drawer {
     #classes = new Set<string>();
     #icon = '';
     #toggleTitle = '';
-    #content = (<></>) as DocumentFragment;
-    #heading = (<></>) as DocumentFragment;
+    #content: DocumentFragment | HTMLElement = (<></>) as DocumentFragment;
+    #heading: DocumentFragment | HTMLElement = (<></>) as DocumentFragment;
     #instance: ThemeBoostDrawers | null = null;
 
     /**
@@ -92,7 +92,7 @@ export default class Drawer {
      * @param heading - the heading to use
      * @returns this
      */
-    setHeading(heading: DocumentFragment) {
+    setHeading(heading: DocumentFragment | HTMLElement) {
         if (this.#instance) {
             const header =
                 this.#instance.drawerNode.querySelector('.drawerheader');
@@ -112,7 +112,7 @@ export default class Drawer {
      * @param content - the content to use
      * @returns this
      */
-    setContent(content: DocumentFragment) {
+    setContent(content: DocumentFragment | HTMLElement) {
         if (this.#instance) {
             this.#instance.drawerNode
                 .querySelector('.drawercontent')
@@ -152,8 +152,14 @@ export default class Drawer {
             id: this.#id,
             tooltip: this.#oppositeSide,
             state: `show-drawer-${this.#side}`,
-            content: getDocumentFragmentHtml(this.#content),
-            drawerheading: getDocumentFragmentHtml(this.#heading),
+            content:
+                this.#content instanceof DocumentFragment ?
+                    getDocumentFragmentHtml(this.#content)
+                :   this.#content.outerHTML,
+            drawerheading:
+                this.#heading instanceof DocumentFragment ?
+                    getDocumentFragmentHtml(this.#heading)
+                :   this.#heading.outerHTML,
         });
     }
 

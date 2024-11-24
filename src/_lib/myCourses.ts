@@ -7,7 +7,6 @@ export interface CourseFilter {
     classification: string;
     customfieldname: string;
     customfieldvalue: string;
-    active?: boolean;
     name: string;
 }
 
@@ -41,7 +40,6 @@ export const getAvailableCourseFilters = async (): Promise<CourseFilter[]> => {
             classification: filterEl.dataset.pref ?? '',
             customfieldname,
             customfieldvalue: filterEl.dataset.customfieldvalue ?? '',
-            active: filterEl.ariaCurrent === 'true',
             name: filterEl.textContent?.trim() ?? '',
         };
         if (active) activeFilter = filter;
@@ -58,13 +56,10 @@ export const getAvailableCourseFilters = async (): Promise<CourseFilter[]> => {
 export const getAvailableCourseFiltersAsOptions = (): Promise<SelectOption[]> =>
     getAvailableCourseFilters().then(filters =>
         filters
-            .map<SelectOption>(filter => {
-                delete filter.active;
-                return {
-                    key: JSON.stringify(filter),
-                    title: filter.name,
-                };
-            })
+            .map<SelectOption>(filter => ({
+                key: JSON.stringify(filter),
+                title: filter.name,
+            }))
             // add a sync option as first item
             .toSpliced(0, 0, '_sync')
     );

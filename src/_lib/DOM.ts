@@ -26,7 +26,7 @@ let loadingSpinner: HTMLElement;
  */
 export const getLoadingSpinner = () =>
     loadingSpinner ?
-        Promise.resolve(loadingSpinner.cloneNode(true))
+        Promise.resolve(loadingSpinner.cloneNode(true) as HTMLElement)
     :   requirePromise(['core/templates'] as const)
             .then(([templates]) =>
                 templates.renderForPromise('core/loading', {})
@@ -34,7 +34,7 @@ export const getLoadingSpinner = () =>
             .then(({ html }) => htmlToElements(html).item(0) as HTMLElement)
             .then(spinner => {
                 loadingSpinner = spinner;
-                return spinner.cloneNode(true);
+                return spinner.cloneNode(true) as HTMLElement;
             });
 
 /**

@@ -202,13 +202,23 @@ type RootTranslation = {
             features: {
                 layout: {
                     settings: {
-                        leftSidebar: {
+                        coursesSidebar: {
                             /**
-                             * L​i​n​k​e​ ​S​e​i​t​e​n​l​e​i​s​t​e
+                             * L​i​n​k​e​ ​S​e​i​t​e​n​l​e​i​s​t​e​:​ ​K​u​r​s​l​i​s​t​e
                              */
                             name: string;
                             /**
-                             * A​k​t​i​v​i​e​r​t​ ​e​i​n​e​ ​l​i​n​k​e​ ​S​e​i​t​e​n​l​e​i​s​t​e​ ​i​m​ ​D​a​s​h​b​o​a​r​d​,​ ​i​n​ ​d​i​e​ ​B​l​ö​c​k​e​ ​v​e​r​s​c​h​o​b​e​n​ ​w​e​r​d​e​n​ ​k​ö​n​n​e​n​.
+                             * A​k​t​i​v​i​e​r​t​ ​e​i​n​e​ ​l​i​n​k​e​ ​S​e​i​t​e​n​l​e​i​s​t​e​ ​i​m​ ​D​a​s​h​b​o​a​r​d​,​ ​i​n​ ​d​e​r​ ​e​i​n​e​ ​f​i​l​t​e​r​b​a​r​e​ ​L​i​s​t​e​ ​d​e​r​ ​e​i​g​e​n​e​n​ ​K​u​r​s​e​ ​a​n​g​e​z​e​i​g​t​ ​w​i​r​d​.
+                             */
+                            description: string;
+                        };
+                        favouriteCoursesAtTop: {
+                            /**
+                             * F​a​v​o​r​i​t​e​n​ ​o​b​e​n​ ​i​n​ ​d​e​r​ ​K​u​r​s​l​i​s​t​e
+                             */
+                            name: string;
+                            /**
+                             * F​a​v​o​r​i​s​i​e​r​t​e​ ​K​u​r​s​e​ ​w​e​r​d​e​n​ ​i​m​m​e​r​ ​o​b​e​n​ ​i​n​ ​d​e​r​ ​K​u​r​s​l​i​s​t​e​ ​a​n​g​e​z​e​i​g​t​,​ ​a​n​s​t​e​l​l​e​ ​a​n​ ​d​e​r​ ​n​o​r​m​a​l​e​n​ ​S​t​e​l​l​e​ ​b​e​i​ ​a​l​p​h​a​b​e​t​i​s​c​h​e​r​ ​S​o​r​t​i​e​r​u​n​g​.
                              */
                             description: string;
                         };
@@ -222,6 +232,20 @@ type RootTranslation = {
                              */
                             description: string;
                         };
+                    };
+                    myCourses: {
+                        /**
+                         * M​e​i​n​e​ ​K​u​r​s​e
+                         */
+                        title: string;
+                        /**
+                         * M​i​t​ ​A​u​s​w​a​h​l​ ​a​u​f​ ​"​M​e​i​n​e​ ​K​u​r​s​e​"​-​S​e​i​t​e​ ​s​y​n​c​h​r​o​n​i​s​i​e​r​e​n
+                         */
+                        sync: string;
+                        /**
+                         * K​e​i​n​e​ ​K​u​r​s​e​ ​i​m​ ​a​k​t​u​e​l​l​e​n​ ​F​i​l​t​e​r​ ​v​o​r​h​a​n​d​e​n​.
+                         */
+                        empty: string;
                     };
                 };
             };
@@ -609,13 +633,23 @@ export type TranslationFunctions = {
             features: {
                 layout: {
                     settings: {
-                        leftSidebar: {
+                        coursesSidebar: {
                             /**
-                             * Linke Seitenleiste
+                             * Linke Seitenleiste: Kursliste
                              */
                             name: () => LocalizedString;
                             /**
-                             * Aktiviert eine linke Seitenleiste im Dashboard, in die Blöcke verschoben werden können.
+                             * Aktiviert eine linke Seitenleiste im Dashboard, in der eine filterbare Liste der eigenen Kurse angezeigt wird.
+                             */
+                            description: () => LocalizedString;
+                        };
+                        favouriteCoursesAtTop: {
+                            /**
+                             * Favoriten oben in der Kursliste
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Favorisierte Kurse werden immer oben in der Kursliste angezeigt, anstelle an der normalen Stelle bei alphabetischer Sortierung.
                              */
                             description: () => LocalizedString;
                         };
@@ -629,6 +663,20 @@ export type TranslationFunctions = {
                              */
                             description: () => LocalizedString;
                         };
+                    };
+                    myCourses: {
+                        /**
+                         * Meine Kurse
+                         */
+                        title: () => LocalizedString;
+                        /**
+                         * Mit Auswahl auf "Meine Kurse"-Seite synchronisieren
+                         */
+                        sync: () => LocalizedString;
+                        /**
+                         * Keine Kurse im aktuellen Filter vorhanden.
+                         */
+                        empty: () => LocalizedString;
                     };
                 };
             };
