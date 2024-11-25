@@ -4,7 +4,11 @@ import { getLoadingSpinner } from '@/DOM';
 import { LL } from '../../i18n/i18n';
 import { requirePromise } from '@/require.js';
 import Drawer, { Side } from '@/Drawer';
-import { getActiveFilter, getAvailableCourseFilters } from '@/myCourses';
+import {
+    getActiveFilter,
+    getAvailableCourseFilters,
+    onActiveFilterChanged,
+} from '@/myCourses';
 import { isDashboard, isLoggedIn } from '@/helpers';
 
 const coursesSidebarEnabled = new BooleanSetting(
@@ -122,6 +126,7 @@ const onload = () => {
             .then(drawer => {
                 void loadCourseContent(drawer);
                 favouriteCoursesAtTop.onInput(() => loadCourseContent(drawer));
+                onActiveFilterChanged(() => loadCourseContent(drawer));
             });
     }
     if (rightSidebarEnabled.value) {

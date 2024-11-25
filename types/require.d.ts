@@ -4,6 +4,7 @@
 import BlockMyOverviewRepository from './require.js/block/myoverview/repository';
 import BlockMyOverviewSelectors from './require.js/block/myoverview/selectors';
 import CoreConfig from './require.js/core/config';
+import CoreCustomInteractionEvents from './require.js/core/custom_interaction_events';
 import CoreFiltersEvents from './require.js/core_filters/event';
 import CoreLocalstorage from './require.js/core/localstorage';
 import CoreModalEvents from './require.js/core/modal_events';
@@ -11,6 +12,7 @@ import CoreModalFactory from './require.js/core/modal_factory';
 import CoreStr from './require.js/core/str';
 import CoreTemplates from './require.js/core/templates';
 import CoreToast from './require.js/core/toast';
+import JQueryStatic from '@types/jquery';
 import ThemeBoostDrawer from './require.js/theme_boost/drawer';
 import ThemeBoostDrawers from './require.js/theme_boost/drawers';
 
@@ -19,6 +21,7 @@ interface ModuleMap {
     'block_myoverview/repository': BlockMyOverviewRepository;
 
     'core/config': CoreConfig;
+    'core/custom_interaction_events': CoreCustomInteractionEvents;
     'core/localstorage': CoreLocalstorage;
     'core/modal_factory': CoreModalFactory;
     'core/modal_events': CoreModalEvents;
@@ -27,6 +30,8 @@ interface ModuleMap {
     'core/toast': CoreToast;
 
     'core_filters/events': CoreFiltersEvents;
+
+    'jquery': JQueryStatic;
 
     'theme_boost/drawer': ThemeBoostDrawer;
     'theme_boost/drawers': typeof ThemeBoostDrawers;
