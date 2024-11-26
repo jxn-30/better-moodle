@@ -8,13 +8,13 @@ Thanks for reading this contribution guide! 😊
 > [!TIP]
 > Anything unclear? Feel free to ask @jxn-30 for clarification!
 
--   [Development](#development)
-    -   [Contribution Workflow](#contribution-workflow)
-    -   [Pre-Commit](#pre-commit)
-    -   [Commit messages](#commit-messages)
-    -   [Pull-Requests](#pull-requests)
-    -   [Changelog](#changelog)
-    -   [Testing](#testing)
+- [Development](#development)
+    - [Contribution Workflow](#contribution-workflow)
+    - [Pre-Commit](#pre-commit)
+    - [Commit messages](#commit-messages)
+    - [Pull-Requests](#pull-requests)
+    - [Changelog](#changelog)
+    - [Testing](#testing)
 
 ## Development
 
