@@ -44,16 +44,16 @@
               "additionalProperties": false,
               "description": "Information about the GitHub repository this Better-Moodle lives on. This is used to generate download and update links as well as links to the repository.",
               "properties": {
+                "branch": {
+                  "description": "The branch this instance ist developed on.",
+                  "type": "string"
+                },
                 "repo": {
                   "description": "The actual repository name.",
                   "type": "string"
                 },
                 "user": {
                   "description": "The GitHub user hosting the repository.",
-                  "type": "string"
-                },
-                "branch": {
-                  "description": "If this version of Better-Moodle is in a special branch (e.g. for testing purposes or for special releases), this can be specified here.",
                   "type": "string"
                 }
               },
@@ -72,8 +72,16 @@
               "type": "string"
             },
             "moodleVersion": {
-              "description": "The version, the Moodle instance is running on. Used for enabling compatibility patches.",
-              "enum": [400, 401, 402, 403, 404, 405],
+              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen.",
+              "enum": [
+                400,
+                401,
+                402,
+                403,
+                404,
+                405
+              ],
+              "type": "number"
             },
             "namespace": {
               "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
@@ -137,6 +145,10 @@
               "additionalProperties": false,
               "description": "Information about the GitHub repository this Better-Moodle lives on. This is used to generate download and update links as well as links to the repository.",
               "properties": {
+                "branch": {
+                  "description": "The branch this instance ist developed on.",
+                  "type": "string"
+                },
                 "repo": {
                   "description": "The actual repository name.",
                   "type": "string"
@@ -167,6 +179,18 @@
               "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
               "type": "string"
             },
+            "moodleVersion": {
+              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen.",
+              "enum": [
+                400,
+                401,
+                402,
+                403,
+                404,
+                405
+              ],
+              "type": "number"
+            },
             "namespace": {
               "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
               "type": "string"
@@ -184,6 +208,7 @@
             "icon",
             "includeFeatures",
             "moodleUrl",
+            "moodleVersion",
             "namespace",
             "uniName"
           ],
@@ -236,6 +261,10 @@
               "additionalProperties": false,
               "description": "Information about the GitHub repository this Better-Moodle lives on. This is used to generate download and update links as well as links to the repository.",
               "properties": {
+                "branch": {
+                  "description": "The branch this instance ist developed on.",
+                  "type": "string"
+                },
                 "repo": {
                   "description": "The actual repository name.",
                   "type": "string"
@@ -259,6 +288,18 @@
               "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
               "type": "string"
             },
+            "moodleVersion": {
+              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen.",
+              "enum": [
+                400,
+                401,
+                402,
+                403,
+                404,
+                405
+              ],
+              "type": "number"
+            },
             "namespace": {
               "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
               "type": "string"
@@ -276,6 +317,7 @@
             "github",
             "icon",
             "moodleUrl",
+            "moodleVersion",
             "namespace",
             "uniName"
           ],
