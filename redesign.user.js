@@ -3632,7 +3632,8 @@ if (getSetting('general.fullwidth')) {
     GM_addStyle(css`
         /* Use full width */
         #topofscroll,
-        .header-maxwidth {
+        .header-maxwidth,
+        .secondary-navigation .navigation .nav-tabs {
             max-width: unset !important;
         }
     `);
