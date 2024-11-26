@@ -12,10 +12,10 @@ export const de = {
             description:
                 'Favorisierte Kurse werden immer oben in der Kursliste angezeigt, anstelle an der normalen Stelle bei alphabetischer Sortierung.',
         },
-        rightSidebar: {
-            name: 'Rechte Seitenleiste',
+        timelineSidebar: {
+            name: 'Rechte Seitenleiste: Zeitleiste und aktuelle Termine',
             description:
-                'Aktiviert eine rechte Seitenleiste im Dashboard, in die Blöcke verschoben werden können.',
+                'Aktiviert eine rechte Seitenleiste im Dashboard. Die Zeitleiste und aktuelle Termine werden nun in dieser statt in der Mitte angezeigt.',
         },
     },
     myCourses: {
@@ -30,17 +30,17 @@ export const en = {
         coursesSidebar: {
             name: 'Left sidebar',
             description:
-                'Enables a left sidebar in dashboard, allowing to move blocks in there.',
+                'Enables a left sidebar in dashboard, showing a filterable list of your courses.',
         },
         favouriteCoursesAtTop: {
             name: 'Show favourite courses at top',
             description:
                 'Favourite courses are always displayed at the top of the course list instead of in the normal position when sorted alphabetically.',
         },
-        rightSidebar: {
-            name: 'Right sidebar',
+        timelineSidebar: {
+            name: 'Right sidebar: Timeline and upcoming events',
             description:
-                'Enables a left sidebar in dashboard, allowing to move blocks in there.',
+                'Enables a right sidebar in dashboard. Timeline and upcoming events are moved into this sidebar.',
         },
     },
     myCourses: {

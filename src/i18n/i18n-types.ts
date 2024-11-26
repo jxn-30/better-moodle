@@ -222,13 +222,13 @@ type RootTranslation = {
                              */
                             description: string;
                         };
-                        rightSidebar: {
+                        timelineSidebar: {
                             /**
-                             * R​e​c​h​t​e​ ​S​e​i​t​e​n​l​e​i​s​t​e
+                             * R​e​c​h​t​e​ ​S​e​i​t​e​n​l​e​i​s​t​e​:​ ​Z​e​i​t​l​e​i​s​t​e​ ​u​n​d​ ​a​k​t​u​e​l​l​e​ ​T​e​r​m​i​n​e
                              */
                             name: string;
                             /**
-                             * A​k​t​i​v​i​e​r​t​ ​e​i​n​e​ ​r​e​c​h​t​e​ ​S​e​i​t​e​n​l​e​i​s​t​e​ ​i​m​ ​D​a​s​h​b​o​a​r​d​,​ ​i​n​ ​d​i​e​ ​B​l​ö​c​k​e​ ​v​e​r​s​c​h​o​b​e​n​ ​w​e​r​d​e​n​ ​k​ö​n​n​e​n​.
+                             * A​k​t​i​v​i​e​r​t​ ​e​i​n​e​ ​r​e​c​h​t​e​ ​S​e​i​t​e​n​l​e​i​s​t​e​ ​i​m​ ​D​a​s​h​b​o​a​r​d​.​ ​D​i​e​ ​Z​e​i​t​l​e​i​s​t​e​ ​u​n​d​ ​a​k​t​u​e​l​l​e​ ​T​e​r​m​i​n​e​ ​w​e​r​d​e​n​ ​n​u​n​ ​i​n​ ​d​i​e​s​e​r​ ​s​t​a​t​t​ ​i​n​ ​d​e​r​ ​M​i​t​t​e​ ​a​n​g​e​z​e​i​g​t​.
                              */
                             description: string;
                         };
@@ -653,13 +653,13 @@ export type TranslationFunctions = {
                              */
                             description: () => LocalizedString;
                         };
-                        rightSidebar: {
+                        timelineSidebar: {
                             /**
-                             * Rechte Seitenleiste
+                             * Rechte Seitenleiste: Zeitleiste und aktuelle Termine
                              */
                             name: () => LocalizedString;
                             /**
-                             * Aktiviert eine rechte Seitenleiste im Dashboard, in die Blöcke verschoben werden können.
+                             * Aktiviert eine rechte Seitenleiste im Dashboard. Die Zeitleiste und aktuelle Termine werden nun in dieser statt in der Mitte angezeigt.
                              */
                             description: () => LocalizedString;
                         };

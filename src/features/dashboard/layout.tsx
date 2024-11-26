@@ -19,8 +19,8 @@ const coursesSidebarEnabled = new BooleanSetting(
 ).requireReload();
 // TODO: Alias
 const favouriteCoursesAtTop = new BooleanSetting('favouriteCoursesAtTop', true);
-const rightSidebarEnabled = new BooleanSetting(
-    'rightSidebar',
+const timelineSidebarEnabled = new BooleanSetting(
+    'timelineSidebar',
     true
 ).requireReload();
 
@@ -41,7 +41,7 @@ GM_setValue(courseFilterStorageKey, courseFilter);
 /**
  * Loads the content of the courses sidebar and shows a loading spinner meanwhile
  * @param drawer - the Drawer to add the course content to
- * @param filterSelection
+ * @param filterSelection - the element that contains filters and needs to be added to the sidebar content
  */
 const loadCourseContent = (drawer: Drawer, filterSelection: HTMLDivElement) => {
     let contentLoaded = false;
@@ -131,7 +131,7 @@ const loadCourseContent = (drawer: Drawer, filterSelection: HTMLDivElement) => {
 };
 
 /**
- *
+ * Inits the course sidebar by creating necessary elements, registers event listeners and creates the sidebar itself.
  */
 const initCourseSidebar = () => {
     const courseFilterDropdownBtnId = `${style.coursesSidebarFilterMenu}-toggle`;
@@ -277,11 +277,31 @@ const onload = () => {
         initCourseSidebar();
     }
 
-    if (rightSidebarEnabled.value) {
-        void new Drawer('dashboard-right')
+    if (timelineSidebarEnabled.value) {
+        const blocks = ['timeline', 'calendar_upcoming'];
+
+        const selector = blocks
+            .map(block => `section[data-block="${block}"]`)
+            .flatMap(block => [
+                `a.sr-only:has(+ ${block})`,
+                block,
+                `${block} + span`,
+            ])
+            .join(',');
+
+        void new Drawer('dashboard-timeline')
             .setSide(Side.Right)
             .setIcon('calendar')
-            .create();
+            .create()
+            .then(drawer =>
+                drawer.setContent(
+                    (
+                        <>
+                            {...Array.from(document.querySelectorAll(selector))}
+                        </>
+                    ) as DocumentFragment
+                )
+            );
     }
 };
 
@@ -289,7 +309,7 @@ export default Feature.register({
     settings: new Set([
         coursesSidebarEnabled,
         favouriteCoursesAtTop,
-        rightSidebarEnabled,
+        timelineSidebarEnabled,
     ]),
     onload,
 });
