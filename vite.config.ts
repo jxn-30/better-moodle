@@ -122,7 +122,18 @@ if (allIncludedFeatureGroups.has('darkmode')) {
     );
 }
 
-// https://vitejs.dev/config/
+const GLOBAL_CONSTANTS = {
+    __GITHUB_USER__: JSON.stringify(config.github.user),
+    __GITHUB_REPO__: JSON.stringify(config.github.repo),
+    __GITHUB_URL__: JSON.stringify(githubUrl),
+    __GITHUB_BRANCH__: JSON.stringify(config.github.branch ?? 'main'),
+    __VERSION__: JSON.stringify(version),
+    __PREFIX__: JSON.stringify(PREFIX),
+    __UNI__: JSON.stringify(configFile),
+    __MOODLE_VERSION__: JSON.stringify(config.moodleVersion),
+    __MOODLE_URL__: JSON.stringify(config.moodleUrl),
+};
+
 export default defineConfig({
     esbuild: {
         jsxInject:
@@ -206,7 +217,9 @@ export default defineConfig({
         preprocessorOptions: {
             scss: {
                 api: 'modern-compiler',
-                additionalData: `$_moodleUrl: ${JSON.stringify(config.moodleUrl)};`,
+                additionalData: Object.entries(GLOBAL_CONSTANTS)
+                    .map(([name, value]) => `$${name}: ${value};`)
+                    .join('\n'),
             },
         },
         modules: {
@@ -235,16 +248,7 @@ export default defineConfig({
             },
         },
     },
-    define: {
-        __GITHUB_USER__: JSON.stringify(config.github.user),
-        __GITHUB_REPO__: JSON.stringify(config.github.repo),
-        __GITHUB_URL__: JSON.stringify(githubUrl),
-        __GITHUB_BRANCH__: JSON.stringify(config.github.branch ?? 'main'),
-        __VERSION__: JSON.stringify(version),
-        __PREFIX__: JSON.stringify(PREFIX),
-        __UNI__: JSON.stringify(configFile),
-        __MOODLE_VERSION__: JSON.stringify(config.moodleVersion),
-    },
+    define: GLOBAL_CONSTANTS,
     plugins: [
         monkey({
             entry: 'src/core.tsx',

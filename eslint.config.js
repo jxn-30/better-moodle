@@ -43,6 +43,7 @@ export default [
                 __PREFIX__: 'readonly',
                 __UNI__: 'readonly',
                 __MOODLE_VERSION__: 'readonly',
+                __MOODLE_URL__: 'readonly',
                 // DarkReader is included via @require
                 DarkReader: 'readonly',
             },

@@ -1,4 +1,4 @@
-a:not([href^='#{$_moodleUrl}']) {
+a:not([href^='#{$__MOODLE_URL__}']) {
     &[href^="https://"],
   &[href^="http://"]
     {
