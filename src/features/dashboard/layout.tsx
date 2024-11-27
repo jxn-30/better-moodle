@@ -221,7 +221,7 @@ const initCourseSidebar = () => {
             // load courses
             void loadCourseContent(drawer, filterSelection);
             // if the favourites setting has been changed, reload
-            favouriteCoursesAtTop.onInput(() =>
+            favouriteCoursesAtTop.onChange(() =>
                 loadCourseContent(drawer, filterSelection)
             );
             // and if the active filter has been changed, load the changes too (but only if we're in synced mode)!
