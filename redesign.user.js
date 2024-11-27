@@ -2516,6 +2516,14 @@ const getSpeiseplan = async () => {
             abk: filter.querySelector('span.abk')?.textContent?.trim() ?? '',
             ...(imgUrl ? { img: imgUrl.href } : {}),
         };
+        // this is an inverted filter, so we need to find the matching text. Currently, Alcohol is the only case for this and at least there using the title of another alcohol bottle works
+        if (filter.dataset.ex === '1' && imgUrl) {
+            const alternativeTitle = mensaplanDoc.querySelector(
+                `:not(.filterbutton) > img[src="${imgUrl.pathname}"]`
+            )?.title;
+            if (alternativeTitle)
+                filters[type][filter.dataset.wert].title = alternativeTitle;
+        }
     });
     Object.freeze(filters);
 
