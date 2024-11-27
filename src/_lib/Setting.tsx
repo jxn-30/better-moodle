@@ -233,7 +233,8 @@ export default abstract class Setting<
     }
 
     /**
-     *
+     * The title of this setting
+     * @returns the translated title of this setting
      */
     get title(): LocalizedString {
         // @ts-expect-error we need to find a way to type this correctly
