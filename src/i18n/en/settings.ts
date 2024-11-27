@@ -12,7 +12,7 @@ export default {
     },
     changelog: 'Changelog',
     requireReload:
-        'The changes of this setting will only take effect after reloading the page.<br/>Saving the settings will therefore automatically reload the page.',
+        'The changes of this setting (*{name}*) will only take effect after reloading the page.  \nSaving the settings will therefore automatically reload the page.',
     tags: {
         fun: 'Fun setting',
     },

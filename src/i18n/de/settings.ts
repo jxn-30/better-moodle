@@ -13,7 +13,7 @@ export default {
     },
     changelog: 'Changelog',
     requireReload:
-        'Die Änderungen dieser Einstellung werden erst nach einem Neuladen der Seite übernommen.<br/>Das Speichern der Einstellungen führt daher automatisch zu einem Neuladen der Seite.',
+        'Die Änderungen dieser Einstellung (*{name: string}*) werden erst nach einem Neuladen der Seite übernommen.  \nDas Speichern der Einstellungen führt daher automatisch zu einem Neuladen der Seite.',
     tags: {
         fun: 'Spaßeinstellung',
     } satisfies Record<Tag, string>,

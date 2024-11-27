@@ -6,7 +6,7 @@ import { LocalizedString } from 'typesafe-i18n';
 import { require } from './require.js';
 import TempStorage from './TempStorage';
 import { UUID } from 'node:crypto';
-import { domID, PREFIX } from './helpers';
+import { domID, mdToHtml, PREFIX } from './helpers';
 import Feature, { FeatureID, FeatureTranslations } from './Feature';
 import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
 
@@ -233,17 +233,20 @@ export default abstract class Setting<
     }
 
     /**
+     *
+     */
+    get title(): LocalizedString {
+        // @ts-expect-error we need to find a way to type this correctly
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
+        return this.Translation?.name() ?? this.#id;
+    }
+
+    /**
      * The FormGroup for this setting
      * @returns the form group
      */
     get formGroup() {
         // TODO: remove typing issue suppressing comments once Feature.Translation is correctly typed
-
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const title: LocalizedString =
-            // @ts-expect-error we need to find a way to type this correctly
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            this.Translation?.name() ?? this.#id;
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const description: LocalizedString =
@@ -282,7 +285,7 @@ export default abstract class Setting<
                         {this.#tags.size ?
                             <>[{tags.map(tag => Tag(tag))}]&nbsp;</>
                         :   ''}
-                        {title}
+                        {this.title}
                     </label>
                     <div className="form-label-addon d-flex align-items-center align-self-start">
                         {descriptionBtn}
@@ -338,11 +341,14 @@ export default abstract class Setting<
             if (this.#unsavedValue === this.savedValue) return;
             // show a toast notification
             require(['core/toast'] as const, ({ add }) => {
-                void add(LL.settings.requireReload(), {
-                    type: 'info',
-                    autohide: false,
-                    closeButton: true,
-                });
+                void add(
+                    mdToHtml(LL.settings.requireReload({ name: this.title })),
+                    {
+                        type: 'info',
+                        autohide: false,
+                        closeButton: true,
+                    }
+                );
             });
             // remember that a reload is required
             TempStorage.settingsRequireReload = true;

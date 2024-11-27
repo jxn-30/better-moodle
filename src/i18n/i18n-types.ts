@@ -3,6 +3,7 @@
 import type {
     BaseTranslation as BaseTranslationType,
     LocalizedString,
+    RequiredParams,
 } from 'typesafe-i18n';
 
 export type BaseTranslation = BaseTranslationType;
@@ -51,9 +52,11 @@ type RootTranslation = {
          */
         changelog: string;
         /**
-         * D​i​e​ ​Ä​n​d​e​r​u​n​g​e​n​ ​d​i​e​s​e​r​ ​E​i​n​s​t​e​l​l​u​n​g​ ​w​e​r​d​e​n​ ​e​r​s​t​ ​n​a​c​h​ ​e​i​n​e​m​ ​N​e​u​l​a​d​e​n​ ​d​e​r​ ​S​e​i​t​e​ ​ü​b​e​r​n​o​m​m​e​n​.​<​b​r​/​>​D​a​s​ ​S​p​e​i​c​h​e​r​n​ ​d​e​r​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​f​ü​h​r​t​ ​d​a​h​e​r​ ​a​u​t​o​m​a​t​i​s​c​h​ ​z​u​ ​e​i​n​e​m​ ​N​e​u​l​a​d​e​n​ ​d​e​r​ ​S​e​i​t​e​.
-         */
-        requireReload: string;
+		 * D​i​e​ ​Ä​n​d​e​r​u​n​g​e​n​ ​d​i​e​s​e​r​ ​E​i​n​s​t​e​l​l​u​n​g​ ​(​*​{​n​a​m​e​}​*​)​ ​w​e​r​d​e​n​ ​e​r​s​t​ ​n​a​c​h​ ​e​i​n​e​m​ ​N​e​u​l​a​d​e​n​ ​d​e​r​ ​S​e​i​t​e​ ​ü​b​e​r​n​o​m​m​e​n​.​ ​ ​
+	​D​a​s​ ​S​p​e​i​c​h​e​r​n​ ​d​e​r​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​f​ü​h​r​t​ ​d​a​h​e​r​ ​a​u​t​o​m​a​t​i​s​c​h​ ​z​u​ ​e​i​n​e​m​ ​N​e​u​l​a​d​e​n​ ​d​e​r​ ​S​e​i​t​e​.
+		 * @param {string} name
+		 */
+        requireReload: RequiredParams<'name'>;
         tags: {
             /**
              * S​p​a​ß​e​i​n​s​t​e​l​l​u​n​g
@@ -179,16 +182,6 @@ type RootTranslation = {
                     name: string;
                     /**
                      * S​t​e​l​l​e​ ​e​i​n​e​n​ ​S​e​p​i​a​-​W​e​r​t​ ​f​ü​r​ ​d​e​n​ ​D​a​r​k​m​o​d​e​s​ ​e​i​n​.
-                     */
-                    description: string;
-                };
-                preview: {
-                    /**
-                     * V​o​r​s​c​h​a​u
-                     */
-                    name: string;
-                    /**
-                     * T​e​s​t​e​ ​h​i​e​r​ ​d​i​e​ ​a​k​t​u​e​l​l​e​n​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​d​e​s​ ​D​a​r​k​m​o​d​e​s​ ​b​e​i​ ​g​e​s​c​h​l​o​s​s​e​n​e​n​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​a​u​s​.​ ​V​o​r​s​i​c​h​t​:​ ​B​e​i​m​ ​n​ä​c​h​s​t​e​n​ ​N​e​u​l​a​d​e​n​ ​o​d​e​r​ ​W​e​c​h​s​e​l​n​ ​d​e​r​ ​S​e​i​t​e​ ​s​i​n​d​ ​d​i​e​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​z​u​r​ü​c​k​g​e​s​e​t​z​t​.
                      */
                     description: string;
                 };
@@ -482,9 +475,10 @@ export type TranslationFunctions = {
          */
         changelog: () => LocalizedString;
         /**
-         * Die Änderungen dieser Einstellung werden erst nach einem Neuladen der Seite übernommen.<br/>Das Speichern der Einstellungen führt daher automatisch zu einem Neuladen der Seite.
-         */
-        requireReload: () => LocalizedString;
+		 * Die Änderungen dieser Einstellung (*{name}*) werden erst nach einem Neuladen der Seite übernommen.  
+	Das Speichern der Einstellungen führt daher automatisch zu einem Neuladen der Seite.
+		 */
+        requireReload: (arg: { name: string }) => LocalizedString;
         tags: {
             /**
              * Spaßeinstellung
@@ -610,16 +604,6 @@ export type TranslationFunctions = {
                     name: () => LocalizedString;
                     /**
                      * Stelle einen Sepia-Wert für den Darkmodes ein.
-                     */
-                    description: () => LocalizedString;
-                };
-                preview: {
-                    /**
-                     * Vorschau
-                     */
-                    name: () => LocalizedString;
-                    /**
-                     * Teste hier die aktuellen Einstellungen des Darkmodes bei geschlossenen Einstellungen aus. Vorsicht: Beim nächsten Neuladen oder Wechseln der Seite sind die Einstellungen zurückgesetzt.
                      */
                     description: () => LocalizedString;
                 };

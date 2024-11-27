@@ -18,7 +18,10 @@ const coursesSidebarEnabled = new BooleanSetting(
     true
 ).requireReload();
 // TODO: Alias
-const favouriteCoursesAtTop = new BooleanSetting('favouriteCoursesAtTop', true);
+const favouriteCoursesAtTop = new BooleanSetting(
+    'favouriteCoursesAtTop',
+    true
+).disabledIf(coursesSidebarEnabled, '!=', true);
 const timelineSidebarEnabled = new BooleanSetting(
     'timelineSidebar',
     true
