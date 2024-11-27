@@ -4,22 +4,22 @@
 
 [![Aktuelle Version / Current Version](https://img.shields.io/github/v/release/jxn-30/better-moodle?label=Aktuellste%20Version%20/%20Current%20Version&color=004B5A&style=for-the-badge)][latest release]&nbsp;[![File size in bytes](https://img.shields.io/github/size/jxn-30/better-moodle/redesign.user.js?branch=main&style=for-the-badge&label=Gr%C3%B6%C3%9Fe%20%2F%20Size&color=004b5a)](https://github.com/jxn-30/better-moodle/blob/main/redesign.user.js)&nbsp;[![GitHub Downloads latest release](https://img.shields.io/github/downloads/jxn-30/better-moodle/latest/better-moodle.user.js?style=for-the-badge&label=Downloads%20latest%20version&color=004b5a)][latest release]
 
--   [Installation](#installation)
--   [Disclaimer](#disclaimer)
--   [Update](#update)
-    -   [Changelog](#changelog)
--   [Hochschulen](#hochschulen)
--   [Features](#features)
--   [FAQ](#faq)
--   [Alte Bilder und Impressionen](#alte-bilder-und-impressionen)
--   [Verlauf der GitHub Stars](#verlauf-der-github-stars)
+- [Installation](#installation)
+- [Disclaimer](#disclaimer)
+- [Update](#update)
+    - [Changelog](#changelog)
+- [Hochschulen](#hochschulen)
+- [Features](#features)
+- [FAQ](#faq)
+- [Alte Bilder und Impressionen](#alte-bilder-und-impressionen)
+- [Verlauf der GitHub Stars](#verlauf-der-github-stars)
 
 [//]: # 'TODO: More english translations'
 
-|                                                                                                                                                                                                                                                                                                                   |                                              |
-|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------:|
+|                                                                                                                                                                                                                                                                                                                 |                                              |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------: |
 | Better-Moodle ist ein Userscript, um das Design vom [UzL Moodle](https://moodle.uni-luebeck.de/) zu verbessern und zusätzliche, coole Features hinzuzufügen.<br><br> 🇬🇧 Better-Moodle is an userscript to improve the design of [UzL Moodle](https://moodle.uni-luebeck.de/) and add additional, cool features. | ![The Better-Moodle logo](./img/moothel.png) |
-| Better-Moodle Maskottchen Moothel / Better-Moodle Mascot Moothel: [moothel.pet](https://moothel.pet)                                                                                                                                                                                                              |              Better-Moodle Logo              |
+| Better-Moodle Maskottchen Moothel / Better-Moodle Mascot Moothel: [moothel.pet](https://moothel.pet)                                                                                                                                                                                                            |              Better-Moodle Logo              |
 
 _Bilder in dieser Beschreibung enthalten teilweise verschwommene Elemente, um den Datenschutz zu wahren._
 
@@ -74,8 +74,8 @@ Better-Moodle erhält regelmäßig Updates. Ein vollständiges Changelog ist in 
 
 Es gibt ganz viele, ganz tolle Menschen, die gerne programmieren und so breitet sich das Better-Moodle mit der Zeit auch auf anderen Hochschulen aus. Von diesen Hochschulen ist bekannt, dass Better-Moodle von ehrenamtlichen Studis entwickelt und getestet wird:
 
--   **Original: [Universität zu Lübeck (UzL)](https://github.com/jxn-30/better-moodle)** by [@jxn-30](https://github.com/jxn-30)
--   [CAU Kiel](https://github.com/YorikHansen/better-moodle) by [@YorikHansen](https://github.com/YorikHansen)
+- **Original: [Universität zu Lübeck (UzL)](https://github.com/jxn-30/better-moodle)** by [@jxn-30](https://github.com/jxn-30)
+- [CAU Kiel](https://github.com/YorikHansen/better-moodle) by [@YorikHansen](https://github.com/YorikHansen)
 
 ## Features
 
