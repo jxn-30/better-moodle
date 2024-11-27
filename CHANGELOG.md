@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.42.2](https://github.com/jxn-30/better-moodle/compare/1.42.1...1.42.2) (2024-11-27)
+
+
+### Bug Fixes
+
+* **speiseplan:** fix title of "contains alcohole" icon being irritating and wrong ([#480](https://github.com/jxn-30/better-moodle/issues/480)) ([9c09cf6](https://github.com/jxn-30/better-moodle/commit/9c09cf671b72d80b62fe0478885ce7378f184ecc))
+
 ## [1.42.1](https://github.com/jxn-30/better-moodle/compare/1.42.0...1.42.1) (2024-10-08)
 
 
