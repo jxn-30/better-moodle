@@ -31,12 +31,6 @@ export const de = {
             name: 'Sepia',
             description: 'Stelle einen Sepia-Wert für den Darkmodes ein.',
         },
-        preview: {
-            name: 'Vorschau',
-            description:
-                'Teste hier die aktuellen Einstellungen des Darkmodes bei geschlossenen Einstellungen aus. Vorsicht: Beim nächsten Neuladen oder Wechseln der Seite sind die Einstellungen zurückgesetzt.',
-            // btn: 'Einstellungen zur Vorschau ausblenden',
-        },
     },
 } satisfies FeatureGroupTranslation;
 
@@ -69,12 +63,6 @@ export const en = {
         sepia: {
             name: 'Sepia',
             description: 'Set the sepia value of the dark mode.',
-        },
-        preview: {
-            name: 'Preview',
-            description:
-                'Test the current dark mode settings here with the settings closed. Caution: The next time you reload or change the page, the settings will be reset.',
-            // btn: 'Hide settings for preview',
         },
     },
 } satisfies typeof de;
