@@ -4,7 +4,9 @@ import Feature from '@/Feature';
 import { ready } from '@/DOM';
 import styles from './googlyEyes.module.scss';
 
-const enabled = new BooleanSetting('enabled', false).addTag('fun');
+const enabled = new BooleanSetting('enabled', false)
+    .addTag('fun')
+    .addAlias('general.googlyEyes');
 
 const pupils = new Map<HTMLSpanElement, DOMRect>();
 

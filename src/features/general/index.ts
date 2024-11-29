@@ -7,14 +7,16 @@ import settingsStyle from '../../style/settings.module.scss';
 export const updateNotification = new BooleanSetting(
     'updateNotification',
     true
-);
+).addAlias('general.updateNotification');
 const languageSetting = new SelectSetting('language', 'auto', [
     'auto',
     ...Array.from(languages.entries()).map(([locale, { name, flag }]) => ({
         key: locale,
         title: `${flag} ${name}`,
     })),
-]).requireReload();
+])
+    .addAlias('general.language')
+    .requireReload();
 
 /**
  * Updates the hidden state of disabled settings.

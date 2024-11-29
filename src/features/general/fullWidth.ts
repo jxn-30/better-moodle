@@ -1,9 +1,9 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
 
-const enabled = new BooleanSetting('enabled', true).onInput(() =>
-    enabled.feature?.reload()
-);
+const enabled = new BooleanSetting('enabled', true)
+    .onInput(() => enabled.feature?.reload())
+    .addAlias('general.fullwidth');
 
 /**
  * Do the DOM operations required to set or unset full width.

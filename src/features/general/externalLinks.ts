@@ -1,9 +1,9 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
 
-const enabled = new BooleanSetting('enabled', true).onInput(() =>
-    enabled.feature?.reload()
-);
+const enabled = new BooleanSetting('enabled', true)
+    .onInput(() => enabled.feature?.reload())
+    .addAlias('general.externalLinks');
 
 const modifiedElements = new Map<HTMLAnchorElement, string>();
 

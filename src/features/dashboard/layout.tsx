@@ -17,11 +17,9 @@ const coursesSidebarEnabled = new BooleanSetting(
     'coursesSidebar',
     true
 ).requireReload();
-// TODO: Alias
-const favouriteCoursesAtTop = new BooleanSetting(
-    'favouriteCoursesAtTop',
-    true
-).disabledIf(coursesSidebarEnabled, '!=', true);
+const favouriteCoursesAtTop = new BooleanSetting('favouriteCoursesAtTop', true)
+    .addAlias('dashboard.courseListFavouritesAtTop')
+    .disabledIf(coursesSidebarEnabled, '!=', true);
 const timelineSidebarEnabled = new BooleanSetting(
     'timelineSidebar',
     true

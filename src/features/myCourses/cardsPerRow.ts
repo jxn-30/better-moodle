@@ -17,7 +17,7 @@ const amount = new SliderSetting('amount', 4, {
     step: 1,
     labels: 10,
 })
-    .addAlias('settings.myCourses.boxesPerRow')
+    .addAlias('myCourses.boxesPerRow')
     .onInput(setAmount);
 
 /**
