@@ -1,11 +1,13 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import browserslist from 'browserslist';
 import Config from './configs/_config';
 import { createHash } from 'crypto';
 import { defineConfig } from 'vite';
 import dotenv from 'dotenv';
 import fastGlob from 'fast-glob';
 import monkey from 'vite-plugin-monkey';
+import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
 import { dependencies, version } from './package.json';
 
 const PREFIX = 'better-moodle';
@@ -145,7 +147,13 @@ export default defineConfig({
     build: {
         minify: false,
         cssMinify: false,
-        target: 'es2022',
+        target: Array.from(
+            new Set(
+                resolveToEsbuildTarget(browserslist(), {
+                    printUnknownTargets: false,
+                })
+            )
+        ),
     },
     resolve: {
         alias: [
