@@ -128,6 +128,13 @@ export default abstract class Feature<
     }
 
     /**
+     *
+     */
+    get hasNewSetting() {
+        return this.#settings.values().some(setting => setting.isNewSetting);
+    }
+
+    /**
      *  Initialize the feature
      *  calls #init internally
      *  @returns the result of the init method

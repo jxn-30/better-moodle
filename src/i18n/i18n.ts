@@ -1,5 +1,5 @@
-import { getSettingKey } from '@/helpers';
 import { loadAllLocales } from './i18n-util.sync';
+import { STORAGE_V2_LANGUAGE_KEY } from '../migrateStorage';
 import { i18nObject, loadedLocales, locales } from './i18n-util';
 import { Locales, Translation } from './i18n-types';
 
@@ -8,7 +8,7 @@ loadAllLocales();
 const MOODLE_LANG = document.documentElement.lang.toLowerCase() as Locales;
 export const BETTER_MOODLE_LANG = (() => {
     const savedLanguage = GM_getValue<Locales | 'auto'>(
-        getSettingKey('general.language'),
+        STORAGE_V2_LANGUAGE_KEY,
         'auto'
     );
     if (savedLanguage === 'auto') return MOODLE_LANG;

@@ -2,11 +2,14 @@ import CanBeReady from './CanBeReady';
 import { GenericSetting } from './Components';
 import { JSX } from 'jsx-dom';
 import { LL } from '../i18n/i18n';
+import globalStyle from '../style/global.module.scss';
+import settingsStyle from '../style/settings.module.scss';
 import { LocalizedString } from 'typesafe-i18n';
 import { require } from './require.js';
 import TempStorage from './TempStorage';
 import { UUID } from 'node:crypto';
-import { domID, mdToHtml, PREFIX } from './helpers';
+import { STORAGE_V2_SEEN_SETTINGS_KEY } from '../migrateStorage';
+import { domID, isNewInstallation, mdToHtml, PREFIX } from './helpers';
 import Feature, { FeatureID, FeatureTranslations } from './Feature';
 import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
 
@@ -52,6 +55,7 @@ export default abstract class Setting<
     readonly #id: string;
     readonly #default: Type;
     readonly #tags = new Set<Tag>();
+    readonly #possibleIDs = new Set<string>();
     #feature: Feature<Group, Feat> | FeatureGroup<Group> | undefined;
 
     #formControl: Component['element'] | undefined;
@@ -92,6 +96,8 @@ export default abstract class Setting<
                 () => (this.#unsavedValue = this.#formControl!.value)
             );
 
+            this.#possibleIDs.add(this.id);
+
             // in V1, setting keys in storage were prefixed
             // this migrates the old storage key for this setting
             this.#migrateSettingStorage();
@@ -109,13 +115,13 @@ export default abstract class Setting<
     }
 
     /**
-     * This migrates a settings storage from an old key to a new one.
-     * It tries both, a prefixed (V1) and a non-prefixed version of the key
+     * This migrates a settings storage from a V1 key to a V2 key
      * @param key - the old key of this setting
      */
     #migrateSettingStorage(key = PREFIX(this.settingKey)) {
         const undefinedValue = crypto.randomUUID();
-        const oldValue: UUID | Type = GM_getValue(key, undefinedValue);
+        const oldKey = PREFIX(`setting.${key}`);
+        const oldValue: UUID | Type = GM_getValue(oldKey, undefinedValue);
         if (oldValue !== undefinedValue) {
             if (!GM_listValues().includes(this.settingKey)) {
                 const migratedValue =
@@ -124,9 +130,7 @@ export default abstract class Setting<
                 this.#formControl!.value = this.#unsavedValue = migratedValue;
                 this.save();
             }
-            GM_deleteValue(key);
-        } else if (!key.startsWith(__PREFIX__)) {
-            this.#migrateSettingStorage(PREFIX(key));
+            GM_deleteValue(oldKey);
         }
     }
 
@@ -136,6 +140,7 @@ export default abstract class Setting<
      * @returns the setting itself
      */
     addAlias(key: string) {
+        this.#possibleIDs.add(key);
         void this.callWhenReady(() => this.#migrateSettingStorage(key));
         return this;
     }
@@ -243,6 +248,19 @@ export default abstract class Setting<
     }
 
     /**
+     *
+     */
+    get isNewSetting() {
+        // if this is a new installation, we don't want to mark this setting as unseen / new
+        if (isNewInstallation) return false;
+        const seenSettings = new Set(
+            GM_getValue<string[]>(STORAGE_V2_SEEN_SETTINGS_KEY, [])
+        );
+        // if none of the possible IDs is within the list of seen settings, this setting is unseen / new
+        return seenSettings.intersection(this.#possibleIDs).size === 0;
+    }
+
+    /**
      * The FormGroup for this setting
      * @returns the form group
      */
@@ -283,6 +301,18 @@ export default abstract class Setting<
                         className="d-inline word-break"
                         htmlFor={this.inputID}
                     >
+                        {this.isNewSetting ?
+                            <span
+                                className={[
+                                    'badge badge-success text-uppercase d-inline',
+                                    globalStyle.shining,
+                                    globalStyle.sparkling,
+                                    settingsStyle.newSettingBadge,
+                                ]}
+                            >
+                                {LL.settings.newBadge()}
+                            </span>
+                        :   ''}
                         {this.#tags.size ?
                             <>[{tags.map(tag => Tag(tag))}]&nbsp;</>
                         :   ''}

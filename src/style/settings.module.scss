@@ -51,16 +51,28 @@
         }
     }
 
-    .fitem:has(input[disabled]) {
-        .col-form-label label {
-            /* disabled settings should have a grayed out label (similar to text-muted class) */
-            color: var(--gray);
+    .fitem {
+        &:has(input[disabled]) {
+            .col-form-label label {
+                /* disabled settings should have a grayed out label (similar to text-muted class) */
+                color: var(--gray);
+            }
+
+            :local(.hide-disabled-settings) & {
+                /* hide disabled settings if the user prefers */
+                display: none;
+            }
         }
 
-        :local(.hide-disabled-settings) & {
-            /* hide disabled settings if the user prefers */
-            display: none;
+        :local(.new-setting-badge) {
+            /* "New!"-Badges should not be cuddling with the label text! */
+            margin-right: 1ch;
         }
+    }
+
+    fieldset .ftoggler h3 :local(.new-setting-badge) {
+        /* "New!"-Badges should not be cuddling with the featureGroup name! */
+        margin-left: 1ch;
     }
 
     $tags: [ 'fun'];

@@ -175,3 +175,8 @@ export const isLoggedIn = !window.location.pathname.startsWith('/login');
 export const isDashboard = /^\/my\/(index\.php)?$/.test(
     window.location.pathname
 );
+
+/**
+ * Checks if this is a new installation. Can be determined by the fact that there are no values stored at all.
+ */
+export const isNewInstallation = GM_listValues().length === 0;

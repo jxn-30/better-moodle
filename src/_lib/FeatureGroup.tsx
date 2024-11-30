@@ -1,7 +1,9 @@
 import Feature from './Feature';
 import { FieldSet } from './Components';
+import globalStyle from '../style/global.module.scss';
 import { LL } from '../i18n/i18n';
 import Setting from './Setting';
+import settingsStyle from '../style/settings.module.scss';
 import { Translation } from '../i18n/i18n-types';
 
 export type FeatureGroupID = keyof Translation['features'];
@@ -107,6 +109,22 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
             description: this.description,
             collapsed: id !== 'general',
         });
+        if (this.hasNewSetting) {
+            void this.#FieldSet.heading.then(heading =>
+                heading?.append(
+                    <span
+                        className={[
+                            'badge badge-success text-uppercase',
+                            globalStyle.shining,
+                            globalStyle.sparkling,
+                            settingsStyle.newSettingBadge,
+                        ]}
+                    >
+                        {LL.settings.newBadge()}
+                    </span>
+                )
+            );
+        }
     }
 
     /**
@@ -165,6 +183,16 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
         return 'description' in this.Translation ?
                 this.Translation.description()
             :   '';
+    }
+
+    /**
+     *
+     */
+    get hasNewSetting() {
+        return (
+            this.#settings.values().some(setting => setting.isNewSetting) ||
+            this.#features.values().some(feature => feature.hasNewSetting)
+        );
     }
 
     /**

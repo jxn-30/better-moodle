@@ -47,3 +47,90 @@
     inherits: true;
     initial-value: 60px;
 }
+
+:local(.shining) {
+    /* Add a little shining effect onto an element */
+    @media (prefers-reduced-motion: no-preference) {
+        position: relative;
+        /* add a shining effect */
+        background-image: linear-gradient(
+            -75deg,
+            transparent 0%,
+            rgba(255, 255, 255, 75%) 15%,
+            transparent 30%,
+            transparent 100%
+        );
+        background-size: 200%;
+        background-repeat: no-repeat;
+
+        // this workaround is unfortunately needed for the animation name to be transformed
+        :local {
+            animation: shining 5s ease-in-out;
+        }
+    }
+
+    @keyframes :local(shining) {
+        0% {
+            background-position: 200% 0;
+        }
+        20% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 0 0;
+        }
+    }
+}
+
+:local(.sparkling)::before {
+    /* Add sparkels onto the element */
+    $width: 10ch;
+
+    display: inline-block;
+    content: ' ';
+    position: absolute;
+    width: $width;
+    height: calc($width * 18 / 11);
+    /* this is a self designed sparkle as SVG :) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 1800'%3E%3Cpath fill='gold' d='M 550 0 C 550 720 660 900 1100 900 C 660 900 550 1080 550 1800 C 550 1080 440 900 0 900 C 440 900 550 720 550 0'/%3E%3C/svg%3E");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    transform: translate(-50%, -50%);
+    transform-origin: top left;
+    top: 0;
+    left: 0;
+
+    // our local trick again
+    :local {
+        animation:
+            sparkling 1s ease-in-out infinite alternate,
+            sparkling_positions 6s step-start infinite;
+    }
+
+    @keyframes :local(sparkling) {
+        0% {
+            scale: 0;
+        }
+        10% {
+            scale: 0;
+        }
+        100% {
+            scale: 10%; /* for better results, we're creating large sparkles (width: 10ch), but to keep them rendered small, max scale is 10% */
+        }
+    }
+
+    @keyframes :local(sparkling_positions) {
+        0% {
+            top: 4%;
+            left: 14%;
+        }
+        33% {
+            top: 85%;
+            left: 51%;
+        }
+        66% {
+            top: 32%;
+            left: 87%;
+        }
+    }
+}
