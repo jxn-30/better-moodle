@@ -834,13 +834,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/add@npm:^2":
-  version: 2.0.3
-  resolution: "@types/add@npm:2.0.3"
-  checksum: 10c0/d18841b43d3799f69db0bdae380d19d05f43b716315c5bfd4d6c1b3467bada2644eab8c04bb5afdb94bba87604da06d466f22fe30df6bcf0518c373593bb474a
-  languageName: node
-  linkType: hard
-
 "@types/eslint@npm:*, @types/eslint@npm:9.6.1":
   version: 9.6.1
   resolution: "@types/eslint@npm:9.6.1"
@@ -1076,13 +1069,6 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: 10c0/6d4ee461a7734b2f48836ee0fbb752903606e576cc100eb49340295129ca0b452f3ba91ddd4424a1d4406a98adfb2ebb6bd0ff4c49d7a0930c10e462719bbfd7
-  languageName: node
-  linkType: hard
-
-"add@npm:2.0.6":
-  version: 2.0.6
-  resolution: "add@npm:2.0.6"
-  checksum: 10c0/6b21d5f2e58cf5e15d56cc6f9ebce04f04f4c33ae25f09d600ddacf8df00036ba521f17feb1b3f81307b7c6d2ef0bed8b511a0f86f062eb90c2f909b48b588ae
   languageName: node
   linkType: hard
 
@@ -5680,13 +5666,11 @@ __metadata:
   resolution: "uzl-better-moodle@workspace:."
   dependencies:
     "@eslint/js": "npm:9.15.0"
-    "@types/add": "npm:^2"
     "@types/eslint": "npm:9.6.1"
     "@types/eslint__js": "npm:8.42.3"
     "@types/jquery": "npm:3.5.32"
     "@types/node": "npm:22.9.3"
     "@types/tampermonkey": "npm:5.0.3"
-    add: "npm:2.0.6"
     browserslist: "npm:4.24.2"
     classnames: "npm:2.5.1"
     darkreader: "npm:4.9.96"
