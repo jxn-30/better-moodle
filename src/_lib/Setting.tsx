@@ -310,6 +310,7 @@ export default abstract class Setting<
                                     globalStyle.sparkling,
                                     settingsStyle.newSettingBadge,
                                 ]}
+                                data-setting={this.id}
                             >
                                 {LL.settings.newBadge()}
                             </span>

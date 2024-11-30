@@ -27,6 +27,7 @@ export interface MoodleModal {
 
     getRoot: () => JQuery<HTMLDivElement>;
     getTitle: () => JQuery<HTMLHeadingElement>;
+    getBody: () => JQuery<HTMLDivElement>;
     getFooter: () => JQuery<HTMLDivElement>;
 }
 

@@ -176,6 +176,15 @@ export class Modal extends CanBeReady {
     }
 
     /**
+     * Returns the body element of the modal once the modal is ready.
+     * This is a JQuery object as long as moodle is using JQuery.
+     * @returns the title element of the modal
+     */
+    getBody() {
+        return this.callWhenReady(() => this.#modal!.getBody());
+    }
+
+    /**
      * Returns the header element of the modal once the modal is ready.
      * It returns not a jQuery Element but an HTMLElement
      * @returns the header element of the modal

@@ -70,9 +70,18 @@
         }
     }
 
-    fieldset .ftoggler h3 :local(.new-setting-badge) {
-        /* "New!"-Badges should not be cuddling with the featureGroup name! */
-        margin-left: 1ch;
+    fieldset {
+        .ftoggler h3 :local(.new-setting-badge) {
+            /* "New!"-Badges should not be cuddling with the featureGroup name! */
+            margin-left: 1ch;
+        }
+
+        &:not(:has(.fcontainer :local(.new-setting-badge))) {
+            .ftoggler h3 :local(.new-setting-badge) {
+                /* Hide the "New!"-Badge of a featureGroup if there are no new settings in this group anymore */
+                display: none;
+            }
+        }
     }
 
     $tags: [ 'fun'];

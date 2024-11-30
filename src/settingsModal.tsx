@@ -4,17 +4,21 @@ import { Modal } from '@/Modal';
 import { request } from '@/network';
 import { lt as semverLt } from '@/semver';
 import settingsStyle from './style/settings.module.scss';
+import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
 import TempStorage from '@/TempStorage';
 import { updateNotification as updateNotificationSetting } from './features/general';
 import { BETTER_MOODLE_LANG, LL } from './i18n/i18n';
 import { getLoadingSpinner, readyCallback } from '@/DOM';
 import {
+    debounce,
     htmlToElements,
     mdID,
     mdToHtml,
     PREFIX,
     rawGithubPath,
 } from '@/helpers';
+
+const seenSettings = GM_getValue<string[]>(STORAGE_V2_SEEN_SETTINGS_KEY, []);
 
 // we need this to have some kind of sorting in settings
 const groups = [
@@ -336,6 +340,8 @@ ImportBtn.addEventListener('click', e => {
 // endregion
 
 // region settings modal
+const newBadges = new Set<HTMLSpanElement>();
+
 const settingsModal = new Modal({
     type: 'SAVE_CANCEL',
     large: true,
@@ -390,14 +396,40 @@ const settingsModal = new Modal({
     .setTrigger(SettingsBtn);
 
 // append the link to moodle settings to the modal header
-settingsModal
-    .getTitle()
-    .then(title => {
-        title.after(
-            <a href="/user/preferences.php" target="_blank">
-                {LL.settings.modal.moodleSettings()}
-            </a>
-        );
-    })
-    .catch(console.error);
+void settingsModal.getTitle().then(title =>
+    title.after(
+        <a href="/user/preferences.php" target="_blank">
+            {LL.settings.modal.moodleSettings()}
+        </a>
+    )
+);
+
+/**
+ * Check for currently visible "New!"-Badges and mark these settings as seen
+ * @param body - the modal body
+ */
+const markVisibleNewSettingsAsSeen = (body: HTMLElement) => {
+    const { top: bodyTop, bottom: bodyBottom } = body.getBoundingClientRect();
+    newBadges.forEach(badge => {
+        if (!badge.closest('.fcontainer.show')) return;
+        const { top: badgeTop, bottom: badgeBottom } =
+            badge.getBoundingClientRect();
+        if (badgeTop < bodyTop || badgeBottom > bodyBottom) return;
+        newBadges.delete(badge);
+        const setting = badge.dataset.setting;
+        if (setting) {
+            seenSettings.push(setting);
+        }
+        GM_setValue(STORAGE_V2_SEEN_SETTINGS_KEY, seenSettings);
+    });
+};
+
+// find the "New!"-Badges
+void settingsModal.getBody().then(([body]) => {
+    body.querySelectorAll(
+        `.fcontainer .${settingsStyle.newSettingBadge}`
+    ).forEach(badge => newBadges.add(badge as HTMLSpanElement));
+    const debounced = debounce(() => markVisibleNewSettingsAsSeen(body), 1000);
+    body.addEventListener('scrollend', debounced);
+});
 // endregion

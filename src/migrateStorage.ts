@@ -33,8 +33,7 @@ const getAndDelete = <Type>(key: string, defaultValue?: Type) => {
 
     // migration to storage version 2
     if (oldStorageVersion < 2) {
-        // What does "better-moodle-ever-opened-settings" do? Do we still need this regarding that there is a key to store already seen settings?
-        // Storage that remembers which settings have already been seen
+        // Storage that remembers which settings have already been seen. Setting keys are not migrated here as settings are not initialized yet
         const oldSeenSettings = getAndDelete<string[]>(
             'better-moodle-seen-settings',
             []
