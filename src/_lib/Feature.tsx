@@ -128,7 +128,8 @@ export default abstract class Feature<
     }
 
     /**
-     *
+     * Does this feature have a setting that is unseen?
+     * @returns wether this feature has a new setting
      */
     get hasNewSetting() {
         return this.#settings.values().some(setting => setting.isNewSetting);

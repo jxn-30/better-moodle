@@ -186,7 +186,8 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
     }
 
     /**
-     *
+     * Does this feature group have a setting that is unseen?
+     * @returns wether this feature group or any of its features has a new setting
      */
     get hasNewSetting() {
         return (

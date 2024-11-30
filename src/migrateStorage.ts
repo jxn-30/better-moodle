@@ -7,8 +7,10 @@ export const STORAGE_V2_SEEN_SETTINGS_KEY = 'seenSettings';
 export const STORAGE_V2_LANGUAGE_KEY = getSettingKey('general.language');
 
 /**
- * @param key
- * @param defaultValue
+ * Gets a value from storage and deletes it afterwards
+ * @param key - the key
+ * @param defaultValue - a value to use when the key does not exist in storage
+ * @returns the value from storage
  */
 const getAndDelete = <Type>(key: string, defaultValue?: Type) => {
     const value = GM_getValue<Type>(key, defaultValue);

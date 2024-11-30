@@ -1,14 +1,14 @@
 import CanBeReady from './CanBeReady';
 import { GenericSetting } from './Components';
+import globalStyle from '../style/global.module.scss';
 import { JSX } from 'jsx-dom';
 import { LL } from '../i18n/i18n';
-import globalStyle from '../style/global.module.scss';
-import settingsStyle from '../style/settings.module.scss';
 import { LocalizedString } from 'typesafe-i18n';
 import { require } from './require.js';
+import settingsStyle from '../style/settings.module.scss';
+import { STORAGE_V2_SEEN_SETTINGS_KEY } from '../migrateStorage';
 import TempStorage from './TempStorage';
 import { UUID } from 'node:crypto';
-import { STORAGE_V2_SEEN_SETTINGS_KEY } from '../migrateStorage';
 import { domID, isNewInstallation, mdToHtml, PREFIX } from './helpers';
 import Feature, { FeatureID, FeatureTranslations } from './Feature';
 import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
@@ -248,7 +248,8 @@ export default abstract class Setting<
     }
 
     /**
-     *
+     * Is this setting new and unseen?
+     * @returns wether this setting is a new one for this instance
      */
     get isNewSetting() {
         // if this is a new installation, we don't want to mark this setting as unseen / new
