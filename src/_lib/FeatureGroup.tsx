@@ -68,6 +68,23 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
                         );
                     }
                 }
+
+                if (this.hasNewSetting) {
+                    void this.#FieldSet.heading.then(heading =>
+                        heading?.append(
+                            <span
+                                className={[
+                                    'badge badge-success text-uppercase',
+                                    globalStyle.shining,
+                                    globalStyle.sparkling,
+                                    settingsStyle.newSettingBadge,
+                                ]}
+                            >
+                                {LL.settings.newBadge()}
+                            </span>
+                        )
+                    );
+                }
             }
         };
     }
@@ -109,22 +126,6 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
             description: this.description,
             collapsed: id !== 'general',
         });
-        if (this.hasNewSetting) {
-            void this.#FieldSet.heading.then(heading =>
-                heading?.append(
-                    <span
-                        className={[
-                            'badge badge-success text-uppercase',
-                            globalStyle.shining,
-                            globalStyle.sparkling,
-                            settingsStyle.newSettingBadge,
-                        ]}
-                    >
-                        {LL.settings.newBadge()}
-                    </span>
-                )
-            );
-        }
     }
 
     /**
