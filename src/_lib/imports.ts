@@ -54,7 +54,7 @@ for (const [id, FeatureGroup] of Object.entries(featureGroupImports)) {
     await featureGroup.loadSettings();
     featureGroup.init();
     featureGroup.load();
-    void featureGroup.loadFeatures(id => initFeature(featureGroup, id));
+    await featureGroup.loadFeatures(id => initFeature(featureGroup, id));
     featureGroups.set(groupId, featureGroup);
 }
 

@@ -8,7 +8,6 @@ import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
 import TempStorage from '@/TempStorage';
 import { updateNotification as updateNotificationSetting } from './features/general';
 import { BETTER_MOODLE_LANG, LL } from './i18n/i18n';
-import { getLoadingSpinner, readyCallback } from '@/DOM';
 import {
     debounce,
     htmlToElements,
@@ -17,6 +16,7 @@ import {
     PREFIX,
     rawGithubPath,
 } from '@/helpers';
+import { getLoadingSpinner, readyCallback } from '@/DOM';
 
 const seenSettings = GM_getValue<string[]>(STORAGE_V2_SEEN_SETTINGS_KEY, []);
 
@@ -432,4 +432,23 @@ void settingsModal.getBody().then(([body]) => {
     const debounced = debounce(() => markVisibleNewSettingsAsSeen(body), 1000);
     body.addEventListener('scrollend', debounced);
 });
+
+// migrate and cleanup storage of seen settings
+const allSettingIDs = featureGroups
+    .values()
+    .reduce(
+        (acc, group) => acc.union(new Set(group.settingIDs)),
+        new Set<string>()
+    );
+const settingIDMap = new Map([
+    ...featureGroups.values().flatMap(group => group.settingIDMap),
+]);
+GM_setValue(
+    STORAGE_V2_SEEN_SETTINGS_KEY,
+    Array.from(
+        new Set(
+            seenSettings.values().map(id => settingIDMap.get(id)?.id)
+        ).intersection(allSettingIDs)
+    )
+);
 // endregion

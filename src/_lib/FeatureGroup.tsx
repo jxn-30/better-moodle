@@ -198,6 +198,32 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
     }
 
     /**
+     * The IDs of all settings this featureGroup has
+     * @returns a list of IDs
+     */
+    get settingIDs() {
+        return [
+            ...this.#settings.values().map(setting => setting.id),
+            ...this.#features.values().flatMap(feature => feature.settingIDs),
+        ];
+    }
+
+    /**
+     * A map that allows accessing all settings of this featureGroup by all of their IDs
+     * @returns the map
+     */
+    get settingIDMap() {
+        return new Map([
+            ...this.#settings
+                .values()
+                .flatMap(setting => setting.idMap.entries()),
+            ...this.#features
+                .values()
+                .flatMap(feature => feature.settingIDMap.entries()),
+        ]);
+    }
+
+    /**
      *  Initialize the feature group
      *  calls #init internally
      *  @throws {Error} if init is called multiple times

@@ -136,6 +136,24 @@ export default abstract class Feature<
     }
 
     /**
+     * The IDs of all settings this feature has
+     * @returns a list of IDs
+     */
+    get settingIDs() {
+        return this.#settings.values().map(setting => setting.id);
+    }
+
+    /**
+     * A map that allows accessing all settings of this feature by all of their IDs
+     * @returns the map
+     */
+    get settingIDMap() {
+        return new Map(
+            this.#settings.values().flatMap(setting => setting.idMap.entries())
+        );
+    }
+
+    /**
      *  Initialize the feature
      *  calls #init internally
      *  @returns the result of the init method

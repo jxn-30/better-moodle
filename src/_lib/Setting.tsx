@@ -262,6 +262,14 @@ export default abstract class Setting<
     }
 
     /**
+     * A map with all possible IDs mapping to the setting instance
+     * @returns the ID map
+     */
+    get idMap() {
+        return new Map(this.#possibleIDs.values().map(id => [id, this]));
+    }
+
+    /**
      * The FormGroup for this setting
      * @returns the form group
      */
