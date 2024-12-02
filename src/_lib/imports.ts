@@ -47,15 +47,51 @@ const initFeature = (
 
 const featureGroups = new Map<string, FeatureGroup<FeatureGroupID>>();
 
-for (const [id, FeatureGroup] of Object.entries(featureGroupImports)) {
-    const groupId = id.split('/')[3];
-    if (!isFeatureGroup(groupId)) continue;
-    const featureGroup = new FeatureGroup(groupId);
-    await featureGroup.loadSettings();
-    featureGroup.init();
-    featureGroup.load();
-    await featureGroup.loadFeatures(id => initFeature(featureGroup, id));
-    featureGroups.set(groupId, featureGroup);
-}
+let importsAreDone = false;
 
-export default featureGroups;
+const importPromises = Object.entries(featureGroupImports).map(
+    ([id, FeatureGroup]) =>
+        (async () => {
+            const groupId = id.split('/')[3];
+            if (!isFeatureGroup(groupId)) return;
+            const featureGroup = new FeatureGroup(groupId);
+            await featureGroup.loadSettings();
+            featureGroup.init();
+            featureGroup.load();
+            await featureGroup.loadFeatures(id =>
+                initFeature(featureGroup, id)
+            );
+            featureGroups.set(groupId, featureGroup);
+        })()
+);
+
+const onImportsDoneResolvers = new Set<
+    PromiseWithResolvers<typeof featureGroups>['resolve']
+>();
+
+/**
+ * Creates a promise, adds the resolver to the set and returns the promise
+ * @returns a promise that will be resolved once all featuregroups are fully loaded
+ */
+const createImportDoneResolver = () => {
+    const { promise, resolve } = Promise.withResolvers<typeof featureGroups>();
+    onImportsDoneResolvers.add(resolve);
+    return promise;
+};
+
+/**
+ * Wait for all featureGroups to be fully loaded
+ * @returns a promise that resolves to the featureGroups map once all featureGroups are fully loaded
+ */
+const awaitImports = () =>
+    importsAreDone ?
+        Promise.resolve(featureGroups)
+    :   createImportDoneResolver();
+
+void Promise.all(importPromises)
+    .then(() => (importsAreDone = true))
+    .then(() =>
+        onImportsDoneResolvers.forEach(resolver => resolver(featureGroups))
+    );
+
+export default awaitImports;

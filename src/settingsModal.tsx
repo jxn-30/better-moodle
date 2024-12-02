@@ -1,4 +1,4 @@
-import featureGroups from '@/imports';
+import awaitImports from '@/imports';
 import { GithubLink } from '@/Components';
 import { Modal } from '@/Modal';
 import { request } from '@/network';
@@ -341,6 +341,9 @@ ImportBtn.addEventListener('click', e => {
 
 // region settings modal
 const newBadges = new Set<HTMLSpanElement>();
+
+// anything beyond this point requires all features to be loaded
+const featureGroups = await awaitImports();
 
 const settingsModal = new Modal({
     type: 'SAVE_CANCEL',

@@ -1,7 +1,7 @@
 import './style/global.module.scss';
 import './migrateStorage';
-import featureGroups from '@/imports';
+import awaitImports from '@/imports';
 
 import './settingsModal';
 
-console.log(featureGroups);
+void awaitImports().then(featureGroups => console.log(featureGroups));
