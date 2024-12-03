@@ -1,11 +1,14 @@
 import awaitImports from '@/imports';
 import { GithubLink } from '@/Components';
+import globalStyle from './style/global.module.scss';
 import { Modal } from '@/Modal';
 import { request } from '@/network';
+import { requirePromise } from '@/require.js';
 import { lt as semverLt } from '@/semver';
 import settingsStyle from './style/settings.module.scss';
 import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
 import TempStorage from '@/TempStorage';
+import type { ThemeBoostBootstrapTooltipClass } from '#/require.js/theme_boost/bootstrap/tooltip.d.ts';
 import { updateNotification as updateNotificationSetting } from './features/general';
 import { BETTER_MOODLE_LANG, LL } from './i18n/i18n';
 import {
@@ -32,6 +35,9 @@ const groups = [
 // region trigger button for settings modal
 const settingsBtnTitle = `Better-Moodle:\xa0${LL.settings.modal.title()}`;
 
+const SettingsBtnIcon = (
+    <i class="fa fa-gears fa-fw" role="img" title={settingsBtnTitle}></i>
+) as HTMLElement;
 const SettingsBtn = (
     <div>
         <div
@@ -41,11 +47,7 @@ const SettingsBtn = (
             title={settingsBtnTitle}
             aria-label={settingsBtnTitle}
         >
-            <i
-                class="fa fa-gears fa-fw"
-                role="img"
-                title={settingsBtnTitle}
-            ></i>
+            {SettingsBtnIcon}
         </div>
     </div>
 ) as HTMLDivElement;
@@ -425,6 +427,11 @@ const markVisibleNewSettingsAsSeen = (body: HTMLElement) => {
         }
         GM_setValue(STORAGE_V2_SEEN_SETTINGS_KEY, seenSettings);
     });
+    // all settings are now seen!
+    if (!newBadges.size) {
+        newSettingsTooltip?.dispose();
+        newSettingsTooltip = null;
+    }
 };
 
 // find the "New!"-Badges
@@ -434,6 +441,9 @@ void settingsModal.getBody().then(([body]) => {
     ).forEach(badge => newBadges.add(badge as HTMLSpanElement));
     const debounced = debounce(() => markVisibleNewSettingsAsSeen(body), 1000);
     body.addEventListener('scrollend', debounced);
+
+    // initially check when modal is being shown
+    void settingsModal.onShown(() => markVisibleNewSettingsAsSeen(body));
 });
 
 // migrate and cleanup storage of seen settings
@@ -454,4 +464,66 @@ GM_setValue(
         ).intersection(allSettingIDs)
     )
 );
+
+// "New!"-Tooltip if there are unseen settings
+let newSettingsTooltip: ThemeBoostBootstrapTooltipClass | null;
+if (featureGroups.values().some(group => group.hasNewSetting)) {
+    void requirePromise(['theme_boost/bootstrap/tooltip'] as const)
+        .then(([Tooltip]) => {
+            SettingsBtnIcon.title = LL.settings.newBadge();
+            return new Tooltip(SettingsBtnIcon, {
+                trigger: 'manual',
+                title: LL.settings.newBadge(),
+                template: (
+                    (
+                        <div class="tooltip" role="tooltip">
+                            <div class="arrow"></div>
+                            <div
+                                class={[
+                                    'tooltip-inner badge bg-success text-uppercase',
+                                    globalStyle.shining,
+                                    globalStyle.sparkling,
+                                    settingsStyle.newSettingBadge,
+                                ]}
+                            ></div>
+                        </div>
+                    ) as HTMLDivElement
+                ).outerHTML,
+            });
+        })
+        .then(tooltip => {
+            tooltip
+                .getTipElement()
+                .addEventListener('click', () => SettingsBtn.click());
+            tooltip.show();
+            tooltip.update();
+            newSettingsTooltip = tooltip;
+        });
+    let listenersAttached = false;
+    void settingsModal.onShown(() => {
+        if (!newSettingsTooltip || listenersAttached) return;
+        listenersAttached = true;
+        /**
+         * Hides the "New!"-Tooltip
+         */
+        const hide = () => {
+            newSettingsTooltip?.hide();
+        };
+        /**
+         * Shows the "New!"-Tooltip (the manual update seems to be necessary)
+         */
+        const show = () => {
+            newSettingsTooltip?.show();
+            newSettingsTooltip?.update();
+        };
+        hide();
+
+        SettingsBtn.addEventListener('mouseenter', show);
+        SettingsBtn.addEventListener('mouseleave', hide);
+        SettingsBtn.addEventListener('focusin', show);
+        SettingsBtn.addEventListener('focusout', hide);
+        newSettingsTooltip.getTipElement().addEventListener('mouseenter', show);
+        newSettingsTooltip.getTipElement().addEventListener('mouseleave', hide);
+    });
+}
 // endregion

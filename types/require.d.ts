@@ -13,6 +13,7 @@ import CoreStr from './require.js/core/str';
 import CoreTemplates from './require.js/core/templates';
 import CoreToast from './require.js/core/toast';
 import JQueryStatic from '@types/jquery';
+import ThemeBoostBootstrapTooltip from './require.js/theme_boost/bootstrap/tooltip';
 import ThemeBoostDrawer from './require.js/theme_boost/drawer';
 import ThemeBoostDrawers from './require.js/theme_boost/drawers';
 
@@ -32,6 +33,8 @@ interface ModuleMap {
     'core_filters/events': CoreFiltersEvents;
 
     'jquery': JQueryStatic;
+
+    'theme_boost/bootstrap/tooltip': ThemeBoostBootstrapTooltip;
 
     'theme_boost/drawer': ThemeBoostDrawer;
     'theme_boost/drawers': typeof ThemeBoostDrawers;

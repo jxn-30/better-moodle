@@ -5,6 +5,11 @@
     &.loading {
         opacity: 0.5;
     }
+
+    .tooltip:has(:local(.new-setting-badge)) {
+        z-index: 1035;
+        cursor: pointer;
+    }
 }
 
 .modal-content:has(:local(#settings-form)) {
