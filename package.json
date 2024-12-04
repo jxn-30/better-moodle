@@ -12,7 +12,7 @@
     "devDependencies": {
         "@eslint/js": "9.15.0",
         "@types/eslint": "9.6.1",
-        "@types/tampermonkey": "5.0.3",
+        "@types/tampermonkey": "5.0.4",
         "darkreader": "4.9.96",
         "eslint": "9.15.0",
         "eslint-config-prettier": "9.1.0",
