@@ -910,10 +910,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/tampermonkey@npm:5.0.3":
-  version: 5.0.3
-  resolution: "@types/tampermonkey@npm:5.0.3"
-  checksum: 10c0/50cc8e1523401d8e899484932cd40e6ad5c8835f6653272c507600037b68ac646d62a403d74009e787e385a0c99e547c1c5f5024a88708033fe041b82ece7050
+"@types/tampermonkey@npm:5.0.4":
+  version: 5.0.4
+  resolution: "@types/tampermonkey@npm:5.0.4"
+  checksum: 10c0/c6d85ea66229fe20fd652b48997db48f1a5d3328ca14d44c89a1b70d4edf659e71b2fd33182753b02084524fed6b6652305f34773013db3f38cd53abbb28f1b9
   languageName: node
   linkType: hard
 
@@ -4880,7 +4880,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:1.81.1":
+"sass@npm:1.81.1, sass@npm:^1.70.0":
   version: 1.81.1
   resolution: "sass@npm:1.81.1"
   dependencies:
@@ -4894,23 +4894,6 @@ __metadata:
   bin:
     sass: sass.js
   checksum: 10c0/be30371b1706ae84ca39fc724368deae5fd9cf94f4737fb0120f166e81545d113d1aa9abd3d797cf66f1d48625ab20ec838509f157d23e3e1e57c6a7e5e78cda
-  languageName: node
-  linkType: hard
-
-"sass@npm:^1.70.0":
-  version: 1.81.0
-  resolution: "sass@npm:1.81.0"
-  dependencies:
-    "@parcel/watcher": "npm:^2.4.1"
-    chokidar: "npm:^4.0.0"
-    immutable: "npm:^5.0.2"
-    source-map-js: "npm:>=0.6.2 <2.0.0"
-  dependenciesMeta:
-    "@parcel/watcher":
-      optional: true
-  bin:
-    sass: sass.js
-  checksum: 10c0/9c59b3c9b4231c18fcb4583cc232dbc4de501ddc11101b7a025e44833e3f3ce6031546dc1cd109ee9f04ebcfb1fe30ff870810af33b8feb9aa9e36dfba9ec1ef
   languageName: node
   linkType: hard
 
@@ -5672,7 +5655,7 @@ __metadata:
     "@types/eslint__js": "npm:8.42.3"
     "@types/jquery": "npm:3.5.32"
     "@types/node": "npm:22.10.1"
-    "@types/tampermonkey": "npm:5.0.3"
+    "@types/tampermonkey": "npm:5.0.4"
     browserslist: "npm:4.24.2"
     classnames: "npm:2.5.1"
     darkreader: "npm:4.9.96"
