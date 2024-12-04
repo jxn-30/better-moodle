@@ -18,6 +18,17 @@ const languageSetting = new SelectSetting('language', 'auto', [
     .addAlias('general.language')
     .requireReload();
 
+export const highlightNewSettings = new BooleanSetting(
+    'newSettings.highlight',
+    true
+).addAlias('general.highlightNewSettings');
+export const newSettingsTooltip = new BooleanSetting(
+    'newSettings.tooltip',
+    true
+)
+    .addAlias('general.highlightNewSettings.navbar')
+    .requireReload();
+
 /**
  * Updates the hidden state of disabled settings.
  * @returns void
@@ -73,6 +84,8 @@ export default FeatureGroup.register({
     settings: new Set([
         updateNotification,
         languageSetting,
+        highlightNewSettings,
+        newSettingsTooltip,
         hideDisabledSettings,
         hideFunSettings,
     ]),

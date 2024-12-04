@@ -89,6 +89,11 @@
         }
     }
 
+    :local(.hide-new-setting-badges) :local(.new-setting-badge) {
+        /* Hide the "New!"-Badges if the user prefers */
+        display: none !important;
+    }
+
     $tags: [ 'fun'];
     @each $tag in $tags {
         :local(.hide-#{$tag}-settings) & .fitem[data-tags*='#{$tag}'] {

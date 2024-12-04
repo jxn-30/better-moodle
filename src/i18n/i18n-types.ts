@@ -249,7 +249,7 @@ type RootTranslation = {
              */
             name: string;
             settings: {
-                updateNotification: {
+                'updateNotification': {
                     /**
                      * B​e​n​a​c​h​r​i​c​h​t​i​g​u​n​g​ ​b​e​i​ ​B​e​t​t​e​r​-​M​o​o​d​l​e​ ​U​p​d​a​t​e​s
                      */
@@ -259,7 +259,7 @@ type RootTranslation = {
                      */
                     description: string;
                 };
-                language: {
+                'language': {
                     /**
                      * B​e​t​t​e​r​-​M​o​o​d​l​e​ ​S​p​r​a​c​h​e
                      */
@@ -275,7 +275,7 @@ type RootTranslation = {
                         auto: string;
                     };
                 };
-                hideDisabledSettings: {
+                'hideDisabledSettings': {
                     /**
                      * D​e​a​k​t​i​v​i​e​r​t​e​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​a​u​s​b​l​e​n​d​e​n
                      */
@@ -285,13 +285,33 @@ type RootTranslation = {
                      */
                     description: string;
                 };
-                hideFunSettings: {
+                'hideFunSettings': {
                     /**
                      * S​p​a​ß​-​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​a​u​s​b​l​e​n​d​e​n
                      */
                     name: string;
                     /**
                      * B​l​e​n​d​e​t​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​a​u​s​,​ ​d​i​e​ ​n​u​r​ ​f​ü​r​ ​m​e​h​r​ ​S​p​a​ß​ ​i​m​ ​M​o​o​d​l​e​ ​d​a​ ​s​i​n​d​.
+                     */
+                    description: string;
+                };
+                'newSettings.highlight': {
+                    /**
+                     * N​e​u​e​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​m​a​r​k​i​e​r​e​n
+                     */
+                    name: string;
+                    /**
+                     * H​e​b​t​ ​n​e​u​e​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​m​i​t​ ​e​i​n​e​m​ ​k​l​e​i​n​e​n​ ​B​a​d​g​e​ ​h​e​r​v​o​r​,​ ​w​e​n​n​ ​s​i​e​ ​n​o​c​h​ ​n​i​c​h​t​ ​a​n​g​e​s​c​h​a​u​t​ ​w​u​r​d​e​n​.
+                     */
+                    description: string;
+                };
+                'newSettings.tooltip': {
+                    /**
+                     * H​i​n​w​e​i​s​ ​z​u​ ​n​e​u​e​n​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​i​n​ ​d​e​r​ ​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e
+                     */
+                    name: string;
+                    /**
+                     * Z​e​i​g​t​ ​e​i​n​ ​s​c​h​i​c​k​e​s​ ​T​o​o​l​t​i​p​ ​b​e​i​m​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​-​K​n​o​p​f​ ​i​n​ ​d​e​r​ ​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e​ ​a​n​,​ ​w​e​n​n​ ​e​s​ ​u​n​g​e​s​e​h​e​n​e​ ​E​i​n​s​t​e​l​l​u​n​g​e​n​ ​g​i​b​t​.
                      */
                     description: string;
                 };
@@ -671,7 +691,7 @@ export type TranslationFunctions = {
              */
             name: () => LocalizedString;
             settings: {
-                updateNotification: {
+                'updateNotification': {
                     /**
                      * Benachrichtigung bei Better-Moodle Updates
                      */
@@ -681,7 +701,7 @@ export type TranslationFunctions = {
                      */
                     description: () => LocalizedString;
                 };
-                language: {
+                'language': {
                     /**
                      * Better-Moodle Sprache
                      */
@@ -697,7 +717,7 @@ export type TranslationFunctions = {
                         auto: () => LocalizedString;
                     };
                 };
-                hideDisabledSettings: {
+                'hideDisabledSettings': {
                     /**
                      * Deaktivierte Einstellungen ausblenden
                      */
@@ -707,13 +727,33 @@ export type TranslationFunctions = {
                      */
                     description: () => LocalizedString;
                 };
-                hideFunSettings: {
+                'hideFunSettings': {
                     /**
                      * Spaß-Einstellungen ausblenden
                      */
                     name: () => LocalizedString;
                     /**
                      * Blendet Einstellungen aus, die nur für mehr Spaß im Moodle da sind.
+                     */
+                    description: () => LocalizedString;
+                };
+                'newSettings.highlight': {
+                    /**
+                     * Neue Einstellungen markieren
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Hebt neue Einstellungen mit einem kleinen Badge hervor, wenn sie noch nicht angeschaut wurden.
+                     */
+                    description: () => LocalizedString;
+                };
+                'newSettings.tooltip': {
+                    /**
+                     * Hinweis zu neuen Einstellungen in der Navigationsleiste
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Zeigt ein schickes Tooltip beim Einstellungen-Knopf in der Navigationsleiste an, wenn es ungesehene Einstellungen gibt.
                      */
                     description: () => LocalizedString;
                 };

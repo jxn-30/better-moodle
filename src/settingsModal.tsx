@@ -9,7 +9,6 @@ import settingsStyle from './style/settings.module.scss';
 import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
 import TempStorage from '@/TempStorage';
 import type { ThemeBoostBootstrapTooltipClass } from '#/require.js/theme_boost/bootstrap/tooltip.d.ts';
-import { updateNotification as updateNotificationSetting } from './features/general';
 import { BETTER_MOODLE_LANG, LL } from './i18n/i18n';
 import {
     debounce,
@@ -20,6 +19,11 @@ import {
     rawGithubPath,
 } from '@/helpers';
 import { getLoadingSpinner, readyCallback } from '@/DOM';
+import {
+    highlightNewSettings as highlightNewSettingsSetting,
+    newSettingsTooltip as newSettingsTooltipSetting,
+    updateNotification as updateNotificationSetting,
+} from './features/general';
 
 const seenSettings = GM_getValue<string[]>(STORAGE_V2_SEEN_SETTINGS_KEY, []);
 
@@ -434,8 +438,9 @@ const markVisibleNewSettingsAsSeen = (body: HTMLElement) => {
     }
 };
 
-// find the "New!"-Badges
+// work with unseen settings on the modal body
 void settingsModal.getBody().then(([body]) => {
+    // find the "New!"-Badges
     body.querySelectorAll(
         `.fcontainer .${settingsStyle.newSettingBadge}`
     ).forEach(badge => newBadges.add(badge as HTMLSpanElement));
@@ -444,6 +449,19 @@ void settingsModal.getBody().then(([body]) => {
 
     // initially check when modal is being shown
     void settingsModal.onShown(() => markVisibleNewSettingsAsSeen(body));
+
+    /**
+     * Updates the visibility status of the "New!"-Badges by toggling a class on modal body
+     * @returns void
+     */
+    const updateNewBadgesVisibility = () =>
+        body.classList.toggle(
+            settingsStyle.hideNewSettingBadges,
+            !highlightNewSettingsSetting.value
+        );
+    updateNewBadgesVisibility();
+
+    highlightNewSettingsSetting.onInput(() => updateNewBadgesVisibility());
 });
 
 // migrate and cleanup storage of seen settings
@@ -467,7 +485,10 @@ GM_setValue(
 
 // "New!"-Tooltip if there are unseen settings
 let newSettingsTooltip: ThemeBoostBootstrapTooltipClass | null;
-if (featureGroups.values().some(group => group.hasNewSetting)) {
+if (
+    newSettingsTooltipSetting.value &&
+    featureGroups.values().some(group => group.hasNewSetting)
+) {
     void requirePromise(['theme_boost/bootstrap/tooltip'] as const)
         .then(([Tooltip]) => {
             SettingsBtnIcon.title = LL.settings.newBadge();
