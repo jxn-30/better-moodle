@@ -35,7 +35,7 @@
         "@types/eslint__js": "8.42.3",
         "@types/jquery": "3.5.32",
         "@types/node": "22.10.1",
-        "@types/tampermonkey": "5.0.3",
+        "@types/tampermonkey": "5.0.4",
         "browserslist": "4.24.2",
         "esbuild": "0.24.0",
         "esbuild-plugin-browserslist": "0.15.0",
