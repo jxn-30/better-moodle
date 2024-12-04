@@ -31,6 +31,7 @@ interface ChildNotDivider {
 
 interface NotActionLink {
     is_action_link?: false;
+    isactive?: boolean;
 }
 
 interface ActionLink {

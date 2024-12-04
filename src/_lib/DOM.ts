@@ -50,7 +50,7 @@ export const getLoadingSpinner = () =>
 export const putTemplate = async (
     element: HTMLElement | string,
     template: { html: string; js: string },
-    action: 'append' | 'prepend' | 'before' | 'after'
+    action: 'append' | 'prepend' | 'before' | 'after' | 'replaceWith'
 ) => {
     const el =
         typeof element === 'string' ?
