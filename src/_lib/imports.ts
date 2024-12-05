@@ -41,7 +41,6 @@ const initFeature = (
         ];
     if (!Feature) return;
     const feature = new Feature(featureId, group);
-    feature.init();
     return feature;
 };
 
@@ -56,7 +55,6 @@ const importPromises = Object.entries(featureGroupImports).map(
             if (!isFeatureGroup(groupId)) return;
             const featureGroup = new FeatureGroup(groupId);
             await featureGroup.loadSettings();
-            featureGroup.init();
             featureGroup.load();
             await featureGroup.loadFeatures(id =>
                 initFeature(featureGroup, id)

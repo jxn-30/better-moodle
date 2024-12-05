@@ -15,9 +15,7 @@ export type FeatureID<Group extends FeatureGroupID> =
 type FeatureMethods<
     Group extends FeatureGroupID,
     ID extends FeatureID<Group>,
-> = Partial<
-    Record<'init' | 'onload' | 'onunload', (this: Feature<Group, ID>) => void>
->;
+> = Partial<Record<'onload' | 'onunload', (this: Feature<Group, ID>) => void>>;
 
 /**
  * A class that represents a single feature
@@ -61,13 +59,11 @@ export default abstract class Feature<
     readonly #id: ID;
     readonly #group: FeatureGroup<Group>;
     readonly #settings: Set<Setting<Group, ID>>;
-    readonly #init: FeatureMethods<Group, ID>['init'];
     readonly #onload: FeatureMethods<Group, ID>['onload'];
     readonly #onunload: FeatureMethods<Group, ID>['onunload'];
 
     readonly #FormGroups: Element[] = [];
 
-    #initCalled = false;
     #loaded = false;
 
     /**
@@ -86,7 +82,6 @@ export default abstract class Feature<
         this.#id = id;
         this.#group = group;
         this.#settings = settings;
-        this.#init = methods.init;
         this.#onload = methods.onload;
         this.#onunload = methods.onunload;
 
@@ -151,23 +146,6 @@ export default abstract class Feature<
         return new Map(
             this.#settings.values().flatMap(setting => setting.idMap.entries())
         );
-    }
-
-    /**
-     *  Initialize the feature
-     *  calls #init internally
-     *  @returns the result of the init method
-     *  @throws {Error} if init is called multiple times
-     */
-    init() {
-        if (this.#initCalled) {
-            throw Error(
-                'init already called. Cannot init a Feature multiple times.'
-            );
-        }
-        this.#initCalled = true;
-
-        return this.#init?.();
     }
 
     /**
