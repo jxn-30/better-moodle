@@ -167,6 +167,7 @@ type Select<
     Feat extends FeatureID<Group>,
 > = HTMLSelectElement & {
     applyTranslations: (translations: SettingTranslations<Group, Feat>) => void;
+    optionsLoaded: boolean;
 };
 
 /**
@@ -254,6 +255,12 @@ export const Select = <
          */
         value: (translations: SettingTranslations<Group, Feat>) =>
             waitForOptions.awaitReady().then(() => translate(translations)),
+    });
+    Object.defineProperty(Select, 'optionsLoaded', {
+        /**
+         *
+         */
+        get: () => waitForOptions.instanceIsReady,
     });
 
     return Select;

@@ -34,4 +34,12 @@ export class SelectSetting<
             this.formControl.applyTranslations(this.Translation)
         );
     }
+
+    /**
+     *
+     */
+    get value() {
+        if (this.formControl.optionsLoaded) return this.formControl.value;
+        return this.savedValue;
+    }
 }
