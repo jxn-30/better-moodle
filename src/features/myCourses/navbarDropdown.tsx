@@ -1,9 +1,11 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
+import mobileTemplate from './navbarDropdown/mobile.mustache?raw';
 import { PREFIX } from '@/helpers';
+import { renderCustomTemplate } from '@/templates';
 import { requirePromise } from '@/require.js';
 import { SelectSetting } from '@/Settings/SelectSetting';
-import style from './navbarDropdown.module.scss';
+import style from './navbarDropdown/style.module.scss';
 import {
     type CourseFilter,
     getActiveFilter,
@@ -27,39 +29,43 @@ const favouriteCoursesAtTop = new BooleanSetting('favouriteCoursesAtTop', true)
     .addAlias('myCourses.navbarDropdownFavouritesAtTop')
     .disabledIf(enabled, '!=', true);
 
-let dropdownNavItem: HTMLLIElement;
+let desktopNavItem: HTMLLIElement;
+let mobileDropdown: HTMLDivElement;
 
 /**
  * Loads the list of courses based on active filter
  * @param root0 - configuration of the dropdown
- * @param root0.element - the element to replace the dropdown with
+ * @param root0.desktopElement - the element to replace the dropdown with (for desktop screens)
+ * @param root0.mobileElement - the element to replace the dropdown with (for mobile screens)
  * @param root0.myCoursesIsActive - are we currently on the myCourses page?
  * @param root0.myCoursesUrl - the url to the myCourses page
  * @param root0.myCoursesText - the text content of dropdown toggler
  */
 const loadContent = ({
-    element = dropdownNavItem,
+    desktopElement = desktopNavItem,
+    mobileElement = mobileDropdown,
     myCoursesIsActive,
     myCoursesUrl,
     myCoursesText,
 }: {
-    element?: HTMLLIElement;
+    desktopElement?: HTMLLIElement;
+    mobileElement?: HTMLDivElement | HTMLAnchorElement;
     myCoursesIsActive: boolean;
     myCoursesUrl: string;
     myCoursesText: string;
 }) => {
-    if (!element) return;
+    if (!desktopElement || !mobileElement) return;
 
     let contentLoaded = false;
     // TODO: Do not create a new loadingSpinner but reuse the old one
     void getLoadingSpinner().then(spinner => {
         spinner.classList.add('text-center');
         if (!contentLoaded) {
-            element.querySelector('.dropdown-menu')?.replaceChildren(spinner);
+            desktopElement
+                .querySelector('.dropdown-menu')
+                ?.replaceChildren(spinner);
         }
     });
-
-    console.log(filter.value);
 
     void Promise.all([
         filter.value === '_sync' ?
@@ -114,32 +120,57 @@ const loadContent = ({
                 ),
             }));
 
-            return templates.renderForPromise('core/moremenu_children', {
-                moremenuid: PREFIX('my_courses-navbar_dropdown'),
-                classes: style.desktop,
-                text: myCoursesText,
-                isactive: myCoursesIsActive,
-                haschildren: true,
-                children: [
-                    {
-                        isactive: false,
-                        url: myCoursesUrl,
-                        text: `[${myCoursesText}]`,
-                    },
-                    ...courseItems,
-                ],
-            });
+            const children = [
+                {
+                    isactive: false,
+                    url: myCoursesUrl,
+                    text: `[${myCoursesText}]`,
+                },
+                ...courseItems,
+            ];
+
+            const desktop = templates.renderForPromise(
+                'core/moremenu_children',
+                {
+                    moremenuid: PREFIX('my_courses-navbar_dropdown-desktop'),
+                    classes: style.desktop,
+                    text: myCoursesText,
+                    isactive: myCoursesIsActive,
+                    haschildren: true,
+                    children,
+                }
+            );
+
+            const mobile = renderCustomTemplate(
+                'myCourses/navbarDropdown/mobile',
+                mobileTemplate,
+                {
+                    includeTrigger: mobileElement instanceof HTMLAnchorElement,
+                    sort: PREFIX('my_courses-navbar_dropdown-mobile'),
+                    text: myCoursesText,
+                    children,
+                }
+            );
+
+            return Promise.all([desktop, mobile]);
         })
-        .then(template => {
+        .then(([desktopTemplate, mobileTemplate]) => {
             contentLoaded = true;
-            return putTemplate<[HTMLLIElement]>(
-                element,
-                template,
+            const desktopEls = putTemplate<[HTMLLIElement]>(
+                desktopElement,
+                desktopTemplate,
                 'replaceWith'
             );
+            const mobileEls = putTemplate<
+                [HTMLAnchorElement, HTMLDivElement] | [HTMLDivElement]
+            >(mobileElement, mobileTemplate, 'replaceWith');
+            return Promise.all([desktopEls, mobileEls]);
         })
-        .then(([navItem]) => {
-            dropdownNavItem = navItem;
+        .then(([[navItem], mobile]) => {
+            desktopNavItem = navItem;
+            const mobileDropdownEl =
+                mobile.length === 2 ? mobile[1] : mobile[0];
+            mobileDropdown = mobileDropdownEl;
 
             // clicking on the dropdown toggle should open my courses page
             if (!myCoursesIsActive) {
@@ -174,8 +205,15 @@ const onload = () => {
     const myCoursesUrl = myCoursesLink.href;
     const myCoursesText = myCoursesLink.textContent?.trim() ?? '';
 
+    const mobileMyCoursesLink = document.querySelector<HTMLAnchorElement>(
+        `#theme_boost-drawers-primary .list-group-item[href="${myCoursesLink.href}"]`
+    );
+
+    if (!mobileMyCoursesLink) return;
+
     loadContent({
-        element: myCoursesElement,
+        desktopElement: myCoursesElement,
+        mobileElement: mobileMyCoursesLink,
         myCoursesIsActive,
         myCoursesUrl,
         myCoursesText,
