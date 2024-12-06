@@ -258,7 +258,8 @@ export const Select = <
     });
     Object.defineProperty(Select, 'optionsLoaded', {
         /**
-         *
+         * Returns wether options are already loaded or not
+         * @returns a boolean
          */
         get: () => waitForOptions.instanceIsReady,
     });

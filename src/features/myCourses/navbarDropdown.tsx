@@ -5,11 +5,13 @@ import { requirePromise } from '@/require.js';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './navbarDropdown.module.scss';
 import {
+    type CourseFilter,
     getActiveFilter,
     getAvailableCourseFilters,
     getAvailableCourseFiltersAsOptions,
+    onActiveFilterChanged,
 } from '@/myCourses';
-import { getDocumentFragmentHtml, putTemplate } from '@/DOM';
+import { getDocumentFragmentHtml, getLoadingSpinner, putTemplate } from '@/DOM';
 
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('myCourses.navbarDropdown')
@@ -25,23 +27,44 @@ const favouriteCoursesAtTop = new BooleanSetting('favouriteCoursesAtTop', true)
     .addAlias('myCourses.navbarDropdownFavouritesAtTop')
     .disabledIf(enabled, '!=', true);
 
-/**
- * Creates the dropdown and fills it with content.
- * Updates dropdown content on change of filter value
- */
-const onload = () => {
-    if (!enabled.value) return;
+let dropdownNavItem: HTMLLIElement;
 
-    const myCoursesElement = document.querySelector<HTMLLIElement>(
-        '.primary-navigation .nav-item[data-key="mycourses"]'
-    );
-    const myCoursesLink = myCoursesElement?.querySelector<HTMLAnchorElement>(
-        ':scope > a.nav-link'
-    );
-    if (!myCoursesElement || !myCoursesLink) return;
+/**
+ * Loads the list of courses based on active filter
+ * @param root0 - configuration of the dropdown
+ * @param root0.element - the element to replace the dropdown with
+ * @param root0.myCoursesIsActive - are we currently on the myCourses page?
+ * @param root0.myCoursesUrl - the url to the myCourses page
+ * @param root0.myCoursesText - the text content of dropdown toggler
+ */
+const loadContent = ({
+    element = dropdownNavItem,
+    myCoursesIsActive,
+    myCoursesUrl,
+    myCoursesText,
+}: {
+    element?: HTMLLIElement;
+    myCoursesIsActive: boolean;
+    myCoursesUrl: string;
+    myCoursesText: string;
+}) => {
+    if (!element) return;
+
+    let contentLoaded = false;
+    // TODO: Do not create a new loadingSpinner but reuse the old one
+    void getLoadingSpinner().then(spinner => {
+        spinner.classList.add('text-center');
+        if (!contentLoaded) {
+            element.querySelector('.dropdown-menu')?.replaceChildren(spinner);
+        }
+    });
+
+    console.log(filter.value);
 
     void Promise.all([
-        getAvailableCourseFilters().then(getActiveFilter),
+        filter.value === '_sync' ?
+            getAvailableCourseFilters().then(getActiveFilter)
+        :   Promise.resolve(JSON.parse(filter.value) as CourseFilter),
         requirePromise([
             'core/templates',
             'block_myoverview/repository',
@@ -94,36 +117,82 @@ const onload = () => {
             return templates.renderForPromise('core/moremenu_children', {
                 moremenuid: PREFIX('my_courses-navbar_dropdown'),
                 classes: style.desktop,
-                title: myCoursesElement.title,
-                text: myCoursesElement.textContent?.trim() ?? '',
-                isactive: myCoursesLink.classList.contains('active'),
+                text: myCoursesText,
+                isactive: myCoursesIsActive,
                 haschildren: true,
                 children: [
                     {
                         isactive: false,
-                        url: myCoursesLink.href,
-                        text: `[${myCoursesElement.textContent?.trim()}]`,
+                        url: myCoursesUrl,
+                        text: `[${myCoursesText}]`,
                     },
                     ...courseItems,
                 ],
             });
         })
-        .then(template =>
-            putTemplate(myCoursesElement, template, 'replaceWith')
-        )
+        .then(template => {
+            contentLoaded = true;
+            return putTemplate<[HTMLLIElement]>(
+                element,
+                template,
+                'replaceWith'
+            );
+        })
         .then(([navItem]) => {
+            dropdownNavItem = navItem;
+
             // clicking on the dropdown toggle should open my courses page
-            if (!myCoursesLink.classList.contains('active')) {
+            if (!myCoursesIsActive) {
                 navItem
                     .querySelector<HTMLAnchorElement>('.dropdown-toggle')
                     ?.addEventListener('click', e => {
                         if (navItem.classList.contains('show')) {
                             e.preventDefault();
-                            window.location.replace(myCoursesLink.href);
+                            window.location.replace(myCoursesUrl);
                         }
                     });
             }
         });
+};
+
+/**
+ * Creates the dropdown and fills it with content.
+ * Updates dropdown content on change of filter value
+ */
+const onload = () => {
+    if (!enabled.value) return;
+
+    const myCoursesElement = document.querySelector<HTMLLIElement>(
+        '.primary-navigation .nav-item[data-key="mycourses"]'
+    );
+    const myCoursesLink = myCoursesElement?.querySelector<HTMLAnchorElement>(
+        ':scope > a.nav-link'
+    );
+    if (!myCoursesElement || !myCoursesLink) return;
+
+    const myCoursesIsActive = myCoursesLink.classList.contains('active');
+    const myCoursesUrl = myCoursesLink.href;
+    const myCoursesText = myCoursesLink.textContent?.trim() ?? '';
+
+    loadContent({
+        element: myCoursesElement,
+        myCoursesIsActive,
+        myCoursesUrl,
+        myCoursesText,
+    });
+
+    favouriteCoursesAtTop.onChange(() =>
+        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText })
+    );
+    filter.onChange(() =>
+        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText })
+    );
+
+    onActiveFilterChanged(() => {
+        if (filter.value === '_sync') {
+            loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
+        }
+    });
 };
 
 export default Feature.register({

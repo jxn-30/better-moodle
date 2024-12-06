@@ -47,17 +47,19 @@ export const getLoadingSpinner = () =>
  * @returns a promise that resolves to the added elements
  * @throws if the element is not found
  */
-export const putTemplate = async (
+export const putTemplate = async <ReturnType extends Element[]>(
     element: HTMLElement | string,
     template: { html: string; js: string },
     action: 'append' | 'prepend' | 'before' | 'after' | 'replaceWith'
-) => {
+): Promise<ReturnType> => {
     const el =
         typeof element === 'string' ?
             document.querySelector<HTMLElement>(element)
         :   element;
     if (!el) throw new Error('Element not found');
-    const templateElements = Array.from(htmlToElements(template.html));
+    const templateElements = Array.from(
+        htmlToElements(template.html)
+    ) as ReturnType;
     el[action](...templateElements);
     const [templates, filterEvents] = await requirePromise([
         'core/templates',

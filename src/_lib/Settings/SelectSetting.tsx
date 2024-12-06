@@ -36,7 +36,8 @@ export class SelectSetting<
     }
 
     /**
-     *
+     * Returns saved value if options are not yet loaded, otherwise current value
+     * @returns The settings value
      */
     get value() {
         if (this.formControl.optionsLoaded) return this.formControl.value;

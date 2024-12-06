@@ -208,7 +208,7 @@ export default abstract class Setting<
      * @returns the current value of this setting
      */
     get value(): Type {
-        return this.#formControl!.value;
+        return this.#formControl?.value ?? this.savedValue;
     }
 
     /**
