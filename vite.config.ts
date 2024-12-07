@@ -246,10 +246,10 @@ export default defineConfig({
                 const feat = path
                     .relative(__dirname, filename)
                     .replace(
-                        /^src\/(style|features)\/|\.module\.(scss|sass)$/g,
+                        /^src\/(style|features)\/|(\/style|\/index)?\.module\.(scss|sass)$/g,
                         ''
                     ) // extract feature name
-                    .replace(/[^a-zA-Z0-9_-]/, '-') // replace invalid characters with hyphen
+                    .replace(/[^a-zA-Z0-9_-]/g, '-') // replace invalid characters with hyphen
                     .replace(/-+/g, '-'); // reduce multiple hyphens to a single one
 
                 return `${PREFIX}_${feat}__${name.replace(/^_/, '')}`;
