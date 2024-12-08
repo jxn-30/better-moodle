@@ -343,6 +343,47 @@ ImportBtn.addEventListener('click', e => {
     importInput.click();
 });
 // endregion
+
+// region search
+const SearchInput = (
+    <input
+        class="form-control-sm form-control"
+        type="search"
+        placeholder={LL.settings.modal.search()}
+    />
+) as HTMLInputElement;
+const SearchStyle = <style></style>;
+const SearchWrapper = (
+    <div class="form-group ml-auto mr-auto">
+        {SearchInput}
+        {SearchStyle}
+    </div>
+);
+
+SearchInput.addEventListener(
+    'input',
+    debounce(() => {
+        const search = SearchInput.value.trim();
+        if (!search) SearchStyle.textContent = '';
+        else {
+            SearchStyle.textContent = `
+#${settingsStyle.settingsForm} .icons-collapse-expand {
+    display: none;
+}
+
+#${settingsStyle.settingsForm} .fcontainer.collapseable {
+    display: block;
+}
+
+#${settingsStyle.settingsForm} .fitem:not([data-search*="${CSS.escape(search)}" i]),
+#${settingsStyle.settingsForm} fieldset:not(:has(.fitem[data-search*="${CSS.escape(search)}" i])) {
+    display: none;
+}
+  `;
+        }
+    }, 100)
+);
+// endregion
 // endregion
 
 // region settings modal
@@ -407,6 +448,7 @@ const settingsModal = new Modal({
 // append the link to moodle settings to the modal header
 void settingsModal.getTitle().then(title =>
     title.after(
+        SearchWrapper,
         <a href="/user/preferences.php" target="_blank">
             {LL.settings.modal.moodleSettings()}
         </a>

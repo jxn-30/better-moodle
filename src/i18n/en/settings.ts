@@ -9,6 +9,7 @@ export default {
         latestVersion: 'latest Version',
         import: 'import preferences',
         export: 'export preferences',
+        search: 'Search...',
     },
     changelog: 'Changelog',
     requireReload:

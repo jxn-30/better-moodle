@@ -1,3 +1,4 @@
+@use 'sass:math';
 @use 'sass:string';
 
 :local(#open-settings-btn) {
@@ -14,20 +15,58 @@
 
 .modal-content:has(:local(#settings-form)) {
     .modal-header {
-        h5 ~ * {
-            /* all elements in settings header should have consistent padding and margin */
-            padding: 1rem;
-            margin: -0.8rem -0.8rem -0.8rem 0;
-        }
+        align-items: center;
 
-        h5 ~ :not(button.close) {
-            /* use small font size but not for the button in settings header */
-            font-size: small;
-        }
+        h5 {
+            ~ :not(div:has(input)) {
+                /* all elements in settings header except should have consistent padding and margin */
+                padding: 1rem;
+                margin: -0.8rem -0.8rem -0.8rem 0;
+            }
 
-        h5 + * {
-            /* first sibling of the h5 should pull itself and next siblings to the right */
-            margin-left: auto;
+            ~ :not(button.close) {
+                /* use small font size but not for the button in settings header */
+                font-size: small;
+            }
+
+            ~ div:has(input) {
+                padding: 0;
+                margin-bottom: 0;
+
+                > input {
+                    $width: 16px;
+                    $unitless-width: math.div($width, 1px);
+                    $padding: 0.5em;
+
+                    /* Uhhh, a SVG as a background image */
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='#{$unitless-width}' height='22'%3E%3Ctext class='fa' x='0' y='11' dominant-baseline='middle' fill='grey'%3E%3C/text%3E%3C/svg%3E");
+                    background-repeat: no-repeat;
+                    background-size: 1em;
+                    background-position-y: center;
+                    background-position-x: $padding;
+                    padding-right: $padding;
+                    padding-left: calc($padding + $width);
+                }
+            }
+
+            @media (max-width: 991.8px) {
+                flex-basis: 100%;
+                flex-shrink: 1;
+
+                ~ div > input {
+                    &:not(:focus) {
+                        max-width: 0;
+                        padding-right: 0;
+                        background-position: center;
+                    }
+
+                    &:focus {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                    }
+                }
+            }
         }
     }
 

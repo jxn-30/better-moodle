@@ -10,6 +10,7 @@ export default {
         latestVersion: 'aktuellste Version',
         import: 'Einstellungen importieren',
         export: 'Einstellungen exportieren',
+        search: 'Suche...',
     },
     changelog: 'Changelog',
     requireReload:

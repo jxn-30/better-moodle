@@ -304,6 +304,7 @@ export default abstract class Setting<
             <div
                 className="form-group row fitem"
                 data-tags={JSON.stringify(tags)}
+                data-search={this.title}
             >
                 <div className="col-md-5 col-form-label d-flex pb-0 pt-0">
                     <label

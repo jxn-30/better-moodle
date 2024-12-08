@@ -46,6 +46,10 @@ type RootTranslation = {
              * E​i​n​s​t​e​l​l​u​n​g​e​n​ ​e​x​p​o​r​t​i​e​r​e​n
              */
             export: string;
+            /**
+             * S​u​c​h​e​.​.​.
+             */
+            search: string;
         };
         /**
          * C​h​a​n​g​e​l​o​g
@@ -489,6 +493,10 @@ export type TranslationFunctions = {
              * Einstellungen exportieren
              */
             export: () => LocalizedString;
+            /**
+             * Suche...
+             */
+            search: () => LocalizedString;
         };
         /**
          * Changelog
