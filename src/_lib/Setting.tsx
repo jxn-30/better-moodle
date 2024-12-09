@@ -1,6 +1,6 @@
 import CanBeReady from './CanBeReady';
 import { GenericSetting } from './Components';
-import globalStyle from '../style/global.module.scss';
+import globalStyle from '../style/index.module.scss';
 import { JSX } from 'jsx-dom';
 import { LL } from '../i18n/i18n';
 import { LocalizedString } from 'typesafe-i18n';

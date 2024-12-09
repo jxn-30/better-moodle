@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { FeatureGroupID } from './FeatureGroup';
 import { FeatureID } from './Feature';
 import { getLoadingSpinner } from './DOM';
-import globalStyle from '../style/global.module.scss';
+import globalStyle from '../style/index.module.scss';
 import type { JSX } from 'jsx-dom';
 import { requirePromise } from './require.js';
 import { SettingTranslations } from './Setting';

@@ -1,4 +1,4 @@
-import './style/global.module.scss';
+import './style/index.module.scss';
 import './migrateStorage';
 import awaitImports from '@/imports';
 

@@ -11,6 +11,9 @@ const enabled = new BooleanSetting('enabled', true)
  */
 const setFullWidth = (state: boolean) => {
     document.body.classList.toggle('limitedwidth', !state);
+    document
+        .getElementById('page-header')
+        ?.classList.toggle('header-maxwidth', !state);
     window.dispatchEvent(new Event('resize'));
 };
 

@@ -1,6 +1,6 @@
 import awaitImports from '@/imports';
 import { GithubLink } from '@/Components';
-import globalStyle from './style/global.module.scss';
+import globalStyle from './style/index.module.scss';
 import { Modal } from '@/Modal';
 import { request } from '@/network';
 import { requirePromise } from '@/require.js';
