@@ -383,6 +383,13 @@ SearchInput.addEventListener(
         }
     }, 100)
 );
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'k' && e.ctrlKey) {
+        e.preventDefault();
+        SearchInput.focus();
+    }
+});
 // endregion
 // endregion
 
