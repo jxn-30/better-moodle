@@ -3,7 +3,7 @@ import type { FeatureGroupTranslation } from '#/i18n';
 import navbarDropdown from './navbarDropdown';
 
 export const de = {
-    name: 'Meine Kurse',
+    name: 'Kurse & Meine Kurse',
     features: {
         navbarDropdown: navbarDropdown.de,
         cardsPerRow: cardsPerRow.de,
@@ -11,7 +11,7 @@ export const de = {
 } satisfies FeatureGroupTranslation;
 
 export const en = {
-    name: 'My Courses',
+    name: 'Courses & My Courses',
     features: {
         navbarDropdown: navbarDropdown.en,
         cardsPerRow: cardsPerRow.en,

@@ -15,6 +15,11 @@ export const de = {
                 _sync: '[Mit Auswahl auf "Meine Kurse"-Seite synchronisieren]',
             },
         },
+        favouriteCoursesAtTop: {
+            name: 'Favoriten oben in der Kurs-Dropdown',
+            description:
+                'Favorisierte Kurse werden immer oben in der Kurs-Dropdown angezeigt, anstelle an der normalen Stelle bei alphabetischer Sortierung.',
+        },
     },
 } satisfies FeatureTranslation;
 
@@ -32,6 +37,11 @@ export const en = {
             options: {
                 _sync: '[sync with filter on "my courses" page]',
             },
+        },
+        favouriteCoursesAtTop: {
+            name: 'Show favourite courses at top',
+            description:
+                'Favourite courses are always displayed at the top of the course dropdown instead of in the normal position when sorted alphabetically.',
         },
     },
 } satisfies typeof de;

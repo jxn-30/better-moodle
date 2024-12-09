@@ -409,7 +409,7 @@ type RootTranslation = {
         };
         myCourses: {
             /**
-             * M​e​i​n​e​ ​K​u​r​s​e
+             * K​u​r​s​e​ ​&​ ​M​e​i​n​e​ ​K​u​r​s​e
              */
             name: string;
             features: {
@@ -441,13 +441,23 @@ type RootTranslation = {
                                 _sync: string;
                             };
                         };
+                        favouriteCoursesAtTop: {
+                            /**
+                             * F​a​v​o​r​i​t​e​n​ ​o​b​e​n​ ​i​n​ ​d​e​r​ ​K​u​r​s​-​D​r​o​p​d​o​w​n
+                             */
+                            name: string;
+                            /**
+                             * F​a​v​o​r​i​s​i​e​r​t​e​ ​K​u​r​s​e​ ​w​e​r​d​e​n​ ​i​m​m​e​r​ ​o​b​e​n​ ​i​n​ ​d​e​r​ ​K​u​r​s​-​D​r​o​p​d​o​w​n​ ​a​n​g​e​z​e​i​g​t​,​ ​a​n​s​t​e​l​l​e​ ​a​n​ ​d​e​r​ ​n​o​r​m​a​l​e​n​ ​S​t​e​l​l​e​ ​b​e​i​ ​a​l​p​h​a​b​e​t​i​s​c​h​e​r​ ​S​o​r​t​i​e​r​u​n​g​.
+                             */
+                            description: string;
+                        };
                     };
                 };
                 cardsPerRow: {
                     settings: {
                         amount: {
                             /**
-                             * K​a​c​h​e​l​n​ ​p​r​o​ ​Z​e​i​l​e
+                             * K​a​c​h​e​l​n​ ​p​r​o​ ​Z​e​i​l​e​ ​(​"​M​e​i​n​e​ ​K​u​r​s​e​"​-​S​e​i​t​e​)
                              */
                             name: string;
                             /**
@@ -855,7 +865,7 @@ export type TranslationFunctions = {
         };
         myCourses: {
             /**
-             * Meine Kurse
+             * Kurse & Meine Kurse
              */
             name: () => LocalizedString;
             features: {
@@ -887,13 +897,23 @@ export type TranslationFunctions = {
                                 _sync: () => LocalizedString;
                             };
                         };
+                        favouriteCoursesAtTop: {
+                            /**
+                             * Favoriten oben in der Kurs-Dropdown
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Favorisierte Kurse werden immer oben in der Kurs-Dropdown angezeigt, anstelle an der normalen Stelle bei alphabetischer Sortierung.
+                             */
+                            description: () => LocalizedString;
+                        };
                     };
                 };
                 cardsPerRow: {
                     settings: {
                         amount: {
                             /**
-                             * Kacheln pro Zeile
+                             * Kacheln pro Zeile ("Meine Kurse"-Seite)
                              */
                             name: () => LocalizedString;
                             /**
