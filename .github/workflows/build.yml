@@ -21,4 +21,10 @@ jobs:
             - name: 🏗️ build Better-Moodle for UzL
               run: yarn build uzl
 
+            - name: 📤️ upload build
+              uses: actions/upload-artifact@v4
+              with:
+                  name: better-moodle-uzl.user.js
+                  path: dist/better-moodle-uzl.user.js
+
             # TODO: Run not only UzL but also other configs?
