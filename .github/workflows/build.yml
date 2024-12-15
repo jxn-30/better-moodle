@@ -11,6 +11,11 @@ jobs:
     build:
         runs-on: ubuntu-latest
         name: 🏗️ Build
+        strategy:
+            matrix:
+                config:
+                    - uzl
+                    - cau
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4
@@ -18,13 +23,13 @@ jobs:
             - name: 🎛️ setup
               uses: ./.github/actions/setup
 
-            - name: 🏗️ build Better-Moodle for UzL
-              run: yarn build uzl
+            - name: 🏗️ build Better-Moodle for ${{ matrix.config }}
+              run: yarn build ${{ matrix.config }}
 
             - name: 📤️ upload build
               uses: actions/upload-artifact@v4
               with:
-                  name: better-moodle-uzl.user.js
-                  path: dist/better-moodle-uzl.user.js
+                  name: better-moodle-${{ matrix.config }}.user.js
+                  path: dist/better-moodle-${{ matrix.config }}.user.js
 
-            # TODO: Run not only UzL but also other configs?
+            # TODO: Output build stats
