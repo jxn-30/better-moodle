@@ -1,4 +1,4 @@
-import * as fs from 'node:fs';
+import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import browserslist from 'browserslist';
 import Config from './configs/_config';
@@ -9,6 +9,8 @@ import fastGlob from 'fast-glob';
 import monkey from 'vite-plugin-monkey';
 import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
 import { dependencies, version } from './package.json';
+
+const _PERF_START = process.hrtime.bigint();
 
 const PREFIX = 'better-moodle';
 
@@ -21,7 +23,7 @@ const configFile =
 if (configFile instanceof Error) throw configFile;
 
 const config = JSON.parse(
-    fs.readFileSync(`./configs/${configFile}.json`, 'utf-8')
+    await fs.readFile(`./configs/${configFile}.json`, 'utf-8')
 ) as Config;
 
 const githubUrl = `https://github.com/${config.github.user}/${config.github.repo}`;
@@ -93,6 +95,18 @@ if (includedFeaturesByConfig.length) {
     });
 }
 
+const featureMd = Array.from(
+    allIncludedFeatureGroups.values().map(
+        group =>
+            `* ${group}${Array.from(
+                allIncludedFeatures
+                    .values()
+                    .filter(feat => feat.startsWith(`${group}.`))
+                    .map(feat => `\n  * ${feat}`)
+            ).join('')}`
+    )
+).join('\n');
+
 // brace expansion wouldn't work with a single element only
 if (allIncludedFeatureGroups.size === 1) {
     allIncludedFeatureGroups.add(crypto.randomUUID());
@@ -120,7 +134,13 @@ const requires: string[] = [];
 
 if (allIncludedFeatureGroups.has('darkmode')) {
     requires.push(
-        `https://unpkg.com/darkreader@${dependencies.darkreader}/darkreader.js#sha512=${createHash('sha512').update(fs.readFileSync('./node_modules/darkreader/darkreader.js')).digest('hex')}`
+        `https://unpkg.com/darkreader@${dependencies.darkreader}/darkreader.js#sha512=${createHash(
+            'sha512'
+        )
+            .update(
+                await fs.readFile('./node_modules/darkreader/darkreader.js')
+            )
+            .digest('hex')}`
     );
 }
 
@@ -290,5 +310,57 @@ export default defineConfig({
                 autoGrant: true,
             },
         }),
+        {
+            name: 'Better-Moodle-build-stats',
+            apply: 'build',
+            /**
+             * Hooks into roolup writeBundle, executed as the very last step
+             * @param options - the output options
+             */
+            writeBundle(options) {
+                const _PERF_TOTAL = process.hrtime.bigint() - _PERF_START;
+                const _PERF_BUILD = _PERF_TOTAL - _PERF_CONFIG;
+
+                const base = options.dir;
+                if (!base) return;
+
+                const prefix = '.stats_';
+
+                const featuresFile = path.join(base, `${prefix}features.md`);
+                const perfConfFile = path.join(base, `${prefix}perf_conf`);
+                const perfBuildFile = path.join(base, `${prefix}perf_build`);
+                const perfTotalFile = path.join(base, `${prefix}perf_total`);
+
+                const timeConfig = {
+                    minute: '2-digit',
+                    second: '2-digit',
+                    fractionalSecondDigits: 3,
+                } as const;
+
+                void Promise.all([
+                    fs.writeFile(featuresFile, featureMd),
+                    fs.writeFile(
+                        perfConfFile,
+                        new Date(
+                            Number(_PERF_CONFIG / 1_000_000n)
+                        ).toLocaleTimeString([], timeConfig)
+                    ),
+                    fs.writeFile(
+                        perfBuildFile,
+                        new Date(
+                            Number(_PERF_BUILD / 1_000_000n)
+                        ).toLocaleTimeString([], timeConfig)
+                    ),
+                    fs.writeFile(
+                        perfTotalFile,
+                        new Date(
+                            Number(_PERF_TOTAL / 1_000_000n)
+                        ).toLocaleTimeString([], timeConfig)
+                    ),
+                ]);
+            },
+        },
     ],
 });
+
+const _PERF_CONFIG = process.hrtime.bigint() - _PERF_START;

@@ -49,3 +49,14 @@ jobs:
                   echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
                   echo "| **File size** | ${{ env.STATS_SIZE }} |" >> $GITHUB_STEP_SUMMARY
                   echo "| **Line count** | ${{ env.STATS_LINES }} |" >> $GITHUB_STEP_SUMMARY
+
+                  echo "## Build stats" >> $GITHUB_STEP_SUMMARY
+                  echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+                  echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Creating config duration** | $(cat ${{ env.dist_dit }}/.stats_perf_conf) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Building duration** | $(cat ${{ env.dist_dit }}/.stats_perf_build) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Total duration** | $(cat ${{ env.dist_dit }}/.stats_perf_total) |" >> $GITHUB_STEP_SUMMARY
+                  echo "*Durations are mm:ss,s*"
+
+                  echo "## Included features" >> $GITHUB_STEP_SUMMARY
+                  cat ${{ env.dist_dir }}/.stats_features.md >> $GITHUB_STEP_SUMMARY
