@@ -16,6 +16,9 @@ jobs:
                 config:
                     - uzl
                     - cau
+        env:
+            dist_dir: dist
+            dist_file: better-moodle-${{ matrix.config }}.user.js
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4
@@ -29,7 +32,20 @@ jobs:
             - name: 📤️ upload build
               uses: actions/upload-artifact@v4
               with:
-                  name: better-moodle-${{ matrix.config }}.user.js
-                  path: dist/better-moodle-${{ matrix.config }}.user.js
+                  name: ${{ env.dist_file }}
+                  path: ${{ env.dist_dir }}/${{ env.dist_file }}
+
+            - name: 📊 aggregate build statistics
+              run: |
+                  echo "STATS_SIZE=$(ls -sh --si '${{ env.dist_dir }}/${{ env.dist_file }}' | awk '{print $1}')B" >> $GITHUB_ENV
+                  echo "STATS_LINES=$(wc -l '${{ env.dist_dir }}/${{ env.dist_file }}' | awk '{print $1}')" >> $GITHUB_ENV
 
             # TODO: Output build stats
+            - name: ✍️ print build stats in summary
+              run: |
+                  echo "# 🏗️ ${{ matrix.config }}" >> $GITHUB_STEP_SUMMARY
+                  echo "## Built file: \`${{ env.dist_file }}\`" >> $GITHUB_STEP_SUMMARY
+                  echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+                  echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
+                  echo "| **File size** | ${{ env.STATS_SIZE }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Line count** | ${{ env.STATS_LINES }} |" >> $GITHUB_STEP_SUMMARY
