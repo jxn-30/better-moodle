@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.42.3](https://github.com/jxn-30/better-moodle/compare/1.42.2...1.42.3) (2024-12-17)
+
+
+### Bug Fixes
+
+* **events:** fix invalid escape character in Verwaltungsgebühren-Demos ([ac64c6d](https://github.com/jxn-30/better-moodle/commit/ac64c6d6e460a3f745604f744af4b2b6f8ea87ed))
+* **events:** fix invalid escape character in Verwaltungsgebühren-Demos ([f9cd5e7](https://github.com/jxn-30/better-moodle/commit/f9cd5e72afefcc78063ae5b482b50ded9ed4034d))
+
 ## [1.42.2](https://github.com/jxn-30/better-moodle/compare/1.42.1...1.42.2) (2024-11-27)
 
 
