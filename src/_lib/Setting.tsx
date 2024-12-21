@@ -443,7 +443,7 @@ export default abstract class Setting<
         const check = () => {
             if (!this.#formControl) return;
 
-            const currentValue = otherSetting.#unsavedValue;
+            const currentValue = otherSetting.value;
             let isDisabled = false;
             switch (condition) {
                 case '==':
