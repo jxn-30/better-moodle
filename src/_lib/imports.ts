@@ -2,11 +2,6 @@ import Feature from './Feature';
 import { isFeatureGroup } from '../i18n/i18n';
 import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
 
-// outsourcing this into an extra file has been necessary
-// as vite otherwise puts the glob imports above the definition of FeatureGroup
-// which throws a
-// `ReferenceError: can't access lexical declaration 'FeatureGroup' before initialization`
-
 const featureGroupImports = Object.fromEntries(
     Object.entries<ReturnType<(typeof FeatureGroup)['register']>>(
         import.meta.glob(import.meta.env.VITE_INCLUDE_FEATURE_GROUPS_GLOB, {
@@ -46,22 +41,15 @@ const initFeature = (
 
 const featureGroups = new Map<string, FeatureGroup<FeatureGroupID>>();
 
-let importsAreDone = false;
-
-const importPromises = Object.entries(featureGroupImports).map(
-    ([id, FeatureGroup]) =>
-        (async () => {
-            const groupId = id.split('/')[3];
-            if (!isFeatureGroup(groupId)) return;
-            const featureGroup = new FeatureGroup(groupId);
-            await featureGroup.loadSettings();
-            featureGroup.load();
-            await featureGroup.loadFeatures(id =>
-                initFeature(featureGroup, id)
-            );
-            featureGroups.set(groupId, featureGroup);
-        })()
-);
+Object.entries(featureGroupImports).forEach(([id, FeatureGroup]) => {
+    const groupId = id.split('/')[3];
+    if (!isFeatureGroup(groupId)) return;
+    const featureGroup = new FeatureGroup(groupId);
+    featureGroup.loadSettings();
+    featureGroup.load();
+    featureGroup.loadFeatures(id => initFeature(featureGroup, id));
+    featureGroups.set(groupId, featureGroup);
+});
 
 const onImportsDoneResolvers = new Set<
     PromiseWithResolvers<typeof featureGroups>['resolve']
@@ -77,6 +65,8 @@ const createImportDoneResolver = () => {
     return promise;
 };
 
+let importsAreDone = false;
+
 /**
  * Wait for all featureGroups to be fully loaded
  * @returns a promise that resolves to the featureGroups map once all featureGroups are fully loaded
@@ -86,7 +76,9 @@ const awaitImports = () =>
         Promise.resolve(featureGroups)
     :   createImportDoneResolver();
 
-void Promise.all(importPromises)
+void Promise.all(
+    featureGroups.values().map(group => group.FieldSet.awaitReady())
+)
     .then(() => (importsAreDone = true))
     .then(() =>
         onImportsDoneResolvers.forEach(resolver => resolver(featureGroups))

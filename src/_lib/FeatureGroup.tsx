@@ -53,21 +53,24 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
              * @param loadFn - a function that actually loads the feature
              * @throws {Error} if the features are already loaded
              */
-            async loadFeatures(
+            loadFeatures(
                 loadFn: (featureId: string) => Feature<ID> | undefined
             ) {
                 if (this.#features.size) throw Error('Features already loaded');
                 if (!features) return;
+                const formGroups = new Set<Element>();
                 for (const id of features) {
                     const feature = loadFn(id);
                     if (feature) {
                         feature.load();
                         this.#features.add(feature);
-                        await this.#FieldSet.appendToContainer(
-                            ...feature.formGroups
+                        feature.formGroups.forEach(formGroup =>
+                            formGroups.add(formGroup)
                         );
                     }
                 }
+
+                void this.#FieldSet.appendToContainer(...formGroups);
 
                 if (this.hasNewSetting) {
                     void this.#FieldSet.heading.then(heading =>
@@ -127,18 +130,20 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
 
     /**
      * Append the setting form groups to the fieldset.
+     * @throws {Error} if settings are already loaded.
      */
-    async loadSettings() {
+    loadSettings() {
         if (this.#settingsLoaded) {
             throw new Error(
                 'Settings for this FeatureGroup are already loaded!'
             );
         }
         this.#settingsLoaded = true;
-        for (const setting of this.#settings) {
+        const formGroups = this.#settings.values().map(setting => {
             setting.feature = this;
-            await this.#FieldSet.appendToContainer(setting.formGroup);
-        }
+            return setting.formGroup;
+        });
+        void this.#FieldSet.appendToContainer(...formGroups);
     }
 
     /**

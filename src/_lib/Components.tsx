@@ -442,6 +442,7 @@ interface FieldSet extends HTMLFieldSetElement {
     appendToContainer: (
         ...args: Parameters<typeof HTMLFieldSetElement.prototype.append>
     ) => Promise<void>;
+    awaitReady: () => Promise<void>;
 }
 
 /**
@@ -520,6 +521,14 @@ export const FieldSet = ({
             FieldSet.querySelector<HTMLAnchorElement>(
                 '[data-toggle="collapse"]'
             )?.click(),
+    });
+
+    Object.defineProperty(FieldSet, 'awaitReady', {
+        /**
+         * Wait for the container to be ready
+         * @returns a promise that resolves when container is ready
+         */
+        value: () => waitForContainer.awaitReady(),
     });
 
     return FieldSet;
