@@ -9,7 +9,7 @@ import settingsStyle from '../style/settings.module.scss';
 import { STORAGE_V2_SEEN_SETTINGS_KEY } from '../migrateStorage';
 import TempStorage from './TempStorage';
 import { UUID } from 'node:crypto';
-import { domID, isNewInstallation, mdToHtml, PREFIX } from './helpers';
+import { domID, isNewInstallation, mdToHtml } from './helpers';
 import Feature, { FeatureID, FeatureTranslations } from './Feature';
 import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
 
@@ -116,11 +116,10 @@ export default abstract class Setting<
 
     /**
      * This migrates a settings storage from a V1 key to a V2 key
-     * @param key - the old key of this setting
+     * @param oldKey - the old key of this setting
      */
-    #migrateSettingStorage(key = PREFIX(this.settingKey)) {
+    #migrateSettingStorage(oldKey = `better-moodle-settings.${this.id}`) {
         const undefinedValue = crypto.randomUUID();
-        const oldKey = PREFIX(`setting.${key}`);
         const oldValue: UUID | Type = GM_getValue(oldKey, undefinedValue);
         if (oldValue !== undefinedValue) {
             if (!GM_listValues().includes(this.settingKey)) {
@@ -141,7 +140,9 @@ export default abstract class Setting<
      */
     addAlias(key: string) {
         this.#possibleIDs.add(key);
-        void this.callWhenReady(() => this.#migrateSettingStorage(key));
+        void this.callWhenReady(() =>
+            this.#migrateSettingStorage(`better-moodle-settings.${key}`)
+        );
         return this;
     }
 

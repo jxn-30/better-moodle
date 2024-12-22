@@ -29,13 +29,16 @@ const timelineSidebarEnabled = new BooleanSetting(
 const courseFilterStorageKey = 'dashboard.layout.courseFilter';
 const oldCourseFilterStorageKey =
     'better-moodle-settings.dashboard.courseListFilter';
-const oldActiveCourseFilter = JSON.parse(
-    GM_getValue(oldCourseFilterStorageKey, JSON.stringify('_sync'))
-) as CourseFilter | '_sync';
+const oldActiveCourseFilter = GM_getValue<string>(
+    oldCourseFilterStorageKey,
+    '_sync'
+);
 GM_deleteValue(oldCourseFilterStorageKey);
-let courseFilter: CourseFilter | '_sync' = GM_getValue(
+let courseFilter = GM_getValue<CourseFilter | '_sync'>(
     courseFilterStorageKey,
-    oldActiveCourseFilter
+    oldActiveCourseFilter === '_sync' ? '_sync' : (
+        (JSON.parse(oldActiveCourseFilter) as CourseFilter)
+    )
 );
 GM_setValue(courseFilterStorageKey, courseFilter);
 
