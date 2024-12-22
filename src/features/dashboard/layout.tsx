@@ -174,9 +174,7 @@ const initCourseSidebar = () => {
                 })
             )
         )
-
-        .then(getActiveFilter)
-        .then(activeFilter => {
+        .then(() => {
             if (courseFilter === '_sync') {
                 syncFilterButton.classList.add('active');
                 return;
@@ -184,9 +182,8 @@ const initCourseSidebar = () => {
             for (const [element, filter] of filterButtons) {
                 if (
                     typeof filter !== 'string' &&
-                    typeof activeFilter !== 'string' &&
-                    filter.classification === activeFilter?.classification &&
-                    filter.customfieldvalue === activeFilter?.customfieldvalue
+                    filter.classification === courseFilter?.classification &&
+                    filter.customfieldvalue === courseFilter?.customfieldvalue
                 ) {
                     element.classList.add('active');
                     return;
