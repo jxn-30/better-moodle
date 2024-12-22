@@ -13,6 +13,7 @@ import { BETTER_MOODLE_LANG, LL } from './i18n/i18n';
 import {
     debounce,
     htmlToElements,
+    isNewInstallation,
     mdID,
     mdToHtml,
     PREFIX,
@@ -538,8 +539,9 @@ GM_setValue(
 // "New!"-Tooltip if there are unseen settings
 let newSettingsTooltip: ThemeBoostBootstrapTooltipClass | null;
 if (
-    newSettingsTooltipSetting.value &&
-    featureGroups.values().some(group => group.hasNewSetting)
+    isNewInstallation ||
+    (newSettingsTooltipSetting.value &&
+        featureGroups.values().some(group => group.hasNewSetting))
 ) {
     void requirePromise(['theme_boost/bootstrap/tooltip'] as const)
         .then(([Tooltip]) => {
