@@ -330,8 +330,11 @@ ImportBtn.addEventListener('click', e => {
         if (!file) return;
         const reader = new FileReader();
         reader.addEventListener('load', () => {
+            const result = reader.result ?? '{}';
             const config = JSON.parse(
-                reader.result?.toString() ?? '{}'
+                result instanceof ArrayBuffer ?
+                    new TextDecoder('utf-8').decode(new Uint8Array(result))
+                :   result
             ) as Record<string, unknown>;
             Object.entries(config)
                 .toSorted(([a], [b]) => a.localeCompare(b))
