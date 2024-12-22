@@ -19,6 +19,9 @@ jobs:
         env:
             dist_dir: dist
             dist_file: better-moodle-${{ matrix.config }}.user.js
+        permissions:
+            id-token: write
+            attestations: write
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4
@@ -30,10 +33,18 @@ jobs:
               run: yarn build ${{ matrix.config }}
 
             - name: 📤️ upload build
+              id: upload
               uses: actions/upload-artifact@v4
               with:
                   name: ${{ env.dist_file }}
                   path: ${{ env.dist_dir }}/${{ env.dist_file }}
+
+            - name: 🦭 attest build provenance
+              uses: actions/attest-build-provenance@v2
+              with:
+                  subject-name: ${{ env.dist_file }}
+                  subject-digest: sha256:${{ steps.upload.outputs.artifact-digest }}
+                  show-summary: true
 
             - name: 📊 aggregate build statistics
               run: |
