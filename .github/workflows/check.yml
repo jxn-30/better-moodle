@@ -43,3 +43,28 @@ jobs:
                   git diff --compact-summary >> $GITHUB_STEP_SUMMARY
                   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
                   echo "For a complete diff introduced by prettier, please see the workflow logs." >> $GITHUB_STEP_SUMMARY
+
+    eslint:
+        runs-on: ubuntu-latest
+        name: 🚨 ESLint
+        steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v4
+
+            - name: 🎛️ setup
+              uses: ./.github/actions/setup
+
+            - name: 🚨 run eslint
+              run: yarn lint:fix -o .eslint-report.json --format json
+              continue-on-error: true
+
+            - name: 🖨  create annotations
+              uses: ataylorme/eslint-annotate-action@v3
+              with:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  report-json: .eslint-report.json
+                  only-pr-files: true
+                  fail-on-warning: false
+                  fail-on-error: true
+                  check-name: ESLint Report Analysis
+                  markdown-report-on-step-summary: true
