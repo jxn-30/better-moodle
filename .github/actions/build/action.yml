@@ -34,4 +34,4 @@ outputs:
     dir:
         description: The directory, output files live in
         # using an env is not allowed => hardcoded
-        value: fist
+        value: dist
