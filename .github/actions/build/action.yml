@@ -28,7 +28,14 @@ runs:
           with:
               name: ${{ env.dist_file }}
               path: ${{ env.dist_dir }}/${{ env.dist_file }}
-    outputs:
-        digest: ${{ steps.upload.outputs.artifact-digest }}
-        file: ${{ env.dist_file }}
-        dir: ${{ env.dist_dir }}
+
+outputs:
+    digest:
+        description: The digest of the uploaded artifact
+        value: ${{ steps.upload.outputs.artifact-digest }}
+    file:
+        description: The filename of the built userscript
+        value: ${{ env.dist_file }}
+    dir:
+        description: The directory, output files live in
+        value: ${{ env.dist_dir }}
