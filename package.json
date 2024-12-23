@@ -37,7 +37,7 @@
         "@types/node": "22.10.2",
         "@types/tampermonkey": "5.0.4",
         "browserslist": "4.24.3",
-        "esbuild": "0.24.0",
+        "esbuild": "0.24.2",
         "esbuild-plugin-browserslist": "0.15.0",
         "eslint": "9.17.0",
         "eslint-config-prettier": "9.1.0",
