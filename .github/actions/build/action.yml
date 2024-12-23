@@ -19,6 +19,7 @@ runs:
           run: |
               echo "DIST_DIR=dist" >> $GITHUB_ENV
               echo "DIST_FILE=better-moodle-${{ inputs.config }}.user.js" >> $GITHUB_ENV
+          shell: bash
 
         - name: 📤️ upload build
           id: upload
