@@ -21,8 +21,8 @@ export default class Drawer {
     #classes = new Set<string>();
     #icon = '';
     #toggleTitle = '';
-    #content: DocumentFragment | HTMLElement = (<></>) as DocumentFragment;
-    #heading: DocumentFragment | HTMLElement = (<></>) as DocumentFragment;
+    #content = (<></>);
+    #heading = (<></>);
     #instance: ThemeBoostDrawers | null = null;
 
     /**
@@ -92,7 +92,7 @@ export default class Drawer {
      * @param heading - the heading to use
      * @returns this
      */
-    setHeading(heading: DocumentFragment | HTMLElement) {
+    setHeading(heading: JSXElement) {
         if (this.#instance) {
             const header =
                 this.#instance.drawerNode.querySelector('.drawerheader');
@@ -112,7 +112,7 @@ export default class Drawer {
      * @param content - the content to use
      * @returns this
      */
-    setContent(content: DocumentFragment | HTMLElement) {
+    setContent(content: JSXElement) {
         if (this.#instance) {
             this.#instance.drawerNode
                 .querySelector('.drawercontent')

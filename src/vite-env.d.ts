@@ -4,6 +4,8 @@
 /// <reference types="jsx-dom/index" />
 /// <reference types="darkreader" />
 
+/* global jsxDom:readonly */
+
 // constants defined in the config file
 declare const __GITHUB_USER__: string;
 declare const __GITHUB_REPO__: string;
@@ -17,6 +19,8 @@ declare const __MOODLE_URL__: string;
 
 // DarkReader is included via @require and thus globally available
 declare const DarkReader: DarkReader;
+
+declare type JSXElement = jsxDom.ReactElement;
 
 // env variables defined in the .env file or in vite config
 interface ImportMetaEnv {

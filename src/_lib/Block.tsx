@@ -1,6 +1,6 @@
 import { PREFIX } from '@/helpers';
 import { render } from '@/templates';
-import { getDocumentFragmentHtml, putTemplate } from '@/DOM';
+import { getHtml, putTemplate } from '@/DOM';
 
 /**
  * A utility class to create a fully working block / sidebar.
@@ -17,10 +17,10 @@ export default class Block {
     #ariaRole = 'complementary';
     #ariaLabel = '';
     #title = '';
-    #controls: DocumentFragment | null = null;
-    #content = (<></>) as DocumentFragment;
-    #footer = (<></>) as DocumentFragment;
-    #annotation = (<></>) as DocumentFragment;
+    #controls: JSXElement | null = null;
+    #content = (<></>);
+    #footer = (<></>);
+    #annotation = (<></>);
 
     #element: Element | undefined;
 
@@ -71,7 +71,7 @@ export default class Block {
      * @param content - the content to use
      * @returns this
      */
-    setContent(content: DocumentFragment) {
+    setContent(content: JSXElement) {
         if (this.#element) {
             // TODO
         } else {
@@ -100,11 +100,10 @@ export default class Block {
             type: this.#id,
             blockinstanceid: this.#instanceId,
             arialabel: this.#ariaLabel,
-            controls:
-                this.#controls ? getDocumentFragmentHtml(this.#controls) : '',
-            content: getDocumentFragmentHtml(this.#content),
-            footer: getDocumentFragmentHtml(this.#footer),
-            annotation: getDocumentFragmentHtml(this.#annotation),
+            controls: this.#controls ? getHtml(this.#controls) : '',
+            content: getHtml(this.#content),
+            footer: getHtml(this.#footer),
+            annotation: getHtml(this.#annotation),
         });
     }
 

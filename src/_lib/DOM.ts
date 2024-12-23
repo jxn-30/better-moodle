@@ -80,3 +80,11 @@ export const getDocumentFragmentHtml = (fragment: DocumentFragment) => {
     div.append(fragment.cloneNode(true));
     return div.innerHTML;
 };
+
+/**
+ * @param element
+ */
+export const getHtml = (element: JSXElement) =>
+    element instanceof DocumentFragment ?
+        getDocumentFragmentHtml(element)
+    :   element.outerHTML;
