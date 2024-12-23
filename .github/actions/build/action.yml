@@ -13,6 +13,7 @@ runs:
 
         - name: 🏗️ build Better-Moodle for ${{ inputs.config }}
           run: yarn build ${{ inputs.config }}
+          shell: bash
 
         # unfortunately, GitHub Actions don't allow env being set via env key in composite actions, so we need this workaround here
         - name: 🌳 set env
