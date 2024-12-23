@@ -1,0 +1,32 @@
+name: 🏗 Build
+
+inputs:
+    config:
+        description: The config to build with
+        required: true
+
+runs:
+    using: composite
+    env:
+        dist_dir: dist
+        dist_file: better-moodle-${{ inputs.config }}.user.js
+    steps:
+        - name: 📥️ checkout
+          uses: actions/checkout@v4
+
+        - name: 🎛️ setup
+          uses: ./.github/actions/setup
+
+        - name: 🏗️ build Better-Moodle for ${{ minputs.config }}
+          run: yarn build ${{ inputs.config }}
+
+        - name: 📤️ upload build
+          id: upload
+          uses: actions/upload-artifact@v4
+          with:
+              name: ${{ env.dist_file }}
+              path: ${{ env.dist_dir }}/${{ env.dist_file }}
+    outputs:
+        digest: ${{ steps.upload.outputs.artifact-digest }}
+        file: ${{ env.dist_file }}
+        dir: ${{ env.dist_dir }}

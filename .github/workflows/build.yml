@@ -16,46 +16,33 @@ jobs:
                 config:
                     - uzl
                     - cau
-        env:
-            dist_dir: dist
-            dist_file: better-moodle-${{ matrix.config }}.user.js
         permissions:
             id-token: write
             attestations: write
         steps:
-            - name: 📥️ checkout
-              uses: actions/checkout@v4
-
-            - name: 🎛️ setup
-              uses: ./.github/actions/setup
-
-            - name: 🏗️ build Better-Moodle for ${{ matrix.config }}
-              run: yarn build ${{ matrix.config }}
-
-            - name: 📤️ upload build
-              id: upload
-              uses: actions/upload-artifact@v4
+            - name: 🏗 build Better-Moodle for ${{ matrix.config }}
+              id: build
+              uses: ./.github/actions/build
               with:
-                  name: ${{ env.dist_file }}
-                  path: ${{ env.dist_dir }}/${{ env.dist_file }}
+                  config: ${{ matrix.config }}
 
             - name: 🦭 attest build provenance
               uses: actions/attest-build-provenance@v2
               with:
-                  subject-name: ${{ env.dist_file }}
-                  subject-digest: sha256:${{ steps.upload.outputs.artifact-digest }}
+                  subject-name: ${{ steps.build.outputs.file }}
+                  subject-digest: sha256:${{ steps.build.outputs.digest }}
                   show-summary: true
 
             - name: 📊 aggregate build statistics
               run: |
-                  echo "STATS_SIZE=$(ls -sh --si '${{ env.dist_dir }}/${{ env.dist_file }}' | awk '{print $1}')B" >> $GITHUB_ENV
-                  echo "STATS_LINES=$(wc -l '${{ env.dist_dir }}/${{ env.dist_file }}' | awk '{print $1}')" >> $GITHUB_ENV
+                  echo "STATS_SIZE=$(ls -sh --si '${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }}' | awk '{print $1}')B" >> $GITHUB_ENV
+                  echo "STATS_LINES=$(wc -l '${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }}' | awk '{print $1}')" >> $GITHUB_ENV
 
             # TODO: Output build stats
             - name: ✍️ print build stats in summary
               run: |
                   echo "# 🏗️ ${{ matrix.config }}" >> $GITHUB_STEP_SUMMARY
-                  echo "## Built file: \`${{ env.dist_file }}\`" >> $GITHUB_STEP_SUMMARY
+                  echo "## Built file: \`${{ steps.build.outputs.file }}\`" >> $GITHUB_STEP_SUMMARY
                   echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
                   echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
                   echo "| **File size** | ${{ env.STATS_SIZE }} |" >> $GITHUB_STEP_SUMMARY
@@ -64,10 +51,10 @@ jobs:
                   echo "## Build stats" >> $GITHUB_STEP_SUMMARY
                   echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
                   echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
-                  echo "| **Creating config duration** | $(cat ${{ env.dist_dir }}/.stats_perf_conf) |" >> $GITHUB_STEP_SUMMARY
-                  echo "| **Building duration** | $(cat ${{ env.dist_dir }}/.stats_perf_build) |" >> $GITHUB_STEP_SUMMARY
-                  echo "| **Total duration** | $(cat ${{ env.dist_dir }}/.stats_perf_total) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Creating config duration** | $(cat ${{ steps.build.outputs.dir }}/.stats_perf_conf) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Building duration** | $(cat ${{ steps.build.outputs.dir }}/.stats_perf_build) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Total duration** | $(cat ${{ steps.build.outputs.dir }}/.stats_perf_total) |" >> $GITHUB_STEP_SUMMARY
                   echo "*Durations are mm:ss,s*"
 
                   echo "## Included features" >> $GITHUB_STEP_SUMMARY
-                  cat ${{ env.dist_dir }}/.stats_features.md >> $GITHUB_STEP_SUMMARY
+                  cat ${{ steps.build.outputs.dir }}/.stats_features.md >> $GITHUB_STEP_SUMMARY
