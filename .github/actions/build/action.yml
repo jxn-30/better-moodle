@@ -15,19 +15,13 @@ runs:
           run: yarn build ${{ inputs.config }}
           shell: bash
 
-        # unfortunately, GitHub Actions don't allow env being set via env key in composite actions, so we need this workaround here
-        - name: 🌳 set env
-          run: |
-              echo "DIST_DIR=dist" >> $GITHUB_ENV
-              echo "DIST_FILE=better-moodle-${{ inputs.config }}.user.js" >> $GITHUB_ENV
-          shell: bash
-
         - name: 📤️ upload build
           id: upload
           uses: actions/upload-artifact@v4
           with:
-              name: ${{ env.DIST_FILE }}
-              path: ${{ env.DIST_DIR }}/${{ env.DIST_FILE }}
+              # hardcoded since closed envs are not allowed in composite actions
+              name: better-moodle-${{ inputs.config }}.user.js
+              path: dist/better-moodle-${{ inputs.config }}.user.js
 
 outputs:
     digest:
@@ -35,7 +29,9 @@ outputs:
         value: ${{ steps.upload.outputs.artifact-digest }}
     file:
         description: The filename of the built userscript
-        value: ${{ env.DIST_FILE }}
+        # using an env is not allowed => hardcoded
+        value: better-moodle-${{ inputs.config }}.user.js
     dir:
         description: The directory, output files live in
-        value: ${{ env.DIST_DIR }}
+        # using an env is not allowed => hardcoded
+        value: fist
