@@ -11,8 +11,9 @@ jobs:
     find-configs:
         runs-on: ubuntu-latest
         outputs:
-            configs: ${{ steps.configs.configs }}
+            configs: ${{ steps.configs.outputs.configs }}
         steps:
             - uses: actions/checkout@v4
 
-            - run: echo "configs=$(basename -a ./configs/*.json | jq -R | jq -s | jq '. - ["_schema.json"]' | jq -c)" >> $GITHUB_OUTPUT
+            - id: configs
+              run: echo "configs=$(basename -a ./configs/*.json | jq -R | jq -s | jq -c '. - ["_schema.json"]')" >> $GITHUB_OUTPUT

@@ -15,7 +15,7 @@ jobs:
         runs-on: ubuntu-latest
         name: 🏗️ Build
         needs:
-          - find-configs
+            - find-configs
         strategy:
             matrix:
                 config: ${{ fromJson(needs.find-configs.outputs.configs) }}
