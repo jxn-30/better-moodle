@@ -20,6 +20,9 @@ jobs:
             id-token: write
             attestations: write
         steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v4
+
             - name: 🏗 build Better-Moodle for ${{ matrix.config }}
               id: build
               uses: ./.github/actions/build

@@ -11,9 +11,6 @@ runs:
         dist_dir: dist
         dist_file: better-moodle-${{ inputs.config }}.user.js
     steps:
-        - name: 📥️ checkout
-          uses: actions/checkout@v4
-
         - name: 🎛️ setup
           uses: ./.github/actions/setup
 
