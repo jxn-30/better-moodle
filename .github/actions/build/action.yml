@@ -26,8 +26,8 @@ runs:
           id: upload
           uses: actions/upload-artifact@v4
           with:
-              name: ${{ env.dist_file }}
-              path: ${{ env.dist_dir }}/${{ env.dist_file }}
+              name: ${{ env.DIST_FILE }}
+              path: ${{ env.DIST_DIR }}/${{ env.DIST_FILE }}
 
 outputs:
     digest:
@@ -35,7 +35,7 @@ outputs:
         value: ${{ steps.upload.outputs.artifact-digest }}
     file:
         description: The filename of the built userscript
-        value: ${{ env.dist_file }}
+        value: ${{ env.DIST_FILE }}
     dir:
         description: The directory, output files live in
-        value: ${{ env.dist_dir }}
+        value: ${{ env.DIST_DIR }}
