@@ -1,0 +1,18 @@
+name: 📇 Find configs
+
+on:
+    workflow_call:
+        outputs:
+            configs:
+                description: A JSON string of all available configs
+                value: ${{ jobs.find-configs.outputs.configs }}
+
+jobs:
+    find-configs:
+        runs-on: ubuntu-latest
+        outputs:
+            configs: ${{ steps.configs.configs }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - run: echo "configs=$(ls configs/!(_schema).json | jq -R | jq -s -c)" >> $GITHUB_OUTPUT

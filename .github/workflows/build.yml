@@ -8,14 +8,15 @@ on:
             - v2
 
 jobs:
+    find-configs:
+        uses: ./.github/workflows/find-configs.yml
+
     build:
         runs-on: ubuntu-latest
         name: 🏗️ Build
         strategy:
             matrix:
-                config:
-                    - uzl
-                    - cau
+                config: ${{ fromJson(needs.find-configs.outputs.configs) }}
         permissions:
             id-token: write
             attestations: write
