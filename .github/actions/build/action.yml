@@ -7,15 +7,18 @@ inputs:
 
 runs:
     using: composite
-    env:
-        dist_dir: dist
-        dist_file: better-moodle-${{ inputs.config }}.user.js
     steps:
         - name: 🎛️ setup
           uses: ./.github/actions/setup
 
-        - name: 🏗️ build Better-Moodle for ${{ minputs.config }}
+        - name: 🏗️ build Better-Moodle for ${{ inputs.config }}
           run: yarn build ${{ inputs.config }}
+
+        # unfortunately, GitHub Actions don't allow env being set via env key in composite actions, so we need this workaround here
+        - name: 🌳 set env
+          run: |
+              echo "DIST_DIR=dist" >> $GITHUB_ENV
+              echo "DIST_FILE=better-moodle-${{ inputs.config }}.user.js" >> $GITHUB_ENV
 
         - name: 📤️ upload build
           id: upload
