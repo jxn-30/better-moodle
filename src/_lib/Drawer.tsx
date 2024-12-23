@@ -3,7 +3,7 @@ import { PREFIX } from '@/helpers';
 import { renderCustomTemplate } from '@/templates';
 import { requirePromise } from '@/require.js';
 import ThemeBoostDrawers from '#/require.js/theme_boost/drawers';
-import { getDocumentFragmentHtml, putTemplate } from '@/DOM';
+import { getHtml, putTemplate } from '@/DOM';
 
 export enum Side {
     Left = 'left',
@@ -152,14 +152,8 @@ export default class Drawer {
             id: this.#id,
             tooltip: this.#oppositeSide,
             state: `show-drawer-${this.#side}`,
-            content:
-                this.#content instanceof DocumentFragment ?
-                    getDocumentFragmentHtml(this.#content)
-                :   this.#content.outerHTML,
-            drawerheading:
-                this.#heading instanceof DocumentFragment ?
-                    getDocumentFragmentHtml(this.#heading)
-                :   this.#heading.outerHTML,
+            content: getHtml(this.#content),
+            drawerheading: getHtml(this.#heading),
         });
     }
 
