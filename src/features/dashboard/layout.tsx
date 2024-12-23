@@ -84,14 +84,12 @@ const loadCourseContent = (drawer: Drawer, filterSelection: HTMLDivElement) => {
 
             if (!courses.length) {
                 return drawer.setContent(
-                    (
-                        <>
-                            {filterSelection}
-                            <span className="text-muted text-center">
-                                {LL.features.dashboard.features.layout.myCourses.empty()}
-                            </span>
-                        </>
-                    ) as DocumentFragment
+                    <>
+                        {filterSelection}
+                        <span className="text-muted text-center">
+                            {LL.features.dashboard.features.layout.myCourses.empty()}
+                        </span>
+                    </>
                 );
             }
 
@@ -124,12 +122,10 @@ const loadCourseContent = (drawer: Drawer, filterSelection: HTMLDivElement) => {
             );
 
             return drawer.setContent(
-                (
-                    <>
-                        {filterSelection}
-                        {...courseCards}
-                    </>
-                ) as DocumentFragment
+                <>
+                    {filterSelection}
+                    {...courseCards}
+                </>
             );
         });
 };
@@ -207,7 +203,7 @@ const initCourseSidebar = () => {
             </a>
             {toggleFilterBtn}
         </>
-    ) as DocumentFragment;
+    );
 
     void new Drawer('dashboard-courses')
         .setSide(Side.Left)
@@ -296,11 +292,7 @@ const onload = () => {
             .create()
             .then(drawer =>
                 drawer.setContent(
-                    (
-                        <>
-                            {...Array.from(document.querySelectorAll(selector))}
-                        </>
-                    ) as DocumentFragment
+                    <>{...Array.from(document.querySelectorAll(selector))}</>
                 )
             );
     }

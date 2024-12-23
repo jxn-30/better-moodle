@@ -13,7 +13,7 @@ import {
     getAvailableCourseFiltersAsOptions,
     onActiveFilterChanged,
 } from '@/myCourses';
-import { getDocumentFragmentHtml, getLoadingSpinner, putTemplate } from '@/DOM';
+import { getHtml, getLoadingSpinner, putTemplate } from '@/DOM';
 
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('myCourses.navbarDropdown')
@@ -105,18 +105,16 @@ const loadContent = ({
                 isactive: false,
                 url: course.viewurl,
                 title: `${course.shortname}\n${course.fullname}`,
-                text: getDocumentFragmentHtml(
-                    (
-                        <>
-                            {course.isfavourite ?
-                                <i className="icon fa fa-star fa-fw"></i>
-                            :   <></>}
-                            {course.shortname ?
-                                <strong>{course.shortname}</strong>
-                            :   <></>}{' '}
-                            <small>{course.fullname}</small>
-                        </>
-                    ) as DocumentFragment
+                text: getHtml(
+                    <>
+                        {course.isfavourite ?
+                            <i className="icon fa fa-star fa-fw"></i>
+                        :   <></>}
+                        {course.shortname ?
+                            <strong>{course.shortname}</strong>
+                        :   <></>}{' '}
+                        <small>{course.fullname}</small>
+                    </>
                 ),
             }));
 

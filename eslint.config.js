@@ -46,6 +46,8 @@ export default [
                 __MOODLE_URL__: 'readonly',
                 // DarkReader is included via @require
                 DarkReader: 'readonly',
+                // JSXElement is created via vite-env.d.ts
+                JSXElement: 'readonly',
             },
             parserOptions: {
                 project: true,
