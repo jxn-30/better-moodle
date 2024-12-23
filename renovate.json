@@ -3,7 +3,7 @@
     "assignees": ["jxn-30"],
     "baseBranches": ["main", "v2"],
     "dependencyDashboard": true,
-    "dependencyDashboardFooter": "PRs will be created on weekdays before 3am (CEST) for any dependencies.",
+    "dependencyDashboardFooter": "PRs will be created on mondays, wednesdays and fridays before 3am (CEST) for any dependencies. Lockfile maintenance is scheduled for saturdays.",
     "dependencyDashboardHeader": "# ℹ️ Renovate Dependency-Dashboard ℹ\nScheduled and currently open dependency updates are listed here\n",
     "dependencyDashboardLabels": ["dependencies"],
     "dependencyDashboardTitle": "⬆ℹ️ Renovate Dependency-Dashboard ℹ️",
@@ -16,26 +16,18 @@
     },
     "packageRules": [
         {
-            "groupName": "ESLint",
+            "groupName": "All non-major dependencies",
             "lockFileMaintenance": { "enabled": true },
-            "matchManagers": ["npm"],
-            "matchDepNames": ["@eslint/js", "eslint"],
-            "rangeStrategy": "pin",
-            "separateMajorMinor": false
+            "groupSlug": "all-minor-patch",
+            "matchPackageNames": ["*"],
+            "matchUpdateTypes": ["minor", "patch"]
         },
         {
-            "groupName": "sass",
+            "extends": ["schedule:monthly"],
+            "groupName": "engines",
             "lockFileMaintenance": { "enabled": true },
+            "matchDepNames": ["node", "npm", "yarn"],
             "matchManagers": ["npm"],
-            "matchDepNames": ["sass", "sass-embedded"],
-            "rangeStrategy": "pin",
-            "separateMajorMinor": false
-        },
-        {
-            "groupName": "types",
-            "lockFileMaintenance": { "enabled": true },
-            "matchManagers": ["npm"],
-            "matchPackagePrefixes": ["@types/"],
             "rangeStrategy": "pin",
             "separateMajorMinor": false
         }
@@ -43,6 +35,6 @@
     "postUpdateOptions": ["yarnDedupeHighest"],
     "rangeStrategy": "pin",
     "reviewers": ["jxn-30"],
-    "schedule": ["before 3am on Monday,Wednesday and Friday"],
+    "schedule": ["before 3am on Monday, Wednesday and Friday"],
     "timezone": "Europe/Berlin"
 }
