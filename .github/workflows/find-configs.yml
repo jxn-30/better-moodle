@@ -15,4 +15,4 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - run: echo "configs=$(ls configs/!(_schema).json | jq -R | jq -s -c)" >> $GITHUB_OUTPUT
+            - run: echo "configs=$(basename -a ./configs/*.json | jq -R | jq -s | jq '. - ["_schema.json"]' | jq -c)" >> $GITHUB_OUTPUT
