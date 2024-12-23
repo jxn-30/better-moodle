@@ -9,6 +9,7 @@ on:
 
 jobs:
     find-configs:
+        name: 📇 Find configs
         runs-on: ubuntu-latest
         outputs:
             configs: ${{ steps.configs.outputs.configs }}
@@ -16,4 +17,4 @@ jobs:
             - uses: actions/checkout@v4
 
             - id: configs
-              run: echo "configs=$(basename -a ./configs/*.json | jq -R | jq -s | jq -c '. - ["_schema.json"]')" >> $GITHUB_OUTPUT
+              run: echo "configs=$(basename -s .json -a ./configs/*.json | jq -R | jq -s | jq -c '. - ["_schema"]')" >> $GITHUB_OUTPUT

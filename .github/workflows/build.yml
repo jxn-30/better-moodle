@@ -9,6 +9,7 @@ on:
 
 jobs:
     find-configs:
+        name: 📇 Find configs
         uses: ./.github/workflows/find-configs.yml
 
     build:
