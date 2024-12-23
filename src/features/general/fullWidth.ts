@@ -1,3 +1,4 @@
+import './fullWidth.scss';
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
 
