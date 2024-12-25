@@ -10,5 +10,6 @@ module.exports = {
             encode: (svg: string) => svg,
             transform: (svg: string) => `"${svgToMiniDataURI(svg)}"`,
         },
+        'postcss-preset-env': {},
     },
 };
