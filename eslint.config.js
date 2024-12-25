@@ -13,6 +13,7 @@ export default [
             'dist/*',
             'src/style/*.d.ts',
             'redesign.user.js', // this is the legacy userscript, no linting here anymore
+            '.postcssrc.cts',
         ],
     },
     js.configs.recommended,

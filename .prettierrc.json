@@ -1,9 +1,11 @@
 {
+    "$schema": "https://json.schemastore.org/prettierrc",
     "arrowParens": "avoid",
     "endOfLine": "lf",
     "quoteProps": "consistent",
     "singleQuote": true,
     "tabWidth": 4,
     "trailingComma": "es5",
-    "experimentalTernaries": true
+    "experimentalTernaries": true,
+    "plugins": ["@prettier/plugin-xml"]
 }

@@ -1,6 +1,13 @@
 @use 'sass:math';
 @use 'sass:string';
 
+$search-icon-width: 16px;
+$search-icon-unitless-width: math.div($search-icon-width, 1px);
+
+@svg-load search url(../assets/search.svg) {
+    width: $search-icon-unitless-width;
+}
+
 :local(#open-settings-btn) {
     /* if settings modal is not ready yet, settings btn should be in a loading state */
     &.loading {
@@ -34,12 +41,11 @@
                 margin-bottom: 0;
 
                 > input {
-                    $width: 16px;
-                    $unitless-width: math.div($width, 1px);
+                    $width: $search-icon-width;
                     $padding: 0.5em;
 
                     /* Uhhh, a SVG as a background image */
-                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='#{$unitless-width}' height='22'%3E%3Ctext class='fa' x='0' y='11' dominant-baseline='middle' fill='grey'%3E%3C/text%3E%3C/svg%3E");
+                    background-image: svg-inline(search);
                     background-repeat: no-repeat;
                     background-size: 1em;
                     background-position-y: center;
