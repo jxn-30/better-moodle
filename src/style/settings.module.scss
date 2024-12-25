@@ -1,13 +1,6 @@
 @use 'sass:math';
 @use 'sass:string';
 
-$search-icon-width: 16px;
-$search-icon-unitless-width: math.div($search-icon-width, 1px);
-
-@svg-load search url(../assets/search.svg) {
-    width: $search-icon-unitless-width;
-}
-
 :local(#open-settings-btn) {
     /* if settings modal is not ready yet, settings btn should be in a loading state */
     &.loading {
@@ -25,6 +18,9 @@ $search-icon-unitless-width: math.div($search-icon-width, 1px);
         align-items: center;
 
         h5 {
+            $search-icon-width: 1em;
+            $search-icon-padding: 0.5em;
+
             ~ :not(div:has(input)) {
                 /* all elements in settings header except should have consistent padding and margin */
                 padding: 1rem;
@@ -36,22 +32,33 @@ $search-icon-unitless-width: math.div($search-icon-width, 1px);
                 font-size: small;
             }
 
-            ~ div:has(input) {
+            ~ div:has(> input[type='search']) {
                 padding: 0;
                 margin-bottom: 0;
+                position: relative;
+
+                &::before {
+                    width: $search-icon-width;
+                    font-family: FontAwesome;
+                    content: '\F002';
+                    position: absolute;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-left: $search-icon-padding;
+                    color: grey;
+                    pointer-events: none;
+                }
 
                 > input[type='search'] {
-                    $width: $search-icon-width;
-                    $padding: 0.5em;
+                    padding-left: calc(
+                        $search-icon-padding + $search-icon-width
+                    );
 
-                    /* Uhhh, a search icon as a background image (via SVG-Hack) */
-                    background-image: svg-inline(search);
-                    background-repeat: no-repeat;
-                    background-size: 1em;
-                    background-position-y: center;
-                    background-position-x: $padding;
-                    padding-right: $padding;
-                    padding-left: calc($padding + $width);
+                    &:not(:focus) {
+                        background-color: transparent;
+                    }
                 }
             }
 
@@ -59,17 +66,30 @@ $search-icon-unitless-width: math.div($search-icon-width, 1px);
                 flex-basis: 100%;
                 flex-shrink: 1;
 
-                ~ div > input {
-                    &:not(:focus) {
-                        max-width: 0;
-                        padding-right: 0;
-                        background-position: center;
+                & ~ div:has(input[type='search']) {
+                    $unfocused-width: calc(
+                        $search-icon-width + 2 * $search-icon-padding
+                    );
+
+                    &:has(> input[type='search']:focus) {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
                     }
 
-                    &:focus {
-                        position: absolute;
-                        left: 0;
-                        top: 0;
+                    &:has(> input[type='search']:not(:focus)) {
+                        max-width: $unfocused-width;
+
+                        &::before {
+                            margin-left: 0;
+                            width: calc(100% + 2px); // 1px border of input
+                        }
+                    }
+
+                    > input[type='search']:not(:focus) {
+                        padding-right: 0;
+                        padding-left: $unfocused-width;
                     }
                 }
             }
