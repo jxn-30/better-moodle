@@ -43,6 +43,9 @@
     }
 }
 
+@svg-load sparkle url(../assets/sparkle.svg) {
+}
+
 :local(.sparkling)::before {
     /* Add sparkels onto the element */
     $width: 10ch;
@@ -53,7 +56,7 @@
     width: $width;
     height: calc($width * 18 / 11);
     /* this is a self designed sparkle as SVG :) */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 1800'%3E%3Cpath fill='gold' d='M 550 0 C 550 720 660 900 1100 900 C 660 900 550 1080 550 1800 C 550 1080 440 900 0 900 C 440 900 550 720 550 0'/%3E%3C/svg%3E");
+    background-image: svg-inline(sparkle);
     background-size: 100%;
     background-repeat: no-repeat;
     transform: translate(-50%, -50%);

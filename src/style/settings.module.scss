@@ -40,11 +40,11 @@ $search-icon-unitless-width: math.div($search-icon-width, 1px);
                 padding: 0;
                 margin-bottom: 0;
 
-                > input {
+                > input[type='search'] {
                     $width: $search-icon-width;
                     $padding: 0.5em;
 
-                    /* Uhhh, a SVG as a background image */
+                    /* Uhhh, a search icon as a background image (via SVG-Hack) */
                     background-image: svg-inline(search);
                     background-repeat: no-repeat;
                     background-size: 1em;
