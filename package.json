@@ -79,6 +79,7 @@
         "not UCAndroid > 0",
         "not and_qq > 0",
         "not OperaMini all",
-        "not KaiOS > 0"
+        "not KaiOS > 0",
+        "not Chrome 109"
     ]
 }
