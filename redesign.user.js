@@ -2,7 +2,7 @@
 // @name            🎓️ UzL: better-moodle
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
-// @version         1.42.1
+// @version         1.42.2
 // @                x-release-please-end
 // @author          Jan (jxn_30)
 // @description     Improves UzL-Moodle by cool features and design improvements.
@@ -29,7 +29,7 @@
 // @connect         api.pirateweather.net
 // @connect         weather.visualcrossing.com
 // @connect         wttr.in
-// @require         https://unpkg.com/darkreader@4.9.95/darkreader.js#sha512=dfcae8a9b19a0c681972a336b2d71a218df5ed2cc952810ffe037fd132519ddd1b3a97725ecb8861d9731a2405e6ad8086f40606d38fbe3033f14d8a7ecae43a
+// @require         https://unpkg.com/darkreader@4.9.96/darkreader.js#sha512=2a6037a404af025da8aee4fcf73aace4f8a78ea8cf11d8fb09b1636470f0f9ac52f6472d2f4b900ea3dd14a1d06d23c5b2e76f36b9f9dcaf88bbcfc380a0859a
 // ==/UserScript==
 
 /* global M, require, DarkReader */
@@ -2516,6 +2516,14 @@ const getSpeiseplan = async () => {
             abk: filter.querySelector('span.abk')?.textContent?.trim() ?? '',
             ...(imgUrl ? { img: imgUrl.href } : {}),
         };
+        // this is an inverted filter, so we need to find the matching text. Currently, Alcohol is the only case for this and at least there using the title of another alcohol bottle works
+        if (filter.dataset.ex === '1' && imgUrl) {
+            const alternativeTitle = mensaplanDoc.querySelector(
+                `:not(.filterbutton) > img[src="${imgUrl.pathname}"]`
+            )?.title;
+            if (alternativeTitle)
+                filters[type][filter.dataset.wert].title = alternativeTitle;
+        }
     });
     Object.freeze(filters);
 
