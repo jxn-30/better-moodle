@@ -631,7 +631,6 @@ __metadata:
   version: 0.21.5
   resolution: "@esbuild/freebsd-x64@npm:0.21.5"
   conditions: os=freebsd & cpu=x64
-
   languageName: node
   linkType: hard
 
