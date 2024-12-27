@@ -38,6 +38,7 @@
         "@types/node": "22.10.2",
         "@types/tampermonkey": "5.0.4",
         "browserslist": "4.24.3",
+        "browserslist-useragent-regexp": "4.1.3",
         "esbuild": "0.24.2",
         "esbuild-plugin-browserslist": "0.15.0",
         "eslint": "9.17.0",
@@ -69,7 +70,9 @@
         "node": "22.12.0"
     },
     "browserslist": [
-        "defaults",
+        "last 4 versions",
+        "Firefox ESR",
+        "not dead",
         "not Android > 0",
         "not ChromeAndroid > 0",
         "not Edge > 0",
@@ -79,7 +82,6 @@
         "not UCAndroid > 0",
         "not and_qq > 0",
         "not OperaMini all",
-        "not KaiOS > 0",
-        "not Chrome 109"
+        "not KaiOS > 0"
     ]
 }

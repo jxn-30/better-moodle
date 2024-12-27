@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import fastGlob from 'fast-glob';
 import monkey from 'vite-plugin-monkey';
 import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
+import { getUserAgentRegex as uaRegex } from 'browserslist-useragent-regexp';
 import { dependencies, version } from './package.json';
 
 const _PERF_START = process.hrtime.bigint();
@@ -144,6 +145,8 @@ if (allIncludedFeatureGroups.has('darkmode')) {
     );
 }
 
+const uaRegexp = uaRegex({ allowHigherVersions: true });
+
 const GLOBAL_CONSTANTS = {
     __GITHUB_USER__: JSON.stringify(config.github.user),
     __GITHUB_REPO__: JSON.stringify(config.github.repo),
@@ -154,6 +157,12 @@ const GLOBAL_CONSTANTS = {
     __UNI__: JSON.stringify(configFile),
     __MOODLE_VERSION__: JSON.stringify(config.moodleVersion),
     __MOODLE_URL__: JSON.stringify(config.moodleUrl),
+    // hacky way for Regular expresions atm
+    // See https://github.com/evanw/esbuild/issues/4019 for workaround source and feature request
+    __UA_REGEX__: JSON.stringify(
+        uaRegexp.toString().replace(/^\/|\/[dgimsuvy]*$/g, '')
+    ),
+    __UA_REGEX_FLAGS__: JSON.stringify(uaRegexp.flags),
 };
 
 export default defineConfig({
@@ -246,6 +255,9 @@ export default defineConfig({
             scss: {
                 api: 'modern-compiler',
                 additionalData: Object.entries(GLOBAL_CONSTANTS)
+                    .filter(([, value]) =>
+                        ['string', 'number'].includes(typeof value)
+                    )
                     .map(([name, value]) => `$${name}: ${value};`)
                     .join('\n'),
             },
