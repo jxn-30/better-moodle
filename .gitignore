@@ -25,3 +25,5 @@ src/features/**/*.scss.d.ts
 
 # temp files
 .eslintcache
+svg
+png

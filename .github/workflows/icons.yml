@@ -1,0 +1,61 @@
+name: icons.yml
+on:
+    push:
+        branches:
+            - v2
+        paths:
+            - configs/*.json
+
+jobs:
+    icons:
+        runs-on: ubuntu-latest
+        name: 🖼️ Create icons
+        steps:
+            - name: 🛠 setup Node.js
+              uses: actions/setup-node@v4
+
+            - name: 📥️ checkout
+              uses: actions/checkout@v4
+              with:
+                  sparse-checkout: |
+                      configs
+
+            - name: 🍱 install converter
+              run: npm install -gy svgexport
+
+            - name: 🖼️ create icons
+              run: |
+                  # create output directories
+                  mkdir svg
+                  mkdir png
+
+                  # set sizes
+                  size=1000
+                  small=$(( $size / 3 ))
+                  position=$(( $size - $small ))
+
+                  # find configs and print them in a line each
+                  jq -nMr '[inputs | select(.icon) | [(input_filename | gsub("^configs/|.json$"; "")), .icon, .github.user, .github.repo, (.github.branch | if . == "" then "main" else . end)] | join("\n")] | join("\n")' configs/*.json | \
+                    # for each config
+                    while read -r config; read -r icon; read -r user; read -r repo; read -r branch; do
+                      svgname="svg/$config.svg"
+                      pngname="png/$config.png"
+                      branch=${branch:="main"}
+                      moothel="https://raw.githubusercontent.com/$user/$repo/$branch/img/moothel.png"
+
+                      # write svg to a file
+                      echo "$config"
+                      echo "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 $size $size'>" > "$svgname"
+                      echo "  <image x='0' y='0' width='$size' height='$size' preserveAspectRatio='meet' href='$moothel'/>" >> "$svgname"
+                      echo "  <image x='$position' y='$position' width='$small' heiht='$small' preserveAspectRatio='meet' href='$icon'/>" >> "$svgname"
+                      echo "</svg>" >> "$svgname"
+
+                      # convert to png
+                      svgexport "$svgname" "$pngname"
+                    done
+
+            - name: 📤 upload build
+              uses: actions/upload-artifact@v4
+              with:
+                  name: icons
+                  path: png/
