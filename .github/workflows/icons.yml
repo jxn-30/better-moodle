@@ -1,5 +1,6 @@
 name: icons.yml
 on:
+    workflow_dispatch:
     push:
         branches:
             - v2
@@ -31,8 +32,6 @@ jobs:
 
                   # set sizes
                   size=1000
-                  small=$(( $size / 3 ))
-                  position=$(( $size - $small ))
 
                   # find configs and print them in a line each
                   jq -nMr '[inputs | select(.icon) | [(input_filename | gsub("^configs/|.json$"; "")), .icon, .github.user, .github.repo, (.github.branch | if . == "" then "main" else . end)] | join("\n")] | join("\n")' configs/*.json | \
@@ -46,8 +45,9 @@ jobs:
                       # write svg to a file
                       echo "$config"
                       echo "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 $size $size'>" > "$svgname"
-                      echo "  <image x='0' y='0' width='$size' height='$size' preserveAspectRatio='meet' href='$moothel'/>" >> "$svgname"
-                      echo "  <image x='$position' y='$position' width='$small' heiht='$small' preserveAspectRatio='meet' href='$icon'/>" >> "$svgname"
+                      echo "  <image x='0' y='0' width='100%' height='100%' preserveAspectRatio='meet' href='$moothel'/>" >> "$svgname"
+                      echo "  <rect  x='66%' y='66%' width='33%' height='33%' fill='white' opacity='0.5'/>" >> "$svgname"
+                      echo "  <image x='66%' y='66%' width='33%' preserveAspectRatio='xMidYMid meet' href='$icon'/>" >> "$svgname"
                       echo "</svg>" >> "$svgname"
 
                       # convert to png

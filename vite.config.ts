@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import fastGlob from 'fast-glob';
 import monkey from 'vite-plugin-monkey';
 import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
+import svgToMiniDataURI from 'mini-svg-data-uri';
 import { getUserAgentRegex as uaRegex } from 'browserslist-useragent-regexp';
 import { dependencies, version } from './package.json';
 
@@ -180,6 +181,18 @@ const GLOBAL_CONSTANTS = {
     __MIN_SUPPORTED_BROWSERS__: Object.fromEntries(minSupportedBrowserVersions),
 };
 
+const iconSize = 1000;
+const smallIconSize = iconSize / 3;
+const icon = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${iconSize} ${iconSize}">
+    <image width="${iconSize}" height="${iconSize}" preserveAspectRatio="meet" href="https://raw.githubusercontent.com/${config.github.user}/${config.github.repo}/${config.github.branch ?? 'main'}/img/moothel.png"/>
+    <image x="${iconSize - smallIconSize}" y="${iconSize - smallIconSize}" width="${smallIconSize}" height="${smallIconSize}" preserveAspectRatio="meet" href="${config.icon}"/>
+</svg>
+`;
+
+console.log(icon);
+console.log(svgToMiniDataURI(icon));
+
 export default defineConfig({
     esbuild: {
         jsxInject:
@@ -323,7 +336,7 @@ export default defineConfig({
                 'description': config.description,
                 'homepage': `${githubUrl}${config.github.branch ? `/tree/${config.github.branch}` : ''}`,
                 'homepageURL': `${githubUrl}${config.github.branch ? `/tree/${config.github.branch}` : ''}`,
-                'icon': config.icon,
+                'icon': svgToMiniDataURI(icon),
                 'updateURL': `${releaseDownloadUrl}/better-moodle.meta.js`,
                 'downloadURL': `${releaseDownloadUrl}/better-moodle.user.js`,
                 'match': `${config.moodleUrl}/*`,
