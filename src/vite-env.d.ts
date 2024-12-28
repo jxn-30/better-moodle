@@ -18,6 +18,7 @@ declare const __MOODLE_VERSION__: 400 | 401 | 402 | 403 | 404 | 405;
 declare const __MOODLE_URL__: string;
 declare const __UA_REGEX__: string;
 declare const __UA_REGEX_FLAGS__: string;
+declare const __MIN_SUPPORTED_BROWSERS__: Record<string, number>;
 
 // DarkReader is included via @require and thus globally available
 declare const DarkReader: DarkReader;

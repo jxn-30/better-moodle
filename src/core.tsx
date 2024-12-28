@@ -10,3 +10,5 @@ void awaitImports().then(featureGroups => console.log(featureGroups));
 console.log(
     new RegExp(__UA_REGEX__, __UA_REGEX_FLAGS__).test(navigator.userAgent)
 );
+
+console.log(__MIN_SUPPORTED_BROWSERS__);

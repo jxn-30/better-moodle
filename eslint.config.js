@@ -47,6 +47,7 @@ export default [
                 __MOODLE_URL__: 'readonly',
                 __UA_REGEX__: 'readonly',
                 __UA_REGEX_FLAGS__: 'readonly',
+                __MIN_SUPPORTED_BROWSERS__: 'readonly',
                 // DarkReader is included via @require
                 DarkReader: 'readonly',
                 // JSXElement is created via vite-env.d.ts

@@ -145,6 +145,20 @@ if (allIncludedFeatureGroups.has('darkmode')) {
     );
 }
 
+const supportedBrowsers = browserslist();
+
+const minSupportedBrowserVersions = new Map<string, number>();
+supportedBrowsers.forEach(browser => {
+    const [id, version] = browser.split(' ');
+    const browserId = { and_ff: 'firefox (android)' }[id] ?? id;
+    const minVersion =
+        minSupportedBrowserVersions.get(browserId) ?? Number.MAX_SAFE_INTEGER;
+    minSupportedBrowserVersions.set(
+        browserId,
+        Math.min(Number(version), minVersion)
+    );
+});
+
 const uaRegexp = uaRegex({ allowHigherVersions: true });
 
 const GLOBAL_CONSTANTS = {
@@ -163,6 +177,7 @@ const GLOBAL_CONSTANTS = {
         uaRegexp.toString().replace(/^\/|\/[dgimsuvy]*$/g, '')
     ),
     __UA_REGEX_FLAGS__: JSON.stringify(uaRegexp.flags),
+    __MIN_SUPPORTED_BROWSERS__: Object.fromEntries(minSupportedBrowserVersions),
 };
 
 export default defineConfig({
@@ -178,7 +193,7 @@ export default defineConfig({
         cssMinify: false,
         target: Array.from(
             new Set(
-                resolveToEsbuildTarget(browserslist(), {
+                resolveToEsbuildTarget(supportedBrowsers, {
                     printUnknownTargets: false,
                 })
             )
@@ -258,6 +273,7 @@ export default defineConfig({
                     .filter(([, value]) =>
                         ['string', 'number'].includes(typeof value)
                     )
+                    // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
                     .map(([name, value]) => `$${name}: ${value};`)
                     .join('\n'),
             },
