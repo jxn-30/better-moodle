@@ -15,6 +15,9 @@ jobs:
             configs: ${{ steps.configs.outputs.configs }}
         steps:
             - uses: actions/checkout@v4
+              with:
+                  sparse-checkout: |
+                      configs
 
             - id: configs
               run: echo "configs=$(basename -s .json -a ./configs/*.json | jq -R | jq -s | jq -c '. - ["_schema"]')" >> $GITHUB_OUTPUT
