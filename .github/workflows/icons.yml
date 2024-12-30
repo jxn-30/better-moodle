@@ -54,7 +54,7 @@ jobs:
                       svgexport "$svgname" "$pngname"
                     done
 
-            - name: 📤 upload build
+            - name: 📤 upload icons
               uses: actions/upload-artifact@v4
               with:
                   name: icons
