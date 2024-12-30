@@ -13,6 +13,14 @@ jobs:
         runs-on: ubuntu-latest
         name: 🖼️ Create icons
         steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v4
+              with:
+                  sparse-checkout: |
+                      configs
+                      .yarn
+                      package.json
+
             - name: 🔎 get Node and version
               run: |
                   echo "NODE_VERSION=$(grep '"node":' ./package.json | awk -F: '{ print $2 }' | sed 's/[",]//g' | sed 's/\^v//g' | tr -d '[:space:]')"  >> $GITHUB_ENV
@@ -21,13 +29,6 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ env.NODE_VERSION }}
-
-            - name: 📥️ checkout
-              uses: actions/checkout@v4
-              with:
-                  sparse-checkout: |
-                      configs
-                      .yarn
 
             - name: 🍱 install converter
               run: npm install -gy svgexport
