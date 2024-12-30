@@ -21,6 +21,7 @@ jobs:
               with:
                   sparse-checkout: |
                       configs
+                      .yarn
 
             - name: 🍱 install converter
               run: npm install -gy svgexport
