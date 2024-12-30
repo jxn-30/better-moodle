@@ -13,8 +13,14 @@ jobs:
         runs-on: ubuntu-latest
         name: 🖼️ Create icons
         steps:
+            - name: 🔎 get Node and version
+              run: |
+                  echo "NODE_VERSION=$(grep '"node":' ./package.json | awk -F: '{ print $2 }' | sed 's/[",]//g' | sed 's/\^v//g' | tr -d '[:space:]')"  >> $GITHUB_ENV
+
             - name: 🛠 setup Node.js
               uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
 
             - name: 📥️ checkout
               uses: actions/checkout@v4
