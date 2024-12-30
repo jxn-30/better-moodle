@@ -6,6 +6,7 @@ on:
             - v2
         paths:
             - configs/*.json
+            - .github/workflows/icons.yml
 
 jobs:
     icons:
@@ -59,3 +60,11 @@ jobs:
               with:
                   name: icons
                   path: png/
+
+            - name: 🚀 deploy icons
+              uses: cloudflare/wrangler-action@v3
+              with:
+                  apiToken: ${{ secrets.ICONS_UPLOAD_CLOUDFLARE_API_TOKEN }}
+                  accountId: ${{ secrets.ICONS_UPLOAD_CLOUDFLARE_ACCOUNT_ID }}
+                  command: |
+                      pages deploy png --project-name=better-moodle-icons
