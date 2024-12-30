@@ -330,7 +330,7 @@ export default defineConfig({
                 'description': config.description,
                 'homepage': `${githubUrl}${config.github.branch ? `/tree/${config.github.branch}` : ''}`,
                 'homepageURL': `${githubUrl}${config.github.branch ? `/tree/${config.github.branch}` : ''}`,
-                'icon': config.icon,
+                'icon': `https://icons.better-moodle.dev/${configFile}.png`,
                 'updateURL': `${releaseDownloadUrl}/better-moodle.meta.js`,
                 'downloadURL': `${releaseDownloadUrl}/better-moodle.user.js`,
                 'match': `${config.moodleUrl}/*`,
