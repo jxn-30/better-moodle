@@ -1,0 +1,20 @@
+$default-max-width: 830px;
+
+@if ($__UNI__ == 'cau') {
+    @media (min-width: 768px) {
+        /* reset the modified max-width */
+        .page-layout-standard,
+        body.limitedwidth {
+            #page.drawers {
+                .main-inner,
+                .footer-popover {
+                    max-width: $default-max-width;
+                }
+            }
+        }
+
+        .header-maxwidth {
+            max-width: $default-max-width;
+        }
+    }
+}

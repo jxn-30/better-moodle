@@ -1,4 +1,8 @@
 node_modules
+dist
+
+src/style/**/*.d.ts
+src/features/**/*.scss.d.ts
 
 # Editor directories and files
 .idea
@@ -21,3 +25,5 @@ node_modules
 
 # temp files
 .eslintcache
+svg
+png

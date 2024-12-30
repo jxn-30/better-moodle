@@ -1,0 +1,5 @@
+@mixin darkmode {
+    html[data-darkreader-scheme='dark'] {
+        @content;
+    }
+}

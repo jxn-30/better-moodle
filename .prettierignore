@@ -1,7 +1,10 @@
-.eslintignore
+configs/_schema.json
 .eslintcache
 .yarn/
 node_modules/
+dist/
+src/style/**/*.d.ts
+src/features/**/*.scss.d.ts
 
 CHANGELOG.md
 
