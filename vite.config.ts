@@ -6,6 +6,7 @@ import { createHash } from 'crypto';
 import { defineConfig } from 'vite';
 import dotenv from 'dotenv';
 import fastGlob from 'fast-glob';
+import legacy from '@vitejs/plugin-legacy';
 import monkey from 'vite-plugin-monkey';
 import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
 import { getUserAgentRegex as uaRegex } from 'browserslist-useragent-regexp';
@@ -309,6 +310,12 @@ export default defineConfig({
     },
     define: GLOBAL_CONSTANTS,
     plugins: [
+        legacy({
+            modernTargets: browserslist.loadConfig({ path: process.cwd() }),
+            modernPolyfills: true,
+            renderLegacyChunks: false,
+            renderModernChunks: true,
+        }),
         monkey({
             entry: 'src/core.tsx',
             userscript: {
