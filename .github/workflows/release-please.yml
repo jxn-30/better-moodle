@@ -54,9 +54,6 @@ jobs:
                   file="${{ steps.build.output.file }}"
                   meta=$(sed 's/\.user\.js/\.meta\.user\.js/' <<< "$file")
 
-                  # extract metadata/userscript-header from the user script
-                  awk '/\/\/ ==UserScript==/,/\/\/ ==\/UserScript==/' "${{ steps.build.output.dir }}/$file" > "${{ steps.build.output.dir }}/$meta"
-
                   # upload the release artifacts with special nice names
                   gh release upload ${{ needs.release.outputs.tag }} \
                     "${{ steps.build.output.dir }}/$file#[${{ matrix.config }}] Better-Moodle userscript version ${{ steps.release.outputs.tag_name }} ($file)" \
