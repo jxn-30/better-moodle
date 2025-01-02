@@ -33,6 +33,8 @@ _Bilder in dieser Beschreibung enthalten teilweise verschwommene Elemente, um de
 
 1. Userscript-Manager als Browser-Erweiterung installieren (z. B. [Tampermonkey](https://tampermonkey.net))
 2. Klicke [hier][installation], um Better-Moodle zu installieren
+    1. In Chromium basierten Browsern (Google Chrome, Edge, Opera, etc.) muss der Entwicklermodus aktiviert werden. Siehe hierzu [Tampermonkey FAQ Q209](https://www.tampermonkey.net/faq.php?locale=de#Q209)
+    2. Alternativ kann auch einfach das freie INternet unterstützt werden, indem Firefox genutzt wird.
 3. Moodle einmal neu laden und ein besseres Moodle genießen 🎉
 4. Bei Bedarf über das Zahnräder-Icon oben rechts im Moodle, neben deinem Profilbild, Better-Moodle individualisieren
 
@@ -41,6 +43,8 @@ _Bilder in dieser Beschreibung enthalten teilweise verschwommene Elemente, um de
 
 1. install an Userscript-Manager as a browser extension (e.g. [Tampermonkey](https://tampermonkey.net))
 2. click [here][installation] to install Better-Moodle
+    1. In Chromium based browsers (Google Chrome, Edge, Opera, etc.), developer mode needs to be enabled. See [Tampermonkey FAQ Q209](https://www.tampermonkey.net/faq.php#Q209) to see how to do so.
+    2. Alternatively support the free internet and just use Firefox
 3. reload Moodle once and enjoy a better Moodle 🎉
 4. if required, customize Better-Moodle via the gears icon at the top right of Moodle, next to your profile picture
  </details>
