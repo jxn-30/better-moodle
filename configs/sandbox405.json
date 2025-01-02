@@ -1,0 +1,17 @@
+{
+    "$schema": "_schema.json",
+    "uniName": "SB405",
+    "namespace": "https://sandbox.moodledemo.net",
+    "description": {
+        "": "Improves UzL-Moodle by cool features and design improvements.",
+        "de": "Verbessert das UzL-Moodle durch coole Features und Designverbesserungen."
+    },
+    "github": {
+        "user": "jxn-30",
+        "repo": "better-moodle",
+        "branch": "v2"
+    },
+    "icon": "https://moodle.org/theme/moodleorg/pix/favicons/favicon-270.png",
+    "moodleUrl": "https://sandbox.moodledemo.net",
+    "moodleVersion": 405
+}
