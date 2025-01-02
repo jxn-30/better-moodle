@@ -114,6 +114,32 @@ type RootTranslation = {
          */
         name: string;
     };
+    browserCheck: {
+        /**
+         * B​e​t​t​e​r​-​M​o​o​d​l​e​:​ ​B​r​o​w​s​e​r​ ​n​i​c​h​t​ ​u​n​t​e​r​s​t​ü​t​z​t
+         */
+        title: string;
+        /**
+         * B​r​o​w​s​e​r
+         */
+        browser: string;
+        /**
+         * Ä​l​t​e​s​t​e​ ​n​o​c​h​ ​u​n​t​e​r​s​t​ü​t​z​t​e​ ​V​e​r​s​i​o​n
+         */
+        minVersion: string;
+        /**
+		 * H​a​l​l​o​!​
+	​
+	​L​e​i​d​e​r​ ​s​c​h​e​i​n​s​t​ ​d​u​ ​e​i​n​e​n​ ​B​r​o​w​s​e​r​ ​z​u​ ​n​u​t​z​e​n​,​ ​d​e​r​ ​n​i​c​h​t​ ​o​f​f​i​z​i​e​l​l​ ​v​o​n​ ​B​e​t​t​e​r​-​M​o​o​d​l​e​ ​u​n​t​e​r​s​t​ü​t​z​t​ ​w​i​r​d​.​
+	​D​a​h​e​r​ ​k​a​n​n​ ​e​s​ ​s​e​i​n​,​ ​d​a​s​s​ ​m​a​n​c​h​e​ ​F​e​a​t​u​r​e​s​ ​n​i​c​h​t​ ​k​o​r​r​e​k​t​ ​f​u​n​k​t​i​o​n​i​e​r​e​n​.​
+	​
+	​U​m​ ​m​ö​g​l​i​c​h​s​t​ ​m​o​d​e​r​n​e​n​ ​C​o​d​e​ ​s​c​h​r​e​i​b​e​n​ ​z​u​ ​k​ö​n​n​e​n​ ​u​n​d​ ​a​u​s​ ​S​i​c​h​e​r​h​e​i​t​s​g​r​ü​n​d​e​n​,​ ​e​m​p​f​i​e​h​l​t​ ​B​e​t​t​e​r​-​M​o​o​d​l​e​ ​d​i​e​ ​V​e​r​w​e​n​d​u​n​g​ ​e​i​n​e​s​ ​a​k​t​u​e​l​l​e​n​ ​B​r​o​w​s​e​r​s​.​
+	​F​ü​r​ ​w​e​i​t​e​r​e​ ​I​n​f​o​r​m​a​t​i​o​n​e​n​ ​k​a​n​n​ ​[​h​t​t​p​s​:​/​/​b​e​t​t​e​r​-​m​o​o​d​l​e​.​d​e​v​]​(​h​t​t​p​s​:​/​/​b​e​t​t​e​r​-​m​o​o​d​l​e​.​d​e​v​)​ ​k​o​n​s​u​l​t​i​e​r​t​ ​w​e​r​d​e​n​.​
+	​
+	​D​i​e​ ​o​f​f​i​z​i​e​l​l​ ​u​n​t​e​r​s​t​ü​t​z​t​e​n​ ​B​r​o​w​s​e​r​:
+		 */
+        body: string;
+    };
     features: {
         darkmode: {
             /**
@@ -569,6 +595,32 @@ export type TranslationFunctions = {
          * Deutsch
          */
         name: () => LocalizedString;
+    };
+    browserCheck: {
+        /**
+         * Better-Moodle: Browser nicht unterstützt
+         */
+        title: () => LocalizedString;
+        /**
+         * Browser
+         */
+        browser: () => LocalizedString;
+        /**
+         * Älteste noch unterstützte Version
+         */
+        minVersion: () => LocalizedString;
+        /**
+		 * Hallo!
+
+	Leider scheinst du einen Browser zu nutzen, der nicht offiziell von Better-Moodle unterstützt wird.
+	Daher kann es sein, dass manche Features nicht korrekt funktionieren.
+
+	Um möglichst modernen Code schreiben zu können und aus Sicherheitsgründen, empfiehlt Better-Moodle die Verwendung eines aktuellen Browsers.
+	Für weitere Informationen kann [https://better-moodle.dev](https://better-moodle.dev) konsultiert werden.
+
+	Die offiziell unterstützten Browser:
+		 */
+        body: () => LocalizedString;
     };
     features: {
         darkmode: {

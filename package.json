@@ -73,11 +73,10 @@
     },
     "browserslist": [
         "last 4 versions",
-        "Firefox ESR",
         "not dead",
         "not Android > 0",
         "not ChromeAndroid > 0",
-        "not Edge > 0",
+        "not Safari > 0",
         "not Samsung > 0",
         "not iOS > 0",
         "not op_mob > 0",

@@ -29,6 +29,22 @@ Um zu erfahren, was sich seit deinem letzten Update getan hat, hier der relevant
         flag: '🇩🇪',
         name: 'Deutsch',
     },
+    browserCheck: {
+        title: 'Better-Moodle: Browser nicht unterstützt',
+        browser: 'Browser',
+        minVersion: 'Älteste noch unterstützte Version',
+        body: `
+Hallo!
+
+Leider scheinst du einen Browser zu nutzen, der nicht offiziell von Better-Moodle unterstützt wird.
+Daher kann es sein, dass manche Features nicht korrekt funktionieren.
+
+Um möglichst modernen Code schreiben zu können und aus Sicherheitsgründen, empfiehlt Better-Moodle die Verwendung eines aktuellen Browsers.
+Für weitere Informationen kann [https://better-moodle.dev](https://better-moodle.dev) konsultiert werden.
+
+Die offiziell unterstützten Browser:
+`.trim(),
+    },
     features: {
         darkmode,
         dashboard,

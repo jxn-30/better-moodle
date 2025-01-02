@@ -29,6 +29,23 @@ To find out what has changed since your last update, here is the relevant extrac
         flag: '🇬🇧',
         name: 'English',
     },
+    browserCheck: {
+        title: 'Better-Moodle: Unsupported Browser',
+        browser: 'Browser',
+        minVersion: 'Minimum supported version',
+        body: `
+Moin!
+
+
+Unfortunately you seem to use a Browser that is not officially supported by Better-Moodle.
+Some features may not work correctly.
+
+To allow the use of modern Code and to maintain maximum security, Better-Moodle suggests using an up-to-date browser.
+For further information, please see [https://better-moodle.dev](https://better-moodle.dev).
+
+These Browsers are officially supported:
+`.trim(),
+    },
     features: {
         darkmode,
         dashboard,
