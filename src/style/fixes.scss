@@ -36,6 +36,12 @@
 }
 
 body:not(.limitedwidth) .secondary-navigation .navigation .nav-tabs {
+    /* secondary navigation should be truly centered */
     max-width: unset;
     justify-content: center;
+}
+
+.drawer.drawer-right .drawerheader {
+    /* close button should be on the right side and header content on the left */
+    flex-flow: row-reverse;
 }

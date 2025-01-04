@@ -198,7 +198,10 @@ const initCourseSidebar = () => {
     ) as HTMLButtonElement;
     const heading = (
         <>
-            <a class="w-100 text-center" href="/my/courses.php">
+            <a
+                class="w-100 d-flex align-items-center justify-content-center"
+                href="/my/courses.php"
+            >
                 {LL.features.dashboard.features.layout.myCourses.title()}
             </a>
             {toggleFilterBtn}

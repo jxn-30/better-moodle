@@ -94,12 +94,9 @@ export default class Drawer {
      */
     setHeading(heading: JSXElement) {
         if (this.#instance) {
-            const header =
-                this.#instance.drawerNode.querySelector('.drawerheader');
-            const toggler = header?.querySelector('.drawertoggle');
-            if (toggler && this.#side === Side.Left) {
-                header?.replaceChildren(toggler, heading);
-            } else if (toggler) header?.replaceChildren(heading, toggler);
+            this.#instance.drawerNode
+                .querySelector('.drawerheadercontent')
+                ?.replaceChildren(heading);
         } else {
             this.#throwOnRendered();
             this.#heading = heading;
@@ -147,13 +144,16 @@ export default class Drawer {
     #render() {
         this.#throwOnRendered();
         this.#rendered = true;
-        return renderCustomTemplate(`drawer/${this.#id}`, DrawerTemplate, {
+        return renderCustomTemplate(`drawer`, DrawerTemplate, {
             classes: `drawer drawer-${this.#side} ${Array.from(this.#classes).join(' ')}`,
             id: this.#id,
             tooltip: this.#oppositeSide,
             state: `show-drawer-${this.#side}`,
             content: getHtml(this.#content),
-            drawerheading: getHtml(this.#heading),
+            // Moodle 403 introduced a special wrapper element.
+            // For < 403 we want to create this on our own, so will be undefined until >= 403
+            drawerheading:
+                __MOODLE_VERSION__ > 403 ? getHtml(this.#heading) : undefined,
         });
     }
 
@@ -172,13 +172,21 @@ export default class Drawer {
             ] as const),
         ]);
 
-        // for Moodle 4.2+ this is not needed anymore but all Moodles before need this
-        if (__MOODLE_VERSION__ < 402 && this.#heading) {
+        // Moodle 4.3 introduced `.drawerheadercontent` field
+        if (__MOODLE_VERSION__ < 403) {
             element
-                .querySelector('.drawertoggle')
-                ?.[
-                    this.#side === Side.Left ? 'after' : 'before'
-                ](this.#heading);
+                .querySelector('.drawerheader')
+                ?.append(
+                    <div class="drawerheadercontent hidden w-100 d-flex">
+                        {this.#heading}
+                    </div>
+                );
+        }
+        // we want `.drawerheadercontent` to use as much width as possible
+        else {
+            element
+                .querySelector('.drawerheadercontent')
+                ?.classList.add('w-100', 'd-flex');
         }
 
         document.querySelector('#page .drawer-toggles')?.append(
@@ -211,11 +219,26 @@ export default class Drawer {
         }
         this.#instance.drawerNode.addEventListener(
             Drawers.eventTypes.drawerShown,
-            () => GM_setValue(this.#storageKey, this.#instance?.isOpen)
+            () => {
+                GM_setValue(this.#storageKey, this.#instance?.isOpen);
+                // show header content
+                this.#instance?.drawerNode
+                    .querySelector('.drawerheadercontent')
+                    ?.classList.remove('hidden');
+            }
         );
         this.#instance.drawerNode.addEventListener(
             Drawers.eventTypes.drawerHidden,
             () => GM_setValue(this.#storageKey, this.#instance?.isOpen)
+        );
+        // hide the header content when hiding drawer to prevent glitchy behaviour
+        // https://git.moodle.org/gw?p=moodle.git;a=blob;f=theme/boost/amd/src/drawers.js;h=86680acfb89f6be03e3ed5a1bc6ef54b9a8667c5;hb=7b04638c5261bd2b2ea3f505bdcd612c96587efa#l427
+        this.#instance.drawerNode.addEventListener(
+            Drawers.eventTypes.drawerHide,
+            () =>
+                this.#instance?.drawerNode
+                    .querySelector('.drawerheadercontent')
+                    ?.classList.add('hidden')
         );
 
         return this;
