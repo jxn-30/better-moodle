@@ -127,6 +127,16 @@ type RootTranslation = {
          * Ä​l​t​e​s​t​e​ ​n​o​c​h​ ​u​n​t​e​r​s​t​ü​t​z​t​e​ ​V​e​r​s​i​o​n
          */
         minVersion: string;
+        dismiss: {
+            /**
+             * F​ü​r​ ​d​i​e​s​e​ ​B​r​o​w​s​e​r​-​V​e​r​s​i​o​n​ ​a​u​s​b​l​e​n​d​e​n
+             */
+            version: string;
+            /**
+             * F​ü​r​ ​d​i​e​s​e​ ​S​i​t​z​u​n​g​ ​a​u​s​b​l​e​n​d​e​n
+             */
+            session: string;
+        };
         /**
 		 * H​a​l​l​o​!​
 	​
@@ -609,6 +619,16 @@ export type TranslationFunctions = {
          * Älteste noch unterstützte Version
          */
         minVersion: () => LocalizedString;
+        dismiss: {
+            /**
+             * Für diese Browser-Version ausblenden
+             */
+            version: () => LocalizedString;
+            /**
+             * Für diese Sitzung ausblenden
+             */
+            session: () => LocalizedString;
+        };
         /**
 		 * Hallo!
 

@@ -33,6 +33,10 @@ To find out what has changed since your last update, here is the relevant extrac
         title: 'Better-Moodle: Unsupported Browser',
         browser: 'Browser',
         minVersion: 'Minimum supported version',
+        dismiss: {
+            version: 'Hide for this Browser-Version',
+            session: 'Hide for this session',
+        },
         body: `
 Moin!
 

@@ -33,6 +33,10 @@ Um zu erfahren, was sich seit deinem letzten Update getan hat, hier der relevant
         title: 'Better-Moodle: Browser nicht unterstützt',
         browser: 'Browser',
         minVersion: 'Älteste noch unterstützte Version',
+        dismiss: {
+            version: 'Für diese Browser-Version ausblenden',
+            session: 'Für diese Sitzung ausblenden',
+        },
         body: `
 Hallo!
 
