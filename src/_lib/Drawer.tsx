@@ -225,11 +225,22 @@ export default class Drawer {
                 this.#instance?.drawerNode
                     .querySelector('.drawerheadercontent')
                     ?.classList.remove('hidden');
+                // trigger a window resize event (pubsub events aren't fired anymore in native moodle drawers, thus not faking them here)
+                setTimeout(
+                    () => window.dispatchEvent(new Event('resize')),
+                    100
+                );
             }
         );
         this.#instance.drawerNode.addEventListener(
             Drawers.eventTypes.drawerHidden,
-            () => GM_setValue(this.#storageKey, this.#instance?.isOpen)
+            () => {
+                GM_setValue(this.#storageKey, this.#instance?.isOpen);
+                setTimeout(
+                    () => window.dispatchEvent(new Event('resize')),
+                    100
+                );
+            }
         );
         // hide the header content when hiding drawer to prevent glitchy behaviour
         // https://git.moodle.org/gw?p=moodle.git;a=blob;f=theme/boost/amd/src/drawers.js;h=86680acfb89f6be03e3ed5a1bc6ef54b9a8667c5;hb=7b04638c5261bd2b2ea3f505bdcd612c96587efa#l427
