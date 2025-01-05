@@ -1,7 +1,9 @@
+@use '/src/style/mixins';
+
 a[href^='mailto:'] {
     body.dir-ltr &::before,
     body.dir-rtl &::after {
-        font-family: 'FontAwesome';
+        @include mixins.fa-icon;
         content: '\f003' !important;
     }
 

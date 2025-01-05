@@ -1,10 +1,12 @@
-a:not([href^='#{$__MOODLE_URL__}']) {
+@use '/src/style/mixins';
+
+a:not([href^='#{global.$MOODLE_URL}']) {
     &[href^="https://"],
-  &[href^="http://"]
+    &[href^="http://"]
     {
         body.dir-ltr &::after,
         body.dir-rtl &::before {
-            font-family: 'FontAwesome';
+            @include mixins.fa-icon;
             content: '' !important;
         }
 

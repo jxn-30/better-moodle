@@ -1,6 +1,6 @@
 $default-max-width: 830px;
 
-@if ($__UNI__ == 'cau') {
+@if (global.$UNI == 'cau') {
     @media (min-width: 768px) {
         /* reset the modified max-width */
         .page-layout-standard,

@@ -1,5 +1,26 @@
+// For some reason that I don't know yet, this explicit @use is required.
+// In any other files/cases the globally injected @use via vite config is enough.
+@use 'global:constants.scss' as global;
+
 @mixin darkmode {
     html[data-darkreader-scheme='dark'] {
         @content;
     }
+}
+
+@mixin fa-icon {
+    $default-font: 'Font Awesome 6 Free';
+
+    // Moodle 402 introduced FA 6
+    @if global.$MOODLE_VERSION < 402 {
+        $default-font: 'FontAwesome';
+    }
+
+    display: var(--fa-display, inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    font-family: var(--fa-style-family, $default-font);
+    font-weight: var(--fa-style, 900);
 }

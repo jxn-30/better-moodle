@@ -270,13 +270,45 @@ export default defineConfig({
         preprocessorOptions: {
             scss: {
                 api: 'modern-compiler',
-                additionalData: Object.entries(GLOBAL_CONSTANTS)
-                    .filter(([, value]) =>
-                        ['string', 'number'].includes(typeof value)
-                    )
-                    // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
-                    .map(([name, value]) => `$${name}: ${value};`)
-                    .join('\n'),
+                additionalData: '@use "global:constants.scss" as global;',
+                importers: [
+                    {
+                        /**
+                         * Urlifies the constants imports, otherwise forwards to standard importer
+                         * @param url - the url to canonicalize
+                         * @returns null or the urlified import
+                         */
+                        canonicalize(url: string) {
+                            if (url === 'global:constants.scss') {
+                                return new URL(url);
+                            }
+                            return null;
+                        },
+                        /**
+                         * Creates a scss string with global constants
+                         * @returns the contents with style
+                         */
+                        load() {
+                            return {
+                                contents: Object.entries(GLOBAL_CONSTANTS)
+                                    .filter(([, value]) =>
+                                        ['string', 'number'].includes(
+                                            typeof value
+                                        )
+                                    )
+                                    .map(
+                                        ([name, value]) =>
+                                            // we need to remove leading and trailing _, otherwise sass would make them private
+                                            // https://sass-lang.com/documentation/at-rules/use/#private-members
+                                            // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+                                            `$${name.replace(/^_+|_+$/g, '')}: ${value};`
+                                    )
+                                    .join('\n'),
+                                syntax: 'scss',
+                            };
+                        },
+                    },
+                ],
             },
         },
         modules: {
