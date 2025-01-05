@@ -46,7 +46,7 @@ Daher kann es sein, dass manche Features nicht korrekt funktionieren.
 Um möglichst modernen Code schreiben zu können und aus Sicherheitsgründen, empfiehlt Better-Moodle die Verwendung eines aktuellen Browsers.
 Für weitere Informationen kann [https://better-moodle.dev](https://better-moodle.dev) konsultiert werden.
 
-Die offiziell unterstützten Browser:
+Die offiziell unterstützten Browser (Das Better-Moodle Core-Team empfiehlt Firefox):
 `.trim(),
     },
     features: {
