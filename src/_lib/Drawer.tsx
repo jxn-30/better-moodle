@@ -217,6 +217,21 @@ export default class Drawer {
         if (GM_getValue(this.#storageKey, false)) {
             this.#instance.openDrawer();
         }
+
+        /**
+         * Publishes messages to indicate changes in drawer state
+         * @param isOpen - wether the drawer is open
+         * @returns undefined
+         */
+        const doPubsub = (isOpen: boolean) =>
+            void requirePromise(['core/pubsub'] as const).then(([pubsub]) => {
+                pubsub.publish('nav-drawer-toggle-start', isOpen);
+                setTimeout(
+                    () => pubsub.publish('nav-drawer-toggle-end', isOpen),
+                    100
+                );
+            });
+
         this.#instance.drawerNode.addEventListener(
             Drawers.eventTypes.drawerShown,
             () => {
@@ -225,21 +240,14 @@ export default class Drawer {
                 this.#instance?.drawerNode
                     .querySelector('.drawerheadercontent')
                     ?.classList.remove('hidden');
-                // trigger a window resize event (pubsub events aren't fired anymore in native moodle drawers, thus not faking them here)
-                setTimeout(
-                    () => window.dispatchEvent(new Event('resize')),
-                    100
-                );
+                doPubsub(true);
             }
         );
         this.#instance.drawerNode.addEventListener(
             Drawers.eventTypes.drawerHidden,
             () => {
                 GM_setValue(this.#storageKey, this.#instance?.isOpen);
-                setTimeout(
-                    () => window.dispatchEvent(new Event('resize')),
-                    100
-                );
+                doPubsub(false);
             }
         );
         // hide the header content when hiding drawer to prevent glitchy behaviour

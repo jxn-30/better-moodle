@@ -9,6 +9,7 @@ import CoreFiltersEvents from './require.js/core_filters/event';
 import CoreLocalstorage from './require.js/core/localstorage';
 import CoreModalEvents from './require.js/core/modal_events';
 import CoreModalFactory from './require.js/core/modal_factory';
+import CorePubsub from './require.js/core/pubsub';
 import CoreStr from './require.js/core/str';
 import CoreTemplates from './require.js/core/templates';
 import CoreToast from './require.js/core/toast';
@@ -26,6 +27,7 @@ interface ModuleMap {
     'core/localstorage': CoreLocalstorage;
     'core/modal_factory': CoreModalFactory;
     'core/modal_events': CoreModalEvents;
+    'core/pubsub': CorePubsub;
     'core/str': CoreStr;
     'core/templates': CoreTemplates;
     'core/toast': CoreToast;
