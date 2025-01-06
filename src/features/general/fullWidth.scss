@@ -2,7 +2,7 @@ $default-max-width: 830px;
 
 @if (global.$UNI == 'cau') {
     @media (min-width: 768px) {
-        /* reset the modified max-width */
+        // reset the modified max-width
         .page-layout-standard,
         body.limitedwidth {
             #page.drawers {

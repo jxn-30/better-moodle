@@ -1,5 +1,5 @@
 :local(#eyes) {
-    /* This is the fancy style for googly Eyes 👀 */
+    // This is the fancy style for googly Eyes 👀
     display: flex;
     width: 100%;
     height: 100%;
@@ -44,7 +44,7 @@
         }
 
         &::before {
-            /* Hey, don't look while I enter a password! Wait, are you peeking? 😨 */
+            // Hey, don't look while I enter a password! Wait, are you peeking? 😨
             content: '';
             position: absolute;
             top: 0;

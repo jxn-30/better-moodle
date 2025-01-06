@@ -1,5 +1,5 @@
 .eye {
-    /* fix for Better-Moodle googly eyes being darkened */
+    // fix for Better-Moodle googly eyes being darkened
     background-color: white;
 }
 
@@ -11,6 +11,6 @@
 .editing .activity-item:hover .activityiconcontainer,
 .editing .activity-item:hover .badge,
 .path-mod .automatic-completion-conditions .badge {
-    /* Replace mix-blend-mode: multiply with mix-blend-mode: hard-light */
+    // Replace mix-blend-mode: multiply with mix-blend-mode: hard-light
     mix-blend-mode: hard-light !important;
 }

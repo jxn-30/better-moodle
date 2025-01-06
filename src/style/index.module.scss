@@ -2,7 +2,7 @@
 @use './fixes';
 
 :local(.no-external-link-icon) {
-    /* remove "external link" icon for specific classes (discouraged, but sometimes it doesn't look good) */
+    // remove "external link" icon for specific classes (discouraged, but sometimes it doesn't look good)
     body.dir-ltr &::after,
     body.dir-rtl &::before {
         display: none !important;
@@ -10,10 +10,10 @@
 }
 
 :local(.shining) {
-    /* Add a little shining effect onto an element */
+    // Add a little shining effect onto an element
     @media (prefers-reduced-motion: no-preference) {
         position: relative;
-        /* add a shining effect */
+        // add a shining effect
         background-image: linear-gradient(
             -75deg,
             transparent 0%,
@@ -47,7 +47,7 @@
 }
 
 :local(.sparkling)::before {
-    /* Add sparkels onto the element */
+    // Add sparkels onto the element
     $width: 10ch;
 
     display: inline-block;
@@ -55,7 +55,7 @@
     position: absolute;
     width: $width;
     height: calc($width * 18 / 11);
-    /* this is a self designed sparkle as SVG :) */
+    // this is a self designed sparkle as SVG :)
     background-image: svg-inline(sparkle);
     background-size: 100%;
     background-repeat: no-repeat;
@@ -79,7 +79,7 @@
             scale: 0;
         }
         100% {
-            scale: 10%; /* for better results, we're creating large sparkles (width: 10ch), but to keep them rendered small, max scale is 10% */
+            scale: 10%; // for better results, we're creating large sparkles (width: 10ch), but to keep them rendered small, max scale is 10%
         }
     }
 

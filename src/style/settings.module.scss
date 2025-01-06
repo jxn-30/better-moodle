@@ -2,7 +2,7 @@
 @use 'sass:string';
 
 :local(#open-settings-btn) {
-    /* if settings modal is not ready yet, settings btn should be in a loading state */
+    // if settings modal is not ready yet, settings btn should be in a loading state
     &.loading {
         opacity: 0.5;
     }
@@ -22,13 +22,13 @@
             $search-icon-padding: 0.5em;
 
             ~ :not(div:has(input)) {
-                /* all elements in settings header except should have consistent padding and margin */
+                // all elements in settings header except should have consistent padding and margin
                 padding: 1rem;
                 margin: -0.8rem -0.8rem -0.8rem 0;
             }
 
             ~ :not(button.close) {
-                /* use small font size but not for the button in settings header */
+                // use small font size but not for the button in settings header
                 font-size: small;
             }
 
@@ -124,51 +124,51 @@
     .fitem {
         &:has(input[disabled], select[disabled]) {
             .col-form-label label {
-                /* disabled settings should have a grayed out label (similar to text-muted class) */
+                // disabled settings should have a grayed out label (similar to text-muted class)
                 color: var(--gray);
             }
 
             :local(.hide-disabled-settings) & {
-                /* hide disabled settings if the user prefers */
+                // hide disabled settings if the user prefers
                 display: none;
             }
         }
 
         :local(.new-setting-badge) {
-            /* "New!"-Badges should not be cuddling with the label text! */
+            // "New!"-Badges should not be cuddling with the label text!
             margin-right: 1ch;
         }
     }
 
     fieldset {
         .ftoggler h3 :local(.new-setting-badge) {
-            /* "New!"-Badges should not be cuddling with the featureGroup name! */
+            // "New!"-Badges should not be cuddling with the featureGroup name!
             margin-left: 1ch;
         }
 
         &:not(:has(.fcontainer :local(.new-setting-badge))) {
             .ftoggler h3 :local(.new-setting-badge) {
-                /* Hide the "New!"-Badge of a featureGroup if there are no new settings in this group anymore */
+                // Hide the "New!"-Badge of a featureGroup if there are no new settings in this group anymore
                 display: none;
             }
         }
     }
 
     :local(.hide-new-setting-badges) :local(.new-setting-badge) {
-        /* Hide the "New!"-Badges if the user prefers */
+        // Hide the "New!"-Badges if the user prefers
         display: none !important;
     }
 
     $tags: [ 'fun'];
     @each $tag in $tags {
         :local(.hide-#{$tag}-settings) & .fitem[data-tags*='#{$tag}'] {
-            /* hide settings with tag #{$tag} if the user prefers */
+            // hide settings with tag #{$tag} if the user prefers
             display: none;
         }
     }
 
     :local(#settings-footer-btns) > :where(button, a) {
-        /* some special style needed for the settings modal footer: show button text only on hover */
+        // some special style needed for the settings modal footer: show button text only on hover
         > span {
             font-size: 0;
             transition: font-size 0.5s;
