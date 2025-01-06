@@ -191,14 +191,6 @@ export default defineConfig({
         minifyWhitespace: true,
         minifyIdentifiers: false,
         minifySyntax: false,
-        banner: `
-/*! This is Better-Moodle; Version ${version}; Built with config ${configFile}.
- *  Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30) and Yorik (@YorikHansen).
- *  All rights reserved.
- *  Licensed under the MIT License (MIT).
- *  Source-Code: ${githubUrl}
- */
-`.trim(),
     },
     build: {
         minify: 'esbuild',
@@ -210,6 +202,18 @@ export default defineConfig({
                 })
             )
         ),
+        rollupOptions: {
+            output: {
+                intro: `
+/*! This is Better-Moodle; Version ${version}; Built for ${config.uniName} (${config.moodleUrl}).
+ *  Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30) and Yorik (@YorikHansen).
+ *  All rights reserved.
+ *  Licensed under the MIT License (MIT).
+ *  Source-Code: ${githubUrl}
+ */
+`.trim(),
+            },
+        },
     },
     resolve: {
         alias: [
