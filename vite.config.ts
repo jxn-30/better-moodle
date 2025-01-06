@@ -188,9 +188,12 @@ export default defineConfig({
         jsxFactory: 'createElement',
         jsxFragment: 'createFragment',
         jsx: 'transform',
+        minifyWhitespace: true,
+        minifyIdentifiers: false,
+        minifySyntax: false,
     },
     build: {
-        minify: false,
+        minify: 'esbuild',
         cssMinify: false,
         target: Array.from(
             new Set(

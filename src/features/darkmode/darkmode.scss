@@ -3,6 +3,7 @@
 @include mixins.darkmode {
     .navbar.fixed-top .navbar-brand .logo,
     #logoimage {
+        /* Make the logo glow a little */
         filter: brightness(500%);
     }
 }
