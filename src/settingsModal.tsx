@@ -35,6 +35,7 @@ const groups = [
     'dashboard',
     'myCourses',
     'linkIcons',
+    'bookmarks',
 ] as const;
 
 // region trigger button for settings modal
@@ -402,6 +403,8 @@ const newBadges = new Set<HTMLSpanElement>();
 
 // anything beyond this point requires all features to be loaded
 const featureGroups = await awaitImports();
+
+console.log(featureGroups);
 
 const settingsModal = new Modal({
     type: 'SAVE_CANCEL',

@@ -1,4 +1,5 @@
 import type { BaseTranslation } from '../i18n-types';
+import { de as bookmarks } from '../../features/bookmarks/i18n';
 import { de as darkmode } from '../../features/darkmode/i18n';
 import { de as dashboard } from '../../features/dashboard/i18n';
 import { de as general } from '../../features/general/i18n';
@@ -50,6 +51,7 @@ Die offiziell unterstützten Browser (Das Better-Moodle Core-Team empfiehlt Fire
 `.trim(),
     },
     features: {
+        bookmarks,
         darkmode,
         dashboard,
         general,

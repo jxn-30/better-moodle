@@ -151,6 +151,24 @@ type RootTranslation = {
         body: string;
     };
     features: {
+        bookmarks: {
+            /**
+             * L​e​s​e​z​e​i​c​h​e​n
+             */
+            name: string;
+            settings: {
+                enabled: {
+                    /**
+                     * L​e​s​e​z​e​i​c​h​e​n​m​a​n​a​g​e​r​ ​a​k​t​i​v​i​e​r​e​n
+                     */
+                    name: string;
+                    /**
+                     * A​k​t​i​v​i​e​r​t​ ​e​i​n​e​n​ ​L​e​s​e​z​e​i​c​h​e​n​m​a​n​a​g​e​r​,​ ​u​m​ ​L​e​s​e​z​e​i​c​h​e​n​ ​d​i​r​e​k​t​ ​i​m​ ​M​o​o​d​l​e​ ​z​u​ ​h​a​b​e​n​.
+                     */
+                    description: string;
+                };
+            };
+        };
         darkmode: {
             /**
              * D​a​r​k​m​o​d​e
@@ -643,6 +661,24 @@ export type TranslationFunctions = {
         body: () => LocalizedString;
     };
     features: {
+        bookmarks: {
+            /**
+             * Lesezeichen
+             */
+            name: () => LocalizedString;
+            settings: {
+                enabled: {
+                    /**
+                     * Lesezeichenmanager aktivieren
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Aktiviert einen Lesezeichenmanager, um Lesezeichen direkt im Moodle zu haben.
+                     */
+                    description: () => LocalizedString;
+                };
+            };
+        };
         darkmode: {
             /**
              * Darkmode
