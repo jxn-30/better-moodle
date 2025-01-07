@@ -1,0 +1,71 @@
+@use '/src/style/mixins';
+@use 'sass:color';
+
+$location-colors: (
+    'mensa': #e8e6e3,
+    'cafeteria': #4b6669,
+);
+
+$darkmode-brightness-fixes: (
+    'sh_teller': 1.5,
+    'iconprop_bio': 0.9,
+);
+
+:local(#table) .dish {
+    &[data-location]::before {
+        content: attr(data-location);
+        font-weight: bold;
+        font-size: smaller;
+        padding: 4px;
+        border-radius: 6px;
+        margin-right: 0.5em;
+    }
+
+    @each $location, $color in $location-colors {
+        &[data-location='#{$location}']::before {
+            background-color: $color;
+            @if (color.channel($color, 'lightness', $space: hsl) > 40) {
+                color: black;
+            }
+            else {
+                color: white;
+            }
+        }
+    }
+
+    .dish-additives {
+        font-size: smaller;
+    }
+
+    .dish-types {
+        text-align: center;
+
+        img {
+            max-width: 40px;
+            max-height: 40px;
+        }
+    }
+}
+
+@include mixins.darkmode {
+    :local(#table) .dish .dish-types img {
+        & {
+            $stroke-pos: 0.5px;
+            $stroke-neg: -1 * $stroke-pos;
+            --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
+            filter: drop-shadow($stroke-pos 0 0 var(--stroke-color))
+                drop-shadow($stroke-neg 0 var(--stroke-color))
+                drop-shadow(0 $stroke-neg 0 var(--stroke-color))
+                drop-shadow($stroke-pos $stroke-pos 0 var(--stroke-color))
+                drop-shadow($stroke-pos $stroke-neg 0 var(--stroke-color))
+                drop-shadow($stroke-neg $stroke-pos 0 var(--stroke-color))
+                drop-shadow($stroke-neg $stroke-neg 0 var(--stroke-color));
+        }
+
+        @each $type, $brightness in $darkmode-brightness-fixes {
+            &[src*='#{$type}'] {
+                filter: brightness($brightness);
+            }
+        }
+    }
+}

@@ -130,6 +130,10 @@ dotenv.populate(process.env, {
     VITE_FEATURES_BASE: featuresBase,
     VITE_INCLUDE_FEATURE_GROUPS_GLOB: featureGroupsGlob,
     VITE_INCLUDE_FEATURES_GLOB: featureGlob,
+
+    // import globs defined for specific features
+    VITE_SPEISEPLAN_CANTEEN_GLOB: `${featuresBase}speiseplan/canteens/${configFile}.ts`,
+    VITE_SPEISEPLAN_PARSER_GLOB: `${featuresBase}speiseplan/parsers/${configFile}.ts`,
 });
 
 const requires: string[] = [];
@@ -172,6 +176,7 @@ const GLOBAL_CONSTANTS = {
     __UNI__: JSON.stringify(configFile),
     __MOODLE_VERSION__: JSON.stringify(config.moodleVersion),
     __MOODLE_URL__: JSON.stringify(config.moodleUrl),
+    __USERSCRIPT_CONNECTS__: JSON.stringify(config.connects ?? []),
     // hacky way for Regular expresions atm
     // See https://github.com/evanw/esbuild/issues/4019 for workaround source and feature request
     __UA_REGEX__: JSON.stringify(

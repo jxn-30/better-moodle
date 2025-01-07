@@ -35,6 +35,7 @@ const groups = [
     'dashboard',
     'myCourses',
     'linkIcons',
+    'speiseplan',
     'bookmarks',
 ] as const;
 

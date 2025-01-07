@@ -6,6 +6,7 @@ import { de as general } from '../../features/general/i18n';
 import { de as linkIcons } from '../../features/linkIcons/i18n';
 import { de as myCourses } from '../../features/myCourses/i18n';
 import settings from './settings';
+import { de as speiseplan } from '../../features/speiseplan/i18n';
 
 export default {
     settings,
@@ -57,5 +58,6 @@ Die offiziell unterstützten Browser (Das Better-Moodle Core-Team empfiehlt Fire
         general,
         linkIcons,
         myCourses,
+        speiseplan,
     },
 } satisfies BaseTranslation;

@@ -5,6 +5,7 @@ export interface FeatureGroupTranslation extends BaseTranslation {
     description?: string;
     settings?: Record<string, SettingTranslation>;
     features?: Record<string, FeatureTranslation>;
+    [key: string]: BaseTranslation;
 }
 
 export interface FeatureTranslation extends BaseTranslation {

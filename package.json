@@ -24,6 +24,7 @@
         "ci": "yarn lint:fix && yarn prettier:write && yarn build ${0}"
     },
     "dependencies": {
+        "@trim21/gm-fetch": "0.2.1",
         "classnames": "2.5.1",
         "darkreader": "4.9.96",
         "jsx-dom": "8.1.6",

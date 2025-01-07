@@ -523,6 +523,54 @@ type RootTranslation = {
                 };
             };
         };
+        speiseplan: {
+            /**
+             * S​p​e​i​s​e​p​l​a​n​ ​d​e​r​ ​M​e​n​s​a
+             */
+            name: string;
+            /**
+             * S​c​h​l​i​e​ß​e​n
+             */
+            close: string;
+            settings: {
+                enabled: {
+                    /**
+                     * S​p​e​i​s​e​p​l​a​n​ ​i​n​ ​d​e​r​ ​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e
+                     */
+                    name: string;
+                    /**
+                     * E​r​l​a​u​b​t​ ​e​s​ ​d​i​r​,​ ​d​e​n​ ​S​p​e​i​s​e​p​l​a​n​ ​d​e​i​n​e​r​ ​L​i​e​b​l​i​n​g​s​m​e​n​s​a​ ​d​i​r​e​k​t​ ​v​o​n​ ​d​e​r​ ​M​o​o​d​l​e​-​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e​ ​a​u​s​ ​z​u​ ​ö​f​f​n​e​n​.
+                     */
+                    description: string;
+                };
+                language: {
+                    /**
+                     * S​p​r​a​c​h​e​ ​d​e​s​ ​S​p​e​i​s​e​p​l​a​n​s
+                     */
+                    name: string;
+                    /**
+                     * H​i​e​r​ ​k​a​n​n​s​t​ ​d​u​ ​b​e​i​ ​B​e​d​a​r​f​ ​e​i​n​e​ ​S​p​r​a​c​h​e​ ​d​e​s​ ​S​p​e​i​s​e​p​l​a​n​s​ ​e​r​z​w​i​n​g​e​n​.
+                     */
+                    description: string;
+                    options: {
+                        /**
+                         * �​�​ ​A​u​t​o​ ​(​B​e​t​t​e​r​-​M​o​o​d​l​e​ ​S​p​r​a​c​h​e​)
+                         */
+                        auto: string;
+                    };
+                };
+                canteen: {
+                    /**
+                     * M​e​n​s​a​ ​/​ ​C​a​f​e​t​e​r​i​a
+                     */
+                    name: string;
+                    /**
+                     * V​o​n​ ​w​e​l​c​h​e​r​ ​M​e​n​s​a​ ​/​ ​C​a​f​e​t​e​r​i​a​ ​m​ö​c​h​t​e​s​t​ ​d​u​ ​d​e​n​ ​S​p​e​i​s​e​p​l​a​n​ ​s​e​h​e​n​?
+                     */
+                    description: string;
+                };
+            };
+        };
     };
 };
 
@@ -1030,6 +1078,54 @@ export type TranslationFunctions = {
                             description: () => LocalizedString;
                         };
                     };
+                };
+            };
+        };
+        speiseplan: {
+            /**
+             * Speiseplan der Mensa
+             */
+            name: () => LocalizedString;
+            /**
+             * Schließen
+             */
+            close: () => LocalizedString;
+            settings: {
+                enabled: {
+                    /**
+                     * Speiseplan in der Navigationsleiste
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Erlaubt es dir, den Speiseplan deiner Lieblingsmensa direkt von der Moodle-Navigationsleiste aus zu öffnen.
+                     */
+                    description: () => LocalizedString;
+                };
+                language: {
+                    /**
+                     * Sprache des Speiseplans
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Hier kannst du bei Bedarf eine Sprache des Speiseplans erzwingen.
+                     */
+                    description: () => LocalizedString;
+                    options: {
+                        /**
+                         * 🌐 Auto (Better-Moodle Sprache)
+                         */
+                        auto: () => LocalizedString;
+                    };
+                };
+                canteen: {
+                    /**
+                     * Mensa / Cafeteria
+                     */
+                    name: () => LocalizedString;
+                    /**
+                     * Von welcher Mensa / Cafeteria möchtest du den Speiseplan sehen?
+                     */
+                    description: () => LocalizedString;
                 };
             };
         };

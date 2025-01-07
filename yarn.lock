@@ -2519,6 +2519,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@trim21/gm-fetch@npm:0.2.1":
+  version: 0.2.1
+  resolution: "@trim21/gm-fetch@npm:0.2.1"
+  checksum: 10c0/224545610f339831d8937b97af8be4b0c71f1367c6e533717a5dd6cb275bb411342775add2454b1c7f0c0878952182674c36c090a5f113a260b105bbac0d370f
+  languageName: node
+  linkType: hard
+
 "@tsconfig/node10@npm:^1.0.7":
   version: 1.0.11
   resolution: "@tsconfig/node10@npm:1.0.11"
@@ -8273,6 +8280,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:9.17.0"
     "@prettier/plugin-xml": "npm:3.4.1"
+    "@trim21/gm-fetch": "npm:0.2.1"
     "@types/eslint": "npm:9.6.1"
     "@types/eslint__js": "npm:8.42.3"
     "@types/jquery": "npm:3.5.32"

@@ -13,5 +13,6 @@
     },
     "icon": "https://moodle.org/theme/moodleorg/pix/favicons/favicon-270.png",
     "moodleUrl": "https://sandbox.moodledemo.net",
-    "moodleVersion": 405
+    "moodleVersion": 405,
+    "excludeFeatures": ["speiseplan"]
 }

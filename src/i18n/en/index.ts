@@ -5,6 +5,7 @@ import { en as general } from '../../features/general/i18n';
 import { en as linkIcons } from '../../features/linkIcons/i18n';
 import { en as myCourses } from '../../features/myCourses/i18n';
 import settings from './settings';
+import { en as speiseplan } from '../../features/speiseplan/i18n';
 import type { Translation } from '../i18n-types';
 
 export default {
@@ -58,5 +59,6 @@ These Browsers are officially supported (Better-Moodle Core-Developers recommend
         general,
         linkIcons,
         myCourses,
+        speiseplan,
     },
 } satisfies Translation;
