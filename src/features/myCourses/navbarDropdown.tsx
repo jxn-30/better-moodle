@@ -13,7 +13,7 @@ import {
     getAvailableCourseFiltersAsOptions,
     onActiveFilterChanged,
 } from '@/myCourses';
-import { getHtml, getLoadingSpinner, putTemplate } from '@/DOM';
+import { getHtml, getLoadingSpinner, putTemplate, ready } from '@/DOM';
 
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('myCourses.navbarDropdown')
@@ -188,8 +188,10 @@ const loadContent = ({
  * Creates the dropdown and fills it with content.
  * Updates dropdown content on change of filter value
  */
-const onload = () => {
+const onload = async () => {
     if (!enabled.value) return;
+
+    await ready();
 
     const myCoursesElement = document.querySelector<HTMLLIElement>(
         '.primary-navigation .nav-item[data-key="mycourses"]'

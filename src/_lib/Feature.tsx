@@ -15,7 +15,12 @@ export type FeatureID<Group extends FeatureGroupID> =
 type FeatureMethods<
     Group extends FeatureGroupID,
     ID extends FeatureID<Group>,
-> = Partial<Record<'onload' | 'onunload', (this: Feature<Group, ID>) => void>>;
+> = Partial<
+    Record<
+        'onload' | 'onunload',
+        (this: Feature<Group, ID>) => void | Promise<void>
+    >
+>;
 
 /**
  * A class that represents a single feature
@@ -159,7 +164,7 @@ export default abstract class Feature<
         }
         this.#loaded = true;
 
-        this.#onload?.();
+        void this.#onload?.();
     }
 
     /**
@@ -174,15 +179,15 @@ export default abstract class Feature<
         }
         this.#loaded = false;
 
-        this.#onunload?.();
+        void this.#onunload?.();
     }
 
     /**
      * Reload (unload and load) the feature
      */
     reload() {
-        this.unload();
-        this.load();
+        void this.unload();
+        void this.load();
     }
 
     /**

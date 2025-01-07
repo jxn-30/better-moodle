@@ -12,7 +12,10 @@ export type FeatureGroupTranslations<
 > = Translation['features'][ID];
 
 type FeatureGroupMethods<ID extends FeatureGroupID> = Partial<
-    Record<'onload' | 'onunload', (this: FeatureGroup<ID>) => void>
+    Record<
+        'onload' | 'onunload',
+        (this: FeatureGroup<ID>) => void | Promise<void>
+    >
 >;
 
 /**
@@ -236,7 +239,7 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
         }
         this.#loaded = true;
 
-        this.#onload?.();
+        void this.#onload?.();
     }
 
     /**
@@ -251,15 +254,15 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
         }
         this.#loaded = false;
 
-        this.#onunload?.();
+        void this.#onunload?.();
     }
 
     /**
      * Reload (unload and load) the feature group
      */
     reload() {
-        this.unload();
-        this.load();
+        void this.unload();
+        void this.load();
     }
 
     /**
