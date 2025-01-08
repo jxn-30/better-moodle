@@ -532,6 +532,20 @@ type RootTranslation = {
              * S​c​h​l​i​e​ß​e​n
              */
             close: string;
+            table: {
+                /**
+                 * G​e​r​i​c​h​t
+                 */
+                dish: string;
+                /**
+                 * A​r​t​(​e​n​)
+                 */
+                types: string;
+                /**
+                 * P​r​e​i​s
+                 */
+                price: string;
+            };
             settings: {
                 enabled: {
                     /**
@@ -1090,6 +1104,20 @@ export type TranslationFunctions = {
              * Schließen
              */
             close: () => LocalizedString;
+            table: {
+                /**
+                 * Gericht
+                 */
+                dish: () => LocalizedString;
+                /**
+                 * Art(en)
+                 */
+                types: () => LocalizedString;
+                /**
+                 * Preis
+                 */
+                price: () => LocalizedString;
+            };
             settings: {
                 enabled: {
                     /**

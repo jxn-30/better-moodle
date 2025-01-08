@@ -3,6 +3,11 @@ import type { FeatureGroupTranslation } from '#/i18n';
 export const de = {
     name: 'Speiseplan der Mensa',
     close: 'Schließen',
+    table: {
+        dish: 'Gericht',
+        types: 'Art(en)',
+        price: 'Preis',
+    },
     settings: {
         enabled: {
             name: 'Speiseplan in der Navigationsleiste',
@@ -28,6 +33,11 @@ export const de = {
 export const en = {
     name: 'Menu of the canteen',
     close: 'Close',
+    table: {
+        dish: 'Dish',
+        types: 'Type(s)',
+        price: 'Price',
+    },
     settings: {
         enabled: {
             name: 'Menu in the navigation bar',

@@ -1,16 +1,22 @@
 export interface Dish {
-    name: string;
+    name: { text: string | HTMLBRElement; info?: string }[];
     location: string;
-    allergens: string[];
+    allergenes: string[];
     additives: string[];
     types: string[];
     prices: string[];
+    co2:
+        | {
+              stars: number;
+              emission: number;
+          }
+        | false;
 }
 
 export interface Speiseplan {
-    dishes: Record<Date, Dish[]>;
+    dishes: Map<Date, Set<Dish>>;
     prices: string[];
-    allergenes: Record<string, string>;
-    additives: Record<string, string>;
-    types: Record<string, { name: string; icon: string }>;
+    allergenes: Map<string, string>;
+    additives: Map<string, string>;
+    types: Map<string, { name: string; icon: string }>;
 }

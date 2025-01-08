@@ -1,6 +1,9 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import type Canteens from './canteens';
+import classNames from 'classnames';
+import { dateToString } from '@/localeString';
 import FeatureGroup from '@/FeatureGroup';
+import { FieldSet } from '@/Components';
 import { Modal } from '@/Modal';
 import Parser from './parsers';
 import { PREFIX } from '@/helpers';
@@ -80,14 +83,58 @@ const getCurrentSpeiseplan = () => {
         urlNextWeek: { [lang]: urlNextWeek },
     } = canteens.get(canteen.value)!;
 
-    return Promise.all([parse(url), parse(urlNextWeek)]).then(
-        ([thisWeek, nextWeek]) => (
-            <>
-                <pre>{JSON.stringify(thisWeek, null, 4)}</pre>
-                <pre>{JSON.stringify(nextWeek, null, 4)}</pre>
-            </>
+    return Promise.all([parse(url), parse(urlNextWeek)])
+        .then(([thisWeek, nextWeek]) => {
+            const speiseplan = thisWeek;
+            speiseplan.dishes = new Map([
+                ...thisWeek.dishes,
+                ...nextWeek.dishes,
+            ]);
+            speiseplan.allergenes = new Map([
+                ...thisWeek.allergenes,
+                ...nextWeek.allergenes,
+            ]);
+            speiseplan.additives = new Map([
+                ...thisWeek.additives,
+                ...nextWeek.additives,
+            ]);
+            speiseplan.types = new Map([...thisWeek.types, ...nextWeek.types]);
+
+            console.log(speiseplan);
+            return speiseplan;
+        })
+        .then(speiseplan =>
+            speiseplan.dishes.entries().map(([day, dishes], index) => (
+                <FieldSet
+                    title={dateToString(day, false, true)}
+                    collapsed={index > 0}
+                >
+                    <table class={classNames(['table', style.table])}>
+                        <thead>
+                            <tr>
+                                <th>{LL.features.speiseplan.table.dish()}</th>
+                                <th>{LL.features.speiseplan.table.types()}</th>
+                                <th>{LL.features.speiseplan.table.price()}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {...Array.from(
+                                dishes.values().map(dish => (
+                                    <tr>
+                                        <td colSpan={3} class="dish">
+                                            <pre>
+                                                {JSON.stringify(dish, null, 4)}
+                                            </pre>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </FieldSet>
+            ))
         )
-    );
+        .then(fieldsets => <>{...Array.from(fieldsets)}</>);
 };
 
 /**

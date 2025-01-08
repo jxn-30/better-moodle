@@ -11,7 +11,7 @@ $darkmode-brightness-fixes: (
     'iconprop_bio': 0.9,
 );
 
-:local(#table) .dish {
+:local(.table) .dish {
     &[data-location]::before {
         content: attr(data-location);
         font-weight: bold;
