@@ -538,7 +538,7 @@ type RootTranslation = {
                  */
                 dish: string;
                 /**
-                 * C​O​₂​ ​S​c​o​r​e
+                 * C​O​₂​ ​S​c​o​r​e
                  */
                 co2score: string;
                 /**
@@ -1114,7 +1114,7 @@ export type TranslationFunctions = {
                  */
                 dish: () => LocalizedString;
                 /**
-                 * CO₂ Score
+                 * CO₂ Score
                  */
                 co2score: () => LocalizedString;
                 /**

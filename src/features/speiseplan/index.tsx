@@ -4,6 +4,9 @@ import classNames from 'classnames';
 import type { Dish } from './speiseplan';
 import FeatureGroup from '@/FeatureGroup';
 import { FieldSet } from '@/Components';
+import globalStyle from '../../style/index.module.scss';
+import { i18nObject } from '../../i18n/i18n-util';
+import type { Locales } from '../../i18n/i18n-types';
 import { Modal } from '@/Modal';
 import Parser from './parsers';
 import { PREFIX } from '@/helpers';
@@ -21,6 +24,19 @@ const language = new SelectSetting('language', 'auto', [
         title: `${flag} ${name}`,
     })),
 ]);
+
+/**
+ * Gets the currently set speiseplan language
+ */
+const getLang = () =>
+    language.value === 'auto' ?
+        BETTER_MOODLE_LANG
+    :   (language.value as Locales);
+
+/**
+ * Gets a LL instance with the speiseplan language
+ */
+const sLL = () => i18nObject(getLang());
 
 const canteens = Object.values(
     import.meta.glob(import.meta.env.VITE_SPEISEPLAN_CANTEEN_GLOB, {
@@ -77,8 +93,8 @@ const mobileBtn = (
  * @returns the current speiseplan as HTML Elements
  */
 const getCurrentSpeiseplan = () => {
-    const lang =
-        language.value === 'auto' ? BETTER_MOODLE_LANG : language.value;
+    const lang = getLang();
+
     const {
         url: { [lang]: url },
         urlNextWeek: { [lang]: urlNextWeek },
@@ -100,6 +116,16 @@ const getCurrentSpeiseplan = () => {
             </>
         ));
 
+    const co2InfoLink = {
+        de: 'https://studentenwerk.sh/de/co2-angaben',
+        en: 'https://studentenwerk.sh/en/co2-data',
+    }[lang];
+    const co2InfoLinkHtml = (
+        <a href={co2InfoLink} target="_blank">
+            {co2InfoLink}
+        </a>
+    ).outerHTML;
+
     return Promise.all([parse(url), parse(urlNextWeek)])
         .then(([thisWeek, nextWeek]) => {
             const speiseplan = thisWeek;
@@ -117,7 +143,6 @@ const getCurrentSpeiseplan = () => {
             ]);
             speiseplan.types = new Map([...thisWeek.types, ...nextWeek.types]);
 
-            console.log(speiseplan);
             return speiseplan;
         })
         .then(speiseplan =>
@@ -129,17 +154,42 @@ const getCurrentSpeiseplan = () => {
                     <table class={classNames(['table', style.table])}>
                         <thead>
                             <tr>
-                                <th>{LL.features.speiseplan.table.dish()}</th>
-                                <th class="text-center">
-                                    {LL.features.speiseplan.table.co2score()}
-                                </th>
-                                <th>{LL.features.speiseplan.table.types()}</th>
                                 <th>
-                                    {LL.features.speiseplan.table.price()}
-                                    <br />
-                                    <span class="text-muted small">
-                                        {speiseplan.prices.join(' / ')}
+                                    {sLL().features.speiseplan.table.dish()}
+                                </th>
+                                <th>
+                                    <span class="d-flex">
+                                        {sLL().features.speiseplan.table.co2score()}
+                                        &nbsp;
+                                        <a
+                                            class={
+                                                globalStyle.noExternalLinkIcon
+                                            }
+                                            href={co2InfoLink}
+                                            target="_blank"
+                                        >
+                                            <i
+                                                class="icon fa fa-info-circle text-info fa-fw"
+                                                data-toggle="tooltip"
+                                                data-placement="auto"
+                                                data-html="true"
+                                                title={co2InfoLinkHtml}
+                                            ></i>
+                                        </a>
                                     </span>
+                                </th>
+                                <th>
+                                    {sLL().features.speiseplan.table.types()}
+                                </th>
+                                <th>
+                                    {sLL().features.speiseplan.table.price()}
+                                    &nbsp;
+                                    <i
+                                        class="icon fa fa-info-circle text-info fa-fw"
+                                        data-toggle="tooltip"
+                                        data-placement="auto"
+                                        title={speiseplan.prices.join(' / ')}
+                                    ></i>
                                 </th>
                             </tr>
                         </thead>
@@ -243,11 +293,11 @@ const openSpeiseplan = () => {
         type: 'ALERT',
         large: true,
         scrollable: true,
-        title: `${randomEmoji()}\xa0${LL.features.speiseplan.name()}`,
+        title: `${randomEmoji()}\xa0${sLL().features.speiseplan.name()}`,
         body: getCurrentSpeiseplan(),
         removeOnClose: true,
         buttons: {
-            cancel: `🍴\xa0${LL.features.speiseplan.close()}`,
+            cancel: `🍴\xa0${sLL().features.speiseplan.close()}`,
         },
     }).show();
 
@@ -275,8 +325,6 @@ const onload = async () => {
     document
         .querySelector('#theme_boost-drawers-primary .list-group')
         ?.append(mobileBtn);
-
-    console.log(style);
 };
 
 /**
