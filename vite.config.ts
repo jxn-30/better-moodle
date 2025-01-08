@@ -231,6 +231,10 @@ export default defineConfig({
                 replacement: path.resolve(__dirname, './types'),
             },
             {
+                find: /^i18n$/,
+                replacement: path.resolve(__dirname, './src/i18n/i18n'),
+            },
+            {
                 find: /^/,
                 replacement: '',
                 /**

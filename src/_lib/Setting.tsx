@@ -2,7 +2,7 @@ import CanBeReady from './CanBeReady';
 import { GenericSetting } from './Components';
 import globalStyle from '../style/index.module.scss';
 import { JSX } from 'jsx-dom';
-import { LL } from '../i18n/i18n';
+import { LL } from 'i18n';
 import { LocalizedString } from 'typesafe-i18n';
 import { require } from './require.js';
 import settingsStyle from '../style/settings.module.scss';

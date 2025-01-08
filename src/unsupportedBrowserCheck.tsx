@@ -1,4 +1,4 @@
-import { LL } from './i18n/i18n';
+import { LL } from 'i18n';
 import { Modal } from '@/Modal';
 import { requirePromise } from '@/require.js';
 import { htmlToElements, mdToHtml, PREFIX } from '@/helpers';

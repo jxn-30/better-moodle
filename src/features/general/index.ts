@@ -1,6 +1,6 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import FeatureGroup from '@/FeatureGroup';
-import { languages } from '../../i18n/i18n';
+import { languages } from 'i18n';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import settingsStyle from '../../style/settings.module.scss';
 

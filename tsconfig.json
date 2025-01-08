@@ -19,7 +19,8 @@
         "jsxImportSource": "jsx-dom",
         "paths": {
             "@/*": ["./src/_lib/*"],
-            "#/*": ["./types/*"]
+            "#/*": ["./types/*"],
+            "i18n": ["./src/i18n/i18n"]
         },
         "plugins": [
             {

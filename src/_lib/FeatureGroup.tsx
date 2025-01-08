@@ -1,7 +1,7 @@
 import Feature from './Feature';
 import { FieldSet } from './Components';
 import globalStyle from '../style/index.module.scss';
-import { LL } from '../i18n/i18n';
+import { LL } from 'i18n';
 import Setting from './Setting';
 import settingsStyle from '../style/settings.module.scss';
 import { Translation } from '../i18n/i18n-types';

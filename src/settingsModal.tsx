@@ -9,7 +9,7 @@ import settingsStyle from './style/settings.module.scss';
 import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
 import TempStorage from '@/TempStorage';
 import type { ThemeBoostBootstrapTooltipClass } from '#/require.js/theme_boost/bootstrap/tooltip.d.ts';
-import { BETTER_MOODLE_LANG, LL } from './i18n/i18n';
+import { BETTER_MOODLE_LANG, LL } from 'i18n';
 import {
     debounce,
     htmlToElements,

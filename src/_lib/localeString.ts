@@ -1,4 +1,4 @@
-import { BETTER_MOODLE_LANG } from '../i18n/i18n';
+import { BETTER_MOODLE_LANG } from 'i18n';
 
 /**
  * Returns the localized string representation of a date

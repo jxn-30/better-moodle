@@ -10,7 +10,7 @@ import { PREFIX } from '@/helpers';
 import { ready } from '@/DOM';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './style.module.scss';
-import { BETTER_MOODLE_LANG, languages, LL } from '../../i18n/i18n';
+import { BETTER_MOODLE_LANG, languages, LL } from 'i18n';
 
 const enabled = new BooleanSetting('enabled', true);
 const language = new SelectSetting('language', 'auto', [

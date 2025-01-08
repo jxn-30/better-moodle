@@ -1,4 +1,4 @@
-import { BETTER_MOODLE_LANG } from '../../../i18n/i18n';
+import { BETTER_MOODLE_LANG } from 'i18n';
 import type { Dish } from '../speiseplan';
 import { getDocument } from '@/network';
 import type Parser from './index';

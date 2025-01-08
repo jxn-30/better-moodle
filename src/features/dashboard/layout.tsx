@@ -1,7 +1,7 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
 import { getLoadingSpinner } from '@/DOM';
-import { LL } from '../../i18n/i18n';
+import { LL } from 'i18n';
 import { requirePromise } from '@/require.js';
 import style from './layout.module.scss';
 import {
