@@ -1,9 +1,12 @@
 @use '/src/style/mixins';
+@use '@sass-fairy/string' as fairystring;
+@use 'sass:string';
 @use 'sass:color';
 
 $location-colors: (
-    'mensa': #e8e6e3,
-    'cafeteria': #4b6669,
+    'Mensa': #6e894a,
+    'Canteen': #6e894a,
+    'Cafeteria': #4b6669,
 );
 
 $darkmode-brightness-fixes: (
@@ -11,30 +14,59 @@ $darkmode-brightness-fixes: (
     'iconprop_bio': 0.9,
 );
 
-:local(.table) .dish {
-    &[data-location]::before {
-        content: attr(data-location);
-        font-weight: bold;
-        font-size: smaller;
-        padding: 4px;
-        border-radius: 6px;
-        margin-right: 0.5em;
-    }
+$max-co2-stars: 3;
 
-    @each $location, $color in $location-colors {
-        &[data-location='#{$location}']::before {
-            background-color: $color;
-            @if (color.channel($color, 'lightness', $space: hsl) > 40) {
-                color: black;
+:local(.table) {
+    .dish {
+        &[data-location]::before {
+            content: attr(data-location);
+            font-weight: bold;
+            font-size: smaller;
+            padding: 4px;
+            border-radius: 6px;
+            margin-right: 0.5em;
+        }
+
+        @each $location, $color in $location-colors {
+            &[data-location='#{$location}']::before {
+                background-color: $color;
+                @if (color.channel($color, 'lightness', $space: hsl) > 50) {
+                    color: black;
+                } @else {
+                    color: white;
+                }
             }
-            else {
-                color: white;
-            }
+        }
+
+        .dish-additives {
+            font-size: smaller;
         }
     }
 
-    .dish-additives {
-        font-size: smaller;
+    .co2-score[data-stars] {
+        text-align: center;
+
+        &::before {
+            @include mixins.fa-icon;
+            background-image: linear-gradient(
+                90deg,
+                red 0%,
+                gold 50%,
+                green 100%
+            );
+            color: transparent;
+            background-clip: text;
+            display: block;
+        }
+
+        @for $i from 1 through $max-co2-stars {
+            &[data-stars='#{$i}']::before {
+                content: string.quote(
+                    fairystring.repeat('\f005', $i) +
+                        fairystring.repeat('\f006', $max-co2-stars - $i)
+                );
+            }
+        }
     }
 
     .dish-types {
@@ -48,7 +80,7 @@ $darkmode-brightness-fixes: (
 }
 
 @include mixins.darkmode {
-    :local(#table) .dish .dish-types img {
+    :local(.table) .dish-types img {
         & {
             $stroke-pos: 0.5px;
             $stroke-neg: -1 * $stroke-pos;

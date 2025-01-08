@@ -5,6 +5,7 @@ export const de = {
     close: 'Schließen',
     table: {
         dish: 'Gericht',
+        co2score: 'CO₂ Score',
         types: 'Art(en)',
         price: 'Preis',
     },
@@ -35,6 +36,7 @@ export const en = {
     close: 'Close',
     table: {
         dish: 'Dish',
+        co2score: 'CO₂ Score',
         types: 'Type(s)',
         price: 'Price',
     },

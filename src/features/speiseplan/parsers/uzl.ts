@@ -38,14 +38,30 @@ const getDishes = (dayEl: HTMLDivElement) => {
 
             const dish = {
                 name,
-                location: '',
-                allergenes: [],
-                additives: [],
-                types: [],
-                prices: [],
+                location:
+                    dishEl.querySelector('[class*="mensatyp_"]')?.textContent ??
+                    '',
+                allergenes:
+                    dishEl.dataset.allergene?.split('|').filter(Boolean) ?? [],
+                additives:
+                    dishEl.dataset.zusatzstoffe?.split('|').filter(Boolean) ??
+                    [],
+                types: dishEl.dataset.arten?.split('|').filter(Boolean) ?? [],
+                prices: Array.from(
+                    dishEl.querySelectorAll<HTMLSpanElement>('.menu_preis span')
+                ).map(p =>
+                    parseFloat(p.textContent?.replace(/,/g, '.') ?? '-1')
+                ),
                 co2: {
-                    stars: 1,
-                    emission: 0,
+                    stars: Number(
+                        dishEl.querySelector<HTMLDivElement>('.co2star')
+                            ?.dataset.anz ?? '0'
+                    ),
+                    emission: Number(
+                        dishEl
+                            .querySelector('.co2box_text')
+                            ?.textContent?.match(/\d+(?=\s+Gramm?)/)?.[0] ?? '0'
+                    ),
                 },
             };
 
@@ -76,12 +92,68 @@ const parse: Parser = (url: string) =>
             }
         });
 
+        const allergenes = new Map(
+            Array.from(
+                doc.querySelectorAll<HTMLDivElement>(
+                    '.filterbutton[data-typ="1"]'
+                )
+            ).map(el => [
+                el.dataset.wert ?? '',
+                el.querySelector('span:not(.abk)')?.textContent?.trim() ?? '',
+            ])
+        );
+
+        const additives = new Map(
+            Array.from(
+                doc.querySelectorAll<HTMLDivElement>(
+                    '.filterbutton[data-typ="2"]'
+                )
+            ).map(el => [
+                el.dataset.wert ?? '',
+                el.querySelector('span:not(.abk)')?.textContent?.trim() ?? '',
+            ])
+        );
+
+        const types = new Map(
+            Array.from(
+                doc.querySelectorAll<HTMLDivElement>(
+                    '.filterbutton[data-typ="3"]'
+                )
+            ).map(el => {
+                // .src returns with Moodle instance as hostname so we need to do some URL tricks here
+                const icon = el.querySelector<HTMLImageElement>('img')?.src;
+                const iconPath = icon ? new URL(icon).pathname : undefined;
+                let name = el.textContent?.trim() ?? '';
+                if (el.dataset.ex === '1' && icon) {
+                    name =
+                        doc.querySelector<HTMLImageElement>(
+                            `:not(.filterbutton) > img[src*="${iconPath}"]`
+                        )?.title ?? name;
+                }
+                return [
+                    el.dataset.wert ?? '',
+                    {
+                        name,
+                        icon: iconPath ? new URL(iconPath, url) : undefined,
+                    },
+                ];
+            })
+        );
+
+        // SH-Teller Icon is not in the filters on english StudentenwerkSH page, so we need to define it here manually
+        types.set('SHT', {
+            name: 'Schleswig-Holstein Teller',
+            icon: new URL(
+                'https://studentenwerk.sh/upload/img/sh_teller1.png?h=80&t=2'
+            ),
+        });
+
         return {
             dishes,
             prices: prices[BETTER_MOODLE_LANG],
-            allergenes: new Map<string, string>(),
-            additives: new Map<string, string>(),
-            types: new Map<string, { name: string; icon: string }>(),
+            allergenes,
+            additives,
+            types,
         };
     });
 

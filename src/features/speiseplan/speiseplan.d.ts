@@ -4,7 +4,7 @@ export interface Dish {
     allergenes: string[];
     additives: string[];
     types: string[];
-    prices: string[];
+    prices: number[];
     co2:
         | {
               stars: number;
@@ -18,5 +18,5 @@ export interface Speiseplan {
     prices: string[];
     allergenes: Map<string, string>;
     additives: Map<string, string>;
-    types: Map<string, { name: string; icon: string }>;
+    types: Map<string, { name: string; icon?: URL }>;
 }

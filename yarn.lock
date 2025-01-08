@@ -2519,6 +2519,52 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sass-fairy/exception@npm:^1.0.0":
+  version: 1.1.1
+  resolution: "@sass-fairy/exception@npm:1.1.1"
+  checksum: 10c0/2c221cd2bd0e8fd072bdb4900e3b8d72927ad81cae7183a9410832e3e752097db2827b9d030eddc00739c1c9073e953aa7b983a36b4eccb8b34eecb7f110e803
+  languageName: node
+  linkType: hard
+
+"@sass-fairy/list@npm:^1.0.0":
+  version: 1.2.4
+  resolution: "@sass-fairy/list@npm:1.2.4"
+  dependencies:
+    "@sass-fairy/exception": "npm:^1.0.0"
+    "@sass-fairy/math": "npm:^1.0.0"
+    "@sass-fairy/meta": "npm:^1.0.0"
+  checksum: 10c0/8700e27186bdeab710e43c7f79777e1ae7c87b0c39be2cbaa475da832860ce70a05855fad7c65d5235903e003bc1010f5938dac41c96e4f017da17dd18982c97
+  languageName: node
+  linkType: hard
+
+"@sass-fairy/math@npm:^1.0.0":
+  version: 1.0.3
+  resolution: "@sass-fairy/math@npm:1.0.3"
+  dependencies:
+    "@sass-fairy/exception": "npm:^1.0.0"
+  checksum: 10c0/b1c975b8148029a9e91c7862091e844df2f7717a845ab8d7836f0fd3d7cca23c606826f2775b4ca925550beb9eb443c20c7f711bfed216f9a1da768e4f7e40c2
+  languageName: node
+  linkType: hard
+
+"@sass-fairy/meta@npm:^1.0.0":
+  version: 1.0.2
+  resolution: "@sass-fairy/meta@npm:1.0.2"
+  dependencies:
+    "@sass-fairy/exception": "npm:^1.0.0"
+  checksum: 10c0/d0c244687511a008abc37b677762da86cc73f9adfc93449bb9a364aec136219bf900cdadd7d47f0e9e1fe910898a21a5d3e866cda3569aff9c7d0988edc78894
+  languageName: node
+  linkType: hard
+
+"@sass-fairy/string@npm:1.3.0":
+  version: 1.3.0
+  resolution: "@sass-fairy/string@npm:1.3.0"
+  dependencies:
+    "@sass-fairy/exception": "npm:^1.0.0"
+    "@sass-fairy/list": "npm:^1.0.0"
+  checksum: 10c0/95da01271d1d97b025d8fe25a3a81c8ecc2426733070dd2a1ce0ac07d4aa40d6da5d9bfe9aac33aeacb29485456cf652c5acb0f5db84d88db4b0df964f708840
+  languageName: node
+  linkType: hard
+
 "@trim21/gm-fetch@npm:0.2.1":
   version: 0.2.1
   resolution: "@trim21/gm-fetch@npm:0.2.1"
@@ -8280,6 +8326,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:9.17.0"
     "@prettier/plugin-xml": "npm:3.4.1"
+    "@sass-fairy/string": "npm:1.3.0"
     "@trim21/gm-fetch": "npm:0.2.1"
     "@types/eslint": "npm:9.6.1"
     "@types/eslint__js": "npm:8.42.3"

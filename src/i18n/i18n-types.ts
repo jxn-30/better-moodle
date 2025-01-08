@@ -538,6 +538,10 @@ type RootTranslation = {
                  */
                 dish: string;
                 /**
+                 * C​O​₂​ ​S​c​o​r​e
+                 */
+                co2score: string;
+                /**
                  * A​r​t​(​e​n​)
                  */
                 types: string;
@@ -1109,6 +1113,10 @@ export type TranslationFunctions = {
                  * Gericht
                  */
                 dish: () => LocalizedString;
+                /**
+                 * CO₂ Score
+                 */
+                co2score: () => LocalizedString;
                 /**
                  * Art(en)
                  */

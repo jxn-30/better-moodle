@@ -1,7 +1,7 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import type Canteens from './canteens';
 import classNames from 'classnames';
-import { dateToString } from '@/localeString';
+import type { Dish } from './speiseplan';
 import FeatureGroup from '@/FeatureGroup';
 import { FieldSet } from '@/Components';
 import { Modal } from '@/Modal';
@@ -11,6 +11,7 @@ import { ready } from '@/DOM';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './style.module.scss';
 import { BETTER_MOODLE_LANG, languages, LL } from 'i18n';
+import { currency, dateToString, unit } from '@/localeString';
 
 const enabled = new BooleanSetting('enabled', true);
 const language = new SelectSetting('language', 'auto', [
@@ -83,6 +84,22 @@ const getCurrentSpeiseplan = () => {
         urlNextWeek: { [lang]: urlNextWeek },
     } = canteens.get(canteen.value)!;
 
+    /**
+     * @param name
+     */
+    const getDishNameEls = (name: Dish['name']) =>
+        name.map(item => (
+            <>
+                {item.text}
+                {item.info ?
+                    <>
+                        &nbsp;
+                        <span class="text-muted">{item.info}</span>
+                    </>
+                :   ''}
+            </>
+        ));
+
     return Promise.all([parse(url), parse(urlNextWeek)])
         .then(([thisWeek, nextWeek]) => {
             const speiseplan = thisWeek;
@@ -106,25 +123,106 @@ const getCurrentSpeiseplan = () => {
         .then(speiseplan =>
             speiseplan.dishes.entries().map(([day, dishes], index) => (
                 <FieldSet
-                    title={dateToString(day, false, true)}
+                    title={dateToString(day, false, true, lang)}
                     collapsed={index > 0}
                 >
                     <table class={classNames(['table', style.table])}>
                         <thead>
                             <tr>
                                 <th>{LL.features.speiseplan.table.dish()}</th>
+                                <th class="text-center">
+                                    {LL.features.speiseplan.table.co2score()}
+                                </th>
                                 <th>{LL.features.speiseplan.table.types()}</th>
-                                <th>{LL.features.speiseplan.table.price()}</th>
+                                <th>
+                                    {LL.features.speiseplan.table.price()}
+                                    <br />
+                                    <span class="text-muted small">
+                                        {speiseplan.prices.join(' / ')}
+                                    </span>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             {...Array.from(
                                 dishes.values().map(dish => (
                                     <tr>
-                                        <td colSpan={3} class="dish">
-                                            <pre>
-                                                {JSON.stringify(dish, null, 4)}
-                                            </pre>
+                                        <td
+                                            class="dish"
+                                            data-location={dish.location}
+                                        >
+                                            {...getDishNameEls(dish.name)}
+                                            {dish.allergenes.length ?
+                                                <>
+                                                    <br />
+                                                    <span class="text-muted small">
+                                                        (
+                                                        {dish.allergenes
+                                                            .map(
+                                                                a =>
+                                                                    `${a}:\xa0${speiseplan.allergenes.get(a)}`
+                                                            )
+                                                            .join(', ')}
+                                                        )
+                                                    </span>
+                                                </>
+                                            :   ''}
+                                            {dish.additives.length ?
+                                                <>
+                                                    <br />
+                                                    <span class="text-muted small">
+                                                        (
+                                                        {dish.additives
+                                                            .map(
+                                                                a =>
+                                                                    `${a}:\xa0${speiseplan.additives.get(a)}`
+                                                            )
+                                                            .join(', ')}
+                                                        )
+                                                    </span>
+                                                </>
+                                            :   ''}
+                                        </td>
+                                        <td
+                                            class="co2-score"
+                                            data-stars={
+                                                dish.co2 ? dish.co2.stars : 0
+                                            }
+                                        >
+                                            {dish.co2 && dish.co2.emission ?
+                                                unit(
+                                                    dish.co2.emission,
+                                                    'gram',
+                                                    'long',
+                                                    lang
+                                                )
+                                            :   ''}
+                                        </td>
+                                        <td class="dish-types">
+                                            {...dish.types.map(t => {
+                                                const dishType =
+                                                    speiseplan.types.get(t);
+                                                if (!dishType?.icon) return t;
+                                                return (
+                                                    <img
+                                                        src={dishType.icon.toString()}
+                                                        title={dishType.name}
+                                                        alt={dishType.name}
+                                                    />
+                                                );
+                                            })}
+                                        </td>
+                                        <td>
+                                            {dish.prices
+                                                .map(p =>
+                                                    currency(
+                                                        p,
+                                                        'EUR',
+                                                        'symbol',
+                                                        lang
+                                                    )
+                                                )
+                                                .join('\xa0/\xa0')}
                                         </td>
                                     </tr>
                                 ))
@@ -141,7 +239,7 @@ const getCurrentSpeiseplan = () => {
  * Opens the Speiseplan modal and loads content
  */
 const openSpeiseplan = () => {
-    new Modal({
+    const modal = new Modal({
         type: 'ALERT',
         large: true,
         scrollable: true,
@@ -152,6 +250,8 @@ const openSpeiseplan = () => {
             cancel: `🍴\xa0${LL.features.speiseplan.close()}`,
         },
     }).show();
+
+    void modal.getBody().then(([body]) => body.classList.add('mform'));
 };
 
 desktopBtn.addEventListener('click', e => {
