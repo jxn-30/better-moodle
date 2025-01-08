@@ -42,10 +42,12 @@ export const unit = (
     });
 
 /**
- * @param num
- * @param currency
- * @param format
- * @param lang
+ * Prints a number localized to a given currency
+ * @param num - the number to be localized
+ * @param currency - the currency to use
+ * @param format - display format of the currency
+ * @param lang - enforce a special language instead of BETTER_MOODLE_LANG
+ * @returns the localized number with currency
  */
 export const currency = (
     num: number,

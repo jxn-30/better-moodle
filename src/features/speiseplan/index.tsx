@@ -27,6 +27,7 @@ const language = new SelectSetting('language', 'auto', [
 
 /**
  * Gets the currently set speiseplan language
+ * @returns the current locale
  */
 const getLang = () =>
     language.value === 'auto' ?
@@ -35,6 +36,7 @@ const getLang = () =>
 
 /**
  * Gets a LL instance with the speiseplan language
+ * @returns a LL instance
  */
 const sLL = () => i18nObject(getLang());
 
@@ -101,7 +103,9 @@ const getCurrentSpeiseplan = () => {
     } = canteens.get(canteen.value)!;
 
     /**
-     * @param name
+     * Creates the elements that show the dishs nam
+     * @param name - the name
+     * @returns the elements
      */
     const getDishNameEls = (name: Dish['name']) =>
         name.map(item => (
