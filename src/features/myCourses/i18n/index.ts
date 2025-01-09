@@ -1,5 +1,6 @@
 import cardsPerRow from './cardsPerRow';
 import type { FeatureGroupTranslation } from '#/i18n';
+import grades from './grades';
 import navbarDropdown from './navbarDropdown';
 
 export const de = {
@@ -7,6 +8,7 @@ export const de = {
     features: {
         navbarDropdown: navbarDropdown.de,
         cardsPerRow: cardsPerRow.de,
+        grades: grades.de,
     },
 } satisfies FeatureGroupTranslation;
 
@@ -15,6 +17,7 @@ export const en = {
     features: {
         navbarDropdown: navbarDropdown.en,
         cardsPerRow: cardsPerRow.en,
+        grades: grades.en,
     },
 } satisfies typeof de;
 

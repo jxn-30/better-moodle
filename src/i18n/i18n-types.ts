@@ -521,6 +521,34 @@ type RootTranslation = {
                         };
                     };
                 };
+                grades: {
+                    /**
+                     * B​e​w​e​r​t​u​n​g​e​n
+                     */
+                    grades: string;
+                    settings: {
+                        enabled: {
+                            /**
+                             * L​i​n​k​ ​z​u​ ​B​e​w​e​r​t​u​n​g​e​n​ ​i​n​ ​d​e​r​ ​S​i​d​e​b​a​r
+                             */
+                            name: string;
+                            /**
+                             * Z​e​i​g​t​ ​e​i​n​e​n​ ​L​i​n​k​ ​z​u​ ​d​e​n​ ​B​e​w​e​r​t​u​n​g​e​n​ ​d​e​s​ ​K​u​r​s​e​s​ ​i​n​ ​d​e​r​ ​l​i​n​k​e​n​ ​S​e​i​t​e​n​l​e​i​s​t​e​ ​a​n​.
+                             */
+                            description: string;
+                        };
+                        newTab: {
+                            /**
+                             * B​e​w​e​r​t​u​n​g​e​n​ ​i​n​ ​n​e​u​e​m​ ​T​a​b​ ​ö​f​f​n​e​n
+                             */
+                            name: string;
+                            /**
+                             * Ö​f​f​n​e​t​ ​d​i​e​ ​B​e​w​e​r​t​u​n​g​e​n​ ​s​t​a​n​d​a​r​d​m​ä​ß​i​g​ ​e​i​n​e​m​ ​n​e​u​e​n​ ​T​a​b​.
+                             */
+                            description: string;
+                        };
+                    };
+                };
             };
         };
         speiseplan: {
@@ -1096,6 +1124,34 @@ export type TranslationFunctions = {
                             name: () => LocalizedString;
                             /**
                              * Zahl der Kacheln pro Zeile auf der "Meine Kurse"-Seite, wenn die Ansicht auf "Kacheln" gestellt ist. (Ist bis zu einer Fenster-/Bildschirmbreite bis 840px aktiv)
+                             */
+                            description: () => LocalizedString;
+                        };
+                    };
+                };
+                grades: {
+                    /**
+                     * Bewertungen
+                     */
+                    grades: () => LocalizedString;
+                    settings: {
+                        enabled: {
+                            /**
+                             * Link zu Bewertungen in der Sidebar
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Zeigt einen Link zu den Bewertungen des Kurses in der linken Seitenleiste an.
+                             */
+                            description: () => LocalizedString;
+                        };
+                        newTab: {
+                            /**
+                             * Bewertungen in neuem Tab öffnen
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Öffnet die Bewertungen standardmäßig einem neuen Tab.
                              */
                             description: () => LocalizedString;
                         };
