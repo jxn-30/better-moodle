@@ -10,11 +10,11 @@ import type { Locales } from '../../i18n/i18n-types';
 import { Modal } from '@/Modal';
 import Parser from './parsers';
 import { PREFIX } from '@/helpers';
-import { ready } from '@/DOM';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './style.module.scss';
 import { BETTER_MOODLE_LANG, languages, LL } from 'i18n';
 import { currency, dateToString, unit } from '@/localeString';
+import { getLoadingSpinner, ready } from '@/DOM';
 
 const enabled = new BooleanSetting('enabled', true);
 const language = new SelectSetting('language', 'auto', [
@@ -294,8 +294,7 @@ const getCurrentSpeiseplan = () => {
                     </table>
                 </FieldSet>
             ))
-        )
-        .then(fieldsets => <>{...Array.from(fieldsets)}</>);
+        );
 };
 
 /**
@@ -309,7 +308,9 @@ const openSpeiseplan = () => {
         large: true,
         scrollable: true,
         title: `${randomEmoji()}\xa0${sLL().name()}`,
-        body: getCurrentSpeiseplan(),
+        body: getCurrentSpeiseplan().then(fieldsets => (
+            <>{...Array.from(fieldsets)}</>
+        )),
         // setting the footer here would remove the buttons 🤷
         removeOnClose: true,
         buttons: {
@@ -322,6 +323,49 @@ const openSpeiseplan = () => {
     void modal
         .getFooter()
         .then(([footer]) => footer.prepend(footerLinkWrapper));
+
+    /**
+     * Updates the modal body to the latest menu respecting curent settings
+     * @returns a Promise
+     */
+    const updateSpeiseplan = () =>
+        Promise.all([modal.getBody(), getLoadingSpinner()]).then(
+            ([[body], spinner]) => {
+                body.replaceChildren(spinner);
+                footerLinkWrapper.textContent = sLL().source();
+                void getCurrentSpeiseplan().then(fieldsets =>
+                    body.replaceChildren(...fieldsets)
+                );
+            }
+        );
+
+    const canteenSelection = canteen.formControl.cloneNode(
+        true
+    ) as HTMLSelectElement;
+    canteenSelection.classList.add('ml-auto', 'custom-select-sm');
+    canteenSelection.value = canteen.formControl.value;
+    canteenSelection.addEventListener('change', () => {
+        canteen.formControl.value = canteenSelection.value;
+        canteen.formControl.dispatchEvent(new Event('change'));
+        canteen.save();
+        void updateSpeiseplan();
+    });
+
+    const languageSelection = language.formControl.cloneNode(
+        true
+    ) as HTMLSelectElement;
+    languageSelection.classList.add('mr-auto', 'custom-select-sm');
+    languageSelection.value = language.formControl.value;
+    languageSelection.addEventListener('change', () => {
+        language.formControl.value = languageSelection.value;
+        language.formControl.dispatchEvent(new Event('change'));
+        language.save();
+        void updateSpeiseplan();
+    });
+
+    void modal
+        .getTitle()
+        .then(title => title.after(canteenSelection, languageSelection));
 };
 
 desktopBtn.addEventListener('click', e => {
