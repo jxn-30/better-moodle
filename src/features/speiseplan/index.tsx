@@ -19,11 +19,15 @@ import { currency, dateToString, unit } from '@/localeString';
 const enabled = new BooleanSetting('enabled', true);
 const language = new SelectSetting('language', 'auto', [
     'auto',
-    ...Array.from(languages.entries()).map(([locale, { name, flag }]) => ({
+    ...languages.entries().map(([locale, { name, flag }]) => ({
         key: locale,
         title: `${flag} ${name}`,
     })),
 ]);
+
+const sLLs = new Map<Locales, typeof LL>(
+    languages.keys().map(locale => [locale, i18nObject(locale)])
+);
 
 /**
  * Gets the currently set speiseplan language
@@ -38,7 +42,7 @@ const getLang = () =>
  * Gets a LL instance with the speiseplan language
  * @returns a LL instance
  */
-const sLL = () => i18nObject(getLang());
+const sLL = () => sLLs.get(getLang())!.features.speiseplan;
 
 const canteens = Object.values(
     import.meta.glob(import.meta.env.VITE_SPEISEPLAN_CANTEEN_GLOB, {
@@ -90,6 +94,13 @@ const mobileBtn = (
     </a>
 );
 
+// textContent will be set on opening
+const footerLinkWrapper = (
+    <a class="mr-auto" href="#speiseplan" target="_blank">
+        Source
+    </a>
+) as HTMLAnchorElement;
+
 /**
  * Gets the current speiseplan as HTML Elements
  * @returns the current speiseplan as HTML Elements
@@ -130,6 +141,8 @@ const getCurrentSpeiseplan = () => {
         </a>
     ).outerHTML;
 
+    footerLinkWrapper.href = url;
+
     return Promise.all([parse(url), parse(urlNextWeek)])
         .then(([thisWeek, nextWeek]) => {
             const speiseplan = thisWeek;
@@ -158,12 +171,10 @@ const getCurrentSpeiseplan = () => {
                     <table class={classNames(['table', style.table])}>
                         <thead>
                             <tr>
-                                <th>
-                                    {sLL().features.speiseplan.table.dish()}
-                                </th>
+                                <th>{sLL().table.dish()}</th>
                                 <th>
                                     <span class="d-flex">
-                                        {sLL().features.speiseplan.table.co2score()}
+                                        {sLL().table.co2score()}
                                         &nbsp;
                                         <a
                                             class={
@@ -182,11 +193,9 @@ const getCurrentSpeiseplan = () => {
                                         </a>
                                     </span>
                                 </th>
+                                <th>{sLL().table.types()}</th>
                                 <th>
-                                    {sLL().features.speiseplan.table.types()}
-                                </th>
-                                <th>
-                                    {sLL().features.speiseplan.table.price()}
+                                    {sLL().table.price()}
                                     &nbsp;
                                     <i
                                         class="icon fa fa-info-circle text-info fa-fw"
@@ -293,19 +302,26 @@ const getCurrentSpeiseplan = () => {
  * Opens the Speiseplan modal and loads content
  */
 const openSpeiseplan = () => {
+    footerLinkWrapper.textContent = sLL().source();
+
     const modal = new Modal({
         type: 'ALERT',
         large: true,
         scrollable: true,
-        title: `${randomEmoji()}\xa0${sLL().features.speiseplan.name()}`,
+        title: `${randomEmoji()}\xa0${sLL().name()}`,
         body: getCurrentSpeiseplan(),
+        // setting the footer here would remove the buttons 🤷
         removeOnClose: true,
         buttons: {
-            cancel: `🍴\xa0${sLL().features.speiseplan.close()}`,
+            cancel: `🍴\xa0${sLL().close()}`,
         },
     }).show();
 
     void modal.getBody().then(([body]) => body.classList.add('mform'));
+
+    void modal
+        .getFooter()
+        .then(([footer]) => footer.prepend(footerLinkWrapper));
 };
 
 desktopBtn.addEventListener('click', e => {

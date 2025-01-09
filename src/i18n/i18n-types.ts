@@ -550,6 +550,10 @@ type RootTranslation = {
                  */
                 price: string;
             };
+            /**
+             * O​r​i​g​i​n​a​l​ ​S​p​e​i​s​e​p​l​a​n
+             */
+            source: string;
             settings: {
                 enabled: {
                     /**
@@ -1126,6 +1130,10 @@ export type TranslationFunctions = {
                  */
                 price: () => LocalizedString;
             };
+            /**
+             * Original Speiseplan
+             */
+            source: () => LocalizedString;
             settings: {
                 enabled: {
                     /**

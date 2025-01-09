@@ -9,6 +9,7 @@ export const de = {
         types: 'Art(en)',
         price: 'Preis',
     },
+    source: 'Original Speiseplan',
     settings: {
         enabled: {
             name: 'Speiseplan in der Navigationsleiste',
@@ -40,6 +41,7 @@ export const en = {
         types: 'Type(s)',
         price: 'Price',
     },
+    source: 'Original menu',
     settings: {
         enabled: {
             name: 'Menu in the navigation bar',
