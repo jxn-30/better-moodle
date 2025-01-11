@@ -1,6 +1,11 @@
 import FeatureGroup from '@/FeatureGroup';
 
-const features = new Set<string>(['cardsPerRow', 'navbarDropdown', 'grades']);
+const features = new Set<string>([
+    'cardsPerRow',
+    'navbarDropdown',
+    'grades',
+    'images',
+]);
 
 // this was introduced during 401.
 if (__MOODLE_VERSION__ < 402) features.add('courseIndexDrawerControls');
