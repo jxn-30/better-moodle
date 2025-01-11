@@ -1,4 +1,5 @@
 import cardsPerRow from './cardsPerRow';
+import courseIndexDrawerControls from './courseIndexDrawerControls';
 import type { FeatureGroupTranslation } from '#/i18n';
 import grades from './grades';
 import navbarDropdown from './navbarDropdown';
@@ -9,6 +10,7 @@ export const de = {
         navbarDropdown: navbarDropdown.de,
         cardsPerRow: cardsPerRow.de,
         grades: grades.de,
+        courseIndexDrawerControls: courseIndexDrawerControls.de,
     },
 } satisfies FeatureGroupTranslation;
 
@@ -18,6 +20,7 @@ export const en = {
         navbarDropdown: navbarDropdown.en,
         cardsPerRow: cardsPerRow.en,
         grades: grades.en,
+        courseIndexDrawerControls: courseIndexDrawerControls.en,
     },
 } satisfies typeof de;
 

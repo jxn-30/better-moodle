@@ -549,6 +549,20 @@ type RootTranslation = {
                         };
                     };
                 };
+                courseIndexDrawerControls: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * T​i​l​e​s​ ​p​e​r​ ​r​o​w​ ​(​"​M​y​ ​C​o​u​r​s​e​s​"​ ​p​a​g​e​)
+                             */
+                            name: string;
+                            /**
+                             * N​u​m​b​e​r​ ​o​f​ ​t​i​l​e​s​ ​p​e​r​ ​r​o​w​ ​o​n​ ​t​h​e​ ​"​M​y​ ​C​o​u​r​s​e​s​"​ ​p​a​g​e​ ​w​h​e​n​ ​t​h​e​ ​v​i​e​w​ ​i​s​ ​s​e​t​ ​t​o​ ​"​T​i​l​e​s​"​.​ ​(​I​s​ ​a​c​t​i​v​e​ ​u​p​ ​t​o​ ​a​ ​w​i​n​d​o​w​/​s​c​r​e​e​n​ ​w​i​d​t​h​ ​o​f​ ​8​4​0​p​x​)
+                             */
+                            description: string;
+                        };
+                    };
+                };
             };
         };
         speiseplan: {
@@ -1152,6 +1166,20 @@ export type TranslationFunctions = {
                             name: () => LocalizedString;
                             /**
                              * Öffnet die Bewertungen standardmäßig einem neuen Tab.
+                             */
+                            description: () => LocalizedString;
+                        };
+                    };
+                };
+                courseIndexDrawerControls: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * Tiles per row ("My Courses" page)
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Number of tiles per row on the "My Courses" page when the view is set to "Tiles". (Is active up to a window/screen width of 840px)
                              */
                             description: () => LocalizedString;
                         };
