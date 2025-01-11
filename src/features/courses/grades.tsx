@@ -41,7 +41,7 @@ const onload = async () => {
                 >
                     <i class="icon fa fa-calculator fa-fw"></i>
                     &nbsp;
-                    {LL.features.myCourses.features.grades.grades()}
+                    {LL.features.courses.features.grades.grades()}
                 </a>
             ) as HTMLAnchorElement;
             if (newTab.value) gradesLink.target = '_blank';

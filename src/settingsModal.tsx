@@ -33,7 +33,7 @@ const groups = [
     'general',
     'darkmode',
     'dashboard',
-    'myCourses',
+    'courses',
     'linkIcons',
     'speiseplan',
     'bookmarks',

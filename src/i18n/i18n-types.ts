@@ -461,7 +461,7 @@ type RootTranslation = {
                 };
             };
         };
-        myCourses: {
+        courses: {
             /**
              * K​u​r​s​e​ ​&​ ​M​e​i​n​e​ ​K​u​r​s​e
              */
@@ -553,11 +553,11 @@ type RootTranslation = {
                     settings: {
                         enabled: {
                             /**
-                             * T​i​l​e​s​ ​p​e​r​ ​r​o​w​ ​(​"​M​y​ ​C​o​u​r​s​e​s​"​ ​p​a​g​e​)
+                             * S​e​i​t​e​n​l​e​i​s​t​e​ ​e​i​n​-​/​a​u​s​k​l​a​p​p​e​n
                              */
                             name: string;
                             /**
-                             * N​u​m​b​e​r​ ​o​f​ ​t​i​l​e​s​ ​p​e​r​ ​r​o​w​ ​o​n​ ​t​h​e​ ​"​M​y​ ​C​o​u​r​s​e​s​"​ ​p​a​g​e​ ​w​h​e​n​ ​t​h​e​ ​v​i​e​w​ ​i​s​ ​s​e​t​ ​t​o​ ​"​T​i​l​e​s​"​.​ ​(​I​s​ ​a​c​t​i​v​e​ ​u​p​ ​t​o​ ​a​ ​w​i​n​d​o​w​/​s​c​r​e​e​n​ ​w​i​d​t​h​ ​o​f​ ​8​4​0​p​x​)
+                             * F​ü​g​t​ ​K​n​ö​p​f​e​ ​h​i​n​z​u​,​ ​d​i​e​ ​e​r​m​ö​g​l​i​c​h​e​n​,​ ​a​l​l​ ​A​b​s​c​h​n​i​t​t​e​ ​d​e​r​ ​S​e​i​t​e​n​l​e​i​s​t​e​ ​a​u​f​ ​e​i​n​m​a​l​ ​e​i​n​-​ ​b​z​w​.​ ​a​u​s​z​u​k​l​a​p​p​e​n​.
                              */
                             description: string;
                         };
@@ -1083,7 +1083,7 @@ export type TranslationFunctions = {
                 };
             };
         };
-        myCourses: {
+        courses: {
             /**
              * Kurse & Meine Kurse
              */
@@ -1175,11 +1175,11 @@ export type TranslationFunctions = {
                     settings: {
                         enabled: {
                             /**
-                             * Tiles per row ("My Courses" page)
+                             * Seitenleiste ein-/ausklappen
                              */
                             name: () => LocalizedString;
                             /**
-                             * Number of tiles per row on the "My Courses" page when the view is set to "Tiles". (Is active up to a window/screen width of 840px)
+                             * Fügt Knöpfe hinzu, die ermöglichen, all Abschnitte der Seitenleiste auf einmal ein- bzw. auszuklappen.
                              */
                             description: () => LocalizedString;
                         };

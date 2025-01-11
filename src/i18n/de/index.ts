@@ -1,10 +1,10 @@
 import type { BaseTranslation } from '../i18n-types';
 import { de as bookmarks } from '../../features/bookmarks/i18n';
+import { de as courses } from '../../features/courses/i18n';
 import { de as darkmode } from '../../features/darkmode/i18n';
 import { de as dashboard } from '../../features/dashboard/i18n';
 import { de as general } from '../../features/general/i18n';
 import { de as linkIcons } from '../../features/linkIcons/i18n';
-import { de as myCourses } from '../../features/myCourses/i18n';
 import settings from './settings';
 import { de as speiseplan } from '../../features/speiseplan/i18n';
 
@@ -57,7 +57,7 @@ Die offiziell unterstützten Browser (Das Better-Moodle Core-Team empfiehlt Fire
         dashboard,
         general,
         linkIcons,
-        myCourses,
+        courses,
         speiseplan,
     },
 } satisfies BaseTranslation;

@@ -3,9 +3,9 @@ import { FeatureTranslation } from '#/i18n';
 export const de = {
     settings: {
         enabled: {
-            name: 'Tiles per row ("My Courses" page)',
+            name: 'Seitenleiste ein-/ausklappen',
             description:
-                'Number of tiles per row on the "My Courses" page when the view is set to "Tiles". (Is active up to a window/screen width of 840px)',
+                'Fügt Knöpfe hinzu, die ermöglichen, all Abschnitte der Seitenleiste auf einmal ein- bzw. auszuklappen.',
         },
     },
 } satisfies FeatureTranslation;
