@@ -49,6 +49,8 @@ const zoomImage = (e: MouseEvent) => {
  * Adjusts the zoom size of the currently zoomed image
  */
 const adjustZoomedImageSize = () => {
+    if (!zoom.value || !zoomCopiedImage) return;
+
     const { naturalWidth: width, naturalHeight: height } = zoomCopiedImage;
 
     // a size could not be determined
