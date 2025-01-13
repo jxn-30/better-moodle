@@ -2,6 +2,7 @@ import externalLinks from './externalLinks';
 import type { FeatureGroupTranslation } from '#/i18n';
 import fullWidth from './fullWidth';
 import googlyEyes from './googlyEyes';
+import prideLogo from './prideLogo';
 import truncatedTexts from './truncatedTexts';
 
 export const de = {
@@ -45,6 +46,7 @@ export const de = {
         externalLinks: externalLinks.de,
         truncatedTexts: truncatedTexts.de,
         googlyEyes: googlyEyes.de,
+        prideLogo: prideLogo.de,
     },
 } satisfies FeatureGroupTranslation;
 
@@ -88,6 +90,7 @@ export const en = {
         externalLinks: externalLinks.en,
         truncatedTexts: truncatedTexts.en,
         googlyEyes: googlyEyes.en,
+        prideLogo: prideLogo.en,
     },
 } satisfies typeof de;
 

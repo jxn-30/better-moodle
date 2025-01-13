@@ -69,6 +69,7 @@ const features = new Set<string>([
     'fullWidth',
     'externalLinks',
     'truncatedTexts',
+    'prideLogo',
     'googlyEyes',
 ]);
 

@@ -1,0 +1,167 @@
+@use 'sass:math';
+@use 'sass:list';
+@use 'sass:string';
+@use 'sass:map';
+@use '/src/style/mixins';
+
+$rotation-angles: (
+    (
+        'rotation': 180deg,
+        'start': 12%,
+        'end': 87%,
+    ),
+    (
+        'rotation': 135deg,
+        'start': 22%,
+        'end': 78%,
+    )
+);
+
+@function stripes($start, $end, $colors...) {
+    $colorsAmount: list.length($colors);
+    $step-size: math.div($end - $start, $colorsAmount);
+
+    $steps: '';
+
+    @for $index from 1 through $colorsAmount {
+        $color: list.nth($colors, $index);
+
+        $start-point: math.round($start + ($index - 1) * $step-size);
+        $end-point: math.round($start-point + $step-size);
+
+        @if $index == 1 {
+            // use 0% as start
+            $steps: $steps + '#{$color} 0% #{$end-point}, ';
+        } @else if $index == $colorsAmount {
+            // use 100% as end and don't add a trailing comma
+            $steps: $steps + '#{$color} #{$start-point} 100%';
+        } @else {
+            // add with start and end
+            $steps: $steps + '#{$color} #{$start-point} #{$end-point}, ';
+        }
+    }
+
+    @return $steps;
+}
+
+$flags: (
+    'rainbow': (
+        #fe0000,
+        #fd8c00,
+        #ffd000,
+        #119f0b,
+        #457cdf,
+        #c22edc,
+    ),
+    'agender': (
+        #000000,
+        #a3aaaf,
+        #f3f3f3,
+        #9ee261,
+        #f3f3f3,
+        #a3aaaf,
+        #000000,
+    ),
+    'aro': (
+        #008800,
+        #6dc049,
+        #f3f3f3,
+        #868686,
+        #000000,
+    ),
+    'ace': (
+        #000000,
+        #75005f,
+        #f3f3f3,
+        #868686O,
+    ),
+    'aroace': (
+        #ce6600,
+        #dbb600,
+        #f3f3f3,
+        #3592ca,
+        #000529,
+    ),
+    'bi': (
+        #d60270,
+        #9b4f96,
+        #0038a8,
+    ),
+    'genderfluid': (
+        #f04e83,
+        #f3f3f3,
+        #ca00c7,
+        #000000,
+        #0007a8,
+    ),
+    'lesbian': (
+        #c00000,
+        #f07724,
+        #f3f3f3,
+        #bb3586,
+        #860035,
+    ),
+    'enby': (
+        #ece22c,
+        #f3f3f3,
+        #7035b6,
+        #000000,
+    ),
+    'pan': (
+        #f3006d,
+        #f0c500,
+        #0097f0,
+    ),
+    'gay': (
+        #006642,
+        #6dc79b,
+        #f3f3f3,
+        #5086c2,
+        #0f004b,
+    ),
+    'trans': (
+        #00b9ee,
+        #ee86d8,
+        #f3f3f3,
+        #ee86d8,
+        #00b9ee,
+    ),
+);
+
+img:local(.pride-logo) {
+    filter: brightness(0.8) contrast(1.5);
+    object-position: -99999px -99999px; // hide original image
+    mask-origin: content-box;
+
+    @each $rotation in $rotation-angles {
+        $angle: map.get($rotation, 'rotation');
+        $start: map.get($rotation, 'start');
+        $end: map.get($rotation, 'end');
+
+        &:local(.rotation-#{$angle}) {
+            @each $flag, $colors in $flags {
+                &:local(.flag-#{$flag}) {
+                    background-image: linear-gradient(
+                        $angle,
+                        string.unquote(stripes($start, $end, $colors...))
+                    );
+                }
+            }
+
+            &:local(.flag-intersex) {
+                background-image: radial-gradient(
+                    circle at 50%,
+                    #f3c500 12%,
+                    #680088 12% 22%,
+                    #f3c500 22%
+                );
+            }
+        }
+    }
+}
+
+@include mixins.darkmode {
+    img:local(.pride-logo) {
+        filter: saturate(2) !important;
+    }
+}

@@ -431,6 +431,98 @@ type RootTranslation = {
                         };
                     };
                 };
+                prideLogo: {
+                    settings: {
+                        flag: {
+                            /**
+                             * P​r​i​d​e​-​L​o​g​o​ ​�​�​️​‍​�​�
+                             */
+                            name: string;
+                            /**
+                             * L​ä​s​s​t​ ​d​a​s​ ​L​o​g​o​ ​i​m​ ​M​o​o​d​l​e​ ​i​n​ ​e​i​n​e​m​ ​n​e​u​e​n​ ​F​a​r​b​g​l​a​n​z​ ​e​r​s​c​h​e​i​n​e​n​.
+                             */
+                            description: string;
+                            options: {
+                                /**
+                                 * A​u​s
+                                 */
+                                off: string;
+                                /**
+                                 * R​e​g​e​n​b​o​g​e​n
+                                 */
+                                Rainbow: string;
+                                /**
+                                 * A​g​e​n​d​e​r
+                                 */
+                                Agender: string;
+                                /**
+                                 * A​r​o​m​a​n​t​i​s​c​h
+                                 */
+                                Aro: string;
+                                /**
+                                 * A​s​e​x​u​e​l​l
+                                 */
+                                Ace: string;
+                                /**
+                                 * A​s​e​x​u​e​l​l​-​A​r​o​m​a​n​t​i​s​c​h
+                                 */
+                                Aroace: string;
+                                /**
+                                 * B​i​s​e​x​u​e​l​l
+                                 */
+                                Bi: string;
+                                /**
+                                 * G​e​n​d​e​r​f​l​u​i​d
+                                 */
+                                Genderfluid: string;
+                                /**
+                                 * I​n​t​e​r​s​e​x
+                                 */
+                                Intersex: string;
+                                /**
+                                 * L​e​s​b​i​s​c​h
+                                 */
+                                Lesbian: string;
+                                /**
+                                 * N​i​c​h​t​-​b​i​n​ä​r
+                                 */
+                                Enby: string;
+                                /**
+                                 * P​a​n​s​e​x​u​e​l​l
+                                 */
+                                Pan: string;
+                                /**
+                                 * S​c​h​w​u​l
+                                 */
+                                Gay: string;
+                                /**
+                                 * T​r​a​n​s​g​e​n​d​e​r
+                                 */
+                                Trans: string;
+                            };
+                        };
+                        rotation: {
+                            /**
+                             * R​o​t​a​t​i​o​n​ ​d​e​s​ ​P​r​i​d​e​-​L​o​g​o​s
+                             */
+                            name: string;
+                            /**
+                             * W​ä​h​l​e​ ​h​i​e​r​,​ ​i​n​ ​w​e​l​c​h​e​ ​R​i​c​h​t​u​n​g​ ​d​a​s​ ​P​r​i​d​e​-​L​o​g​o​ ​r​o​t​i​e​r​t​ ​s​e​i​n​ ​s​o​l​l​.
+                             */
+                            description: string;
+                            options: {
+                                /**
+                                 * 1​8​0​°​:​ ​V​o​n​ ​O​b​e​n​ ​n​a​c​h​ ​U​n​t​e​n
+                                 */
+                                '180Deg': string;
+                                /**
+                                 * 1​3​5​°​:​ ​V​o​n​ ​N​o​r​d​-​N​o​r​d​-​W​e​s​t​ ​n​a​c​h​ ​S​ü​d​-​S​ü​d​-​O​s​t
+                                 */
+                                '135Deg': string;
+                            };
+                        };
+                    };
+                };
             };
         };
         linkIcons: {
@@ -1050,6 +1142,98 @@ export type TranslationFunctions = {
                              * 👀
                              */
                             description: () => LocalizedString;
+                        };
+                    };
+                };
+                prideLogo: {
+                    settings: {
+                        flag: {
+                            /**
+                             * Pride-Logo 🏳️‍🌈
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Lässt das Logo im Moodle in einem neuen Farbglanz erscheinen.
+                             */
+                            description: () => LocalizedString;
+                            options: {
+                                /**
+                                 * Aus
+                                 */
+                                off: () => LocalizedString;
+                                /**
+                                 * Regenbogen
+                                 */
+                                Rainbow: () => LocalizedString;
+                                /**
+                                 * Agender
+                                 */
+                                Agender: () => LocalizedString;
+                                /**
+                                 * Aromantisch
+                                 */
+                                Aro: () => LocalizedString;
+                                /**
+                                 * Asexuell
+                                 */
+                                Ace: () => LocalizedString;
+                                /**
+                                 * Asexuell-Aromantisch
+                                 */
+                                Aroace: () => LocalizedString;
+                                /**
+                                 * Bisexuell
+                                 */
+                                Bi: () => LocalizedString;
+                                /**
+                                 * Genderfluid
+                                 */
+                                Genderfluid: () => LocalizedString;
+                                /**
+                                 * Intersex
+                                 */
+                                Intersex: () => LocalizedString;
+                                /**
+                                 * Lesbisch
+                                 */
+                                Lesbian: () => LocalizedString;
+                                /**
+                                 * Nicht-binär
+                                 */
+                                Enby: () => LocalizedString;
+                                /**
+                                 * Pansexuell
+                                 */
+                                Pan: () => LocalizedString;
+                                /**
+                                 * Schwul
+                                 */
+                                Gay: () => LocalizedString;
+                                /**
+                                 * Transgender
+                                 */
+                                Trans: () => LocalizedString;
+                            };
+                        };
+                        rotation: {
+                            /**
+                             * Rotation des Pride-Logos
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Wähle hier, in welche Richtung das Pride-Logo rotiert sein soll.
+                             */
+                            description: () => LocalizedString;
+                            options: {
+                                /**
+                                 * 180°: Von Oben nach Unten
+                                 */
+                                '180Deg': () => LocalizedString;
+                                /**
+                                 * 135°: Von Nord-Nord-West nach Süd-Süd-Ost
+                                 */
+                                '135Deg': () => LocalizedString;
+                            };
                         };
                     };
                 };
