@@ -342,7 +342,7 @@ const openSpeiseplan = () => {
     const canteenSelection = canteen.formControl.cloneNode(
         true
     ) as HTMLSelectElement;
-    canteenSelection.classList.add('ml-auto', 'custom-select-sm');
+    canteenSelection.classList.add('flex-grow-1', 'custom-select-sm');
     canteenSelection.value = canteen.formControl.value;
     canteenSelection.addEventListener('change', () => {
         canteen.formControl.value = canteenSelection.value;
@@ -354,7 +354,7 @@ const openSpeiseplan = () => {
     const languageSelection = language.formControl.cloneNode(
         true
     ) as HTMLSelectElement;
-    languageSelection.classList.add('mr-auto', 'custom-select-sm');
+    languageSelection.classList.add('flex-grow-1', 'custom-select-sm');
     languageSelection.value = language.formControl.value;
     languageSelection.addEventListener('change', () => {
         language.formControl.value = languageSelection.value;
@@ -363,9 +363,14 @@ const openSpeiseplan = () => {
         void updateSpeiseplan();
     });
 
-    void modal
-        .getTitle()
-        .then(title => title.after(canteenSelection, languageSelection));
+    void modal.getTitle().then(title =>
+        title.after(
+            <div class="mx-auto d-flex flex-wrap">
+                {canteenSelection}
+                {languageSelection}
+            </div>
+        )
+    );
 };
 
 desktopBtn.addEventListener('click', e => {
