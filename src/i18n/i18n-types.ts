@@ -655,6 +655,30 @@ type RootTranslation = {
                         };
                     };
                 };
+                images: {
+                    settings: {
+                        maxWidth: {
+                            /**
+                             * B​i​l​d​ü​b​e​r​l​a​u​f​ ​v​e​r​h​i​n​d​e​r​n
+                             */
+                            name: string;
+                            /**
+                             * V​e​r​h​i​n​d​e​r​t​,​ ​d​a​s​s​ ​B​i​l​d​e​r​ ​i​n​ ​d​e​n​ ​K​u​r​s​e​n​ ​m​e​h​r​ ​a​l​s​ ​d​i​e​ ​k​o​m​p​l​e​t​t​e​ ​B​r​e​i​t​e​ ​e​i​n​n​e​h​m​e​n​ ​u​n​d​ ​d​a​m​i​t​ ​e​i​n​ ​h​o​r​i​z​o​n​t​a​l​e​s​ ​S​c​r​o​l​l​e​n​ ​d​e​r​ ​S​e​i​t​e​ ​v​e​r​u​r​s​a​c​h​e​n​.
+                             */
+                            description: string;
+                        };
+                        zoom: {
+                            /**
+                             * B​i​l​d​e​r​ ​z​o​o​m​e​n
+                             */
+                            name: string;
+                            /**
+                             * Z​o​o​m​t​ ​e​i​n​ ​B​i​l​d​ ​h​e​r​a​n​,​ ​w​e​n​n​ ​e​s​ ​a​n​g​e​k​l​i​c​k​t​ ​w​i​r​d​.​ ​S​o​ ​l​a​s​s​e​n​ ​s​i​c​h​ ​k​l​e​i​n​e​ ​B​i​l​d​e​r​ ​e​i​n​f​a​c​h​ ​p​e​r​ ​K​n​o​p​f​d​r​u​c​k​ ​v​e​r​g​r​ö​ß​e​r​t​ ​a​n​z​e​i​g​e​n​.
+                             */
+                            description: string;
+                        };
+                    };
+                };
             };
         };
         speiseplan: {
@@ -1364,6 +1388,30 @@ export type TranslationFunctions = {
                             name: () => LocalizedString;
                             /**
                              * Fügt Knöpfe hinzu, die ermöglichen, all Abschnitte der Seitenleiste auf einmal ein- bzw. auszuklappen.
+                             */
+                            description: () => LocalizedString;
+                        };
+                    };
+                };
+                images: {
+                    settings: {
+                        maxWidth: {
+                            /**
+                             * Bildüberlauf verhindern
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Verhindert, dass Bilder in den Kursen mehr als die komplette Breite einnehmen und damit ein horizontales Scrollen der Seite verursachen.
+                             */
+                            description: () => LocalizedString;
+                        };
+                        zoom: {
+                            /**
+                             * Bilder zoomen
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Zoomt ein Bild heran, wenn es angeklickt wird. So lassen sich kleine Bilder einfach per Knopfdruck vergrößert anzeigen.
                              */
                             description: () => LocalizedString;
                         };
