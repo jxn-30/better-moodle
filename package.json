@@ -8,7 +8,7 @@
     "scripts": {
         "lint:fix": "yarn eslint . --exit-on-fatal-error --report-unused-disable-directives --cache --cache-strategy content --fix",
         "prettier:write": "prettier --write --cache --cache-strategy content .",
-        "prettier:dist": "prettier --write dist --ignore-path dummy",
+        "prettier:dist": "prettier --write dist --ignore-path dummy --print-width 120 --tab-width 2",
         "prettier:i18n": "prettier --write src/i18n",
         "dev": "vite",
         "prebuild": "yarn i18n:once",
