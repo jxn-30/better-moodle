@@ -269,9 +269,12 @@ export const Select = <
 // endregion
 
 // region Slider
-export type SliderComponent = GenericSetting<
+export type SliderComponent<
+    Group extends FeatureGroupID,
+    Feat extends FeatureID<Group>,
+> = GenericSetting<
     number,
-    HTMLDivElement,
+    Slider<Group, Feat>,
     {
         min: number;
         max: number;
@@ -279,7 +282,14 @@ export type SliderComponent = GenericSetting<
         labels: number | string[];
     }
 >;
-type Slider = SliderComponent['element'];
+type Slider<
+    Group extends FeatureGroupID,
+    Feat extends FeatureID<Group>,
+> = HTMLDivElement & {
+    applyTranslations: (
+        translations: SettingTranslations<Group, Feat>['labels']
+    ) => void;
+};
 
 /**
  * creates a Slider component
@@ -292,14 +302,17 @@ type Slider = SliderComponent['element'];
  * @param attributes.labels - the amount of labels to show below the slider or an array of label keys
  * @returns the switch element
  */
-export const Slider = ({
+export const Slider = <
+    Group extends FeatureGroupID,
+    Feat extends FeatureID<Group>,
+>({
     id,
     value,
     min,
     max,
     step = 1,
     labels = (max - min + 1) / step,
-}: SliderComponent['props']): Slider => {
+}: SliderComponent<Group, Feat>['props']): Slider<Group, Feat> => {
     const datalistId = `${id}-datalist`;
 
     const Input = (
@@ -349,26 +362,6 @@ export const Slider = ({
         <datalist style={{ '--label-count': labelCount }}></datalist>
     );
 
-    for (
-        let currentStep = min;
-        currentStep <= max;
-        currentStep += (max - min) / (labelCount - 1)
-    ) {
-        if (fixLabels) {
-            valueToLabel.set(
-                currentStep,
-                // TODO: Translations
-                `settings.${id}.labels.${labels.shift()}`
-            );
-        }
-
-        const title = valueToLabel.get(currentStep) ?? stringify(currentStep);
-
-        labelDatalist.append(
-            <option value={currentStep} title={title} label={title}></option>
-        );
-    }
-
     const Slider = (
         <div
             className={classNames(
@@ -381,7 +374,7 @@ export const Slider = ({
             {datalist}
             {labelDatalist}
         </div>
-    ) as Slider;
+    ) as Slider<Group, Feat>;
 
     Object.defineProperty(Slider, 'value', {
         /**
@@ -415,6 +408,44 @@ export const Slider = ({
          */
         set(newVal: boolean) {
             Input.disabled = newVal;
+        },
+    });
+
+    Object.defineProperty(Slider, 'applyTranslations', {
+        /**
+         * Creates the labels with their respective translations
+         * @param translations - the label translations to use
+         */
+        value: (translations: SettingTranslations<Group, Feat>['labels']) => {
+            if (!translations) return;
+
+            for (
+                let currentStep = min;
+                currentStep <= max;
+                currentStep += (max - min) / (labelCount - 1)
+            ) {
+                if (fixLabels) {
+                    const label = labels.shift();
+                    valueToLabel.set(
+                        currentStep,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call
+                        translations[label]?.() ?? label
+                    );
+                }
+
+                const title =
+                    valueToLabel.get(currentStep) ?? stringify(currentStep);
+
+                labelDatalist.append(
+                    <option
+                        value={currentStep}
+                        title={title}
+                        label={title}
+                    ></option>
+                );
+            }
+
+            Output.textContent = valueToLabel.get(value) ?? stringify(value);
         },
     });
 

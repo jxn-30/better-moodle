@@ -18,7 +18,9 @@ export type SettingTranslations<
     Feat extends FeatureID<Group>,
     T extends
         FeatureTranslations<Group>[Feat] = FeatureTranslations<Group>[Feat],
-> = 'settings' extends keyof T ? T['settings'] : Record<string, never>;
+> =
+    'settings' extends keyof T ? T['settings'][keyof T['settings']]
+    :   Record<string, never>;
 
 type ComparisonCondition = '==' | '!=' | '>' | '<';
 

@@ -14,11 +14,29 @@ export const dateToString = (
     weekday = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
 ) =>
-    date.toLocaleString(lang, {
+    date.toLocaleDateString(lang, {
         weekday: weekday ? 'long' : undefined,
         year: year ? 'numeric' : undefined,
         month: '2-digit',
         day: '2-digit',
+    });
+
+/**
+ * Returns the localized string representation of a time
+ * @param date - the date to localize
+ * @param seconds - wether to show seconds
+ * @param lang - enforce a special language instead of BETTER_MOODLE_LANG
+ * @returns the time as a localized string
+ */
+export const timeToString = (
+    date: Date,
+    seconds = true,
+    lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
+) =>
+    date.toLocaleTimeString(lang, {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: seconds ? '2-digit' : undefined,
     });
 
 /**

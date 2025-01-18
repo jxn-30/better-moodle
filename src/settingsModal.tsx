@@ -34,6 +34,7 @@ const groups = [
     'darkmode',
     'dashboard',
     'courses',
+    'navbarMarquee',
     'linkIcons',
     'speiseplan',
     'bookmarks',

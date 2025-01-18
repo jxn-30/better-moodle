@@ -1,0 +1,93 @@
+@use '@sass-fairy/string';
+
+$marquee-duration: 10s;
+$min-marquee-width: 200px;
+
+$divider-img: 'https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico';
+
+@if global.$UNI == 'cau' {
+    $divider-img: 'https://www.fs-infmath.uni-kiel.de/favicon.ico';
+}
+
+:local(.marquee) {
+    --max-width: 0px;
+    --text-width: 0;
+    --parent-left: 0px;
+    overflow: hidden;
+    position: absolute;
+    max-width: calc(var(--max-width));
+    width: calc(var(--max-width));
+    height: 100%;
+    left: calc(var(--parent-left) - var(--max-width));
+
+    &:not(:has(> span[data-rolling])) {
+        justify-content: end;
+
+        > span > *:last-child::after {
+            display: none;
+        }
+    }
+
+    > span {
+        display: inline-block;
+        white-space: nowrap;
+        will-change: transform;
+
+        > *::after {
+            content: string.repeat(' ', 11);
+            white-space: pre;
+            background-image: url($divider-img);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+
+        &[data-rolling] {
+            :local {
+                // :local-wörkaround for animation name to be transformed
+                animation: marquee calc(var(--text-width) * 100ms) linear
+                    infinite;
+            }
+
+            + span {
+                display: inline-block;
+
+                :local {
+                    animation: marquee calc(var(--text-width) * 100ms) linear
+                        infinite;
+                }
+            }
+        }
+
+        + span {
+            display: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+
+            &[data-rolling]:hover :local {
+                animation-name: marquee;
+            }
+        }
+
+        @keyframes :local(marquee) {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    }
+
+    @media (min-width: 768px) {
+        max-width: calc(var(--max-width));
+        width: calc(var(--max-width));
+        left: calc(var(--parent-left) - var(--max-width) + $min-marquee-width);
+
+        :local(.marquee-min-width-placeholder):has(+ &) {
+            min-width: $min-marquee-width;
+        }
+    }
+}

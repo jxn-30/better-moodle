@@ -17,4 +17,5 @@ export interface SettingTranslation extends BaseTranslation {
     name: string;
     description: string;
     options?: Record<string, string>;
+    labels?: Record<string | number, string>;
 }

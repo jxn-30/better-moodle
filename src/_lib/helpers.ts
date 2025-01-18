@@ -165,6 +165,40 @@ export const debounce = <Args extends unknown[]>(
 };
 
 /**
+ * Animate things in a specific interval.
+ * @param delay - the delay in ms between two callback calls
+ * @param callback - the function to execute every delay ms
+ * @param runImmediate - wether to run the callback immediately
+ * @returns a method to cancel / abort the animation
+ */
+export const animate = <Args extends unknown[]>(
+    delay: number,
+    callback: (...args: Args) => void,
+    runImmediate = false
+) => {
+    if (runImmediate) callback();
+
+    let last = 0;
+    /**
+     * call the callback if enough time has passed
+     * @param now - a time identifier
+     */
+    const intervalCallback = now => {
+        currentId = requestAnimationFrame(intervalCallback);
+
+        const elapsed = now - last;
+
+        if (elapsed >= delay) {
+            last = now - (elapsed % delay);
+            callback();
+        }
+    };
+    let currentId = requestAnimationFrame(intervalCallback);
+
+    return () => cancelAnimationFrame(currentId);
+};
+
+/**
  * Checks if the user is logged in by checking the current URL.
  */
 export const isLoggedIn = !window.location.pathname.startsWith('/login');

@@ -14,8 +14,8 @@ export class SliderSetting<
     Group,
     Feat,
     number,
-    SliderComponent['params'],
-    SliderComponent
+    SliderComponent<Group, Feat>['params'],
+    SliderComponent<Group, Feat>
 > {
     /**
      * Constructor
@@ -26,9 +26,15 @@ export class SliderSetting<
     constructor(
         id: string,
         defaultValue: number,
-        params: SliderComponent['params']
+        params: SliderComponent<Group, Feat>['params']
     ) {
         super(id, defaultValue, Slider, params);
+
+        void this.callWhenReady(() =>
+            // We really need to make translations more typesafe
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            this.formControl.applyTranslations(this.Translation.labels)
+        );
     }
 
     /**

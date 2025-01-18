@@ -553,6 +553,78 @@ type RootTranslation = {
                 };
             };
         };
+        navbarMarquee: {
+            /**
+             * L​a​u​f​b​a​n​d​ ​(​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e​)
+             */
+            name: string;
+            /**
+             * D​i​e​ ​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e​ ​e​i​g​n​e​t​ ​s​i​c​h​ ​p​r​i​m​a​,​ ​u​m​ ​d​o​r​t​ ​n​ü​t​z​l​i​c​h​e​ ​I​n​f​o​r​m​a​t​i​o​n​e​n​ ​a​n​z​u​z​e​i​g​e​n​.
+             */
+            description: string;
+            features: {
+                clock: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * U​h​r
+                             */
+                            name: string;
+                            /**
+                             * E​i​n​e​ ​g​a​n​z​ ​n​o​r​m​a​l​e​ ​D​i​g​i​t​a​l​u​h​r
+                             */
+                            description: string;
+                        };
+                        seconds: {
+                            /**
+                             * S​e​k​u​n​d​e​n​ ​a​n​z​e​i​g​e​n
+                             */
+                            name: string;
+                            /**
+                             * S​o​l​l​e​n​ ​d​i​e​ ​S​e​k​u​n​d​e​n​ ​i​n​ ​d​e​r​ ​D​i​g​i​t​a​l​u​h​r​ ​a​n​g​e​z​e​i​g​t​ ​w​e​r​d​e​n​?
+                             */
+                            description: string;
+                        };
+                        fuzzy: {
+                            /**
+                             * U​m​g​a​n​g​s​s​p​r​a​c​h​l​i​c​h​e​ ​U​h​r
+                             */
+                            name: string;
+                            /**
+                             * E​i​n​e​ ​u​m​g​a​n​g​s​s​p​r​a​c​h​l​i​c​h​e​ ​U​h​r​,​ ​w​i​e​ ​s​i​e​ ​a​u​c​h​ ​v​o​n​ ​K​D​E​ ​P​l​a​s​m​a​ ​b​e​k​a​n​n​t​ ​i​s​t​.
+                             */
+                            description: string;
+                            labels: {
+                                /**
+                                 * A​u​s
+                                 */
+                                'off': string;
+                                /**
+                                 * 5​ ​M​i​n​u​t​e​n
+                                 */
+                                '5min': string;
+                                /**
+                                 * 1​5​ ​M​i​n​u​t​e​n
+                                 */
+                                '15min': string;
+                                /**
+                                 * E​s​s​e​n
+                                 */
+                                'food': string;
+                                /**
+                                 * T​a​g​e​s​z​e​i​t
+                                 */
+                                'day': string;
+                                /**
+                                 * W​o​c​h​e​n​a​b​s​c​h​n​i​t​t
+                                 */
+                                'week': string;
+                            };
+                        };
+                    };
+                };
+            };
+        };
         courses: {
             /**
              * K​u​r​s​e​ ​&​ ​M​e​i​n​e​ ​K​u​r​s​e
@@ -1288,6 +1360,78 @@ export type TranslationFunctions = {
                      * Zeigt ein kleines Icon an, wenn ein Link deinen Email-Client öffnen kann.
                      */
                     description: () => LocalizedString;
+                };
+            };
+        };
+        navbarMarquee: {
+            /**
+             * Laufband (Navigationsleiste)
+             */
+            name: () => LocalizedString;
+            /**
+             * Die Navigationsleiste eignet sich prima, um dort nützliche Informationen anzuzeigen.
+             */
+            description: () => LocalizedString;
+            features: {
+                clock: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * Uhr
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Eine ganz normale Digitaluhr
+                             */
+                            description: () => LocalizedString;
+                        };
+                        seconds: {
+                            /**
+                             * Sekunden anzeigen
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Sollen die Sekunden in der Digitaluhr angezeigt werden?
+                             */
+                            description: () => LocalizedString;
+                        };
+                        fuzzy: {
+                            /**
+                             * Umgangssprachliche Uhr
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Eine umgangssprachliche Uhr, wie sie auch von KDE Plasma bekannt ist.
+                             */
+                            description: () => LocalizedString;
+                            labels: {
+                                /**
+                                 * Aus
+                                 */
+                                'off': () => LocalizedString;
+                                /**
+                                 * 5 Minuten
+                                 */
+                                '5min': () => LocalizedString;
+                                /**
+                                 * 15 Minuten
+                                 */
+                                '15min': () => LocalizedString;
+                                /**
+                                 * Essen
+                                 */
+                                'food': () => LocalizedString;
+                                /**
+                                 * Tageszeit
+                                 */
+                                'day': () => LocalizedString;
+                                /**
+                                 * Wochenabschnitt
+                                 */
+                                'week': () => LocalizedString;
+                            };
+                        };
+                    };
                 };
             };
         };
