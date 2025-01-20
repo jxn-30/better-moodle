@@ -5,14 +5,13 @@ import type { Dish } from './speiseplan';
 import FeatureGroup from '@/FeatureGroup';
 import { FieldSet } from '@/Components';
 import globalStyle from '../../style/index.module.scss';
-import { i18nObject } from '../../i18n/i18n-util';
 import type { Locales } from '../../i18n/i18n-types';
 import { Modal } from '@/Modal';
 import Parser from './parsers';
 import { PREFIX } from '@/helpers';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './style.module.scss';
-import { BETTER_MOODLE_LANG, languages, LL } from 'i18n';
+import { BETTER_MOODLE_LANG, languages, LL, LLMap } from 'i18n';
 import { currency, dateToString, unit } from '@/localeString';
 import { getLoadingSpinner, ready } from '@/DOM';
 
@@ -24,10 +23,6 @@ const language = new SelectSetting('language', 'auto', [
         title: `${flag} ${name}`,
     })),
 ]);
-
-const sLLs = new Map<Locales, typeof LL>(
-    languages.keys().map(locale => [locale, i18nObject(locale)])
-);
 
 /**
  * Gets the currently set speiseplan language
@@ -42,7 +37,7 @@ const getLang = () =>
  * Gets a LL instance with the speiseplan language
  * @returns a LL instance
  */
-const sLL = () => sLLs.get(getLang())!.features.speiseplan;
+const sLL = () => LLMap.get(getLang()).features.speiseplan;
 
 const canteens = Object.values(
     import.meta.glob(import.meta.env.VITE_SPEISEPLAN_CANTEEN_GLOB, {

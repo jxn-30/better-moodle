@@ -15,7 +15,31 @@ export const BETTER_MOODLE_LANG = (() => {
     return savedLanguage;
 })();
 
-export const LL = i18nObject(BETTER_MOODLE_LANG);
+type I18nObject = ReturnType<typeof i18nObject>;
+
+/**
+ * A helper class that instantiates i18nObjects for languages when required.
+ */
+class LLMapClass extends Map<Locales, I18nObject> {
+    /**
+     * Gets a i18nObject for a language.
+     * Creates the object if it does not exist yet.
+     * @param key - the locale or 'auto' to use
+     * @returns the i18nObject
+     */
+    get(key: Locales | 'auto'): I18nObject {
+        if (key === 'auto') return this.get(BETTER_MOODLE_LANG);
+        const object = super.get(key);
+        if (object) return object;
+        const newObject = i18nObject(key);
+        this.set(key, newObject);
+        return newObject;
+    }
+}
+
+export const LLMap = new LLMapClass();
+
+export const LL = LLMap.get('auto');
 
 export const languages = new Map<Locales, Translation['language']>();
 for (const locale of locales) {
