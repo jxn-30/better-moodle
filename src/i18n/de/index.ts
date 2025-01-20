@@ -62,4 +62,18 @@ Die offiziell unterstützten Browser (Das Better-Moodle Core-Team empfiehlt Fire
         courses,
         speiseplan,
     },
+    numbers: {
+        1: 'eins',
+        2: 'zwei',
+        3: 'drei',
+        4: 'vier',
+        5: 'fünf',
+        6: 'sechs',
+        7: 'sieben',
+        8: 'acht',
+        9: 'neun',
+        10: 'zehn',
+        11: 'elf',
+        12: 'zwölf',
+    },
 } satisfies BaseTranslation;

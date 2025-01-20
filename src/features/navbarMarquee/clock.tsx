@@ -1,9 +1,21 @@
 import { animate } from '@/helpers';
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
+import { LL } from 'i18n';
 import { marquee } from './index';
 import { SliderSetting } from '@/Settings/SliderSetting';
 import { timeToString } from '@/localeString';
+
+const enum FUZZYNESS {
+    off,
+    '5min',
+    '15min',
+    food,
+    day,
+    week,
+}
+
+type Fuzzyness = keyof typeof FUZZYNESS;
 
 const enabled = new BooleanSetting('enabled', false);
 const seconds = new BooleanSetting('seconds', true).disabledIf(
@@ -16,7 +28,7 @@ const fuzzy = new SliderSetting('fuzzy', 0, {
     min: 0,
     max: 5,
     step: 1,
-    labels: ['off', '5min', '15min', 'food', 'day', 'week'],
+    labels: ['off', '5min', '15min', 'food', 'day', 'week'] as Fuzzyness[],
 });
 
 const clockSpan = <span>00:00:00</span>;
@@ -25,6 +37,53 @@ const fuzzySpan = <span>Kurz vor knapp</span>;
 let fuzzySpanClone: HTMLSpanElement;
 
 let cancelAnimation: (() => void) | null = null;
+
+const fuzzyTranslations = LL.features.navbarMarquee.features.clock.fuzzy;
+
+/**
+ * Gets the time in the currently set fuzzy format
+ * @param now - the current time as a Date
+ * @returns the fuzzy time string
+ */
+const fuzzyTime = (now: Date): string => {
+    const fuzzyness = fuzzy.value as FUZZYNESS;
+    if (fuzzyness === FUZZYNESS.off) return '';
+    else if (
+        fuzzyness === FUZZYNESS['5min'] ||
+        fuzzyness === FUZZYNESS['15min']
+    ) {
+        const translations = fuzzyTranslations.minutes;
+        const sectorSize = (
+            { [FUZZYNESS['5min']]: 5, [FUZZYNESS['15min']]: 15 } as const
+        )[fuzzyness];
+        const minutes = (now.getTime() % (60 * 60 * 1000)) / (60 * 1000);
+        const section = (Math.floor((minutes + sectorSize / 2) / sectorSize) *
+            sectorSize) as keyof typeof translations;
+        return translations[section]({ hour: now.getHours() % 12 });
+    } else if (fuzzyness === FUZZYNESS.food || fuzzyness === FUZZYNESS.day) {
+        const translationKey = (
+            { [FUZZYNESS.food]: 'food', [FUZZYNESS.day]: 'day' } as const
+        )[fuzzyness];
+        const translations = fuzzyTranslations[translationKey];
+        const hour = now.getHours();
+        const section = Math.floor(
+            hour / (24 / Object.keys(translations).length)
+        ).toString() as keyof typeof translations;
+        return translations[section]({ hour: hour % 12 });
+    } else if (fuzzyness === FUZZYNESS.week) {
+        const dayOfWeek = now.getDay();
+        const weekSection = (
+            dayOfWeek === 1 ?
+                0 // Monday
+            : dayOfWeek >= 2 && dayOfWeek <= 3 ?
+                1 // Tuesday, Wednesday
+            : dayOfWeek <= 5 ?
+                2 // Thursday, Friday
+            :   3) as const; // Saturday, Sunday
+        return fuzzyTranslations.week[weekSection]();
+    }
+    return '';
+};
 
 /**
  * Appends the clock spans to the marquee, if needed and sets animation
@@ -54,6 +113,8 @@ const onload = () => {
                 }
 
                 if (fuzzy.value !== 0 && fuzzySpanClone) {
+                    fuzzySpan.textContent = fuzzySpanClone.textContent =
+                        fuzzyTime(now);
                     fuzzySpan.title = fuzzySpanClone.title = timeToString(
                         now,
                         true

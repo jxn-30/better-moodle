@@ -78,3 +78,14 @@ export const currency = (
         currency,
         currencyDisplay: format,
     });
+
+/**
+ * Capitalizes the first letter of each word.
+ * @param str - the string to capitalize
+ * @param lang - enforce a special language instead of BETTER_MOODLE_LANG
+ * @returns the capitalized string
+ */
+export const capitalize = (
+    str: string,
+    lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
+) => str.replace(/(?<=^|\W)\w/g, $1 => $1.toLocaleUpperCase(lang));

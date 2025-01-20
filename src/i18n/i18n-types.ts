@@ -622,6 +622,160 @@ type RootTranslation = {
                             };
                         };
                     };
+                    fuzzy: {
+                        minutes: {
+                            /**
+                             * {​h​o​u​r​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​|​r​e​m​o​v​e​T​r​a​i​l​i​n​g​S​}​ ​U​h​r
+                             * @param {number} hour
+                             */
+                            '0': RequiredParams<'hour|spell|capitalize|removeTrailingS'>;
+                            /**
+                             * F​ü​n​f​ ​n​a​c​h​ ​{​h​o​u​r​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * @param {number} hour
+                             */
+                            '5': RequiredParams<'hour|spell|capitalize'>;
+                            /**
+                             * Z​e​h​n​ ​n​a​c​h​ ​{​h​o​u​r​:​n​u​m​b​e​r​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e
+                             */
+                            '10': string;
+                            /**
+                             * V​i​e​r​t​e​l​ ​n​a​c​h​ ​{​h​o​u​r​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * @param {number} hour
+                             */
+                            '15': RequiredParams<'hour|spell|capitalize'>;
+                            /**
+                             * Z​w​a​n​z​i​g​ ​n​a​c​h​ ​{​h​o​u​r​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * @param {number} hour
+                             */
+                            '20': RequiredParams<'hour|spell|capitalize'>;
+                            /**
+                             * F​ü​n​f​ ​v​o​r​ ​h​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * @param {number} hour
+                             */
+                            '25': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            /**
+                             * H​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * @param {number} hour
+                             */
+                            '30': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            /**
+                             * F​ü​n​f​ ​n​a​c​h​ ​h​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * @param {number} hour
+                             */
+                            '35': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            /**
+                             * Z​w​a​n​z​i​g​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * @param {number} hour
+                             */
+                            '40': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            /**
+                             * D​r​e​i​v​i​e​r​t​e​l​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * @param {number} hour
+                             */
+                            '45': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            /**
+                             * Z​e​h​n​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * @param {number} hour
+                             */
+                            '50': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            /**
+                             * F​ü​n​f​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * @param {number} hour
+                             */
+                            '55': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            /**
+                             * {​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​|​r​e​m​o​v​e​T​r​a​i​l​i​n​g​S​}​ ​U​h​r
+                             * @param {number} hour
+                             */
+                            '60': RequiredParams<'hour|plus1|spell|capitalize|removeTrailingS'>;
+                        };
+                        food: {
+                            /**
+                             * S​c​h​l​a​f​e​n​s​z​e​i​t
+                             */
+                            '0': string;
+                            /**
+                             * F​r​ü​h​s​t​ü​c​k
+                             */
+                            '1': string;
+                            /**
+                             * Z​w​e​i​t​e​s​ ​F​r​ü​h​s​t​ü​c​k
+                             */
+                            '2': string;
+                            /**
+                             * K​a​f​f​e​e​p​a​u​s​e
+                             */
+                            '3': string;
+                            /**
+                             * M​i​t​t​a​g​s​p​a​u​s​e
+                             */
+                            '4': string;
+                            /**
+                             * N​a​c​h​m​i​t​t​a​g​s​t​e​e
+                             */
+                            '5': string;
+                            /**
+                             * A​b​e​n​d​e​s​s​e​n
+                             */
+                            '6': string;
+                            /**
+                             * M​i​t​t​e​r​n​a​c​h​t​s​s​n​a​c​k
+                             */
+                            '7': string;
+                        };
+                        day: {
+                            /**
+                             * N​a​c​h​t
+                             */
+                            '0': string;
+                            /**
+                             * F​r​ü​h​e​r​ ​M​o​r​g​e​n
+                             */
+                            '1': string;
+                            /**
+                             * M​o​r​g​e​n
+                             */
+                            '2': string;
+                            /**
+                             * V​o​r​m​i​t​t​a​g
+                             */
+                            '3': string;
+                            /**
+                             * M​i​t​t​a​g
+                             */
+                            '4': string;
+                            /**
+                             * N​a​c​h​m​i​t​t​a​g
+                             */
+                            '5': string;
+                            /**
+                             * A​b​e​n​d
+                             */
+                            '6': string;
+                            /**
+                             * S​p​ä​t​e​r​ ​A​b​e​n​d
+                             */
+                            '7': string;
+                        };
+                        week: {
+                            /**
+                             * W​o​c​h​e​n​a​n​f​a​n​g
+                             */
+                            '0': string;
+                            /**
+                             * M​i​t​t​e​ ​d​e​r​ ​W​o​c​h​e
+                             */
+                            '1': string;
+                            /**
+                             * E​n​d​e​ ​d​e​r​ ​W​o​c​h​e
+                             */
+                            '2': string;
+                            /**
+                             * W​o​c​h​e​n​e​n​d​e​!
+                             */
+                            '3': string;
+                        };
+                    };
                 };
             };
         };
@@ -823,6 +977,56 @@ type RootTranslation = {
                 };
             };
         };
+    };
+    numbers: {
+        /**
+         * e​i​n​s
+         */
+        '1': string;
+        /**
+         * z​w​e​i
+         */
+        '2': string;
+        /**
+         * d​r​e​i
+         */
+        '3': string;
+        /**
+         * v​i​e​r
+         */
+        '4': string;
+        /**
+         * f​ü​n​f
+         */
+        '5': string;
+        /**
+         * s​e​c​h​s
+         */
+        '6': string;
+        /**
+         * s​i​e​b​e​n
+         */
+        '7': string;
+        /**
+         * a​c​h​t
+         */
+        '8': string;
+        /**
+         * n​e​u​n
+         */
+        '9': string;
+        /**
+         * z​e​h​n
+         */
+        '10': string;
+        /**
+         * e​l​f
+         */
+        '11': string;
+        /**
+         * z​w​ö​l​f
+         */
+        '12': string;
     };
 };
 
@@ -1432,6 +1636,148 @@ export type TranslationFunctions = {
                             };
                         };
                     };
+                    fuzzy: {
+                        minutes: {
+                            /**
+                             * {hour|spell|capitalize|removeTrailingS} Uhr
+                             */
+                            '0': (arg: { hour: number }) => LocalizedString;
+                            /**
+                             * Fünf nach {hour|spell|capitalize}
+                             */
+                            '5': (arg: { hour: number }) => LocalizedString;
+                            /**
+                             * Zehn nach {hour:number|spell|capitalize
+                             */
+                            '10': () => LocalizedString;
+                            /**
+                             * Viertel nach {hour|spell|capitalize}
+                             */
+                            '15': (arg: { hour: number }) => LocalizedString;
+                            /**
+                             * Zwanzig nach {hour|spell|capitalize}
+                             */
+                            '20': (arg: { hour: number }) => LocalizedString;
+                            /**
+                             * Fünf vor halb {hour|plus1|spell|capitalize}
+                             */
+                            '25': (arg: { hour: number }) => LocalizedString;
+                            /**
+                             * Halb {hour|plus1|spell|capitalize}
+                             */
+                            '30': (arg: { hour: number }) => LocalizedString;
+                            /**
+                             * Fünf nach halb {hour|plus1|spell|capitalize}
+                             */
+                            '35': (arg: { hour: number }) => LocalizedString;
+                            /**
+                             * Zwanzig vor {hour|plus1|spell|capitalize}
+                             */
+                            '40': (arg: { hour: number }) => LocalizedString;
+                            /**
+                             * Dreiviertel {hour|plus1|spell|capitalize}
+                             */
+                            '45': (arg: { hour: number }) => LocalizedString;
+                            /**
+                             * Zehn vor {hour|plus1|spell|capitalize}
+                             */
+                            '50': (arg: { hour: number }) => LocalizedString;
+                            /**
+                             * Fünf vor {hour|plus1|spell|capitalize}
+                             */
+                            '55': (arg: { hour: number }) => LocalizedString;
+                            /**
+                             * {hour|plus1|spell|capitalize|removeTrailingS} Uhr
+                             */
+                            '60': (arg: { hour: number }) => LocalizedString;
+                        };
+                        food: {
+                            /**
+                             * Schlafenszeit
+                             */
+                            '0': () => LocalizedString;
+                            /**
+                             * Frühstück
+                             */
+                            '1': () => LocalizedString;
+                            /**
+                             * Zweites Frühstück
+                             */
+                            '2': () => LocalizedString;
+                            /**
+                             * Kaffeepause
+                             */
+                            '3': () => LocalizedString;
+                            /**
+                             * Mittagspause
+                             */
+                            '4': () => LocalizedString;
+                            /**
+                             * Nachmittagstee
+                             */
+                            '5': () => LocalizedString;
+                            /**
+                             * Abendessen
+                             */
+                            '6': () => LocalizedString;
+                            /**
+                             * Mitternachtssnack
+                             */
+                            '7': () => LocalizedString;
+                        };
+                        day: {
+                            /**
+                             * Nacht
+                             */
+                            '0': () => LocalizedString;
+                            /**
+                             * Früher Morgen
+                             */
+                            '1': () => LocalizedString;
+                            /**
+                             * Morgen
+                             */
+                            '2': () => LocalizedString;
+                            /**
+                             * Vormittag
+                             */
+                            '3': () => LocalizedString;
+                            /**
+                             * Mittag
+                             */
+                            '4': () => LocalizedString;
+                            /**
+                             * Nachmittag
+                             */
+                            '5': () => LocalizedString;
+                            /**
+                             * Abend
+                             */
+                            '6': () => LocalizedString;
+                            /**
+                             * Später Abend
+                             */
+                            '7': () => LocalizedString;
+                        };
+                        week: {
+                            /**
+                             * Wochenanfang
+                             */
+                            '0': () => LocalizedString;
+                            /**
+                             * Mitte der Woche
+                             */
+                            '1': () => LocalizedString;
+                            /**
+                             * Ende der Woche
+                             */
+                            '2': () => LocalizedString;
+                            /**
+                             * Wochenende!
+                             */
+                            '3': () => LocalizedString;
+                        };
+                    };
                 };
             };
         };
@@ -1634,6 +1980,61 @@ export type TranslationFunctions = {
             };
         };
     };
+    numbers: {
+        /**
+         * eins
+         */
+        '1': () => LocalizedString;
+        /**
+         * zwei
+         */
+        '2': () => LocalizedString;
+        /**
+         * drei
+         */
+        '3': () => LocalizedString;
+        /**
+         * vier
+         */
+        '4': () => LocalizedString;
+        /**
+         * fünf
+         */
+        '5': () => LocalizedString;
+        /**
+         * sechs
+         */
+        '6': () => LocalizedString;
+        /**
+         * sieben
+         */
+        '7': () => LocalizedString;
+        /**
+         * acht
+         */
+        '8': () => LocalizedString;
+        /**
+         * neun
+         */
+        '9': () => LocalizedString;
+        /**
+         * zehn
+         */
+        '10': () => LocalizedString;
+        /**
+         * elf
+         */
+        '11': () => LocalizedString;
+        /**
+         * zwölf
+         */
+        '12': () => LocalizedString;
+    };
 };
 
-export type Formatters = {};
+export type Formatters = {
+    capitalize: (value: number) => unknown;
+    plus1: (value: number) => unknown;
+    removeTrailingS: (value: number) => unknown;
+    spell: (value: number) => unknown;
+};
