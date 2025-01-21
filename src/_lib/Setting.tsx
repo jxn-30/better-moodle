@@ -84,8 +84,6 @@ export default abstract class Setting<
         this.#id = id;
         this.#default = defaultValue;
 
-        this.#unsavedValue = this.savedValue;
-
         void this.callWhenReady(() => {
             this.#formControl = createComponent({
                 id: this.inputID,
@@ -163,6 +161,7 @@ export default abstract class Setting<
     set feature(feature: Feature<Group, Feat> | FeatureGroup<Group>) {
         if (this.#feature) throw new Error('Cannot reassign feature');
         this.#feature = feature;
+        this.#unsavedValue = this.savedValue;
         this.instanceReady();
     }
 
