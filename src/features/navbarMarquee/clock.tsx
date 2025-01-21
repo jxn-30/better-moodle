@@ -33,7 +33,7 @@ const fuzzy = new SliderSetting('fuzzy', 0, {
 
 const clockSpan = <span>00:00:00</span>;
 let clockSpanClone: HTMLSpanElement;
-const fuzzySpan = <span>Kurz vor knapp</span>;
+const fuzzySpan = <span>🕛️🕒🕕🕘</span>;
 let fuzzySpanClone: HTMLSpanElement;
 
 let cancelAnimation: (() => void) | null = null;
