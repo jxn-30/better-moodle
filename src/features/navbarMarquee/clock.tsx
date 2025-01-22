@@ -59,7 +59,7 @@ const fuzzyTime = (now: Date): string => {
         const minutes = (now.getTime() % (60 * 60 * 1000)) / (60 * 1000);
         const section = (Math.floor((minutes + sectorSize / 2) / sectorSize) *
             sectorSize) as keyof typeof translations;
-        return translations[section]({ hour: now.getHours() % 12 });
+        return translations[section]({ hour: now.getHours() % 12 || 12 });
     } else if (fuzzyness === FUZZYNESS.food || fuzzyness === FUZZYNESS.day) {
         const translationKey = (
             { [FUZZYNESS.food]: 'food', [FUZZYNESS.day]: 'day' } as const
@@ -69,7 +69,7 @@ const fuzzyTime = (now: Date): string => {
         const section = Math.floor(
             hour / (24 / Object.keys(translations).length)
         ).toString() as keyof typeof translations;
-        return translations[section]({ hour: hour % 12 });
+        return translations[section]();
     } else if (fuzzyness === FUZZYNESS.week) {
         const dayOfWeek = now.getDay();
         const weekSection = (

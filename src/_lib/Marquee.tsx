@@ -23,9 +23,8 @@ export default class Marquee {
             {this.#cloneSpan}
         </div>
     ) as HTMLDivElement;
-    readonly #observer = new ResizeObserver(
-        debounce(() => this.#recalculate())
-    );
+    readonly recalculate = debounce(() => this.#recalculate());
+    readonly #observer = new ResizeObserver(this.recalculate);
     readonly #observedElements = new Set<Element>();
     readonly #minWidthPlaceholder = (
         <div class={style.marqueeMinWidthPlaceholder}></div>
@@ -61,7 +60,7 @@ export default class Marquee {
             this.#minWidthPlaceholder,
             this.#content
         );
-        this.#recalculate();
+        this.recalculate();
         this.#observer.observe(this.#parent);
         this.#observedElements.forEach(el => this.#observer.observe(el));
         window.dispatchEvent(new Event('resize'));
@@ -83,7 +82,7 @@ export default class Marquee {
      */
     setMaxWidthFunction(maxWidthFn: () => number) {
         this.#getMaxWidth = maxWidthFn;
-        this.#recalculate();
+        this.recalculate();
     }
 
     /**
@@ -114,7 +113,7 @@ export default class Marquee {
 
         if (!this.#parent) void this.#put();
 
-        this.#recalculate();
+        this.recalculate();
 
         return clones;
     }
@@ -127,7 +126,7 @@ export default class Marquee {
         el.remove();
         this.#contentClones.get(el)?.remove();
         this.#contentClones.delete(el);
-        this.#recalculate();
+        this.recalculate();
 
         if (this.#contentClones.size === 0) this.#remove();
     }

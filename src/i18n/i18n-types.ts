@@ -649,45 +649,45 @@ type RootTranslation = {
                              */
                             '20': RequiredParams<'hour|spell|capitalize'>;
                             /**
-                             * F​ü​n​f​ ​v​o​r​ ​h​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * F​ü​n​f​ ​v​o​r​ ​h​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '25': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '25': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * H​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * H​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '30': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '30': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * F​ü​n​f​ ​n​a​c​h​ ​h​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * F​ü​n​f​ ​n​a​c​h​ ​h​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '35': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '35': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * Z​w​a​n​z​i​g​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * Z​w​a​n​z​i​g​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '40': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '40': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * D​r​e​i​v​i​e​r​t​e​l​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * D​r​e​i​v​i​e​r​t​e​l​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '45': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '45': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * Z​e​h​n​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * Z​e​h​n​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '50': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '50': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * F​ü​n​f​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * F​ü​n​f​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '55': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '55': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * {​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​|​r​e​m​o​v​e​T​r​a​i​l​i​n​g​S​}​ ​U​h​r
+                             * {​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​|​r​e​m​o​v​e​T​r​a​i​l​i​n​g​S​}​ ​U​h​r
                              * @param {number} hour
                              */
-                            '60': RequiredParams<'hour|plus1|spell|capitalize|removeTrailingS'>;
+                            '60': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize|removeTrailingS'>;
                         };
                         food: {
                             /**
@@ -776,6 +776,30 @@ type RootTranslation = {
                             '3': string;
                         };
                     };
+                };
+                christmasCountdown: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * C​o​u​n​t​d​o​w​n​ ​b​i​s​ ​H​e​i​l​i​g​a​b​e​n​d​ ​�​�
+                             */
+                            name: string;
+                            /**
+							 * Z​e​i​g​t​ ​e​i​n​e​n​ ​C​o​u​n​t​d​o​w​n​ ​b​i​s​ ​H​e​i​l​i​g​a​b​e​n​d​ ​i​n​ ​d​e​r​ ​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e​ ​a​n​.​
+						​H​i​e​r​b​e​i​ ​h​a​n​d​e​l​t​ ​e​s​ ​s​i​c​h​ ​u​m​ ​e​i​n​e​ ​k​l​e​i​n​e​ ​H​o​m​m​a​g​e​ ​a​n​ ​d​e​n​ ​M​a​t​h​e​-​V​o​r​k​u​r​s​.
+							 */
+                            description: string;
+                        };
+                    };
+                    /**
+                     * N​o​c​h​ ​*​*​{​d​a​y​s​}​*​*​ ​T​a​g​{​{​e​}​}​ ​b​i​s​ ​H​e​i​l​i​g​a​b​e​n​d​.
+                     * @param {string | number | boolean} days
+                     */
+                    remaining: RequiredParams<'days'>;
+                    /**
+                     * �​�​ ​H​e​u​t​e​ ​i​s​t​ ​H​e​i​l​i​g​a​b​e​n​d​.​ ​F​r​o​h​e​ ​W​e​i​h​n​a​c​h​t​e​n​!​ ​�​�
+                     */
+                    christmas: string;
                 };
             };
         };
@@ -1659,35 +1683,35 @@ export type TranslationFunctions = {
                              */
                             '20': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Fünf vor halb {hour|plus1|spell|capitalize}
+                             * Fünf vor halb {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '25': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Halb {hour|plus1|spell|capitalize}
+                             * Halb {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '30': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Fünf nach halb {hour|plus1|spell|capitalize}
+                             * Fünf nach halb {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '35': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Zwanzig vor {hour|plus1|spell|capitalize}
+                             * Zwanzig vor {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '40': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Dreiviertel {hour|plus1|spell|capitalize}
+                             * Dreiviertel {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '45': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Zehn vor {hour|plus1|spell|capitalize}
+                             * Zehn vor {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '50': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Fünf vor {hour|plus1|spell|capitalize}
+                             * Fünf vor {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '55': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * {hour|plus1|spell|capitalize|removeTrailingS} Uhr
+                             * {hour|plus1|mod12Or12|spell|capitalize|removeTrailingS} Uhr
                              */
                             '60': (arg: { hour: number }) => LocalizedString;
                         };
@@ -1778,6 +1802,31 @@ export type TranslationFunctions = {
                             '3': () => LocalizedString;
                         };
                     };
+                };
+                christmasCountdown: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * Countdown bis Heiligabend 🎄
+                             */
+                            name: () => LocalizedString;
+                            /**
+							 * Zeigt einen Countdown bis Heiligabend in der Navigationsleiste an.
+						Hierbei handelt es sich um eine kleine Hommage an den Mathe-Vorkurs.
+							 */
+                            description: () => LocalizedString;
+                        };
+                    };
+                    /**
+                     * Noch **{days}** Tag{{e}} bis Heiligabend.
+                     */
+                    remaining: (arg: {
+                        days: string | number | boolean;
+                    }) => LocalizedString;
+                    /**
+                     * 🎄 Heute ist Heiligabend. Frohe Weihnachten! 🎄
+                     */
+                    christmas: () => LocalizedString;
                 };
             };
         };
@@ -2034,6 +2083,7 @@ export type TranslationFunctions = {
 
 export type Formatters = {
     capitalize: (value: number) => unknown;
+    mod12Or12: (value: number) => unknown;
     plus1: (value: number) => unknown;
     removeTrailingS: (value: number) => unknown;
     spell: (value: number) => unknown;

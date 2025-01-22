@@ -88,4 +88,4 @@ export const currency = (
 export const capitalize = (
     str: string,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) => str.replace(/(?<=^|\W)\w/g, $1 => $1.toLocaleUpperCase(lang));
+) => str.replace(/(?<=^|\s)\S/g, $1 => $1.toLocaleUpperCase(lang));
