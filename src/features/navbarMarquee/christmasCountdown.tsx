@@ -39,6 +39,7 @@ const updateCountdown = () => {
         undefined,
         false
     );
+    marquee.recalculate();
 };
 
 /**
