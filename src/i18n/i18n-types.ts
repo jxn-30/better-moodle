@@ -649,45 +649,45 @@ type RootTranslation = {
                              */
                             '20': RequiredParams<'hour|spell|capitalize'>;
                             /**
-                             * F​ü​n​f​ ​v​o​r​ ​h​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * F​ü​n​f​ ​v​o​r​ ​h​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '25': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '25': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * H​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * H​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '30': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '30': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * F​ü​n​f​ ​n​a​c​h​ ​h​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * F​ü​n​f​ ​n​a​c​h​ ​h​a​l​b​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '35': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '35': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * Z​w​a​n​z​i​g​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * Z​w​a​n​z​i​g​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '40': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '40': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * D​r​e​i​v​i​e​r​t​e​l​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * D​r​e​i​v​i​e​r​t​e​l​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '45': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '45': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * Z​e​h​n​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * Z​e​h​n​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '50': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '50': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * F​ü​n​f​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * F​ü​n​f​ ​v​o​r​ ​{​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
                              */
-                            '55': RequiredParams<'hour|plus1|spell|capitalize'>;
+                            '55': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize'>;
                             /**
-                             * {​h​o​u​r​|​p​l​u​s​1​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​|​r​e​m​o​v​e​T​r​a​i​l​i​n​g​S​}​ ​U​h​r
+                             * {​h​o​u​r​|​p​l​u​s​1​|​m​o​d​1​2​O​r​1​2​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​|​r​e​m​o​v​e​T​r​a​i​l​i​n​g​S​}​ ​U​h​r
                              * @param {number} hour
                              */
-                            '60': RequiredParams<'hour|plus1|spell|capitalize|removeTrailingS'>;
+                            '60': RequiredParams<'hour|plus1|mod12Or12|spell|capitalize|removeTrailingS'>;
                         };
                         food: {
                             /**
@@ -1659,35 +1659,35 @@ export type TranslationFunctions = {
                              */
                             '20': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Fünf vor halb {hour|plus1|spell|capitalize}
+                             * Fünf vor halb {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '25': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Halb {hour|plus1|spell|capitalize}
+                             * Halb {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '30': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Fünf nach halb {hour|plus1|spell|capitalize}
+                             * Fünf nach halb {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '35': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Zwanzig vor {hour|plus1|spell|capitalize}
+                             * Zwanzig vor {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '40': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Dreiviertel {hour|plus1|spell|capitalize}
+                             * Dreiviertel {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '45': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Zehn vor {hour|plus1|spell|capitalize}
+                             * Zehn vor {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '50': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Fünf vor {hour|plus1|spell|capitalize}
+                             * Fünf vor {hour|plus1|mod12Or12|spell|capitalize}
                              */
                             '55': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * {hour|plus1|spell|capitalize|removeTrailingS} Uhr
+                             * {hour|plus1|mod12Or12|spell|capitalize|removeTrailingS} Uhr
                              */
                             '60': (arg: { hour: number }) => LocalizedString;
                         };
@@ -2034,6 +2034,7 @@ export type TranslationFunctions = {
 
 export type Formatters = {
     capitalize: (value: number) => unknown;
+    mod12Or12: (value: number) => unknown;
     plus1: (value: number) => unknown;
     removeTrailingS: (value: number) => unknown;
     spell: (value: number) => unknown;

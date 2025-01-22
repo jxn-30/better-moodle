@@ -51,6 +51,12 @@ export const initFormatters: FormattersInitializer<
          * @returns num + 1
          */
         plus1: (num: number) => num + 1,
+        /**
+         * Calculates mod12 on a number and returns 12 if result would be 0
+         * @param num - the base number
+         * @returns num mod 12 or 12 if num mod 12 is 0
+         */
+        mod12Or12: (num: number) => num % 12 || 12,
     };
 
     return formatters;
