@@ -777,6 +777,30 @@ type RootTranslation = {
                         };
                     };
                 };
+                christmasCountdown: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * C​o​u​n​t​d​o​w​n​ ​b​i​s​ ​H​e​i​l​i​g​a​b​e​n​d​ ​�​�
+                             */
+                            name: string;
+                            /**
+							 * Z​e​i​g​t​ ​e​i​n​e​n​ ​C​o​u​n​t​d​o​w​n​ ​b​i​s​ ​H​e​i​l​i​g​a​b​e​n​d​ ​i​n​ ​d​e​r​ ​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e​ ​a​n​.​
+						​H​i​e​r​b​e​i​ ​h​a​n​d​e​l​t​ ​e​s​ ​s​i​c​h​ ​u​m​ ​e​i​n​e​ ​k​l​e​i​n​e​ ​H​o​m​m​a​g​e​ ​a​n​ ​d​e​n​ ​M​a​t​h​e​-​V​o​r​k​u​r​s​.
+							 */
+                            description: string;
+                        };
+                    };
+                    /**
+                     * N​o​c​h​ ​*​*​{​d​a​y​s​}​*​*​ ​T​a​g​{​{​e​}​}​ ​b​i​s​ ​H​e​i​l​i​g​a​b​e​n​d​.
+                     * @param {string | number | boolean} days
+                     */
+                    remaining: RequiredParams<'days'>;
+                    /**
+                     * �​�​ ​H​e​u​t​e​ ​i​s​t​ ​H​e​i​l​i​g​a​b​e​n​d​.​ ​F​r​o​h​e​ ​W​e​i​h​n​a​c​h​t​e​n​!​ ​�​�
+                     */
+                    christmas: string;
+                };
             };
         };
         courses: {
@@ -1778,6 +1802,31 @@ export type TranslationFunctions = {
                             '3': () => LocalizedString;
                         };
                     };
+                };
+                christmasCountdown: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * Countdown bis Heiligabend 🎄
+                             */
+                            name: () => LocalizedString;
+                            /**
+							 * Zeigt einen Countdown bis Heiligabend in der Navigationsleiste an.
+						Hierbei handelt es sich um eine kleine Hommage an den Mathe-Vorkurs.
+							 */
+                            description: () => LocalizedString;
+                        };
+                    };
+                    /**
+                     * Noch **{days}** Tag{{e}} bis Heiligabend.
+                     */
+                    remaining: (arg: {
+                        days: string | number | boolean;
+                    }) => LocalizedString;
+                    /**
+                     * 🎄 Heute ist Heiligabend. Frohe Weihnachten! 🎄
+                     */
+                    christmas: () => LocalizedString;
                 };
             };
         };

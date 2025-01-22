@@ -20,6 +20,6 @@ void ready().then(() => {
 });
 
 export default FeatureGroup.register({
-    features: new Set(['clock']),
+    features: new Set(['clock', 'christmasCountdown']),
 });
 export { marquee };

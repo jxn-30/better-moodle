@@ -55,10 +55,16 @@ export const mdID = (md: string, idPrefix = '') =>
  * @param md - the markdown string to be converted
  * @param headingStart - an optional number to start the heading levels at
  * @param idPrefix - a prefix used in IDs to achieve scoped IDs
+ * @param pWrap - wether to wrap normal paragraphs into a <p></p>. May be useful to disable for singleline strings
  * @returns the HTML string
  * @see {@link https://github.com/p01/mmd.js} for where this is adopted from.
  */
-export const mdToHtml = (md: string, headingStart = 1, idPrefix = '') => {
+export const mdToHtml = (
+    md: string,
+    headingStart = 1,
+    idPrefix = '',
+    pWrap = true
+) => {
     let html = '';
 
     const referenceLinks = new Map<string, string>();
@@ -128,7 +134,8 @@ export const mdToHtml = (md: string, headingStart = 1, idPrefix = '') => {
                       )}</h${i}>`
                 : firstChar === '<' ? b
                 : b.startsWith('---') ? '<hr />'
-                : `<p>${inlineEscape(b)}</p>`;
+                : pWrap ? `<p>${inlineEscape(b)}</p>`
+                : inlineEscape(b);
         });
 
     referenceLinks.forEach(
