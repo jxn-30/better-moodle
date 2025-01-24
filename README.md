@@ -49,6 +49,25 @@ _Bilder in dieser Beschreibung enthalten teilweise verschwommene Elemente, um de
 4. if required, customize Better-Moodle via the gears icon at the top right of Moodle, next to your profile picture
  </details>
 
+### Unterstützte Browser
+
+Wir möchten in Better-Moodle modernen Code schreiben. Da wir hierfür auch auf neuere Konzepte zurückgreifen möchten, werden automatisch Polyfills (kleine Code-Zeilen, die die Kompatibilität zu älteren Browsern herstellen) mit in Better-Moodle eingefügt.
+Allerdings ist hier zu beachten, dass das gesamte Userscript dadurch größer wird. Die Menge an zusätzlichem Code wächst mit jeder weiteren unterstützten Version, was wiederum die Performance von Better-Moodle senkt.
+
+Auch aus einem Sicherheits-Aspekt ist ein aktueller Browser immer zu empfehlen. Better-Moodle wird primär auf **Firefox** entwickelt und getestet. Offiziell unterstützen wir jedoch die Browser **Firefox**, **Chrome**, **Edge** und **Opera**, jeweils die **4 aktuellsten Versionen**.
+Auf mobilen Android-Geräten unterstützen wir **Firefox für Android**, ebenso in den **4 aktuellsten Versionen**.
+
+<details>
+<summary>🇬🇧 Supported browsers</summary>
+
+We want to write modern code in Better-Moodle. As we also want to use newer concepts for this, polyfills (small lines of code that ensure compatibility with older browsers) are automatically inserted into Better-Moodle.
+However, it should be noted here that the entire userscript becomes larger as a result. The amount of additional code increases with each additional supported version, which in turn reduces the performance of Better-Moodle.
+
+An up-to-date browser is also always recommended from a security point of view. Better-Moodle is primarily developed and tested on **Firefox**. However, we officially support the **Firefox**, **Chrome**, **Edge** and **Opera** browsers, in each case the **4 latest versions**.
+On mobile Android devices we support **Firefox for Android**, also in the **4 latest versions**.
+
+</details>
+
 ## Disclaimer
 
 Better-Moodle wurde privat von einem Fachschaftsmitglied entwickelt und ist kein offizielles Projekt der Uni. Es dient ausschließlich dazu, die individuelle Moodle-Nutzung zu verbessern, und sammelt keinerlei Daten. Die Nutzung geschieht natürlich dennoch auf eigene Verantwortung! ;)
