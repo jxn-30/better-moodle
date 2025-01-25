@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { debounce } from '@/helpers';
 import { ready } from '@/DOM';
-import style from '../style/marquee.module.scss';
+import style from '!/marquee.module.scss';
 
 type Position = 'prepend';
 

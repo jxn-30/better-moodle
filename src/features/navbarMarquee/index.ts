@@ -1,6 +1,6 @@
 import FeatureGroup from '@/FeatureGroup';
 import Marquee from '@/Marquee';
-import marqueeStyle from '../../style/marquee.module.scss';
+import marqueeStyle from '!/marquee.module.scss';
 import { ready } from '@/DOM';
 
 const marquee = new Marquee('#usernavigation', 'prepend');

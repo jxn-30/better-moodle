@@ -2,7 +2,7 @@ import { BooleanSetting } from '@/Settings/BooleanSetting';
 import FeatureGroup from '@/FeatureGroup';
 import { languages } from 'i18n';
 import { SelectSetting } from '@/Settings/SelectSetting';
-import settingsStyle from '../../style/settings.module.scss';
+import settingsStyle from '!/settings.module.scss';
 
 export const updateNotification = new BooleanSetting(
     'updateNotification',

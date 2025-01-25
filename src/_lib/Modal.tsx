@@ -1,6 +1,6 @@
 import CanBeReady from './CanBeReady';
 import CoreModalEvents from '#/require.js/core/modal_events';
-import modalStyle from '../style/modal.module.scss';
+import modalStyle from '!/modal.module.scss';
 import { require } from './require.js';
 import type {
     default as CoreModalFactory,

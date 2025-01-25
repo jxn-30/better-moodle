@@ -1,4 +1,4 @@
-import './style/index.module.scss';
+import '!/index.module.scss';
 import './migrateStorage';
 
 import './settingsModal';

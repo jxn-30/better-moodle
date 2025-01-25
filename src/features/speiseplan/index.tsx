@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import type { Dish } from './speiseplan';
 import FeatureGroup from '@/FeatureGroup';
 import { FieldSet } from '@/Components';
-import globalStyle from '../../style/index.module.scss';
+import globalStyle from '!/index.module.scss';
 import type { Locales } from '../../i18n/i18n-types';
 import { Modal } from '@/Modal';
 import Parser from './parsers';

@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import { FeatureGroupID } from './FeatureGroup';
 import { FeatureID } from './Feature';
 import { getLoadingSpinner } from './DOM';
-import globalStyle from '../style/index.module.scss';
+import globalStyle from '!/index.module.scss';
 import type { JSX } from 'jsx-dom';
 import { requirePromise } from './require.js';
 import { SettingTranslations } from './Setting';
 import { SimpleReady } from './CanBeReady';
-import sliderStyle from '../style/settings/SliderSetting.module.scss';
+import sliderStyle from '!/settings/SliderSetting.module.scss';
 import { stringify } from '../i18n/i18n';
 import { githubPath, htmlToElements, mdToHtml, PREFIX } from './helpers';
 

@@ -1,11 +1,11 @@
 import CanBeReady from './CanBeReady';
 import { GenericSetting } from './Components';
-import globalStyle from '../style/index.module.scss';
+import globalStyle from '!/index.module.scss';
 import { JSX } from 'jsx-dom';
 import { LL } from 'i18n';
 import { LocalizedString } from 'typesafe-i18n';
 import { require } from './require.js';
-import settingsStyle from '../style/settings.module.scss';
+import settingsStyle from '!/settings.module.scss';
 import { STORAGE_V2_SEEN_SETTINGS_KEY } from '../migrateStorage';
 import TempStorage from './TempStorage';
 import { UUID } from 'node:crypto';
