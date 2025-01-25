@@ -29,7 +29,7 @@ export const de = {
         minutes: {
             0: '{hour:number|spell|capitalize|removeTrailingS} Uhr',
             5: 'Fünf nach {hour:number|spell|capitalize}',
-            10: 'Zehn nach {hour:number|spell|capitalize',
+            10: 'Zehn nach {hour:number|spell|capitalize}',
             15: 'Viertel nach {hour:number|spell|capitalize}',
             20: 'Zwanzig nach {hour:number|spell|capitalize}',
             25: 'Fünf vor halb {hour:number|plus1|mod12Or12|spell|capitalize}',
@@ -98,7 +98,7 @@ export const en = {
         minutes: {
             0: '{hour:number|spell|capitalize|removeTrailingS} o’clock',
             5: 'Five past {hour:number|spell|capitalize}',
-            10: 'Ten past {hour:number|spell|capitalize',
+            10: 'Ten past {hour:number|spell|capitalize}',
             15: 'Quarter past {hour:number|spell|capitalize}',
             20: 'Twenty past {hour:number|spell|capitalize}',
             25: 'Twenty-five past {hour:number|spell|capitalize}',
