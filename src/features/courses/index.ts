@@ -5,6 +5,7 @@ const features = new Set<string>([
     'navbarDropdown',
     'grades',
     'images',
+    'quickRoleChange',
 ]);
 
 // this was introduced during 401.

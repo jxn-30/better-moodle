@@ -235,6 +235,10 @@ export default defineConfig({
                 replacement: path.resolve(__dirname, './src/i18n/i18n'),
             },
             {
+                find: /^\+(?=\/)/,
+                replacement: path.resolve(__dirname, './src/templates'),
+            },
+            {
                 find: /^/,
                 replacement: '',
                 /**

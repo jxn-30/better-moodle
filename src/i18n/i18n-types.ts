@@ -635,9 +635,10 @@ type RootTranslation = {
                              */
                             '5': RequiredParams<'hour|spell|capitalize'>;
                             /**
-                             * Z​e​h​n​ ​n​a​c​h​ ​{​h​o​u​r​:​n​u​m​b​e​r​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e
+                             * Z​e​h​n​ ​n​a​c​h​ ​{​h​o​u​r​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
+                             * @param {number} hour
                              */
-                            '10': string;
+                            '10': RequiredParams<'hour|spell|capitalize'>;
                             /**
                              * V​i​e​r​t​e​l​ ​n​a​c​h​ ​{​h​o​u​r​|​s​p​e​l​l​|​c​a​p​i​t​a​l​i​z​e​}
                              * @param {number} hour
@@ -924,6 +925,20 @@ type RootTranslation = {
                             name: string;
                             /**
                              * Z​o​o​m​t​ ​e​i​n​ ​B​i​l​d​ ​h​e​r​a​n​,​ ​w​e​n​n​ ​e​s​ ​a​n​g​e​k​l​i​c​k​t​ ​w​i​r​d​.​ ​S​o​ ​l​a​s​s​e​n​ ​s​i​c​h​ ​k​l​e​i​n​e​ ​B​i​l​d​e​r​ ​e​i​n​f​a​c​h​ ​p​e​r​ ​K​n​o​p​f​d​r​u​c​k​ ​v​e​r​g​r​ö​ß​e​r​t​ ​a​n​z​e​i​g​e​n​.
+                             */
+                            description: string;
+                        };
+                    };
+                };
+                quickRoleChange: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * S​c​h​n​e​l​l​e​r​ ​R​o​l​l​e​n​w​e​c​h​s​e​l
+                             */
+                            name: string;
+                            /**
+                             * E​r​m​ö​g​l​i​c​h​t​ ​e​s​ ​(​m​i​t​ ​d​e​n​ ​p​a​s​s​e​n​d​e​n​ ​B​e​r​e​c​h​t​i​g​u​n​g​e​n​)​,​ ​d​i​e​ ​B​e​t​r​a​c​h​t​u​n​g​ ​e​i​n​e​s​ ​K​u​r​s​e​s​ ​m​i​t​ ​e​i​n​e​r​ ​a​n​d​e​r​e​n​ ​R​o​l​l​e​ ​d​i​r​e​k​t​ ​ü​b​e​r​ ​d​a​s​ ​P​r​o​f​i​l​-​D​r​o​p​d​o​w​n​ ​z​u​ ​ä​n​d​e​r​n​.
                              */
                             description: string;
                         };
@@ -1671,9 +1686,9 @@ export type TranslationFunctions = {
                              */
                             '5': (arg: { hour: number }) => LocalizedString;
                             /**
-                             * Zehn nach {hour:number|spell|capitalize
+                             * Zehn nach {hour|spell|capitalize}
                              */
-                            '10': () => LocalizedString;
+                            '10': (arg: { hour: number }) => LocalizedString;
                             /**
                              * Viertel nach {hour|spell|capitalize}
                              */
@@ -1951,6 +1966,20 @@ export type TranslationFunctions = {
                             name: () => LocalizedString;
                             /**
                              * Zoomt ein Bild heran, wenn es angeklickt wird. So lassen sich kleine Bilder einfach per Knopfdruck vergrößert anzeigen.
+                             */
+                            description: () => LocalizedString;
+                        };
+                    };
+                };
+                quickRoleChange: {
+                    settings: {
+                        enabled: {
+                            /**
+                             * Schneller Rollenwechsel
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Ermöglicht es (mit den passenden Berechtigungen), die Betrachtung eines Kurses mit einer anderen Rolle direkt über das Profil-Dropdown zu ändern.
                              */
                             description: () => LocalizedString;
                         };

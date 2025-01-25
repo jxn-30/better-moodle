@@ -4,6 +4,7 @@ import type { FeatureGroupTranslation } from '#/i18n';
 import grades from './grades';
 import images from './images';
 import navbarDropdown from './navbarDropdown';
+import quickRoleChange from './quickRoleChange';
 
 export const de = {
     name: 'Kurse & Meine Kurse',
@@ -13,6 +14,7 @@ export const de = {
         grades: grades.de,
         courseIndexDrawerControls: courseIndexDrawerControls.de,
         images: images.de,
+        quickRoleChange: quickRoleChange.de,
     },
 } satisfies FeatureGroupTranslation;
 
@@ -24,6 +26,7 @@ export const en = {
         grades: grades.en,
         courseIndexDrawerControls: courseIndexDrawerControls.en,
         images: images.en,
+        quickRoleChange: quickRoleChange.en,
     },
 } satisfies typeof de;
 
