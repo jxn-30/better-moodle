@@ -6,7 +6,7 @@ import { mdToHtml } from '@/helpers';
 
 const enabled = new BooleanSetting('enabled', true).addTag('fun');
 
-const countdownSpan = <span>🎄</span>;
+const countdownSpan = (<span>🎄</span>) as HTMLSpanElement;
 let countdownSpanClone: HTMLSpanElement;
 let timeout: ReturnType<typeof setTimeout>;
 

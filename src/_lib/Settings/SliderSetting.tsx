@@ -32,6 +32,7 @@ export class SliderSetting<
 
         void this.callWhenReady(() =>
             // We really need to make translations more typesafe
+            // @ts-expect-error because types are not very safe atm
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             this.formControl.applyTranslations(this.Translation.labels)
         );

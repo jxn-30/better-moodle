@@ -82,7 +82,7 @@ export default abstract class Setting<
         super();
 
         this.#id = id;
-        this.#default = defaultValue;
+        this.#default = this.#unsavedValue = defaultValue;
 
         void this.callWhenReady(() => {
             this.#formControl = createComponent({

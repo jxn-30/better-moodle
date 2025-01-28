@@ -178,9 +178,9 @@ export const debounce = <Args extends unknown[]>(
  * @param runImmediate - wether to run the callback immediately
  * @returns a method to cancel / abort the animation
  */
-export const animate = <Args extends unknown[]>(
+export const animate = (
     delay: number,
-    callback: (...args: Args) => void,
+    callback: () => void,
     runImmediate = false
 ) => {
     if (runImmediate) callback();
@@ -190,7 +190,7 @@ export const animate = <Args extends unknown[]>(
      * call the callback if enough time has passed
      * @param now - a time identifier
      */
-    const intervalCallback = now => {
+    const intervalCallback = (now: DOMHighResTimeStamp) => {
         currentId = requestAnimationFrame(intervalCallback);
 
         const elapsed = now - last;

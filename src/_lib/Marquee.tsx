@@ -11,8 +11,8 @@ type Position = 'prepend';
 export default class Marquee {
     readonly #parentSelector: string;
     readonly #parentPosition: Position;
-    #parent: HTMLElement | null;
-    #getMaxWidth: () => number;
+    #parent: HTMLElement | null = null;
+    #getMaxWidth: (() => number) | null = null;
     readonly #span = document.createElement('span');
     readonly #cloneSpan = document.createElement('span');
     readonly #content = (
@@ -102,20 +102,20 @@ export default class Marquee {
      * @param els - all elements that shall be added
      * @returns a list that contains the added elements and their respective clones
      */
-    add(...els: Element[]) {
+    add<Elements extends readonly Element[]>(...els: Elements) {
         const clones = els.map(el => {
             const clone = el.cloneNode(true) as typeof el;
             this.#span.append(el);
             this.#cloneSpan.append(clone);
             this.#contentClones.set(el, clone);
-            return [el, clone];
+            return [el, clone] as [typeof el, typeof el];
         });
 
         if (!this.#parent) void this.#put();
 
         this.recalculate();
 
-        return clones;
+        return clones as { [K in keyof Elements]: [Elements[K], Elements[K]] };
     }
 
     /**
@@ -135,7 +135,7 @@ export default class Marquee {
      * Observe this element for resizing to trigger recalculation
      * @param el - the element to observe
      */
-    observe(el?: HTMLElement) {
+    observe(el: HTMLElement | null) {
         if (!el) return;
         if (this.#parent) this.#observer.observe(el);
         this.#observedElements.add(el);
@@ -150,7 +150,7 @@ export default class Marquee {
             parseFloat(getComputedStyle(this.#span).width)
         );
         this.#content.style.setProperty('--max-width', `${maxWidth}px`);
-        this.#content.style.setProperty('--text-width', textWidth);
+        this.#content.style.setProperty('--text-width', textWidth.toString());
 
         if (this.#parent) {
             this.#content.style.setProperty(

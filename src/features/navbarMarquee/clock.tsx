@@ -31,9 +31,9 @@ const fuzzy = new SliderSetting('fuzzy', 0, {
     labels: ['off', '5min', '15min', 'food', 'day', 'week'] as Fuzzyness[],
 });
 
-const clockSpan = <span>00:00:00</span>;
+const clockSpan = (<span>00:00:00</span>) as HTMLSpanElement;
 let clockSpanClone: HTMLSpanElement;
-const fuzzySpan = <span>🕛️🕒🕕🕘</span>;
+const fuzzySpan = (<span>🕛️🕒🕕🕘</span>) as HTMLSpanElement;
 let fuzzySpanClone: HTMLSpanElement;
 
 let cancelAnimation: (() => void) | null = null;
@@ -58,7 +58,7 @@ const fuzzyTime = (now: Date): string => {
         )[fuzzyness];
         const minutes = (now.getTime() % (60 * 60 * 1000)) / (60 * 1000);
         const section = (Math.floor((minutes + sectorSize / 2) / sectorSize) *
-            sectorSize) as keyof typeof translations;
+            sectorSize) as unknown as keyof typeof translations; // need this unknown conversion here
         return translations[section]({ hour: now.getHours() % 12 || 12 });
     } else if (fuzzyness === FUZZYNESS.food || fuzzyness === FUZZYNESS.day) {
         const translationKey = (
@@ -72,14 +72,14 @@ const fuzzyTime = (now: Date): string => {
         return translations[section]();
     } else if (fuzzyness === FUZZYNESS.week) {
         const dayOfWeek = now.getDay();
-        const weekSection = (
+        const weekSection =
             dayOfWeek === 1 ?
                 0 // Monday
             : dayOfWeek >= 2 && dayOfWeek <= 3 ?
                 1 // Tuesday, Wednesday
             : dayOfWeek <= 5 ?
                 2 // Thursday, Friday
-            :   3) as const; // Saturday, Sunday
+            :   3; // Saturday, Sunday
         return fuzzyTranslations.week[weekSection]();
     }
     return '';

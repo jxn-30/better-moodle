@@ -272,9 +272,13 @@ export const Select = <
 export type SliderComponent<
     Group extends FeatureGroupID,
     Feat extends FeatureID<Group>,
+    ST extends SettingTranslations<Group, Feat> = SettingTranslations<
+        Group,
+        Feat
+    >,
 > = GenericSetting<
     number,
-    Slider<Group, Feat>,
+    Slider<Group, Feat, ST>,
     {
         min: number;
         max: number;
@@ -285,9 +289,17 @@ export type SliderComponent<
 type Slider<
     Group extends FeatureGroupID,
     Feat extends FeatureID<Group>,
+    ST extends SettingTranslations<Group, Feat> = SettingTranslations<
+        Group,
+        Feat
+    >,
 > = HTMLDivElement & {
+    value: number;
+    disabled: boolean;
     applyTranslations: (
-        translations: SettingTranslations<Group, Feat>['labels']
+        translations: ST extends { labels: Record<string, unknown> } ?
+            ST['labels']
+        :   never
     ) => void;
 };
 
@@ -305,6 +317,10 @@ type Slider<
 export const Slider = <
     Group extends FeatureGroupID,
     Feat extends FeatureID<Group>,
+    ST extends SettingTranslations<Group, Feat> = SettingTranslations<
+        Group,
+        Feat
+    >,
 >({
     id,
     value,
@@ -312,7 +328,7 @@ export const Slider = <
     max,
     step = 1,
     labels = (max - min + 1) / step,
-}: SliderComponent<Group, Feat>['props']): Slider<Group, Feat> => {
+}: SliderComponent<Group, Feat, ST>['props']): Slider<Group, Feat, ST> => {
     const datalistId = `${id}-datalist`;
 
     const Input = (
@@ -355,7 +371,9 @@ export const Slider = <
     // create and fill the datalist specifying the labels shown below the data list
     const fixLabels = Array.isArray(labels);
     const labelCount =
-        fixLabels ? labels.length : Math.max(2, Math.min(10, labels)); // minimum 2, maximum 10 labels
+        Array.isArray(labels) ?
+            labels.length
+        :   Math.max(2, Math.min(10, labels)); // minimum 2, maximum 10 labels
     const valueToLabel = new Map<number, string>();
     const labelDatalist = (
         // @ts-expect-error as the types do not allow css variables / custom properties yet.
@@ -416,7 +434,11 @@ export const Slider = <
          * Creates the labels with their respective translations
          * @param translations - the label translations to use
          */
-        value: (translations: SettingTranslations<Group, Feat>['labels']) => {
+        value: (
+            translations: ST extends { labels: Record<string, unknown> } ?
+                ST['labels']
+            :   Record<'', never>
+        ) => {
             if (!translations) return;
 
             for (
@@ -428,6 +450,7 @@ export const Slider = <
                     const label = labels.shift();
                     valueToLabel.set(
                         currentStep,
+                        // @ts-expect-error as typed translations are wild
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call
                         translations[label]?.() ?? label
                     );

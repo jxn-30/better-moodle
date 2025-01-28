@@ -8,6 +8,8 @@ const marquee = new Marquee('#usernavigation', 'prepend');
 void ready().then(() => {
     const userNav = document.getElementById('usernavigation');
 
+    if (!userNav) return;
+
     marquee.setMaxWidthFunction(
         () =>
             parseFloat(getComputedStyle(userNav).marginLeft) +
@@ -15,7 +17,7 @@ void ready().then(() => {
                 .querySelector(`.${marqueeStyle.marqueeMinWidthPlaceholder}`)
                 ?.getBoundingClientRect().width ?? 0)
     );
-    marquee.observe(document.querySelector('.primary-navigation'));
+    marquee.observe(document.querySelector<HTMLElement>('.primary-navigation'));
     marquee.observe(userNav.parentElement);
 });
 

@@ -9,7 +9,7 @@ import { putTemplate, ready } from '@/DOM';
 
 const enabled = new BooleanSetting('enabled', true);
 
-let menuItem: HTMLAnchorElement;
+let menuItem: HTMLAnchorElement | null;
 let menuItemLink: string;
 let submenu: HTMLDivElement;
 
@@ -52,7 +52,7 @@ const switchRole = (e: MouseEvent) => {
     void requirePromise(['core/config'] as const)
         .then(([{ courseId, sesskey }]) => {
             const formData = new FormData();
-            formData.set('id', courseId);
+            formData.set('id', courseId?.toString() ?? '');
             formData.set('switchrole', role);
             formData.set('returnurl', window.location.href);
             formData.set('sesskey', sesskey);
@@ -91,7 +91,7 @@ const onload = async () => {
                         submenuTemplate,
                         {
                             id: PREFIX('courses-quick_role_change-submenu'),
-                            title: menuItem.textContent?.trim(),
+                            title: menuItem?.textContent?.trim() ?? '',
                             items: roleItems,
                         }
                     )
@@ -119,11 +119,13 @@ enabled.onInput(() => void onload());
  * Reverts the changes done by quickRoleChange
  */
 const onunload = () => {
-    menuItem.href = menuItemLink;
-    menuItem.classList.remove('carousel-navigation-link');
-    delete menuItem.dataset.carouselTargetId;
+    if (menuItem) {
+        menuItem.href = menuItemLink;
+        menuItem.classList.remove('carousel-navigation-link');
+        delete menuItem.dataset.carouselTargetId;
+    }
 
-    submenu.removeEventListener('click', switchRole);
+    submenu?.removeEventListener('click', switchRole);
     submenu?.remove();
 };
 
