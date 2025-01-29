@@ -51,11 +51,8 @@ export default class Marquee {
         this.#parent = document.querySelector<HTMLElement>(
             this.#parentSelector
         );
-        if (!this.#parent) {
-            throw new Error(
-                `Could'nt find a parent with selector ${this.#parentSelector} for marquee`
-            );
-        }
+        if (!this.#parent) return;
+
         this.#parent[this.#parentPosition](
             this.#minWidthPlaceholder,
             this.#content
