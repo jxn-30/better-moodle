@@ -20,6 +20,6 @@ export const en = {
                 'Aktiviert einen Lesezeichenmanager, um Lesezeichen direkt im Moodle zu haben.',
         },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

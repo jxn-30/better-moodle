@@ -16,6 +16,6 @@ export const en = {
             description: '👀',
         },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

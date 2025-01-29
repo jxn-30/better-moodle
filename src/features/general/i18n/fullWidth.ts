@@ -18,6 +18,6 @@ export const en = {
                 'Removes the weird white border and makes pages use the full width.',
         },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

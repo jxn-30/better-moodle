@@ -18,6 +18,6 @@ export const en = {
                 'Allows (with the appropriate permissions) to change the view of a course with a different role directly via the profile dropdown.',
         },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

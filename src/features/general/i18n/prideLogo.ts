@@ -68,6 +68,6 @@ export const en = {
             },
         },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

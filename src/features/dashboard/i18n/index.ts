@@ -13,6 +13,6 @@ export const en = {
     features: {
         layout: layout.en,
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

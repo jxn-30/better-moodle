@@ -14,6 +14,6 @@ export const en = {
     description:
         'The top navigation bar is perfect to show usefull information.',
     features: { clock: clock.en, christmasCountdown: christmasCountdown.en },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

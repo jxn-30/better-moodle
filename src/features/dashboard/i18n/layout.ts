@@ -48,6 +48,6 @@ export const en = {
         sync: 'Sync with current filter on "My courses"-Page',
         empty: 'There are no courses matching the currently selected filter.',
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

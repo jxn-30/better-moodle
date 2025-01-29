@@ -1,4 +1,4 @@
-import { FeatureTranslation } from '#/i18n';
+import type { FeatureTranslation } from '#/i18n';
 
 export const de = {
     settings: {
@@ -41,32 +41,32 @@ export const de = {
             55: 'Fünf vor {hour:number|plus1|mod12Or12|spell|capitalize}',
             60: '{hour:number|plus1|mod12Or12|spell|capitalize|removeTrailingS} Uhr',
         },
-        food: [
-            'Schlafenszeit',
-            'Frühstück',
-            'Zweites Frühstück',
-            'Kaffeepause',
-            'Mittagspause',
-            'Nachmittagstee',
-            'Abendessen',
-            'Mitternachtssnack',
-        ],
-        day: [
-            'Nacht',
-            'Früher Morgen',
-            'Morgen',
-            'Vormittag',
-            'Mittag',
-            'Nachmittag',
-            'Abend',
-            'Später Abend',
-        ],
-        week: [
-            'Wochenanfang',
-            'Mitte der Woche',
-            'Ende der Woche',
-            'Wochenende!',
-        ],
+        food: {
+            0: 'Schlafenszeit',
+            1: 'Frühstück',
+            2: 'Zweites Frühstück',
+            3: 'Kaffeepause',
+            4: 'Mittagspause',
+            5: 'Nachmittagstee',
+            6: 'Abendessen',
+            7: 'Mitternachtssnack',
+        },
+        day: {
+            0: 'Nacht',
+            1: 'Früher Morgen',
+            2: 'Morgen',
+            3: 'Vormittag',
+            4: 'Mittag',
+            5: 'Nachmittag',
+            6: 'Abend',
+            7: 'Später Abend',
+        },
+        week: {
+            0: 'Wochenanfang',
+            1: 'Mitte der Woche',
+            2: 'Ende der Woche',
+            3: 'Wochenende!',
+        },
     },
 } satisfies FeatureTranslation;
 
@@ -110,28 +110,33 @@ export const en = {
             55: 'Five to {hour:number|plus1|mod12Or12|spell|capitalize}',
             60: '{hour:number|plus1|mod12Or12|spell|capitalize|removeTrailingS} o’clock',
         },
-        food: [
-            'Sleep',
-            'Breakfast',
-            'Second Breakfast',
-            'Elevenses',
-            'Lunch',
-            'Afternoon tea',
-            'Dinner',
-            'Supper',
-        ],
-        day: [
-            'Night',
-            'Early morning',
-            'Morning',
-            'Almost noon',
-            'Noon',
-            'Afternoon',
-            'Evening',
-            'Late Evening',
-        ],
-        week: ['Start of week', 'Middle of week', 'End of week', 'Weekend!'],
+        food: {
+            0: 'Sleep',
+            1: 'Breakfast',
+            2: 'Second Breakfast',
+            3: 'Elevenses',
+            4: 'Lunch',
+            5: 'Afternoon tea',
+            6: 'Dinner',
+            7: 'Supper',
+        },
+        day: {
+            0: 'Night',
+            1: 'Early morning',
+            2: 'Morning',
+            3: 'Almost noon',
+            4: 'Noon',
+            5: 'Afternoon',
+            6: 'Evening',
+            7: 'Late Evening',
+        },
+        week: {
+            0: 'Start of week',
+            1: 'Middle of week',
+            2: 'End of week',
+            3: 'Weekend!',
+        },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

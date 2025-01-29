@@ -18,6 +18,6 @@ export const en = {
                 'Ensures that external links are always automatically opened in a new tab.',
         },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

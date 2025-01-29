@@ -28,6 +28,6 @@ export const en = {
         images: images.en,
         quickRoleChange: quickRoleChange.en,
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

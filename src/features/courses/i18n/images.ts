@@ -28,6 +28,6 @@ export const en = {
                 'Zooms in on an image when it is clicked. This allows small images to be enlarged at the touch of a button.',
         },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

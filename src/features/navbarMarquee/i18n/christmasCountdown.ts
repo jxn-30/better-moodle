@@ -22,6 +22,6 @@ export const en = {
     },
     remaining: '**{days}** day{{s}} until Christmas Eve.',
     christmas: '🎄 Today is Christmas Eve. Merry Christmas! 🎄',
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

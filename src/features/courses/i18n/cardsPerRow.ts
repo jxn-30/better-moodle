@@ -18,6 +18,6 @@ export const en = {
                 'Number of tiles per row on the "My Courses" page when the view is set to "Tiles". (Is active up to a window/screen width of 840px)',
         },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

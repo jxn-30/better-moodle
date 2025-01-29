@@ -61,6 +61,6 @@ export const en = {
                 'Which canteen / cafeteria would you like to see the menu from?',
         },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

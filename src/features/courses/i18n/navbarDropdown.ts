@@ -44,6 +44,6 @@ export const en = {
                 'Favourite courses are always displayed at the top of the course dropdown instead of in the normal position when sorted alphabetically.',
         },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

@@ -30,6 +30,6 @@ export const en = {
                 'Shows a small icon next to links that can open your Email-Client.',
         },
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

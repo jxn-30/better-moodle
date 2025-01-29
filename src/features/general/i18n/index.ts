@@ -92,6 +92,6 @@ export const en = {
         googlyEyes: googlyEyes.en,
         prideLogo: prideLogo.en,
     },
-} satisfies typeof de;
+} as typeof de;
 
 export default { de, en };

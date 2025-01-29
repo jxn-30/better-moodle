@@ -77,4 +77,4 @@ These Browsers are officially supported (Better-Moodle Core-Developers recommend
         11: 'eleven',
         12: 'twelve',
     },
-} satisfies Translation;
+} as Translation;
