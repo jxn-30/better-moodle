@@ -31,32 +31,35 @@ export const initFormatters: FormattersInitializer<
          * @param str - the string to capitalize
          * @returns the capitalized string
          */
-        capitalize: (str: string) => capitalize(str, locale),
+        capitalize: str => capitalize(str.toString(), locale),
         /**
          * Removes a trailing 's' from a string
          * @param str - the string to remove the 's' from
          * @returns the string without trailing 's'
          */
-        removeTrailingS: (str: string) => str.replace(/s$/, ''),
+        removeTrailingS: str => str.toString().replace(/s$/, ''),
         /**
          * Gets the spoken representation of a number
          * @param num - the number to get the spoken representation of
          * @returns the spoken representation of the number
          */
-        spell: (num: keyof ReturnType<typeof numberTranslations>) =>
-            numberTranslations()[num](),
+        spell: num => {
+            const numI18n = numberTranslations();
+            const key = num.toString() as keyof typeof numI18n;
+            return key in numI18n ? numI18n[key]() : key;
+        },
         /**
          * Increases a number by one
          * @param num - the basis number
          * @returns num + 1
          */
-        plus1: (num: number) => num + 1,
+        plus1: num => num + 1,
         /**
          * Calculates mod12 on a number and returns 12 if result would be 0
          * @param num - the base number
          * @returns num mod 12 or 12 if num mod 12 is 0
          */
-        mod12Or12: (num: number) => num % 12 || 12,
+        mod12Or12: num => num % 12 || 12,
     };
 
     return formatters;
