@@ -11,7 +11,7 @@
         "prettier:dist": "prettier --write dist --ignore-path dummy --print-width 120 --tab-width 2",
         "prettier:i18n": "prettier --write src/i18n",
         "dev": "vite",
-        "prebuild": "yarn i18n:once",
+        "prebuild": "yarn i18n:once && tsc",
         "build": "yarn prebuild && vite build -- --config=${0} && yarn postbuild",
         "build:uzl": "yarn build uzl",
         "build:cau": "yarn build cau",
