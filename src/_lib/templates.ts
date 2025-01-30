@@ -18,7 +18,23 @@ export const renderCustomTemplate = (
         'core/localstorage',
         'core/templates',
         'core/config',
-    ] as const).then(([storage, templates, config]) => {
+    ] as const).then(async ([storage, templates, config]) => {
+        const { promise, resolve } = Promise.withResolvers<void>();
+
+        /**
+         * Checks if moodles storage validation has completed.
+         * storage validation may clear the storage and thus delete our template.
+         */
+        const check = () => {
+            if (M.util.complete_js.flat().includes('core/storage_validation')) {
+                return resolve();
+            }
+            setTimeout(check, 100);
+        };
+        check();
+
+        await promise;
+
         const templateName = `${__PREFIX__}/${name}`;
         storage.set(
             `core_template/${config.templaterev}:${config.theme}/${templateName}`,

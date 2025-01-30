@@ -33,6 +33,7 @@ export default [
                 ...globals.greasemonkey,
                 // globals existing within moodle
                 requirejs: 'readonly',
+                M: 'readonly',
                 // jQuery exposes its namespace globally
                 JQuery: 'readonly',
                 // custom globals defined in vite config

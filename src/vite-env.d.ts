@@ -3,6 +3,7 @@
 /// <reference types="vite-plugin-monkey/global" />
 /// <reference types="jsx-dom/index" />
 /// <reference types="darkreader" />
+/// <reference types="../types/window.d.ts" />
 
 /* global jsxDom:readonly */
 
