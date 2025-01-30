@@ -20,7 +20,7 @@ export const en = {
                 'Displays a countdown to Christmas Eve in the navigation bar.\nThis is a small homage to the math pre-course.',
         },
     },
-    remaining: '**{days}** day{{s}} until Christmas Eve.',
+    remaining: "It's **{days}** day{{s}} until Christmas Eve.",
     christmas: '🎄 Today is Christmas Eve. Merry Christmas! 🎄',
 } as typeof de;
 

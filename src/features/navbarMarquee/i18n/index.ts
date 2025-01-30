@@ -10,7 +10,7 @@ export const de = {
 } satisfies FeatureGroupTranslation;
 
 export const en = {
-    name: 'Marquee (Navigation bar)s',
+    name: 'Marquee (Navigation bar)',
     description:
         'The top navigation bar is perfect to show usefull information.',
     features: { clock: clock.en, christmasCountdown: christmasCountdown.en },
