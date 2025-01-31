@@ -43,7 +43,7 @@ export class SliderSetting<
      * @param oldValue - the old value
      * @returns the numbered value
      */
-    migrateStoredValue(oldValue: unknown): number {
-        return Number(oldValue);
+    migrateStoredValue(oldValue: string): number {
+        return this.migrator?.(oldValue) ?? Number(oldValue);
     }
 }

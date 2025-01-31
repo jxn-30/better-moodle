@@ -42,15 +42,16 @@ const updateDarkReaderMode = () => {
 
 const debouncedUpdateDarkReaderMode = debounce(updateDarkReaderMode, 100);
 
-const mode = new SelectSetting('mode', 'off', ['off', 'on', 'auto']).onChange(
-    debouncedUpdateDarkReaderMode
-);
+const mode = new SelectSetting('mode', 'off', ['off', 'on', 'auto'])
+    .addAlias('darkmode.mode')
+    .onChange(debouncedUpdateDarkReaderMode);
 const brightness = new SliderSetting('brightness', 100, {
     min: 0,
     max: 150,
     step: 1,
     labels: 7,
 })
+    .addAlias('darkmode.brightness')
     .disabledIf(mode, '==', 'off')
     .onChange(debouncedUpdateDarkReaderMode);
 const contrast = new SliderSetting('contrast', 100, {
@@ -59,6 +60,7 @@ const contrast = new SliderSetting('contrast', 100, {
     step: 1,
     labels: 7,
 })
+    .addAlias('darkmode.contrast')
     .disabledIf(mode, '==', 'off')
     .onChange(debouncedUpdateDarkReaderMode);
 const grayscale = new SliderSetting('grayscale', 0, {
@@ -67,6 +69,7 @@ const grayscale = new SliderSetting('grayscale', 0, {
     step: 1,
     labels: 6,
 })
+    .addAlias('darkmode.grayscale')
     .disabledIf(mode, '==', 'off')
     .onChange(debouncedUpdateDarkReaderMode);
 const sepia = new SliderSetting('sepia', 0, {
@@ -75,6 +78,7 @@ const sepia = new SliderSetting('sepia', 0, {
     step: 1,
     labels: 6,
 })
+    .addAlias('darkmode.sepia')
     .disabledIf(mode, '==', 'off')
     .onChange(debouncedUpdateDarkReaderMode);
 

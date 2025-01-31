@@ -4,7 +4,9 @@ import { LL } from 'i18n';
 import { marquee } from './index';
 import { mdToHtml } from '@/helpers';
 
-const enabled = new BooleanSetting('enabled', true).addTag('fun');
+const enabled = new BooleanSetting('enabled', true)
+    .addAlias('general.christmasCountdown')
+    .addTag('fun');
 
 const countdownSpan = (<span>🎄</span>) as HTMLSpanElement;
 let countdownSpanClone: HTMLSpanElement;

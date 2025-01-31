@@ -31,6 +31,9 @@ const tags = {
 type Tags = typeof tags;
 export type Tag = keyof Tags;
 
+type OldType = string | number | boolean;
+type Migrator<Type> = (oldValue: OldType) => Type;
+
 /**
  * Create a span element for a tag
  * @param tag - the tag to display
@@ -65,6 +68,8 @@ export default abstract class Setting<
     #unsavedValue: Type;
 
     #conditionalDisabledStates = new Map<string, boolean>();
+
+    protected migrator: Migrator<Type> | null = null;
 
     /**
      * Constructor
@@ -110,8 +115,8 @@ export default abstract class Setting<
      * @param oldValue - the old stored value
      * @returns the new value
      */
-    migrateStoredValue(oldValue: unknown): Type {
-        return oldValue as Type;
+    migrateStoredValue(oldValue: OldType): Type {
+        return this.migrator?.(oldValue) ?? (oldValue as Type);
     }
 
     /**
@@ -136,10 +141,12 @@ export default abstract class Setting<
     /**
      * Sets an alias for this setting (e.g. if the key has been renamed) to allow migrating the storage
      * @param key - the alias key of this setting
+     * @param migrator - a custom function to migrate the old storage for this setting
      * @returns the setting itself
      */
-    addAlias(key: string) {
+    addAlias(key: string, migrator?: Migrator<Type>) {
         this.#possibleIDs.add(key);
+        if (migrator) this.migrator = migrator;
         void this.callWhenReady(() =>
             this.#migrateSettingStorage(`better-moodle-settings.${key}`)
         );

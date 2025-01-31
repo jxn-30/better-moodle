@@ -17,19 +17,23 @@ const enum FUZZYNESS {
 
 type Fuzzyness = keyof typeof FUZZYNESS;
 
-const enabled = new BooleanSetting('enabled', false);
-const seconds = new BooleanSetting('seconds', true).disabledIf(
-    enabled,
-    '!=',
-    true
-);
+const enabled = new BooleanSetting('enabled', false).addAlias('clock.clock');
+const seconds = new BooleanSetting('seconds', true)
+    .addAlias('clock.clock.seconds')
+    .disabledIf(enabled, '!=', true);
+
+const oldFuzzyKey = 'better-moodle-settings.clock.fuzzyClock';
+const oldFuzzyEnabled = GM_getValue(oldFuzzyKey, false);
+GM_deleteValue(oldFuzzyKey);
 
 const fuzzy = new SliderSetting('fuzzy', 0, {
     min: 0,
     max: 5,
     step: 1,
     labels: ['off', '5min', '15min', 'food', 'day', 'week'] as Fuzzyness[],
-});
+}).addAlias('clock.fuzzyClock.fuzziness', old =>
+    oldFuzzyEnabled ? Math.round(Number(old) / 10) : 0
+);
 
 const clockSpan = (<span>00:00:00</span>) as HTMLSpanElement;
 let clockSpanClone: HTMLSpanElement;

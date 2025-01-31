@@ -10,12 +10,15 @@ const rotations = Object.keys(style)
     .filter(className => className.startsWith('rotation'))
     .map(flag => flag.replace(/^rotation/, ''));
 
-const flagSetting = new SelectSetting('flag', 'off', ['off', ...flags]);
-const rotationSetting = new SelectSetting(
-    'rotation',
-    rotations[0],
-    rotations
-).disabledIf(flagSetting, '==', 'off');
+const flagSetting = new SelectSetting('flag', 'off', [
+    'off',
+    ...flags,
+]).addAlias('general.prideLogo', oldValue =>
+    oldValue.toString().replace(/^[a-z]/, $0 => $0.toUpperCase())
+);
+const rotationSetting = new SelectSetting('rotation', rotations[0], rotations)
+    .addAlias('general.prideLogoRotated', rotated => rotations[Number(rotated)])
+    .disabledIf(flagSetting, '==', 'off');
 
 // logo in navbar, logo on login page
 const logoSelector = '.navbar.fixed-top .navbar-brand img, #logoimage';
