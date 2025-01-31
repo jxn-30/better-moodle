@@ -24,6 +24,7 @@ export const renderCustomTemplate = (
         /**
          * Checks if moodles storage validation has completed.
          * storage validation may clear the storage and thus delete our template.
+         * @returns void
          */
         const check = () => {
             if (M.util.complete_js.flat().includes('core/storage_validation')) {
