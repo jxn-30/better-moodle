@@ -100,5 +100,16 @@ $max-co2-stars: 3;
                 filter: brightness($brightness);
             }
         }
+
+        @if global.$UNI == 'uzl' or global.$UNI == 'cau' {
+            &[src*='kuechen-klassiker'] {
+                filter: invert(1)
+                    saturate(1500%)
+                    hue-rotate(230deg)
+                    saturate(30%)
+                    hue-rotate(300deg);
+                mix-blend-mode: screen;
+            }
+        }
     }
 }
