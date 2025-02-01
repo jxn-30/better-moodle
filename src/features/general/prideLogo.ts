@@ -47,13 +47,13 @@ const onload = async () => {
     }
 
     const logoPath = new URL(logo.src).href;
-    logo.style.setProperty(
-        'mask',
-        `
-      url(${logoPath}) center/contain no-repeat exclude luminance,
+    const mask =
+        __UNI__ === 'cau' ?
+            `url(${logoPath}) center center / contain no-repeat`
+        :   `url(${logoPath}) center/contain no-repeat exclude luminance,
       url(${logoPath}) center/contain no-repeat add alpha
-    `.trim()
-    );
+    `;
+    logo.style.setProperty('mask', mask.trim());
 
     logo.classList.add(
         style.prideLogo,
