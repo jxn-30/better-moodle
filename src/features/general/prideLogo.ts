@@ -10,8 +10,8 @@ const rotations = Object.keys(style)
     .filter(className => className.startsWith('rotation'))
     .map(flag => flag.replace(/^rotation/, ''));
 
-const flagSetting = new SelectSetting('flag', 'off', [
-    flags[0],
+const flagSetting = new SelectSetting('flag', flags[0], [
+    'off',
     ...flags,
 ]).addAlias('general.prideLogo', oldValue =>
     oldValue.toString().replace(/^[a-z]/, $0 => $0.toUpperCase())
