@@ -11,7 +11,7 @@ const rotations = Object.keys(style)
     .map(flag => flag.replace(/^rotation/, ''));
 
 const flagSetting = new SelectSetting('flag', 'off', [
-    'off',
+    flags[0],
     ...flags,
 ]).addAlias('general.prideLogo', oldValue =>
     oldValue.toString().replace(/^[a-z]/, $0 => $0.toUpperCase())
