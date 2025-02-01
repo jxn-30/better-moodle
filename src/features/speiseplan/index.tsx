@@ -369,7 +369,7 @@ const openSpeiseplan = () => {
 
     void modal.getTitle().then(title =>
         title.after(
-            <div class="mx-auto d-flex flex-wrap">
+            <div class="mx-auto px-2 d-flex flex-wrap" style="column-gap: 5px;">
                 {canteenSelection}
                 {languageSelection}
             </div>
