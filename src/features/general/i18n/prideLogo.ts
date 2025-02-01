@@ -64,7 +64,7 @@ export const en = {
                 'Select here in which direction the Pride logo should be rotated',
             options: {
                 '180Deg': '180°: From top to bottom',
-                '135Deg': '135°: From North-North-West to South-South-Ost',
+                '135Deg': '135°: From North-North-West to South-South-East',
             },
         },
     },
