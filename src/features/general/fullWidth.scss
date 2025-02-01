@@ -1,7 +1,9 @@
+@use '/src/style/mixins';
+
 $default-max-width: 830px;
 
 @if (global.$UNI == 'cau') {
-    @media (min-width: 768px) {
+    @include mixins.media-up(md) {
         // reset the modified max-width
         .page-layout-standard,
         body.limitedwidth {

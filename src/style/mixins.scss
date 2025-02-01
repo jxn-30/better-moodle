@@ -1,6 +1,7 @@
 // For some reason that I don't know yet, this explicit @use is required.
 // In any other files/cases the globally injected @use via vite config is enough.
 @use 'global:constants.scss' as global;
+@use 'sass:map';
 
 @mixin darkmode {
     html[data-darkreader-scheme='dark'] {
@@ -23,4 +24,33 @@
     text-rendering: auto;
     font-family: var(--fa-style-family, $default-font);
     font-weight: var(--fa-style, 900);
+}
+
+// yes, bootstrap breakpoints here
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+);
+
+@mixin media-up($breakpoint) {
+    $size: $breakpoint;
+    @if (map.has-key($grid-breakpoints, $breakpoint)) {
+        $size: map.get($grid-breakpoints, $breakpoint);
+    }
+    @media (min-width: $size) {
+        @content;
+    }
+}
+
+@mixin media-down($breakpoint) {
+    $size: $breakpoint;
+    @if (map.has-key($grid-breakpoints, $breakpoint)) {
+        $size: map.get($grid-breakpoints, $breakpoint);
+    }
+    @media (max-width: $size - 0.02) {
+        @content;
+    }
 }

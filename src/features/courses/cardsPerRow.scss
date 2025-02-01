@@ -1,4 +1,6 @@
-@media (min-width: 840px) {
+@use '/src/style/mixins';
+
+@include mixins.media-up(840px) {
     .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
         --margin: max(4px, min(10px, calc(100vw / 192)));
         width: calc((100% / var(--boxes-per-row, 4)) - var(--margin) * 2);

@@ -1,5 +1,6 @@
 @use 'sass:math';
 @use 'sass:string';
+@use '/src/style/mixins';
 
 :local(#open-settings-btn) {
     // if settings modal is not ready yet, settings btn should be in a loading state
@@ -62,7 +63,7 @@
                 }
             }
 
-            @media (max-width: 991.8px) {
+            @include mixins.media-down(lg) {
                 flex-basis: 100%;
                 flex-shrink: 1;
 
@@ -100,7 +101,7 @@
         top: 0.5rem;
         right: 0.5rem;
 
-        @media (max-width: 991.98px) {
+        @include mixins.media-down(lg) {
             position: unset !important;
 
             > span {
@@ -109,7 +110,7 @@
             }
         }
 
-        @media (min-width: 992px) {
+        @include mixins.media-up(lg) {
             > span {
                 margin-left: 0.5rem;
                 margin-right: 0.5rem;

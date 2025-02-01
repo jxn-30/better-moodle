@@ -1,3 +1,4 @@
+@use '/src/style/mixins';
 @use '@sass-fairy/string';
 
 $marquee-duration: 10s;
@@ -81,7 +82,7 @@ $divider-img: 'https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmai
         }
     }
 
-    @media (min-width: 768px) {
+    @include mixins.media-up(md) {
         max-width: calc(var(--max-width));
         width: calc(var(--max-width));
         left: calc(var(--parent-left) - var(--max-width) + $min-marquee-width);
