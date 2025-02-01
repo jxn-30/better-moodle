@@ -4,7 +4,9 @@ import { renderCustomTemplate } from '@/templates';
 import Template from './courseIndexDrawerControls.mustache?raw';
 import { putTemplate, ready } from '@/DOM';
 
-const enabled = new BooleanSetting('enabled', true);
+const enabled = new BooleanSetting('enabled', true).addAlias(
+    'myCourses.collapseAll'
+);
 
 const headerContent = (
     <div class="drawerheadercontent"></div>

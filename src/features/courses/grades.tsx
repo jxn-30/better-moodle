@@ -4,12 +4,10 @@ import { LL } from 'i18n';
 import { ready } from '@/DOM';
 import { requirePromise } from '@/require.js';
 
-const enabled = new BooleanSetting('enabled', true);
-const newTab = new BooleanSetting('newTab', false).disabledIf(
-    enabled,
-    '==',
-    false
-);
+const enabled = new BooleanSetting('enabled', true).addAlias('courses.grades');
+const newTab = new BooleanSetting('newTab', false)
+    .addAlias('courses.gradesNewTab')
+    .disabledIf(enabled, '==', false);
 
 let gradesLink: HTMLAnchorElement;
 

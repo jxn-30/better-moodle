@@ -7,7 +7,9 @@ import { requirePromise } from '@/require.js';
 import submenuTemplate from '+/userMenuCarouselSubmenu.mustache?raw';
 import { putTemplate, ready } from '@/DOM';
 
-const enabled = new BooleanSetting('enabled', true);
+const enabled = new BooleanSetting('enabled', true).addAlias(
+    'general.quickRoleChange'
+);
 
 let menuItem: HTMLAnchorElement | null;
 let menuItemLink: string;

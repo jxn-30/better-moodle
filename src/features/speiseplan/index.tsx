@@ -15,14 +15,16 @@ import { BETTER_MOODLE_LANG, languages, LL, LLMap } from 'i18n';
 import { currency, dateToString, unit } from '@/localeString';
 import { getLoadingSpinner, ready } from '@/DOM';
 
-const enabled = new BooleanSetting('enabled', true);
+const enabled = new BooleanSetting('enabled', true).addAlias(
+    'general.speiseplan'
+);
 const language = new SelectSetting('language', 'auto', [
     'auto',
     ...languages.entries().map(([locale, { name, flag }]) => ({
         key: locale,
         title: `${flag} ${name}`,
     })),
-]);
+]).addAlias('speiseplan.language');
 
 /**
  * Gets the currently set speiseplan language
@@ -51,6 +53,13 @@ const canteen = new SelectSetting(
     Array.from(canteens.keys())[0],
     Array.from(canteens.values())
 );
+
+if (__UNI__ === 'cau') {
+    canteen.addAlias(
+        'speiseplan.canteen',
+        old => ['', 'cau1', 'cau2', 'gaarden'][Number(old)] ?? 'cau1'
+    );
+}
 
 const parse = Object.values(
     import.meta.glob(import.meta.env.VITE_SPEISEPLAN_PARSER_GLOB, {
