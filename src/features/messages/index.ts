@@ -7,11 +7,7 @@ const features = new Set<string>([
     'markdownSupport',
 ]);
 
-const onload = () => {
-};
-
 export default FeatureGroup.register({
     settings,
 	features,
-    onload,
 });
