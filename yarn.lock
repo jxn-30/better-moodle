@@ -122,6 +122,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/rollup-linux-x64-gnu@npm:4.29.1":
+  version: 4.29.1
+  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.29.1"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-win32-x64-msvc@npm:4.29.1":
+  version: 4.29.1
+  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.29.1"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@types/eslint@npm:9.6.1":
   version: 9.6.1
   resolution: "@types/eslint@npm:9.6.1"
@@ -267,12 +281,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"darkreader@npm:4.9.96":
-  version: 4.9.96
-  resolution: "darkreader@npm:4.9.96"
+"darkreader@npm:4.9.100":
+  version: 4.9.100
+  resolution: "darkreader@npm:4.9.100"
   dependencies:
+    "@rollup/rollup-linux-x64-gnu": "npm:4.29.1"
+    "@rollup/rollup-win32-x64-msvc": "npm:4.29.1"
     malevic: "npm:0.20.2"
-  checksum: 10c0/da26ef6a20173773407af16b1fc93165e993e99555db50d1c9a894f0d358683c158f81fec97787bd746e7fef95b0d83c788241ffdfbb51cccc050b135581187c
+  dependenciesMeta:
+    "@rollup/rollup-linux-x64-gnu":
+      optional: true
+    "@rollup/rollup-win32-x64-msvc":
+      optional: true
+  checksum: 10c0/49d95fffe0f1d3e9c4b709e67d7aad6c5029258dada4c577ce8e740e6aeceb0f95d22e20edd251de572cbe0691df2c356e77374c70c98366be581244a3ddf14f
   languageName: node
   linkType: hard
 
@@ -829,7 +850,7 @@ __metadata:
     "@eslint/js": "npm:9.19.0"
     "@types/eslint": "npm:9.6.1"
     "@types/tampermonkey": "npm:5.0.4"
-    darkreader: "npm:4.9.96"
+    darkreader: "npm:4.9.100"
     eslint: "npm:9.19.0"
     eslint-config-prettier: "npm:10.0.1"
     eslint-plugin-userscripts: "npm:0.5.6"
