@@ -23,6 +23,7 @@
         "ci": "yarn lint:fix && yarn prettier:write && yarn build ${0}"
     },
     "dependencies": {
+        "@sass-fairy/map": "1.1.1",
         "@trim21/gm-fetch": "0.2.3",
         "classnames": "2.5.1",
         "darkreader": "4.9.96",

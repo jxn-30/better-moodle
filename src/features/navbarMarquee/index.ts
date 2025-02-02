@@ -1,3 +1,4 @@
+import { breakpoints } from '@/styleVars';
 import FeatureGroup from '@/FeatureGroup';
 import Marquee from '@/Marquee';
 import marqueeStyle from '!/marquee.module.scss';
@@ -10,9 +11,10 @@ void ready().then(() => {
 
     if (!userNav) return;
 
-    marquee.setMaxWidthFunction(
-        () =>
-            parseFloat(getComputedStyle(userNav).marginLeft) +
+    marquee.setMaxWidthFunction(() =>
+        window.innerWidth < breakpoints.md ?
+            window.innerWidth
+        :   parseFloat(getComputedStyle(userNav).marginLeft) +
             (document
                 .querySelector(`.${marqueeStyle.marqueeMinWidthPlaceholder}`)
                 ?.getBoundingClientRect().width ?? 0)

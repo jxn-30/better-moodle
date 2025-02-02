@@ -2,6 +2,7 @@
 // In any other files/cases the globally injected @use via vite config is enough.
 @use 'global:constants.scss' as global;
 @use 'sass:map';
+@use 'variables' as *;
 
 @mixin darkmode {
     html[data-darkreader-scheme='dark'] {
@@ -25,15 +26,6 @@
     font-family: var(--fa-style-family, $default-font);
     font-weight: var(--fa-style, 900);
 }
-
-// yes, bootstrap breakpoints here
-$grid-breakpoints: (
-    xs: 0,
-    sm: 576px,
-    md: 768px,
-    lg: 992px,
-    xl: 1200px,
-);
 
 @mixin media-up($breakpoint) {
     $size: $breakpoint;

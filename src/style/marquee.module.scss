@@ -91,4 +91,24 @@ $divider-img: 'https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmai
             min-width: $min-marquee-width;
         }
     }
+
+    @include mixins.media-down(md) {
+        width: 100%;
+        max-width: 100%;
+        left: 0;
+        top: 100%;
+        padding-top: 2px;
+        height: auto;
+        background-color: rgba(255, 255, 255, 0.75);
+
+        &:not(:has(> span[data-rolling])) {
+            justify-content: center !important;
+        }
+
+        @include mixins.darkmode {
+        & {
+            background-color: rgba(0, 0, 0, 0.75);
+            }
+        }
+    }
 }
