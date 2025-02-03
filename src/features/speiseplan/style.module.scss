@@ -76,39 +76,39 @@ $max-co2-stars: 3;
         img {
             max-width: 40px;
             max-height: 40px;
-        }
-    }
-}
 
-@include mixins.darkmode {
-    :local(.table) .dish-types img {
-        & {
-            $stroke-pos: 0.5px;
-            $stroke-neg: -1 * $stroke-pos;
-            --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
-            filter: drop-shadow($stroke-pos 0 0 var(--stroke-color))
-                drop-shadow($stroke-neg 0 var(--stroke-color))
-                drop-shadow(0 $stroke-neg 0 var(--stroke-color))
-                drop-shadow($stroke-pos $stroke-pos 0 var(--stroke-color))
-                drop-shadow($stroke-pos $stroke-neg 0 var(--stroke-color))
-                drop-shadow($stroke-neg $stroke-pos 0 var(--stroke-color))
-                drop-shadow($stroke-neg $stroke-neg 0 var(--stroke-color));
-        }
+            @include mixins.darkmode {
+                $stroke-pos: 0.5px;
+                $stroke-neg: -1 * $stroke-pos;
+                --stroke-color: color-mix(
+                    in srgb,
+                    currentColor 20%,
+                    transparent
+                );
+                filter: drop-shadow($stroke-pos 0 0 var(--stroke-color))
+                    drop-shadow($stroke-neg 0 var(--stroke-color))
+                    drop-shadow(0 $stroke-neg 0 var(--stroke-color))
+                    drop-shadow($stroke-pos $stroke-pos 0 var(--stroke-color))
+                    drop-shadow($stroke-pos $stroke-neg 0 var(--stroke-color))
+                    drop-shadow($stroke-neg $stroke-pos 0 var(--stroke-color))
+                    drop-shadow($stroke-neg $stroke-neg 0 var(--stroke-color));
 
-        @each $type, $brightness in $darkmode-brightness-fixes {
-            &[src*='#{$type}'] {
-                filter: brightness($brightness);
-            }
-        }
+                @each $type, $brightness in $darkmode-brightness-fixes {
+                    &[src*='#{$type}'] {
+                        filter: brightness($brightness);
+                    }
+                }
 
-        @if global.$UNI == 'uzl' or global.$UNI == 'cau' {
-            &[src*='kuechen-klassiker'] {
-                filter: invert(1)
-                    saturate(1500%)
-                    hue-rotate(230deg)
-                    saturate(30%)
-                    hue-rotate(300deg);
-                mix-blend-mode: screen;
+                @if global.$UNI == 'uzl' or global.$UNI == 'cau' {
+                    &[src*='kuechen-klassiker'] {
+                        filter: invert(1)
+                            saturate(1500%)
+                            hue-rotate(230deg)
+                            saturate(30%)
+                            hue-rotate(300deg);
+                        mix-blend-mode: screen;
+                    }
+                }
             }
         }
     }

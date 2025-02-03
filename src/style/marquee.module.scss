@@ -106,9 +106,7 @@ $divider-img: 'https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmai
         }
 
         @include mixins.darkmode {
-        & {
             background-color: rgba(0, 0, 0, 0.75);
-            }
         }
     }
 }
