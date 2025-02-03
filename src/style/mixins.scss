@@ -5,7 +5,9 @@
 @use 'variables' as *;
 
 @mixin darkmode {
-    html[data-darkreader-scheme='dark'] {
+    $s: #{if(&, '&', '')};
+
+    html[data-darkreader-scheme='dark'] #{$s} {
         @content;
     }
 }

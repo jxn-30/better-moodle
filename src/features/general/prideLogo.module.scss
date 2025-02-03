@@ -158,10 +158,8 @@ img:local(.pride-logo) {
             }
         }
     }
-}
 
-@include mixins.darkmode {
-    img:local(.pride-logo) {
+    @include mixins.darkmode {
         filter: saturate(2) !important;
     }
 }
