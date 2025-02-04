@@ -211,7 +211,7 @@ export default defineConfig({
             output: {
                 intro: `
 /*! This is Better-Moodle; Version ${version}; Built for ${config.uniName} (${config.moodleUrl}).
- *  Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30) and Yorik (@YorikHansen).
+ *  Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30), Yorik (@YorikHansen) and contributors.
  *  All rights reserved.
  *  Licensed under the MIT License (MIT).
  *  Source-Code: ${githubUrl}
