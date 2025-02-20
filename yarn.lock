@@ -290,9 +290,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"darkreader@npm:4.9.101":
-  version: 4.9.101
-  resolution: "darkreader@npm:4.9.101"
+"darkreader@npm:4.9.104":
+  version: 4.9.104
+  resolution: "darkreader@npm:4.9.104"
   dependencies:
     "@rollup/rollup-linux-x64-gnu": "npm:4.29.1"
     "@rollup/rollup-win32-x64-msvc": "npm:4.29.1"
@@ -302,7 +302,7 @@ __metadata:
       optional: true
     "@rollup/rollup-win32-x64-msvc":
       optional: true
-  checksum: 10c0/aeecec87aaaec86fadd5f6e018d5e69c895e6dbaecf102ec00a3eea072460c839880e315963a0070f88001f97ebd513feea43694283e6ec92a6fa993218a6180
+  checksum: 10c0/021445f95b21631ed194591b06fe16dba3f53c3e4bb8defe7bd5ab3e836b140114cd55ceeff463b1ea87ab5739ade940ba9b8895d7fbee8ab2c001ba2fdc4adb
   languageName: node
   linkType: hard
 
@@ -859,7 +859,7 @@ __metadata:
     "@eslint/js": "npm:9.20.0"
     "@types/eslint": "npm:9.6.1"
     "@types/tampermonkey": "npm:5.0.4"
-    darkreader: "npm:4.9.101"
+    darkreader: "npm:4.9.104"
     eslint: "npm:9.20.1"
     eslint-config-prettier: "npm:10.0.1"
     eslint-plugin-userscripts: "npm:0.5.6"
