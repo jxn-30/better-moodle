@@ -25,6 +25,8 @@ runs:
               <details>
               <summary>${{ inputs.section }}</summary>
 
+              Run: \`[${{github.run_id}}/${{github.run_attempt}}](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}/attempts/${{github.run_attempt}})\`
+
               ${{ inputs.content }}
               </details>"
               else
@@ -35,6 +37,8 @@ runs:
                   updated_comment="${existing_comment}
               <details>
               <summary>${{ inputs.section }}</summary>
+
+              Run: \`[${{github.run_id}}/${{github.run_attempt}}](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}/attempts/${{github.run_attempt}})\`
 
               ${{ inputs.content }}
               </details>"

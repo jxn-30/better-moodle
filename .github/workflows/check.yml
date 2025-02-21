@@ -52,10 +52,7 @@ jobs:
               with:
                   pr-number: ${{ github.event.pull_request.number }}
                   section: Prettier
-                  content: |
-                      Run: `[${{github.run_id}}/${{github.run_attempt}}](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}/attempts/${{github.run_attempt}})`
-
-                      ${{env.PR_SUMMARY}}
+                  content: ${{env.PR_SUMMARY}}
 
     eslint:
         runs-on: ubuntu-latest
