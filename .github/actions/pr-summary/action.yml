@@ -1,0 +1,45 @@
+name: 📜 PR Summary
+description: Update or create a PR comment with sectioned content
+
+inputs:
+    pr-number:
+        description: 'Pull Request number'
+        required: true
+    section:
+        description: 'Section name in Markdown format'
+        required: true
+    content:
+        description: 'Section content in Markdown format'
+        required: true
+
+runs:
+    using: 'composite'
+    steps:
+        - name: '✏️ Update or create comment'
+          shell: bash
+          run: |
+              COMMENT_ID=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '[.comments[] | select(.body | startswith("<!-- Better-Moodle PR-Summary -->"))][0] .id')
+
+              if [ -z "$COMMENT_ID" ]; then
+                gh pr comment ${{ inputs.pr-number }} --body "<!-- Better-Moodle PR-Summary -->
+              <details>
+              <summary>${{ inputs.section }}</summary>
+
+              ${{ inputs.content }}
+              </details>"
+              else
+                existing_comment=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '.comments[] | select(.id == '"$COMMENT_ID"') | .body')
+                if echo "$existing_comment" | grep -q "<summary>${{ inputs.section }}</summary>"; then
+                  updated_comment=$(echo "$existing_comment" | sed -e "/<summary>${{ inputs.section }}<\/summary>/,/<\/details>/c\<summary>${{ inputs.section }}</summary>\n\n${{ inputs.content }}\n</details>")
+                else
+                  updated_comment="${existing_comment}
+              <details>
+              <summary>${{ inputs.section }}</summary>
+
+              ${{ inputs.content }}
+              </details>"
+                fi
+                gh pr comment ${{ inputs.pr-number }} --body "$updated_comment" --edit $COMMENT_ID
+              fi
+          env:
+              GH_TOKEN: ${{ github.token }}
