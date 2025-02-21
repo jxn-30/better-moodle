@@ -20,6 +20,8 @@ runs:
           run: |
               COMMENT_ID=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '[.comments[] | select(.body | startswith("<!-- Better-Moodle PR-Summary -->"))][0] .id')
 
+              echo "$COMMENT_ID"
+
               if [ -z "$COMMENT_ID" ]; then
                 gh pr comment ${{ inputs.pr-number }} --body "<!-- Better-Moodle PR-Summary -->
               <details>
@@ -43,7 +45,7 @@ runs:
               ${{ inputs.content }}
               </details>"
                 fi
-                gh pr comment ${{ inputs.pr-number }} --body "$updated_comment" --edit $COMMENT_ID
+                gh pr comment ${{ inputs.pr-number }} --body "$updated_comment" --edit "$COMMENT_ID"
               fi
           env:
               GH_TOKEN: ${{ github.token }}
