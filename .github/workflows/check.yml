@@ -29,10 +29,11 @@ jobs:
               run: |
                   echo "# ✅ Prettier approves code" >> $GITHUB_STEP_SUMMARY
                   echo "Running prettier on $(echo ${{ github.sha }} | head -c 7) did not result in any changes. 🎉" >> $GITHUB_STEP_SUMMARY
+                  echo "PR_SUMMARY='✅ Prettier approves code'" >> $GITHUB_ENV
 
-            #- name: 🖨️ print diff introduced by prettier
-            #  if: ${{ env.CHANGES_COUNT > 0 }}
-            #  run: git diff
+            - name: 🖨️ print diff introduced by prettier
+              if: ${{ env.CHANGES_COUNT > 0 }}
+              run: git diff
 
             - name: ⚠️ warn over prettier result
               if: ${{ env.CHANGES_COUNT > 0 }}
@@ -43,15 +44,7 @@ jobs:
                   git diff --compact-summary >> $GITHUB_STEP_SUMMARY
                   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
                   echo "For a complete diff introduced by prettier, please see the workflow logs." >> $GITHUB_STEP_SUMMARY
-
-            - name: 📖 Read Step Summary
-              if: github.event_name == 'pull_request'
-              id: read_summary
-              run: |
-                  SUMMARY_CONTENT=$(cat $GITHUB_STEP_SUMMARY)
-                  echo "summary_content<<EOF" >> $GITHUB_OUTPUT
-                  echo "$SUMMARY_CONTENT" >> $GITHUB_OUTPUT
-                  echo "EOF" >> $GITHUB_OUTPUT
+                  echo "PR_SUMMARY='⚠ Prettier changed some code. Please see summary and log for more detail.'" >> $GITHUB_ENV
 
             - name: 📜 Update PR Summary
               if: github.event_name == 'pull_request'
@@ -59,7 +52,10 @@ jobs:
               with:
                   pr-number: ${{ github.event.pull_request.number }}
                   section: Prettier
-                  content: ${{ steps.read_summary.outputs.summary_content }}
+                  content: |
+                      Run: `[${{github.run_id}}/${{github.run_attempt}}](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}/attempts/${{github.run_attempt}})`
+
+                      ${{env.PR_SUMMARY}}
 
     eslint:
         runs-on: ubuntu-latest
