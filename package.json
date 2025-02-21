@@ -52,6 +52,7 @@
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
         "globals": "16.0.0",
+        "jiti": "2.4.2",
         "mini-svg-data-uri": "1.4.4",
         "postcss": "8.5.3",
         "postcss-inline-svg": "6.0.0",
@@ -65,7 +66,7 @@
         "typescript-eslint": "8.24.1",
         "typescript-plugin-css-modules": "5.1.0",
         "userscript-meta": "1.0.1",
-        "vite": "5.4.14",
+        "vite": "6.1.1",
         "vite-plugin-monkey": "5.0.8",
         "yarn": "1.22.22"
     },

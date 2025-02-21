@@ -33,5 +33,11 @@
             }
         ]
     },
-    "include": ["src", "types", "vite.config.ts", ".postcssrc.cts", "configs"]
+    "include": [
+        "src",
+        "types",
+        "vite.config.ts",
+        "postcss.config.ts",
+        "configs"
+    ]
 }
