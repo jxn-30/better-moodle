@@ -18,9 +18,9 @@ runs:
         - name: '✏️ Update or create comment'
           shell: bash
           run: |
-              COMMENT_ID=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '[.comments[] | select(.body | startswith("<!-- Better-Moodle PR-Summary -->"))][0] .id')
+              COMMENT_URL=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '[.comments[] | select(.body | startswith("<!-- Better-Moodle PR-Summary -->"))][0] .url')
 
-              if [ -z "$COMMENT_ID" ]; then
+              if [ -z "$COMMENT_URL" ]; then
                 gh pr comment ${{ inputs.pr-number }} --body "<!-- Better-Moodle PR-Summary -->
               <details>
               <summary>${{ inputs.section }}</summary>
@@ -30,7 +30,9 @@ runs:
               ${{ inputs.content }}
               </details>"
               else
-                existing_comment=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '.comments[] | select(.id == "$COMMENT_ID") | .body')
+                COMMENT_ID=$(echo "$COMMENT_URL" | sed 's/.*-\([0-9]*\)$/\1/')
+
+                existing_comment=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '.comments[] | select(.url == "$COMMENT_URL") | .body')
                 if echo "$existing_comment" | grep -q "<summary>${{ inputs.section }}</summary>"; then
                   updated_comment=$(echo "$existing_comment" | sed -e "/<summary>${{ inputs.section }}<\/summary>/,/<\/details>/c\<summary>${{ inputs.section }}</summary>\n\n${{ inputs.content }}\n</details>")
                 else
