@@ -21,7 +21,7 @@ runs:
               COMMENT_URL=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '[.comments[] | select(.body | startswith("<!-- Better-Moodle PR-Summary -->"))][0] .url')
               TITLE="<summary><h2>${{ inputs.section }}</h2></summary>"
               START_COMMENT="<!-- ${{ inputs.section }} -->"
-              END_COMMENT="<!-- /${{ inputs.section }} -->"
+              END_COMMENT="<!-- #${{ inputs.section }} -->"
               RUN="Run: [\`${{github.run_id}}/${{github.run_attempt}}\`](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}/attempts/${{github.run_attempt}})"
 
               if [ -z "$COMMENT_URL" ]; then
