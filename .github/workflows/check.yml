@@ -52,7 +52,7 @@ jobs:
               with:
                   pr-number: ${{ github.event.pull_request.number }}
                   section: Prettier
-                  content: ${{env.PR_SUMMARY}}
+                  content: ${{ env.PR_SUMMARY }}
 
     eslint:
         runs-on: ubuntu-latest
@@ -69,6 +69,7 @@ jobs:
               continue-on-error: true
 
             - name: 🖨  create annotations
+              id: annotations
               uses: ataylorme/eslint-annotate-action@v3
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -78,3 +79,10 @@ jobs:
                   fail-on-error: true
                   check-name: ESLint Report Analysis
                   markdown-report-on-step-summary: true
+
+            - name: 📜 Update PR Summary
+              uses: ./.github/actions/pr-summary
+              with:
+                  pr-number: ${{ github.event.pull_request.number }}
+                  section: ESLint
+                  content: ${{ steps.annotations.outputs.summary }}

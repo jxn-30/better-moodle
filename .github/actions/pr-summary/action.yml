@@ -19,13 +19,14 @@ runs:
           shell: bash
           run: |
               COMMENT_URL=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '[.comments[] | select(.body | startswith("<!-- Better-Moodle PR-Summary -->"))][0] .url')
+              RUN="Run: [\`${{github.run_id}}/${{github.run_attempt}}\`](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}/attempts/${{github.run_attempt}})"
 
               if [ -z "$COMMENT_URL" ]; then
                 gh pr comment ${{ inputs.pr-number }} --body "<!-- Better-Moodle PR-Summary -->
               <details>
               <summary>${{ inputs.section }}</summary>
 
-              Run: \`[${{github.run_id}}/${{github.run_attempt}}](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}/attempts/${{github.run_attempt}})\`
+              $RUN
 
               ${{ inputs.content }}
               </details>"
@@ -34,13 +35,13 @@ runs:
 
                 existing_comment=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '.comments[] | select(.url == "$COMMENT_URL") | .body')
                 if echo "$existing_comment" | grep -q "<summary>${{ inputs.section }}</summary>"; then
-                  updated_comment=$(echo "$existing_comment" | sed -e "/<summary>${{ inputs.section }}<\/summary>/,/<\/details>/c\<summary>${{ inputs.section }}</summary>\n\n${{ inputs.content }}\n</details>")
+                  updated_comment=$(echo "$existing_comment" | sed -e "/<summary>${{ inputs.section }}<\/summary>/,/<\/details>/c\<summary>${{ inputs.section }}</summary>\n\n$RUN\n\n${{ inputs.content }}\n</details>")
                 else
                   updated_comment="${existing_comment}
               <details>
               <summary>${{ inputs.section }}</summary>
 
-              Run: \`[${{github.run_id}}/${{github.run_attempt}}](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}/attempts/${{github.run_attempt}})\`
+              $RUN
 
               ${{ inputs.content }}
               </details>"
