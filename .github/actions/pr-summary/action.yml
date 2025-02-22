@@ -30,7 +30,7 @@ runs:
               ${{ inputs.content }}
               </details>"
               else
-                existing_comment=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '.comments[] | select(.id == '"$COMMENT_ID"') | .body')
+                existing_comment=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '.comments[] | select(.id == "$COMMENT_ID") | .body')
                 if echo "$existing_comment" | grep -q "<summary>${{ inputs.section }}</summary>"; then
                   updated_comment=$(echo "$existing_comment" | sed -e "/<summary>${{ inputs.section }}<\/summary>/,/<\/details>/c\<summary>${{ inputs.section }}</summary>\n\n${{ inputs.content }}\n</details>")
                 else
