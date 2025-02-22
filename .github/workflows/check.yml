@@ -81,7 +81,7 @@ jobs:
                   markdown-report-on-step-summary: true
 
             - name: 📜 Update PR Summary
-              if: github.event_name == 'pull_request'
+              if: ${{ github.event_name == 'pull_request' && always() }}
               uses: ./.github/actions/pr-summary
               with:
                   pr-number: ${{ github.event.pull_request.number }}
