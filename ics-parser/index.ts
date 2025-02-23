@@ -18,6 +18,9 @@ const URLS = {
     semesterzeiten: {
         uzl: 'http://files.asta.uni-luebeck.de/remote.php/dav/public-calendars/AH4pFg6pqb7AfBXo?export',
     },
+    events: {
+        cau: 'https://cloud.rz.uni-kiel.de/remote.php/dav/public-calendars/6i9dfBcXyqsLYKZK/?export',
+    },
 };
 
 const SERVER_CACHE_DUR = 10 * 60; // 10 * 60s = 10 minutes

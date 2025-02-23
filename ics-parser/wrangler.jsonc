@@ -5,10 +5,11 @@
     "compatibility_flags": ["nodejs_compat"],
     "observability": {
         "enabled": true,
-    },  "routes": [
-    {
-      "pattern": "ics.better-moodle.dev",
-      "custom_domain": true
-    }
-  ]
+    },
+    "routes": [
+        {
+            "pattern": "ics.better-moodle.dev",
+            "custom_domain": true,
+        },
+    ],
 }
