@@ -4,6 +4,8 @@ dist
 src/style/**/*.d.ts
 src/features/**/*.scss.d.ts
 
+ics-parser/.wrangler
+
 # Editor directories and files
 .idea
 .vscode

@@ -14,6 +14,7 @@ export default [
             'src/style/*.d.ts',
             'redesign.user.js', // this is the legacy userscript, no linting here anymore
             '.postcssrc.cts',
+            'ics-parser', // TODO: see how we can include this in linting but without monkey
         ],
     },
     js.configs.recommended,
