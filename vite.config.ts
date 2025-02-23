@@ -186,6 +186,9 @@ const GLOBAL_CONSTANTS = {
     __MIN_SUPPORTED_BROWSERS__: Object.fromEntries(minSupportedBrowserVersions),
 };
 
+const fileName = `better-moodle-${configFile}.user.js`;
+const metaFileName = `better-moodle-${configFile}.meta.js`;
+
 export default defineConfig({
     esbuild: {
         jsxInject:
@@ -395,8 +398,8 @@ export default defineConfig({
                 'homepage': `${githubUrl}${config.github.branch ? `/tree/${config.github.branch}` : ''}`,
                 'homepageURL': `${githubUrl}${config.github.branch ? `/tree/${config.github.branch}` : ''}`,
                 'icon': `https://icons.better-moodle.dev/${configFile}.png`,
-                'updateURL': `${releaseDownloadUrl}/better-moodle.meta.js`,
-                'downloadURL': `${releaseDownloadUrl}/better-moodle.user.js`,
+                'updateURL': `${releaseDownloadUrl}/${metaFileName}`,
+                'downloadURL': `${releaseDownloadUrl}/${fileName}`,
                 'match': `${config.moodleUrl}/*`,
                 'run-at': 'document-body',
                 'connect': config.connects,
@@ -404,8 +407,8 @@ export default defineConfig({
             },
             clientAlias: 'GM',
             build: {
-                fileName: `better-moodle-${configFile}.user.js`,
-                metaFileName: `better-moodle-${configFile}.meta.js`,
+                fileName,
+                metaFileName,
                 autoGrant: true,
             },
         }),

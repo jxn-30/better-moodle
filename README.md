@@ -152,9 +152,9 @@ Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar s
 [moodle uzl]: https://moodle.uni-luebeck.de
 [moodle cau]: https://elearn.informatik.uni-kiel.de/
 [download uzl]: https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle-uzl.user.js
-[downloads uzl]: https://img.shields.io/github/downloads/jxn-30/better-moodle/latest/better-moodle-uzl.user.js?style=for-the-badge&label=Downloads%20latest%20version&color=004b5a
+[downloads uzl]: https://img.shields.io/github/downloads/jxn-30/better-moodle/latest/better-moodle-uzl.user.js?style=for-the-badge&label=Downloads&color=004b5a
 [download cau]: https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle-cau.user.js
-[downloads cau]: https://img.shields.io/github/downloads/jxn-30/better-moodle/latest/better-moodle-cau.user.js?style=for-the-badge&label=Downloads%20latest%20version&color=004b5a
+[downloads cau]: https://img.shields.io/github/downloads/jxn-30/better-moodle/latest/better-moodle-cau.user.js?style=for-the-badge&label=Downloads&color=004b5a
 [@jxn-30]: https://github.com/jxn-30
 [@YorikHansen]: https://github.com/YorikHansen
 [#installation]: #installation
