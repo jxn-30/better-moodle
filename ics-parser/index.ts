@@ -20,6 +20,7 @@ const URLS = {
     },
     events: {
         cau: 'https://cloud.rz.uni-kiel.de/remote.php/dav/public-calendars/6i9dfBcXyqsLYKZK/?export',
+        uzl: 'https://files.asta.uni-luebeck.de/remote.php/dav/public-calendars/2iNZHdBDLqcZF48a?export',
     },
 };
 
@@ -47,7 +48,7 @@ export default {
                 const name =
                     desc ?
                         Object.fromEntries(
-                            desc.split(/\n/g).map(l => {
+                            (desc.val ?? desc).split(/\n/g).map(l => {
                                 const [lang, ...rest] = l.split(':');
                                 return [lang.toLowerCase(), rest.join(':')];
                             })
