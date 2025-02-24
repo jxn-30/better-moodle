@@ -6,7 +6,7 @@ Thanks for reading this contribution guide! 😊
 > This guide is currently still work in progress. Expect changes, especially clarifications to appear here in the future.
 
 > [!TIP]
-> Anything unclear? Feel free to ask @jxn-30 for clarification!
+> Anything unclear? Feel free to ask [@jxn-30](https://github.com/jxn-30) for clarification!
 
 - [Development](#development)
     - [Contribution Workflow](#contribution-workflow)
@@ -18,20 +18,25 @@ Thanks for reading this contribution guide! 😊
     - [Changelog](#changelog)
     - [How-Tos](#how-tos)
         - [Adding a new `FeatureGroup`](#adding-a-new-featuregroup)
+    - [Calendars](#calendars)
+        - [Semesterzeiten](#semesterzeiten)
+        - [Events](#events)
 
 ## Development
 
 ### Contribution Workflow
 
-Some steps are
+The basic contribution steps are:
 
-1. clone
-2. run `yarn install`
-3. develop and test. See sections [Bundling](#bundling) and [Testing](#testing)
-4. run `yarn run lint:fix` and `yarn run prettier:write` to lint and format. See section [Pre-Commit](#pre-commit)
-    1. fix any warnings and errors reported by ESLint
+1. clone the repository.
+2. run `yarn install` to install all the dependencies.
+    - you need to have the node version specified in the file`.nvmrc` installed and enabled.
+    - you need to have yarn enabled via `corepack enable`.
+3. develop and test. See sections [Bundling](#bundling) and [Testing](#testing).
+4. run `yarn run lint:fix` and `yarn run prettier:write` to lint and format. See section [Pre-Commit](#pre-commit).
+    1. fix any warnings and errors reported by ESLint before pushing your commits
 5. commit using [Conventional Commits][cc]. See section [Commit messages](#commit-messages) for more info.
-6. Create a Pull-Request
+6. create a Pull-Request.
 
 ### Bundling
 
@@ -91,5 +96,32 @@ The position within the array determines the position of the fieldset within the
 
 It is also important to import and use the translations in `src/i18n/*/index.ts`, otherwise it will not be recognized as a `FeatureGroup`.
 
+### Calendars
+
+Calenders MUST[^keyword] provide a link that returns an iCalendar ([RFC 5545](https://www.rfc-editor.org/rfc/rfc5545.txt)) string.
+
+#### Semesterzeiten
+
+Every event MUST[^keyword] have the following attributes set:
+
+- `DTSTART`, type `DATE`
+- `DTEND`, type `DATE`
+- `DESCRIPTION` with the following format, where
+    - `<type>` identifies the type of event to e.g. toggle all lecutre periods at once
+    - `<color>` is a [Bootstrap theme color](https://getbootstrap.com/docs/4.6/getting-started/theming/#theme-colors)
+    - `<lang>` is a valid language identifier for the moodle instance and `<name>` the translation in this language. Each language MUST[^keyword] get its own line.
+
+```md
+@type:<type>
+@color:<color>
+@name:<lang>:<name>
+```
+
+#### Events
+
+TBD
+
 [cc]: https://www.conventionalcommits.org/
 [rp]: https://github.com/googleapis/release-please/
+
+[^keyword]: The key words `MUST`, `MUST NOT`, `REQUIRED`, `SHALL`, `SHALL NOT`, `SHOULD`, `SHOULD NOT`, `RECOMMENDED`, `MAY`, and `OPTIONAL` in this document are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
