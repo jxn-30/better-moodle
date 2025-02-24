@@ -10,15 +10,15 @@
         "prettier:write": "prettier --write --cache --cache-strategy content ."
     },
     "devDependencies": {
-        "@eslint/js": "9.20.0",
+        "@eslint/js": "9.21.0",
         "@types/eslint": "9.6.1",
         "@types/tampermonkey": "5.0.4",
         "darkreader": "4.9.104",
-        "eslint": "9.20.1",
+        "eslint": "9.21.0",
         "eslint-config-prettier": "10.0.1",
         "eslint-plugin-userscripts": "0.5.6",
         "globals": "16.0.0",
-        "prettier": "3.5.1",
+        "prettier": "3.5.2",
         "userscript-meta": "1.0.1"
     }
 }
