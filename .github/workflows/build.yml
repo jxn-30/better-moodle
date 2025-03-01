@@ -24,7 +24,11 @@ jobs:
             id-token: write
             attestations: write
         outputs:
-            stats: ${{ toJSON(steps.output.outputs) }}
+            # Hardcoded until https://github.com/actions/runner/pull/2477 is finally working...
+            # stats: ${{ toJSON(steps.output.outputs) }}
+            line_uzl: ${{ steps.output.outputs.build_uzl }}
+            line_cau: ${{ steps.output.outputs.build_cau }}
+            line_sandbox405: ${{ steps.output.outputs.build_sandbox405 }}
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4
@@ -91,6 +95,8 @@ jobs:
                   pr-number: ${{ github.event.pull_request.number }}
                   section: 🏗️  Build
                   content: |
-                      \`\`\`json
-                      ${{ needs.build.outputs.stats }}
-                      \`\`\`
+                      | Config | Size | Lines | Duration |
+                      | ------ | ---- | ----- | -------- |
+                      ${{ needs.build.outputs.line_uzl }}
+                      ${{ needs.build.outputs.line_cau }}
+                      ${{ needs.build.outputs.line_sandbox405 }}
