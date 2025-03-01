@@ -23,6 +23,8 @@ jobs:
         permissions:
             id-token: write
             attestations: write
+        outputs:
+            stats: ${{ toJSON(steps.output.outputs) }}
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4
@@ -44,8 +46,10 @@ jobs:
               run: |
                   echo "STATS_SIZE=$(ls -sh --si '${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }}' | awk '{print $1}')B" >> $GITHUB_ENV
                   echo "STATS_LINES=$(wc -l '${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }}' | awk '{print $1}')" >> $GITHUB_ENV
+                  echo "STATS_PERF_CONF=$(cat ${{ steps.build.outputs.dir }}/.stats_perf_conf)" >> $GITHUB_ENV
+                  echo "STATS_PERF_BUILD=$(cat ${{ steps.build.outputs.dir }}/.stats_perf_build)" >> $GITHUB_ENV
+                  echo "STATS_PERF_TOTAL=$(cat ${{ steps.build.outputs.dir }}/.stats_perf_total)" >> $GITHUB_ENV
 
-            # TODO: Output build stats
             - name: ✍️ print build stats in summary
               run: |
                   echo "# 🏗️ ${{ matrix.config }}" >> $GITHUB_STEP_SUMMARY
@@ -58,10 +62,32 @@ jobs:
                   echo "## Build stats" >> $GITHUB_STEP_SUMMARY
                   echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
                   echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
-                  echo "| **Creating config duration** | $(cat ${{ steps.build.outputs.dir }}/.stats_perf_conf) |" >> $GITHUB_STEP_SUMMARY
-                  echo "| **Building duration** | $(cat ${{ steps.build.outputs.dir }}/.stats_perf_build) |" >> $GITHUB_STEP_SUMMARY
-                  echo "| **Total duration** | $(cat ${{ steps.build.outputs.dir }}/.stats_perf_total) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Creating config duration** | ${{ env.STATS_PERF_CONF }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Building duration** | ${{ env.STATS_PERF_BUILD }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Total duration** | **${{ env.STATS_PERF_TOTAL }}** |" >> $GITHUB_STEP_SUMMARY
                   echo "*Durations are mm:ss,s*"
 
                   echo "## Included features" >> $GITHUB_STEP_SUMMARY
                   cat ${{ steps.build.outputs.dir }}/.stats_features.md >> $GITHUB_STEP_SUMMARY
+
+            - name: 📝 generate output
+              id: output
+              run: |
+                  echo "build_${{ matrix.config }}=| ${{matrix.config}} | ${{ env.STATS_SIZE }} | ${{ env.STATS_LINES }} | ${{ env.STATS_PERF_TOTAL }} |" >> $GITHUB_OUTPUT
+
+    pr-summary:
+        runs-on: ubuntu-latest
+        name: 📜 update PR Summary
+        if: ${{ github.event_name == 'pull_request' && always() }}
+        needs:
+            - build
+        steps:
+            - name: 📜 update PR Summary
+              uses: ./.github/actions/pr-summary
+              with:
+                  pr-number: ${{ github.event.pull_request.number }}
+                  section: 🏗️  Build
+                  content: |
+                      \`\`\`json
+                      ${{ needs.build.outputs.stats }}
+                      \`\`\`
