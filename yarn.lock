@@ -2745,13 +2745,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-gnu@npm:4.29.1":
-  version: 4.29.1
-  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.29.1"
-  conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-linux-x64-gnu@npm:4.34.8":
   version: 4.34.8
   resolution: "@rollup/rollup-linux-x64-gnu@npm:4.34.8"
@@ -2777,13 +2770,6 @@ __metadata:
   version: 4.34.8
   resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.34.8"
   conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
-"@rollup/rollup-win32-x64-msvc@npm:4.29.1":
-  version: 4.29.1
-  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.29.1"
-  conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
@@ -2928,12 +2914,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.13.5":
-  version: 22.13.5
-  resolution: "@types/node@npm:22.13.5"
+"@types/node@npm:22.13.8":
+  version: 22.13.8
+  resolution: "@types/node@npm:22.13.8"
   dependencies:
     undici-types: "npm:~6.20.0"
-  checksum: 10c0/a2e7ed7bb0690e439004779baedeb05159c5cc41ef6d81c7a6ebea5303fde4033669e1c0e41ff7453b45fd2fea8dbd55fddfcd052950c7fcae3167c970bca725
+  checksum: 10c0/bfc92b734a9dce6ac5daee0a52feccdf5dcb3804d895e4bc5384e2f4644612b8801725cd03c8c3c0888fb5eeb16b875877ac44b77641e0196dc1a837b1c2a366
   languageName: node
   linkType: hard
 
@@ -3886,19 +3872,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"darkreader@npm:4.9.104":
-  version: 4.9.104
-  resolution: "darkreader@npm:4.9.104"
+"darkreader@npm:4.9.105":
+  version: 4.9.105
+  resolution: "darkreader@npm:4.9.105"
   dependencies:
-    "@rollup/rollup-linux-x64-gnu": "npm:4.29.1"
-    "@rollup/rollup-win32-x64-msvc": "npm:4.29.1"
+    "@rollup/rollup-linux-x64-gnu": "npm:4.34.8"
+    "@rollup/rollup-win32-x64-msvc": "npm:4.34.8"
     malevic: "npm:0.20.2"
   dependenciesMeta:
     "@rollup/rollup-linux-x64-gnu":
       optional: true
     "@rollup/rollup-win32-x64-msvc":
       optional: true
-  checksum: 10c0/021445f95b21631ed194591b06fe16dba3f53c3e4bb8defe7bd5ab3e836b140114cd55ceeff463b1ea87ab5739ade940ba9b8895d7fbee8ab2c001ba2fdc4adb
+  checksum: 10c0/8a0d6cd95d7083bd5e3c2baca9e931e6a1971f7923108104a3205057542659d2d9e97eb4be50cee3d6085fd9bbb8a74b75383473205ec2d51cd13f2ffe15d0cf
   languageName: node
   linkType: hard
 
@@ -4502,14 +4488,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:10.0.1":
-  version: 10.0.1
-  resolution: "eslint-config-prettier@npm:10.0.1"
+"eslint-config-prettier@npm:10.0.2":
+  version: 10.0.2
+  resolution: "eslint-config-prettier@npm:10.0.2"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: build/bin/cli.js
-  checksum: 10c0/e2434931669d211663c0493f2c1640a670a02ba4503a68f056a7eda133f383acbbb983a4a7bd0ad6cb3b2bc4d5731c3be8b32fe28e35087a76fea45f7061ae70
+  checksum: 10c0/e0ef3c442661a26fc6e82acec5bb9a418c4a8f65ec8adf0983d3aaba7716d2ed448358b063cce6e3c272c847d14cb856ddf30031770c6571e2b2c3e2a439afd4
   languageName: node
   linkType: hard
 
@@ -8425,17 +8411,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.7.3":
-  version: 5.7.3
-  resolution: "typescript@npm:5.7.3"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/b7580d716cf1824736cc6e628ab4cd8b51877408ba2be0869d2866da35ef8366dd6ae9eb9d0851470a39be17cbd61df1126f9e211d8799d764ea7431d5435afa
-  languageName: node
-  linkType: hard
-
-"typescript@npm:^5.4.5":
+"typescript@npm:5.8.2, typescript@npm:^5.4.5":
   version: 5.8.2
   resolution: "typescript@npm:5.8.2"
   bin:
@@ -8445,17 +8421,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>":
-  version: 5.7.3
-  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/6fd7e0ed3bf23a81246878c613423730c40e8bdbfec4c6e4d7bf1b847cbb39076e56ad5f50aa9d7ebd89877999abaee216002d3f2818885e41c907caaa192cc4
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A^5.4.5#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.4.5#optional!builtin<compat/typescript>":
   version: 5.8.2
   resolution: "typescript@patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=5786d5"
   bin:
@@ -8628,18 +8594,18 @@ __metadata:
     "@types/eslint": "npm:9.6.1"
     "@types/eslint__js": "npm:8.42.3"
     "@types/jquery": "npm:3.5.32"
-    "@types/node": "npm:22.13.5"
+    "@types/node": "npm:22.13.8"
     "@types/tampermonkey": "npm:5.0.4"
     "@vitejs/plugin-legacy": "npm:6.0.2"
     browserslist: "npm:4.24.4"
     browserslist-useragent-regexp: "npm:4.1.3"
     chanfana: "npm:2.6.3"
     classnames: "npm:2.5.1"
-    darkreader: "npm:4.9.104"
+    darkreader: "npm:4.9.105"
     esbuild: "npm:0.25.0"
     esbuild-plugin-browserslist: "npm:0.16.0"
     eslint: "npm:9.21.0"
-    eslint-config-prettier: "npm:10.0.1"
+    eslint-config-prettier: "npm:10.0.2"
     eslint-plugin-jsdoc: "npm:50.6.3"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-userscripts: "npm:0.5.6"
@@ -8660,13 +8626,13 @@ __metadata:
     ts-json-schema-generator: "npm:2.3.0"
     ts-node: "npm:10.9.2"
     typesafe-i18n: "npm:5.26.2"
-    typescript: "npm:5.7.3"
+    typescript: "npm:5.8.2"
     typescript-eslint: "npm:8.25.0"
     typescript-plugin-css-modules: "npm:5.1.0"
     userscript-meta: "npm:1.0.1"
     vite: "npm:6.2.0"
     vite-plugin-monkey: "npm:5.0.8"
-    wrangler: "npm:3.110.0"
+    wrangler: "npm:3.111.0"
     yarn: "npm:1.22.22"
     zod: "npm:3.24.2"
   languageName: unknown
@@ -8884,9 +8850,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrangler@npm:3.110.0":
-  version: 3.110.0
-  resolution: "wrangler@npm:3.110.0"
+"wrangler@npm:3.111.0":
+  version: 3.111.0
+  resolution: "wrangler@npm:3.111.0"
   dependencies:
     "@cloudflare/kv-asset-handler": "npm:0.3.4"
     "@esbuild-plugins/node-globals-polyfill": "npm:0.2.3"
@@ -8912,7 +8878,7 @@ __metadata:
   bin:
     wrangler: bin/wrangler.js
     wrangler2: bin/wrangler.js
-  checksum: 10c0/0e8842eeb452cdf56a2056c7b01c0d1a387db5bdd7d651a20619f59df575820575060e8cf2044a1f65376fbc64fcb2273e143662e3fbfb695bc7829d3981587b
+  checksum: 10c0/724047af861461a6ccb82d8f57bc13edb8e7c07ff8dcd2da1d3b16304c53c92651dea69f1f8f4fa90fc0ee760366456b618d03be8c035e116b7479f86d244859
   languageName: node
   linkType: hard
 
