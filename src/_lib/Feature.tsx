@@ -110,7 +110,7 @@ export default abstract class Feature<
      * Get the translations for exactly this feature
      * @returns the translations for this feature
      */
-    get Translation(): FeatureTranslations<Group>[ID] {
+    get Translation(): FeatureTranslations<Group>[ID] | undefined {
         // TODO: See if we can find a way to type this correctly
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return 'features' in this.#group.Translation ?
