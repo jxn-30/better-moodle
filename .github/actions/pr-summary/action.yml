@@ -56,6 +56,7 @@ runs:
               $END_COMMENT"
               else
                 COMMENT_ID=$(echo "$COMMENT_URL" | sed 's/.*-\([0-9]*\)$/\1/')
+                BODY_FILE=$(mktemp)
                 NEW_BODY_FILE=$(mktemp)
 
                 gh pr view ${{ inputs.pr-number }} --json comments --jq ".comments[] | select(.url == \"$COMMENT_URL\") | .body" > "$BODY_FILE"
