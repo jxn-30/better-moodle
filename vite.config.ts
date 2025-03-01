@@ -402,7 +402,9 @@ export default defineConfig({
                 'downloadURL': `${releaseDownloadUrl}/${fileName}`,
                 'match': `${config.moodleUrl}/*`,
                 'run-at': 'document-body',
-                'connect': config.connects,
+                'connect': Array.from(
+                    new Set(['better-moodle.dev', ...config.connects])
+                ),
                 'require': requires,
             },
             clientAlias: 'GM',
