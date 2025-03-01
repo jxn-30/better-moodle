@@ -82,6 +82,9 @@ jobs:
         needs:
             - build
         steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v4
+
             - name: 📜 update PR Summary
               uses: ./.github/actions/pr-summary
               with:
