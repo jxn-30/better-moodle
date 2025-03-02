@@ -165,6 +165,9 @@ supportedBrowsers.forEach(browser => {
 });
 
 const uaRegexp = uaRegex({ allowHigherVersions: true });
+const connects = Array.from(
+    new Set(['better-moodle.dev', ...(config.connects ?? [])])
+);
 
 const GLOBAL_CONSTANTS = {
     __GITHUB_USER__: JSON.stringify(config.github.user),
@@ -176,7 +179,7 @@ const GLOBAL_CONSTANTS = {
     __UNI__: JSON.stringify(configFile),
     __MOODLE_VERSION__: JSON.stringify(config.moodleVersion),
     __MOODLE_URL__: JSON.stringify(config.moodleUrl),
-    __USERSCRIPT_CONNECTS__: JSON.stringify(config.connects ?? []),
+    __USERSCRIPT_CONNECTS__: JSON.stringify(connects),
     // hacky way for Regular expresions atm
     // See https://github.com/evanw/esbuild/issues/4019 for workaround source and feature request
     __UA_REGEX__: JSON.stringify(
@@ -402,9 +405,7 @@ export default defineConfig({
                 'downloadURL': `${releaseDownloadUrl}/${fileName}`,
                 'match': `${config.moodleUrl}/*`,
                 'run-at': 'document-body',
-                'connect': Array.from(
-                    new Set(['better-moodle.dev', ...config.connects])
-                ),
+                'connect': connects,
                 'require': requires,
             },
             clientAlias: 'GM',
