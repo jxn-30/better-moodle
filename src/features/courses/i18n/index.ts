@@ -8,6 +8,8 @@ import quickRoleChange from './quickRoleChange';
 
 export const de = {
     name: 'Kurse & Meine Kurse',
+    description:
+        'Hier findest du diverse Einstellungen, die die Moodle-Kurse und die "Meine Kurse"-Seite betrifft.',
     features: {
         navbarDropdown: navbarDropdown.de,
         cardsPerRow: cardsPerRow.de,
@@ -20,6 +22,8 @@ export const de = {
 
 export const en = {
     name: 'Courses & My Courses',
+    description:
+        'You can find diverse settings regarding the moodle courses and the "My courses" page.',
     features: {
         navbarDropdown: navbarDropdown.en,
         cardsPerRow: cardsPerRow.en,
