@@ -9,7 +9,7 @@ import { BETTER_MOODLE_LANG } from 'i18n';
  * @returns the day as a localized string
  */
 export const dateToString = (
-    date: Date,
+    date = new Date(),
     year = true,
     weekday = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG

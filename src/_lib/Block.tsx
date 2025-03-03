@@ -17,20 +17,25 @@ export default class Block {
     #ariaRole = 'complementary';
     #ariaLabel = '';
     #title = '';
+    #showTitle = true;
     #controls: JSXElement | null = null;
     #content = (<></>);
     #footer = (<></>);
     #annotation = (<></>);
+    readonly #card: boolean;
 
+    #elements: Element[] = [];
     #element: Element | undefined;
 
     /**
      * creates a new block instance
      * @param id - the id of the block for DOM ID and storage
+     * @param card
      */
-    constructor(id: string) {
+    constructor(id: string, card = true) {
         this.#id = PREFIX(id);
         this.#instanceId = Block.#counters.get(id) ?? 0;
+        this.#card = card;
         Block.#counters.set(id, this.#instanceId + 1);
     }
 
@@ -69,16 +74,42 @@ export default class Block {
     /**
      * sets the content of the block
      * @param content - the content to use
+     * @param showTitle
      * @returns this
      */
-    setContent(content: JSXElement) {
+    setContent(content: JSXElement, showTitle = this.#showTitle) {
+        this.#showTitle = showTitle;
         if (this.#element) {
-            // TODO
+            this.#content = content;
+            this.#element.replaceChildren(this.#realContent);
         } else {
             this.#throwOnRendered();
             this.#content = content;
         }
         return this;
+    }
+
+    /**
+     * Returns the "real" content of the block.
+     * This includes some additional html if the block shall be a card and if the title shall be shown.
+     * @returns the content with additional html if required
+     */
+    get #realContent() {
+        return this.#card ?
+                <div class="card-body p-3">
+                    {this.#showTitle ?
+                        <h5 class="card-title d-inline">{this.#title}</h5>
+                    :   <></>}
+                    <div class="card-text content mt-3">{this.#content}</div>
+                </div>
+            :   this.#content;
+    }
+
+    /**
+     *
+     */
+    get rendered() {
+        return this.#rendered;
     }
 
     /**
@@ -101,7 +132,7 @@ export default class Block {
             blockinstanceid: this.#instanceId,
             arialabel: this.#ariaLabel,
             controls: this.#controls ? getHtml(this.#controls) : '',
-            content: getHtml(this.#content),
+            content: getHtml(this.#realContent),
             footer: getHtml(this.#footer),
             annotation: getHtml(this.#annotation),
         });
@@ -120,10 +151,27 @@ export default class Block {
         this.#throwOnRendered();
         const template = await this.#render();
 
-        this.#element = await putTemplate(element, template, action).then(els =>
-            els.find(el => el.matches('section'))
-        );
+        this.#elements = await putTemplate(element, template, action);
+        this.#element = this.#elements.find(el => el.matches('section'));
 
         return this;
+    }
+
+    /**
+     *
+     */
+    remove() {
+        this.#elements.forEach(el => el.remove());
+    }
+
+    /**
+     * @param element
+     * @param action
+     */
+    put(
+        element: HTMLElement,
+        action: 'append' | 'prepend' | 'before' | 'after'
+    ) {
+        element[action](...this.#elements);
     }
 }

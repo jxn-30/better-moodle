@@ -37,6 +37,7 @@ const groups = [
     'navbarMarquee',
     'linkIcons',
     'speiseplan',
+    'semesterzeiten',
     'bookmarks',
 ] as const;
 
