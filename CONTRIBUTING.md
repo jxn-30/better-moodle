@@ -117,6 +117,8 @@ Every event MUST[^keyword] have the following attributes set:
 @name:<lang>:<name>
 ```
 
+If the event marks a semester, `<type>` is `semester` and the `@color` line may be omitted.
+
 #### Events
 
 TBD
