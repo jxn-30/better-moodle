@@ -122,16 +122,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-gnu@npm:4.29.1":
-  version: 4.29.1
-  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.29.1"
+"@rollup/rollup-linux-x64-gnu@npm:4.34.8":
+  version: 4.34.8
+  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.34.8"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-x64-msvc@npm:4.29.1":
-  version: 4.29.1
-  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.29.1"
+"@rollup/rollup-win32-x64-msvc@npm:4.34.8":
+  version: 4.34.8
+  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.34.8"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -281,19 +281,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"darkreader@npm:4.9.104":
-  version: 4.9.104
-  resolution: "darkreader@npm:4.9.104"
+"darkreader@npm:4.9.105":
+  version: 4.9.105
+  resolution: "darkreader@npm:4.9.105"
   dependencies:
-    "@rollup/rollup-linux-x64-gnu": "npm:4.29.1"
-    "@rollup/rollup-win32-x64-msvc": "npm:4.29.1"
+    "@rollup/rollup-linux-x64-gnu": "npm:4.34.8"
+    "@rollup/rollup-win32-x64-msvc": "npm:4.34.8"
     malevic: "npm:0.20.2"
   dependenciesMeta:
     "@rollup/rollup-linux-x64-gnu":
       optional: true
     "@rollup/rollup-win32-x64-msvc":
       optional: true
-  checksum: 10c0/021445f95b21631ed194591b06fe16dba3f53c3e4bb8defe7bd5ab3e836b140114cd55ceeff463b1ea87ab5739ade940ba9b8895d7fbee8ab2c001ba2fdc4adb
+  checksum: 10c0/8a0d6cd95d7083bd5e3c2baca9e931e6a1971f7923108104a3205057542659d2d9e97eb4be50cee3d6085fd9bbb8a74b75383473205ec2d51cd13f2ffe15d0cf
   languageName: node
   linkType: hard
 
@@ -323,14 +323,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:10.0.1":
-  version: 10.0.1
-  resolution: "eslint-config-prettier@npm:10.0.1"
+"eslint-config-prettier@npm:10.0.2":
+  version: 10.0.2
+  resolution: "eslint-config-prettier@npm:10.0.2"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: build/bin/cli.js
-  checksum: 10c0/e2434931669d211663c0493f2c1640a670a02ba4503a68f056a7eda133f383acbbb983a4a7bd0ad6cb3b2bc4d5731c3be8b32fe28e35087a76fea45f7061ae70
+  checksum: 10c0/e0ef3c442661a26fc6e82acec5bb9a418c4a8f65ec8adf0983d3aaba7716d2ed448358b063cce6e3c272c847d14cb856ddf30031770c6571e2b2c3e2a439afd4
   languageName: node
   linkType: hard
 
@@ -754,12 +754,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.5.2":
-  version: 3.5.2
-  resolution: "prettier@npm:3.5.2"
+"prettier@npm:3.5.3":
+  version: 3.5.3
+  resolution: "prettier@npm:3.5.3"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10c0/d7b597ed33f39c32ace675896ad187f06a3e48dc8a1e80051b5c5f0dae3586d53981704b8fda5ac3b080e6c2e0e197d239131b953702674f044351621ca5e1ac
+  checksum: 10c0/3880cb90b9dc0635819ab52ff571518c35bd7f15a6e80a2054c05dbc8a3aa6e74f135519e91197de63705bcb38388ded7e7230e2178432a1468005406238b877
   languageName: node
   linkType: hard
 
@@ -850,12 +850,12 @@ __metadata:
     "@eslint/js": "npm:9.21.0"
     "@types/eslint": "npm:9.6.1"
     "@types/tampermonkey": "npm:5.0.4"
-    darkreader: "npm:4.9.104"
+    darkreader: "npm:4.9.105"
     eslint: "npm:9.21.0"
-    eslint-config-prettier: "npm:10.0.1"
+    eslint-config-prettier: "npm:10.0.2"
     eslint-plugin-userscripts: "npm:0.5.6"
     globals: "npm:16.0.0"
-    prettier: "npm:3.5.2"
+    prettier: "npm:3.5.3"
     userscript-meta: "npm:1.0.1"
   languageName: unknown
   linkType: soft
