@@ -31,6 +31,13 @@ const mapSemesterzeiten = rawEvents => {
     const semesters = [];
     const events = rawEvents
         .map(e => {
+            // Ignore events that have ended more than 6 months ago.
+            if (
+                Date.now() - new Date(e.end).getTime() >
+                183 * 24 * 60 * 60 * 1000
+            )
+                return null;
+
             const desc = e.description.val;
             const event = {
                 start: e.start,
@@ -48,7 +55,8 @@ const mapSemesterzeiten = rawEvents => {
 
             if (event.type === 'semester') {
                 event.events = [];
-                semesters.push(event);
+                // Only output semesters that have no ended yet.
+                if (new Date(e.end) > new Date()) semesters.push(event);
                 return null;
             }
 
@@ -73,11 +81,7 @@ const mapSemesterzeiten = rawEvents => {
         });
     });
 
-    semesters.forEach(semester =>
-        semester.events.sort((a, b) => a.start - b.start)
-    );
-
-    return semesters.toSorted((a, b) => a.start - b.start);
+    return semesters;
 };
 
 export default {
@@ -94,9 +98,9 @@ export default {
         }).then(res => res.text());
         const calendar = await ical.async.parseICS(icsContent);
 
-        const rawEvents = Object.values(calendar).filter(
-            v => v.type === 'VEVENT'
-        );
+        const rawEvents = Object.values(calendar)
+            .filter(v => v.type === 'VEVENT')
+            .toSorted((a, b) => a.start - b.start);
         let events = [];
         switch (cat) {
             case 'semesterzeiten':
