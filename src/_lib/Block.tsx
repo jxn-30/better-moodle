@@ -24,13 +24,13 @@ export default class Block {
     #annotation = (<></>);
     readonly #card: boolean;
 
-    #elements: Element[] = [];
-    #element: Element | undefined;
+    #elements: HTMLElement[] = [];
+    #element: HTMLElement | undefined;
 
     /**
      * creates a new block instance
      * @param id - the id of the block for DOM ID and storage
-     * @param card
+     * @param card - wether to add additional markup to make the block look more like a card
      */
     constructor(id: string, card = true) {
         this.#id = PREFIX(id);
@@ -74,7 +74,7 @@ export default class Block {
     /**
      * sets the content of the block
      * @param content - the content to use
-     * @param showTitle
+     * @param showTitle - wether to add the blocks title to the markup
      * @returns this
      */
     setContent(content: JSXElement, showTitle = this.#showTitle) {
@@ -106,10 +106,19 @@ export default class Block {
     }
 
     /**
-     *
+     * Get if this block has already been rendered.
+     * @returns the rendered state
      */
     get rendered() {
         return this.#rendered;
+    }
+
+    /**
+     * Get the block content element.
+     * @returns the block content element
+     */
+    get element() {
+        return this.#element;
     }
 
     /**
@@ -151,22 +160,27 @@ export default class Block {
         this.#throwOnRendered();
         const template = await this.#render();
 
-        this.#elements = await putTemplate(element, template, action);
+        this.#elements = await putTemplate<HTMLElement[]>(
+            element,
+            template,
+            action
+        );
         this.#element = this.#elements.find(el => el.matches('section'));
 
         return this;
     }
 
     /**
-     *
+     * Removes the block from the DOM
      */
     remove() {
         this.#elements.forEach(el => el.remove());
     }
 
     /**
-     * @param element
-     * @param action
+     * Adds the block to the DOM
+     * @param element - the element to which the block should be added
+     * @param action - where to put the block in relation to the element
      */
     put(
         element: HTMLElement,

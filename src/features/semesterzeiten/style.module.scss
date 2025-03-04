@@ -1,21 +1,28 @@
-[data-block='better-moodle-semesterzeiten'] .card-text.content {
-    // overrides the mt-3 class
-    margin-top: 0 !important;
-
+[data-block='better-moodle-semesterzeiten'] {
     --progress-percent: 0;
-    $icon-width: 16px; // .icon
-    $icon-margin: 0.5rem; // .mr-2
-    $progressbar-width: calc(100% - $icon-width - $icon-margin);
 
-    :local(.today-span) {
-        position: absolute;
-        top: 0;
-        // These numbers have been carefully chosen by evidence based trial-and-error methods :)
-        transform: translateX(-50%) translateY(calc(-1lh + 3px));
-        font-size: 0.703125rem; // this is the font size of progress bars
-        margin-left: calc(
-            (var(--progress-percent) * $progressbar-width) + $icon-width +
-                $icon-margin
-        );
+    .card-text.content {
+        // overrides the mt-3 class
+        margin-top: 0 !important;
+
+        $icon-width: 16px; // .icon
+        $icon-margin: 0.5rem; // .mr-2
+        $progressbar-width: calc(100% - $icon-width - $icon-margin);
+
+        :local(.today-span) {
+            position: absolute;
+            top: 0;
+            // These numbers have been carefully chosen by evidence based trial-and-error methods :)
+            transform: translateX(-50%) translateY(calc(-1lh + 3px));
+            font-size: 0.703125rem; // this is the font size of progress bars
+            margin-left: calc(
+                (var(--progress-percent) * $progressbar-width) + $icon-width +
+                    $icon-margin
+            );
+        }
+
+        :local(.table-toggle) {
+            border: 0;
+        }
     }
 }

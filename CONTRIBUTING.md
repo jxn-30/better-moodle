@@ -107,8 +107,8 @@ Every event MUST[^keyword] have the following attributes set:
 - `DTSTART`, type `DATE`
 - `DTEND`, type `DATE`
 - `DESCRIPTION` with the following format, where
-    - `<type>` identifies the type of event to e.g. toggle all lecutre periods at once
-    - `<color>` is a [Bootstrap theme color](https://getbootstrap.com/docs/4.6/getting-started/theming/#theme-colors)
+    - `<type>` identifies the type of event to e.g. toggle all lecutre periods at once. Public holiday values of `<type>` MUST[^keyword] start with `holiday-`.
+    - `<color>` is a [Bootstrap theme color](https://getbootstrap.com/docs/4.6/getting-started/theming/#theme-colors).
     - `<lang>` is a valid language identifier for the moodle instance and `<name>` the translation in this language. Each language MUST[^keyword] get its own line.
 
 ```md

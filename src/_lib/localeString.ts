@@ -80,6 +80,23 @@ export const currency = (
     });
 
 /**
+ * Prints a number localized as a percentage
+ * @param num - the number to be localized
+ * @param digits - the maximum amount of fraction digits
+ * @param lang - enforce a special language instead of BETTER_MOODLE_LANG
+ * @returns the localized number as percentage
+ */
+export const percent = (
+    num: number,
+    digits = 2,
+    lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
+) =>
+    num.toLocaleString(lang, {
+        style: 'percent',
+        maximumFractionDigits: digits,
+    });
+
+/**
  * Capitalizes the first letter of each word.
  * @param str - the string to capitalize
  * @param lang - enforce a special language instead of BETTER_MOODLE_LANG
