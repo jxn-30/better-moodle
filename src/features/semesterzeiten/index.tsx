@@ -46,9 +46,7 @@ const todaySpan = (
     <span class={style.todaySpan}>{dateToString()}</span>
 ) as HTMLSpanElement;
 const toggleTableBtn = (
-    <button
-        class={classnames(['mr-2 btn btn-link btn-sm p-0', style.tableToggle])}
-    >
+    <button class={classnames('btn btn-link btn-sm p-0', style.tableToggle)}>
         <i class="icon fa fa-info-circle mr-0"></i>
     </button>
 ) as HTMLButtonElement;
@@ -153,10 +151,21 @@ const loadContent = (semesterIndex = 0) => {
                 progress: semesterProgress,
             } = getEventDates(semester);
 
+            progressBar.replaceChildren();
+
             if (semesterIndex === 0) {
                 block.element?.style.setProperty(
                     '--progress-percent',
                     semesterProgress.toString()
+                );
+
+                progressBar.append(
+                    <div
+                        class={classnames(
+                            'progress-bar bg-transparent progress-bar-striped',
+                            style.progressOverlayBar
+                        )}
+                    ></div>
                 );
             }
 
