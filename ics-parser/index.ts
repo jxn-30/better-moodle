@@ -39,9 +39,17 @@ const mapSemesterzeiten = rawEvents => {
                 return null;
 
             const desc = e.description.val;
+            const end = new Date(e.end);
+            if (
+                end.getHours() === 0 &&
+                end.getMinutes() === 0 &&
+                end.getSeconds() === 0 &&
+                end.getMilliseconds() === 0
+            )
+                end.setTime(end.getTime() - 1);
             const event = {
                 start: e.start,
-                end: e.end,
+                end: end.toISOString(),
                 type: desc.match(/(?<=^@type:).*$/m)?.[0],
                 color: desc.match(/(?<=^@color:).*$/m)?.[0],
                 name: Object.fromEntries(
