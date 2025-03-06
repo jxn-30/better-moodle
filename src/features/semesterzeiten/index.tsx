@@ -8,7 +8,7 @@ import { request } from '@/network';
 import style from './style.module.scss';
 import { BETTER_MOODLE_LANG, LL } from 'i18n';
 import { dateToString, percent } from '@/localeString';
-import { getLoadingSpinner, ready } from '@/DOM';
+import { getHtml, getLoadingSpinner, ready } from '@/DOM';
 
 const blockSetting = new BooleanSetting('block', false);
 
@@ -112,7 +112,7 @@ const getEventDates = (event: Event | Semester) => {
     const duration = end.getTime() - start.getTime();
     const passed = Date.now() - start.getTime();
     const progress = Math.max(0, Math.min(passed / duration, 1));
-    return { start, end, progress };
+    return { start, end, duration, progress };
 };
 
 let currentSemester = 0;
@@ -139,19 +139,167 @@ const loadContent = (semesterIndex = 0) => {
         ({ [semesterIndex]: semester, length: semesterCount }) => {
             contentLoaded = true;
 
+            const {
+                start: semesterStart,
+                end: semesterEnd,
+                duration: semesterDuration,
+                progress: semesterProgress,
+            } = getEventDates(semester);
+
             prevSemesterBtn.classList.toggle('disabled', semesterIndex === 0);
             nextSemesterBtn.classList.toggle(
                 'disabled',
                 semesterIndex === semesterCount - 1
             );
 
-            const {
-                start: semesterStart,
-                end: semesterEnd,
-                progress: semesterProgress,
-            } = getEventDates(semester);
+            tableBody.replaceChildren(
+                <tr class="table-primary font-weight-bold">
+                    <td>{semester.name[BETTER_MOODLE_LANG]}</td>
+                    <td>{dateToString(semesterStart)}</td>
+                    <td>{dateToString(semesterEnd)}</td>
+                    <td>{percent(semesterProgress)}</td>
+                    <td class="p-0 px-md-3 align-middle">
+                        <nav>
+                            <ul class="pagination mb-0 flex-nowrap justify-content-center justify-content-md-end">
+                                {prevSemesterBtn}
+                                {nextSemesterBtn}
+                            </ul>
+                        </nav>
+                    </td>
+                </tr>
+            );
+
+            const stops = new Map<
+                Date,
+                Record<'start' | 'end', Set<Semester | Event>>
+            >();
+
+            stops.set(semesterStart, {
+                start: new Set<Semester | Event>([semester]),
+                end: new Set<Semester | Event>(),
+            });
+            stops.set(semesterEnd, {
+                start: new Set<Semester | Event>(),
+                end: new Set<Semester | Event>([semester]),
+            });
+
+            semester.events.forEach(event => {
+                const { start, end, progress } = getEventDates(event);
+
+                // TODO: Check toggling state here.
+                // eslint-disable-next-line no-constant-condition
+                if (true) {
+                    const normalizedStart =
+                        start > semesterStart ? start : semesterStart;
+                    const normalizedEnd = end < semesterEnd ? end : semesterEnd;
+
+                    const startStop = stops.get(normalizedStart) ?? {
+                        start: new Set<Semester | Event>(),
+                        end: new Set<Semester | Event>(),
+                    };
+                    const endStop = stops.get(normalizedEnd) ?? {
+                        start: new Set<Semester | Event>(),
+                        end: new Set<Semester | Event>(),
+                    };
+
+                    startStop.start.add(event);
+                    endStop.end.add(event);
+
+                    stops.set(normalizedStart, startStop);
+                    stops.set(normalizedEnd, endStop);
+                }
+
+                if (event.type.startsWith('holiday-')) {
+                    tableBody.append(
+                        <tr class={`table-${event.color}`}>
+                            <td colSpan={4}>
+                                {/* The strings are explicit here, to avoid trimming */}
+                                {LL.features.semesterzeiten.publicHoliday()}
+                                {': '}
+                                {event.name[BETTER_MOODLE_LANG]}
+                                {' ('}
+                                {dateToString(start, true, true)}
+                                {')'}
+                            </td>
+                            <td>Toggl :)</td>
+                        </tr>
+                    );
+                } else {
+                    tableBody.append(
+                        <tr class={`table-${event.color}`}>
+                            <td>{event.name[BETTER_MOODLE_LANG]}</td>
+                            <td>{dateToString(start)}</td>
+                            <td>{dateToString(end)}</td>
+                            <td>{percent(progress)}</td>
+                            <td>Toggl :)</td>
+                        </tr>
+                    );
+                }
+            });
 
             progressBar.replaceChildren();
+
+            const currentEvents = new Set<Semester | Event>();
+            const stopDates = Array.from(stops.keys()).toSorted(
+                (a, b) => a.getTime() - b.getTime()
+            );
+            stopDates.forEach((date, index) => {
+                // Do not iterate over the last stop
+                if (index === stops.size - 1) return;
+
+                // see the ! at the end? this tells TS that we're sure, this will not be null
+                const { start: starts, end: ends } = stops.get(date)!;
+                starts.forEach(event => currentEvents.add(event));
+                ends.forEach(event => currentEvents.delete(event));
+
+                const startPercentage =
+                    (date.getTime() - semesterStart.getTime()) /
+                    semesterDuration;
+                const endPercentage =
+                    (stopDates[index + 1].getTime() - semesterStart.getTime()) /
+                    semesterDuration;
+                const width = (endPercentage - startPercentage) * 100;
+
+                const title = <></>;
+                const bar = (
+                    <div
+                        class="progress-bar"
+                        style={{ width: `${width}%` }}
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-html="true"
+                    ></div>
+                );
+
+                currentEvents.forEach(event => {
+                    title.append(
+                        <p>
+                            <b>{event.name[BETTER_MOODLE_LANG]}</b>
+                            <br />
+                            {event.type.startsWith('holiday-') ?
+                                dateToString(new Date(event.start))
+                            :   <>
+                                    {dateToString(new Date(event.start))}
+                                    &nbsp;-&nbsp;
+                                    {dateToString(new Date(event.end))}
+                                </>
+                            }
+                        </p>
+                    );
+                    bar.append(
+                        <div
+                            class={classnames(
+                                'progress-bar w-100, h-100',
+                                `bg-${'color' in event ? event.color : 'primary'}`
+                            )}
+                        ></div>
+                    );
+                });
+
+                bar.dataset.originalTitle = getHtml(title);
+
+                progressBar.append(bar);
+            });
 
             if (semesterIndex === 0) {
                 block.element?.style.setProperty(
@@ -168,54 +316,6 @@ const loadContent = (semesterIndex = 0) => {
                     ></div>
                 );
             }
-
-            tableBody.replaceChildren(
-                <tr class="table-primary font-weight-bold">
-                    <td>{semester.name[BETTER_MOODLE_LANG]}</td>
-                    <td>{dateToString(semesterStart)}</td>
-                    <td>{dateToString(semesterEnd)}</td>
-                    <td>{percent(semesterProgress)}</td>
-                    <td class="p-0 px-md-3 align-middle">
-                        <nav>
-                            <ul class="pagination mb-0 flex-nowrap justify-content-center justify-content-md-end">
-                                {prevSemesterBtn}
-                                {nextSemesterBtn}
-                            </ul>
-                        </nav>
-                    </td>
-                </tr>,
-                ...semester.events.map(event => {
-                    const { start, end, progress } = getEventDates(event);
-                    if (event.type.startsWith('holiday-')) {
-                        return (
-                            <tr class={`table-${event.color}`}>
-                                <td>
-                                    {/* The strings are explicit here, to avoid trimming */}
-                                    {LL.features.semesterzeiten.publicHoliday()}
-                                    {': '}
-                                    {event.name[BETTER_MOODLE_LANG]}
-                                    {' ('}
-                                    {dateToString(start, true, true)}
-                                    {')'}
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>Toggl :)</td>
-                            </tr>
-                        );
-                    }
-                    return (
-                        <tr class={`table-${event.color}`}>
-                            <td>{event.name[BETTER_MOODLE_LANG]}</td>
-                            <td>{dateToString(start)}</td>
-                            <td>{dateToString(end)}</td>
-                            <td>{percent(progress)}</td>
-                            <td>Toggl :)</td>
-                        </tr>
-                    );
-                })
-            );
 
             block.setContent(
                 <>
