@@ -45,5 +45,9 @@
             );
             border-right: 1px solid currentColor;
         }
+
+        .progress-bar[data-toggle='tooltip']:hover {
+            filter: brightness(1.5);
+        }
     }
 }
