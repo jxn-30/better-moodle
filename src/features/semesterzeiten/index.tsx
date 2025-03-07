@@ -19,6 +19,8 @@ const block = new Block('semesterzeiten', true).setTitle(
 interface Event {
     start: string;
     end: string;
+    startDateOnly: boolean;
+    endDateOnly: boolean;
     type: string;
     color: string;
     name: Record<Locales, string>;

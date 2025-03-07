@@ -1,19 +1,6 @@
 import ical from 'node-ical';
 import german from './i18n/de';
 
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.jsonc`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
-
 const URLS = {
     semesterzeiten: {
         uzl: 'http://files.asta.uni-luebeck.de/remote.php/dav/public-calendars/AH4pFg6pqb7AfBXo?export',
@@ -49,7 +36,9 @@ const mapSemesterzeiten = rawEvents => {
                 end.setTime(end.getTime() - 1);
             const event = {
                 start: e.start,
-                end: end.toISOString(),
+                end: end,
+                startDateOnly: !!e.start.dateOnly,
+                endDateOnly: !!e.end.dateOnly,
                 type: desc.match(/(?<=^@type:).*$/m)?.[0],
                 color: desc.match(/(?<=^@color:).*$/m)?.[0],
                 name: Object.fromEntries(
