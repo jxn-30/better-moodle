@@ -66,8 +66,7 @@ const mapSemesterzeiten = rawEvents => {
             }
 
             if (e.rrule) recurringEvents.push([i, event]);
-
-            return event;
+            else return event;
         })
         .filter(Boolean);
 
@@ -77,7 +76,6 @@ const mapSemesterzeiten = rawEvents => {
         event.rrule
             .between(new Date(minStartDate), new Date(maxEndDate))
             .forEach(rDate => {
-                if (rDate.getTime() === new Date(event.start)) return;
                 events.push({
                     ...e,
                     start: rDate,
