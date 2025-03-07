@@ -2,13 +2,17 @@ import Block from '@/Block';
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import classnames from 'classnames';
 import FeatureGroup from '@/FeatureGroup';
-import { isDashboard } from '@/helpers';
 import { type Locales } from '../../i18n/i18n-types';
 import { request } from '@/network';
 import style from './style.module.scss';
+import { Switch } from '@/Components';
 import { BETTER_MOODLE_LANG, LL } from 'i18n';
 import { dateToString, percent } from '@/localeString';
+import { domID, isDashboard } from '@/helpers';
 import { getHtml, getLoadingSpinner, ready } from '@/DOM';
+
+const hiddenBarsKey = 'semesterzeitenHiddenBars';
+const hiddenBars = new Set<string>(GM_getValue<string[]>(hiddenBarsKey, []));
 
 const blockSetting = new BooleanSetting('block', false);
 
@@ -126,6 +130,134 @@ const getEventDates = (event: Event | Semester) => {
 let currentSemester = 0;
 
 /**
+ * Loads the content of a progress bar
+ * @param semester - the semester to load the content for
+ * @param currentSemester - wether this is the current semester and an overlay needs to be added
+ */
+const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
+    const {
+        start: semesterStart,
+        end: semesterEnd,
+        duration: semesterDuration,
+    } = getEventDates(semester);
+
+    const stops = new Map<
+        Date,
+        Record<'start' | 'end', Set<Semester | Event>>
+    >();
+
+    stops.set(semesterStart, {
+        start: new Set<Semester | Event>([semester]),
+        end: new Set<Semester | Event>(),
+    });
+    stops.set(semesterEnd, {
+        start: new Set<Semester | Event>(),
+        end: new Set<Semester | Event>([semester]),
+    });
+
+    semester.events.forEach(event => {
+        const { start, end } = getEventDates(event);
+
+        if (!hiddenBars.has(event.type)) {
+            const normalizedStart =
+                start > semesterStart ? start : semesterStart;
+            const normalizedEnd = end < semesterEnd ? end : semesterEnd;
+
+            const startStop = stops.get(normalizedStart) ?? {
+                start: new Set<Semester | Event>(),
+                end: new Set<Semester | Event>(),
+            };
+            const endStop = stops.get(normalizedEnd) ?? {
+                start: new Set<Semester | Event>(),
+                end: new Set<Semester | Event>(),
+            };
+
+            startStop.start.add(event);
+            endStop.end.add(event);
+
+            stops.set(normalizedStart, startStop);
+            stops.set(normalizedEnd, endStop);
+        }
+    });
+
+    progressBar.replaceChildren();
+
+    const currentEvents = new Set<Semester | Event>();
+    const stopDates = Array.from(stops.keys()).toSorted(
+        (a, b) => a.getTime() - b.getTime()
+    );
+    stopDates.forEach((date, index) => {
+        // Do not iterate over the last stop
+        if (index === stops.size - 1) return;
+
+        // see the ! at the end? this tells TS that we're sure, this will not be null
+        const { start: starts, end: ends } = stops.get(date)!;
+        starts.forEach(event => currentEvents.add(event));
+        ends.forEach(event => currentEvents.delete(event));
+
+        const startPercentage =
+            (date.getTime() - semesterStart.getTime()) / semesterDuration;
+        const endPercentage =
+            (stopDates[index + 1].getTime() - semesterStart.getTime()) /
+            semesterDuration;
+        const width = (endPercentage - startPercentage) * 100;
+
+        const title = <></>;
+        const bar = (
+            <div
+                class="progress-bar"
+                style={{ width: `${width}%` }}
+                data-toggle="tooltip"
+                data-placement="bottom"
+                data-html="true"
+            ></div>
+        );
+
+        currentEvents.forEach(event => {
+            const { start, end } = getEventDates(event);
+
+            title.append(
+                <p>
+                    <b>{event.name[BETTER_MOODLE_LANG]}</b>
+                    <br />
+                    {event.type.startsWith('holiday-') ?
+                        dateToString(start)
+                    :   <>
+                            {dateToString(start)}
+                            &nbsp;-&nbsp;
+                            {dateToString(end)}
+                        </>
+                    }
+                </p>
+            );
+            bar.append(
+                <div
+                    class={classnames(
+                        'progress-bar w-100, h-100',
+                        `bg-${'color' in event ? event.color : 'primary'}`
+                    )}
+                ></div>
+            );
+        });
+
+        bar.dataset.originalTitle = getHtml(title);
+
+        progressBar.append(bar);
+    });
+
+    if (currentSemester) {
+        progressBar.append(
+            <div
+                class={classnames(
+                    'progress-bar bg-transparent progress-bar-striped',
+                    style.progressOverlayBar
+                )}
+            ></div>
+        );
+    }
+};
+
+/**
  * Loads the block content for a specific semester.
  * @param semesterIndex - the position of the semester in the list of semesters
  */
@@ -150,7 +282,6 @@ const loadContent = (semesterIndex = 0) => {
             const {
                 start: semesterStart,
                 end: semesterEnd,
-                duration: semesterDuration,
                 progress: semesterProgress,
             } = getEventDates(semester);
 
@@ -177,46 +308,26 @@ const loadContent = (semesterIndex = 0) => {
                 </tr>
             );
 
-            const stops = new Map<
-                Date,
-                Record<'start' | 'end', Set<Semester | Event>>
-            >();
-
-            stops.set(semesterStart, {
-                start: new Set<Semester | Event>([semester]),
-                end: new Set<Semester | Event>(),
-            });
-            stops.set(semesterEnd, {
-                start: new Set<Semester | Event>(),
-                end: new Set<Semester | Event>([semester]),
-            });
-
             semester.events.forEach(event => {
                 const { start, end, progress } = getEventDates(event);
 
-                // TODO: Check toggling state here.
-                // eslint-disable-next-line no-constant-condition
-                if (true) {
-                    const normalizedStart =
-                        start > semesterStart ? start : semesterStart;
-                    const normalizedEnd = end < semesterEnd ? end : semesterEnd;
-
-                    const startStop = stops.get(normalizedStart) ?? {
-                        start: new Set<Semester | Event>(),
-                        end: new Set<Semester | Event>(),
-                    };
-                    const endStop = stops.get(normalizedEnd) ?? {
-                        start: new Set<Semester | Event>(),
-                        end: new Set<Semester | Event>(),
-                    };
-
-                    startStop.start.add(event);
-                    endStop.end.add(event);
-
-                    stops.set(normalizedStart, startStop);
-                    stops.set(normalizedEnd, endStop);
-                }
-
+                const toggle = (
+                    <Switch
+                        id={domID(
+                            `semesterzeiten-toggle-${semesterIndex}-${event.type}`
+                        )}
+                        value={!hiddenBars.has(event.type)}
+                    />
+                ) as ReturnType<typeof Switch>;
+                toggle.addEventListener('input', () => {
+                    if (toggle.value) {
+                        hiddenBars.delete(event.type);
+                    } else {
+                        hiddenBars.add(event.type);
+                    }
+                    GM_setValue(hiddenBarsKey, Array.from(hiddenBars));
+                    loadProgressBar(semester, semesterIndex === 0);
+                });
                 if (event.type.startsWith('holiday-')) {
                     tableBody.append(
                         <tr class={`table-${event.color}`}>
@@ -229,7 +340,7 @@ const loadContent = (semesterIndex = 0) => {
                                 {dateToString(start, true, true)}
                                 {')'}
                             </td>
-                            <td>Toggl :)</td>
+                            <td>{toggle}</td>
                         </tr>
                     );
                 } else {
@@ -239,91 +350,18 @@ const loadContent = (semesterIndex = 0) => {
                             <td>{dateToString(start)}</td>
                             <td>{dateToString(end)}</td>
                             <td>{percent(progress)}</td>
-                            <td>Toggl :)</td>
+                            <td>{toggle}</td>
                         </tr>
                     );
                 }
             });
 
-            progressBar.replaceChildren();
-
-            const currentEvents = new Set<Semester | Event>();
-            const stopDates = Array.from(stops.keys()).toSorted(
-                (a, b) => a.getTime() - b.getTime()
-            );
-            stopDates.forEach((date, index) => {
-                // Do not iterate over the last stop
-                if (index === stops.size - 1) return;
-
-                // see the ! at the end? this tells TS that we're sure, this will not be null
-                const { start: starts, end: ends } = stops.get(date)!;
-                starts.forEach(event => currentEvents.add(event));
-                ends.forEach(event => currentEvents.delete(event));
-
-                const startPercentage =
-                    (date.getTime() - semesterStart.getTime()) /
-                    semesterDuration;
-                const endPercentage =
-                    (stopDates[index + 1].getTime() - semesterStart.getTime()) /
-                    semesterDuration;
-                const width = (endPercentage - startPercentage) * 100;
-
-                const title = <></>;
-                const bar = (
-                    <div
-                        class="progress-bar"
-                        style={{ width: `${width}%` }}
-                        data-toggle="tooltip"
-                        data-placement="bottom"
-                        data-html="true"
-                    ></div>
-                );
-
-                currentEvents.forEach(event => {
-                    const { start, end } = getEventDates(event);
-
-                    title.append(
-                        <p>
-                            <b>{event.name[BETTER_MOODLE_LANG]}</b>
-                            <br />
-                            {event.type.startsWith('holiday-') ?
-                                dateToString(start)
-                            :   <>
-                                    {dateToString(start)}
-                                    &nbsp;-&nbsp;
-                                    {dateToString(end)}
-                                </>
-                            }
-                        </p>
-                    );
-                    bar.append(
-                        <div
-                            class={classnames(
-                                'progress-bar w-100, h-100',
-                                `bg-${'color' in event ? event.color : 'primary'}`
-                            )}
-                        ></div>
-                    );
-                });
-
-                bar.dataset.originalTitle = getHtml(title);
-
-                progressBar.append(bar);
-            });
+            loadProgressBar(semester, semesterIndex === 0);
 
             if (semesterIndex === 0) {
                 block.element?.style.setProperty(
                     '--progress-percent',
                     semesterProgress.toString()
-                );
-
-                progressBar.append(
-                    <div
-                        class={classnames(
-                            'progress-bar bg-transparent progress-bar-striped',
-                            style.progressOverlayBar
-                        )}
-                    ></div>
                 );
             }
 
