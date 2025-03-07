@@ -14,10 +14,15 @@ const URLS = {
 const SERVER_CACHE_DUR = 10 * 60; // 10 * 60s = 10 minutes
 const CLIENT_CACHE_DUR = 30 * 60; // 30 * 60s = 30 minutes
 
+interface Event {}
+
 const mapSemesterzeiten = rawEvents => {
     const semesters = [];
+    let minStartDate = new Date();
+    let maxEndDate = new Date();
+    const recurringEvents: [number, Event][] = [];
     const events = rawEvents
-        .map(e => {
+        .map((e, i) => {
             // Ignore events that have ended more than 6 months ago.
             if (
                 Date.now() - new Date(e.end).getTime() >
@@ -26,6 +31,7 @@ const mapSemesterzeiten = rawEvents => {
                 return null;
 
             const desc = e.description.val;
+            const start = new Date(e.start);
             const end = new Date(e.end);
             if (
                 end.getHours() === 0 &&
@@ -34,8 +40,10 @@ const mapSemesterzeiten = rawEvents => {
                 end.getMilliseconds() === 0
             )
                 end.setTime(end.getTime() - 1);
+            minStartDate = Math.min(minStartDate, start);
+            maxEndDate = Math.max(maxEndDate, end);
             const event = {
-                start: e.start,
+                start: start,
                 end: end,
                 startDateOnly: !!e.start.dateOnly,
                 endDateOnly: !!e.end.dateOnly,
@@ -57,11 +65,26 @@ const mapSemesterzeiten = rawEvents => {
                 return null;
             }
 
+            if (e.rrule) recurringEvents.push([i, event]);
+
             return event;
         })
         .filter(Boolean);
 
-    // TODO: Recurring dates?
+    recurringEvents.forEach(([idx, e]) => {
+        const event = rawEvents[idx];
+        const duration = e.end.getTime() - e.start.getTime();
+        event.rrule
+            .between(new Date(minStartDate), new Date(maxEndDate))
+            .forEach(rDate => {
+                if (rDate.getTime() === new Date(event.start)) return;
+                events.push({
+                    ...e,
+                    start: rDate,
+                    end: new Date(rDate.getTime() + duration),
+                });
+            });
+    });
 
     events.forEach(event => {
         // TODO: This just works but I guess it may be done way more efficient!
@@ -77,6 +100,10 @@ const mapSemesterzeiten = rawEvents => {
                 semester.events.push(event);
         });
     });
+
+    semesters.forEach(semester =>
+        semester.events.sort((a, b) => a.start - b.start)
+    );
 
     return semesters;
 };
