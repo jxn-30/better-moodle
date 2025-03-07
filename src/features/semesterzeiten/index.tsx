@@ -110,7 +110,13 @@ toggleTableBtn.addEventListener('click', () =>
  */
 const getEventDates = (event: Event | Semester) => {
     const start = new Date(event.start);
+    if (event.startDateOnly) {
+        start.setTime(start.getTime() + start.getTimezoneOffset() * 60 * 1000);
+    }
     const end = new Date(event.end);
+    if (event.endDateOnly) {
+        end.setTime(end.getTime() + end.getTimezoneOffset() * 60 * 1000);
+    }
     const duration = end.getTime() - start.getTime();
     const passed = Date.now() - start.getTime();
     const progress = Math.max(0, Math.min(passed / duration, 1));
@@ -274,16 +280,18 @@ const loadContent = (semesterIndex = 0) => {
                 );
 
                 currentEvents.forEach(event => {
+                    const { start, end } = getEventDates(event);
+
                     title.append(
                         <p>
                             <b>{event.name[BETTER_MOODLE_LANG]}</b>
                             <br />
                             {event.type.startsWith('holiday-') ?
-                                dateToString(new Date(event.start))
+                                dateToString(start)
                             :   <>
-                                    {dateToString(new Date(event.start))}
+                                    {dateToString(start)}
                                     &nbsp;-&nbsp;
-                                    {dateToString(new Date(event.end))}
+                                    {dateToString(end)}
                                 </>
                             }
                         </p>
