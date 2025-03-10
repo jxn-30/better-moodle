@@ -12,6 +12,13 @@ export const de = {
         progress: 'Fortschritt',
         show: 'Im Balken anzeigen?',
     },
+    settings: {
+        block: {
+            name: 'Block im Dashboard',
+            description:
+                'Fügt dem Dashboard einen Block hinzu, der die Semesterzeiten anzeigt.',
+        },
+    },
 } satisfies FeatureGroupTranslation;
 
 export const en = {
@@ -25,6 +32,13 @@ export const en = {
         end: 'End',
         progress: 'Progress',
         show: 'Show in Progress bar?',
+    },
+    settings: {
+        block: {
+            name: 'Block in the Dashboard',
+            description:
+                'Adds a block to the dashboard that shows the semester times.',
+        },
     },
 } as typeof de;
 
