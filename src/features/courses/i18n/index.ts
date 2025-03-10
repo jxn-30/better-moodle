@@ -4,6 +4,7 @@ import type { FeatureGroupTranslation } from '#/i18n';
 import grades from './grades';
 import images from './images';
 import navbarDropdown from './navbarDropdown';
+import noDownload from './noDownload';
 import quickRoleChange from './quickRoleChange';
 
 export const de = {
@@ -17,6 +18,7 @@ export const de = {
         courseIndexDrawerControls: courseIndexDrawerControls.de,
         images: images.de,
         quickRoleChange: quickRoleChange.de,
+        noDownload: noDownload.de,
     },
 } satisfies FeatureGroupTranslation;
 
@@ -31,6 +33,7 @@ export const en = {
         courseIndexDrawerControls: courseIndexDrawerControls.en,
         images: images.en,
         quickRoleChange: quickRoleChange.en,
+        noDownload: noDownload.en,
     },
 } as typeof de;
 
