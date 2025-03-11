@@ -11,6 +11,9 @@ export const de = {
                 'Aktiviert einen Lesezeichenmanager, um Lesezeichen direkt im Moodle zu haben.',
         },
     },
+    bookmarks: 'Lesezeichen',
+    edit: 'Lesezeichen bearbeiten',
+    empty: 'Es sind noch keine Lesezeichen angelegt.',
 } satisfies FeatureGroupTranslation;
 
 export const en = {
@@ -19,11 +22,14 @@ export const en = {
         'Who even uses the bookmarks feature of their browser? The one integrated in Better-Moodle is way cooler!',
     settings: {
         enabled: {
-            name: 'Lesezeichenmanager aktivieren',
+            name: 'Enable bookmarks manager',
             description:
-                'Aktiviert einen Lesezeichenmanager, um Lesezeichen direkt im Moodle zu haben.',
+                'Enables a bookmarks manager to allow bookmarks within Moodle.',
         },
     },
+    bookmarks: 'Bookmarks',
+    edit: 'Edit bookmarks',
+    empty: 'No bookmarks created yet.',
 } as typeof de;
 
 export default { de, en };

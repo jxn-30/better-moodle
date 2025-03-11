@@ -1,0 +1,30 @@
+@use '/src/style/mixins';
+
+:local(#dropdown) {
+    .dropdown-menu {
+        max-width: 400px;
+        // faking the .dropdown-menu-right
+        right: 0;
+        left: auto;
+
+        &:has(.dropdown-item:only-child)::before {
+            display: block;
+            text-align: center;
+            content: var(--empty-text);
+            font-size: small;
+            padding: 0.25rem 1.5rem; // padding of .dropdown-item
+        }
+    }
+
+    @include mixins.media-down(sm) {
+        position: inherit;
+
+        .dropdown-menu {
+            max-width: 100%;
+
+            .dropdown-item {
+                overflow: auto;
+            }
+        }
+    }
+}
