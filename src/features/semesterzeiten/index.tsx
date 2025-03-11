@@ -21,7 +21,9 @@ GM_listValues().forEach(key => {
     }
 });
 
-const blockSetting = new BooleanSetting('block', false);
+const blockSetting = new BooleanSetting('block', false).addAlias(
+    'general.semesterzeiten'
+);
 
 const block = new Block('semesterzeiten', true).setTitle(
     LL.features.semesterzeiten.name()

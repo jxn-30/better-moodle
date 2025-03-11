@@ -4,8 +4,6 @@ import { PREFIX } from '@/helpers';
 
 const enabled = new BooleanSetting('enabled', false);
 
-enabled.disabledIf(enabled, '==', false);
-
 const storageKey = 'bookmarks';
 const oldStorageKey = PREFIX(storageKey);
 
