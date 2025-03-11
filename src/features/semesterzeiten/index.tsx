@@ -11,8 +11,15 @@ import { dateToString, percent } from '@/localeString';
 import { domID, isDashboard } from '@/helpers';
 import { getHtml, getLoadingSpinner, ready } from '@/DOM';
 
-const hiddenBarsKey = 'semesterzeitenHiddenBars';
+const hiddenBarsKey = 'semesterzeiten.hiddenBars';
 const hiddenBars = new Set<string>(GM_getValue<string[]>(hiddenBarsKey, []));
+
+// Remove the old storage keys. Migration is not done here as event types may have significantly changed.
+GM_listValues().forEach(key => {
+    if (key.startsWith('better-moodle-semesterzeiten.show.')) {
+        GM_deleteValue(key);
+    }
+});
 
 const blockSetting = new BooleanSetting('block', false);
 
