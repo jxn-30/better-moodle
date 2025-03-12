@@ -12,8 +12,14 @@ export const de = {
         },
     },
     bookmarks: 'Lesezeichen',
+    add: 'Lesezeichen hinzufügen',
     edit: 'Lesezeichen bearbeiten',
     empty: 'Es sind noch keine Lesezeichen angelegt.',
+    savedNotification: 'Deine Lesezeichen wurden erfolgreich gespeichert! 😊',
+    modal: {
+        title: 'Bezeichnung',
+        url: 'Adresse',
+    },
 } satisfies FeatureGroupTranslation;
 
 export const en = {
@@ -28,8 +34,14 @@ export const en = {
         },
     },
     bookmarks: 'Bookmarks',
+    add: 'Add bookmark',
     edit: 'Edit bookmarks',
     empty: 'No bookmarks created yet.',
+    savedNotification: 'Your bookmarks were saved successfully! 😊',
+    modal: {
+        title: 'Title',
+        url: 'Adress',
+    },
 } as typeof de;
 
 export default { de, en };

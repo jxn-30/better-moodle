@@ -28,3 +28,16 @@
         }
     }
 }
+
+:local(.form) {
+    .fcontainer {
+        display: grid;
+        grid-template-columns: 1fr 2fr auto auto;
+        grid-column-gap: 1ch;
+        grid-row-gap: 1ch;
+    }
+
+    &:local(.edit-form) .fcontainer {
+        grid-template-columns: 1fr 2fr;
+    }
+}
