@@ -72,7 +72,7 @@
         "userscript-meta": "1.0.1",
         "vite": "6.2.2",
         "vite-plugin-monkey": "5.0.8",
-        "wrangler": "3.114.1",
+        "wrangler": "4.0.0",
         "yarn": "1.22.22",
         "zod": "3.24.2"
     },
