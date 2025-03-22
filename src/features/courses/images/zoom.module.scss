@@ -1,0 +1,32 @@
+:local(.zoom-enabled) #page-content .course-content img {
+    cursor: zoom-in;
+}
+
+// background
+:local(#overlay) {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2000;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    cursor: zoom-out;
+
+    transition: opacity 0.2s ease-in-out;
+    will-change: opacity;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // zooming
+    > img {
+        cursor: zoom-out;
+        transform: scale(0);
+        transition: transform 0.2s ease-in-out;
+        will-change: transform;
+    }
+}
