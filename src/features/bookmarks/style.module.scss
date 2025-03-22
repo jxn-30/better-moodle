@@ -32,9 +32,26 @@
 :local(.form) {
     .fcontainer {
         display: grid;
-        grid-template-columns: 1fr 2fr auto auto;
+        grid-template-columns: 1fr 2fr auto;
         grid-column-gap: 1ch;
         grid-row-gap: 1ch;
+
+        @include mixins.media-down(sm) {
+            grid-template-columns: 1fr 2fr;
+
+            .btn-group {
+                grid-column-start: 1;
+                grid-column-end: 3;
+            }
+        }
+
+        .btn-group {
+            &[data-index='0'] [data-action='up'],
+            &:not(:has(~ .btn-group[data-index])) [data-action='down'] {
+                pointer-events: none;
+                opacity: 0.5;
+            }
+        }
     }
 
     &:local(.edit-form) .fcontainer {
