@@ -416,6 +416,22 @@ export default defineConfig({
             },
         }),
         {
+            name: 'mustache-loader',
+            /**
+             * Minifies a mustache template a little.
+             * @param src - the mustache template code
+             * @param id - the import id of the template file
+             * @returns null or the minified mustache template
+             */
+            transform(src, id) {
+                if (!id.endsWith('.mustache?raw')) return null;
+                return src
+                    .replace(/\{\{!.*?\}\}/gs, '') // remove mustache comments
+                    .replace(/\\n/g, '') // remove linebreaks
+                    .replace(/ {3,}/g, '  '); // reduce white spaces to a maximum of 2. This may break at <pre> tags but that isn't an issue yet.
+            },
+        },
+        {
             name: 'Better-Moodle-build-stats',
             apply: 'build',
             /**
