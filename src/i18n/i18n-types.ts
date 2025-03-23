@@ -553,6 +553,28 @@ type RootTranslation = {
                 };
             };
         };
+        messages: {
+            /**
+             * M​i​t​t​e​i​l​u​n​g​e​n
+             */
+            name: string;
+            features: {
+                markdownSupport: {
+                    settings: {
+                        markdownSupport: {
+                            /**
+                             * M​a​r​k​d​o​w​n​ ​i​n​ ​M​i​t​t​e​i​l​u​n​g​e​n
+                             */
+                            name: string;
+                            /**
+                             * E​r​l​a​u​b​t​ ​d​i​e​ ​V​e​r​w​e​n​d​u​n​g​ ​v​o​n​ ​M​a​r​k​d​o​w​n​ ​i​n​ ​M​i​t​t​e​i​l​u​n​g​e​n​.
+                             */
+                            description: string;
+                        };
+                    };
+                };
+            };
+        };
         navbarMarquee: {
             /**
              * L​a​u​f​b​a​n​d​ ​(​N​a​v​i​g​a​t​i​o​n​s​l​e​i​s​t​e​)
@@ -1603,6 +1625,28 @@ export type TranslationFunctions = {
                      * Zeigt ein kleines Icon an, wenn ein Link deinen Email-Client öffnen kann.
                      */
                     description: () => LocalizedString;
+                };
+            };
+        };
+        messages: {
+            /**
+             * Mitteilungen
+             */
+            name: () => LocalizedString;
+            features: {
+                markdownSupport: {
+                    settings: {
+                        markdownSupport: {
+                            /**
+                             * Markdown in Mitteilungen
+                             */
+                            name: () => LocalizedString;
+                            /**
+                             * Erlaubt die Verwendung von Markdown in Mitteilungen.
+                             */
+                            description: () => LocalizedString;
+                        };
+                    };
                 };
             };
         };

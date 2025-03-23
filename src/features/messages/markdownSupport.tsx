@@ -11,12 +11,12 @@ const enabled = new BooleanSetting('markdownSupport', true).addAlias(
  * Returns a promise that resolves when MathJax is ready
  * @returns A promise that resolves to Moodles MathJax instance
  */
-const mathJaxReady = (): Promise<typeof MathJax> =>
-    new Promise<typeof MathJax>(resolve => {
+const mathJaxReady = (): Promise<(typeof window)['MathJax']> =>
+    new Promise<(typeof window)['MathJax']>(resolve => {
         const interval = setInterval(() => {
-            if (unsafeWindow.MathJax) {
+            if (window.MathJax) {
                 clearInterval(interval);
-                resolve(unsafeWindow.MathJax);
+                resolve(window.MathJax);
             }
         }, 10);
     });
@@ -26,12 +26,15 @@ const mathJaxReady = (): Promise<typeof MathJax> =>
  * @param inputElem - The input field to parse
  * @returns The parsed HTML
  */
-const parseMarkdown = async (inputElem: HTMLTextAreaElement): Promise<string> => {
+const parseMarkdown = async (
+    inputElem: HTMLTextAreaElement
+): Promise<string> => {
     const MathJax = await mathJaxReady();
     const raw = inputElem.value;
 
     const dummy = document.createElement('span');
-    dummy.innerHTML = raw.replace( // Replace $math$ with \(math\)
+    dummy.innerHTML = raw.replace(
+        // Replace $math$ with \(math\)
         /(?<!\\)\$(.*?)(?<!\\)\$/g,
         '\\($1\\)'
     );
@@ -45,7 +48,9 @@ const parseMarkdown = async (inputElem: HTMLTextAreaElement): Promise<string> =>
 };
 
 const inputFieldRegion = domID('send-message-txt');
-const dummyField = <textarea class="d-none"></textarea> as HTMLTextAreaElement;
+const dummyField = (
+    <textarea class="d-none"></textarea>
+) as HTMLTextAreaElement;
 let inputField: HTMLTextAreaElement | null = null;
 let sendBtn: HTMLButtonElement | null = null;
 
@@ -64,8 +69,7 @@ const enable = async () => {
     await ready();
 
     // Get the message app
-    const messageApp =
-        document.querySelector<HTMLDivElement>('.message-app');
+    const messageApp = document.querySelector<HTMLDivElement>('.message-app');
     if (!messageApp) return;
     sendBtn = messageApp.querySelector<HTMLButtonElement>(
         '[data-action="send-message"]'
@@ -85,9 +89,9 @@ const enable = async () => {
     /**
      * When the input field changes, update the dummy field
      */
-    inputEvent = async () => {
+    inputEvent = () => {
         if (!dummyField || !inputField) return;
-        dummyField.value = await parseMarkdown(inputField);
+        void parseMarkdown(inputField).then(md => (dummyField.value = md));
     };
     inputField.addEventListener('input', inputEvent);
     inputEvent(new Event('input'));
@@ -101,7 +105,7 @@ const enable = async () => {
         inputField.value = '';
     };
     sendBtn.addEventListener('click', sendEvent);
-}
+};
 /**
  * Disables markdown support in the message app
  */
@@ -123,16 +127,16 @@ const disable = () => {
         sendEvent = null;
     }
     inputField = null;
-}
+};
 
 /**
  * Reloads the markdown support
  */
 const reload = async () => {
     if (enabled.value) {
-        await enable()}
-    else {
-        disable()
+        await enable();
+    } else {
+        disable();
     }
 };
 
@@ -143,9 +147,13 @@ export default Feature.register({
     /**
      * Loads the feature
      */
-    onload: () => { void reload() },
+    onload: () => {
+        void reload();
+    },
     /**
      * Unloads the feature
      */
-    onunload: () => { void disable() },
+    onunload: () => {
+        void disable();
+    },
 });
