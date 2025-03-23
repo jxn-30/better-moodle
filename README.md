@@ -133,14 +133,14 @@ Konkrete Informationen zum Support und unsere FAQ findest du in der Datei [suppo
 
 Es gibt viele Verschiedene Möglichkeiten, bei Better-Moodle mitzuhelfen. Sei es die Meldung oder Behebung eines Fehlers, das Ändern einer ungünstigen Übersetzung oder das Implementieren eines neuen Features. Aber auch schon allein ein neues Feature vorzuschlagen ist eine großartige Möglichkeit, mitzuwirken, selbst wenn man gar nicht mit programmieren kann oder möchte!
 
-Wenn du am Code mitwirken möchtest, hilft dir unser [Contribution guide][contributing.md]. Solltest du GitHub besitzen, dann nutze doch gerne unsere Issue-Templates für [Bugs][issue bug] bzw. [Features][isue feature]. Alternativ kannst du uns natürlich auch über die im [Support-Dokument][support de] genannten Wege kontaktieren.
+Wenn du am Code mitwirken möchtest, hilft dir unser [Contribution guide][contributing.md]. Solltest du GitHub besitzen, dann nutze doch gerne unsere Issue-Templates für [Bugs][issue bug] bzw. [Features][issue feature]. Alternativ kannst du uns natürlich auch über die im [Support-Dokument][support de] genannten Wege kontaktieren.
 
 <details>
 <summary><h3>🇬🇧 Contributing</h3></summary>
 
 There are many different ways to help with Better-Moodle. Be it reporting or fixing a bug, changing an unfavourable translation or implementing a new feature. But even just suggesting a new feature is a great way to contribute, even if you can't or don't want to code!
 
-If you want to contribute to the code, our [Contribution guide][contributing.md] will help you. If you have GitHub, you are welcome to use our issue templates for [Bugs][issue bug] or [Features][isue feature]. Alternatively, you can of course contact us at via the channels listed in the [support document][support en].
+If you want to contribute to the code, our [Contribution guide][contributing.md] will help you. If you have GitHub, you are welcome to use our issue templates for [Bugs][issue bug] or [Features][issue feature]. Alternatively, you can of course contact us at via the channels listed in the [support document][support en].
 
 </details>
 
