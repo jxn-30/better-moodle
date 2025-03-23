@@ -2,6 +2,7 @@ import cardsPerRow from './cardsPerRow';
 import courseIndexDrawerControls from './courseIndexDrawerControls';
 import type { FeatureGroupTranslation } from '#/i18n';
 import grades from './grades';
+import hideSelfEnrolHint from './hideSelfEnrolHint';
 import images from './images';
 import navbarDropdown from './navbarDropdown';
 import noDownload from './noDownload';
@@ -19,6 +20,7 @@ export const de = {
         images: images.de,
         quickRoleChange: quickRoleChange.de,
         noDownload: noDownload.de,
+        hideSelfEnrolHint: hideSelfEnrolHint.de,
     },
 } satisfies FeatureGroupTranslation;
 
@@ -34,6 +36,7 @@ export const en = {
         images: images.en,
         quickRoleChange: quickRoleChange.en,
         noDownload: noDownload.en,
+        hideSelfEnrolHint: hideSelfEnrolHint.en,
     },
 } as typeof de;
 

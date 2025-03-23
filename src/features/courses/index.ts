@@ -7,6 +7,7 @@ const features = new Set<string>([
     'images',
     'quickRoleChange',
     'noDownload',
+    'hideSelfEnrolHint',
 ]);
 
 // this was introduced during 401.
