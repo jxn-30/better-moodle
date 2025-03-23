@@ -1,0 +1,53 @@
+[data-block='better-moodle-semesterzeiten'] {
+    --progress-percent: 0;
+
+    .card-text.content {
+        // overrides the mt-3 class
+        margin-top: 0 !important;
+
+        $icon-width: 16px; // .icon
+        $icon-margin: 0.5rem; // .mr-2
+        $icon-full-width: calc($icon-width + $icon-margin);
+        $progressbar-width: calc(100% - $icon-full-width);
+
+        :local(.today-span) {
+            position: absolute;
+            top: 0;
+            // These numbers have been carefully chosen by evidence based trial-and-error methods :)
+            transform: translateX(-50%) translateY(calc(-1lh + 3px));
+            font-size: 0.703125rem; // this is the font size of progress bars
+            margin-left: calc(
+                (var(--progress-percent) * $progressbar-width) +
+                    $icon-full-width
+            );
+        }
+
+        :local(.table-toggle) {
+            border: 0;
+            max-width: $icon-width;
+            margin-right: $icon-margin;
+        }
+
+        :local(.progress-overlay-bar) {
+            width: calc(var(--progress-percent) * 100%);
+            position: absolute;
+            height: 100%;
+            pointer-events: none;
+            background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.3) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0.3) 75%,
+                transparent 75%,
+                transparent
+            );
+            border-right: 1px solid currentColor;
+        }
+
+        .progress-bar[data-toggle='tooltip']:hover {
+            filter: brightness(1.5);
+        }
+    }
+}
