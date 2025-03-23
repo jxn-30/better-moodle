@@ -38,6 +38,12 @@ runs:
               RUN="Run: [\`${{github.run_id}}/${{github.run_attempt}}\`](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}/attempts/${{github.run_attempt}})"
 
               if [ -z "$COMMENT_URL" ]; then
+                # this is a way to escape the inputs.content
+                CONTENT=$(
+                cat <<"EOF"
+              ${{ inputs.content }}
+              EOF
+                )
                 gh pr comment ${{ inputs.pr-number }} --body "<!-- Better-Moodle PR-Summary -->
               $START_COMMENT
               <details>
@@ -45,7 +51,7 @@ runs:
 
               $RUN
 
-              ${{ inputs.content }}
+              $CONTENT
               </details>
               $END_COMMENT"
               else

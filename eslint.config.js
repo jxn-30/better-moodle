@@ -2,7 +2,7 @@ import globals from 'globals';
 import js from '@eslint/js';
 import jsdoc from 'eslint-plugin-jsdoc';
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
-import prettier from 'eslint-config-prettier';
+import prettier from 'eslint-config-prettier/flat';
 import tsEslint from 'typescript-eslint';
 
 export default [
@@ -14,6 +14,7 @@ export default [
             'src/style/*.d.ts',
             'redesign.user.js', // this is the legacy userscript, no linting here anymore
             '.postcssrc.cts',
+            'ics-parser', // TODO: see how we can include this in linting but without monkey
         ],
     },
     js.configs.recommended,

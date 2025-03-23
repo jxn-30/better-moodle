@@ -7,6 +7,7 @@ import { de as general } from '../../features/general/i18n';
 import { de as linkIcons } from '../../features/linkIcons/i18n';
 import { de as messages } from '../../features/messages/i18n';
 import { de as navbarMarquee } from '../../features/navbarMarquee/i18n';
+import { de as semesterzeiten } from '../../features/semesterzeiten/i18n';
 import settings from './settings';
 import { de as speiseplan } from '../../features/speiseplan/i18n';
 
@@ -55,13 +56,14 @@ Die offiziell unterstützten Browser (Das Better-Moodle Core-Team empfiehlt Fire
     },
     features: {
         bookmarks,
+        courses,
         darkmode,
         dashboard,
         general,
         linkIcons,
         messages,
         navbarMarquee,
-        courses,
+        semesterzeiten,
         speiseplan,
     },
     numbers: {

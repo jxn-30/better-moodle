@@ -6,6 +6,8 @@ dist/
 src/style/**/*.d.ts
 src/features/**/*.scss.d.ts
 
+ics-parser/.wrangler/
+
 CHANGELOG.md
 
 speiseplan.json

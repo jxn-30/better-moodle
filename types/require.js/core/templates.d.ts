@@ -1,6 +1,7 @@
 // types found out by reading the moodle source code
 // may be incomplete at some points
 
+import CoreCustomMenuItem from './_templates/core/custom_menu_item';
 import CoreMoreMenuChildren from './_templates/core/moremenu_children';
 
 export type Context = string | number | Context[] | Record<string, Context>;
@@ -33,6 +34,7 @@ interface ContextMap extends Record<string, Context> {
         footer: string;
         annotation: string;
     };
+    'core/custom_menu_item': CoreCustomMenuItem;
     'core/loading': Record<string, never>;
     'core/moremenu_children': CoreMoreMenuChildren;
     'core_course/favouriteicon': { isfavourite: boolean; id: number };

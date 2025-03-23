@@ -10,7 +10,11 @@ export const request = (url: string, init?: RequestInit) => {
     const urlUrl = new URL(url, window.location.toString());
 
     // happens via internal GM-API
-    if (__USERSCRIPT_CONNECTS__.includes(urlUrl.hostname)) {
+    if (
+        __USERSCRIPT_CONNECTS__.some(connect =>
+            urlUrl.hostname.includes(connect)
+        )
+    ) {
         return GM_fetch(url, init);
     } else {
         // happens via native fetch
