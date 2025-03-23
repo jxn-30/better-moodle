@@ -9,6 +9,7 @@
 - [Hochschulen / Universities][#hochschulen]
 - [Features][#features]
 - [Support & FAQ][#support]
+- [Mitwirken / Contributing][#contributing]
 - [Alte Bilder und Impressionen / Old pictures and impressions][#gallery]
 - [Verlauf der GitHub Stars / GitHub star history][#stars]
 
@@ -35,7 +36,7 @@ _Bilder in dieser Beschreibung enthalten teilweise verschwommene Elemente, um de
 4. Bei Bedarf über das Zahnräder-Icon oben rechts im Moodle, neben deinem Profilbild, Better-Moodle individualisieren
 
 <details>
-<summary>🇬🇧 Installation</summary>
+<summary><h3>🇬🇧 Installation</h3></summary>
 
 1. Install an Userscript-Manager as a browser extension (e.g. [Tampermonkey](https://tampermonkey.net))
 2. Click the respective `Download`-Link in the [Universities](#hochschulen) section to install Better-Moodle
@@ -54,7 +55,7 @@ Auch aus einem Sicherheits-Aspekt ist ein aktueller Browser immer zu empfehlen. 
 Auf mobilen Android-Geräten unterstützen wir **Firefox für Android**, ebenso in den **4 aktuellsten Versionen**.
 
 <details>
-<summary>🇬🇧 Supported browsers</summary>
+<summary><h4>🇬🇧 Supported browsers</h4></summary>
 
 We want to write modern code in Better-Moodle. As we also want to use newer concepts for this, polyfills (small lines of code that ensure compatibility with older browsers) are automatically inserted into Better-Moodle.
 However, it should be noted here that the entire userscript becomes larger as a result. The amount of additional code increases with each additional supported version, which in turn reduces the performance of Better-Moodle.
@@ -71,7 +72,7 @@ Better-Moodle wurde privat von [@jxn-30][@jxn-30] und [@YorikHansen][@YorikHanse
 Bei der Verwendung von Userscript-Managern wie Tampermonkey wird ein externes Tool genutzt, für das wir nicht zuständig oder verantwortlich sind. Es wird zur Vorsicht bei der Installation weiterer Userscripts geraten.
 
 <details>
-<summary>🇬🇧 Disclaimer</summary>
+<summary><h3>🇬🇧 Disclaimer</h3></summary>
 
 Better-Moodle was developed privately by [@jxn-30][@jxn-30] and [@YorikHansen][@YorikHansen] and is not an official project of the universities. Its sole purpose is to improve the individual use of Moodle and does not collect any data. Of course, you still use it at your own risk ;)
 
@@ -86,9 +87,9 @@ Die meisten Userscript-Manager suchen regelmäßig nach Aktualisierungen. Eine m
 Wenn in den Einstellungen aktiviert, wird Better-Moodle auch einen kleinen roten Punkt neben dem Einstellungen-Icon in der Navigationsleiste anzeigen, wenn ein Update verfügbar ist. In den Einstellungen kann, wenn ein Update verfügbar ist, die Aktualisierung durchgeführt werden.
 
 <details>
-<summary>🇬🇧 Update</summary>
+<summary><h3>🇬🇧 Update</h3></summary>
 
-Most userscript managers regularly check for updates. A manual update of Better-Moodle is also possible at any time via the by opening the appropriate link in the [latest release][latest release] or the `Download` link in the [Universities][#universities] section.
+Most userscript managers regularly check for updates. A manual update of Better-Moodle is also possible at any time via the by opening the appropriate link in the [latest release][latest release] or the `Download` link in the [Universities][#hochschulen] section.
 
 If activated in the settings, Better-Moodle will also display a small red dot next to the settings icon in the navigation bar when an update is available. In the settings, if an update is is available, the update can be installed via a button.
 
@@ -99,7 +100,7 @@ If activated in the settings, Better-Moodle will also display a small red dot ne
 Better-Moodle erhält regelmäßig Updates. Ein vollständiges Changelog ist in der Datei [CHANGELOG.md][changelog] zu finden. Das Changelog ist auch über das Einstellungen-Menü über den Button in der linken unteren Ecke der Fußleiste erreichbar.
 
 <details>
-<summary>🇬🇧 Changelog</summary>
+<summary><h4>🇬🇧 Changelog</h4></summary>
 
 Better-Moodle receives regular updates. A complete changelog can be found in the file [CHANGELOG.md][changelog]. The changelog can also be accessed via the settings menu using the button in the bottom left-hand corner of the footer accessible.
 
@@ -124,9 +125,24 @@ Eine vollständige Liste aller Features würde hier mittlerweile den Rahmen spre
 
 ## Support & FAQ
 
-Konkrete Informationen zum Support und unsere FAQ findest du in der Datei [support/de.md](./support/de.md).
+Konkrete Informationen zum Support und unsere FAQ findest du in der Datei [support/de.md][support de].
 
-🇬🇧 For english support and FAQ, please refer to the file [support/en.md](./support/en.md).
+🇬🇧 For english support and FAQ, please refer to the file [support/en.md][support en].
+
+## Mitwirken
+
+Es gibt viele Verschiedene Möglichkeiten, bei Better-Moodle mitzuhelfen. Sei es die Meldung oder Behebung eines Fehlers, das Ändern einer ungünstigen Übersetzung oder das Implementieren eines neuen Features. Aber auch schon allein ein neues Feature vorzuschlagen ist eine großartige Möglichkeit, mitzuwirken, selbst wenn man gar nicht mit programmieren kann oder möchte!
+
+Wenn du am Code mitwirken möchtest, hilft dir unser [Contribution guide][contributing.md]. Solltest du GitHub besitzen, dann nutze doch gerne unsere Issue-Templates für [Bugs][issue bug] bzw. [Features][isue feature]. Alternativ kannst du uns natürlich auch über die im [Support-Dokument][support de] genannten Wege kontaktieren.
+
+<details>
+<summary><h3>🇬🇧 Contributing</h3></summary>
+
+There are many different ways to help with Better-Moodle. Be it reporting or fixing a bug, changing an unfavourable translation or implementing a new feature. But even just suggesting a new feature is a great way to contribute, even if you can't or don't want to code!
+
+If you want to contribute to the code, our [Contribution guide][contributing.md] will help you. If you have GitHub, you are welcome to use our issue templates for [Bugs][issue bug] or [Features][isue feature]. Alternatively, you can of course contact us at via the channels listed in the [support document][support en].
+
+</details>
 
 ## Alte Bilder und Impressionen
 
@@ -157,6 +173,11 @@ Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar s
 [downloads cau]: https://img.shields.io/github/downloads/jxn-30/better-moodle/latest/better-moodle-cau.user.js?style=for-the-badge&label=Downloads&color=004b5a
 [@jxn-30]: https://github.com/jxn-30
 [@YorikHansen]: https://github.com/YorikHansen
+[contributing.md]: ./CONTRIBUTING.md
+[support de]: ./support/de.md
+[support en]: ./support/en.md
+[issue bug]: https://github.com/jxn-30/better-moodle/issues/new?template=bug.yml
+[issue feature]: https://github.com/jxn-30/better-moodle/issues/new?template=feature.yml
 [#installation]: #installation
 [#disclaimer]: #disclaimer
 [#update]: #update
@@ -164,5 +185,6 @@ Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar s
 [#hochschulen]: #hochschulen
 [#features]: #features
 [#support]: #support--faq
+[#contributing]: #mitwirken
 [#gallery]: #alte-bilder-und-impressionen
 [#stars]: #verlauf-der-github-stars
