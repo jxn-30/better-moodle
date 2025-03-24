@@ -56,6 +56,7 @@ jobs:
 
             - name: 🧮 calculate diff
               run: |
+                  NO_CHANGE="±0"
                   RUN_ID=$(gh run list \
                     --workflow=build.yml \
                     --branch=${{ github.base_ref || github.ref_name }} \
@@ -64,7 +65,7 @@ jobs:
                     --json databaseId \
                     --jq '.[0].databaseId')
                   if [[ -z "$RUN_ID" ]]; then
-                      echo "$STATS_DIFF='/'" >> $GITHUB_ENV
+                      echo "STATS_DIFF=$NO_CHANGE" >> $GITHUB_ENV
                   else
                       gh run download $RUN_ID \
                         --name=${{ steps.build.outputs.file }} \
@@ -78,7 +79,7 @@ jobs:
                       )
 
                       if [[ -z "$STATS_DIFF" ]]; then
-                          echo "STATS_DIFF='/'" >> $GITHUB_ENV
+                          echo "STATS_DIFF=NO_CHANGE" >> $GITHUB_ENV
                       else
                           echo "STATS_DIFF=$STATS_DIFF" >> $GITHUB_ENV
                       fi
@@ -94,7 +95,7 @@ jobs:
                   echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
                   echo "| **File size** | ${{ env.STATS_SIZE }} |" >> $GITHUB_STEP_SUMMARY
                   echo "| **Line count** | ${{ env.STATS_LINES }} |" >> $GITHUB_STEP_SUMMARY
-                  echo "| **Diff** | ${{ env.STATS_DIFF }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Diff to prev build** | ${{ env.STATS_DIFF }} |" >> $GITHUB_STEP_SUMMARY
 
                   echo "## Build stats" >> $GITHUB_STEP_SUMMARY
                   echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
