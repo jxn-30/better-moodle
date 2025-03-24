@@ -82,9 +82,9 @@ jobs:
                           echo "STATS_DIFF=$NO_CHANGE" >> $GITHUB_ENV
                       else
                           echo "STATS_DIFF=$STATS_DIFF" >> $GITHUB_ENV
-                          git diff --no-index \
+                          git diff --color --no-index \
                             base_artifact/${{ steps.build.outputs.file }} \
-                            ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }}
+                            ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }} || true
                       fi
                   fi
               env:
