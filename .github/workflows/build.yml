@@ -79,9 +79,12 @@ jobs:
                       )
 
                       if [[ -z "$STATS_DIFF" ]]; then
-                          echo "STATS_DIFF=NO_CHANGE" >> $GITHUB_ENV
+                          echo "STATS_DIFF=$NO_CHANGE" >> $GITHUB_ENV
                       else
                           echo "STATS_DIFF=$STATS_DIFF" >> $GITHUB_ENV
+                          git diff --no-index \
+                            base_artifact/${{ steps.build.outputs.file }} \
+                            ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }}
                       fi
                   fi
               env:
@@ -127,7 +130,8 @@ jobs:
               uses: ./.github/actions/pr-summary
               with:
                   pr-number: ${{ github.event.pull_request.number }}
-                  section: 🏗️  Build
+                  section: build
+                  title: 🏗️ Build
                   content: |
                       | Config | Size | Lines | Duration | Diff to ${{ github.base_ref }} |
                       | ------ | ---- | ----- | -------- | ------------------------------ |

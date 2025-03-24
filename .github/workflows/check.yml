@@ -31,6 +31,7 @@ jobs:
                   echo "# $SUMMARY" >> $GITHUB_STEP_SUMMARY
                   echo "Running prettier on $(echo ${{ github.sha }} | head -c 7) did not result in any changes. 🎉" >> $GITHUB_STEP_SUMMARY
                   echo "PR_SUMMARY=$SUMMARY" >> $GITHUB_ENV
+                  echo "EMOJI=✅" >> $GITHUB_ENV
 
             - name: 🖨️ print diff introduced by prettier
               if: ${{ env.CHANGES_COUNT > 0 }}
@@ -48,13 +49,15 @@ jobs:
                   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
                   echo "For a complete diff introduced by prettier, please see the workflow logs." >> $GITHUB_STEP_SUMMARY
                   echo "PR_SUMMARY=$SUMMARY" >> $GITHUB_ENV
+                  echo "EMOJI=⚠️" >> $GITHUB_ENV
 
             - name: 📜 Update PR Summary
               if: github.event_name == 'pull_request'
               uses: ./.github/actions/pr-summary
               with:
                   pr-number: ${{ github.event.pull_request.number }}
-                  section: Prettier
+                  section: prettier
+                  name: 🎨${{ env.EMOJI }} Prettier
                   content: ${{ env.PR_SUMMARY }}
 
     eslint:
@@ -88,5 +91,6 @@ jobs:
               uses: ./.github/actions/pr-summary
               with:
                   pr-number: ${{ github.event.pull_request.number }}
-                  section: ESLint
+                  section: eslint
+                  title: 🚨 ESLint
                   content: ${{ steps.annotations.outputs.summary }}

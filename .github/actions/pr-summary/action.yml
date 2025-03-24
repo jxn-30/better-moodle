@@ -6,7 +6,10 @@ inputs:
         description: 'Pull Request number'
         required: true
     section:
-        description: 'Section name in Markdown format'
+        description: 'a unique simple section ID'
+        required: true
+    title:
+        description: 'Section name in HTML format'
         required: true
     content:
         description: 'Section content in Markdown format'
@@ -32,7 +35,7 @@ runs:
           shell: bash
           run: |
               COMMENT_URL=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '[.comments[] | select(.body | startswith("<!-- Better-Moodle PR-Summary -->"))][0] .url')
-              TITLE="<summary><h2>${{ inputs.section }}</h2></summary>"
+              TITLE="<summary><h2>${{ inputs.title }}</h2></summary>"
               START_COMMENT="<!-- ${{ inputs.section }} -->"
               END_COMMENT="<!-- >${{ inputs.section }} -->"
               RUN="Run: [\`${{github.run_id}}/${{github.run_attempt}}\`](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}/attempts/${{github.run_attempt}})"
