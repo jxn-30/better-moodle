@@ -76,7 +76,12 @@ jobs:
                         ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }} \
                         | awk '{print $1 " insertions(+), " $2 " deletions(-)"}'
                       )
-                      echo "STATS_DIFF=$STATS_DIFF" >> $GITHUB_ENV
+
+                      if [[ -z "$STATS_DIFF" ]]; then
+                          echo "STATS_DIFF='/'" >> $GITHUB_ENV
+                      else
+                          echo "STATS_DIFF=$STATS_DIFF" >> $GITHUB_ENV
+                      fi
                   fi
               env:
                   GH_TOKEN: ${{ github.token }}
@@ -105,7 +110,7 @@ jobs:
             - name: 📝 generate output
               id: output
               run: |
-                  echo "build_${{ matrix.config }}=| ${{matrix.config}} | ${{ env.STATS_SIZE }} | ${{ env.STATS_LINES }} | ${{ env.STATS_PERF_TOTAL }} |" >> $GITHUB_OUTPUT
+                  echo "build_${{ matrix.config }}=| ${{matrix.config}} | ${{ env.STATS_SIZE }} | ${{ env.STATS_LINES }} | ${{ env.STATS_PERF_TOTAL }} | ${{ env.STATS_DIFF }} |" >> $GITHUB_OUTPUT
 
     pr-summary:
         runs-on: ubuntu-latest
@@ -123,8 +128,8 @@ jobs:
                   pr-number: ${{ github.event.pull_request.number }}
                   section: 🏗️  Build
                   content: |
-                      | Config | Size | Lines | Duration |
-                      | ------ | ---- | ----- | -------- |
+                      | Config | Size | Lines | Duration | Diff to ${{ github.base_ref }} |
+                      | ------ | ---- | ----- | -------- | ------------------------------ |
                       ${{ needs.build.outputs.line_uzl }}
                       ${{ needs.build.outputs.line_cau }}
                       ${{ needs.build.outputs.line_sandbox405 }}
