@@ -14,9 +14,9 @@ const enabled = new BooleanSetting('markdownSupport', true).addAlias(
 const mathJaxReady = (): Promise<(typeof window)['MathJax']> =>
     new Promise<(typeof window)['MathJax']>(resolve => {
         const interval = setInterval(() => {
-            if (window.MathJax) {
+            if (unsafeWindow.MathJax) {
                 clearInterval(interval);
-                resolve(window.MathJax);
+                resolve(unsafeWindow.MathJax);
             }
         }, 10);
     });
