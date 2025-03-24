@@ -23,6 +23,12 @@ jobs:
         permissions:
             id-token: write
             attestations: write
+        outputs:
+            # Hardcoded until https://github.com/actions/runner/pull/2477 is finally working...
+            # stats: ${{ toJSON(steps.output.outputs) }}
+            line_uzl: ${{ steps.output.outputs.build_uzl }}
+            line_cau: ${{ steps.output.outputs.build_cau }}
+            line_sandbox405: ${{ steps.output.outputs.build_sandbox405 }}
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4
@@ -44,8 +50,43 @@ jobs:
               run: |
                   echo "STATS_SIZE=$(ls -sh --si '${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }}' | awk '{print $1}')B" >> $GITHUB_ENV
                   echo "STATS_LINES=$(wc -l '${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }}' | awk '{print $1}')" >> $GITHUB_ENV
+                  echo "STATS_PERF_CONF=$(cat ${{ steps.build.outputs.dir }}/.stats_perf_conf)" >> $GITHUB_ENV
+                  echo "STATS_PERF_BUILD=$(cat ${{ steps.build.outputs.dir }}/.stats_perf_build)" >> $GITHUB_ENV
+                  echo "STATS_PERF_TOTAL=$(cat ${{ steps.build.outputs.dir }}/.stats_perf_total)" >> $GITHUB_ENV
 
-            # TODO: Output build stats
+            - name: 🧮 calculate diff
+              run: |
+                  NO_CHANGE="±0"
+                  RUN_ID=$(gh run list \
+                    --workflow=build.yml \
+                    --branch=${{ github.base_ref || github.ref_name }} \
+                    --status=success \
+                    --limit=1 \
+                    --json databaseId \
+                    --jq '.[0].databaseId')
+                  if [[ -z "$RUN_ID" ]]; then
+                      echo "STATS_DIFF=$NO_CHANGE" >> $GITHUB_ENV
+                  else
+                      gh run download $RUN_ID \
+                        --name=${{ steps.build.outputs.file }} \
+                        --dir=base_artifact
+                      STATS_DIFF=$(git diff \
+                        --numstat \
+                        --no-index \
+                        base_artifact/${{ steps.build.outputs.file }} \
+                        ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }} \
+                        | awk '{print $1 " insertions(+), " $2 " deletions(-)"}'
+                      )
+
+                      if [[ -z "$STATS_DIFF" ]]; then
+                          echo "STATS_DIFF=NO_CHANGE" >> $GITHUB_ENV
+                      else
+                          echo "STATS_DIFF=$STATS_DIFF" >> $GITHUB_ENV
+                      fi
+                  fi
+              env:
+                  GH_TOKEN: ${{ github.token }}
+
             - name: ✍️ print build stats in summary
               run: |
                   echo "# 🏗️ ${{ matrix.config }}" >> $GITHUB_STEP_SUMMARY
@@ -54,14 +95,42 @@ jobs:
                   echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
                   echo "| **File size** | ${{ env.STATS_SIZE }} |" >> $GITHUB_STEP_SUMMARY
                   echo "| **Line count** | ${{ env.STATS_LINES }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Diff to prev build** | ${{ env.STATS_DIFF }} |" >> $GITHUB_STEP_SUMMARY
 
                   echo "## Build stats" >> $GITHUB_STEP_SUMMARY
                   echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
                   echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
-                  echo "| **Creating config duration** | $(cat ${{ steps.build.outputs.dir }}/.stats_perf_conf) |" >> $GITHUB_STEP_SUMMARY
-                  echo "| **Building duration** | $(cat ${{ steps.build.outputs.dir }}/.stats_perf_build) |" >> $GITHUB_STEP_SUMMARY
-                  echo "| **Total duration** | $(cat ${{ steps.build.outputs.dir }}/.stats_perf_total) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Creating config duration** | ${{ env.STATS_PERF_CONF }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Building duration** | ${{ env.STATS_PERF_BUILD }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Total duration** | **${{ env.STATS_PERF_TOTAL }}** |" >> $GITHUB_STEP_SUMMARY
                   echo "*Durations are mm:ss,s*"
 
                   echo "## Included features" >> $GITHUB_STEP_SUMMARY
                   cat ${{ steps.build.outputs.dir }}/.stats_features.md >> $GITHUB_STEP_SUMMARY
+
+            - name: 📝 generate output
+              id: output
+              run: |
+                  echo "build_${{ matrix.config }}=| ${{matrix.config}} | ${{ env.STATS_SIZE }} | ${{ env.STATS_LINES }} | ${{ env.STATS_PERF_TOTAL }} | ${{ env.STATS_DIFF }} |" >> $GITHUB_OUTPUT
+
+    pr-summary:
+        runs-on: ubuntu-latest
+        name: 📜 update PR Summary
+        if: ${{ github.event_name == 'pull_request' && always() }}
+        needs:
+            - build
+        steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v4
+
+            - name: 📜 update PR Summary
+              uses: ./.github/actions/pr-summary
+              with:
+                  pr-number: ${{ github.event.pull_request.number }}
+                  section: 🏗️  Build
+                  content: |
+                      | Config | Size | Lines | Duration | Diff to ${{ github.base_ref }} |
+                      | ------ | ---- | ----- | -------- | ------------------------------ |
+                      ${{ needs.build.outputs.line_uzl }}
+                      ${{ needs.build.outputs.line_cau }}
+                      ${{ needs.build.outputs.line_sandbox405 }}

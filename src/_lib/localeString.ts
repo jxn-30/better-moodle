@@ -9,7 +9,7 @@ import { BETTER_MOODLE_LANG } from 'i18n';
  * @returns the day as a localized string
  */
 export const dateToString = (
-    date: Date,
+    date = new Date(),
     year = true,
     weekday = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
@@ -77,6 +77,23 @@ export const currency = (
         style: 'currency',
         currency,
         currencyDisplay: format,
+    });
+
+/**
+ * Prints a number localized as a percentage
+ * @param num - the number to be localized
+ * @param digits - the maximum amount of fraction digits
+ * @param lang - enforce a special language instead of BETTER_MOODLE_LANG
+ * @returns the localized number as percentage
+ */
+export const percent = (
+    num: number,
+    digits = 2,
+    lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
+) =>
+    num.toLocaleString(lang, {
+        style: 'percent',
+        maximumFractionDigits: digits,
     });
 
 /**

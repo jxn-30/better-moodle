@@ -7,6 +7,8 @@ import truncatedTexts from './truncatedTexts';
 
 export const de = {
     name: 'Allgemeine Einstellungen',
+    description:
+        'Diese allgemeinen Einstellungen steuern das Verhalten von Better-Moodle und einige grundlegende Features.',
     settings: {
         'updateNotification': {
             name: 'Benachrichtigung bei Better-Moodle Updates',
@@ -52,6 +54,8 @@ export const de = {
 
 export const en = {
     name: 'General Settings',
+    description:
+        'These general settings control the behaviour of Better-Moodle and some more general Features.',
     settings: {
         'updateNotification': {
             name: 'Notification for Better-Moodle updates',

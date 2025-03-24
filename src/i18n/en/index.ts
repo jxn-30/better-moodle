@@ -6,6 +6,7 @@ import { en as general } from '../../features/general/i18n';
 import { en as linkIcons } from '../../features/linkIcons/i18n';
 import { en as messages } from '../../features/messages/i18n';
 import { en as navbarMarquee } from '../../features/navbarMarquee/i18n';
+import { en as semesterzeiten } from '../../features/semesterzeiten/i18n';
 import settings from './settings';
 import { en as speiseplan } from '../../features/speiseplan/i18n';
 import type { Translation } from '../i18n-types';
@@ -56,13 +57,14 @@ These Browsers are officially supported (Better-Moodle Core-Developers recommend
     },
     features: {
         bookmarks,
+        courses,
         darkmode,
         dashboard,
         general,
         linkIcons,
         messages,
         navbarMarquee,
-        courses,
+        semesterzeiten,
         speiseplan,
     },
     numbers: {

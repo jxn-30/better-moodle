@@ -165,6 +165,9 @@ supportedBrowsers.forEach(browser => {
 });
 
 const uaRegexp = uaRegex({ allowHigherVersions: true });
+const connects = Array.from(
+    new Set(['better-moodle.dev', ...(config.connects ?? [])])
+);
 
 const GLOBAL_CONSTANTS = {
     __GITHUB_USER__: JSON.stringify(config.github.user),
@@ -176,7 +179,7 @@ const GLOBAL_CONSTANTS = {
     __UNI__: JSON.stringify(configFile),
     __MOODLE_VERSION__: JSON.stringify(config.moodleVersion),
     __MOODLE_URL__: JSON.stringify(config.moodleUrl),
-    __USERSCRIPT_CONNECTS__: JSON.stringify(config.connects ?? []),
+    __USERSCRIPT_CONNECTS__: JSON.stringify(connects),
     // hacky way for Regular expresions atm
     // See https://github.com/evanw/esbuild/issues/4019 for workaround source and feature request
     __UA_REGEX__: JSON.stringify(
@@ -185,6 +188,9 @@ const GLOBAL_CONSTANTS = {
     __UA_REGEX_FLAGS__: JSON.stringify(uaRegexp.flags),
     __MIN_SUPPORTED_BROWSERS__: Object.fromEntries(minSupportedBrowserVersions),
 };
+
+const fileName = `better-moodle-${configFile}.user.js`;
+const metaFileName = `better-moodle-${configFile}.meta.js`;
 
 export default defineConfig({
     esbuild: {
@@ -395,20 +401,36 @@ export default defineConfig({
                 'homepage': `${githubUrl}${config.github.branch ? `/tree/${config.github.branch}` : ''}`,
                 'homepageURL': `${githubUrl}${config.github.branch ? `/tree/${config.github.branch}` : ''}`,
                 'icon': `https://icons.better-moodle.dev/${configFile}.png`,
-                'updateURL': `${releaseDownloadUrl}/better-moodle.meta.js`,
-                'downloadURL': `${releaseDownloadUrl}/better-moodle.user.js`,
+                'updateURL': `${releaseDownloadUrl}/${metaFileName}`,
+                'downloadURL': `${releaseDownloadUrl}/${fileName}`,
                 'match': `${config.moodleUrl}/*`,
                 'run-at': 'document-body',
-                'connect': config.connects,
+                'connect': connects,
                 'require': requires,
             },
             clientAlias: 'GM',
             build: {
-                fileName: `better-moodle-${configFile}.user.js`,
-                metaFileName: `better-moodle-${configFile}.meta.js`,
+                fileName,
+                metaFileName,
                 autoGrant: true,
             },
         }),
+        {
+            name: 'mustache-loader',
+            /**
+             * Minifies a mustache template a little.
+             * @param src - the mustache template code
+             * @param id - the import id of the template file
+             * @returns null or the minified mustache template
+             */
+            transform(src, id) {
+                if (!id.endsWith('.mustache?raw')) return null;
+                return src
+                    .replace(/\{\{!.*?\}\}/gs, '') // remove mustache comments
+                    .replace(/\\n/g, '') // remove linebreaks
+                    .replace(/ {3,}/g, '  '); // reduce white spaces to a maximum of 2. This may break at <pre> tags but that isn't an issue yet.
+            },
+        },
         {
             name: 'Better-Moodle-build-stats',
             apply: 'build',

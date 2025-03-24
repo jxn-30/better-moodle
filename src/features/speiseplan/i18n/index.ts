@@ -2,6 +2,7 @@ import type { FeatureGroupTranslation } from '#/i18n';
 
 export const de = {
     name: 'Speiseplan der Mensa',
+    description: 'Der Speiseplan deiner Lieblingsmensa direkt in Moodle.',
     close: 'Schließen',
     table: {
         dish: 'Gericht',
@@ -34,6 +35,7 @@ export const de = {
 
 export const en = {
     name: 'Menu of the canteen',
+    description: 'The menu of your favourite canteen within Moodle.',
     close: 'Close',
     table: {
         dish: 'Dish',

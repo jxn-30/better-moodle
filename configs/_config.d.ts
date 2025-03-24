@@ -43,6 +43,7 @@ interface BaseConfig {
     /**
      * Does this instance of Better-Moodle require a connection to the internet?
      * If so, list the origins that need to be connected to.
+     * You do not have to add better-moodle.dev as it is included by standard.
      */
     connects: string[];
     /**

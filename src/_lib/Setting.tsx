@@ -391,7 +391,7 @@ export default abstract class Setting<
             // we don't want to show or set if the value stays the same (e.g. after an undo operation)
             if (this.#unsavedValue === this.savedValue) return;
             // show a toast notification
-            require(['core/toast'] as const, ({ add }) => {
+            require(['core/toast'] as const, ({ add }) =>
                 void add(
                     mdToHtml(LL.settings.requireReload({ name: this.title })),
                     {
@@ -399,8 +399,7 @@ export default abstract class Setting<
                         autohide: false,
                         closeButton: true,
                     }
-                );
-            });
+                ));
             // remember that a reload is required
             TempStorage.settingsRequireReload = true;
         });

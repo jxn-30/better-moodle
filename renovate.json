@@ -3,7 +3,7 @@
     "assignees": ["jxn-30"],
     "baseBranches": ["main", "v2"],
     "dependencyDashboard": true,
-    "dependencyDashboardFooter": "PRs will be created on mondays, wednesdays and fridays before 3am (CEST) for any dependencies. Lockfile maintenance is scheduled for saturdays.",
+    "dependencyDashboardFooter": "Node.js and yarn updates are scheduled to the first day of the month. PRs will be created on mondays, wednesdays and fridays before 3am (CEST) for any other dependencies. Lockfile maintenance is scheduled for saturdays.",
     "dependencyDashboardHeader": "# ℹ️ Renovate Dependency-Dashboard ℹ\nScheduled and currently open dependency updates are listed here\n",
     "dependencyDashboardLabels": ["dependencies"],
     "dependencyDashboardTitle": "⬆ℹ️ Renovate Dependency-Dashboard ℹ️",
@@ -24,10 +24,19 @@
         },
         {
             "extends": ["schedule:monthly"],
-            "groupName": "engines",
+            "groupName": "yarn",
             "lockFileMaintenance": { "enabled": true },
-            "matchDepNames": ["node", "npm", "yarn"],
+            "matchDepNames": ["yarn"],
             "matchManagers": ["npm"],
+            "rangeStrategy": "pin",
+            "separateMajorMinor": false
+        },
+        {
+            "extends": ["schedule:monthly"],
+            "groupName": "node.js",
+            "lockFileMaintenance": { "enabled": true },
+            "matchDepNames": ["node"],
+            "matchManagers": ["npm", "nvm"],
             "rangeStrategy": "pin",
             "separateMajorMinor": false
         }

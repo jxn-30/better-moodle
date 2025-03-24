@@ -27,9 +27,10 @@ jobs:
             - name: ✅ approve prettier result
               if: ${{ env.CHANGES_COUNT == 0 }}
               run: |
-                  echo "# ✅ Prettier approves code" >> $GITHUB_STEP_SUMMARY
+                  SUMMARY="✅ Prettier approves code"
+                  echo "# $SUMMARY" >> $GITHUB_STEP_SUMMARY
                   echo "Running prettier on $(echo ${{ github.sha }} | head -c 7) did not result in any changes. 🎉" >> $GITHUB_STEP_SUMMARY
-                  echo "PR_SUMMARY=\"✅ Prettier approves code\"" >> $GITHUB_ENV
+                  echo "PR_SUMMARY=$SUMMARY" >> $GITHUB_ENV
 
             - name: 🖨️ print diff introduced by prettier
               if: ${{ env.CHANGES_COUNT > 0 }}
@@ -38,13 +39,15 @@ jobs:
             - name: ⚠️ warn over prettier result
               if: ${{ env.CHANGES_COUNT > 0 }}
               run: |
-                  echo "# ⚠️ Prettier changed some code" >> $GITHUB_STEP_SUMMARY
+                  SUMMARY="⚠️ Prettier changed some code".
+                  echo "# $SUMMARY" >> $GITHUB_STEP_SUMMARY
+                  SUMMARY="$SUMMARY. Plase see the summary and logs for more details."
                   echo "There were a total of **${{ env.CHANGES_COUNT }}** files affected by running prettier on $(echo ${{ github.sha }} | head -c 7):" >> $GITHUB_STEP_SUMMARY
                   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
                   git diff --compact-summary >> $GITHUB_STEP_SUMMARY
                   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
                   echo "For a complete diff introduced by prettier, please see the workflow logs." >> $GITHUB_STEP_SUMMARY
-                  echo "PR_SUMMARY=\"⚠️ Prettier changed some code. Please see summary and log for more detail.\"" >> $GITHUB_ENV
+                  echo "PR_SUMMARY=$SUMMARY" >> $GITHUB_ENV
 
             - name: 📜 Update PR Summary
               if: github.event_name == 'pull_request'

@@ -2,6 +2,8 @@ import type { FeatureGroupTranslation } from '#/i18n';
 
 export const de = {
     name: 'Links kennzeichnen',
+    description:
+        'Manchmal ist es nicht ganz einfach zu erkennen, was sich hinter einem Link versteckt. Diese Einstellungen helfen dir, besondere Links besser zu erkennen.',
     settings: {
         external: {
             name: 'Externe Links',
@@ -18,6 +20,8 @@ export const de = {
 
 export const en = {
     name: 'Mark links',
+    description:
+        'Sometimes it is hard to identify what is hidden behind a link. These settings help you identify special links.',
     settings: {
         external: {
             name: 'Mark links: external links',
