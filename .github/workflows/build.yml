@@ -54,6 +54,33 @@ jobs:
                   echo "STATS_PERF_BUILD=$(cat ${{ steps.build.outputs.dir }}/.stats_perf_build)" >> $GITHUB_ENV
                   echo "STATS_PERF_TOTAL=$(cat ${{ steps.build.outputs.dir }}/.stats_perf_total)" >> $GITHUB_ENV
 
+            - name: 🧮 calculate diff
+              run: |
+                  RUN_ID=$(gh run list \
+                    --workflow=build.yml \
+                    --branch=${{ github.base_ref || github.ref_name }} \
+                    --status=success \
+                    --limit=1 \
+                    --json databaseId \
+                    --jq '.[0].databaseId')
+                  if [[ -z "$RUN_ID" ]]; then
+                      echo "$STATS_DIFF='/'" >> $GITHUB_ENV
+                  else
+                      gh run download $RUN_ID \
+                        --name=${{ steps.build.outputs.file }} \
+                        --dir=base_artifact
+                      STATS_DIFF=$(git diff \
+                        --numstat \
+                        --no-index \
+                        base_artifact/${{ steps.build.outputs.file }} \
+                        ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }} \
+                        | awk '{print $1 " insertions(+), " $2 " deletions(-)"}'
+                      )
+                      echo "STATS_DIFF=$STATS_DIFF" >> $GITHUB_ENV
+                  fi
+              env:
+                  GH_TOKEN: ${{ github.token }}
+
             - name: ✍️ print build stats in summary
               run: |
                   echo "# 🏗️ ${{ matrix.config }}" >> $GITHUB_STEP_SUMMARY
@@ -62,6 +89,7 @@ jobs:
                   echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
                   echo "| **File size** | ${{ env.STATS_SIZE }} |" >> $GITHUB_STEP_SUMMARY
                   echo "| **Line count** | ${{ env.STATS_LINES }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Diff** | ${{ env.STATS_DIFF }} |" >> $GITHUB_STEP_SUMMARY
 
                   echo "## Build stats" >> $GITHUB_STEP_SUMMARY
                   echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
