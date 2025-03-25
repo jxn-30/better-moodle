@@ -4,6 +4,7 @@ import { en as darkmode } from '../../features/darkmode/i18n';
 import { en as dashboard } from '../../features/dashboard/i18n';
 import { en as general } from '../../features/general/i18n';
 import { en as linkIcons } from '../../features/linkIcons/i18n';
+import { en as messages } from '../../features/messages/i18n';
 import { en as navbarMarquee } from '../../features/navbarMarquee/i18n';
 import { en as semesterzeiten } from '../../features/semesterzeiten/i18n';
 import settings from './settings';
@@ -61,6 +62,7 @@ These Browsers are officially supported (Better-Moodle Core-Developers recommend
         dashboard,
         general,
         linkIcons,
+        messages,
         navbarMarquee,
         semesterzeiten,
         speiseplan,

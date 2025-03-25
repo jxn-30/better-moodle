@@ -5,6 +5,7 @@ import { de as darkmode } from '../../features/darkmode/i18n';
 import { de as dashboard } from '../../features/dashboard/i18n';
 import { de as general } from '../../features/general/i18n';
 import { de as linkIcons } from '../../features/linkIcons/i18n';
+import { de as messages } from '../../features/messages/i18n';
 import { de as navbarMarquee } from '../../features/navbarMarquee/i18n';
 import { de as semesterzeiten } from '../../features/semesterzeiten/i18n';
 import settings from './settings';
@@ -60,6 +61,7 @@ Die offiziell unterstützten Browser (Das Better-Moodle Core-Team empfiehlt Fire
         dashboard,
         general,
         linkIcons,
+        messages,
         navbarMarquee,
         semesterzeiten,
         speiseplan,
