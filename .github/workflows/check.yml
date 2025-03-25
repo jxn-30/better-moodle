@@ -70,6 +70,9 @@ jobs:
             - name: 🎛️ setup
               uses: ./.github/actions/setup
 
+            - name: 🌐 create i18n types
+              run: yarn i18n:once
+
             - name: 🚨 run eslint
               run: yarn lint:fix -o .eslint-report.json --format json
               continue-on-error: true
