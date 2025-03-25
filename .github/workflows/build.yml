@@ -70,7 +70,7 @@ jobs:
 
                   if [[ -n "$RUN_ID" ]]; then
                       OLD_DIR="base_artifact"
-                      gh run download 13816086557 \
+                      gh run download $RUN_ID \
                         --name=${{ steps.build.outputs.file }} \
                         --dir=$OLD_DIR \
                         || exit 0
