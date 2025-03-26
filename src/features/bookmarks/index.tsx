@@ -272,7 +272,10 @@ const openEditModal = () => {
         if (action === 'delete') {
             row.remove();
             inputs.delete(index);
-            inputs.values().forEach((row, i) => (row.index = i));
+            inputs.values().forEach((row, i) => {
+                row.index = i;
+                inputs.set(i, row);
+            });
         } else if (action === 'up') {
             const prevRow = inputs.get(index - 1);
             if (prevRow) {
