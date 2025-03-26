@@ -82,10 +82,15 @@ jobs:
                       OLD_SIZE=$(ls -n "$OLD_DIR/${{ steps.build.outputs.file }}" | { read _ _ _ _ size _ && echo "$size"; })
                       OLD_LINES=$(wc -l "$OLD_DIR/${{ steps.build.outputs.file }}"  | awk '{print $1}')
 
-                      SIZE_DIFF=$( printf "%+d" $(( $OLD_SIZE - $NEW_SIZE )))
-                      LINES_DIFF=$( printf "%+d" $(( $OLD_LINES - ${{ env.STATS_LINES }} )))
-                      echo "STATS_SIZE_DIFF=$SIZE_DIFF" >> $GITHUB_ENV
-                      echo "STATS_LINES_DIFF=$LINES_DIFF" >> $GITHUB_ENV
+                      if [[ $NEW_SIZE -ne $OLD_SIZE ]]; then
+                          SIZE_DIFF=$( printf "%+d" $(( $OLD_SIZE - $NEW_SIZE )))
+                          echo "STATS_SIZE_DIFF=$SIZE_DIFF" >> $GITHUB_ENV
+                      fi
+
+                      if [[ $OLD_LINES -ne ${{ env.STATS_LINES }} ]]; then
+                          LINES_DIFF=$( printf "%+d" $(( $OLD_LINES - ${{ env.STATS_LINES }} )))
+                          echo "STATS_LINES_DIFF=$LINES_DIFF" >> $GITHUB_ENV
+                      fi
 
                       perl -pe 's/([\w\$]+\$)[0-9a-z]+(?=[^\w\$])/$1/g' ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }} > new.normalized
                       perl -pe 's/([\w\$]+\$)[0-9a-z]+(?=[^\w\$])/$1/g' $OLD_DIR/${{ steps.build.outputs.file }} > old.normalized
