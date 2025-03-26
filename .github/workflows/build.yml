@@ -78,7 +78,7 @@ jobs:
                         --dir=$OLD_DIR \
                         || exit 0
 
-                      NEW_SIZE=$(ls -n "${{ steps.build.outputs.dir }}/${{  steps.build.outputs.file }}" { read _ _ _ _ size _ && echo "$size"; })
+                      NEW_SIZE=$(ls -n "${{ steps.build.outputs.dir }}/${{  steps.build.outputs.file }}" | { read _ _ _ _ size _ && echo "$size"; })
                       OLD_SIZE=$(ls -n "$OLD_DIR/${{ steps.build.outputs.file }}" | { read _ _ _ _ size _ && echo "$size"; })
                       OLD_LINES=$(wc -l "$OLD_DIR/${{ steps.build.outputs.file }}"  | awk '{print $1}')
 
