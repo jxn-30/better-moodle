@@ -83,12 +83,12 @@ jobs:
                       OLD_LINES=$(wc -l "$OLD_DIR/${{ steps.build.outputs.file }}"  | awk '{print $1}')
 
                       if [[ $NEW_SIZE -ne $OLD_SIZE ]]; then
-                          SIZE_DIFF=$( printf "%+d" $(( $OLD_SIZE - $NEW_SIZE )))
+                          SIZE_DIFF=$( printf "%+d" $(( $NEW_SIZE - $OLD_SIZE )))
                           echo "STATS_SIZE_DIFF=$SIZE_DIFF" >> $GITHUB_ENV
                       fi
 
                       if [[ $OLD_LINES -ne ${{ env.STATS_LINES }} ]]; then
-                          LINES_DIFF=$( printf "%+d" $(( $OLD_LINES - ${{ env.STATS_LINES }} )))
+                          LINES_DIFF=$( printf "%+d" $(( ${{ env.STATS_LINES }} - $OLD_LINES )))
                           echo "STATS_LINES_DIFF=$LINES_DIFF" >> $GITHUB_ENV
                       fi
 
