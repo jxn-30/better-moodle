@@ -9,7 +9,7 @@ const enabled = new BooleanSetting('enabled', true).addAlias(
 );
 
 const headerContent = (
-    <div class="drawerheadercontent"></div>
+    <div className="drawerheadercontent"></div>
 ) as HTMLDivElement;
 let controls: HTMLDivElement;
 

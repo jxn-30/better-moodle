@@ -58,31 +58,33 @@ const getSemesterzeiten = () =>
             .then(zeiten => (semesterzeiten = zeiten));
 
 const todaySpan = (
-    <span class={style.todaySpan}>{dateToString()}</span>
+    <span className={style.todaySpan}>{dateToString()}</span>
 ) as HTMLSpanElement;
 const toggleTableBtn = (
-    <button class={classnames('btn btn-link btn-sm p-0', style.tableToggle)}>
-        <i class="icon fa fa-info-circle mr-0"></i>
+    <button
+        className={classnames('btn btn-link btn-sm p-0', style.tableToggle)}
+    >
+        <i className="icon fa fa-info-circle mr-0"></i>
     </button>
 ) as HTMLButtonElement;
 const progressBar = (
-    <div class="progress w-100 position-relative"></div>
+    <div className="progress w-100 position-relative"></div>
 ) as HTMLDivElement;
 
 const prevSemesterBtn = (
-    <li class="page-item">
-        <button class="page-link">
-            <span class="icon-no-margin">
-                <i class="icon fa fa-chevron-left fa-fw"></i>
+    <li className="page-item">
+        <button className="page-link">
+            <span className="icon-no-margin">
+                <i className="icon fa fa-chevron-left fa-fw"></i>
             </span>
         </button>
     </li>
 ) as HTMLLIElement;
 const nextSemesterBtn = (
-    <li class="page-item">
-        <button class="page-link">
-            <span class="icon-no-margin">
-                <i class="icon fa fa-chevron-right fa-fw"></i>
+    <li className="page-item">
+        <button className="page-link">
+            <span className="icon-no-margin">
+                <i className="icon fa fa-chevron-right fa-fw"></i>
             </span>
         </button>
     </li>
@@ -98,7 +100,7 @@ nextSemesterBtn.addEventListener('click', () =>
 const tableBody = (<tbody></tbody>) as HTMLTableSectionElement;
 
 const table = (
-    <table class="table table-striped table-hover hidden">
+    <table className="table table-striped table-hover hidden">
         <thead>
             <tr>
                 <th>{LL.features.semesterzeiten.table.name()}</th>
@@ -214,7 +216,7 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
         const title = <></>;
         const bar = (
             <div
-                class="progress-bar"
+                className="progress-bar"
                 style={{ width: `${width}%` }}
                 data-toggle="tooltip"
                 data-placement="bottom"
@@ -241,7 +243,7 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
             );
             bar.append(
                 <div
-                    class={classnames(
+                    className={classnames(
                         'progress-bar w-100, h-100',
                         `bg-${'color' in event ? event.color : 'primary'}`
                     )}
@@ -257,7 +259,7 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
     if (currentSemester) {
         progressBar.append(
             <div
-                class={classnames(
+                className={classnames(
                     'progress-bar bg-transparent progress-bar-striped',
                     style.progressOverlayBar
                 )}
@@ -301,14 +303,14 @@ const loadContent = (semesterIndex = 0) => {
             );
 
             tableBody.replaceChildren(
-                <tr class="table-primary font-weight-bold">
+                <tr className="table-primary font-weight-bold">
                     <td>{semester.name[BETTER_MOODLE_LANG]}</td>
                     <td>{dateToString(semesterStart)}</td>
                     <td>{dateToString(semesterEnd)}</td>
                     <td>{percent(semesterProgress)}</td>
-                    <td class="p-0 px-md-3 align-middle">
+                    <td className="p-0 px-md-3 align-middle">
                         <nav>
-                            <ul class="pagination mb-0 flex-nowrap justify-content-center justify-content-md-end">
+                            <ul className="pagination mb-0 flex-nowrap justify-content-center justify-content-md-end">
                                 {prevSemesterBtn}
                                 {nextSemesterBtn}
                             </ul>
@@ -339,7 +341,7 @@ const loadContent = (semesterIndex = 0) => {
                 });
                 if (event.type.startsWith('holiday-')) {
                     tableBody.append(
-                        <tr class={`table-${event.color}`}>
+                        <tr className={`table-${event.color}`}>
                             <td colSpan={4}>
                                 {/* The strings are explicit here, to avoid trimming */}
                                 {LL.features.semesterzeiten.publicHoliday()}
@@ -354,7 +356,7 @@ const loadContent = (semesterIndex = 0) => {
                     );
                 } else {
                     tableBody.append(
-                        <tr class={`table-${event.color}`}>
+                        <tr className={`table-${event.color}`}>
                             <td>{event.name[BETTER_MOODLE_LANG]}</td>
                             <td>{dateToString(start)}</td>
                             <td>{dateToString(end)}</td>
@@ -377,13 +379,13 @@ const loadContent = (semesterIndex = 0) => {
             block.setContent(
                 <>
                     {semesterIndex === 0 ?
-                        <div class="position-relative">{todaySpan}</div>
+                        <div className="position-relative">{todaySpan}</div>
                     :   <></>}
-                    <div class="d-flex align-items-center">
+                    <div className="d-flex align-items-center">
                         {toggleTableBtn}
                         {progressBar}
                     </div>
-                    <div class="table-responsive">{table}</div>
+                    <div className="table-responsive">{table}</div>
                 </>,
                 false
             );

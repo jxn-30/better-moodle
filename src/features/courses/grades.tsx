@@ -34,10 +34,10 @@ const onload = async () => {
 
             gradesLink ??= (
                 <a
-                    class="w-100 text-center"
+                    className="w-100 text-center"
                     href={`/grade/report/user/index.php?id=${courseId}`}
                 >
-                    <i class="icon fa fa-calculator fa-fw"></i>
+                    <i className="icon fa fa-calculator fa-fw"></i>
                     &nbsp;
                     {LL.features.courses.features.grades.grades()}
                 </a>

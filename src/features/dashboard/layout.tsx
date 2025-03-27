@@ -138,13 +138,16 @@ const initCourseSidebar = () => {
     const filterSelection = (
         <div
             id={style.coursesSidebarFilterMenu}
-            class="list-group w-100 mb-6 hidden"
+            className="list-group w-100 mb-6 hidden"
             aria-labelledby={courseFilterDropdownBtnId}
         ></div>
     ) as HTMLDivElement;
 
     const syncFilterButton = (
-        <button type="button" class="list-group-item list-group-item-action">
+        <button
+            type="button"
+            className="list-group-item list-group-item-action"
+        >
             [{LL.features.dashboard.features.layout.myCourses.sync()}]
         </button>
     ) as HTMLButtonElement;
@@ -160,7 +163,7 @@ const initCourseSidebar = () => {
                     const btn = (
                         <button
                             type="button"
-                            class="list-group-item list-group-item-action"
+                            className="list-group-item list-group-item-action"
                         >
                             {filter.name}
                         </button>
@@ -190,16 +193,16 @@ const initCourseSidebar = () => {
     const toggleFilterBtn = (
         <button
             id={courseFilterDropdownBtnId}
-            class="btn icon-no-margin dropdown-toggle"
+            className="btn icon-no-margin dropdown-toggle"
             aria-controls={style.coursesSidebarFilterMenu}
         >
-            <i class="icon fa fa-filter fa-fw"></i>
+            <i className="icon fa fa-filter fa-fw"></i>
         </button>
     ) as HTMLButtonElement;
     const heading = (
         <>
             <a
-                class="w-100 d-flex align-items-center justify-content-center"
+                className="w-100 d-flex align-items-center justify-content-center"
                 href="/my/courses.php"
             >
                 {LL.features.dashboard.features.layout.myCourses.title()}

@@ -96,11 +96,13 @@ export default class Block {
      */
     get #realContent() {
         return this.#card ?
-                <div class="card-body p-3">
+                <div className="card-body p-3">
                     {this.#showTitle ?
-                        <h5 class="card-title d-inline">{this.#title}</h5>
+                        <h5 className="card-title d-inline">{this.#title}</h5>
                     :   <></>}
-                    <div class="card-text content mt-3">{this.#content}</div>
+                    <div className="card-text content mt-3">
+                        {this.#content}
+                    </div>
                 </div>
             :   this.#content;
     }

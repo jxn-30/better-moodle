@@ -18,9 +18,9 @@ if (!new RegExp(__UA_REGEX__, __UA_REGEX_FLAGS__).test(navigator.userAgent)) {
             large: false,
             title: LL.browserCheck.title(),
             body: (
-                <div class="table-responsive">
+                <div className="table-responsive">
                     {htmlToElements(mdToHtml(LL.browserCheck.body()))}
-                    <table class="table table-striped table-hover table-sm">
+                    <table className="table table-striped table-hover table-sm">
                         <thead>
                             <tr>
                                 <th>{LL.browserCheck.browser()}</th>
@@ -30,7 +30,7 @@ if (!new RegExp(__UA_REGEX__, __UA_REGEX_FLAGS__).test(navigator.userAgent)) {
                         <tbody>
                             {Object.entries(__MIN_SUPPORTED_BROWSERS__).map(
                                 ([browser, version]) => (
-                                    <tr class="text-capitalize">
+                                    <tr className="text-capitalize">
                                         <td>{browser}</td>
                                         <td>{version}</td>
                                     </tr>

@@ -44,13 +44,13 @@ export const GithubLink = ({
     <a
         href={githubPath(path)}
         target="_blank"
-        class={classNames(className, {
+        className={classNames(className, {
             [globalStyle.noExternalLinkIcon]: !externalIcon,
         })}
         {...props}
     >
         {/* if icon */}
-        {icon && <i class="fa fa-github fa-fw"></i>}
+        {icon && <i className="fa fa-github fa-fw"></i>}
         {/* passing possible children */}
         {children}
     </a>
@@ -538,7 +538,7 @@ export const FieldSet = ({
                 container?.append(
                     <>
                         {description && (
-                            <p class="p-12">
+                            <p className="p-12">
                                 {htmlToElements(mdToHtml(description))}
                             </p>
                         )}

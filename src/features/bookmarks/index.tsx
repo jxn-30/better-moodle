@@ -87,7 +87,7 @@ const EditRow = ({
 }: EditRowProps): EditRowElement => {
     const titleInput = (
         <input
-            class="form-control"
+            className="form-control"
             type="text"
             placeholder=""
             value={title.trim()}
@@ -95,7 +95,7 @@ const EditRow = ({
     ) as HTMLInputElement;
     const urlInput = (
         <input
-            class="form-control"
+            className="form-control"
             type="url"
             placeholder=""
             value={url
@@ -105,9 +105,9 @@ const EditRow = ({
         />
     ) as HTMLInputElement;
     const urlInputGroup = (
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">https://</span>
+        <div className="input-group">
+            <div className="input-group-prepend">
+                <span className="input-group-text">https://</span>
             </div>
             {urlInput}
         </div>
@@ -115,18 +115,24 @@ const EditRow = ({
     const controlsGroup =
         controls ?
             ((
-                <div class="btn-group ml-auto" data-index={index}>
-                    <button class="btn btn-outline-secondary" data-action="up">
-                        <i class="fa fa-arrow-up fa-fw"></i>
+                <div className="btn-group ml-auto" data-index={index}>
+                    <button
+                        className="btn btn-outline-secondary"
+                        data-action="up"
+                    >
+                        <i className="fa fa-arrow-up fa-fw"></i>
                     </button>
                     <button
-                        class="btn btn-outline-secondary"
+                        className="btn btn-outline-secondary"
                         data-action="down"
                     >
-                        <i class="fa fa-arrow-down fa-fw"></i>
+                        <i className="fa fa-arrow-down fa-fw"></i>
                     </button>
-                    <button class="btn btn-outline-danger" data-action="delete">
-                        <i class="fa fa-trash fa-fw"></i>
+                    <button
+                        className="btn btn-outline-danger"
+                        data-action="delete"
+                    >
+                        <i className="fa fa-trash fa-fw"></i>
                     </button>
                 </div>
             ) as HTMLDivElement)
@@ -217,8 +223,8 @@ const openAddModal = () => {
         type: 'SAVE_CANCEL',
         title: LL.features.bookmarks.add(),
         body: (
-            <form class={classnames('mform', style.form, style.editForm)}>
-                <div class="fcontainer">
+            <form className={classnames('mform', style.form, style.editForm)}>
+                <div className="fcontainer">
                     <b>{LL.features.bookmarks.modal.title()}</b>
                     <b>{LL.features.bookmarks.modal.url()}</b>
                     {input}
@@ -250,10 +256,10 @@ const openEditModal = () => {
     );
 
     const container = (
-        <div class="fcontainer">
+        <div className="fcontainer">
             <b>{LL.features.bookmarks.modal.title()}</b>
             <b>{LL.features.bookmarks.modal.url()}</b>
-            <div class="d-none d-sm-block"></div>
+            <div className="d-none d-sm-block"></div>
             {...Array.from(inputs.values())}
         </div>
     ) as HTMLDivElement;
@@ -296,8 +302,8 @@ const openEditModal = () => {
     });
 
     const addBtn = (
-        <button class="btn btn-outline-success pull-right">
-            <i class="fa fa-plus fa-fw"></i>
+        <button className="btn btn-outline-success pull-right">
+            <i className="fa fa-plus fa-fw"></i>
         </button>
     ) as HTMLButtonElement;
     addBtn.addEventListener('click', e => {
@@ -317,7 +323,7 @@ const openEditModal = () => {
         type: 'SAVE_CANCEL',
         title: LL.features.bookmarks.edit(),
         body: (
-            <form class={classnames('mform', style.form)}>
+            <form className={classnames('mform', style.form)}>
                 {container}
                 {addBtn}
             </form>
@@ -345,7 +351,9 @@ const openEditModal = () => {
 const renderDropdown = () =>
     render('core/custom_menu_item', {
         title: LL.features.bookmarks.bookmarks(),
-        text: getHtml(<i class="icon fa fa-bookmark-o fa-fw" role="img"></i>),
+        text: getHtml(
+            <i className="icon fa fa-bookmark-o fa-fw" role="img"></i>
+        ),
         haschildren: true,
         children: [
             ...bookmarks.map(bookmark => ({

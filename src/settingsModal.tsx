@@ -45,14 +45,14 @@ const groups = [
 const settingsBtnTitle = `Better-Moodle:\xa0${LL.settings.modal.title()}`;
 
 const SettingsBtnIcon = (
-    <i class="fa fa-gears fa-fw" role="img" title={settingsBtnTitle}></i>
+    <i className="fa fa-gears fa-fw" role="img" title={settingsBtnTitle}></i>
 ) as HTMLElement;
 const SettingsBtn = (
     <div>
         <div
             id={settingsStyle.openSettingsBtn}
             role="button"
-            class="nav-link position-relative icon-no-margin loading"
+            className="nav-link position-relative icon-no-margin loading"
             title={settingsBtnTitle}
             aria-label={settingsBtnTitle}
         >
@@ -61,7 +61,7 @@ const SettingsBtn = (
     </div>
 ) as HTMLDivElement;
 const UpdateAvailableBadge = (
-    <div class="count-container"></div>
+    <div className="count-container"></div>
 ) as HTMLDivElement;
 
 // append the Button to the navbar
@@ -78,9 +78,9 @@ const ChangelogBtn = (
     <GithubLink
         path={changelogPath}
         icon={false}
-        class="btn btn-outline-primary"
+        className="btn btn-outline-primary"
     >
-        <i class="fa fa-history fa-fw"></i>
+        <i className="fa fa-history fa-fw"></i>
         <span>{LL.settings.changelog()}</span>
     </GithubLink>
 );
@@ -355,14 +355,14 @@ ImportBtn.addEventListener('click', e => {
 // region search
 const SearchInput = (
     <input
-        class="form-control-sm form-control"
+        className="form-control-sm form-control"
         type="search"
         placeholder={LL.settings.modal.search()}
     />
 ) as HTMLInputElement;
 const SearchStyle = <style></style>;
 const SearchWrapper = (
-    <div class="form-group ml-auto mr-auto">
+    <div className="form-group ml-auto mr-auto">
         {SearchInput}
         {SearchStyle}
     </div>
@@ -430,7 +430,10 @@ const settingsModal = new Modal({
         </>
     ),
     footer: (
-        <div class="btn-group mr-auto" id={settingsStyle.settingsFooterBtns}>
+        <div
+            className="btn-group mr-auto"
+            id={settingsStyle.settingsFooterBtns}
+        >
             {/* Changelog btn */}
             {ChangelogBtn}
 
@@ -555,10 +558,10 @@ if (
                 title: LL.settings.newBadge(),
                 template: (
                     (
-                        <div class="tooltip" role="tooltip">
-                            <div class="arrow"></div>
+                        <div className="tooltip" role="tooltip">
+                            <div className="arrow"></div>
                             <div
-                                class={[
+                                className={[
                                     'tooltip-inner badge bg-success text-uppercase',
                                     globalStyle.shining,
                                     globalStyle.sparkling,
