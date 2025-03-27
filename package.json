@@ -20,7 +20,7 @@
         "i18n:watch": "typesafe-i18n",
         "i18n:once": "typesafe-i18n --no-watch",
         "config:scheme": "ts-json-schema-generator --path 'configs/*.d.ts' --type 'Config' > configs/_schema.json",
-        "ics-parser:dev": "wrangler dev --config=ics-parser/wrangler.jsonc --ip=127.0.0.1",
+        "ics-parser:dev": "wrangler dev --config=ics-parser/wrangler.json --ip=127.0.0.1",
         "ci": "yarn lint:fix && yarn prettier:write && yarn build ${0}"
     },
     "dependencies": {
