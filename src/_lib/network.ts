@@ -31,3 +31,11 @@ export const getDocument = (path: string): Promise<Document> =>
     request(path)
         .then(res => res.text())
         .then(html => new DOMParser().parseFromString(html, 'text/html'));
+
+/**
+ * Creates the URL for parsing ics by the Better-Moodle server infrastructure.
+ * @param category - the category this link is for.
+ * @returns a full valid URL that matches the criteria
+ */
+export const icsUrl = (category: 'semesterzeiten' | 'events') =>
+    `https://${__ICS_PARSER_DOMAIN__}/${category}/${__UNI__}`;

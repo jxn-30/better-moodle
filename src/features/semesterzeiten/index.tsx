@@ -3,13 +3,13 @@ import { BooleanSetting } from '@/Settings/BooleanSetting';
 import classnames from 'classnames';
 import FeatureGroup from '@/FeatureGroup';
 import { type Locales } from '../../i18n/i18n-types';
-import { request } from '@/network';
 import style from './style.module.scss';
 import { Switch } from '@/Components';
 import { BETTER_MOODLE_LANG, LL } from 'i18n';
 import { dateToString, percent } from '@/localeString';
 import { domID, isDashboard } from '@/helpers';
 import { getHtml, getLoadingSpinner, ready } from '@/DOM';
+import { icsUrl, request } from '@/network';
 
 const hiddenBarsKey = 'semesterzeiten.hiddenBars';
 const hiddenBars = new Set<string>(GM_getValue<string[]>(hiddenBarsKey, []));
@@ -53,7 +53,7 @@ let semesterzeiten: Semesterzeiten;
 const getSemesterzeiten = () =>
     semesterzeiten ?
         Promise.resolve(semesterzeiten)
-    :   request(`https://ics.better-moodle.dev/semesterzeiten/${__UNI__}`)
+    :   request(icsUrl('semesterzeiten'))
             .then<Semesterzeiten>(res => res.json())
             .then(zeiten => (semesterzeiten = zeiten));
 
