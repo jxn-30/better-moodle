@@ -98,8 +98,7 @@ It is also important to import and use the translations in `src/i18n/*/index.ts`
 
 ### Calendars
 
-Calenders MUST[^keyword] provide a link that returns an iCalendar ([RFC 5545](https://www.rfc-editor.org/rfc/rfc5545.txt)) string.
-
+Calendars MUST[^keyword] provide a link that returns an iCalendar ([RFC 5545](https://www.rfc-editor.org/rfc/rfc5545.txt)) string.
 #### Semesterzeiten
 
 Every event MUST[^keyword] have the following attributes set:
