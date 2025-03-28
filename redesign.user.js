@@ -6305,7 +6305,7 @@ ready(async () => {
 if (getSetting('courses.imgMaxWidth')) {
     GM_addStyle(css`
         /* prevent images from overflowing */
-        #page-content .course-content img {
+        #page-content .course-content img:not(.activityicon) {
             max-width: 100%;
         }
     `);
@@ -6320,7 +6320,7 @@ if (getSetting('courses.imageZoom')) {
     let copyImage;
 
     GM_addStyle(css`
-        #page-content .course-content img {
+        #page-content .course-content img:not(.activityicon) {
             cursor: zoom-in;
         }
 
@@ -6365,6 +6365,8 @@ if (getSetting('courses.imageZoom')) {
     const zoomImage = e => {
         const target = e.target;
         if (!(target instanceof HTMLImageElement)) return;
+
+        if (target.classList.contains('activityicon')) return;
 
         e.preventDefault();
 
