@@ -1,4 +1,4 @@
 // prevent images from overflowing
-#page-content .course-content img {
+#page-content .course-content img:not(.activityicon) {
     max-width: 100%;
 }

@@ -29,6 +29,8 @@ const zoomImage = (e: MouseEvent) => {
     const target = e.target;
     if (!(target instanceof HTMLImageElement)) return;
 
+    if (target.classList.contains('activityicon')) return;
+
     e.preventDefault();
 
     zoomCopiedImage = target.cloneNode(true) as HTMLImageElement;
