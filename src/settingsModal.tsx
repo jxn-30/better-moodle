@@ -449,6 +449,14 @@ const settingsModal = new Modal({
     .onCancel(() => featureGroups.forEach(group => group.undoSettings()))
     .onSave(event => {
         featureGroups.forEach(group => group.saveSettings());
+        void requirePromise(['core/toast'] as const).then(
+            ([{ add }]) =>
+                void add(LL.settings.saved(), {
+                    type: 'success',
+                    autohide: true,
+                    closeButton: true,
+                })
+        );
         // reload the page if required
         if (TempStorage.settingsRequireReload) {
             // do not close the modal
