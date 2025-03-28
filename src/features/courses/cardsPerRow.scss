@@ -1,10 +1,21 @@
 @use '/src/style/mixins';
 
 @include mixins.media-up(840px) {
-    .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
-        --margin: max(4px, min(10px, calc(100vw / 192)));
-        width: calc((100% / var(--boxes-per-row, 4)) - var(--margin) * 2);
-        margin-left: var(--margin);
-        margin-right: var(--margin);
+    // moodle changed this card deck somewhere between 401 and 405
+    // may need to adjust the version selector
+    @if global.$MOODLE_VERSION < 405 {
+        .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
+            --margin: max(4px, min(10px, calc(100vw / 192)));
+            width: calc((100% / var(--boxes-per-row, 4)) - var(--margin) * 2);
+            margin-left: var(--margin);
+            margin-right: var(--margin);
+        }
+    } @else {
+        .block-myoverview .card-grid[data-region='card-deck'] > .col {
+            --width: calc(100% / var(--boxes-per-row, 4));
+            min-width: var(--width) !important;
+            width: var(--width) !important;
+            max-width: var(--width) !important;
+        }
     }
 }
