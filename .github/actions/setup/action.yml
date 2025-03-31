@@ -29,8 +29,7 @@ runs:
               path: |
                   ${{ steps.yarn_cache_dir.outputs.dir }}
                   **/node_modules
-                  **/.eslintcache
-              key: ${{ runner.os }}-cache-${{ hashFiles('**/yarn.lock', '.yarnrc.yml', '.eslintcache') }}
+              key: ${{ runner.os }}-cache-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
               restore-keys: ${{ runner.os }}-cache-
 
         - name: 🍱 install dependencies
