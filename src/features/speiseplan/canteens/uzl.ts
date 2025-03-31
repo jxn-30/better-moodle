@@ -14,13 +14,12 @@ const add = (key: string, name = '', id = 0) =>
         key,
         title: name,
         url: {
-            // yeah, using the luebeck-link with the correct ID works totally fine :)
-            de: `https://studentenwerk.sh/de/mensen-in-luebeck?mensa=${id}`,
-            en: `https://studentenwerk.sh/en/canteens-in-luebeck?mensa=${id}`,
+            de: `https://studentenwerk.sh/de/essen-uebersicht?mensa=${id}#mensaplan`,
+            en: `https://studentenwerk.sh/en/food-overview?mensa=${id}#mensaplan`,
         },
         urlNextWeek: {
-            de: `https://studentenwerk.sh/de/mensen-in-luebeck?mensa=${id}&nw=1`,
-            en: `https://studentenwerk.sh/en/canteens-in-luebeck?mensa=${id}&nw=1`,
+            de: `https://studentenwerk.sh/de/essen-uebersicht?mensa=${id}&nw=1#mensaplan`,
+            en: `https://studentenwerk.sh/en/food-overview?mensa=${id}&nw=1#mensaplan`,
         },
     });
 
