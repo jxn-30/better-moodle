@@ -1,15 +1,16 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
-import { ready } from '@/DOM';
+import { render } from '@/templates';
 import { requirePromise } from '@/require.js';
+import { putTemplate, ready } from '@/DOM';
 import { domID, mdToHtml } from '@/helpers';
 
 /**
  * The setting for enabling markdown support
  */
-const enabled = new BooleanSetting('markdownSupport', true)
-    .addAlias('messages.markdown')
-    .requireReload(); // TODO: I don't want to require a reload
+const enabled = new BooleanSetting('markdownSupport', true).addAlias(
+    'messages.markdown'
+);
 
 /**
  * Returns a promise that resolves when MathJax is ready
@@ -45,7 +46,7 @@ const parseMarkdown = async (
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, dummy]);
     const mathJaxed = dummy.innerHTML;
     const markdowned = mdToHtml(`\n${mathJaxed}`, 1);
-    // Moodle does weird stuff with spaces (for 15 years...)
+    // Moodle has been doing weird stuff with spaces (for as long as the Better-Moodle devs are alive...). See MDL-85010
     const spacecaped = markdowned.replaceAll('> <', '>&#32;<');
     // This removes unnecessary spaces inside of html tags (as they somehow break Moodles html rendering)
     dummy.innerHTML = spacecaped;
@@ -61,7 +62,7 @@ const inputFieldRegion: string = domID('send-message-txt');
  */
 const dummyField: HTMLTextAreaElement = (
     <textarea
-        class="d-none" // TODO: remove debug css
+        className="d-none" // TODO: remove debug css
         style="display: block !important; position: fixed; top: var(--navbar-height); left: 0; width: 50vw; height: calc(100vh - var(--navbar-height)); background-color: black; color: lime; font-family: monospace; z-index:100000;"
     ></textarea>
 ) as HTMLTextAreaElement;
@@ -72,9 +73,117 @@ let sendBtn: HTMLButtonElement | null = null;
 let inputEvent: EventListener | null = null;
 let sendEvent: EventListener | null = null;
 
-let emojiAutoComplete: HTMLDivElement | null = null;
-let emojiPicker: HTMLDivElement | null = null;
-let originalEmojiPicker: HTMLDivElement | null = null;
+/**
+ * The event listener for the emoji picker button
+ */
+const emojiPickerBtnClickEvent: EventListener = () => {
+    const container = document.querySelector<HTMLDivElement>(
+        '[data-region="emoji-picker-container"]'
+    );
+    if (!container) return;
+    container.classList.toggle('hidden');
+};
+
+// let emojiPickerButton: HTMLButtonElement | null = null;
+
+/**
+ * Returns a callback that inserts the emoji into the input field
+ * @param containerElement - The container element to hide
+ * @param inputField - The input field to insert the emoji into
+ * @param replaceWord - Whether to replace the word before the cursor
+ * @returns The callback
+ */
+const getEmojiCallback = (
+    containerElement: HTMLDivElement,
+    inputField: HTMLTextAreaElement,
+    replaceWord = false
+) => {
+    return (emoji: string) => {
+        containerElement.classList.add('hidden');
+
+        inputField.focus();
+        const cursorPos = inputField.selectionStart;
+
+        if (!cursorPos) return;
+        const currentText = inputField.value;
+        const textBefore = currentText
+            .substring(0, cursorPos)
+            .replace(replaceWord ? /\S*$/ : '', '');
+        const textAfter = currentText
+            .substring(cursorPos)
+            .replace(replaceWord ? /^\S*/ : '', '');
+
+        inputField.value = textBefore + emoji + textAfter;
+        inputField.setSelectionRange(
+            textBefore.length + emoji.length,
+            textBefore.length + emoji.length
+        );
+
+        void parseMarkdown(inputField).then(md => (dummyField.value = md));
+    };
+};
+/**
+ * Replaces the current emoji auto complete with a new emoji auto complete for the given input field
+ * @param inputField - The input field for the emoji auto complete
+ */
+const putEmojiAutoComplete = async (inputField: HTMLTextAreaElement) => {
+    await ready();
+    // Remove the previous emoji auto complete
+    document
+        .querySelector<HTMLDivElement>('[data-region="emoji-auto-complete"]')
+        ?.remove();
+    const container = document.querySelector<HTMLDivElement>(
+        '[data-region="emoji-auto-complete-container"]'
+    );
+    if (!container) return;
+    container.classList.add('hidden');
+    void render('core/emoji/auto_complete', {})
+        .then(template =>
+            Promise.all([
+                requirePromise(['core/emoji/auto_complete'] as const),
+                putTemplate<HTMLDivElement[]>(container, template, 'append'),
+            ])
+        )
+        .then(([[initialiseEmojiAutoComplete], templateElements]) => {
+            const emojiAutoComplete = templateElements[0];
+            initialiseEmojiAutoComplete(
+                container,
+                inputField,
+                show => container.classList.toggle('hidden', !show),
+                getEmojiCallback(emojiAutoComplete, inputField, true)
+            );
+        });
+};
+/**
+ * Replaces the current emoji picker with a new emoji picker for the given input field
+ * @param inputField - The input field for the emoji picker
+ */
+const putEmojiPicker = async (inputField: HTMLTextAreaElement) => {
+    await ready();
+    document
+        .querySelector<HTMLDivElement>('[data-region="emoji-picker"]')
+        ?.remove();
+    const container = document.querySelector<HTMLDivElement>(
+        '[data-region="emoji-picker-container"]'
+    );
+    if (!container) return;
+    container.classList.add('hidden');
+
+    void render('core/emoji/picker', {})
+        .then(template =>
+            Promise.all([
+                requirePromise(['core/emoji/picker'] as const),
+                putTemplate<HTMLDivElement[]>(container, template, 'append'),
+            ])
+        )
+        .then(([[initialiseEmojiPicker], templateElements]) => {
+            const emojiPicker = templateElements[0];
+            initialiseEmojiPicker(
+                emojiPicker,
+                getEmojiCallback(container, inputField)
+            );
+        });
+};
 
 /**
  * Enables markdown support in the message app
@@ -90,7 +199,7 @@ const enable = async () => {
         '[data-action="send-message"]'
     );
     inputField = messageApp.querySelector<HTMLTextAreaElement>(
-        'textarea[data-region="send-message-txt"]'
+        '[data-region="send-message-txt"]'
     );
     if (!sendBtn || !inputField) return;
 
@@ -124,117 +233,19 @@ const enable = async () => {
     };
     sendBtn.addEventListener('click', sendEvent);
 
-    void requirePromise([
-        'core/templates',
-        'core/emoji/auto_complete',
-        'core/emoji/picker',
-    ] as const).then(
-        ([templates, initialiseEmojiAutoComplete, initialiseEmojiPicker]) => {
-            const emojiAutoCompleteContainer =
-                document.querySelector<HTMLDivElement>(
-                    '[data-region="emoji-auto-complete-container"]'
-                );
-            const emojiPickerContainer = document.querySelector<HTMLDivElement>(
-                '[data-region="emoji-picker-container"]'
-            );
-            if (!emojiAutoCompleteContainer || !emojiPickerContainer) return;
-            originalEmojiPicker = document.querySelector<HTMLDivElement>(
-                '[data-region="emoji-picker"]'
-            );
-
-            /**
-             * Returns a callback that inserts the emoji into the input field
-             * @param containerElement - The container element to hide
-             * @param replaceWord - Whether to replace the word before the cursor
-             * @returns The callback
-             */
-            const getEmojiCallback = (
-                containerElement: HTMLDivElement,
-                replaceWord = false
-            ) => {
-                return (emoji: string) => {
-                    containerElement.classList.add('hidden');
-
-                    if (!inputField) return;
-                    inputField.focus();
-                    const cursorPos = inputField.selectionStart;
-
-                    if (!cursorPos) return;
-                    const currentText = inputField.value;
-                    const textBefore = currentText
-                        .substring(0, cursorPos)
-                        .replace(replaceWord ? /\S*$/ : '', '');
-                    const textAfter = currentText
-                        .substring(cursorPos)
-                        .replace(replaceWord ? /^\S*/ : '', '');
-
-                    inputField.value = textBefore + emoji + textAfter;
-                    inputField.setSelectionRange(
-                        textBefore.length + emoji.length,
-                        textBefore.length + emoji.length
-                    );
-
-                    void parseMarkdown(inputField).then(
-                        md => (dummyField.value = md)
-                    );
-                };
-            };
-
-            void templates
-                .renderForPromise('core/emoji/auto_complete', {})
-                .then(({ html }) => {
-                    const dummyEmojiAutoComplete =
-                        document.createElement('div');
-                    dummyEmojiAutoComplete.innerHTML = html;
-                    emojiAutoComplete =
-                        dummyEmojiAutoComplete.querySelector<HTMLDivElement>(
-                            '[data-region="emoji-auto-complete"]'
-                        );
-                    if (!emojiAutoComplete) return;
-                    emojiAutoComplete.dataset.region = domID(
-                        'emoji-auto-complete'
-                    );
-
-                    emojiAutoCompleteContainer.append(emojiAutoComplete);
-                    emojiAutoCompleteContainer.classList.add('hidden');
-
-                    if (!inputField) return;
-                    initialiseEmojiAutoComplete(
-                        emojiAutoCompleteContainer,
-                        inputField,
-                        show =>
-                            emojiAutoCompleteContainer.classList.toggle(
-                                'hidden',
-                                !show
-                            ),
-                        getEmojiCallback(emojiAutoComplete, true)
-                    );
-                });
-
-            void templates
-                .renderForPromise('core/emoji/picker', {})
-                .then(({ html }) => {
-                    const dummyEmojiPicker = document.createElement('div');
-                    dummyEmojiPicker.innerHTML = html;
-                    emojiPicker =
-                        dummyEmojiPicker.querySelector<HTMLDivElement>(
-                            '[data-region="emoji-picker"]'
-                        );
-                    if (!emojiPicker) return;
-                    emojiPicker.dataset.region = domID('emoji-picker');
-
-                    emojiPickerContainer.append(emojiPicker);
-                    emojiPickerContainer.classList.add('hidden');
-
-                    initialiseEmojiPicker(
-                        emojiPicker,
-                        getEmojiCallback(emojiPickerContainer)
-                        // TODO: The emojiPickerButton needs to update it's state - currently it thinks it is still open
-                    );
-                    originalEmojiPicker?.classList.add('d-none');
-                });
-        }
+    const emojiPickerBtn = document.querySelector<HTMLButtonElement>(
+        '[data-action="toggle-emoji-picker"]'
     );
+    if (emojiPickerBtn) {
+        emojiPickerBtn.addEventListener('click', emojiPickerBtnClickEvent);
+        emojiPickerBtn.setAttribute(
+            'data-action',
+            domID('toggle-emoji-picker')
+        );
+    }
+
+    void putEmojiAutoComplete(inputField);
+    void putEmojiPicker(inputField);
 };
 /**
  * Disables markdown support in the message app
@@ -258,12 +269,13 @@ const disable = () => {
     }
     inputField = null;
 
-    emojiAutoComplete?.remove();
-    emojiAutoComplete = null;
-
-    emojiPicker?.remove();
-    emojiPicker = null;
-    originalEmojiPicker?.classList.remove('d-none');
+    const originalInputField = document.querySelector<HTMLTextAreaElement>(
+        '[data-region="send-message-txt"]'
+    );
+    if (originalInputField) {
+        void putEmojiAutoComplete(originalInputField);
+        void putEmojiPicker(originalInputField);
+    }
 };
 
 /**
