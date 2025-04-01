@@ -109,7 +109,7 @@ const getEmojiCallback = (
         inputField.focus();
         const cursorPos = inputField.selectionStart;
 
-        if (!cursorPos) return;
+        if (cursorPos === null || cursorPos === undefined) return;
         const currentText = inputField.value;
         const textBefore = currentText
             .substring(0, cursorPos)
