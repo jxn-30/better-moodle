@@ -211,7 +211,7 @@ export class Modal extends CanBeReady {
         void this.getHeader().then(header =>
             header.before(
                 <img
-                    class={modalStyle.modalBackgroundImage}
+                    className={modalStyle.modalBackgroundImage}
                     src={src}
                     aria-hidden={true}
                     alt=""

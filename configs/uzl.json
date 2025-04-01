@@ -13,6 +13,6 @@
     },
     "icon": "https://moodle.uni-luebeck.de/pluginfile.php/1/theme_boost_union/logocompact/1/1734590139/Siegel-Uni-Luebeck.svg",
     "moodleUrl": "https://moodle.uni-luebeck.de",
-    "moodleVersion": 401,
+    "moodleVersion": 405,
     "connects": ["studentenwerk.sh"]
 }

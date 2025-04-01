@@ -89,11 +89,21 @@ jobs:
                   check-name: ESLint Report Analysis
                   markdown-report-on-step-summary: true
 
-            - name: 📜 Update PR Summary
+            - name: 🙂 get summarizing emoji
+              run: |
+                  echo "EMOJI=✅" >> $GITHUB_ENV
+                  if [[ ${{ steps.annotations.outputs.warningCount }} -gt 0 ]]; then
+                    echo "EMOJI=⚠️" >> $GITHUB_ENV
+                  fi
+                  if [[ ${{ steps.annotations.outputs.errorCount }} -gt 0 ]]; then
+                    echo "EMOJI=❌" >> $GITHUB_ENV
+                  fi
+
+            - name: 📜 update PR Summary
               if: ${{ github.event_name == 'pull_request' && always() }}
               uses: ./.github/actions/pr-summary
               with:
                   pr-number: ${{ github.event.pull_request.number }}
                   section: eslint
-                  title: 🚨 ESLint
+                  title: 🚨${{ env.EMOJI }} ESLint
                   content: ${{ steps.annotations.outputs.summary }}

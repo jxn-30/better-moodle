@@ -27,7 +27,7 @@ export default class Marquee {
     readonly #observer = new ResizeObserver(this.recalculate);
     readonly #observedElements = new Set<Element>();
     readonly #minWidthPlaceholder = (
-        <div class={style.marqueeMinWidthPlaceholder}></div>
+        <div className={style.marqueeMinWidthPlaceholder}></div>
     );
     readonly #contentClones = new Map<Element, Element>();
 

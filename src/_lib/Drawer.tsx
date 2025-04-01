@@ -177,7 +177,7 @@ export default class Drawer {
             element
                 .querySelector('.drawerheader')
                 ?.append(
-                    <div class="drawerheadercontent hidden w-100 d-flex">
+                    <div className="drawerheadercontent hidden w-100 d-flex">
                         {this.#heading}
                     </div>
                 );
@@ -194,7 +194,7 @@ export default class Drawer {
                 className={`drawer-toggler drawer-${this.#side}-toggle ml-auto d-print-none`}
             >
                 <button
-                    class="btn icon-no-margin"
+                    className="btn icon-no-margin"
                     data-toggler="drawers"
                     data-action="toggle"
                     data-target={this.#id}
@@ -205,7 +205,7 @@ export default class Drawer {
                     }
                     title={this.#toggleTitle}
                 >
-                    <span class="sr-only">{this.#toggleTitle}</span>
+                    <span className="sr-only">{this.#toggleTitle}</span>
                     <span>
                         <i className={`icon fa fa-fw fa-${this.#icon}`}></i>
                     </span>

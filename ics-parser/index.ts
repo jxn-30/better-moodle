@@ -3,6 +3,7 @@ import german from './i18n/de';
 
 const URLS = {
     semesterzeiten: {
+        cau: 'https://cloud.rz.uni-kiel.de/remote.php/dav/public-calendars/XNpJxfSoQcsxCe8m/?export',
         uzl: 'http://files.asta.uni-luebeck.de/remote.php/dav/public-calendars/AH4pFg6pqb7AfBXo?export',
     },
     events: {

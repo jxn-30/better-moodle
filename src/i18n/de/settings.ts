@@ -15,6 +15,7 @@ export default {
     changelog: 'Changelog',
     requireReload:
         'Die Änderungen dieser Einstellung (*{name: string}*) werden erst nach einem Neuladen der Seite übernommen.  \nDas Speichern der Einstellungen führt daher automatisch zu einem Neuladen der Seite.',
+    saved: 'Alle Einstellungen wurden erfolgreich gespeichert und angewendet. Viel Spaß mit deinem individualisierten Better-Moodle! 😊',
     tags: {
         fun: 'Spaßeinstellung',
     } satisfies Record<Tag, string>,

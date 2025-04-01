@@ -60,6 +60,9 @@ jobs:
                   echo "STATS_DIFF_SYN=$NO_CHANGE" >> $GITHUB_ENV
                   echo "STATS_DIFF_SEM=$NO_CHANGE" >> $GITHUB_ENV
 
+                  echo "STATS_SIZE_DIFF=$NO_CHANGE" >> $GITHUB_ENV
+                  echo "STATS_LINES_DIFF=$NO_CHANGE" >> $GITHUB_ENV
+
                   RUN_ID=$(gh run list \
                     --workflow=build.yml \
                     --branch=${{ github.base_ref || github.ref_name }} \
@@ -74,6 +77,20 @@ jobs:
                         --name=${{ steps.build.outputs.file }} \
                         --dir=$OLD_DIR \
                         || exit 0
+
+                      NEW_SIZE=$(ls -n "${{ steps.build.outputs.dir }}/${{  steps.build.outputs.file }}" | { read _ _ _ _ size _ && echo "$size"; })
+                      OLD_SIZE=$(ls -n "$OLD_DIR/${{ steps.build.outputs.file }}" | { read _ _ _ _ size _ && echo "$size"; })
+                      OLD_LINES=$(wc -l "$OLD_DIR/${{ steps.build.outputs.file }}"  | awk '{print $1}')
+
+                      if [[ $NEW_SIZE -ne $OLD_SIZE ]]; then
+                          SIZE_DIFF=$( printf "%+d" $(( $NEW_SIZE - $OLD_SIZE )))
+                          echo "STATS_SIZE_DIFF=$SIZE_DIFF" >> $GITHUB_ENV
+                      fi
+
+                      if [[ $OLD_LINES -ne ${{ env.STATS_LINES }} ]]; then
+                          LINES_DIFF=$( printf "%+d" $(( ${{ env.STATS_LINES }} - $OLD_LINES )))
+                          echo "STATS_LINES_DIFF=$LINES_DIFF" >> $GITHUB_ENV
+                      fi
 
                       perl -pe 's/([\w\$]+\$)[0-9a-z]+(?=[^\w\$])/$1/g' ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }} > new.normalized
                       perl -pe 's/([\w\$]+\$)[0-9a-z]+(?=[^\w\$])/$1/g' $OLD_DIR/${{ steps.build.outputs.file }} > old.normalized
@@ -115,8 +132,8 @@ jobs:
                   echo "## Built file: \`${{ steps.build.outputs.file }}\`" >> $GITHUB_STEP_SUMMARY
                   echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
                   echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
-                  echo "| **File size** | ${{ env.STATS_SIZE }} |" >> $GITHUB_STEP_SUMMARY
-                  echo "| **Line count** | ${{ env.STATS_LINES }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **File size** | ${{ env.STATS_SIZE }} (${{ env.STATS_SIZE_DIFF }}) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Line count** | ${{ env.STATS_LINES }} (${{ env.STATS_LINES_DIFF }}) |" >> $GITHUB_STEP_SUMMARY
                   echo "| **Diff to prev build (semantic)** | ${{ env.STATS_DIFF_SEM }} |" >> $GITHUB_STEP_SUMMARY
                   echo "| **Diff to prev build (syntactic)** | ${{ env.STATS_DIFF_SYN }} |" >> $GITHUB_STEP_SUMMARY
 
@@ -134,7 +151,7 @@ jobs:
             - name: 📝 generate output
               id: output
               run: |
-                  echo "build_${{ matrix.config }}=| ${{matrix.config}} | ${{ env.STATS_SIZE }} | ${{ env.STATS_LINES }} | ${{ env.STATS_PERF_TOTAL }} | ${{ env.STATS_DIFF_SEM }} | ${{ env.STATS_DIFF_SYN }} |" >> $GITHUB_OUTPUT
+                  echo "build_${{ matrix.config }}=| ${{matrix.config}} | ${{ env.STATS_SIZE }} (${{ env.STATS_SIZE_DIFF }}) | ${{ env.STATS_LINES }} (${{ env.STATS_LINES_DIFF }}) | ${{ env.STATS_PERF_TOTAL }} | ${{ env.STATS_DIFF_SEM }} | ${{ env.STATS_DIFF_SYN }} |" >> $GITHUB_OUTPUT
 
     pr-summary:
         runs-on: ubuntu-latest

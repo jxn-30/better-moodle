@@ -6,6 +6,7 @@ import { createHash } from 'crypto';
 import { defineConfig } from 'vite';
 import dotenv from 'dotenv';
 import fastGlob from 'fast-glob';
+import icsParserConfig from './ics-parser/wrangler.json';
 import legacy from '@vitejs/plugin-legacy';
 import monkey from 'vite-plugin-monkey';
 import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
@@ -180,6 +181,7 @@ const GLOBAL_CONSTANTS = {
     __MOODLE_VERSION__: JSON.stringify(config.moodleVersion),
     __MOODLE_URL__: JSON.stringify(config.moodleUrl),
     __USERSCRIPT_CONNECTS__: JSON.stringify(connects),
+    __ICS_PARSER_DOMAIN__: JSON.stringify(icsParserConfig.routes[0].pattern),
     // hacky way for Regular expresions atm
     // See https://github.com/evanw/esbuild/issues/4019 for workaround source and feature request
     __UA_REGEX__: JSON.stringify(

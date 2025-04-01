@@ -48,6 +48,7 @@ export default [
                 __MOODLE_VERSION__: 'readonly',
                 __MOODLE_URL__: 'readonly',
                 __USERSCRIPT_CONNECTS__: 'readonly',
+                __ICS_PARSER_DOMAIN__: 'readonly',
                 __UA_REGEX__: 'readonly',
                 __UA_REGEX_FLAGS__: 'readonly',
                 __MIN_SUPPORTED_BROWSERS__: 'readonly',

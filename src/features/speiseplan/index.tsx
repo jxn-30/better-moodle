@@ -82,9 +82,9 @@ const emojis =
  */
 const randomEmoji = () => emojis[Math.floor(Math.random() * emojis.length)];
 const desktopBtn = (
-    <li class="nav-item">
+    <li className="nav-item">
         <a
-            class="nav-link"
+            className="nav-link"
             href={speiseplanLink}
             title={LL.features.speiseplan.name()}
         >
@@ -93,14 +93,14 @@ const desktopBtn = (
     </li>
 );
 const mobileBtn = (
-    <a class="list-group-item list-group-item-action" href={speiseplanLink}>
+    <a className="list-group-item list-group-item-action" href={speiseplanLink}>
         {randomEmoji()}&nbsp;{LL.features.speiseplan.name()}
     </a>
 );
 
 // textContent will be set on opening
 const footerLinkWrapper = (
-    <a class="mr-auto" href="#speiseplan" target="_blank">
+    <a className="mr-auto" href="#speiseplan" target="_blank">
         Source
     </a>
 ) as HTMLAnchorElement;
@@ -129,7 +129,7 @@ const getCurrentSpeiseplan = () => {
                 {item.info ?
                     <>
                         &nbsp;
-                        <span class="text-muted">{item.info}</span>
+                        <span className="text-muted">{item.info}</span>
                     </>
                 :   ''}
             </>
@@ -172,23 +172,23 @@ const getCurrentSpeiseplan = () => {
                     title={dateToString(day, false, true, lang)}
                     collapsed={index > 0}
                 >
-                    <table class={classNames(['table', style.table])}>
+                    <table className={classNames(['table', style.table])}>
                         <thead>
                             <tr>
                                 <th>{sLL().table.dish()}</th>
                                 <th>
-                                    <span class="d-flex">
+                                    <span className="d-flex">
                                         {sLL().table.co2score()}
                                         &nbsp;
                                         <a
-                                            class={
+                                            className={
                                                 globalStyle.noExternalLinkIcon
                                             }
                                             href={co2InfoLink}
                                             target="_blank"
                                         >
                                             <i
-                                                class="icon fa fa-info-circle text-info fa-fw"
+                                                className="icon fa fa-info-circle text-info fa-fw"
                                                 data-toggle="tooltip"
                                                 data-placement="auto"
                                                 data-html="true"
@@ -202,7 +202,7 @@ const getCurrentSpeiseplan = () => {
                                     {sLL().table.price()}
                                     &nbsp;
                                     <i
-                                        class="icon fa fa-info-circle text-info fa-fw"
+                                        className="icon fa fa-info-circle text-info fa-fw"
                                         data-toggle="tooltip"
                                         data-placement="auto"
                                         title={speiseplan.prices.join(' / ')}
@@ -215,14 +215,14 @@ const getCurrentSpeiseplan = () => {
                                 dishes.values().map(dish => (
                                     <tr>
                                         <td
-                                            class="dish"
+                                            className="dish"
                                             data-location={dish.location}
                                         >
                                             {...getDishNameEls(dish.name)}
                                             {dish.allergenes.length ?
                                                 <>
                                                     <br />
-                                                    <span class="text-muted small">
+                                                    <span className="text-muted small">
                                                         (
                                                         {dish.allergenes
                                                             .map(
@@ -237,7 +237,7 @@ const getCurrentSpeiseplan = () => {
                                             {dish.additives.length ?
                                                 <>
                                                     <br />
-                                                    <span class="text-muted small">
+                                                    <span className="text-muted small">
                                                         (
                                                         {dish.additives
                                                             .map(
@@ -251,7 +251,7 @@ const getCurrentSpeiseplan = () => {
                                             :   ''}
                                         </td>
                                         <td
-                                            class="co2-score"
+                                            className="co2-score"
                                             data-stars={
                                                 dish.co2 ? dish.co2.stars : 0
                                             }
@@ -265,7 +265,7 @@ const getCurrentSpeiseplan = () => {
                                                 )
                                             :   ''}
                                         </td>
-                                        <td class="dish-types">
+                                        <td className="dish-types">
                                             {...dish.types.map(t => {
                                                 const dishType =
                                                     speiseplan.types.get(t);
@@ -369,7 +369,10 @@ const openSpeiseplan = () => {
 
     void modal.getTitle().then(title =>
         title.after(
-            <div class="mx-auto px-2 d-flex flex-wrap" style="column-gap: 5px;">
+            <div
+                className="mx-auto px-2 d-flex flex-wrap"
+                style="column-gap: 5px;"
+            >
                 {canteenSelection}
                 {languageSelection}
             </div>
