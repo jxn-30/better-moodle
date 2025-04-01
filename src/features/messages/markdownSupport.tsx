@@ -236,24 +236,16 @@ const enable = async () => {
         if (
             !dummyField?.dispatchEvent(
                 new KeyboardEvent('keydown', {
-                    // TODO: find out minimal set of necessary properties
                     altKey: e.altKey,
-                    charCode: e.charCode,
                     code: e.code,
                     ctrlKey: e.ctrlKey,
-                    isComposing: e.isComposing,
                     key: e.key,
-                    keyCode: e.keyCode,
+                    keyCode: e.keyCode, // I really hate JQuery for making me include a deprecated property
                     location: e.location,
                     metaKey: e.metaKey,
-                    repeat: e.repeat,
                     shiftKey: e.shiftKey,
-                    detail: e.detail,
-                    view: e.view,
-                    which: e.which,
                     bubbles: true,
                     cancelable: true,
-                    composed: true,
                 })
             )
         ) {
