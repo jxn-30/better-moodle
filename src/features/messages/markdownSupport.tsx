@@ -35,9 +35,10 @@ const parseMarkdown = async (
     inputElem: HTMLTextAreaElement
 ): Promise<string> => {
     const MathJax = await mathJaxReady();
+    const dummy = document.createElement('span');
     const raw = inputElem.value;
 
-    const dummy = document.createElement('span');
+    // Get MathJax to render the math
     dummy.innerHTML = raw.replace(
         // Replace $math$ with \(math\)
         /(?<!\\)\$(.*?)(?<!\\)\$/g,
@@ -45,12 +46,20 @@ const parseMarkdown = async (
     );
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, dummy]);
     const mathJaxed = dummy.innerHTML;
+
+    // Parse the markdown to HTML
     const markdowned = mdToHtml(`\n${mathJaxed}`, 1);
+
+    // Remove spaces inside of html tags
+    dummy.innerHTML = markdowned;
+    const cleanMarkdowned = dummy.innerHTML;
+
     // Moodle has been doing weird stuff with spaces (for as long as the Better-Moodle devs are alive...). See MDL-85010
-    const spacecaped = markdowned.replaceAll('> <', '>&#32;<');
-    // This removes unnecessary spaces inside of html tags (as they somehow break Moodles html rendering)
+    const spacecaped = cleanMarkdowned.replaceAll('> <', '>&#32;<');
+
+    // Check if there is anything to send (or if the message is empty)
     dummy.innerHTML = spacecaped;
-    return dummy.innerText.length > 0 ? dummy.innerHTML : '';
+    return dummy.innerText.length > 0 ? spacecaped : '';
 };
 
 /**
