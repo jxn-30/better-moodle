@@ -13,6 +13,8 @@ import CorePubsub from './require.js/core/pubsub';
 import CoreStr from './require.js/core/str';
 import CoreTemplates from './require.js/core/templates';
 import CoreToast from './require.js/core/toast';
+import InitEmojiAutoComplete from './require.js/core/emoji/auto_complete';
+import InitEmojiPicker from './require.js/core/emoji/picker';
 import JQueryStatic from '@types/jquery';
 import ThemeBoostBootstrapTooltip from './require.js/theme_boost/bootstrap/tooltip';
 import ThemeBoostDrawer from './require.js/theme_boost/drawer';
@@ -24,6 +26,8 @@ interface ModuleMap {
 
     'core/config': CoreConfig;
     'core/custom_interaction_events': CoreCustomInteractionEvents;
+    'core/emoji/auto_complete': InitEmojiAutoComplete;
+    'core/emoji/picker': InitEmojiPicker;
     'core/localstorage': CoreLocalstorage;
     'core/modal_factory': CoreModalFactory;
     'core/modal_events': CoreModalEvents;
