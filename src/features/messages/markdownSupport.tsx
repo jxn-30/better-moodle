@@ -2,8 +2,8 @@ import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
 import { render } from '@/templates';
 import { requirePromise } from '@/require.js';
-import { putTemplate, ready } from '@/DOM';
 import { domID, mdToHtml } from '@/helpers';
+import { putTemplate, ready } from '@/DOM';
 
 /**
  * The setting for enabling markdown support
@@ -50,7 +50,7 @@ const parseMarkdown = async (
     const spacecaped = markdowned.replaceAll('> <', '>&#32;<');
     // This removes unnecessary spaces inside of html tags (as they somehow break Moodles html rendering)
     dummy.innerHTML = spacecaped;
-    return dummy.innerHTML;
+    return dummy.innerText.length > 0 ? dummy.innerHTML : '';
 };
 
 /**
@@ -61,10 +61,7 @@ const inputFieldRegion: string = domID('send-message-txt');
  * The dummy field for markdown parsing
  */
 const dummyField: HTMLTextAreaElement = (
-    <textarea
-        className="d-none" // TODO: remove debug css
-        style="display: block !important; position: fixed; top: var(--navbar-height); left: 0; width: 50vw; height: calc(100vh - var(--navbar-height)); background-color: black; color: lime; font-family: monospace; z-index:100000;"
-    ></textarea>
+    <textarea className="d-none"></textarea>
 ) as HTMLTextAreaElement;
 
 let inputField: HTMLTextAreaElement | null = null;
@@ -72,6 +69,7 @@ let sendBtn: HTMLButtonElement | null = null;
 
 let inputEvent: EventListener | null = null;
 let sendEvent: EventListener | null = null;
+let keyRelayEvent: EventListener | null = null;
 
 /**
  * The event listener for the emoji picker button
@@ -83,8 +81,6 @@ const emojiPickerBtnClickEvent: EventListener = () => {
     if (!container) return;
     container.classList.toggle('hidden');
 };
-
-// let emojiPickerButton: HTMLButtonElement | null = null;
 
 /**
  * Returns a callback that inserts the emoji into the input field
@@ -128,15 +124,14 @@ const getEmojiCallback = (
  */
 const putEmojiAutoComplete = async (inputField: HTMLTextAreaElement) => {
     await ready();
-    // Remove the previous emoji auto complete
-    document
-        .querySelector<HTMLDivElement>('[data-region="emoji-auto-complete"]')
-        ?.remove();
     const container = document.querySelector<HTMLDivElement>(
         '[data-region="emoji-auto-complete-container"]'
     );
     if (!container) return;
     container.classList.add('hidden');
+    container
+        .querySelector<HTMLDivElement>('[data-region="emoji-auto-complete"]')
+        ?.remove();
     void render('core/emoji/auto_complete', {})
         .then(template =>
             Promise.all([
@@ -160,14 +155,14 @@ const putEmojiAutoComplete = async (inputField: HTMLTextAreaElement) => {
  */
 const putEmojiPicker = async (inputField: HTMLTextAreaElement) => {
     await ready();
-    document
-        .querySelector<HTMLDivElement>('[data-region="emoji-picker"]')
-        ?.remove();
     const container = document.querySelector<HTMLDivElement>(
         '[data-region="emoji-picker-container"]'
     );
     if (!container) return;
     container.classList.add('hidden');
+    container
+        .querySelector<HTMLDivElement>('[data-region="emoji-picker"]')
+        ?.remove();
 
     void render('core/emoji/picker', {})
         .then(template =>
@@ -207,6 +202,9 @@ const enable = async () => {
     dummyField.dataset.region = inputField.dataset.region;
     inputField.dataset.region = inputFieldRegion;
     inputField.after(dummyField);
+
+    // This event will be removed when dummyField is removed,
+    //  so it doesn't need to be stored in a variable
     dummyField.addEventListener('focus', () => inputField?.focus());
 
     // Add the input event listener
@@ -220,8 +218,43 @@ const enable = async () => {
     inputField.addEventListener('input', inputEvent);
     inputEvent(new Event('input'));
 
-    // TODO: Send Enter key event to the right element
-    // inputField.addEventListener('keydown', (e) => dummyField?.dispatchEvent(e));
+    /**
+     * Relays the keydown event from the input field to the dummy field
+     * @param e - The keydown event
+     */
+    keyRelayEvent = e => {
+        if (!(e instanceof KeyboardEvent)) return;
+        if (
+            !dummyField?.dispatchEvent(
+                new KeyboardEvent('keydown', {
+                    // TODO: find out minimal set of necessary properties
+                    altKey: e.altKey,
+                    charCode: e.charCode,
+                    code: e.code,
+                    ctrlKey: e.ctrlKey,
+                    isComposing: e.isComposing,
+                    key: e.key,
+                    keyCode: e.keyCode,
+                    location: e.location,
+                    metaKey: e.metaKey,
+                    repeat: e.repeat,
+                    shiftKey: e.shiftKey,
+                    detail: e.detail,
+                    view: e.view,
+                    which: e.which,
+                    bubbles: true,
+                    cancelable: true,
+                    composed: true,
+                })
+            )
+        ) {
+            e.preventDefault();
+        }
+        if (inputField && dummyField?.value === '') {
+            inputField.value = '';
+        }
+    };
+    inputField.addEventListener('keydown', keyRelayEvent);
 
     // Add the send button event listener
     /**
@@ -266,6 +299,10 @@ const disable = () => {
     if (sendEvent) {
         sendBtn?.removeEventListener('click', sendEvent);
         sendEvent = null;
+    }
+    if (keyRelayEvent) {
+        inputField.removeEventListener('keydown', keyRelayEvent);
+        keyRelayEvent = null;
     }
     inputField = null;
 
