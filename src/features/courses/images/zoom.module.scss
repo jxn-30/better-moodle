@@ -1,4 +1,4 @@
-:local(.zoom-enabled) #page-content .course-content img:not(.activityicon) {
+:local(.zoom-enabled) #region-main img:not(.activityicon):not(.icon) {
     cursor: zoom-in;
 }
 
