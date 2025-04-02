@@ -59,6 +59,7 @@ const parseMarkdown = async (
 
     // Check if there is anything to send (or if the message is empty)
     dummy.innerHTML = spacecaped;
+    console.log(spacecaped); // TODO: remove
     return dummy.innerText.length > 0 ? spacecaped : '';
 };
 
@@ -148,15 +149,14 @@ const putEmojiAutoComplete = async (inputField: HTMLTextAreaElement) => {
                 putTemplate<HTMLDivElement[]>(container, template, 'append'),
             ])
         )
-        .then(([[initialiseEmojiAutoComplete], templateElements]) => {
-            const emojiAutoComplete = templateElements[0];
+        .then(([[initialiseEmojiAutoComplete], [emojiAutoComplete]]) =>
             initialiseEmojiAutoComplete(
                 container,
                 inputField,
                 show => container.classList.toggle('hidden', !show),
                 getEmojiCallback(emojiAutoComplete, inputField, true)
-            );
-        });
+            )
+        );
 };
 /**
  * Replaces the current emoji picker with a new emoji picker for the given input field
@@ -180,13 +180,12 @@ const putEmojiPicker = async (inputField: HTMLTextAreaElement) => {
                 putTemplate<HTMLDivElement[]>(container, template, 'append'),
             ])
         )
-        .then(([[initialiseEmojiPicker], templateElements]) => {
-            const emojiPicker = templateElements[0];
+        .then(([[initialiseEmojiPicker], [emojiPicker]]) =>
             initialiseEmojiPicker(
                 emojiPicker,
                 getEmojiCallback(container, inputField)
-            );
-        });
+            )
+        );
 };
 
 /**
@@ -233,6 +232,7 @@ const enable = async () => {
      */
     keyRelayEvent = e => {
         if (!(e instanceof KeyboardEvent)) return;
+        const beforeValue = dummyField?.value;
         if (
             !dummyField?.dispatchEvent(
                 new KeyboardEvent('keydown', {
@@ -251,7 +251,11 @@ const enable = async () => {
         ) {
             e.preventDefault();
         }
-        if (inputField && dummyField?.value === '') {
+        if (
+            inputField &&
+            beforeValue !== dummyField?.value &&
+            dummyField?.value === ''
+        ) {
             inputField.value = '';
         }
     };
@@ -270,13 +274,8 @@ const enable = async () => {
     const emojiPickerBtn = document.querySelector<HTMLButtonElement>(
         '[data-action="toggle-emoji-picker"]'
     );
-    if (emojiPickerBtn) {
-        emojiPickerBtn.addEventListener('click', emojiPickerBtnClickEvent);
-        emojiPickerBtn.setAttribute(
-            'data-action',
-            domID('toggle-emoji-picker')
-        );
-    }
+    emojiPickerBtn?.addEventListener('click', emojiPickerBtnClickEvent);
+    emojiPickerBtn?.setAttribute('data-action', domID('toggle-emoji-picker'));
 
     void putEmojiAutoComplete(inputField);
     void putEmojiPicker(inputField);
@@ -285,7 +284,7 @@ const enable = async () => {
  * Disables markdown support in the message app
  */
 const disable = () => {
-    if (enabled.value || !inputField) return;
+    if (enabled.value || !inputField || !dummyField) return;
 
     // Remove the dummy field and restore the original input field
     inputField.dataset.region = dummyField.dataset.region;
