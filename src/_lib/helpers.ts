@@ -52,6 +52,7 @@ export const mdID = (md: string, idPrefix = '') =>
 
 /**
  * Converts a markdown string to the matching HTML string.
+ * There are some caveats as it attempts to be a simple and minimal parser.
  * @param md - the markdown string to be converted
  * @param headingStart - an optional number to start the heading levels at
  * @param idPrefix - a prefix used in IDs to achieve scoped IDs
@@ -70,18 +71,12 @@ export const mdToHtml = (
     const referenceLinks = new Map<string, string>();
 
     /**
-     * Escapes a string to be used within HTML. HTML special chars are replaced by their entity equivalents.
-     * @param str - the string to be escaped
-     * @returns the escaped string
-     */
-    const escape = (str: string) => new Option(str).innerHTML;
-    /**
      * Replaces inline markdown with HTML (such as images, links, inline code, bold and italic).
      * @param str - the markdown string to be replaced
      * @returns the HTML string
      */
     const inlineEscape = (str: string) =>
-        escape(str)
+        new Option(str).innerHTML // do some HTML Escaping
             .replace(/!\[([^\]]*)]\(([^(]+)\)/g, '<img alt="$1" src="$2">') // image
             .replace(/\[([^\]]+)]\(([^(]+?)\)/g, '<a href="$2">$1</a>') // link
             .replace(/\[([^\]]+)]\[([^[]+?)]/g, '<a data-link="$2">$1</a>') // reference link
@@ -92,50 +87,63 @@ export const mdToHtml = (
             ) // bold
             .replace(/([*_])(?=\S)([^\r]*?\S)\1/g, '<em>$2</em>'); // italic
 
-    const replacements = new Map<
-        string,
-        [RegExp, string, string] | [RegExp, string, string, string]
-    >([
-        ['*', [/\n\* /, '<ul><li>', '</li></ul>']],
-        ['1', [/\n[1-9]\d*\.? /, '<ol><li>', '</li></ol>']],
-        [' ', [/\n {4}/, '<pre><code>', '</code></pre>', '\n']],
-        ['>', [/\n> /, '<blockquote>', '</blockquote>', '\n']],
-    ]);
-
-    md.replace(/^\s+|\r|\s+$/g, '')
-        .replace(/\t/g, '    ')
+    md.trim()
+        .replace(/\r/g, '') // replace \r newlines
+        .replace(/\t/g, '    ') // replace tabs with 4 spaces
         // find reference definitions, store them and remove them from the text
         .replace(/^\[(.+?)]:\s*(.+)$/gm, (_, id: string, url: string) => {
             referenceLinks.set(id, url);
             return '';
         })
-        .split(/\n\n+/)
-        .forEach(b => {
-            const firstChar = b[0];
-            const replacement = replacements.get(firstChar);
-            let i;
-            html +=
-                replacement ?
-                    replacement[1] +
-                    `\n${b}`
-                        .split(replacement[0])
-                        .slice(1)
-                        .map(replacement[3] ? escape : inlineEscape)
-                        .join(replacement[3] ?? '</li>\n<li>') +
-                    replacement[2]
-                : firstChar === '#' ?
-                    `<h${(i = b.indexOf(' ') + (headingStart - 1))}
-                      id="${mdID(
-                          b.slice(i + 1 - (headingStart - 1)),
-                          idPrefix
-                      )}"
-                      >${inlineEscape(
-                          b.slice(i + 1 - (headingStart - 1))
-                      )}</h${i}>`
-                : firstChar === '<' ? b
-                : b.startsWith('---') ? '<hr />'
-                : pWrap ? `<p>${inlineEscape(b)}</p>`
-                : inlineEscape(b);
+        .split(/\n\n+/) // split into paragraphs
+        .forEach(mdParagraph => {
+            // unordered list
+            if (/^[-*]\s/m.test(mdParagraph)) {
+                html += `<ul><li>${mdParagraph
+                    .split(/^[-*]\s+/gm)
+                    .map(l => l.trim())
+                    .filter(Boolean)
+                    .map(inlineEscape)
+                    .join('</li><li>')}</li></ul>`;
+            } else if (/^\d+\.?\s/m.test(mdParagraph)) {
+                // ordered list
+                html += `<ol><li>${mdParagraph
+                    .split(/^\d+\.?\s+/gm)
+                    .map(l => l.trim())
+                    .filter(Boolean)
+                    .map(inlineEscape)
+                    .join('</li><li>')}</li></ol>`;
+            } else if (/^\s{4}/m.test(mdParagraph)) {
+                // preformatted text
+                html += `<pre><code>${mdParagraph
+                    .split(/^\s{4}/gm)
+                    .join('\n')}</code></pre>`;
+            } else if (/^>\s/m.test(mdParagraph)) {
+                // blockquote
+                html += `<blockquote>${mdParagraph
+                    .split(/^>\s/gm)
+                    .map(inlineEscape)
+                    .join('\n')}</blockquote>`;
+            } else if (/^#{1,6}\s/m.test(mdParagraph)) {
+                // heading
+                const level = mdParagraph.indexOf(' ') + headingStart - 1;
+                const content = mdParagraph.replace(/^#+/m, '').trim();
+                html += `<h${level} id="${mdID(
+                    content,
+                    idPrefix
+                )}">${inlineEscape(content)}</h${level}>`;
+            } else if (mdParagraph.startsWith('<')) {
+                // paragraph starts with html
+                html += mdParagraph;
+            } else if (/^---+|^\*\*\*+/m.test(mdParagraph)) {
+                // hr
+                html += '<hr>';
+            } else if (pWrap) {
+                // normal paragraph, wrapper in a <p>
+                html += `<p>${inlineEscape(mdParagraph)}</p>`;
+            } else {
+                html += inlineEscape(mdParagraph);
+            }
         });
 
     referenceLinks.forEach(
