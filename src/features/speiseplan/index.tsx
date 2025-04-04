@@ -392,8 +392,12 @@ mobileBtn.addEventListener('click', e => {
 /**
  * Adds the btns to desktop and mobile navigation if the setting is enabled.
  */
-const onload = async () => {
-    if (!enabled.value) return;
+const reload = async () => {
+    if (!enabled.value) {
+        desktopBtn.remove();
+        mobileBtn.remove();
+        return;
+    }
 
     await ready();
 
@@ -403,21 +407,10 @@ const onload = async () => {
         ?.append(mobileBtn);
 };
 
-/**
- * Removes the btns from navigation.
- */
-const onunload = () => {
-    desktopBtn.remove();
-    mobileBtn.remove();
-};
-
-enabled.onInput(() => {
-    if (enabled.value) void onload();
-    else void onunload();
-});
+enabled.onInput(() => void reload());
 
 export default FeatureGroup.register({
     settings: new Set([enabled, language, canteen]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

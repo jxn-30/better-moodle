@@ -20,7 +20,7 @@ newTab.onInput(() => {
 /**
  * Creates and adds the grades link or removes it, depending on state
  */
-const onload = async () => {
+const reload = async () => {
     await ready();
 
     const header = document.querySelector<HTMLDivElement>(
@@ -51,17 +51,10 @@ const onload = async () => {
     } else gradesLink?.remove();
 };
 
-enabled.onInput(() => void onload());
-
-/**
- * Removes the grades link
- */
-const onunload = () => {
-    gradesLink?.remove();
-};
+enabled.onInput(() => void reload());
 
 export default Feature.register({
     settings: new Set([enabled, newTab]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

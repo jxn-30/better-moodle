@@ -70,7 +70,7 @@ const switchRole = (e: MouseEvent) => {
 /**
  * Loads the quick role change menu or removes it, depending on setting state
  */
-const onload = async () => {
+const reload = async () => {
     if (enabled.value) {
         await ready();
         menuItem = document.querySelector<HTMLAnchorElement>(
@@ -112,27 +112,22 @@ const onload = async () => {
         menuItem.href = '#';
         menuItem.classList.add('carousel-navigation-link');
         menuItem.dataset.carouselTargetId = submenu.id;
-    } else onunload();
-};
+    } else {
+        if (menuItem) {
+            menuItem.href = menuItemLink;
+            menuItem.classList.remove('carousel-navigation-link');
+            delete menuItem.dataset.carouselTargetId;
+        }
 
-enabled.onInput(() => void onload());
-
-/**
- * Reverts the changes done by quickRoleChange
- */
-const onunload = () => {
-    if (menuItem) {
-        menuItem.href = menuItemLink;
-        menuItem.classList.remove('carousel-navigation-link');
-        delete menuItem.dataset.carouselTargetId;
+        submenu?.removeEventListener('click', switchRole);
+        submenu?.remove();
     }
-
-    submenu?.removeEventListener('click', switchRole);
-    submenu?.remove();
 };
+
+enabled.onInput(() => void reload());
 
 export default Feature.register({
     settings: new Set([enabled]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

@@ -47,7 +47,7 @@ const updateCountdown = () => {
 /**
  * Adds or removes the countdown based on setting state and triggers updating the countdown
  */
-const onload = () => {
+const reload = () => {
     if (enabled.value) {
         [[, countdownSpanClone]] = marquee.add(countdownSpan);
         updateCountdown();
@@ -61,18 +61,10 @@ const onload = () => {
     }
 };
 
-enabled.onInput(onload);
-
-/**
- * Removes the countdown.
- */
-const onunload = () => {
-    marquee.remove(countdownSpan);
-    if (timeout) clearTimeout(timeout);
-};
+enabled.onInput(reload);
 
 export default Feature.register({
     settings: new Set([enabled]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

@@ -39,7 +39,7 @@ const removeListener = (event: MouseEvent) => {
 /**
  * Toggles the event listener based on the setting and removes forcedownload links if necessary
  */
-const onload = () => {
+const reload = () => {
     if (enabled.value) {
         void ready().then(() =>
             document
@@ -50,17 +50,10 @@ const onload = () => {
     } else document.removeEventListener('mousedown', removeListener);
 };
 
-enabled.onInput(() => void onload());
-
-/**
- * Removes the event listener
- */
-const onunload = () => {
-    document.removeEventListener('mousedown', removeListener);
-};
+enabled.onInput(() => void reload());
 
 export default Feature.register({
     settings: new Set([enabled]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

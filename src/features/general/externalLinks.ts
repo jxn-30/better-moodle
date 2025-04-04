@@ -1,9 +1,9 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
 
-const enabled = new BooleanSetting('enabled', true)
-    .onInput(() => enabled.feature?.reload())
-    .addAlias('general.externalLinks');
+const enabled = new BooleanSetting('enabled', true).addAlias(
+    'general.externalLinks'
+);
 
 const modifiedElements = new Map<HTMLAnchorElement, string>();
 
@@ -27,25 +27,23 @@ const openInNewTabListener = (event: MouseEvent) => {
 };
 
 /**
- * Adds the event listener that handles mouse clicks
+ * Adds or removes the event listener that handles mouse clicks
  */
-const onload = () => {
+const reload = () => {
     if (enabled.value) document.addEventListener('click', openInNewTabListener);
+    else {
+        document.removeEventListener('click', openInNewTabListener);
+        modifiedElements.forEach(
+            (origTarget, anchor) => (anchor.target = origTarget)
+        );
+        modifiedElements.clear();
+    }
 };
 
-/**
- * Removes the event listener that handles mouse clicks and cleans up modifications
- */
-const onunload = () => {
-    document.removeEventListener('click', openInNewTabListener);
-    modifiedElements.forEach(
-        (origTarget, anchor) => (anchor.target = origTarget)
-    );
-    modifiedElements.clear();
-};
+enabled.onInput(reload);
 
 export default Feature.register({
     settings: new Set([enabled]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

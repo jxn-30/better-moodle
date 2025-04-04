@@ -9,24 +9,17 @@ let hideStyle: HTMLElement;
 /**
  * Adds or removes the style based on the settings value
  */
-const onload = () => {
+const reload = () => {
     if (hide.value) {
         if (hideStyle) document.head.append(hideStyle);
         else hideStyle = GM_addStyle(hideCSS);
-    } else onunload();
+    } else hideStyle?.remove();
 };
 
-hide.onInput(() => onload());
-
-/**
- * Removes the style
- */
-const onunload = () => {
-    hideStyle?.remove();
-};
+hide.onInput(reload);
 
 export default Feature.register({
     settings: new Set([hide]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

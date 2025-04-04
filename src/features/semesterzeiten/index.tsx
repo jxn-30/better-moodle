@@ -397,7 +397,7 @@ const loadContent = (semesterIndex = 0) => {
  * Adds or removes the block, depending on the settings state.
  * Also loads the content for the block if it has been added to the DOM.
  */
-const onload = async () => {
+const reload = async () => {
     if (isDashboard && blockSetting.value) {
         await ready();
         const region = document.getElementById('block-region-content');
@@ -410,17 +410,10 @@ const onload = async () => {
     }
 };
 
-blockSetting.onInput(() => void onload());
-
-/**
- * Removes the block form the DOM
- */
-const onunload = () => {
-    block?.remove();
-};
+blockSetting.onInput(() => void reload());
 
 export default FeatureGroup.register({
     settings: new Set([blockSetting]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

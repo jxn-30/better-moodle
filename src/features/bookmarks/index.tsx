@@ -430,26 +430,19 @@ const renderDropdown = () =>
 /**
  * Triggers rendering or removal of the dropdown, based on the settings state
  */
-const onload = () => {
+const reload = () => {
     if (enabled.value) {
         void renderDropdown();
     } else {
-        onunload();
+        navbarItem?.remove();
+        navbarItem = null;
     }
 };
 
-enabled.onInput(() => void onload());
-
-/**
- * Removes the dropdown from DOM and deletes the instance.
- */
-const onunload = () => {
-    navbarItem?.remove();
-    navbarItem = null;
-};
+enabled.onInput(() => void reload());
 
 export default FeatureGroup.register({
     settings: new Set([enabled]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });
