@@ -229,3 +229,27 @@ export const isDashboard = /^\/my\/(index\.php)?$/.test(
  * Checks if this is a new installation. Can be determined by the fact that there are no values stored at all.
  */
 export const isNewInstallation = GM_listValues().length === 0;
+
+/**
+ * Checks if the certain JS action in moodle has been completed.
+ * @param action - the action string to wait for
+ * @returns a promise that resolves once the action string is present in M.util.complete_js
+ */
+export const mdlJSComplete = (action: string) => {
+    const { promise, resolve } = Promise.withResolvers<void>();
+
+    /**
+     * Checks if the certain JS action in moodle has been completed.
+     * Resolves the promise if the action string is present in M.util.complete_js
+     * @returns void
+     */
+    const check = () => {
+        if (M.util.complete_js.flat().includes(action)) {
+            return resolve();
+        }
+        setTimeout(check, 100);
+    };
+    check();
+
+    return promise;
+};

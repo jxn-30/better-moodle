@@ -7,6 +7,7 @@ import images from './images';
 import navbarDropdown from './navbarDropdown';
 import noDownload from './noDownload';
 import quickRoleChange from './quickRoleChange';
+import sectionCourseIndex from './sectionCourseIndex';
 
 export const de = {
     name: 'Kurse & Meine Kurse',
@@ -21,6 +22,7 @@ export const de = {
         quickRoleChange: quickRoleChange.de,
         noDownload: noDownload.de,
         hideSelfEnrolHint: hideSelfEnrolHint.de,
+        sectionCourseIndex: sectionCourseIndex.de,
     },
 } satisfies FeatureGroupTranslation;
 
@@ -37,6 +39,7 @@ export const en = {
         quickRoleChange: quickRoleChange.en,
         noDownload: noDownload.en,
         hideSelfEnrolHint: hideSelfEnrolHint.en,
+        sectionCourseIndex: sectionCourseIndex.en,
     },
 } as typeof de;
 
