@@ -13,6 +13,7 @@ $divider-img: 'https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmai
 :local(.marquee) {
     --max-width: 0px;
     --text-width: 0;
+    --text-speed: 100;
     --parent-left: 0px;
     overflow: hidden;
     position: absolute;
@@ -20,6 +21,7 @@ $divider-img: 'https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmai
     width: calc(var(--max-width));
     height: 100%;
     left: calc(var(--parent-left) - var(--max-width));
+    --rolling-duration: calc(var(--text-width) * var(--text-speed) * 1ms);
 
     &:not(:has(> span[data-rolling])) {
         justify-content: end;
@@ -46,16 +48,14 @@ $divider-img: 'https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmai
         &[data-rolling] {
             :local {
                 // :local-wörkaround for animation name to be transformed
-                animation: marquee calc(var(--text-width) * 100ms) linear
-                    infinite;
+                animation: marquee var(--rolling-duration) linear infinite;
             }
 
             + span {
                 display: inline-block;
 
                 :local {
-                    animation: marquee calc(var(--text-width) * 100ms) linear
-                        infinite;
+                    animation: marquee var(--rolling-duration) linear infinite;
                 }
             }
         }

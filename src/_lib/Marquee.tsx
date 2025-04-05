@@ -160,4 +160,13 @@ export default class Marquee {
             this.#span.dataset.rolling = '';
         } else delete this.#span.dataset.rolling;
     }
+
+    /**
+     * Adjusts the speed of the Marquee
+     * @param speed - the speed index
+     */
+    setSpeed(speed: number) {
+        const msPerPx = [0, 500, 400, 300, 200, 100, 90, 80, 70, 60, 50][speed];
+        this.#content.style.setProperty('--text-speed', msPerPx.toString());
+    }
 }
