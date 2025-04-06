@@ -6320,7 +6320,7 @@ if (getSetting('courses.imageZoom')) {
     let copyImage;
 
     GM_addStyle(css`
-        #page-content .course-content img:not(.activityicon) {
+        #region-main img:not(.activityicon):not(.icon) {
             cursor: zoom-in;
         }
 
@@ -6352,6 +6352,9 @@ if (getSetting('courses.imageZoom')) {
             transform: scale(0);
             transition: transform 0.2s ease-in-out;
             will-change: transform;
+            /* need to unset width and height during zoomed */
+            width: unset !important;
+            height: unset !important;
         }
     `);
 
@@ -6366,7 +6369,7 @@ if (getSetting('courses.imageZoom')) {
         const target = e.target;
         if (!(target instanceof HTMLImageElement)) return;
 
-        if (target.classList.contains('activityicon')) return;
+        if (getComputedStyle(target).cursor !== 'zoom-in') return;
 
         e.preventDefault();
 
@@ -6406,7 +6409,7 @@ if (getSetting('courses.imageZoom')) {
 
     ready(() =>
         document
-            .querySelector('#page-content .course-content')
+            .querySelector('#region-main')
             ?.addEventListener('click', zoomImage)
     );
 }
