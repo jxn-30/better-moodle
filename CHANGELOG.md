@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.42.3](https://github.com/jxn-30/better-moodle/compare/1.42.2...1.42.3) (2025-03-28)
+
+
+### Bug Fixes
+
+* **courses:** fix cardsPerRow being broke by moodle update ([1f5ef55](https://github.com/jxn-30/better-moodle/commit/1f5ef555a30d2f20a7f034067b8bc2f12c8dae2b))
+* **courses:** fix image sizes being broke since moodle update ([24941a5](https://github.com/jxn-30/better-moodle/commit/24941a5987e8e94d2d3d180eca3b1d1e4c49c7a3))
+
 ## [1.42.2](https://github.com/jxn-30/better-moodle/compare/1.42.1...1.42.2) (2024-11-27)
 
 
