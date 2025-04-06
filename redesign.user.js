@@ -5775,6 +5775,12 @@ const myCoursesBoxesPerRow = getSetting('myCourses.boxesPerRow');
 GM_addStyle(css`
     /* ${myCoursesBoxesPerRow} boxes per row in the "my courses" view, instead of 3 plus increase margin a little */
     @media (min-width: 840px) {
+        .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
+            --margin: max(4px, min(10px, calc(100vw / 192)));
+            width: calc((100% / ${myCoursesBoxesPerRow}) - var(--margin) * 2);
+            margin-left: var(--margin);
+            margin-right: var(--margin);
+        }
         .block-myoverview .card-grid[data-region='card-deck'] > .col {
             --width: calc(100% / ${myCoursesBoxesPerRow});
             min-width: var(--width) !important;
