@@ -15,49 +15,73 @@ const URLS = {
 const SERVER_CACHE_DUR = 10 * 60; // 10 * 60s = 10 minutes
 const CLIENT_CACHE_DUR = 30 * 60; // 30 * 60s = 30 minutes
 
-interface Event {}
+interface Event {
+    start: Date;
+    end: Date;
+    desc: string;
+    startDateOnly: boolean;
+    endDateOnly: boolean;
+    name: Record<string, string>;
+}
+
+interface Semesterzeit extends Event {
+    type: string;
+    color: string;
+}
+
+interface Semester extends Semesterzeit {
+    events: Event[];
+}
+
+const getBaseEvent = (rawEvent, timeOver = 0): Event => {
+    // do not abort parsing events that do have a rrule
+    if (!rawEvent.rrule && (new Date(rawEvent.end).getTime() < Date.now() - timeOver))
+        return null;
+    const desc = rawEvent.description.val;
+    const start = new Date(rawEvent.start);
+    const end = new Date(rawEvent.end);
+    if (
+        end.getHours() === 0 &&
+        end.getMinutes() === 0 &&
+        end.getSeconds() === 0 &&
+        end.getMilliseconds() === 0
+    )
+        end.setTime(end.getTime() - 1);
+
+    const event = {
+        start: start,
+        end: end,
+        desc,
+        startDateOnly: !!rawEvent.start.dateOnly,
+        endDateOnly: !!rawEvent.end.dateOnly,
+        name: {},
+    };
+
+    return event;
+};
 
 const mapSemesterzeiten = rawEvents => {
-    const semesters = [];
+    const semesters: Semester[] = [];
     let minStartDate = new Date();
     let maxEndDate = new Date();
     const recurringEvents: [number, Event][] = [];
     const events = rawEvents
         .map((e, i) => {
-            // Ignore events that have ended more than 6 months ago.
-            if (
-                Date.now() - new Date(e.end).getTime() >
-                183 * 24 * 60 * 60 * 1000
-            )
-                return null;
+            const event = getBaseEvent(e, 183 * 24 * 60 * 60 * 1000); // half a year
+            if (!event) return;
 
-            const desc = e.description.val;
-            const start = new Date(e.start);
-            const end = new Date(e.end);
-            if (
-                end.getHours() === 0 &&
-                end.getMinutes() === 0 &&
-                end.getSeconds() === 0 &&
-                end.getMilliseconds() === 0
-            )
-                end.setTime(end.getTime() - 1);
-            minStartDate = Math.min(minStartDate, start);
-            maxEndDate = Math.max(maxEndDate, end);
-            const event = {
-                start: start,
-                end: end,
-                startDateOnly: !!e.start.dateOnly,
-                endDateOnly: !!e.end.dateOnly,
-                type: desc.match(/(?<=^@type:).*$/m)?.[0],
-                color: desc.match(/(?<=^@color:).*$/m)?.[0],
-                name: Object.fromEntries(
-                    desc
+            minStartDate = Math.min(minStartDate, event.start);
+            maxEndDate = Math.max(maxEndDate, event.end);
+
+            event.type = event.desc.match(/(?<=^@type:).*$/m)?.[0];
+            event.color = event.desc.match(/(?<=^@color:).*$/m)?.[0];
+            event.name = Object.fromEntries(
+                    event.desc
                         .matchAll(
                             /(?<=^@name:(?<lang>[a-z]{2}):)(?<name>.*)$/gm
                         )
                         .map(n => [n.groups.lang, n.groups.name])
-                ),
-            };
+                );
 
             if (event.type === 'semester') {
                 event.events = [];
@@ -128,7 +152,8 @@ export default {
         switch (cat) {
             case 'semesterzeiten':
                 events = mapSemesterzeiten(rawEvents);
-                /*
+                break;
+            /*
                 .map(e => {
                     const desc = e.description;
                     const name =
