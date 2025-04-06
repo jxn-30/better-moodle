@@ -10,8 +10,8 @@
 // @homepage        https://github.com/jxn-30/better-moodle
 // @homepageURL     https://github.com/jxn-30/better-moodle
 // @icon            https://raw.githubusercontent.com/jxn-30/better-moodle/main/img/moothel.png
-// @updateURL       https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.meta.js
-// @downloadURL     https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle.user.js
+// @updateURL       https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle-uzl.meta.js
+// @downloadURL     https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle-uzl.user.js
 // @match           https://moodle.uni-luebeck.de/*
 // @run-at          document-body
 // @grant           GM_addStyle
