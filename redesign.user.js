@@ -6305,7 +6305,7 @@ ready(async () => {
 if (getSetting('courses.imgMaxWidth')) {
     GM_addStyle(css`
         /* prevent images from overflowing */
-        #page-content .course-content img:not(.activityicon) {
+        #region-main img:not(.activityicon):not(.icon) {
             max-width: 100%;
         }
     `);
