@@ -1,0 +1,6 @@
+@use '@sass-fairy/map';
+@use 'variables' as *;
+
+:export {
+    grid-breakpoints: map.to-string($grid-breakpoints);
+}

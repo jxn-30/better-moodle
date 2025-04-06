@@ -1,0 +1,177 @@
+name: build.yml
+on:
+    push:
+        branches:
+            - v2
+    pull_request:
+        branches:
+            - v2
+
+jobs:
+    find-configs:
+        name: 📇 Find configs
+        uses: ./.github/workflows/find-configs.yml
+
+    build:
+        runs-on: ubuntu-latest
+        name: 🏗️ Build
+        needs:
+            - find-configs
+        strategy:
+            matrix:
+                config: ${{ fromJson(needs.find-configs.outputs.configs) }}
+        permissions:
+            id-token: write
+            attestations: write
+        outputs:
+            # Hardcoded until https://github.com/actions/runner/pull/2477 is finally working...
+            # stats: ${{ toJSON(steps.output.outputs) }}
+            line_uzl: ${{ steps.output.outputs.build_uzl }}
+            line_cau: ${{ steps.output.outputs.build_cau }}
+            line_sandbox405: ${{ steps.output.outputs.build_sandbox405 }}
+        steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v4
+
+            - name: 🏗 build Better-Moodle for ${{ matrix.config }}
+              id: build
+              uses: ./.github/actions/build
+              with:
+                  config: ${{ matrix.config }}
+
+            - name: 🦭 attest build provenance
+              uses: actions/attest-build-provenance@v2
+              with:
+                  subject-name: ${{ steps.build.outputs.file }}
+                  subject-digest: sha256:${{ steps.build.outputs.digest }}
+                  show-summary: true
+
+            - name: 📊 aggregate build statistics
+              run: |
+                  echo "STATS_SIZE=$(ls -sh --si '${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }}' | awk '{print $1}')B" >> $GITHUB_ENV
+                  echo "STATS_LINES=$(wc -l '${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }}' | awk '{print $1}')" >> $GITHUB_ENV
+                  echo "STATS_PERF_CONF=$(cat ${{ steps.build.outputs.dir }}/.stats_perf_conf)" >> $GITHUB_ENV
+                  echo "STATS_PERF_BUILD=$(cat ${{ steps.build.outputs.dir }}/.stats_perf_build)" >> $GITHUB_ENV
+                  echo "STATS_PERF_TOTAL=$(cat ${{ steps.build.outputs.dir }}/.stats_perf_total)" >> $GITHUB_ENV
+
+            - name: 🧮 calculate diff
+              run: |
+                  NO_CHANGE="±0"
+                  echo "STATS_DIFF_SYN=$NO_CHANGE" >> $GITHUB_ENV
+                  echo "STATS_DIFF_SEM=$NO_CHANGE" >> $GITHUB_ENV
+
+                  echo "STATS_SIZE_DIFF=$NO_CHANGE" >> $GITHUB_ENV
+                  echo "STATS_LINES_DIFF=$NO_CHANGE" >> $GITHUB_ENV
+
+                  RUN_ID=$(gh run list \
+                    --workflow=build.yml \
+                    --branch=${{ github.base_ref || github.ref_name }} \
+                    --status=success \
+                    --limit=1 \
+                    --json databaseId \
+                    --jq '.[0].databaseId')
+
+                  if [[ -n "$RUN_ID" ]]; then
+                      OLD_DIR="base_artifact"
+                      gh run download $RUN_ID \
+                        --name=${{ steps.build.outputs.file }} \
+                        --dir=$OLD_DIR \
+                        || exit 0
+
+                      NEW_SIZE=$(ls -n "${{ steps.build.outputs.dir }}/${{  steps.build.outputs.file }}" | { read _ _ _ _ size _ && echo "$size"; })
+                      OLD_SIZE=$(ls -n "$OLD_DIR/${{ steps.build.outputs.file }}" | { read _ _ _ _ size _ && echo "$size"; })
+                      OLD_LINES=$(wc -l "$OLD_DIR/${{ steps.build.outputs.file }}"  | awk '{print $1}')
+
+                      if [[ $NEW_SIZE -ne $OLD_SIZE ]]; then
+                          SIZE_DIFF=$( printf "%+d" $(( $NEW_SIZE - $OLD_SIZE )))
+                          echo "STATS_SIZE_DIFF=$SIZE_DIFF" >> $GITHUB_ENV
+                      fi
+
+                      if [[ $OLD_LINES -ne ${{ env.STATS_LINES }} ]]; then
+                          LINES_DIFF=$( printf "%+d" $(( ${{ env.STATS_LINES }} - $OLD_LINES )))
+                          echo "STATS_LINES_DIFF=$LINES_DIFF" >> $GITHUB_ENV
+                      fi
+
+                      perl -pe 's/([\w\$]+\$)[0-9a-z]+(?=[^\w\$])/$1/g' ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }} > new.normalized
+                      perl -pe 's/([\w\$]+\$)[0-9a-z]+(?=[^\w\$])/$1/g' $OLD_DIR/${{ steps.build.outputs.file }} > old.normalized
+
+                      STATS_DIFF_SYN=$(git diff \
+                        --numstat \
+                        --no-index \
+                        $OLD_DIR/${{ steps.build.outputs.file }} \
+                        ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }} \
+                        | awk '{print $1 " insertions(+), " $2 " deletions(-)"}'
+                      )
+
+                      if [[ -n "$STATS_DIFF_SYN" ]]; then
+                          echo "STATS_DIFF_SYN=$STATS_DIFF_SYN" >> $GITHUB_ENV
+                          git --no-pager diff --color --no-index \
+                            base_artifact/${{ steps.build.outputs.file }} \
+                            ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.file }} \
+                            || echo true
+                      fi
+
+                      STATS_DIFF_SEM=$(git diff \
+                        --numstat \
+                        --no-index \
+                        old.normalized \
+                        new.normalized \
+                        | awk '{print $1 " insertions(+), " $2 " deletions(-)"}'
+                      )
+
+                      if [[ -n "$STATS_DIFF_SEM" ]]; then
+                          echo "STATS_DIFF_SEM=$STATS_DIFF_SEM" >> $GITHUB_ENV
+                      fi
+                  fi
+              env:
+                  GH_TOKEN: ${{ github.token }}
+
+            - name: ✍️ print build stats in summary
+              run: |
+                  echo "# 🏗️ ${{ matrix.config }}" >> $GITHUB_STEP_SUMMARY
+                  echo "## Built file: \`${{ steps.build.outputs.file }}\`" >> $GITHUB_STEP_SUMMARY
+                  echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+                  echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
+                  echo "| **File size** | ${{ env.STATS_SIZE }} (${{ env.STATS_SIZE_DIFF }}) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Line count** | ${{ env.STATS_LINES }} (${{ env.STATS_LINES_DIFF }}) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Diff to prev build (semantic)** | ${{ env.STATS_DIFF_SEM }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Diff to prev build (syntactic)** | ${{ env.STATS_DIFF_SYN }} |" >> $GITHUB_STEP_SUMMARY
+
+                  echo "## Build stats" >> $GITHUB_STEP_SUMMARY
+                  echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+                  echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Creating config duration** | ${{ env.STATS_PERF_CONF }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Building duration** | ${{ env.STATS_PERF_BUILD }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Total duration** | **${{ env.STATS_PERF_TOTAL }}** |" >> $GITHUB_STEP_SUMMARY
+                  echo "*Durations are mm:ss,s*"
+
+                  echo "## Included features" >> $GITHUB_STEP_SUMMARY
+                  cat ${{ steps.build.outputs.dir }}/.stats_features.md >> $GITHUB_STEP_SUMMARY
+
+            - name: 📝 generate output
+              id: output
+              run: |
+                  echo "build_${{ matrix.config }}=| ${{matrix.config}} | ${{ env.STATS_SIZE }} (${{ env.STATS_SIZE_DIFF }}) | ${{ env.STATS_LINES }} (${{ env.STATS_LINES_DIFF }}) | ${{ env.STATS_PERF_TOTAL }} | ${{ env.STATS_DIFF_SEM }} | ${{ env.STATS_DIFF_SYN }} |" >> $GITHUB_OUTPUT
+
+    pr-summary:
+        runs-on: ubuntu-latest
+        name: 📜 update PR Summary
+        if: ${{ github.event_name == 'pull_request' && always() }}
+        needs:
+            - build
+        steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v4
+
+            - name: 📜 update PR Summary
+              uses: ./.github/actions/pr-summary
+              with:
+                  pr-number: ${{ github.event.pull_request.number }}
+                  section: build
+                  title: 🏗️ Build
+                  content: |
+                      | Config | Size | Lines | Duration | Diff to ${{ github.base_ref }} (semantic) | Diff to ${{ github.base_ref }} (syntactic) |
+                      | ------ | ---- | ----- | -------- | ----------------------------------------- | ------------------------------------------ |
+                      ${{ needs.build.outputs.line_uzl }}
+                      ${{ needs.build.outputs.line_cau }}
+                      ${{ needs.build.outputs.line_sandbox405 }}
