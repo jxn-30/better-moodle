@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.42.4](https://github.com/jxn-30/better-moodle/compare/1.42.3...1.42.4) (2025-04-06)
+
+
+### Bug Fixes
+
+* **courses/imageZoom:** fix image zoom not working on some pages (backported from v2) ([ff6a8cb](https://github.com/jxn-30/better-moodle/commit/ff6a8cbf91fa6b779a8c37b66f472c0d13783d16))
+* **courses/imgMaxWidth:** fix image max width not working correctly on some pages (backported from v2) ([7e12288](https://github.com/jxn-30/better-moodle/commit/7e12288c8ac8ab0312da04bbcc5c4676cb2d0a88))
+
 ## [1.42.3](https://github.com/jxn-30/better-moodle/compare/1.42.2...1.42.3) (2025-03-28)
 
 
