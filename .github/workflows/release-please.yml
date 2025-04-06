@@ -34,8 +34,8 @@ jobs:
                   awk '/\/\/ ==UserScript==/,/\/\/ ==\/UserScript==/' better-moodle-uzl.user.js > better-moodle-uzl.meta.js
 
                   # copy file for legacy names
-                  cp better-moodle.uzl.user.js better-moodle.user.js
-                  cp better-moodle.uzl.meta.js better-moodle.meta.js
+                  cp better-moodle-uzl.user.js better-moodle.user.js
+                  cp better-moodle-uzl.meta.js better-moodle.meta.js
 
                   # upload the release artifacts with special nice names
                   gh release upload ${{ steps.release.outputs.tag_name }} \
