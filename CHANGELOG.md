@@ -3,6 +3,13 @@
 ## [1.42.4](https://github.com/jxn-30/better-moodle/compare/1.42.3...1.42.4) (2025-04-06)
 
 
+### Changes to the Userscript
+
+This update adjusts the `@updateURL` and `@downloadURL` in preparation for the new Version V2! The old links will still work until V2 has been published.
+Speaking about V2: The rewrite project is almost ready for being published. We've already published a first release candidate [2.0.0-rc0](https://github.com/jxn-30/better-moodle/releases/tag/v2.0.0-rc0), you may install the V2-preview version from there but be aware that you will probably end up with multiple versions of Better-Moodle installed. If you want to give feedback to this V2-preview, feel free to write us a mail to moin@better-moodle.dev (or talk to us if you see us on the campus).
+For anyone else: V2 will be great and you will get the new version seamless one it's published!
+
+
 ### Bug Fixes
 
 * **courses/imageZoom:** fix image zoom not working on some pages (backported from v2) ([ff6a8cb](https://github.com/jxn-30/better-moodle/commit/ff6a8cbf91fa6b779a8c37b66f472c0d13783d16))
