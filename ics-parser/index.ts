@@ -35,7 +35,10 @@ interface Semester extends Semesterzeit {
 
 const getBaseEvent = (rawEvent, timeOver = 0): Event => {
     // do not abort parsing events that do have a rrule
-    if (!rawEvent.rrule && (new Date(rawEvent.end).getTime() < Date.now() - timeOver))
+    if (
+        !rawEvent.rrule &&
+        new Date(rawEvent.end).getTime() < Date.now() - timeOver
+    )
         return null;
     const desc = rawEvent.description.val;
     const start = new Date(rawEvent.start);
@@ -76,12 +79,10 @@ const mapSemesterzeiten = rawEvents => {
             event.type = event.desc.match(/(?<=^@type:).*$/m)?.[0];
             event.color = event.desc.match(/(?<=^@color:).*$/m)?.[0];
             event.name = Object.fromEntries(
-                    event.desc
-                        .matchAll(
-                            /(?<=^@name:(?<lang>[a-z]{2}):)(?<name>.*)$/gm
-                        )
-                        .map(n => [n.groups.lang, n.groups.name])
-                );
+                event.desc
+                    .matchAll(/(?<=^@name:(?<lang>[a-z]{2}):)(?<name>.*)$/gm)
+                    .map(n => [n.groups.lang, n.groups.name])
+            );
 
             if (event.type === 'semester') {
                 event.events = [];
@@ -153,7 +154,7 @@ export default {
             case 'semesterzeiten':
                 events = mapSemesterzeiten(rawEvents);
                 break;
-            /*
+                /*
                 .map(e => {
                     const desc = e.description;
                     const name =
