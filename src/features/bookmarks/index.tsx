@@ -278,7 +278,9 @@ const openEditModal = () => {
         if (action === 'delete') {
             row.remove();
             inputs.delete(index);
-            inputs.values().forEach((row, i) => {
+            const inputArray = Array.from(inputs.values());
+            inputs.clear();
+            inputArray.forEach((row, i) => {
                 row.index = i;
                 inputs.set(i, row);
             });
