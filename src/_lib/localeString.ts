@@ -40,11 +40,13 @@ export const timeToString = (
     });
 
 /**
- * @param date
- * @param year
- * @param weekday
- * @param seconds
- * @param lang
+ * Returns the localized string representation of a datetime
+ * @param date - the date to localize
+ * @param year - wether to show the year
+ * @param weekday - wether to show the weekday
+ * @param seconds - wether to show seconds
+ * @param lang - enforce a special language instead of BETTER_MOODLE_LANG
+ * @returns the datetime as a localized string
  */
 export const datetimeToString = (
     date: Date,

@@ -29,7 +29,8 @@ const spans = new Map<HTMLSpanElement, Event>();
 let events: Event[];
 
 /**
- *
+ * Fetches the parsed events from the calendar or uses the stored version if they have already been fetched since the last page load
+ * @returns the parsed semesterzeiten
  */
 const getEvents = () =>
     events ?
@@ -39,7 +40,7 @@ const getEvents = () =>
             .then(e => (events = e));
 
 /**
- *
+ * Removes all spans from the marquee and clears the span map
  */
 const removeAll = () => {
     spans.keys().forEach(span => marquee.remove(span));
@@ -47,7 +48,9 @@ const removeAll = () => {
 };
 
 /**
- * @param event
+ * Creates a span that is to be added to the marquee and adds the relevant event listener.
+ * @param event - the event this span shows data of
+ * @returns the created span
  */
 const createEventSpan = (event: Event) => {
     const span = (
@@ -127,7 +130,7 @@ const createEventSpan = (event: Event) => {
 };
 
 /**
- *
+ * Triggers creating or removing the spans to/from the marquee
  */
 const reload = async () => {
     if (enabled.value) {
