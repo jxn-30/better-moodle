@@ -1,5 +1,6 @@
 import christmasCountdown from './christmasCountdown';
 import clock from './clock';
+import eventAdvertisements from './eventAdvertisements';
 import type { FeatureGroupTranslation } from '#/i18n';
 
 export const de = {
@@ -12,7 +13,11 @@ export const de = {
             description: 'Passe hier die Geschwindigkeit des Laufbands an.',
         },
     },
-    features: { clock: clock.de, christmasCountdown: christmasCountdown.de },
+    features: {
+        clock: clock.de,
+        christmasCountdown: christmasCountdown.de,
+        eventAdvertisements: eventAdvertisements.de,
+    },
 } satisfies FeatureGroupTranslation;
 
 export const en = {
@@ -25,7 +30,11 @@ export const en = {
             description: 'Adjust the speed of the Marquee here.',
         },
     },
-    features: { clock: clock.en, christmasCountdown: christmasCountdown.en },
+    features: {
+        clock: clock.en,
+        christmasCountdown: christmasCountdown.en,
+        eventAdvertisements: eventAdvertisements.en,
+    },
 } as typeof de;
 
 export default { de, en };

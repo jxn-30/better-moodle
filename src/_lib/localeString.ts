@@ -40,6 +40,30 @@ export const timeToString = (
     });
 
 /**
+ * @param date
+ * @param year
+ * @param weekday
+ * @param seconds
+ * @param lang
+ */
+export const datetimeToString = (
+    date: Date,
+    year = true,
+    weekday = true,
+    seconds = false,
+    lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
+) =>
+    date.toLocaleString(lang, {
+        weekday: weekday ? 'long' : undefined,
+        year: year ? 'numeric' : undefined,
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: seconds ? '2-digit' : undefined,
+    });
+
+/**
  * Prints a number localized with a given unit
  * @param num - the number to be localized
  * @param unit - the unit to use

@@ -33,6 +33,6 @@ void ready().then(() => {
 
 export default FeatureGroup.register({
     settings: new Set([speed]),
-    features: new Set(['clock', 'christmasCountdown']),
+    features: new Set(['eventAdvertisements', 'clock', 'christmasCountdown']),
 });
 export { marquee };
