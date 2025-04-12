@@ -1,5 +1,5 @@
 import ical from 'node-ical';
-import german from './i18n/de';
+import rruleToWords from './rruleToWords';
 
 const URLS = {
     semesterzeiten: {
@@ -83,7 +83,6 @@ const expandRecuringEvent = (
     maxDate: Date
 ) => {
     const duration = event.end.getTime() - event.start.getTime();
-    console.log(event);
     return rawEvent.rrule.between(minDate, maxDate).map(start => ({
         ...event,
         start,
@@ -91,8 +90,8 @@ const expandRecuringEvent = (
     }));
 };
 
-const rruleToText = (rrule, lang) =>
-    rrule.toText(lang.getText, lang.language, lang.dateFormat);
+const rruleToText = (rrule, lang = 'en') =>
+    rruleToWords(rrule.toString(), lang);
 
 const mapSemesterzeiten = rawEvents => {
     const semesters: Semester[] = [];
@@ -178,8 +177,8 @@ const mapEvents = rawEvents => {
 
             if (raw.rrule) {
                 event.rruleString = {
-                    en: raw.rrule.toText(),
-                    de: rruleToText(raw.rrule, german),
+                    en: rruleToText(raw.rrule),
+                    de: rruleToText(raw.rrule, 'de'),
                 };
             }
 
@@ -225,74 +224,6 @@ export default {
         switch (cat) {
             case 'semesterzeiten':
                 events = mapSemesterzeiten(rawEvents);
-                break;
-                /*
-                .map(e => {
-                    const desc = e.description;
-                    const name =
-                        desc ?
-                            Object.fromEntries(
-                                (desc.val ?? desc).split(/\n/g).map(l => {
-                                    const [lang, ...rest] = l.split(':');
-                                    return [lang.toLowerCase(), rest.join(':')];
-                                })
-                            )
-                        :   e.summary;
-
-                    const categories = new Set(e.categories);
-
-                    let color = 'info';
-                    let storage = 'dummy';
-                    categories.forEach(category => {
-                        if (category.startsWith('color-')) {
-                            color = category.replace('color-', '');
-                            categories.delete(category);
-                        } else if (category.startsWith('storage-')) {
-                            storage = category.replace('storage-', '');
-                            categories.delete(category);
-                        }
-                    });
-
-                    const rruleString =
-                        e.rrule ?
-                            {
-                                en: e.rrule.toText(),
-                                de: e.rrule.toText(undefined, german),
-                            }
-                        :   undefined;
-
-                    const cleanedEvent = {
-                        start: e.start,
-                        end: e.end,
-                        name,
-                        color,
-                        storage,
-                        location: e.location,
-                        urls:
-                            Array.isArray(e.attach) ? e.attach
-                            : e.attach ? [e.attach]
-                            : [],
-                        categories: Array.from(categories),
-                        rruleString,
-                        rrule: e.rrule?.origOptions ?? undefined,
-                    };
-
-                    let duration =
-                        new Date(e.end).getTime() - new Date(e.start).getTime();
-                    const firstDate = e.rrule?.after(
-                        new Date(Date.now() - duration),
-                        true
-                    ); // a workaround to also get the current instance
-                    if (firstDate) {
-                        cleanedEvent.start = firstDate.toISOString();
-                        cleanedEvent.end = new Date(
-                            firstDate.getTime() + duration
-                        ).toISOString();
-                    }
-
-                    return cleanedEvent;
-                });
-                */
                 break;
             case 'events':
                 events = mapEvents(rawEvents);
