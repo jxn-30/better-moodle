@@ -2,7 +2,9 @@ import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
 import hideCSS from './hideSelfEnrolHint.scss?inline';
 
-const hide = new BooleanSetting('hide', false);
+const hide = new BooleanSetting('hide', false).addAlias(
+    'courses.hideSelfEnrolHint'
+);
 
 let hideStyle: HTMLElement;
 

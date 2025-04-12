@@ -8,7 +8,9 @@ import { require } from '@/require.js';
 import style from './style.module.scss';
 import { getHtml, putTemplate, ready } from '@/DOM';
 
-const enabled = new BooleanSetting('enabled', false);
+const enabled = new BooleanSetting('enabled', false).addAlias(
+    'general.bookmarkManager'
+);
 
 interface Bookmark {
     title: string;
