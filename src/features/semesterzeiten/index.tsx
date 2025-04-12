@@ -226,10 +226,13 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
 
         currentEvents.forEach(event => {
             const { start, end } = getEventDates(event);
+            const color = 'color' in event ? event.color : 'primary';
 
             title.append(
                 <p>
-                    <b>{event.name[BETTER_MOODLE_LANG]}</b>
+                    <b className={`text-${color}`}>
+                        {event.name[BETTER_MOODLE_LANG]}
+                    </b>
                     <br />
                     {event.type.startsWith('holiday-') ?
                         dateToString(start)
@@ -245,7 +248,7 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
                 <div
                     className={classnames(
                         'progress-bar w-100, h-100',
-                        `bg-${'color' in event ? event.color : 'primary'}`
+                        `bg-${color}`
                     )}
                 ></div>
             );
