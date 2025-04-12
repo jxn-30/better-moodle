@@ -63,6 +63,23 @@ const getBaseEvent = (rawEvent, timeOver = 0): Event => {
     return event;
 };
 
+const sortEvents = (events: Event[]) =>
+    events.sort((a, b) => a.start - b.start);
+
+const expandRecuringEvent = (
+    rawEvent,
+    event: Event,
+    minDate: Date,
+    maxDate: Date
+) => {
+    const duration = event.end.getTime() - event.start.getTime();
+    return rawEvent.rrule.between(minDate, maxDate).map(start => ({
+        ...event,
+        start,
+        end: new Date(start.getTime() + duration),
+    }));
+};
+
 const mapSemesterzeiten = rawEvents => {
     const semesters: Semester[] = [];
     let minStartDate = new Date();
@@ -96,19 +113,16 @@ const mapSemesterzeiten = rawEvents => {
         })
         .filter(Boolean);
 
-    recurringEvents.forEach(([idx, e]) => {
-        const event = rawEvents[idx];
-        const duration = e.end.getTime() - e.start.getTime();
-        event.rrule
-            .between(new Date(minStartDate), new Date(maxEndDate))
-            .forEach(rDate => {
-                events.push({
-                    ...e,
-                    start: rDate,
-                    end: new Date(rDate.getTime() + duration),
-                });
-            });
-    });
+    recurringEvents.forEach(([idx, e]) =>
+        events.push(
+            ...expandRecuringEvent(
+                rawEvents[idx],
+                e,
+                new Date(minStartDate),
+                new Date(maxEndDate)
+            )
+        )
+    );
 
     events.forEach(event => {
         // TODO: This just works but I guess it may be done way more efficient!
@@ -125,9 +139,7 @@ const mapSemesterzeiten = rawEvents => {
         });
     });
 
-    semesters.forEach(semester =>
-        semester.events.sort((a, b) => a.start - b.start)
-    );
+    semesters.forEach(semester => sortEvents(semester.events));
 
     return semesters;
 };
