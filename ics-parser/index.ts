@@ -15,6 +15,13 @@ const URLS = {
 const SERVER_CACHE_DUR = 10 * 60; // 10 * 60s = 10 minutes
 const CLIENT_CACHE_DUR = 30 * 60; // 30 * 60s = 30 minutes
 
+const ONE_SECOND = 1000;
+const ONE_MINUTE = 60 * ONE_SECOND;
+const ONE_HOUR = 60 * ONE_MINUTE;
+const ONE_DAY = 24 * ONE_HOUR;
+const ONE_YEAR = 365 * ONE_DAY;
+const HALF_YEAR = ONE_YEAR / 2;
+
 interface Event {
     start: Date;
     end: Date;
@@ -40,7 +47,10 @@ const getBaseEvent = (rawEvent, timeOver = 0): Event => {
         new Date(rawEvent.end).getTime() < Date.now() - timeOver
     )
         return null;
-    const desc = rawEvent.description.val;
+    const desc =
+        typeof rawEvent.description === 'string' ?
+            rawEvent.description
+        :   rawEvent.description.val;
     const start = new Date(rawEvent.start);
     const end = new Date(rawEvent.end);
     if (
@@ -73,6 +83,7 @@ const expandRecuringEvent = (
     maxDate: Date
 ) => {
     const duration = event.end.getTime() - event.start.getTime();
+    console.log(event);
     return rawEvent.rrule.between(minDate, maxDate).map(start => ({
         ...event,
         start,
@@ -80,14 +91,17 @@ const expandRecuringEvent = (
     }));
 };
 
+const rruleToText = (rrule, lang) =>
+    rrule.toText(lang.getText, lang.language, lang.dateFormat);
+
 const mapSemesterzeiten = rawEvents => {
     const semesters: Semester[] = [];
     let minStartDate = new Date();
     let maxEndDate = new Date();
     const recurringEvents: [number, Event][] = [];
     const events = rawEvents
-        .map((e, i) => {
-            const event = getBaseEvent(e, 183 * 24 * 60 * 60 * 1000); // half a year
+        .map((raw, index) => {
+            const event = getBaseEvent(raw, HALF_YEAR);
             if (!event) return;
 
             minStartDate = Math.min(minStartDate, event.start);
@@ -104,20 +118,20 @@ const mapSemesterzeiten = rawEvents => {
             if (event.type === 'semester') {
                 event.events = [];
                 // Only output semesters that have no ended yet.
-                if (new Date(e.end) > new Date()) semesters.push(event);
+                if (new Date(raw.end) > new Date()) semesters.push(event);
                 return null;
             }
 
-            if (e.rrule) recurringEvents.push([i, event]);
+            if (raw.rrule) recurringEvents.push([index, event]);
             else return event;
         })
         .filter(Boolean);
 
-    recurringEvents.forEach(([idx, e]) =>
+    recurringEvents.forEach(([index, event]) =>
         events.push(
             ...expandRecuringEvent(
-                rawEvents[idx],
-                e,
+                rawEvents[index],
+                event,
                 new Date(minStartDate),
                 new Date(maxEndDate)
             )
@@ -125,10 +139,11 @@ const mapSemesterzeiten = rawEvents => {
     );
 
     events.forEach(event => {
+        const start = new Date(event.start);
+        const end = new Date(event.end);
+
         // TODO: This just works but I guess it may be done way more efficient!
         semesters.forEach(semester => {
-            const start = new Date(event.start);
-            const end = new Date(event.end);
             const seStart = new Date(semester.start);
             const seEnd = new Date(semester.end);
             if (
@@ -142,6 +157,51 @@ const mapSemesterzeiten = rawEvents => {
     semesters.forEach(semester => sortEvents(semester.events));
 
     return semesters;
+};
+
+const mapEvents = rawEvents => {
+    const recurringEvents: [number, Event][] = [];
+
+    const events = rawEvents
+        .map((raw, index) => {
+            const event = getBaseEvent(raw);
+            if (!event) return;
+
+            event.name.de = event.name.en = raw.summary;
+            event.location = raw.location;
+            event.url =
+                raw.attach ?
+                    Array.isArray(raw.attach) ?
+                        raw.attach[0]
+                    :   raw.attach
+                :   undefined;
+
+            if (raw.rrule) {
+                event.rruleString = {
+                    en: raw.rrule.toText(),
+                    de: rruleToText(raw.rrule, german),
+                };
+            }
+
+            if (raw.rrule) recurringEvents.push([index, event]);
+            else if (event.end >= Date.now()) return event;
+        })
+        .filter(Boolean);
+
+    recurringEvents.forEach(([index, event]) =>
+        events.push(
+            ...expandRecuringEvent(
+                rawEvents[index],
+                event,
+                new Date(),
+                new Date(Date.now() + ONE_YEAR)
+            )
+        )
+    );
+
+    sortEvents(events);
+
+    return events;
 };
 
 export default {
@@ -233,6 +293,9 @@ export default {
                     return cleanedEvent;
                 });
                 */
+                break;
+            case 'events':
+                events = mapEvents(rawEvents);
                 break;
             default:
                 events = rawEvents;
