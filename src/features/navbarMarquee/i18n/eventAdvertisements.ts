@@ -7,6 +7,11 @@ export const de = {
             description:
                 'Zeigt ab und zu (selten) Ankündigungen zu coolen Events deiner studentischen Gremien in der Navigationsleiste an.',
         },
+        noticeTime: {
+            name: 'Event-Ankündigungen anzeigen ab Tage vorher',
+            description:
+                'Stelle hier ein, wie viele Tage vor einer Veranstaltung diese in der Navigationsleiste zu sehen sein soll.',
+        },
     },
     start: 'Beginn',
     end: 'Ende',
@@ -20,6 +25,11 @@ export const en = {
             name: 'Event announcements',
             description:
                 'Occasionally (rarely) displays announcements about cool events from your student committees ("Studentische Gremien") in the navigation bar.',
+        },
+        noticeTime: {
+            name: 'Show event announcements from days before',
+            description:
+                'Set here how many days before an event it should be displayed in the navigation bar',
         },
     },
     start: 'Start',

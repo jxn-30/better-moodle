@@ -4,6 +4,7 @@ import Feature from '@/Feature';
 import { type Locales } from '../../i18n/i18n-types';
 import { marquee } from './index';
 import { Modal } from '@/Modal';
+import { SliderSetting } from '@/Settings/SliderSetting';
 import style from './eventAdvertisements.module.scss';
 import { BETTER_MOODLE_LANG, LLF } from 'i18n';
 import { icsUrl, request } from '@/network';
@@ -13,6 +14,12 @@ const LL = LLF('navbarMarquee', 'eventAdvertisements');
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'general.eventAdvertisements'
 );
+const noticeTime = new SliderSetting('noticeTime', 14, {
+    min: 1,
+    max: 33,
+    step: 1,
+    labels: 5,
+}).disabledIf(enabled, '!=', true);
 
 interface Event {
     start: string;
@@ -124,14 +131,11 @@ const createEventSpan = (event: Event) => {
  */
 const reload = async () => {
     if (enabled.value) {
+        const noticeTimeMs = noticeTime.value * 24 * 60 * 60 * 1000;
         const events = await getEvents();
         removeAll();
         events.forEach(event => {
-            // only create if start is less than 2 weeks from now
-            if (
-                new Date(event.start).getTime() <=
-                Date.now() + 14 * 24 * 60 * 60 * 1000
-            ) {
+            if (new Date(event.start).getTime() <= Date.now() + noticeTimeMs) {
                 marquee.add(createEventSpan(event));
             }
         });
@@ -139,9 +143,10 @@ const reload = async () => {
 };
 
 enabled.onInput(() => void reload());
+noticeTime.onInput(() => void reload());
 
 export default Feature.register({
-    settings: new Set([enabled]),
+    settings: new Set([enabled, noticeTime]),
     onload: reload,
     onunload: reload,
 });
