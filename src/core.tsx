@@ -3,3 +3,4 @@ import './migrateStorage';
 
 import './settingsModal';
 import './unsupportedBrowserCheck';
+import './train';

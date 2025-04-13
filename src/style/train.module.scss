@@ -1,0 +1,112 @@
+@use 'sass:math';
+
+$base-ratio: math.div(5, 8);
+
+$coach-width: 8rem;
+$coach-ratio: $base-ratio;
+$coach-height: $coach-width * $coach-ratio;
+
+$clutch-coach-ratio: math.div(1, 8);
+$clutch-width: $coach-width * $clutch-coach-ratio;
+$clutch-height: $coach-height * $clutch-coach-ratio;
+$clutch-bottom: $coach-height * 0.1;
+
+$wheel-coach-ratio: math.div(1, 3);
+$wheel-diameter: $coach-width * $wheel-coach-ratio;
+$wheel-radius: $wheel-diameter * math.div(1, 2);
+$wheel-border-ratio: 0.1;
+$wheel-color: orange;
+$wheel-extra-color: rgba(0, 0, 0, 0.6);
+$wheel-dot-size-ratio: 0.3;
+$wheel-dot-size: $wheel-diameter * $wheel-dot-size-ratio;
+$wheel-dot-position: ($wheel-diameter - $wheel-dot-size) * 0.5;
+
+$window-coach-ratio: 0.4;
+$window-height: $coach-height * $window-coach-ratio;
+$window-total-margin-y: $coach-height - $wheel-radius - $window-height;
+$window-top: $window-total-margin-y * 0.5;
+
+$roof-height: $coach-height * 0.1;
+$roof-width: 110%;
+$roof-left: -1 * ($roof-width - 100%) * 0.5;
+
+:local(.train) {
+    display: flex;
+    background-color: green;
+    position: relative;
+}
+
+:local(.coach) {
+    width: $coach-width;
+    height: $coach-height;
+    background-color: blue;
+    margin: 0 $clutch-width $wheel-radius $clutch-width;
+    position: relative;
+
+    &::before,
+    &::after {
+        content: ' ';
+        width: $clutch-width;
+        height: $clutch-height;
+        display: block;
+        bottom: $clutch-bottom;
+        position: absolute;
+    }
+
+    &::before {
+        right: 100%;
+        background-color: yellow;
+    }
+    &::after {
+        left: 100%;
+        background-color: red;
+    }
+}
+
+:local(.window-bar) {
+    position: relative;
+    width: 100%;
+    height: $window-height;
+    top: $window-top;
+    background-color: skyblue;
+}
+
+:local(.roof) {
+    width: 110%;
+    height: $roof-height;
+    bottom: 100%;
+    left: $roof-left;
+    background-color: inherit;
+    position: absolute;
+}
+
+:local(.wheel-bar) {
+    width: 100%;
+    bottom: -1 * $wheel-radius;
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+}
+
+:local(.wheel) {
+    width: $wheel-diameter;
+    height: $wheel-diameter;
+    border-width: $wheel-diameter * $wheel-border-ratio;
+
+    &,
+    &::before {
+        background-color: $wheel-color;
+        border-radius: 50%;
+        border-style: solid;
+        border-color: $wheel-extra-color;
+    }
+
+    &::before {
+        content: '';
+        width: $wheel-dot-size;
+        height: $wheel-dot-size;
+        border-width: $wheel-dot-size * $wheel-border-ratio;
+        position: absolute;
+        transform: translate($wheel-dot-position, $wheel-dot-position);
+    }
+}
