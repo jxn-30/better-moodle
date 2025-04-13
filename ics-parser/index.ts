@@ -50,7 +50,7 @@ const getBaseEvent = (rawEvent, timeOver = 0): Event => {
     const desc =
         typeof rawEvent.description === 'string' ?
             rawEvent.description
-        :   rawEvent.description.val;
+        :   (rawEvent.description?.val ?? '');
     const start = new Date(rawEvent.start);
     const end = new Date(rawEvent.end);
     if (
