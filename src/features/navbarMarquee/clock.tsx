@@ -1,7 +1,7 @@
 import { animate } from '@/helpers';
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
-import { LL } from 'i18n';
+import { LLF } from 'i18n';
 import { marquee } from './index';
 import { SliderSetting } from '@/Settings/SliderSetting';
 import { timeToString } from '@/localeString';
@@ -42,7 +42,7 @@ let fuzzySpanClone: HTMLSpanElement;
 
 let cancelAnimation: (() => void) | null = null;
 
-const fuzzyTranslations = LL.features.navbarMarquee.features.clock.fuzzy;
+const fuzzyTranslations = LLF('navbarMarquee', 'clock').fuzzy;
 
 /**
  * Gets the time in the currently set fuzzy format

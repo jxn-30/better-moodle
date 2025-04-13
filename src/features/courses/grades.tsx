@@ -1,6 +1,6 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
-import { LL } from 'i18n';
+import { LLF } from 'i18n';
 import { ready } from '@/DOM';
 import { requirePromise } from '@/require.js';
 
@@ -39,7 +39,7 @@ const reload = async () => {
                 >
                     <i className="icon fa fa-calculator fa-fw"></i>
                     &nbsp;
-                    {LL.features.courses.features.grades.grades()}
+                    {LLF('courses', 'grades').grades()}
                 </a>
             ) as HTMLAnchorElement;
             if (newTab.value) gradesLink.target = '_blank';

@@ -5,8 +5,10 @@ import { type Locales } from '../../i18n/i18n-types';
 import { marquee } from './index';
 import { Modal } from '@/Modal';
 import style from './eventAdvertisements.module.scss';
-import { BETTER_MOODLE_LANG, LL } from 'i18n';
+import { BETTER_MOODLE_LANG, LLF } from 'i18n';
 import { icsUrl, request } from '@/network';
+
+const LL = LLF('navbarMarquee', 'eventAdvertisements');
 
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'general.eventAdvertisements'
@@ -68,34 +70,22 @@ const createEventSpan = (event: Event) => {
             <table className="table table-striped table-hover m-0">
                 <tbody>
                     <tr>
-                        <th>
-                            {LL.features.navbarMarquee.features.eventAdvertisements.start()}
-                            :
-                        </th>
+                        <th>{LL.start()}:</th>
                         <td>{datetimeToString(new Date(event.start))}</td>
                     </tr>
                     <tr>
-                        <th>
-                            {LL.features.navbarMarquee.features.eventAdvertisements.end()}
-                            :
-                        </th>
+                        <th>{LL.end()}:</th>
                         <td>{datetimeToString(new Date(event.end))}</td>
                     </tr>
                     {event.rruleString ?
                         <tr>
-                            <th>
-                                {LL.features.navbarMarquee.features.eventAdvertisements.rrule()}
-                                :
-                            </th>
+                            <th>{LL.rrule()}:</th>
                             <td>{event.rruleString[BETTER_MOODLE_LANG]}</td>
                         </tr>
                     :   null}
                     {event.location ?
                         <tr>
-                            <th>
-                                {LL.features.navbarMarquee.features.eventAdvertisements.location()}
-                                :
-                            </th>
+                            <th>{LL.location()}:</th>
                             <td>{event.location}</td>
                         </tr>
                     :   null}

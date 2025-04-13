@@ -1,8 +1,10 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
-import { LL } from 'i18n';
+import { LLF } from 'i18n';
 import { marquee } from './index';
 import { mdToHtml } from '@/helpers';
+
+const LL = LLF('navbarMarquee', 'christmasCountdown');
 
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('general.christmasCountdown')
@@ -21,8 +23,7 @@ const updateCountdown = () => {
     if (!countdownSpanClone) return;
     const now = new Date();
     if (now.getDate() === 24 && now.getMonth() === 11) {
-        countdownSpan.innerHTML = countdownSpanClone.innerHTML =
-            LL.features.navbarMarquee.features.christmasCountdown.christmas();
+        countdownSpan.innerHTML = countdownSpanClone.innerHTML = LL.christmas();
         return;
     }
     const christmas = new Date(now);
@@ -34,7 +35,7 @@ const updateCountdown = () => {
     const tillThen = christmas.getTime() - now.getTime();
     const daysTillThen = Math.floor(tillThen / ONE_DAY);
     countdownSpan.innerHTML = countdownSpanClone.innerHTML = mdToHtml(
-        LL.features.navbarMarquee.features.christmasCountdown.remaining({
+        LL.remaining({
             days: daysTillThen,
         }),
         undefined,

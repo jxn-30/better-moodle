@@ -5,11 +5,13 @@ import FeatureGroup from '@/FeatureGroup';
 import { type Locales } from '../../i18n/i18n-types';
 import style from './style.module.scss';
 import { Switch } from '@/Components';
-import { BETTER_MOODLE_LANG, LL } from 'i18n';
+import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
 import { dateToString, percent } from '@/localeString';
 import { domID, isDashboard } from '@/helpers';
 import { getHtml, getLoadingSpinner, ready } from '@/DOM';
 import { icsUrl, request } from '@/network';
+
+const LL = LLFG('semesterzeiten');
 
 const hiddenBarsKey = 'semesterzeiten.hiddenBars';
 const hiddenBars = new Set<string>(GM_getValue<string[]>(hiddenBarsKey, []));
@@ -25,9 +27,7 @@ const blockSetting = new BooleanSetting('block', false).addAlias(
     'general.semesterzeiten'
 );
 
-const block = new Block('semesterzeiten', true).setTitle(
-    LL.features.semesterzeiten.name()
-);
+const block = new Block('semesterzeiten', true).setTitle(LL.name());
 
 interface Event {
     start: string;
@@ -103,11 +103,11 @@ const table = (
     <table className="table table-striped table-hover hidden">
         <thead>
             <tr>
-                <th>{LL.features.semesterzeiten.table.name()}</th>
-                <th>{LL.features.semesterzeiten.table.start()}</th>
-                <th>{LL.features.semesterzeiten.table.end()}</th>
-                <th>{LL.features.semesterzeiten.table.progress()}</th>
-                <th>{LL.features.semesterzeiten.table.show()}</th>
+                <th>{LL.table.name()}</th>
+                <th>{LL.table.start()}</th>
+                <th>{LL.table.end()}</th>
+                <th>{LL.table.progress()}</th>
+                <th>{LL.table.show()}</th>
             </tr>
         </thead>
         {tableBody}
@@ -347,7 +347,7 @@ const loadContent = (semesterIndex = 0) => {
                         <tr className={`table-${event.color}`}>
                             <td colSpan={4}>
                                 {/* The strings are explicit here, to avoid trimming */}
-                                {LL.features.semesterzeiten.publicHoliday()}
+                                {LL.publicHoliday()}
                                 {': '}
                                 {event.name[BETTER_MOODLE_LANG]}
                                 {' ('}

@@ -1,7 +1,7 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
 import { getLoadingSpinner } from '@/DOM';
-import { LL } from 'i18n';
+import { LLF } from 'i18n';
 import { requirePromise } from '@/require.js';
 import style from './layout.module.scss';
 import {
@@ -12,6 +12,8 @@ import {
 } from '@/myCourses';
 import Drawer, { Side } from '@/Drawer';
 import { isDashboard, isLoggedIn } from '@/helpers';
+
+const LL = LLF('dashboard', 'layout');
 
 const coursesSidebarEnabled = new BooleanSetting(
     'coursesSidebar',
@@ -87,7 +89,7 @@ const loadCourseContent = (drawer: Drawer, filterSelection: HTMLDivElement) => {
                     <>
                         {filterSelection}
                         <span className="text-muted text-center">
-                            {LL.features.dashboard.features.layout.myCourses.empty()}
+                            {LL.myCourses.empty()}
                         </span>
                     </>
                 );
@@ -148,7 +150,7 @@ const initCourseSidebar = () => {
             type="button"
             className="list-group-item list-group-item-action"
         >
-            [{LL.features.dashboard.features.layout.myCourses.sync()}]
+            [{LL.myCourses.sync()}]
         </button>
     ) as HTMLButtonElement;
 
@@ -205,7 +207,7 @@ const initCourseSidebar = () => {
                 className="w-100 d-flex align-items-center justify-content-center"
                 href="/my/courses.php"
             >
-                {LL.features.dashboard.features.layout.myCourses.title()}
+                {LL.myCourses.title()}
             </a>
             {toggleFilterBtn}
         </>

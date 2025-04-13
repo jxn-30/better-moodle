@@ -1,12 +1,14 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import classnames from 'classnames';
 import FeatureGroup from '@/FeatureGroup';
-import { LL } from 'i18n';
+import { LLFG } from 'i18n';
 import { Modal } from '@/Modal';
 import { render } from '@/templates';
 import { require } from '@/require.js';
 import style from './style.module.scss';
 import { getHtml, putTemplate, ready } from '@/DOM';
+
+const LL = LLFG('bookmarks');
 
 const enabled = new BooleanSetting('enabled', false).addAlias(
     'general.bookmarkManager'
@@ -42,7 +44,7 @@ const bookmarks = GM_getValue<Bookmarks>(storageKey, []).map(bookmark => ({
 const saveBookmarks = () => {
     GM_setValue(storageKey, bookmarks);
     require(['core/toast'] as const, ({ add }) =>
-        void add(LL.features.bookmarks.savedNotification(), {
+        void add(LL.savedNotification(), {
             type: 'success',
             autohide: true,
             closeButton: true,
@@ -223,12 +225,12 @@ const openAddModal = () => {
     ) as EditRowElement;
     new Modal({
         type: 'SAVE_CANCEL',
-        title: LL.features.bookmarks.add(),
+        title: LL.add(),
         body: (
             <form className={classnames('mform', style.form, style.editForm)}>
                 <div className="fcontainer">
-                    <b>{LL.features.bookmarks.modal.title()}</b>
-                    <b>{LL.features.bookmarks.modal.url()}</b>
+                    <b>{LL.modal.title()}</b>
+                    <b>{LL.modal.url()}</b>
                     {input}
                 </div>
             </form>
@@ -259,8 +261,8 @@ const openEditModal = () => {
 
     const container = (
         <div className="fcontainer">
-            <b>{LL.features.bookmarks.modal.title()}</b>
-            <b>{LL.features.bookmarks.modal.url()}</b>
+            <b>{LL.modal.title()}</b>
+            <b>{LL.modal.url()}</b>
             <div className="d-none d-sm-block"></div>
             {...Array.from(inputs.values())}
         </div>
@@ -325,7 +327,7 @@ const openEditModal = () => {
 
     new Modal({
         type: 'SAVE_CANCEL',
-        title: LL.features.bookmarks.edit(),
+        title: LL.edit(),
         body: (
             <form className={classnames('mform', style.form)}>
                 {container}
@@ -354,7 +356,7 @@ const openEditModal = () => {
  */
 const renderDropdown = () =>
     render('core/custom_menu_item', {
-        title: LL.features.bookmarks.bookmarks(),
+        title: LL.bookmarks(),
         text: getHtml(
             <i className="icon fa fa-bookmark-o fa-fw" role="img"></i>
         ),
@@ -367,13 +369,13 @@ const renderDropdown = () =>
             { divider: true },
             {
                 url: '#addBookmark',
-                title: LL.features.bookmarks.add(),
-                text: LL.features.bookmarks.add(),
+                title: LL.add(),
+                text: LL.add(),
             },
             {
                 url: '#editBookmarks',
-                title: LL.features.bookmarks.edit(),
-                text: LL.features.bookmarks.edit(),
+                title: LL.edit(),
+                text: LL.edit(),
             },
         ],
     })
@@ -397,7 +399,7 @@ const renderDropdown = () =>
             navbarItem.id = style.dropdown;
             navbarItem.style.setProperty(
                 '--empty-text',
-                JSON.stringify(LL.features.bookmarks.empty())
+                JSON.stringify(LL.empty())
             );
 
             const currentPage = new URL(window.location.href);
