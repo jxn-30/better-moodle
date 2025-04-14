@@ -66,50 +66,80 @@ const parseMarkdown = async (
  * The input field region identifier
  */
 const inputFieldRegion: string = domID('send-message-txt');
+
+/**
+ * The selectors for the message app
+ */
+const SELECTORS = {
+    messageApp: '.message-app',
+    inputField: '[data-region="send-message-txt"]',
+    sendBtn: '[data-action="send-message"]',
+    emojiPickerBtn: '[data-action="toggle-emoji-picker"]',
+    emojiPickerContainer: '[data-region="emoji-picker-container"]',
+    emojiAutoCompleteContainer: '[data-region="emoji-auto-complete-container"]',
+    emojiAutoComplete: '[data-region="emoji-auto-complete"]',
+    emojiPicker: '[data-region="emoji-picker"]',
+};
+
+/**
+ * The message apps that have been modified
+ */
+const messageApps = new Map<
+    HTMLDivElement,
+    {
+        inputField?: HTMLTextAreaElement;
+        dummyField?: HTMLTextAreaElement;
+        sendBtn?: HTMLButtonElement;
+        inputEvent?: EventListener;
+        sendEvent?: EventListener;
+        keyRelayEvent?: EventListener;
+    }
+>();
+
 /**
  * The dummy field for markdown parsing
  */
-const dummyField: HTMLTextAreaElement = (
+const dummyFieldTemplate: HTMLTextAreaElement = (
     <textarea className="d-none"></textarea>
 ) as HTMLTextAreaElement;
 
-let inputField: HTMLTextAreaElement | null = null;
-let sendBtn: HTMLButtonElement | null = null;
-
-let inputEvent: EventListener | null = null;
-let sendEvent: EventListener | null = null;
-let keyRelayEvent: EventListener | null = null;
-
 /**
  * The event listener for the emoji picker button
+ * @param messageApp - The message app to get the emoji picker from
+ * @returns The event listener
  */
-const emojiPickerBtnClickEvent: EventListener = () => {
-    const container = document.querySelector<HTMLDivElement>(
-        '[data-region="emoji-picker-container"]'
-    );
-    if (!container) return;
-    container.classList.toggle('hidden');
-};
+const emojiPickerBtnClickEventGenerator =
+    (messageApp: HTMLDivElement) => () => {
+        const container = messageApp.querySelector<HTMLDivElement>(
+            SELECTORS.emojiPickerContainer
+        );
+        if (!container) return;
+        container.classList.toggle('hidden');
+    };
 
 /**
  * Returns a callback that inserts the emoji into the input field
  * @param containerElement - The container element to hide
- * @param inputField - The input field to insert the emoji into
+ * @param messageApp - The message app to get the input field from
  * @param replaceWord - Whether to replace the word before the cursor
  * @returns The callback
  */
 const getEmojiCallback = (
     containerElement: HTMLDivElement,
-    inputField: HTMLTextAreaElement,
+    messageApp: HTMLDivElement,
     replaceWord = false
 ) => {
+    const { inputField, dummyField } = messageApps.get(messageApp) ?? {};
+
     return (emoji: string) => {
+        if (!inputField || !dummyField) return;
+
         containerElement.classList.add('hidden');
 
         inputField.focus();
         const cursorPos = inputField.selectionStart;
 
-        if (cursorPos === null || cursorPos === undefined) return;
+        if (!cursorPos) return;
         const currentText = inputField.value;
         const textBefore = currentText
             .substring(0, cursorPos)
@@ -124,22 +154,25 @@ const getEmojiCallback = (
             textBefore.length + emoji.length
         );
 
-        void parseMarkdown(inputField).then(md => (dummyField.value = md));
+        if (dummyField) {
+            void parseMarkdown(inputField).then(md => (dummyField.value = md));
+        }
     };
 };
 /**
  * Replaces the current emoji auto complete with a new emoji auto complete for the given input field
- * @param inputField - The input field for the emoji auto complete
+ * @param messageApp - The message app for the emoji auto complete
  */
-const putEmojiAutoComplete = async (inputField: HTMLTextAreaElement) => {
+const putEmojiAutoComplete = async (messageApp: HTMLDivElement) => {
     await ready();
-    const container = document.querySelector<HTMLDivElement>(
-        '[data-region="emoji-auto-complete-container"]'
+    const container = messageApp.querySelector<HTMLDivElement>(
+        SELECTORS.emojiAutoCompleteContainer
     );
-    if (!container) return;
+    const inputField = messageApps.get(messageApp)?.inputField;
+    if (!container || !inputField) return;
     container.classList.add('hidden');
     container
-        .querySelector<HTMLDivElement>('[data-region="emoji-auto-complete"]')
+        .querySelector<HTMLDivElement>(SELECTORS.emojiAutoComplete)
         ?.remove();
     void render('core/emoji/auto_complete', {})
         .then(template =>
@@ -153,24 +186,24 @@ const putEmojiAutoComplete = async (inputField: HTMLTextAreaElement) => {
                 container,
                 inputField,
                 show => container.classList.toggle('hidden', !show),
-                getEmojiCallback(emojiAutoComplete, inputField, true)
+                getEmojiCallback(emojiAutoComplete, messageApp, true)
             )
         );
 };
 /**
  * Replaces the current emoji picker with a new emoji picker for the given input field
- * @param inputField - The input field for the emoji picker
+ * @param messageApp - The message app for the emoji picker
  */
-const putEmojiPicker = async (inputField: HTMLTextAreaElement) => {
+const putEmojiPicker = async (messageApp: HTMLDivElement) => {
     await ready();
-    const container = document.querySelector<HTMLDivElement>(
-        '[data-region="emoji-picker-container"]'
+    const container = messageApp.querySelector<HTMLDivElement>(
+        SELECTORS.emojiPickerContainer
     );
     if (!container) return;
     container.classList.add('hidden');
-    container
-        .querySelector<HTMLDivElement>('[data-region="emoji-picker"]')
-        ?.remove();
+    container.querySelector<HTMLDivElement>(SELECTORS.emojiPicker)?.remove();
+
+    console.log(container);
 
     void render('core/emoji/picker', {})
         .then(template =>
@@ -182,7 +215,7 @@ const putEmojiPicker = async (inputField: HTMLTextAreaElement) => {
         .then(([[initialiseEmojiPicker], [emojiPicker]]) =>
             initialiseEmojiPicker(
                 emojiPicker,
-                getEmojiCallback(container, inputField)
+                getEmojiCallback(container, messageApp)
             )
         );
 };
@@ -191,127 +224,182 @@ const putEmojiPicker = async (inputField: HTMLTextAreaElement) => {
  * Enables markdown support in the message app
  */
 const enable = async () => {
-    if (!enabled.value || inputField) return;
+    if (!enabled.value) return;
     await ready();
 
     // Get the message app
-    const messageApp = document.querySelector<HTMLDivElement>('.message-app');
-    if (!messageApp) return;
-    sendBtn = messageApp.querySelector<HTMLButtonElement>(
-        '[data-action="send-message"]'
-    );
-    inputField = messageApp.querySelector<HTMLTextAreaElement>(
-        '[data-region="send-message-txt"]'
-    );
-    if (!sendBtn || !inputField) return;
+    void document
+        .querySelectorAll<HTMLDivElement>(SELECTORS.messageApp)
+        .forEach(messageApp => {
+            if (messageApps.get(messageApp)?.inputField) return; // Already active
 
-    // Replace the input field with a dummy field
-    dummyField.dataset.region = inputField.dataset.region;
-    inputField.dataset.region = inputFieldRegion;
-    inputField.after(dummyField);
+            const dummyField = dummyFieldTemplate.cloneNode(
+                true
+            ) as HTMLTextAreaElement;
+            const inputField = messageApp.querySelector<HTMLTextAreaElement>(
+                SELECTORS.inputField
+            );
+            const sendBtn = messageApp.querySelector<HTMLButtonElement>(
+                SELECTORS.sendBtn
+            );
+            if (!inputField || !sendBtn) return;
 
-    // This event will be removed when dummyField is removed,
-    //  so it doesn't need to be stored in a variable
-    dummyField.addEventListener('focus', () => inputField?.focus());
+            // Replace the input field with a dummy field
+            dummyField.dataset.region = inputField.dataset.region;
+            inputField.dataset.region = inputFieldRegion;
+            inputField.after(dummyField);
 
-    // Add the input event listener
-    /**
-     * When the input field changes, update the dummy field
-     */
-    inputEvent = () => {
-        if (!dummyField || !inputField) return;
-        void parseMarkdown(inputField).then(md => (dummyField.value = md));
-    };
-    inputField.addEventListener('input', inputEvent);
-    inputEvent(new Event('input'));
+            // This event will be removed when dummyField is removed,
+            //  so it doesn't need to be stored in a variable
+            dummyField.addEventListener('focus', () => inputField?.focus());
 
-    /**
-     * Relays the keydown event from the input field to the dummy field
-     * @param e - The keydown event
-     */
-    keyRelayEvent = e => {
-        if (!(e instanceof KeyboardEvent)) return;
-        const beforeValue = dummyField?.value;
-        if (
-            !dummyField?.dispatchEvent(
-                new KeyboardEvent('keydown', {
-                    altKey: e.altKey,
-                    code: e.code,
-                    ctrlKey: e.ctrlKey,
-                    key: e.key,
-                    keyCode: e.keyCode, // I really hate JQuery for making me include a deprecated property
-                    location: e.location,
-                    metaKey: e.metaKey,
-                    shiftKey: e.shiftKey,
-                    bubbles: true,
-                    cancelable: true,
-                })
-            )
-        ) {
-            e.preventDefault();
-        }
-        if (
-            inputField &&
-            beforeValue !== dummyField?.value &&
-            dummyField?.value === ''
-        ) {
-            inputField.value = '';
-        }
-    };
-    inputField.addEventListener('keydown', keyRelayEvent);
+            // Add the input event listener
+            /**
+             * When the input field changes, update the dummy field
+             */
+            const inputEvent: EventListener = () => {
+                if (!dummyField || !inputField) return;
+                void parseMarkdown(inputField).then(
+                    md => (dummyField.value = md)
+                );
+            };
+            inputField.addEventListener('input', inputEvent);
+            inputEvent(new Event('input'));
 
-    // Add the send button event listener
-    /**
-     * When the send button is clicked, clear the input field
-     */
-    sendEvent = () => {
-        if (!inputField) return;
-        inputField.value = '';
-    };
-    sendBtn.addEventListener('click', sendEvent);
+            /**
+             * Relays the keydown event from the input field to the dummy field
+             * @param e - The keydown event
+             */
+            const keyRelayEvent: EventListener = e => {
+                if (!(e instanceof KeyboardEvent)) return;
+                const beforeValue = dummyField?.value;
+                if (
+                    !dummyField?.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            altKey: e.altKey,
+                            code: e.code,
+                            ctrlKey: e.ctrlKey,
+                            key: e.key,
+                            keyCode: e.keyCode, // I really hate JQuery for making me include a deprecated property
+                            location: e.location,
+                            metaKey: e.metaKey,
+                            shiftKey: e.shiftKey,
+                            bubbles: true,
+                            cancelable: true,
+                        })
+                    )
+                ) {
+                    e.preventDefault();
+                }
+                if (
+                    inputField &&
+                    beforeValue !== dummyField?.value &&
+                    dummyField?.value === ''
+                ) {
+                    inputField.value = '';
+                }
+            };
+            inputField.addEventListener('keydown', keyRelayEvent);
 
-    const emojiPickerBtn = document.querySelector<HTMLButtonElement>(
-        '[data-action="toggle-emoji-picker"]'
-    );
-    emojiPickerBtn?.addEventListener('click', emojiPickerBtnClickEvent);
-    emojiPickerBtn?.setAttribute('data-action', domID('toggle-emoji-picker'));
+            // Add the send button event listener
+            /**
+             * When the send button is clicked, clear the input field
+             */
+            const sendEvent: EventListener = () => {
+                if (!inputField) return;
+                inputField.value = '';
+            };
+            sendBtn.addEventListener('click', sendEvent);
 
-    void putEmojiAutoComplete(inputField);
-    void putEmojiPicker(inputField);
+            const emojiPickerBtn = messageApp.querySelector<HTMLButtonElement>(
+                SELECTORS.emojiPickerBtn
+            );
+            emojiPickerBtn?.addEventListener(
+                'click',
+                emojiPickerBtnClickEventGenerator(messageApp)
+            );
+            emojiPickerBtn?.setAttribute(
+                'data-action',
+                domID('toggle-emoji-picker')
+            );
+
+            messageApps.set(messageApp, {
+                dummyField,
+                inputField,
+                sendBtn,
+                inputEvent,
+                sendEvent,
+                keyRelayEvent,
+            });
+
+            void putEmojiAutoComplete(messageApp);
+            void putEmojiPicker(messageApp);
+        });
 };
 /**
  * Disables markdown support in the message app
  */
 const disable = () => {
-    if (enabled.value || !inputField || !dummyField) return;
+    if (enabled.value) return;
 
-    // Remove the dummy field and restore the original input field
-    inputField.dataset.region = dummyField.dataset.region;
-    dummyField.dataset.region = '';
-    dummyField.remove();
+    document
+        .querySelectorAll<HTMLDivElement>(SELECTORS.messageApp)
+        .forEach(messageApp => {
+            const app = messageApps.get(messageApp);
+            if (!app) return;
 
-    // Remove the event listeners
-    if (inputEvent) {
-        inputField.removeEventListener('input', inputEvent);
-        inputEvent = null;
-    }
-    if (sendEvent) {
-        sendBtn?.removeEventListener('click', sendEvent);
-        sendEvent = null;
-    }
-    if (keyRelayEvent) {
-        inputField.removeEventListener('keydown', keyRelayEvent);
-        keyRelayEvent = null;
-    }
-    inputField = null;
+            let {
+                inputField,
+                dummyField,
+                sendBtn,
+                inputEvent,
+                sendEvent,
+                keyRelayEvent,
+            } = app;
 
-    const originalInputField = document.querySelector<HTMLTextAreaElement>(
-        '[data-region="send-message-txt"]'
-    );
-    if (originalInputField) {
-        void putEmojiAutoComplete(originalInputField);
-        void putEmojiPicker(originalInputField);
-    }
+            if (!inputField || !dummyField) return;
+
+            // Remove the event listeners
+            if (sendEvent) {
+                sendBtn?.removeEventListener('click', sendEvent);
+                sendEvent = undefined;
+            }
+            if (inputEvent) {
+                inputField.removeEventListener('input', inputEvent);
+                inputEvent = undefined;
+            }
+            if (keyRelayEvent) {
+                inputField.removeEventListener('keydown', keyRelayEvent);
+                keyRelayEvent = undefined;
+            }
+
+            // Remove the dummy field and restore the original input field
+            inputField.dataset.region = dummyField.dataset.region;
+            dummyField.dataset.region = '';
+            dummyField.remove();
+            inputField = undefined;
+            dummyField = undefined;
+            sendBtn = undefined;
+
+            const originalInputField =
+                messageApp.querySelector<HTMLTextAreaElement>(
+                    SELECTORS.inputField
+                );
+
+            messageApps.set(messageApp, {
+                inputField: originalInputField ?? undefined,
+                dummyField,
+                sendBtn,
+                inputEvent,
+                sendEvent,
+                keyRelayEvent,
+            });
+
+            if (originalInputField) {
+                void putEmojiAutoComplete(messageApp);
+                void putEmojiPicker(messageApp);
+            }
+        });
 };
 
 /**
