@@ -59,7 +59,6 @@ const parseMarkdown = async (
 
     // Check if there is anything to send (or if the message is empty)
     dummy.innerHTML = spacecaped;
-    console.log(spacecaped); // TODO: remove
     return dummy.innerText.length > 0 ? spacecaped : '';
 };
 
