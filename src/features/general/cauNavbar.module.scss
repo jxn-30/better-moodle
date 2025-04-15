@@ -28,8 +28,10 @@ $estimated-marquee-height: 25px;
             z-index: -1;
             opacity: 0;
         }
-        transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
-        
+        transition:
+            top 0.2s ease-in-out,
+            opacity 0.2s ease-in-out;
+
         width: 100%;
         height: calc(var(--navbar-height));
     }
