@@ -1,0 +1,49 @@
+@use '/src/style/mixins';
+
+$estimated-marquee-height: 25px;
+
+:local(#localnavbarplus) {
+    display: flex;
+    align-items: center;
+    overflow: auto hidden;
+
+    & > * {
+        padding: 0.5rem;
+    }
+
+    a i {
+        border-radius: 8px;
+    }
+
+    @include mixins.media-down(lg) {
+        justify-content: center;
+
+        position: absolute;
+        left: 0;
+
+        top: calc(var(--navbar-height));
+        opacity: 1;
+        &:local(.scroll-down) {
+            top: 0;
+            z-index: -1;
+            opacity: 0;
+        }
+        transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
+        
+        width: 100%;
+        height: calc(var(--navbar-height));
+    }
+
+    @include mixins.media-down(md) {
+        top: calc(var(--navbar-height) + $estimated-marquee-height);
+    }
+}
+
+#page {
+    @include mixins.media-down(lg) {
+        padding-top: var(--navbar-height);
+    }
+    @include mixins.media-down(md) {
+        padding-top: calc(var(--navbar-height) + $estimated-marquee-height);
+    }
+}

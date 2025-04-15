@@ -1,3 +1,4 @@
+import cauNavbar from './cauNavbar';
 import externalLinks from './externalLinks';
 import type { FeatureGroupTranslation } from '#/i18n';
 import fullWidth from './fullWidth';
@@ -49,6 +50,7 @@ export const de = {
         truncatedTexts: truncatedTexts.de,
         googlyEyes: googlyEyes.de,
         prideLogo: prideLogo.de,
+        cauNavbar: cauNavbar.de,
     },
 } satisfies FeatureGroupTranslation;
 
@@ -95,6 +97,7 @@ export const en = {
         truncatedTexts: truncatedTexts.en,
         googlyEyes: googlyEyes.en,
         prideLogo: prideLogo.en,
+        cauNavbar: cauNavbar.en,
     },
 } as typeof de;
 

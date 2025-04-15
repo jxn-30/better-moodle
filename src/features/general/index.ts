@@ -73,6 +73,11 @@ const features = new Set<string>([
     'googlyEyes',
 ]);
 
+if (__UNI__ === 'cau') {
+    features.add('cauLoginFix');
+    features.add('cauNavbar');
+}
+
 /**
  * Updates the hidden state of all settings.
  */
