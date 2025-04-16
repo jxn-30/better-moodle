@@ -7,7 +7,7 @@ $estimated-marquee-height: 25px;
     align-items: center;
     overflow: auto hidden;
 
-    & > * {
+    div {
         padding: 0.5rem;
     }
 
@@ -27,10 +27,13 @@ $estimated-marquee-height: 25px;
             top: 0;
             z-index: -1;
             opacity: 0;
+            pointer-events: none;
         }
-        transition:
-            top 0.2s ease-in-out,
-            opacity 0.2s ease-in-out;
+        @media (prefers-reduced-motion: no-preference) {
+            transition:
+                top 0.2s ease-in-out,
+                opacity 0.2s ease-in-out;
+        }
 
         width: 100%;
         height: calc(var(--navbar-height));
