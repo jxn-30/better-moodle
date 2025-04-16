@@ -11,6 +11,8 @@ jobs:
     prettier:
         runs-on: ubuntu-latest
         name: 🍱 Prettier
+        permissions:
+            pull-requests: write
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4
@@ -63,6 +65,8 @@ jobs:
     eslint:
         runs-on: ubuntu-latest
         name: 🚨 ESLint
+        permissions:
+            pull-requests: write
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4

@@ -156,6 +156,8 @@ jobs:
     pr-summary:
         runs-on: ubuntu-latest
         name: 📜 update PR Summary
+        permissions:
+            pull-requests: write
         if: ${{ github.event_name == 'pull_request' && always() }}
         needs:
             - build

@@ -20,4 +20,4 @@ jobs:
                       configs
 
             - id: configs
-              run: echo "configs=$(basename -s .json -a ./configs/*.json | jq -R | jq -s | jq -c '. - ["_schema"]')" >> $GITHUB_OUTPUT
+              run: echo "configs=$(basename -s .json -a ./configs/*.json | jq -R | jq -s | jq -c '. - ["_schema", "_global"]')" >> $GITHUB_OUTPUT
