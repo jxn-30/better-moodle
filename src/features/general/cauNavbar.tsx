@@ -45,7 +45,6 @@ const reload = async () => {
                         currentScrollDown
                     );
                     page.classList.toggle(styles.scrollDown, currentScrollDown);
-                    console.log(styles.scrollDown, currentScrollDown);
                 }
                 previousScrollPosition = currentScrollPosition;
                 scrollDown = currentScrollDown;
