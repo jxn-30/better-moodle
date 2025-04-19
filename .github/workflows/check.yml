@@ -13,6 +13,7 @@ jobs:
         name: 🍱 Prettier
         permissions:
             issues: write
+            pull-requests: write
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4
@@ -67,6 +68,7 @@ jobs:
         name: 🚨 ESLint
         permissions:
             issues: write
+            pull-requests: write
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4
