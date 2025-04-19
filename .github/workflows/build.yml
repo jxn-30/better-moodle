@@ -158,6 +158,7 @@ jobs:
         name: 📜 update PR Summary
         permissions:
             issues: write
+            pull-requests: write
         if: ${{ github.event_name == 'pull_request' && always() }}
         needs:
             - build
