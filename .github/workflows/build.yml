@@ -178,3 +178,5 @@ jobs:
                       ${{ needs.build.outputs.line_uzl }}
                       ${{ needs.build.outputs.line_cau }}
                       ${{ needs.build.outputs.line_sandbox405 }}
+                  app-id: ${{ secrets.CI_APP }}
+                  app-pat: ${{ secrets.CI_PAT }}
