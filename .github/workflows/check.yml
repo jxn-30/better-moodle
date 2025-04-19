@@ -62,6 +62,8 @@ jobs:
                   section: prettier
                   title: 🎨${{ env.EMOJI }} Prettier
                   content: ${{ env.PR_SUMMARY }}
+                  app-id: ${{ secrets.CI_APP }}
+                  app-pat: ${{ secrets.CI_PAT }}
 
     eslint:
         runs-on: ubuntu-latest
@@ -113,3 +115,5 @@ jobs:
                   section: eslint
                   title: 🚨${{ env.EMOJI }} ESLint
                   content: ${{ steps.annotations.outputs.summary }}
+                  app-id: ${{ secrets.CI_APP }}
+                  app-pat: ${{ secrets.CI_PAT }}

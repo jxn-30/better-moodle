@@ -14,6 +14,12 @@ inputs:
     content:
         description: 'Section content in Markdown format'
         required: true
+    app-id:
+        description: 'The ID of the App that will post the comment'
+        required: true
+    app-pat:
+        description: 'A PAT to authenticate with the App that will post the comment'
+        required: true
 
 runs:
     using: 'composite'
@@ -35,8 +41,8 @@ runs:
           id: generate_token
           uses: tibdex/github-app-token@v2
           with:
-              app_id: ${{ secrets.CI_APP }}
-              private_key: ${{ secrets.CI_PAT }}
+              app_id: ${{ inputs.app-id }}
+              private_key: ${{ inputs.app-pat }}
 
         - name: '✏️ Update or create comment'
           shell: bash
