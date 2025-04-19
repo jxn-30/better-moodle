@@ -29,7 +29,7 @@ const zoomImage = (e: MouseEvent) => {
     const target = e.target;
     if (!(target instanceof HTMLImageElement)) return;
 
-    if (target.classList.contains('activityicon')) return;
+    if (getComputedStyle(target).cursor !== 'zoom-in') return;
 
     e.preventDefault();
 
@@ -62,6 +62,7 @@ const adjustZoomedImageSize = () => {
         zoomCopiedImage.style.setProperty('max-width', `90%`);
         zoomCopiedImage.style.setProperty('max-height', `90%`);
         zoomCopiedImage.style.setProperty('transform', `scale(1)`);
+        return;
     }
 
     const maxWidth = window.innerWidth * 0.9;
@@ -87,20 +88,16 @@ const onload = async () => {
 
     document.body.classList.toggle(zoomStyle.zoomEnabled, zoom.value);
 
-    const courseContent = document.querySelector<HTMLDivElement>(
-        '#page-content .course-content'
-    );
+    const mainRegion = document.querySelector<HTMLDivElement>('#region-main');
     if (zoom.value) {
         if (!zoomEventListenerAdded) {
-            courseContent?.addEventListener('click', zoomImage);
+            mainRegion?.addEventListener('click', zoomImage);
             zoomEventListenerAdded = true;
         } else {
-            courseContent?.removeEventListener('click', zoomImage);
+            mainRegion?.removeEventListener('click', zoomImage);
             zoomEventListenerAdded = false;
         }
-    }
 
-    if (zoom.value) {
         if (!zoomResizeListenerAdded) {
             window.addEventListener('resize', adjustZoomedImageSize);
             zoomResizeListenerAdded = true;
@@ -122,7 +119,7 @@ const onunload = () => {
 
     document.body.classList.remove(zoomStyle.zoomEnabled);
     document
-        .querySelector<HTMLDivElement>('#page-content .course-content')
+        .querySelector<HTMLDivElement>('#region-main')
         ?.removeEventListener('click', zoomImage);
     window.removeEventListener('resize', adjustZoomedImageSize);
 

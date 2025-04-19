@@ -5,11 +5,13 @@ import FeatureGroup from '@/FeatureGroup';
 import { type Locales } from '../../i18n/i18n-types';
 import style from './style.module.scss';
 import { Switch } from '@/Components';
-import { BETTER_MOODLE_LANG, LL } from 'i18n';
+import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
 import { dateToString, percent } from '@/localeString';
 import { domID, isDashboard } from '@/helpers';
 import { getHtml, getLoadingSpinner, ready } from '@/DOM';
 import { icsUrl, request } from '@/network';
+
+const LL = LLFG('semesterzeiten');
 
 const hiddenBarsKey = 'semesterzeiten.hiddenBars';
 const hiddenBars = new Set<string>(GM_getValue<string[]>(hiddenBarsKey, []));
@@ -25,9 +27,7 @@ const blockSetting = new BooleanSetting('block', false).addAlias(
     'general.semesterzeiten'
 );
 
-const block = new Block('semesterzeiten', true).setTitle(
-    LL.features.semesterzeiten.name()
-);
+const block = new Block('semesterzeiten', true).setTitle(LL.name());
 
 interface Event {
     start: string;
@@ -103,11 +103,11 @@ const table = (
     <table className="table table-striped table-hover hidden">
         <thead>
             <tr>
-                <th>{LL.features.semesterzeiten.table.name()}</th>
-                <th>{LL.features.semesterzeiten.table.start()}</th>
-                <th>{LL.features.semesterzeiten.table.end()}</th>
-                <th>{LL.features.semesterzeiten.table.progress()}</th>
-                <th>{LL.features.semesterzeiten.table.show()}</th>
+                <th>{LL.table.name()}</th>
+                <th>{LL.table.start()}</th>
+                <th>{LL.table.end()}</th>
+                <th>{LL.table.progress()}</th>
+                <th>{LL.table.show()}</th>
             </tr>
         </thead>
         {tableBody}
@@ -226,10 +226,13 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
 
         currentEvents.forEach(event => {
             const { start, end } = getEventDates(event);
+            const color = 'color' in event ? event.color : 'primary';
 
             title.append(
                 <p>
-                    <b>{event.name[BETTER_MOODLE_LANG]}</b>
+                    <b className={`text-${color}`}>
+                        {event.name[BETTER_MOODLE_LANG]}
+                    </b>
                     <br />
                     {event.type.startsWith('holiday-') ?
                         dateToString(start)
@@ -245,7 +248,7 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
                 <div
                     className={classnames(
                         'progress-bar w-100, h-100',
-                        `bg-${'color' in event ? event.color : 'primary'}`
+                        `bg-${color}`
                     )}
                 ></div>
             );
@@ -344,7 +347,7 @@ const loadContent = (semesterIndex = 0) => {
                         <tr className={`table-${event.color}`}>
                             <td colSpan={4}>
                                 {/* The strings are explicit here, to avoid trimming */}
-                                {LL.features.semesterzeiten.publicHoliday()}
+                                {LL.publicHoliday()}
                                 {': '}
                                 {event.name[BETTER_MOODLE_LANG]}
                                 {' ('}
@@ -397,7 +400,7 @@ const loadContent = (semesterIndex = 0) => {
  * Adds or removes the block, depending on the settings state.
  * Also loads the content for the block if it has been added to the DOM.
  */
-const onload = async () => {
+const reload = async () => {
     if (isDashboard && blockSetting.value) {
         await ready();
         const region = document.getElementById('block-region-content');
@@ -410,17 +413,10 @@ const onload = async () => {
     }
 };
 
-blockSetting.onInput(() => void onload());
-
-/**
- * Removes the block form the DOM
- */
-const onunload = () => {
-    block?.remove();
-};
+blockSetting.onInput(() => void reload());
 
 export default FeatureGroup.register({
     settings: new Set([blockSetting]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

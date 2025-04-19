@@ -27,7 +27,7 @@ const setFullWidth = async (state: boolean) => {
  */
 const onload = () => void setFullWidth(enabled.value);
 
-enabled.onInput(() => void setFullWidth(enabled.value));
+enabled.onInput(onload);
 
 /**
  * Disables fullwidth-mode.

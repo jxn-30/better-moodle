@@ -16,7 +16,7 @@ let controls: HTMLDivElement;
 /**
  * Renders and appends the controls or removes them, depending on setting state
  */
-const onload = async () => {
+const reload = async () => {
     if (!enabled.value) {
         controls?.remove();
         return;
@@ -66,16 +66,10 @@ const onload = async () => {
     }
 };
 
-enabled.onInput(() => void onload());
-
-/**
- * Removes the collapse / uncollapse controls.
- * @returns void
- */
-const onunload = () => controls?.remove();
+enabled.onInput(() => void reload());
 
 export default Feature.register({
     settings: new Set([enabled]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

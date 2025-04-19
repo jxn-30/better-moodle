@@ -2,7 +2,7 @@
 // @name            🎓️ UzL: better-moodle
 // @namespace       https://uni-luebeck.de
 // @                x-release-please-start-version
-// @version         1.42.2
+// @version         1.42.3
 // @                x-release-please-end
 // @author          Jan (jxn_30)
 // @description     Improves UzL-Moodle by cool features and design improvements.
@@ -5775,11 +5775,11 @@ const myCoursesBoxesPerRow = getSetting('myCourses.boxesPerRow');
 GM_addStyle(css`
     /* ${myCoursesBoxesPerRow} boxes per row in the "my courses" view, instead of 3 plus increase margin a little */
     @media (min-width: 840px) {
-        .dashboard-card-deck:not(.fixed-width-cards) .dashboard-card {
-            --margin: max(4px, min(10px, calc(100vw / 192)));
-            width: calc((100% / ${myCoursesBoxesPerRow}) - var(--margin) * 2);
-            margin-left: var(--margin);
-            margin-right: var(--margin);
+        .block-myoverview .card-grid[data-region='card-deck'] > .col {
+            --width: calc(100% / ${myCoursesBoxesPerRow});
+            min-width: var(--width) !important;
+            width: var(--width) !important;
+            max-width: var(--width) !important;
         }
     }
 `);
@@ -6305,7 +6305,7 @@ ready(async () => {
 if (getSetting('courses.imgMaxWidth')) {
     GM_addStyle(css`
         /* prevent images from overflowing */
-        #page-content .course-content img {
+        #page-content .course-content img:not(.activityicon) {
             max-width: 100%;
         }
     `);
@@ -6320,7 +6320,7 @@ if (getSetting('courses.imageZoom')) {
     let copyImage;
 
     GM_addStyle(css`
-        #page-content .course-content img {
+        #page-content .course-content img:not(.activityicon) {
             cursor: zoom-in;
         }
 
@@ -6365,6 +6365,8 @@ if (getSetting('courses.imageZoom')) {
     const zoomImage = e => {
         const target = e.target;
         if (!(target instanceof HTMLImageElement)) return;
+
+        if (target.classList.contains('activityicon')) return;
 
         e.preventDefault();
 

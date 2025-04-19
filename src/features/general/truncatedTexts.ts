@@ -1,9 +1,9 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
 
-const enabled = new BooleanSetting('enabled', true)
-    .onInput(() => enabled.feature?.reload())
-    .addAlias('general.truncatedTexts');
+const enabled = new BooleanSetting('enabled', true).addAlias(
+    'general.truncatedTexts'
+);
 
 const modifiedElements = new Set<HTMLElement>();
 
@@ -22,25 +22,22 @@ const setTitleListener = (event: MouseEvent) => {
 };
 
 /**
- * Adds the event listener that handles the mouseover event
+ * Adds or removes the event listener that handles the mouseover event
  */
-const onload = () => {
+const reload = () => {
     if (enabled.value) {
         document.addEventListener('mouseover', setTitleListener);
+    } else {
+        document.removeEventListener('mouseover', setTitleListener);
+        modifiedElements.forEach(element => element.removeAttribute('title'));
+        modifiedElements.clear();
     }
 };
 
-/**
- * Removes the event listener that handles the mouseover event and cleans up modifications
- */
-const onunload = () => {
-    document.removeEventListener('mouseover', setTitleListener);
-    modifiedElements.forEach(element => element.removeAttribute('title'));
-    modifiedElements.clear();
-};
+enabled.onInput(reload);
 
 export default Feature.register({
     settings: new Set([enabled]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

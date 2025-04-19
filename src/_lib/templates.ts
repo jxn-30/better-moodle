@@ -1,3 +1,4 @@
+import { mdlJSComplete } from '@/helpers';
 import { requirePromise } from '@/require.js';
 import CoreTemplates, { Context } from '#/require.js/core/templates';
 
@@ -19,22 +20,7 @@ export const renderCustomTemplate = (
         'core/templates',
         'core/config',
     ] as const).then(async ([storage, templates, config]) => {
-        const { promise, resolve } = Promise.withResolvers<void>();
-
-        /**
-         * Checks if moodles storage validation has completed.
-         * storage validation may clear the storage and thus delete our template.
-         * @returns void
-         */
-        const check = () => {
-            if (M.util.complete_js.flat().includes('core/storage_validation')) {
-                return resolve();
-            }
-            setTimeout(check, 100);
-        };
-        check();
-
-        await promise;
+        await mdlJSComplete('core/storage_validation');
 
         const templateName = `${__PREFIX__}/${name}`;
         storage.set(

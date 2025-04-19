@@ -41,6 +41,37 @@ export const LLMap = new LLMapClass();
 
 export const LL = LLMap.get('auto');
 
+/**
+ * Gets the translations for a specific FeatureGroup
+ * @param featureGroup - the ID of the FeatureGroup
+ * @returns the translations for this FeatureGroup
+ */
+export const LLFG = <FeatureGroup extends keyof I18nObject['features']>(
+    featureGroup: FeatureGroup
+): I18nObject['features'][FeatureGroup] => LL.features[featureGroup];
+
+/**
+ * Gets the translations for a specific feature
+ * @param featureGroup - the ID of the FeatureGroup
+ * @param feature - the ID of the Feature
+ * @returns the translations for this Feature
+ */
+export const LLF = <
+    FeatureGroup extends keyof I18nObject['features'],
+    Feature extends I18nObject['features'][FeatureGroup] extends (
+        { features: unknown }
+    ) ?
+        keyof I18nObject['features'][FeatureGroup]['features']
+    :   never,
+>(
+    featureGroup: FeatureGroup,
+    feature: Feature
+    // @ts-expect-error we need extends oneof :(
+): I18nObject['features'][FeatureGroup]['features'][Feature] =>
+    // @ts-expect-error we need extends oneof :(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access
+    LLFG(featureGroup).features[feature];
+
 export const languages = new Map<Locales, Translation['language']>();
 for (const locale of locales) {
     languages.set(locale, loadedLocales[locale].language);

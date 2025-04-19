@@ -29,7 +29,7 @@ interface GithubLinkProps extends Anchor {
  * @param attributes.path - the absolute path on GitHub beginning at the repos root
  * @param attributes.icon - whether to show the GitHub icon
  * @param attributes.externalIcon - whether to allow the icon indicating an external link to be shown
- * @param attributes.class - additional classes
+ * @param attributes.className - additional classes
  * @param attributes.children - any children of this component
  * @returns HTMLAnchorElement
  */
@@ -37,7 +37,7 @@ export const GithubLink = ({
     path,
     icon = true,
     externalIcon = false,
-    class: className,
+    className,
     children,
     ...props
 }: GithubLinkProps) => (

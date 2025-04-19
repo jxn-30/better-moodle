@@ -11,9 +11,11 @@ import Parser from './parsers';
 import { PREFIX } from '@/helpers';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './style.module.scss';
-import { BETTER_MOODLE_LANG, languages, LL, LLMap } from 'i18n';
+import { BETTER_MOODLE_LANG, languages, LLFG, LLMap } from 'i18n';
 import { currency, dateToString, unit } from '@/localeString';
 import { getLoadingSpinner, ready } from '@/DOM';
+
+const LL = LLFG('speiseplan');
 
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'general.speiseplan'
@@ -83,18 +85,14 @@ const emojis =
 const randomEmoji = () => emojis[Math.floor(Math.random() * emojis.length)];
 const desktopBtn = (
     <li className="nav-item">
-        <a
-            className="nav-link"
-            href={speiseplanLink}
-            title={LL.features.speiseplan.name()}
-        >
+        <a className="nav-link" href={speiseplanLink} title={LL.name()}>
             {randomEmoji()}
         </a>
     </li>
 );
 const mobileBtn = (
     <a className="list-group-item list-group-item-action" href={speiseplanLink}>
-        {randomEmoji()}&nbsp;{LL.features.speiseplan.name()}
+        {randomEmoji()}&nbsp;{LL.name()}
     </a>
 );
 
@@ -392,8 +390,12 @@ mobileBtn.addEventListener('click', e => {
 /**
  * Adds the btns to desktop and mobile navigation if the setting is enabled.
  */
-const onload = async () => {
-    if (!enabled.value) return;
+const reload = async () => {
+    if (!enabled.value) {
+        desktopBtn.remove();
+        mobileBtn.remove();
+        return;
+    }
 
     await ready();
 
@@ -403,21 +405,10 @@ const onload = async () => {
         ?.append(mobileBtn);
 };
 
-/**
- * Removes the btns from navigation.
- */
-const onunload = () => {
-    desktopBtn.remove();
-    mobileBtn.remove();
-};
-
-enabled.onInput(() => {
-    if (enabled.value) void onload();
-    else void onunload();
-});
+enabled.onInput(() => void reload());
 
 export default FeatureGroup.register({
     settings: new Set([enabled, language, canteen]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

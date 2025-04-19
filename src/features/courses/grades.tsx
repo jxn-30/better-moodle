@@ -1,6 +1,6 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
-import { LL } from 'i18n';
+import { LLF } from 'i18n';
 import { ready } from '@/DOM';
 import { requirePromise } from '@/require.js';
 
@@ -20,7 +20,7 @@ newTab.onInput(() => {
 /**
  * Creates and adds the grades link or removes it, depending on state
  */
-const onload = async () => {
+const reload = async () => {
     await ready();
 
     const header = document.querySelector<HTMLDivElement>(
@@ -39,7 +39,7 @@ const onload = async () => {
                 >
                     <i className="icon fa fa-calculator fa-fw"></i>
                     &nbsp;
-                    {LL.features.courses.features.grades.grades()}
+                    {LLF('courses', 'grades').grades()}
                 </a>
             ) as HTMLAnchorElement;
             if (newTab.value) gradesLink.target = '_blank';
@@ -51,17 +51,10 @@ const onload = async () => {
     } else gradesLink?.remove();
 };
 
-enabled.onInput(() => void onload());
-
-/**
- * Removes the grades link
- */
-const onunload = () => {
-    gradesLink?.remove();
-};
+enabled.onInput(() => void reload());
 
 export default Feature.register({
     settings: new Set([enabled, newTab]),
-    onload,
-    onunload,
+    onload: reload,
+    onunload: reload,
 });

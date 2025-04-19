@@ -1,5 +1,5 @@
 import ical from 'node-ical';
-import german from './i18n/de';
+import rruleToWords from './rruleToWords';
 
 const URLS = {
     semesterzeiten: {
@@ -15,81 +15,134 @@ const URLS = {
 const SERVER_CACHE_DUR = 10 * 60; // 10 * 60s = 10 minutes
 const CLIENT_CACHE_DUR = 30 * 60; // 30 * 60s = 30 minutes
 
-interface Event {}
+const ONE_SECOND = 1000;
+const ONE_MINUTE = 60 * ONE_SECOND;
+const ONE_HOUR = 60 * ONE_MINUTE;
+const ONE_DAY = 24 * ONE_HOUR;
+const ONE_YEAR = 365 * ONE_DAY;
+const HALF_YEAR = ONE_YEAR / 2;
+
+interface Event {
+    start: Date;
+    end: Date;
+    desc: string;
+    startDateOnly: boolean;
+    endDateOnly: boolean;
+    name: Record<string, string>;
+}
+
+interface Semesterzeit extends Event {
+    type: string;
+    color: string;
+}
+
+interface Semester extends Semesterzeit {
+    events: Event[];
+}
+
+const getBaseEvent = (rawEvent, timeOver = 0): Event => {
+    // do not abort parsing events that do have a rrule
+    if (
+        !rawEvent.rrule &&
+        new Date(rawEvent.end).getTime() < Date.now() - timeOver
+    )
+        return null;
+    const desc =
+        typeof rawEvent.description === 'string' ?
+            rawEvent.description
+        :   (rawEvent.description?.val ?? '');
+    const start = new Date(rawEvent.start);
+    const end = new Date(rawEvent.end);
+    if (
+        end.getHours() === 0 &&
+        end.getMinutes() === 0 &&
+        end.getSeconds() === 0 &&
+        end.getMilliseconds() === 0
+    )
+        end.setTime(end.getTime() - 1);
+
+    const event = {
+        start: start,
+        end: end,
+        desc,
+        startDateOnly: !!rawEvent.start.dateOnly,
+        endDateOnly: !!rawEvent.end.dateOnly,
+        name: {},
+    };
+
+    return event;
+};
+
+const sortEvents = (events: Event[]) =>
+    events.sort((a, b) => a.start - b.start);
+
+const expandRecuringEvent = (
+    rawEvent,
+    event: Event,
+    minDate: Date,
+    maxDate: Date
+) => {
+    const duration = event.end.getTime() - event.start.getTime();
+    return rawEvent.rrule.between(minDate, maxDate).map(start => ({
+        ...event,
+        start,
+        end: new Date(start.getTime() + duration),
+    }));
+};
+
+const rruleToText = (rrule, lang = 'en') =>
+    rruleToWords(rrule.toString(), lang);
 
 const mapSemesterzeiten = rawEvents => {
-    const semesters = [];
+    const semesters: Semester[] = [];
     let minStartDate = new Date();
     let maxEndDate = new Date();
     const recurringEvents: [number, Event][] = [];
     const events = rawEvents
-        .map((e, i) => {
-            // Ignore events that have ended more than 6 months ago.
-            if (
-                Date.now() - new Date(e.end).getTime() >
-                183 * 24 * 60 * 60 * 1000
-            )
-                return null;
+        .map((raw, index) => {
+            const event = getBaseEvent(raw, HALF_YEAR);
+            if (!event) return;
 
-            const desc = e.description.val;
-            const start = new Date(e.start);
-            const end = new Date(e.end);
-            if (
-                end.getHours() === 0 &&
-                end.getMinutes() === 0 &&
-                end.getSeconds() === 0 &&
-                end.getMilliseconds() === 0
-            )
-                end.setTime(end.getTime() - 1);
-            minStartDate = Math.min(minStartDate, start);
-            maxEndDate = Math.max(maxEndDate, end);
-            const event = {
-                start: start,
-                end: end,
-                startDateOnly: !!e.start.dateOnly,
-                endDateOnly: !!e.end.dateOnly,
-                type: desc.match(/(?<=^@type:).*$/m)?.[0],
-                color: desc.match(/(?<=^@color:).*$/m)?.[0],
-                name: Object.fromEntries(
-                    desc
-                        .matchAll(
-                            /(?<=^@name:(?<lang>[a-z]{2}):)(?<name>.*)$/gm
-                        )
-                        .map(n => [n.groups.lang, n.groups.name])
-                ),
-            };
+            minStartDate = Math.min(minStartDate, event.start);
+            maxEndDate = Math.max(maxEndDate, event.end);
+
+            event.type = event.desc.match(/(?<=^@type:).*$/m)?.[0];
+            event.color = event.desc.match(/(?<=^@color:).*$/m)?.[0];
+            event.name = Object.fromEntries(
+                event.desc
+                    .matchAll(/(?<=^@name:(?<lang>[a-z]{2}):)(?<name>.*)$/gm)
+                    .map(n => [n.groups.lang, n.groups.name])
+            );
 
             if (event.type === 'semester') {
                 event.events = [];
                 // Only output semesters that have no ended yet.
-                if (new Date(e.end) > new Date()) semesters.push(event);
+                if (new Date(raw.end) > new Date()) semesters.push(event);
                 return null;
             }
 
-            if (e.rrule) recurringEvents.push([i, event]);
+            if (raw.rrule) recurringEvents.push([index, event]);
             else return event;
         })
         .filter(Boolean);
 
-    recurringEvents.forEach(([idx, e]) => {
-        const event = rawEvents[idx];
-        const duration = e.end.getTime() - e.start.getTime();
-        event.rrule
-            .between(new Date(minStartDate), new Date(maxEndDate))
-            .forEach(rDate => {
-                events.push({
-                    ...e,
-                    start: rDate,
-                    end: new Date(rDate.getTime() + duration),
-                });
-            });
-    });
+    recurringEvents.forEach(([index, event]) =>
+        events.push(
+            ...expandRecuringEvent(
+                rawEvents[index],
+                event,
+                new Date(minStartDate),
+                new Date(maxEndDate)
+            )
+        )
+    );
 
     events.forEach(event => {
+        const start = new Date(event.start);
+        const end = new Date(event.end);
+
         // TODO: This just works but I guess it may be done way more efficient!
         semesters.forEach(semester => {
-            const start = new Date(event.start);
-            const end = new Date(event.end);
             const seStart = new Date(semester.start);
             const seEnd = new Date(semester.end);
             if (
@@ -100,11 +153,54 @@ const mapSemesterzeiten = rawEvents => {
         });
     });
 
-    semesters.forEach(semester =>
-        semester.events.sort((a, b) => a.start - b.start)
-    );
+    semesters.forEach(semester => sortEvents(semester.events));
 
     return semesters;
+};
+
+const mapEvents = rawEvents => {
+    const recurringEvents: [number, Event][] = [];
+
+    const events = rawEvents
+        .map((raw, index) => {
+            const event = getBaseEvent(raw);
+            if (!event) return;
+
+            event.name.de = event.name.en = raw.summary;
+            event.location = raw.location;
+            event.url =
+                raw.attach ?
+                    Array.isArray(raw.attach) ?
+                        raw.attach[0]
+                    :   raw.attach
+                :   undefined;
+
+            if (raw.rrule) {
+                event.rruleString = {
+                    en: rruleToText(raw.rrule),
+                    de: rruleToText(raw.rrule, 'de'),
+                };
+            }
+
+            if (raw.rrule) recurringEvents.push([index, event]);
+            else if (event.end >= Date.now()) return event;
+        })
+        .filter(Boolean);
+
+    recurringEvents.forEach(([index, event]) =>
+        events.push(
+            ...expandRecuringEvent(
+                rawEvents[index],
+                event,
+                new Date(),
+                new Date(Date.now() + ONE_YEAR)
+            )
+        )
+    );
+
+    sortEvents(events);
+
+    return events;
 };
 
 export default {
@@ -128,73 +224,9 @@ export default {
         switch (cat) {
             case 'semesterzeiten':
                 events = mapSemesterzeiten(rawEvents);
-                /*
-                .map(e => {
-                    const desc = e.description;
-                    const name =
-                        desc ?
-                            Object.fromEntries(
-                                (desc.val ?? desc).split(/\n/g).map(l => {
-                                    const [lang, ...rest] = l.split(':');
-                                    return [lang.toLowerCase(), rest.join(':')];
-                                })
-                            )
-                        :   e.summary;
-
-                    const categories = new Set(e.categories);
-
-                    let color = 'info';
-                    let storage = 'dummy';
-                    categories.forEach(category => {
-                        if (category.startsWith('color-')) {
-                            color = category.replace('color-', '');
-                            categories.delete(category);
-                        } else if (category.startsWith('storage-')) {
-                            storage = category.replace('storage-', '');
-                            categories.delete(category);
-                        }
-                    });
-
-                    const rruleString =
-                        e.rrule ?
-                            {
-                                en: e.rrule.toText(),
-                                de: e.rrule.toText(undefined, german),
-                            }
-                        :   undefined;
-
-                    const cleanedEvent = {
-                        start: e.start,
-                        end: e.end,
-                        name,
-                        color,
-                        storage,
-                        location: e.location,
-                        urls:
-                            Array.isArray(e.attach) ? e.attach
-                            : e.attach ? [e.attach]
-                            : [],
-                        categories: Array.from(categories),
-                        rruleString,
-                        rrule: e.rrule?.origOptions ?? undefined,
-                    };
-
-                    let duration =
-                        new Date(e.end).getTime() - new Date(e.start).getTime();
-                    const firstDate = e.rrule?.after(
-                        new Date(Date.now() - duration),
-                        true
-                    ); // a workaround to also get the current instance
-                    if (firstDate) {
-                        cleanedEvent.start = firstDate.toISOString();
-                        cleanedEvent.end = new Date(
-                            firstDate.getTime() + duration
-                        ).toISOString();
-                    }
-
-                    return cleanedEvent;
-                });
-                */
+                break;
+            case 'events':
+                events = mapEvents(rawEvents);
                 break;
             default:
                 events = rawEvents;
