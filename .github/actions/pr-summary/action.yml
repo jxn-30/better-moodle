@@ -39,12 +39,14 @@ runs:
 
         - name: ⌨️  Generate GitHub App Token
           id: generate_token
+          if: github.event.pull_request.head.repo.full_name == github.repository
           uses: tibdex/github-app-token@v2
           with:
               app_id: ${{ inputs.app-id }}
               private_key: ${{ inputs.app-pat }}
 
         - name: '✏️ Update or create comment'
+          if: github.event.pull_request.head.repo.full_name == github.repository
           shell: bash
           run: |
               COMMENT_URL=$(gh pr view ${{ inputs.pr-number }} --json comments --jq '[.comments[] | select(.body | startswith("<!-- Better-Moodle PR-Summary -->"))][0] .url')
