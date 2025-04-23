@@ -1,0 +1,102 @@
+{
+    "$ref": "#/definitions/GlobalConfig",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "GlobalConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "$schema": {
+                    "const": "_globalSchema.json",
+                    "description": "This is the schema file we are using.",
+                    "type": "string"
+                },
+                "disabledFrom": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "400": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "401": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "402": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "403": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "404": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "405": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
+                },
+                "enabledFrom": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "400": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "401": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "402": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "403": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "404": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "405": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "required": ["$schema", "enabledFrom", "disabledFrom"],
+            "type": "object"
+        }
+    }
+}

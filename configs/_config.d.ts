@@ -1,3 +1,5 @@
+export type MoodleVersion = 400 | 401 | 402 | 403 | 404 | 405;
+
 interface BaseConfig {
     /** This is the schema file we are using. */
     $schema: '_schema.json';
@@ -39,7 +41,7 @@ interface BaseConfig {
      * Setting a version here enables specific compatibility patches required for lower versions.
      * If version is not known, the lowest realisticly possible value should be chosen.
      */
-    moodleVersion: 400 | 401 | 402 | 403 | 404 | 405;
+    moodleVersion: MoodleVersion;
     /**
      * Does this instance of Better-Moodle require a connection to the internet?
      * If so, list the origins that need to be connected to.

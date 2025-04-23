@@ -1,11 +1,12 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import browserslist from 'browserslist';
-import Config from './configs/_config';
+import type Config from './configs/_config';
 import { createHash } from 'crypto';
 import { defineConfig } from 'vite';
 import dotenv from 'dotenv';
 import fastGlob from 'fast-glob';
+import globalConfig from './configs/_global.json';
 import icsParserConfig from './ics-parser/wrangler.json';
 import legacy from '@vitejs/plugin-legacy';
 import monkey from 'vite-plugin-monkey';
@@ -56,27 +57,50 @@ const includedFeaturesByConfig =
 const excludedFeaturesByConfig =
     'excludeFeatures' in config ? config.excludeFeatures : [];
 
+const disabledByVersion = new Set<string>();
+Object.entries(globalConfig.enabledFrom).forEach(([version, features]) => {
+    if (config.moodleVersion < parseInt(version)) {
+        features.forEach(feature => disabledByVersion.add(feature));
+    }
+});
+Object.entries(globalConfig.disabledFrom).forEach(([version, features]) => {
+    if (config.moodleVersion >= parseInt(version)) {
+        features.forEach(feature => disabledByVersion.add(feature));
+    }
+});
+
 if (includedFeaturesByConfig.length) {
     // add the features that are included by config
     includedFeaturesByConfig.forEach(feature => {
         if (feature.includes('.')) {
             // this is a feature, not a group
-            allIncludedFeatures.add(feature);
             const group = feature.split('.')[0];
+            if (
+                disabledByVersion.has(feature) ||
+                disabledByVersion.has(group)
+            ) {
+                return;
+            }
+            allIncludedFeatures.add(feature);
             allIncludedFeatureGroups.add(group);
         } else {
             // this is a group
+            if (disabledByVersion.has(feature)) return;
             allIncludedFeatureGroups.add(feature);
             allFullyIncludedFeatureGroups.add(feature);
         }
     });
 } else {
-    // include all features
+    // include all features except the ones disabled by version
     allFeatureGroups.forEach(group => {
+        if (disabledByVersion.has(group)) return;
         allIncludedFeatureGroups.add(group);
         allFullyIncludedFeatureGroups.add(group);
     });
-    allFeatures.forEach(feature => allIncludedFeatures.add(feature));
+    allFeatures.forEach(feature => {
+        if (disabledByVersion.has(feature)) return;
+        allIncludedFeatures.add(feature);
+    });
 
     // now exclude those excluded by config
     excludedFeaturesByConfig.forEach(feature => {
