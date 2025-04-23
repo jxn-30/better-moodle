@@ -56,6 +56,10 @@ const includedFeaturesByConfig =
     'includeFeatures' in config ? config.includeFeatures : [];
 const excludedFeaturesByConfig =
     'excludeFeatures' in config ? config.excludeFeatures : [];
+const includedNonDefaultFeaturesByConfig =
+    'includeNonDefaultFeatures' in config ?
+        new Set<string>(config.includeNonDefaultFeatures)
+    :   new Set<string>();
 
 const disabledByVersion = new Set<string>();
 Object.entries(globalConfig.enabledFrom).forEach(([version, features]) => {
@@ -68,6 +72,7 @@ Object.entries(globalConfig.disabledFrom).forEach(([version, features]) => {
         features.forEach(feature => disabledByVersion.add(feature));
     }
 });
+const disabledByDefault = new Set<string>(globalConfig.defaultDisabled);
 
 if (includedFeaturesByConfig.length) {
     // add the features that are included by config
@@ -75,9 +80,24 @@ if (includedFeaturesByConfig.length) {
         if (feature.includes('.')) {
             // this is a feature, not a group
             const group = feature.split('.')[0];
+            // this feature or its group is disabled due to moodle version restrictions
             if (
                 disabledByVersion.has(feature) ||
                 disabledByVersion.has(group)
+            ) {
+                return;
+            }
+            // this feature is disabled by default and not manually included by config
+            if (
+                disabledByDefault.has(feature) &&
+                !includedNonDefaultFeaturesByConfig.has(feature)
+            ) {
+                return;
+            }
+            // this feature group is disabled by default and not manually included by config
+            if (
+                disabledByDefault.has(group) &&
+                !includedNonDefaultFeaturesByConfig.has(group)
             ) {
                 return;
             }
@@ -85,7 +105,15 @@ if (includedFeaturesByConfig.length) {
             allIncludedFeatureGroups.add(group);
         } else {
             // this is a group
+            // this group is disabled due to moodle version restrictions
             if (disabledByVersion.has(feature)) return;
+            // this group is disabled by default and not manually included by config
+            if (
+                disabledByDefault.has(feature) &&
+                !includedNonDefaultFeaturesByConfig.has(feature)
+            ) {
+                return;
+            }
             allIncludedFeatureGroups.add(feature);
             allFullyIncludedFeatureGroups.add(feature);
         }
@@ -93,12 +121,28 @@ if (includedFeaturesByConfig.length) {
 } else {
     // include all features except the ones disabled by version
     allFeatureGroups.forEach(group => {
+        // this group is disabled due to moodle version restrictions
         if (disabledByVersion.has(group)) return;
+        // this feature group is disabled by default and not manually included by config
+        if (
+            disabledByDefault.has(group) &&
+            !includedNonDefaultFeaturesByConfig.has(group)
+        ) {
+            return;
+        }
         allIncludedFeatureGroups.add(group);
         allFullyIncludedFeatureGroups.add(group);
     });
     allFeatures.forEach(feature => {
+        // this feature is disabled due to moodle version restrictions
         if (disabledByVersion.has(feature)) return;
+        // this feature is disabled by default and not manually included by config
+        if (
+            disabledByDefault.has(feature) &&
+            !includedNonDefaultFeaturesByConfig.has(feature)
+        ) {
+            return;
+        }
         allIncludedFeatures.add(feature);
     });
 
