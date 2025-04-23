@@ -150,11 +150,15 @@ const featureGlob = `${featuresBase}{${Array.from(allIncludedFeatures.values())
     .map(f => (f.includes('.') ? f.replace('.', '/') : `${f}/!(index)`))
     .join(',')}}.{ts,tsx}`;
 
+// we're again adding random UUIDs to not have empty brace expansion
+const fixesGlob = `/src/fixes/{${crypto.randomUUID()},${crypto.randomUUID()},${(config.fixes ?? []).join(',')}}.{ts, tsx}`;
+
 // @ts-expect-error because process.env may also include undefined values
 dotenv.populate(process.env, {
     VITE_FEATURES_BASE: featuresBase,
     VITE_INCLUDE_FEATURE_GROUPS_GLOB: featureGroupsGlob,
     VITE_INCLUDE_FEATURES_GLOB: featureGlob,
+    VITE_INCLUDE_FIXES_GLOB: fixesGlob,
 
     // import globs defined for specific features
     VITE_SPEISEPLAN_CANTEEN_GLOB: `${featuresBase}speiseplan/canteens/${configFile}.ts`,

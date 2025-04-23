@@ -53,6 +53,12 @@ interface BaseConfig {
      * List the IDs of these fixes here.
      */
     fixes?: string[];
+    /**
+     * Should this instance of Better-Moodle load any features or featureGroups that are not included by default?
+     * Features and feature groups can be defaultDisabled via global config.
+     * List the IDs of these features or feature groups here.
+     */
+    includeNonDefaultFeatures?: string[];
 }
 
 interface ConfigWithExplicitFeatures extends BaseConfig {

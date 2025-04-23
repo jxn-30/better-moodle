@@ -6,8 +6,11 @@ type VersionRecord<ValueType> = Partial<Record<MoodleVersion, ValueType>>;
 export interface GlobalConfig {
     /** This is the schema file we are using. */
     $schema: '_globalSchema.json';
-    // defaultDisabled: string;
+    /** If a feature is specific to only a single moodle instance (e.g. a bugfix for instance modifications), it is a good idea to disable them in general and explicitely include them in the specific config via includeNonDefaultFeatures. */
+    defaultDisabled: string[];
+    /** For each version, we can specify features and featureGroups that should not be included if the moodle instance version is below the key, e.g. if a feature does not make sense for moodle versions before 405. */
     enabledFrom: VersionRecord<string[]>;
+    /** For each version, we can specify features and featureGroups that should not be included if the moodle instance version is above the key, e.g. if a feature does not make sense for moodle versions since 405. */
     disabledFrom: VersionRecord<string[]>;
 }
 
