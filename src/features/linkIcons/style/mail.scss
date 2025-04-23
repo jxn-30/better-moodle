@@ -1,6 +1,6 @@
 @use '/src/style/mixins';
 
-a[href^='mailto:'] {
+a[href^='mailto:']:not(:has(.fa-envelope)) {
     body.dir-ltr &::before,
     body.dir-rtl &::after {
         @include mixins.fa-icon;
