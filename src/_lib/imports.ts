@@ -85,3 +85,6 @@ void Promise.all(
     );
 
 export default awaitImports;
+
+// Now also import the fixes that have been specified in the config file :)
+import.meta.glob(import.meta.env.VITE_INCLUDE_FIXES_GLOB, { eager: true });

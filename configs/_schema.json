@@ -72,16 +72,8 @@
               "type": "string"
             },
             "moodleVersion": {
-              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen.",
-              "enum": [
-                400,
-                401,
-                402,
-                403,
-                404,
-                405
-              ],
-              "type": "number"
+              "$ref": "#/definitions/MoodleVersion",
+              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen."
             },
             "namespace": {
               "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
@@ -180,16 +172,8 @@
               "type": "string"
             },
             "moodleVersion": {
-              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen.",
-              "enum": [
-                400,
-                401,
-                402,
-                403,
-                404,
-                405
-              ],
-              "type": "number"
+              "$ref": "#/definitions/MoodleVersion",
+              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen."
             },
             "namespace": {
               "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
@@ -289,16 +273,8 @@
               "type": "string"
             },
             "moodleVersion": {
-              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen.",
-              "enum": [
-                400,
-                401,
-                402,
-                403,
-                404,
-                405
-              ],
-              "type": "number"
+              "$ref": "#/definitions/MoodleVersion",
+              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen."
             },
             "namespace": {
               "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
@@ -324,6 +300,17 @@
           "type": "object"
         }
       ]
+    },
+    "MoodleVersion": {
+      "enum": [
+        400,
+        401,
+        402,
+        403,
+        404,
+        405
+      ],
+      "type": "number"
     }
   }
 }
