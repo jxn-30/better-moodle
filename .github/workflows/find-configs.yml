@@ -6,6 +6,7 @@ on:
             configs:
                 description: A JSON string of all available configs
                 value: ${{ jobs.find-configs.outputs.configs }}
+permissions: {}
 
 jobs:
     find-configs:
