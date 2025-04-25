@@ -1,11 +1,12 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import browserslist from 'browserslist';
-import Config from './configs/_config';
+import type Config from './configs/_config';
 import { createHash } from 'crypto';
 import { defineConfig } from 'vite';
 import dotenv from 'dotenv';
 import fastGlob from 'fast-glob';
+import globalConfig from './configs/_global.json';
 import icsParserConfig from './ics-parser/wrangler.json';
 import legacy from '@vitejs/plugin-legacy';
 import monkey from 'vite-plugin-monkey';
@@ -55,28 +56,95 @@ const includedFeaturesByConfig =
     'includeFeatures' in config ? config.includeFeatures : [];
 const excludedFeaturesByConfig =
     'excludeFeatures' in config ? config.excludeFeatures : [];
+const includedNonDefaultFeaturesByConfig =
+    'includeNonDefaultFeatures' in config ?
+        new Set<string>(config.includeNonDefaultFeatures)
+    :   new Set<string>();
+
+const disabledByVersion = new Set<string>();
+Object.entries(globalConfig.enabledFrom).forEach(([version, features]) => {
+    if (config.moodleVersion < parseInt(version)) {
+        features.forEach(feature => disabledByVersion.add(feature));
+    }
+});
+Object.entries(globalConfig.disabledFrom).forEach(([version, features]) => {
+    if (config.moodleVersion >= parseInt(version)) {
+        features.forEach(feature => disabledByVersion.add(feature));
+    }
+});
+const disabledByDefault = new Set<string>(globalConfig.defaultDisabled);
 
 if (includedFeaturesByConfig.length) {
     // add the features that are included by config
     includedFeaturesByConfig.forEach(feature => {
         if (feature.includes('.')) {
             // this is a feature, not a group
-            allIncludedFeatures.add(feature);
             const group = feature.split('.')[0];
+            // this feature or its group is disabled due to moodle version restrictions
+            if (
+                disabledByVersion.has(feature) ||
+                disabledByVersion.has(group)
+            ) {
+                return;
+            }
+            // this feature is disabled by default and not manually included by config
+            if (
+                disabledByDefault.has(feature) &&
+                !includedNonDefaultFeaturesByConfig.has(feature)
+            ) {
+                return;
+            }
+            // this feature group is disabled by default and not manually included by config
+            if (
+                disabledByDefault.has(group) &&
+                !includedNonDefaultFeaturesByConfig.has(group)
+            ) {
+                return;
+            }
+            allIncludedFeatures.add(feature);
             allIncludedFeatureGroups.add(group);
         } else {
             // this is a group
+            // this group is disabled due to moodle version restrictions
+            if (disabledByVersion.has(feature)) return;
+            // this group is disabled by default and not manually included by config
+            if (
+                disabledByDefault.has(feature) &&
+                !includedNonDefaultFeaturesByConfig.has(feature)
+            ) {
+                return;
+            }
             allIncludedFeatureGroups.add(feature);
             allFullyIncludedFeatureGroups.add(feature);
         }
     });
 } else {
-    // include all features
+    // include all features except the ones disabled by version
     allFeatureGroups.forEach(group => {
+        // this group is disabled due to moodle version restrictions
+        if (disabledByVersion.has(group)) return;
+        // this feature group is disabled by default and not manually included by config
+        if (
+            disabledByDefault.has(group) &&
+            !includedNonDefaultFeaturesByConfig.has(group)
+        ) {
+            return;
+        }
         allIncludedFeatureGroups.add(group);
         allFullyIncludedFeatureGroups.add(group);
     });
-    allFeatures.forEach(feature => allIncludedFeatures.add(feature));
+    allFeatures.forEach(feature => {
+        // this feature is disabled due to moodle version restrictions
+        if (disabledByVersion.has(feature)) return;
+        // this feature is disabled by default and not manually included by config
+        if (
+            disabledByDefault.has(feature) &&
+            !includedNonDefaultFeaturesByConfig.has(feature)
+        ) {
+            return;
+        }
+        allIncludedFeatures.add(feature);
+    });
 
     // now exclude those excluded by config
     excludedFeaturesByConfig.forEach(feature => {
@@ -126,11 +194,15 @@ const featureGlob = `${featuresBase}{${Array.from(allIncludedFeatures.values())
     .map(f => (f.includes('.') ? f.replace('.', '/') : `${f}/!(index)`))
     .join(',')}}.{ts,tsx}`;
 
+// we're again adding random UUIDs to not have empty brace expansion
+const fixesGlob = `/src/fixes/{${crypto.randomUUID()},${crypto.randomUUID()},${(config.fixes ?? []).join(',')}}.{ts, tsx}`;
+
 // @ts-expect-error because process.env may also include undefined values
 dotenv.populate(process.env, {
     VITE_FEATURES_BASE: featuresBase,
     VITE_INCLUDE_FEATURE_GROUPS_GLOB: featureGroupsGlob,
     VITE_INCLUDE_FEATURES_GLOB: featureGlob,
+    VITE_INCLUDE_FIXES_GLOB: fixesGlob,
 
     // import globs defined for specific features
     VITE_SPEISEPLAN_CANTEEN_GLOB: `${featuresBase}speiseplan/canteens/${configFile}.ts`,

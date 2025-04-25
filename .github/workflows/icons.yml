@@ -7,6 +7,7 @@ on:
         paths:
             - configs/*.json
             - .github/workflows/icons.yml
+permissions: {}
 
 jobs:
     icons:

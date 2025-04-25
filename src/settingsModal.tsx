@@ -194,16 +194,18 @@ const latestVersionEl = (
 const SupportWrapper = (
     <div
         id={settingsStyle.supportWrapper}
-        className="position-absolute z-index-1 d-flex flex-row flex-lg-column small card border-light mb-3"
+        className="position-absolute z-index-1 d-flex flex-row small card border-light mb-3"
     >
         {SupportBtn}
-        <span>
-            {LL.settings.modal.installedVersion()}:{' '}
-            <code>{GM_info.script.version}</code>
-        </span>
-        <span>
-            {LL.settings.modal.latestVersion()}: {latestVersionEl}
-        </span>
+        <div className="d-flex flex-row flex-lg-column align-items-center">
+            <span>
+                {LL.settings.modal.installedVersion()}:{' '}
+                <code>{GM_info.script.version}</code>
+            </span>
+            <span>
+                {LL.settings.modal.latestVersion()}: {latestVersionEl}
+            </span>
+        </div>
     </div>
 );
 

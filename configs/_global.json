@@ -1,0 +1,10 @@
+{
+    "$schema": "_globalSchema.json",
+    "defaultDisabled": [],
+    "enabledFrom": {
+        "405": ["courses.sectionCourseIndex"]
+    },
+    "disabledFrom": {
+        "402": ["courses.courseIndexDrawerControls"]
+    }
+}
