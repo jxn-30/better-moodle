@@ -203,8 +203,6 @@ const putEmojiPicker = async (messageApp: HTMLDivElement) => {
     container.classList.add('hidden');
     container.querySelector<HTMLDivElement>(SELECTORS.emojiPicker)?.remove();
 
-    console.log(container);
-
     void render('core/emoji/picker', {})
         .then(template =>
             Promise.all([
