@@ -3378,13 +3378,13 @@ __metadata:
   linkType: hard
 
 "axios@npm:^1.7.7":
-  version: 1.8.4
-  resolution: "axios@npm:1.8.4"
+  version: 1.9.0
+  resolution: "axios@npm:1.9.0"
   dependencies:
     follow-redirects: "npm:^1.15.6"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 10c0/450993c2ba975ffccaf0d480b68839a3b2435a5469a71fa2fb0b8a55cdb2c2ae47e609360b9c1e2b2534b73dfd69e2733a1cf9f8215bee0bcd729b72f801b0ce
+  checksum: 10c0/9371a56886c2e43e4ff5647b5c2c3c046ed0a3d13482ef1d0135b994a628c41fbad459796f101c655e62f0c161d03883454474d2e435b2e021b1924d9f24994c
   languageName: node
   linkType: hard
 
@@ -3608,9 +3608,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001688, caniuse-lite@npm:^1.0.30001702":
-  version: 1.0.30001714
-  resolution: "caniuse-lite@npm:1.0.30001714"
-  checksum: 10c0/b0e3372f018c5c177912f0282af98049057d83c80846293a4e3df728644a622db42a9e8971d6b7708d76e0fd4e9f6d5ce93802cf4e6818de80fdf371dc0f6a06
+  version: 1.0.30001715
+  resolution: "caniuse-lite@npm:1.0.30001715"
+  checksum: 10c0/0109a7da797ffbe1aa197baa5242b205011098eecec1087ef3d0c58ceea19be325ab6679b2751a78660adc3051a9f77e99d5789938fd1eb1235e6fdf6a1dbf8e
   languageName: node
   linkType: hard
 
@@ -4037,9 +4037,9 @@ __metadata:
   linkType: hard
 
 "detect-libc@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "detect-libc@npm:2.0.3"
-  checksum: 10c0/88095bda8f90220c95f162bf92cad70bd0e424913e655c20578600e35b91edc261af27531cf160a331e185c0ced93944bc7e09939143225f56312d7fd800fdb7
+  version: 2.0.4
+  resolution: "detect-libc@npm:2.0.4"
+  checksum: 10c0/c15541f836eba4b1f521e4eecc28eefefdbc10a94d3b8cb4c507689f332cc111babb95deda66f2de050b22122113189986d5190be97d51b5a2b23b938415e67c
   languageName: node
   linkType: hard
 
@@ -4127,9 +4127,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.73":
-  version: 1.5.139
-  resolution: "electron-to-chromium@npm:1.5.139"
-  checksum: 10c0/1b468c0c02a38322261b50b12ed090ff792a0d2ea24f299368babd484d5b81829528540463158572a3524fd835014d877d6c4bf097509bdb13ca696609b04aca
+  version: 1.5.142
+  resolution: "electron-to-chromium@npm:1.5.142"
+  checksum: 10c0/05bc0c695a4b7c6fac499700199bfd90d767eea352e67171f005920a225e42fa08dc62ba0d31523fcd2e9b49e25aab133f82270e784888fb5c3c032f6607cdeb
   languageName: node
   linkType: hard
 
@@ -5015,8 +5015,8 @@ __metadata:
   linkType: hard
 
 "glob@npm:^11.0.1":
-  version: 11.0.1
-  resolution: "glob@npm:11.0.1"
+  version: 11.0.2
+  resolution: "glob@npm:11.0.2"
   dependencies:
     foreground-child: "npm:^3.1.0"
     jackspeak: "npm:^4.0.1"
@@ -5026,7 +5026,7 @@ __metadata:
     path-scurry: "npm:^2.0.0"
   bin:
     glob: dist/esm/bin.mjs
-  checksum: 10c0/2b32588be52e9e90f914c7d8dec32f3144b81b84054b0f70e9adfebf37cd7014570489f2a79d21f7801b9a4bd4cca94f426966bfd00fb64a5b705cfe10da3a03
+  checksum: 10c0/49f91c64ca882d5e3a72397bd45a146ca91fd3ca53dafb5254daf6c0e83fc510d39ea66f136f9ac7ca075cdd11fbe9aaa235b28f743bd477622e472f4fdc0240
   languageName: node
   linkType: hard
 
@@ -7625,8 +7625,8 @@ __metadata:
   linkType: hard
 
 "sass@npm:^1.70.0":
-  version: 1.86.3
-  resolution: "sass@npm:1.86.3"
+  version: 1.87.0
+  resolution: "sass@npm:1.87.0"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^4.0.0"
@@ -7637,7 +7637,7 @@ __metadata:
       optional: true
   bin:
     sass: sass.js
-  checksum: 10c0/ba819a0828f732adf7a94cd8ca017bce92bc299ffb878836ed1da80a30612bfbbf56a5e42d6dff3ad80d919c2025afb42948fc7b54a7bc61a9a2d58e1e0c558a
+  checksum: 10c0/bd245faf14e4783dc547765350cf05817edaac0d6d6f6e4da8ab751f3eb3cc3873afd563c0ce416a24aa6c9c4e9023b05096447fc006660a01f76adffb54fbc6
   languageName: node
   linkType: hard
 
