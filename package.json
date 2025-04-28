@@ -32,14 +32,14 @@
         "typesafe-i18n": "5.26.2"
     },
     "devDependencies": {
-        "@cloudflare/workers-types": "4.20250424.0",
+        "@cloudflare/workers-types": "4.20250428.0",
         "@eslint/js": "9.25.1",
         "@prettier/plugin-xml": "3.4.1",
         "@sass-fairy/string": "1.3.1",
         "@types/eslint": "9.6.1",
         "@types/jquery": "3.5.32",
         "@types/mathjax": "0.0.40",
-        "@types/node": "22.15.0",
+        "@types/node": "22.15.2",
         "@types/tampermonkey": "5.0.4",
         "@vitejs/plugin-legacy": "6.1.0",
         "browserslist": "4.24.4",
@@ -48,7 +48,7 @@
         "esbuild-plugin-browserslist": "1.0.0",
         "eslint": "9.25.1",
         "eslint-config-prettier": "10.1.2",
-        "eslint-plugin-jsdoc": "50.6.10",
+        "eslint-plugin-jsdoc": "50.6.11",
         "eslint-plugin-jsx-a11y": "6.10.2",
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
@@ -71,7 +71,7 @@
         "userscript-meta": "1.0.1",
         "vite": "6.3.3",
         "vite-plugin-monkey": "5.0.8",
-        "wrangler": "4.13.1",
+        "wrangler": "4.13.2",
         "yarn": "1.22.22"
     },
     "engines": {
