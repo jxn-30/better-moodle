@@ -45,3 +45,10 @@ body:not(.limitedwidth) .secondary-navigation .navigation .nav-tabs {
     // close button should be on the right side and header content on the left
     flex-flow: row-reverse;
 }
+
+// we want the not-allowed cursor to appear on all disabled input types
+select[disabled],
+.custom-switch:has(input[disabled]),
+.custom-switch:has(input[disabled]) .custom-control-label {
+    cursor: not-allowed;
+}
