@@ -289,8 +289,15 @@ const loadContent = (semesterIndex = 0) => {
         });
     }
 
-    void getSemesterzeiten().then(
-        ({ [semesterIndex]: semester, length: semesterCount }) => {
+    void getSemesterzeiten()
+        .then(zeiten => {
+            currentSemester = Math.max(
+                0,
+                Math.min(zeiten.length - 1, currentSemester)
+            );
+            return [zeiten[currentSemester], zeiten.length] as const;
+        })
+        .then(([semester, semesterCount]) => {
             contentLoaded = true;
 
             const {
@@ -299,10 +306,10 @@ const loadContent = (semesterIndex = 0) => {
                 progress: semesterProgress,
             } = getEventDates(semester);
 
-            prevSemesterBtn.classList.toggle('disabled', semesterIndex === 0);
+            prevSemesterBtn.classList.toggle('disabled', currentSemester === 0);
             nextSemesterBtn.classList.toggle(
                 'disabled',
-                semesterIndex === semesterCount - 1
+                currentSemester === semesterCount - 1
             );
 
             tableBody.replaceChildren(
@@ -328,7 +335,7 @@ const loadContent = (semesterIndex = 0) => {
                 const toggle = (
                     <Switch
                         id={domID(
-                            `semesterzeiten-toggle-${semesterIndex}-${event.type}`
+                            `semesterzeiten-toggle-${currentSemester}-${event.type}`
                         )}
                         value={!hiddenBars.has(event.type)}
                     />
@@ -340,7 +347,7 @@ const loadContent = (semesterIndex = 0) => {
                         hiddenBars.add(event.type);
                     }
                     GM_setValue(hiddenBarsKey, Array.from(hiddenBars));
-                    loadProgressBar(semester, semesterIndex === 0);
+                    loadProgressBar(semester, currentSemester === 0);
                 });
                 if (event.type.startsWith('holiday-')) {
                     tableBody.append(
@@ -370,9 +377,9 @@ const loadContent = (semesterIndex = 0) => {
                 }
             });
 
-            loadProgressBar(semester, semesterIndex === 0);
+            loadProgressBar(semester, currentSemester === 0);
 
-            if (semesterIndex === 0) {
+            if (currentSemester === 0) {
                 block.element?.style.setProperty(
                     '--progress-percent',
                     semesterProgress.toString()
@@ -381,7 +388,7 @@ const loadContent = (semesterIndex = 0) => {
 
             block.setContent(
                 <>
-                    {semesterIndex === 0 ?
+                    {currentSemester === 0 ?
                         <div className="position-relative">{todaySpan}</div>
                     :   <></>}
                     <div className="d-flex align-items-center">
@@ -392,8 +399,7 @@ const loadContent = (semesterIndex = 0) => {
                 </>,
                 false
             );
-        }
-    );
+        });
 };
 
 /**
