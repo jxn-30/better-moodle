@@ -1,5 +1,5 @@
 import awaitImports from '@/imports';
-import { GithubLink } from '@/Components';
+import { getLoadingSpinner } from '@/DOM';
 import globalStyle from '!/index.module.scss';
 import { Modal } from '@/Modal';
 import { request } from '@/network';
@@ -19,7 +19,7 @@ import {
     PREFIX,
     rawGithubPath,
 } from '@/helpers';
-import { getLoadingSpinner, readyCallback } from '@/DOM';
+import { GithubLink, NavbarItem, type NavbarItemComponent } from '@/Components';
 import {
     highlightNewSettings as highlightNewSettingsSetting,
     newSettingsTooltip as newSettingsTooltipSetting,
@@ -49,7 +49,7 @@ const SettingsBtnIcon = (
     <i className="fa fa-gears fa-fw" role="img" title={settingsBtnTitle}></i>
 ) as HTMLElement;
 const SettingsBtn = (
-    <div>
+    <NavbarItem order={999}>
         <div
             id={settingsStyle.openSettingsBtn}
             role="button"
@@ -59,18 +59,14 @@ const SettingsBtn = (
         >
             {SettingsBtnIcon}
         </div>
-    </div>
-) as HTMLDivElement;
+    </NavbarItem>
+) as NavbarItemComponent;
 const UpdateAvailableBadge = (
     <div className="count-container"></div>
 ) as HTMLDivElement;
 
 // append the Button to the navbar
-readyCallback(() =>
-    document
-        .querySelector('#usernavigation .usermenu-container')
-        ?.before(SettingsBtn)
-);
+SettingsBtn.put();
 // endregion
 
 // region changelog button

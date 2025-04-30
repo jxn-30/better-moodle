@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { FeatureGroupID } from './FeatureGroup';
 import { FeatureID } from './Feature';
-import { getLoadingSpinner } from './DOM';
 import globalStyle from '!/index.module.scss';
 import type { JSX } from 'jsx-dom';
 import { requirePromise } from './require.js';
@@ -9,12 +8,14 @@ import { SettingTranslations } from './Setting';
 import { SimpleReady } from './CanBeReady';
 import sliderStyle from '!/settings/SliderSetting.module.scss';
 import { stringify } from '../i18n/i18n';
+import { getLoadingSpinner, ready } from './DOM';
 import { githubPath, htmlToElements, mdToHtml, PREFIX } from './helpers';
 
 type IntrinsicElements = JSX.IntrinsicElements;
 type Anchor = IntrinsicElements['a'];
 type Input = IntrinsicElements['input'];
 type HTMLFieldSet = IntrinsicElements['fieldset'];
+type HTMLDiv = IntrinsicElements['div'];
 
 // region GithubLink
 interface GithubLinkProps extends Anchor {
@@ -55,6 +56,51 @@ export const GithubLink = ({
         {children}
     </a>
 );
+// endregion
+
+// region
+interface NavbarItemProps extends HTMLDiv {
+    order: number;
+}
+export interface NavbarItemComponent extends HTMLDivElement {
+    put(): void;
+}
+
+/**
+ * @param root0
+ * @param root0.order
+ * @param root0.children
+ * @param root0.className
+ * @param root0.style
+ */
+export const NavbarItem = ({
+    order,
+    children,
+    className,
+    ...props
+}: NavbarItemProps) => {
+    const item = (
+        <div
+            className={classNames(className, globalStyle.navbarItem)}
+            {...props}
+        >
+            {children}
+        </div>
+    ) as NavbarItemComponent;
+    item.style.setProperty('order', order.toString());
+
+    Object.defineProperty(item, 'put', {
+        /**
+         *
+         */
+        value: () =>
+            ready().then(() =>
+                document.getElementById('usernavigation')?.append(item)
+            ),
+    });
+
+    return item;
+};
 // endregion
 
 // region Settings inputs

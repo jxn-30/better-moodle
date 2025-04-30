@@ -9,6 +9,16 @@
     }
 }
 
+:local(.navbar-item) {
+    #usernavigation > :not(&) {
+        order: 0;
+
+        &.usermenu-container {
+            order: 1000;
+        }
+    }
+}
+
 :local(.shining) {
     // Add a little shining effect onto an element
     @media (prefers-reduced-motion: no-preference) {
