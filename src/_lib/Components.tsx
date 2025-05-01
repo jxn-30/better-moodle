@@ -67,11 +67,12 @@ export interface NavbarItemComponent extends HTMLDivElement {
 }
 
 /**
- * @param root0
- * @param root0.order
- * @param root0.children
- * @param root0.className
- * @param root0.style
+ * Creates an item that lives in the moodle navbar.
+ * @param attributes - the element attributes
+ * @param attributes.order - where to position this in the navbar, should be 1 ≤ order ≤ 998 for best results
+ * @param attributes.children - children for this navbar item
+ * @param attributes.className - additional classes
+ * @returns the navbarItem
  */
 export const NavbarItem = ({
     order,
@@ -91,7 +92,8 @@ export const NavbarItem = ({
 
     Object.defineProperty(item, 'put', {
         /**
-         *
+         * Appends the element to the navbar
+         * @returns void
          */
         value: () =>
             ready().then(() =>
