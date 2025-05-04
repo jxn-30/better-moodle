@@ -29,6 +29,7 @@
             "matchPackageNames": [
                 "@babel/*",
                 "babel-plugin-polyfill-corejs3",
+                "browserslist",
                 "core-js",
                 "core-js-compat"
             ],
