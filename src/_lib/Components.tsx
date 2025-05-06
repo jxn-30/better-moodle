@@ -198,6 +198,23 @@ export const Switch = ({ id, value }: SwitchComponent['props']): Switch => {
 };
 // endregion
 
+// region Text input
+export type TextComponent = GenericSetting<string, HTMLInputElement>;
+type TextInput = TextComponent['element'];
+
+/**
+ * Creates a textual input component
+ * @param attributes - the input element attributes
+ * @param attributes.id - the id of the input element
+ * @param attributes.value - the initial value of the input element
+ * @returns the input element
+ */
+export const TextInput = ({ id, value }: TextComponent['props']): TextInput =>
+    (
+        <input id={id} className="form-control" type="text" value={value} />
+    ) as HTMLInputElement;
+// endregion
+
 // region Select
 export type SelectOption = string | { key: string; title: string };
 export type SelectComponent<

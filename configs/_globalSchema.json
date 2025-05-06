@@ -10,8 +10,18 @@
                     "description": "This is the schema file we are using.",
                     "type": "string"
                 },
+                "connects": {
+                    "additionalProperties": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "description": "These are connects, that are added conditionally, if a specific feature is included in the build.",
+                    "type": "object"
+                },
                 "defaultDisabled": {
-                    "description": "If a feature is specific to only a single moodle instance (e.g. a bugfix for instance modifications), it is a good idea to disable them in general and explicitely include them in the specific config.",
+                    "description": "If a feature is specific to only a single moodle instance (e.g. a bugfix for instance modifications), it is a good idea to disable them in general and explicitely include them in the specific config via includeNonDefaultFeatures.",
                     "items": {
                         "type": "string"
                     },
@@ -108,7 +118,8 @@
                 "$schema",
                 "defaultDisabled",
                 "enabledFrom",
-                "disabledFrom"
+                "disabledFrom",
+                "connects"
             ],
             "type": "object"
         }

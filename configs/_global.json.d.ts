@@ -12,6 +12,8 @@ export interface GlobalConfig {
     enabledFrom: VersionRecord<string[]>;
     /** For each version, we can specify features and featureGroups that should not be included if the moodle instance version is above the key, e.g. if a feature does not make sense for moodle versions since 405. */
     disabledFrom: VersionRecord<string[]>;
+    /** These are connects, that are added conditionally, if a specific feature is included in the build. */
+    connects: Record<string, string[]>;
 }
 
 /**

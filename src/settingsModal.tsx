@@ -40,6 +40,7 @@ const groups = [
     'speiseplan',
     'semesterzeiten',
     'bookmarks',
+    'weather',
 ] as const;
 
 // region trigger button for settings modal

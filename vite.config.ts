@@ -238,8 +238,21 @@ supportedBrowsers.forEach(browser => {
 });
 
 const uaRegexp = uaRegex({ allowHigherVersions: true });
+const connectsByFeatures = Object.entries(globalConfig.connects).flatMap(
+    ([feature, connects]) =>
+        (
+            allIncludedFeatureGroups.has(feature) ||
+            allIncludedFeatures.has(feature)
+        ) ?
+            connects
+        :   []
+);
 const connects = Array.from(
-    new Set(['better-moodle.dev', ...(config.connects ?? [])])
+    new Set([
+        'better-moodle.dev',
+        ...(config.connects ?? []),
+        ...connectsByFeatures,
+    ])
 );
 
 const GLOBAL_CONSTANTS = {

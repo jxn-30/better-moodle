@@ -10,6 +10,7 @@ import { de as navbarMarquee } from '../../features/navbarMarquee/i18n';
 import { de as semesterzeiten } from '../../features/semesterzeiten/i18n';
 import settings from './settings';
 import { de as speiseplan } from '../../features/speiseplan/i18n';
+import { de as weather } from '../../features/weather/i18n';
 
 export default {
     settings,
@@ -65,6 +66,7 @@ Die offiziell unterstützten Browser (Das Better-Moodle Core-Team empfiehlt Fire
         navbarMarquee,
         semesterzeiten,
         speiseplan,
+        weather,
     },
     numbers: {
         1: 'eins',

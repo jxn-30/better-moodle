@@ -10,6 +10,7 @@ import { en as semesterzeiten } from '../../features/semesterzeiten/i18n';
 import settings from './settings';
 import { en as speiseplan } from '../../features/speiseplan/i18n';
 import type { Translation } from '../i18n-types';
+import { en as weather } from '../../features/weather/i18n';
 
 export default {
     settings,
@@ -66,6 +67,7 @@ These Browsers are officially supported (Better-Moodle Core-Developers recommend
         navbarMarquee,
         semesterzeiten,
         speiseplan,
+        weather,
     },
     numbers: {
         1: 'one',

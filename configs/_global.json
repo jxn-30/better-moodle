@@ -6,5 +6,14 @@
     },
     "disabledFrom": {
         "402": ["courses.courseIndexDrawerControls"]
+    },
+    "connects": {
+        "weather": [
+            "api.open-meteo.com",
+            "api.openweathermap.org",
+            "api.pirateweather.net",
+            "weather.visualcrossing.com",
+            "wttr.in"
+        ]
     }
 }
