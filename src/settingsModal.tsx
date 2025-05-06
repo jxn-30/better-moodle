@@ -28,21 +28,6 @@ import {
 
 const seenSettings = GM_getValue<string[]>(STORAGE_V2_SEEN_SETTINGS_KEY, []);
 
-// we need this to have some kind of sorting in settings
-const groups = [
-    'general',
-    'darkmode',
-    'dashboard',
-    'courses',
-    'messages',
-    'navbarMarquee',
-    'linkIcons',
-    'speiseplan',
-    'semesterzeiten',
-    'bookmarks',
-    'weather',
-] as const;
-
 // region trigger button for settings modal
 const settingsBtnTitle = `Better-Moodle:\xa0${LL.settings.modal.title()}`;
 
@@ -423,7 +408,7 @@ const settingsModal = new Modal({
         <>
             {SupportWrapper}
             <form id={settingsStyle.settingsForm} className="mform">
-                {groups
+                {__FEATURE_GROUPS__
                     .map(group => featureGroups.get(group)?.FieldSet)
                     .filter(fieldset => fieldset !== undefined)}
             </form>

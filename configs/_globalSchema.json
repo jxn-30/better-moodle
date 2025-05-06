@@ -112,10 +112,18 @@
                         }
                     },
                     "type": "object"
+                },
+                "featureGroupOrder": {
+                    "description": "Defines the order in which the FeatureGroups are shown in settings. \"general\" will be added in any case at first group.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
                 }
             },
             "required": [
                 "$schema",
+                "featureGroupOrder",
                 "defaultDisabled",
                 "enabledFrom",
                 "disabledFrom",

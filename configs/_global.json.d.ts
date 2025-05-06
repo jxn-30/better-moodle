@@ -6,6 +6,8 @@ type VersionRecord<ValueType> = Partial<Record<MoodleVersion, ValueType>>;
 export interface GlobalConfig {
     /** This is the schema file we are using. */
     $schema: '_globalSchema.json';
+    /** Defines the order in which the FeatureGroups are shown in settings. "general" will be added in any case at first group. */
+    featureGroupOrder: string[];
     /** If a feature is specific to only a single moodle instance (e.g. a bugfix for instance modifications), it is a good idea to disable them in general and explicitely include them in the specific config via includeNonDefaultFeatures. */
     defaultDisabled: string[];
     /** For each version, we can specify features and featureGroups that should not be included if the moodle instance version is below the key, e.g. if a feature does not make sense for moodle versions before 405. */

@@ -1,5 +1,17 @@
 {
     "$schema": "_globalSchema.json",
+    "featureGroupOrder": [
+        "darkmode",
+        "dashboard",
+        "courses",
+        "messages",
+        "navbarMarquee",
+        "linkIcons",
+        "speiseplan",
+        "semesterzeiten",
+        "bookmarks",
+        "weather"
+    ],
     "defaultDisabled": [],
     "enabledFrom": {
         "405": ["courses.sectionCourseIndex"]

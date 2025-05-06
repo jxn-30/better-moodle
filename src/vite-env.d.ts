@@ -17,6 +17,7 @@ declare const __PREFIX__: string;
 declare const __UNI__: string;
 declare const __MOODLE_VERSION__: 400 | 401 | 402 | 403 | 404 | 405;
 declare const __MOODLE_URL__: string;
+declare const __FEATURE_GROUPS__: string[];
 declare const __USERSCRIPT_CONNECTS__: string[];
 declare const __ICS_PARSER_DOMAIN__: string;
 declare const __UA_REGEX__: string;

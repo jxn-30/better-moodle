@@ -255,6 +255,10 @@ const connects = Array.from(
     ])
 );
 
+const orderedFeatureGroups = globalConfig.featureGroupOrder.filter(group =>
+    allIncludedFeatureGroups.has(group)
+);
+
 const GLOBAL_CONSTANTS = {
     __GITHUB_USER__: JSON.stringify(config.github.user),
     __GITHUB_REPO__: JSON.stringify(config.github.repo),
@@ -265,6 +269,7 @@ const GLOBAL_CONSTANTS = {
     __UNI__: JSON.stringify(configFile),
     __MOODLE_VERSION__: JSON.stringify(config.moodleVersion),
     __MOODLE_URL__: JSON.stringify(config.moodleUrl),
+    __FEATURE_GROUPS__: JSON.stringify(['general', ...orderedFeatureGroups]),
     __USERSCRIPT_CONNECTS__: JSON.stringify(connects),
     __ICS_PARSER_DOMAIN__: JSON.stringify(icsParserConfig.routes[0].pattern),
     // hacky way for Regular expresions atm
