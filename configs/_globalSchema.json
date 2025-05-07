@@ -119,10 +119,15 @@
                         "type": "string"
                     },
                     "type": "array"
+                },
+                "prefix": {
+                    "description": "A global prefix that is used for internal IDs, classes etc to uniquely identify as part of Better-Moodle.",
+                    "type": "string"
                 }
             },
             "required": [
                 "$schema",
+                "prefix",
                 "featureGroupOrder",
                 "defaultDisabled",
                 "enabledFrom",

@@ -1,5 +1,6 @@
 {
     "$schema": "_globalSchema.json",
+    "prefix": "better-moodle",
     "featureGroupOrder": [
         "darkmode",
         "dashboard",

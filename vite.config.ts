@@ -16,7 +16,7 @@ import { dependencies, version } from './package.json';
 
 const _PERF_START = process.hrtime.bigint();
 
-const PREFIX = 'better-moodle';
+const PREFIX = globalConfig.prefix;
 
 const configFile =
     process.argv
