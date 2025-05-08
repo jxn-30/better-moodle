@@ -13,7 +13,9 @@
     #usernavigation > :not(&) {
         order: 0;
 
-        &.usermenu-container {
+        &.usermenu-container,
+        &.editmode-switch-form,
+        &.divider:has(+ .editmode-switch-form) {
             order: 1000;
         }
     }
