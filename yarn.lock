@@ -123,15 +123,15 @@ __metadata:
   linkType: hard
 
 "@humanwhocodes/retry@npm:^0.4.2":
-  version: 0.4.2
-  resolution: "@humanwhocodes/retry@npm:0.4.2"
-  checksum: 10c0/0235525d38f243bee3bf8b25ed395fbf957fb51c08adae52787e1325673071abe856c7e18e530922ed2dd3ce12ed82ba01b8cee0279ac52a3315fcdc3a69ef0c
+  version: 0.4.3
+  resolution: "@humanwhocodes/retry@npm:0.4.3"
+  checksum: 10c0/3775bb30087d4440b3f7406d5a057777d90e4b9f435af488a4923ef249e93615fb78565a85f173a186a076c7706a81d0d57d563a2624e4de2c5c9c66c486ce42
   languageName: node
   linkType: hard
 
 "@modelcontextprotocol/sdk@npm:^1.8.0":
-  version: 1.11.0
-  resolution: "@modelcontextprotocol/sdk@npm:1.11.0"
+  version: 1.11.1
+  resolution: "@modelcontextprotocol/sdk@npm:1.11.1"
   dependencies:
     content-type: "npm:^1.0.5"
     cors: "npm:^2.8.5"
@@ -143,7 +143,7 @@ __metadata:
     raw-body: "npm:^3.0.0"
     zod: "npm:^3.23.8"
     zod-to-json-schema: "npm:^3.24.1"
-  checksum: 10c0/10ce5ebe54b238df614051e0f2ef8f037fee6ceda7a870f5892c84efe21cbdcdb7e932d9be25e91982e0eb40e4c8ed33da9b0b2ca01df6baa76eb0cd5cb89ce6
+  checksum: 10c0/43ae2c8ebcc55a0f050f94fa325dfcb038325fd3b11d7c0ca2bc005d41a007f0039e90632f12ebf316e17d7a002233bc6e62f4d4626bf84edb24bd580c47671f
   languageName: node
   linkType: hard
 
@@ -660,11 +660,11 @@ __metadata:
   linkType: hard
 
 "eventsource@npm:^3.0.2":
-  version: 3.0.6
-  resolution: "eventsource@npm:3.0.6"
+  version: 3.0.7
+  resolution: "eventsource@npm:3.0.7"
   dependencies:
     eventsource-parser: "npm:^3.0.1"
-  checksum: 10c0/074d865ea1c7e29e3243f85a13306e89fca2d775b982dca03fa6bfa75c56827fa89cf1ab9e730db24bd6b104cbdcae074f2b37ba498874e9dd9710fbff4979bb
+  checksum: 10c0/c48a73c38f300e33e9f11375d4ee969f25cbb0519608a12378a38068055ae8b55b6e0e8a49c3f91c784068434efe1d9f01eb49b6315b04b0da9157879ce2f67d
   languageName: node
   linkType: hard
 
