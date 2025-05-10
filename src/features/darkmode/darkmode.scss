@@ -4,6 +4,19 @@
     .navbar.fixed-top .navbar-brand .logo,
     #logoimage {
         // Make the logo glow a little
-        filter: brightness(500%);
+        @if global.$UNI == 'cau' {
+            filter: grayscale(1)
+                contrast(200)
+                invert(18%)
+                sepia(93%)
+                saturate(2977%)
+                hue-rotate(204deg)
+                brightness(96%)
+                contrast(95%)
+                brightness(60%)
+                brightness(280%);
+        } @else {
+            filter: brightness(500%);
+        }
     }
 }
