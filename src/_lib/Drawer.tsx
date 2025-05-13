@@ -44,6 +44,23 @@ export default class Drawer {
     }
 
     /**
+     * sets an old alias
+     * this is only used to migrate the storage key
+     * @param alias - the old storage key without prefix and suffix
+     * @returns this
+     */
+    setAlias(alias: string) {
+        const undefinedValue = crypto.randomUUID();
+        const oldKey = `better-moodle-${alias}-sidebar-open`;
+        const oldValue = GM_getValue(oldKey, undefinedValue);
+        if (oldValue !== undefinedValue) {
+            GM_deleteValue(oldKey);
+            GM_setValue(this.#storageKey, oldValue);
+        }
+        return this;
+    }
+
+    /**
      * sets the side of the drawer
      * @param side - the side of the drawer
      * @returns this

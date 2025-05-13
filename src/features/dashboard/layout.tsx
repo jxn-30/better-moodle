@@ -214,6 +214,7 @@ const initCourseSidebar = () => {
     );
 
     void new Drawer('dashboard-courses')
+        .setAlias('dashboard-left')
         .setSide(Side.Left)
         .setIcon('graduation-cap')
         .create()
@@ -295,6 +296,7 @@ const onload = () => {
             .join(',');
 
         void new Drawer('dashboard-timeline')
+            .setAlias('dashboard-right')
             .setSide(Side.Right)
             .setIcon('calendar')
             .create()
