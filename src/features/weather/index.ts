@@ -39,11 +39,14 @@ const provider = new SelectSetting('provider', 'wttrIn', [
     'visualCrossing',
     'openWeatherMap',
     'pirateWeather',
-]).disabledIf(enabled, '!=', true);
+])
+    .addAlias('weatherDisplay.provider')
+    .disabledIf(enabled, '!=', true);
 
 const apiKeys = new Map<string, TextSetting>();
 ['visualCrossing', 'openWeatherMap', 'pirateWeather'].forEach(providerKey => {
     const setting = new TextSetting(`api.${providerKey}`, '')
+        .addAlias(`weatherDisplay.${providerKey}APIKey`)
         .disabledIf(enabled, '!=', true)
         .disabledIf(provider, '!=', providerKey);
     apiKeys.set(providerKey, setting);
