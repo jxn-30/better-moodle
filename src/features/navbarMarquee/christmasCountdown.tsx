@@ -3,6 +3,7 @@ import Feature from '@/Feature';
 import { LLF } from 'i18n';
 import { marquee } from './index';
 import { mdToHtml } from '@/helpers';
+import { ONE_DAY } from '@/times';
 
 const LL = LLF('navbarMarquee', 'christmasCountdown');
 
@@ -13,8 +14,6 @@ const enabled = new BooleanSetting('enabled', true)
 const countdownSpan = (<span>🎄</span>) as HTMLSpanElement;
 let countdownSpanClone: HTMLSpanElement;
 let timeout: ReturnType<typeof setTimeout>;
-
-const ONE_DAY = 24 * 60 * 60 * 1000;
 
 /**
  * Updates the countdown content based on current time

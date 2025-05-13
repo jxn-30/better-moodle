@@ -1,6 +1,7 @@
 import { BETTER_MOODLE_LANG } from 'i18n';
 import type { Dish } from '../speiseplan';
 import { getDocument } from '@/network';
+import { ONE_DAY } from '@/times';
 import type Parser from './index';
 
 const prices = {
@@ -8,7 +9,7 @@ const prices = {
     en: ['Students', 'University members', 'Guests'],
 };
 
-const todayTreshhold = new Date(Date.now() - 24 * 60 * 60 * 1000);
+const todayTreshhold = new Date(Date.now() - ONE_DAY);
 
 /**
  * Extracts the dishes from a day table

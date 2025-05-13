@@ -5,6 +5,7 @@ import { LLF } from 'i18n';
 import { marquee } from './index';
 import { SliderSetting } from '@/Settings/SliderSetting';
 import { timeToString } from '@/localeString';
+import { ONE_HOUR, ONE_MINUTE, ONE_SECOND } from '@/times';
 
 const enum FUZZYNESS {
     off,
@@ -60,7 +61,7 @@ const fuzzyTime = (now: Date): string => {
         const sectorSize = (
             { [FUZZYNESS['5min']]: 5, [FUZZYNESS['15min']]: 15 } as const
         )[fuzzyness];
-        const minutes = (now.getTime() % (60 * 60 * 1000)) / (60 * 1000);
+        const minutes = (now.getTime() % ONE_HOUR) / ONE_MINUTE;
         const section = (Math.floor((minutes + sectorSize / 2) / sectorSize) *
             sectorSize) as unknown as keyof typeof translations; // need this unknown conversion here
         return translations[section]({ hour: now.getHours() % 12 || 12 });
@@ -107,7 +108,7 @@ const onload = () => {
 
     if (cancelAnimation === null && (enabled.value || fuzzy.value !== 0)) {
         cancelAnimation = animate(
-            1000,
+            ONE_SECOND,
             () => {
                 const now = new Date();
 

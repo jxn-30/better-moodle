@@ -3,6 +3,7 @@ import { BooleanSetting } from '@/Settings/BooleanSetting';
 import classnames from 'classnames';
 import FeatureGroup from '@/FeatureGroup';
 import { type Locales } from '../../i18n/i18n-types';
+import { ONE_MINUTE } from '@/times';
 import style from './style.module.scss';
 import { Switch } from '@/Components';
 import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
@@ -126,11 +127,11 @@ toggleTableBtn.addEventListener('click', () =>
 const getEventDates = (event: Event | Semester) => {
     const start = new Date(event.start);
     if (event.startDateOnly) {
-        start.setTime(start.getTime() + start.getTimezoneOffset() * 60 * 1000);
+        start.setTime(start.getTime() + start.getTimezoneOffset() * ONE_MINUTE);
     }
     const end = new Date(event.end);
     if (event.endDateOnly) {
-        end.setTime(end.getTime() + end.getTimezoneOffset() * 60 * 1000);
+        end.setTime(end.getTime() + end.getTimezoneOffset() * ONE_MINUTE);
     }
     const duration = end.getTime() - start.getTime();
     const passed = Date.now() - start.getTime();

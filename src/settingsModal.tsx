@@ -19,6 +19,7 @@ import {
     PREFIX,
     rawGithubPath,
 } from '@/helpers';
+import { FIVE_MINUTES, ONE_DAY, ONE_SECOND } from '@/times';
 import { GithubLink, NavbarItem, type NavbarItemComponent } from '@/Components';
 import {
     highlightNewSettings as highlightNewSettingsSetting,
@@ -69,7 +70,7 @@ const ChangelogBtn = (
 );
 
 let changelogHtml: string;
-const changelogCache = 1000 * 60 * 5; // 5 minutes
+const changelogCache = FIVE_MINUTES;
 const changelogIdPrefix = 'changelog';
 
 /**
@@ -121,7 +122,7 @@ ChangelogBtn.addEventListener('click', e => {
 // region support button and information
 const supportPath = `/blob/${__GITHUB_BRANCH__}/support/${BETTER_MOODLE_LANG}.md`;
 let supportHtml: string;
-const supportCache = 1000 * 60 * 60 * 24; // 24 hours
+const supportCache = ONE_DAY;
 
 /**
  * Fetches the support document from the GitHub repo and converts it to HTML.
@@ -497,7 +498,10 @@ void settingsModal.getBody().then(([body]) => {
     body.querySelectorAll(
         `.fcontainer .${settingsStyle.newSettingBadge}`
     ).forEach(badge => newBadges.add(badge as HTMLSpanElement));
-    const debounced = debounce(() => markVisibleNewSettingsAsSeen(body), 1000);
+    const debounced = debounce(
+        () => markVisibleNewSettingsAsSeen(body),
+        ONE_SECOND
+    );
     body.addEventListener('scrollend', debounced);
 
     // initially check when modal is being shown
