@@ -2,7 +2,6 @@ import awaitImports from '@/imports';
 import { getLoadingSpinner } from '@/DOM';
 import globalStyle from '!/index.module.scss';
 import { Modal } from '@/Modal';
-import { request } from '@/network';
 import { requirePromise } from '@/require.js';
 import { lt as semverLt } from '@/semver';
 import settingsStyle from '!/settings.module.scss';
@@ -10,6 +9,7 @@ import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
 import TempStorage from '@/TempStorage';
 import type { ThemeBoostBootstrapTooltipClass } from '#/require.js/theme_boost/bootstrap/tooltip.d.ts';
 import { BETTER_MOODLE_LANG, LL } from 'i18n';
+import { cachedRequest, NETWORK_CACHE_KEY, request } from '@/network';
 import {
     debounce,
     htmlToElements,
@@ -69,8 +69,6 @@ const ChangelogBtn = (
     </GithubLink>
 );
 
-let changelogHtml: string;
-const changelogCache = FIVE_MINUTES;
 const changelogIdPrefix = 'changelog';
 
 /**
@@ -79,28 +77,18 @@ const changelogIdPrefix = 'changelog';
  * @returns the HTML string of the changelog
  */
 const getChangelogHtml = () =>
-    changelogHtml ?
-        Promise.resolve(changelogHtml)
-    :   request(
-            rawGithubPath(
-                `CHANGELOG.md?_=${Math.floor(Date.now() / changelogCache)}`
-            )
+    cachedRequest(rawGithubPath('CHANGELOG.md'), FIVE_MINUTES, 'text', md =>
+        mdToHtml(
+            md
+                // remove the title
+                .replace(/^#\s.*/g, '')
+                // add a horizontal rule before each heading except first
+                .trim()
+                .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n'),
+            3,
+            changelogIdPrefix
         )
-            .then(res => res.text())
-            .then(md =>
-                md
-                    // remove the title
-                    .replace(/^#\s.*/g, '')
-                    // add a horizontal rule before each heading except first
-                    .trim()
-                    .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n')
-            )
-            .then(md => mdToHtml(md, 3, changelogIdPrefix))
-            .then(html => {
-                changelogHtml = html;
-                setTimeout(() => (changelogHtml = ''), changelogCache);
-                return html;
-            });
+    );
 
 ChangelogBtn.addEventListener('click', e => {
     e.preventDefault();
@@ -121,8 +109,6 @@ ChangelogBtn.addEventListener('click', e => {
 
 // region support button and information
 const supportPath = `/blob/${__GITHUB_BRANCH__}/support/${BETTER_MOODLE_LANG}.md`;
-let supportHtml: string;
-const supportCache = ONE_DAY;
 
 /**
  * Fetches the support document from the GitHub repo and converts it to HTML.
@@ -130,19 +116,11 @@ const supportCache = ONE_DAY;
  * @returns the HTML string of the support document
  */
 const getSupportHtml = () =>
-    supportHtml ? supportHtml : (
-        request(
-            rawGithubPath(
-                `support/${BETTER_MOODLE_LANG}.md?_=${Math.floor(Date.now() / supportCache)}`
-            )
-        )
-            .then(res => res.text())
-            .then(md => mdToHtml(md, 3))
-            .then(html => {
-                supportHtml = html;
-                setTimeout(() => (supportHtml = ''), supportCache);
-                return html;
-            })
+    cachedRequest(
+        rawGithubPath(`support/${BETTER_MOODLE_LANG}.md`),
+        ONE_DAY,
+        'text',
+        md => mdToHtml(md, 3)
     );
 
 const SupportBtn = (
@@ -287,8 +265,10 @@ const ExportBtn = (
 
 ExportBtn.addEventListener('click', e => {
     e.preventDefault();
+    const unwantedKeys = new Set([NETWORK_CACHE_KEY]);
     const storage = Object.fromEntries(
         GM_listValues()
+            .filter(key => !unwantedKeys.has(key))
             .toSorted() // we want to sort the keys because why not
             .map(key => [key, GM_getValue(key)])
     );
