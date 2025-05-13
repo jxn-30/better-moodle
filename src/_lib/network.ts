@@ -64,8 +64,9 @@ export const cachedRequest = <
     preprocess?: (result: ResponseType) => ResultType,
     init?: RequestInit
 ) => {
-    const cache =
-        GM_getValue<NetworkCache<Method, ResultType>>(NETWORK_CACHE_KEY) ?? {urls: {}, processed: {}};
+    const cache = GM_getValue<NetworkCache<Method, ResultType>>(
+        NETWORK_CACHE_KEY
+    ) ?? { urls: {}, processed: {} };
 
     const cacheKey =
         preprocess ?
@@ -75,7 +76,7 @@ export const cachedRequest = <
     // We do have a non-outdated cached version
     // => return that
     if (
-        (cache.processed[cacheKey]?.lastUpdate ?? 0) + cacheDuration) >
+        (cache.processed[cacheKey]?.lastUpdate ?? 0) + cacheDuration >
         Date.now()
     ) {
         return Promise.resolve(cache.processed[cacheKey].value);
@@ -85,7 +86,7 @@ export const cachedRequest = <
     // => do the preprocessing, store and return the result
     if (
         preprocess &&
-        ((cache.urls[url]?.lastUpdate ?? 0) + cacheDuration) > Date.now()
+        (cache.urls[url]?.lastUpdate ?? 0) + cacheDuration > Date.now()
     ) {
         const result = preprocess(cache.urls[url].value);
         cache.processed[cacheKey] = {
