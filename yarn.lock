@@ -1162,10 +1162,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20250510.0":
-  version: 4.20250510.0
-  resolution: "@cloudflare/workers-types@npm:4.20250510.0"
-  checksum: 10c0/af47841937ebf8fc74034959ce36430ec186129167ce12b37c44a4b19dca2c5916f9b0fee8793efd60f6fe2695e6670db355e09a4c66759e72acc24d9954a02b
+"@cloudflare/workers-types@npm:4.20250513.0":
+  version: 4.20250513.0
+  resolution: "@cloudflare/workers-types@npm:4.20250513.0"
+  checksum: 10c0/9e7071c22cbcf7180cd41b7aa0378231e193b39f939dcbcb32fe8720bc3dc9ac574e4131a01bfa3ce38c986208842e68c22c22e68b3c57f72b8be82fa7076646
   languageName: node
   linkType: hard
 
@@ -8311,9 +8311,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:5.39.0":
-  version: 5.39.0
-  resolution: "terser@npm:5.39.0"
+"terser@npm:5.39.1":
+  version: 5.39.1
+  resolution: "terser@npm:5.39.1"
   dependencies:
     "@jridgewell/source-map": "npm:^0.3.3"
     acorn: "npm:^8.8.2"
@@ -8321,7 +8321,7 @@ __metadata:
     source-map-support: "npm:~0.5.20"
   bin:
     terser: bin/terser
-  checksum: 10c0/83326545ea1aecd6261030568b6191ccfa4cb6aa61d9ea41746a52479f50017a78b77e4725fbbc207c5df841ffa66a773c5ac33636e95c7ab94fe7e0379ae5c7
+  checksum: 10c0/d49e06dd4dd03661dac41f45c9cf187b2aa3fe80775235e838398c29311705169387c007f398ab44cd1bd8f89b14a1eea383feaa95c1cae29e3f5b6b606b6b37
   languageName: node
   linkType: hard
 
@@ -8740,7 +8740,7 @@ __metadata:
   resolution: "uzl-better-moodle@workspace:."
   dependencies:
     "@babel/compat-data": "npm:7.27.2"
-    "@cloudflare/workers-types": "npm:4.20250510.0"
+    "@cloudflare/workers-types": "npm:4.20250513.0"
     "@eslint/js": "npm:9.26.0"
     "@prettier/plugin-xml": "npm:3.4.1"
     "@sass-fairy/map": "npm:1.1.1"
@@ -8778,7 +8778,7 @@ __metadata:
     prettier: "npm:3.5.3"
     rrule: "npm:2.8.1"
     sass-embedded: "npm:1.88.0"
-    terser: "npm:5.39.0"
+    terser: "npm:5.39.1"
     ts-json-schema-generator: "npm:2.4.0"
     ts-node: "npm:10.9.2"
     typesafe-i18n: "npm:5.26.2"
