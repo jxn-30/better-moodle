@@ -36,10 +36,7 @@ interface NotActionLink {
 
 interface ActionLink {
     is_action_link: true;
-    actionattributes?: {
-        name: string;
-        value: string;
-    };
+    actionattributes?: { name: string; value: string };
     action_link_actions?: boolean;
     actions: { event: string; jsfunction: string; jsfunctionargs?: string }[];
 }

@@ -29,8 +29,5 @@ export default interface BlockMyOverviewRepository {
         limit: number;
         offset: number;
         sort: string;
-    }): Promise<{
-        nextoffset: number;
-        courses: Course[];
-    }>;
+    }): Promise<{ nextoffset: number; courses: Course[] }>;
 }

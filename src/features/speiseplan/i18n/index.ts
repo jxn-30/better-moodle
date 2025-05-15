@@ -21,9 +21,7 @@ export const de = {
             name: 'Sprache des Speiseplans',
             description:
                 'Hier kannst du bei Bedarf eine Sprache des Speiseplans erzwingen.',
-            options: {
-                auto: '🌐 Auto (Better-Moodle Sprache)',
-            },
+            options: { auto: '🌐 Auto (Better-Moodle Sprache)' },
         },
         canteen: {
             name: 'Mensa / Cafeteria',
@@ -53,9 +51,7 @@ export const en = {
         language: {
             name: 'Language of the menu',
             description: 'Here you can force a menu language if required',
-            options: {
-                auto: '🌐 Auto (Better-Moodle language)',
-            },
+            options: { auto: '🌐 Auto (Better-Moodle language)' },
         },
         canteen: {
             name: 'Mensa / Cafeteria',

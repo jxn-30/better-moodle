@@ -26,7 +26,4 @@ const amount = new SliderSetting('amount', 4, {
  */
 const onload = () => setAmount();
 
-export default Feature.register({
-    settings: new Set([amount]),
-    onload,
-});
+export default Feature.register({ settings: new Set([amount]), onload });

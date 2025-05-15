@@ -1,8 +1,5 @@
 export default interface BlockMyOverviewSelectors {
-    courseView: {
-        region: string;
-        regionContent: string;
-    };
+    courseView: { region: string; regionContent: string };
     FILTERS: string;
     FILTER_OPTION: string;
     DISPLAY_OPTION: string;
@@ -13,9 +10,5 @@ export default interface BlockMyOverviewSelectors {
     FAVOURITE_ICON: string;
     ICON_IS_FAVOURITE: string;
     ICON_NOT_FAVOURITE: string;
-    region: {
-        selectBlock: string;
-        clearIcon: string;
-        searchInput: string;
-    };
+    region: { selectBlock: string; clearIcon: string; searchInput: string };
 }

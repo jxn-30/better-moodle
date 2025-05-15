@@ -31,10 +31,7 @@ To find out what has changed since your last update, here is the relevant extrac
         title: 'Support for Better-Moodle',
         close: 'Thanks for the great support! 😊',
     },
-    language: {
-        flag: '🇬🇧',
-        name: 'English',
-    },
+    language: { flag: '🇬🇧', name: 'English' },
     browserCheck: {
         title: 'Better-Moodle: Unsupported Browser',
         browser: 'Browser',

@@ -110,9 +110,7 @@ type GenericSettingProps<Type, Props extends Record<string, unknown>> = Omit<
     Input,
     'value'
 > &
-    Props & {
-        value: Type;
-    };
+    Props & { value: Type };
 type GenericSettingElement<Type, Base extends JSX.Element> = Base & {
     value: Type;
     disabled: boolean;
@@ -223,9 +221,7 @@ export type SelectComponent<
 > = GenericSetting<
     string,
     Select<Group, Feat>,
-    {
-        options: SelectOption[] | Promise<SelectOption[]>;
-    }
+    { options: SelectOption[] | Promise<SelectOption[]> }
 >;
 type Select<
     Group extends FeatureGroupID,
@@ -344,12 +340,7 @@ export type SliderComponent<
 > = GenericSetting<
     number,
     Slider<Group, Feat, ST>,
-    {
-        min: number;
-        max: number;
-        step: number;
-        labels: number | string[];
-    }
+    { min: number; max: number; step: number; labels: number | string[] }
 >;
 type Slider<
     Group extends FeatureGroupID,

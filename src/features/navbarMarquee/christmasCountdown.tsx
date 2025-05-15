@@ -34,9 +34,7 @@ const updateCountdown = () => {
     const tillThen = christmas.getTime() - now.getTime();
     const daysTillThen = Math.floor(tillThen / ONE_DAY);
     countdownSpan.innerHTML = countdownSpanClone.innerHTML = mdToHtml(
-        LL.remaining({
-            days: daysTillThen,
-        }),
+        LL.remaining({ days: daysTillThen }),
         undefined,
         undefined,
         false

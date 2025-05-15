@@ -99,7 +99,4 @@ const onload = () =>
         Array.from(settings.values()).map(setting => setting.awaitReady())
     ).then(updateDarkReaderMode);
 
-export default FeatureGroup.register({
-    settings,
-    onload,
-});
+export default FeatureGroup.register({ settings, onload });

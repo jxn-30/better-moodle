@@ -14,12 +14,8 @@
         "weather"
     ],
     "defaultDisabled": [],
-    "enabledFrom": {
-        "405": ["courses.sectionCourseIndex"]
-    },
-    "disabledFrom": {
-        "402": ["courses.courseIndexDrawerControls"]
-    },
+    "enabledFrom": { "405": ["courses.sectionCourseIndex"] },
+    "disabledFrom": { "402": ["courses.courseIndexDrawerControls"] },
     "connects": {
         "weather": [
             "api.open-meteo.com",

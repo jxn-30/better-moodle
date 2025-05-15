@@ -22,10 +22,12 @@ const enabled = new BooleanSetting('enabled', true).addAlias(
 );
 const language = new SelectSetting('language', 'auto', [
     'auto',
-    ...languages.entries().map(([locale, { name, flag }]) => ({
-        key: locale,
-        title: `${flag} ${name}`,
-    })),
+    ...languages
+        .entries()
+        .map(([locale, { name, flag }]) => ({
+            key: locale,
+            title: `${flag} ${name}`,
+        })),
 ]).addAlias('speiseplan.language');
 
 /**
@@ -315,9 +317,7 @@ const openSpeiseplan = () => {
         )),
         // setting the footer here would remove the buttons 🤷
         removeOnClose: true,
-        buttons: {
-            cancel: `🍴\xa0${sLL().close()}`,
-        },
+        buttons: { cancel: `🍴\xa0${sLL().close()}` },
     }).show();
 
     void modal.getBody().then(([body]) => body.classList.add('mform'));

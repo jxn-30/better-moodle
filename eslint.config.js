@@ -61,9 +61,7 @@ export default [
             parserOptions: {
                 project: true,
                 tsconfigRootDir: import.meta.dirname,
-                ecmaFeatures: {
-                    globalReturn: true,
-                },
+                ecmaFeatures: { globalReturn: true },
             },
         },
         plugins: { 'jsx-a11y': pluginJsxA11y },
@@ -79,12 +77,7 @@ export default [
             'no-duplicate-imports': ['error', { includeExports: true }],
             'no-eval': 'error',
             'no-extra-bind': 'warn',
-            'no-implicit-coercion': [
-                'error',
-                {
-                    allow: ['!!'],
-                },
-            ],
+            'no-implicit-coercion': ['error', { allow: ['!!'] }],
             'no-implicit-globals': 'error',
             'no-implied-eval': 'warn',
             'no-lone-blocks': 'warn',
@@ -112,9 +105,7 @@ export default [
             'prefer-const': 'error',
             'prefer-regex-literals': [
                 'error',
-                {
-                    disallowRedundantWrapping: true,
-                },
+                { disallowRedundantWrapping: true },
             ],
             'prefer-rest-params': 'error',
             'prefer-spread': 'error',
@@ -132,13 +123,7 @@ export default [
                     ],
                 },
             ],
-            'yoda': [
-                'error',
-                'never',
-                {
-                    exceptRange: true,
-                },
-            ],
+            'yoda': ['error', 'never', { exceptRange: true }],
             'jsdoc/require-asterisk-prefix': 'warn',
             'jsdoc/no-blank-block-descriptions': 'warn',
             'jsdoc/no-blank-blocks': 'warn',
@@ -165,18 +150,12 @@ export default [
     {
         name: 'Allow node globals in vite config',
         files: ['vite.config.ts'],
-        languageOptions: {
-            globals: {
-                ...globals.node,
-            },
-        },
+        languageOptions: { globals: { ...globals.node } },
     },
     {
         name: 'set sourceType to module for eslint.config.js and postcss.config.ts',
         ...tsEslint.configs.disableTypeChecked,
         files: ['eslint.config.js', 'postcss.config.ts'],
-        languageOptions: {
-            sourceType: 'module',
-        },
+        languageOptions: { sourceType: 'module' },
     },
 ];

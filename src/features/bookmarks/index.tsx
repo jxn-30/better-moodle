@@ -368,16 +368,8 @@ const renderDropdown = () =>
                 text: bookmark.title,
             })),
             { divider: true },
-            {
-                url: '#addBookmark',
-                title: LL.add(),
-                text: LL.add(),
-            },
-            {
-                url: '#editBookmarks',
-                title: LL.edit(),
-                text: LL.edit(),
-            },
+            { url: '#addBookmark', title: LL.add(), text: LL.add() },
+            { url: '#editBookmarks', title: LL.edit(), text: LL.edit() },
         ],
     })
         .then(template =>

@@ -141,9 +141,7 @@ SupportBtn.addEventListener('click', e => {
             </>
         ),
         body: getSupportHtml(),
-        buttons: {
-            cancel: LL.support.close(),
-        },
+        buttons: { cancel: LL.support.close() },
         removeOnClose: true,
     }).show();
 });
@@ -194,10 +192,7 @@ UpdateBtn.addEventListener('click', e => {
             ).forEach(el => el.remove());
             return body;
         }),
-        buttons: {
-            save: LL.update.reload(),
-            cancel: LL.update.close(),
-        },
+        buttons: { save: LL.update.reload(), cancel: LL.update.close() },
         removeOnClose: true,
     })
         .onSave(() => window.location.reload())

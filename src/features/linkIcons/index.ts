@@ -36,7 +36,4 @@ const onload = () => {
     } else mailStyle?.remove();
 };
 
-export default FeatureGroup.register({
-    settings,
-    onload,
-});
+export default FeatureGroup.register({ settings, onload });

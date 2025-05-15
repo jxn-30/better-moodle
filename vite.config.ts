@@ -502,11 +502,7 @@ export default defineConfig({
                 'require': requires,
             },
             clientAlias: 'GM',
-            build: {
-                fileName,
-                metaFileName,
-                autoGrant: true,
-            },
+            build: { fileName, metaFileName, autoGrant: true },
         }),
         {
             name: 'mustache-loader',
@@ -596,10 +592,7 @@ export default defineConfig({
                 typeofs: true,
                 unused: true,
             },
-            format: {
-                comments: 'all',
-                ecma: 2020,
-            },
+            format: { comments: 'all', ecma: 2020 },
             mangle: false,
             ecma: 2020,
             keep_classnames: true,

@@ -31,10 +31,7 @@ Um zu erfahren, was sich seit deinem letzten Update getan hat, hier der relevant
         title: 'Hilfe zu Better-Moodle',
         close: 'Vielen Dank für die Hilfe! 😊',
     },
-    language: {
-        flag: '🇩🇪',
-        name: 'Deutsch',
-    },
+    language: { flag: '🇩🇪', name: 'Deutsch' },
     browserCheck: {
         title: 'Better-Moodle: Browser nicht unterstützt',
         browser: 'Browser',

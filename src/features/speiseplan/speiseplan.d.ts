@@ -5,12 +5,7 @@ export interface Dish {
     additives: string[];
     types: string[];
     prices: number[];
-    co2:
-        | {
-              stars: number;
-              emission: number;
-          }
-        | false;
+    co2: { stars: number; emission: number } | false;
 }
 
 export interface Speiseplan {
