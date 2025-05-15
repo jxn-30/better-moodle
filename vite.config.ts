@@ -10,6 +10,7 @@ import globalConfig from './configs/_global.json';
 import icsParserConfig from './ics-parser/wrangler.json';
 import legacy from '@vitejs/plugin-legacy';
 import monkey from 'vite-plugin-monkey';
+import pluginTerser from '@rollup/plugin-terser';
 import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
 import { getUserAgentRegex as uaRegex } from 'browserslist-useragent-regexp';
 import { dependencies, version } from './package.json';
@@ -573,6 +574,37 @@ export default defineConfig({
                 ]);
             },
         },
+        pluginTerser({
+            module: true,
+            compress: {
+                defaults: false,
+                collapse_vars: true,
+                computed_props: true,
+                dead_code: true,
+                directives: true,
+                evaluate: true,
+                keep_classnames: true,
+                keep_fnames: true,
+                keep_infinity: true,
+                // lhs_constants: true, // does not exist in terser types?
+                loops: true,
+                passes: 5,
+                properties: true,
+                reduce_vars: true,
+                side_effects: true,
+                switches: true,
+                typeofs: true,
+                unused: true,
+            },
+            format: {
+                comments: 'all',
+                ecma: 2020,
+            },
+            mangle: false,
+            ecma: 2020,
+            keep_classnames: true,
+            keep_fnames: true,
+        }),
     ],
 });
 
