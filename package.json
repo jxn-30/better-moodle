@@ -16,7 +16,7 @@
         "build": "yarn prebuild && vite build -- --config=${0} && yarn postbuild",
         "build:uzl": "yarn build uzl",
         "build:cau": "yarn build cau",
-        "postbuild": "yarn lint:fix:dist && yarn prettier:dist",
+        "postbuild": "yarn prettier:dist && yarn lint:fix:dist && yarn prettier:dist",
         "preview": "vite preview",
         "i18n:watch": "typesafe-i18n",
         "i18n:once": "typesafe-i18n --no-watch",

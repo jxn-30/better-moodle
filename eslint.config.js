@@ -155,7 +155,11 @@ export default [
     {
         name: 'set sourceType to module for eslint.config.js and postcss.config.ts',
         ...tsEslint.configs.disableTypeChecked,
-        files: ['eslint.config.js', 'postcss.config.ts'],
+        files: [
+            'eslint.config.js',
+            'eslint.userscript.config.js',
+            'postcss.config.ts',
+        ],
         languageOptions: { sourceType: 'module' },
     },
 ];
