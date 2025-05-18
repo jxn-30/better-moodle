@@ -5,10 +5,12 @@ import { de as darkmode } from '../../features/darkmode/i18n';
 import { de as dashboard } from '../../features/dashboard/i18n';
 import { de as general } from '../../features/general/i18n';
 import { de as linkIcons } from '../../features/linkIcons/i18n';
+import { de as messages } from '../../features/messages/i18n';
 import { de as navbarMarquee } from '../../features/navbarMarquee/i18n';
 import { de as semesterzeiten } from '../../features/semesterzeiten/i18n';
 import settings from './settings';
 import { de as speiseplan } from '../../features/speiseplan/i18n';
+import { de as weather } from '../../features/weather/i18n';
 
 export default {
     settings,
@@ -29,10 +31,7 @@ Um zu erfahren, was sich seit deinem letzten Update getan hat, hier der relevant
         title: 'Hilfe zu Better-Moodle',
         close: 'Vielen Dank für die Hilfe! 😊',
     },
-    language: {
-        flag: '🇩🇪',
-        name: 'Deutsch',
-    },
+    language: { flag: '🇩🇪', name: 'Deutsch' },
     browserCheck: {
         title: 'Better-Moodle: Browser nicht unterstützt',
         browser: 'Browser',
@@ -60,9 +59,11 @@ Die offiziell unterstützten Browser (Das Better-Moodle Core-Team empfiehlt Fire
         dashboard,
         general,
         linkIcons,
+        messages,
         navbarMarquee,
         semesterzeiten,
         speiseplan,
+        weather,
     },
     numbers: {
         1: 'eins',

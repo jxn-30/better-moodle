@@ -3,6 +3,7 @@ import { BooleanSetting } from '@/Settings/BooleanSetting';
 import classnames from 'classnames';
 import FeatureGroup from '@/FeatureGroup';
 import { type Locales } from '../../i18n/i18n-types';
+import { ONE_MINUTE } from '@/times';
 import style from './style.module.scss';
 import { Switch } from '@/Components';
 import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
@@ -126,11 +127,11 @@ toggleTableBtn.addEventListener('click', () =>
 const getEventDates = (event: Event | Semester) => {
     const start = new Date(event.start);
     if (event.startDateOnly) {
-        start.setTime(start.getTime() + start.getTimezoneOffset() * 60 * 1000);
+        start.setTime(start.getTime() + start.getTimezoneOffset() * ONE_MINUTE);
     }
     const end = new Date(event.end);
     if (event.endDateOnly) {
-        end.setTime(end.getTime() + end.getTimezoneOffset() * 60 * 1000);
+        end.setTime(end.getTime() + end.getTimezoneOffset() * ONE_MINUTE);
     }
     const duration = end.getTime() - start.getTime();
     const passed = Date.now() - start.getTime();
@@ -289,8 +290,15 @@ const loadContent = (semesterIndex = 0) => {
         });
     }
 
-    void getSemesterzeiten().then(
-        ({ [semesterIndex]: semester, length: semesterCount }) => {
+    void getSemesterzeiten()
+        .then(zeiten => {
+            currentSemester = Math.max(
+                0,
+                Math.min(zeiten.length - 1, currentSemester)
+            );
+            return [zeiten[currentSemester], zeiten.length] as const;
+        })
+        .then(([semester, semesterCount]) => {
             contentLoaded = true;
 
             const {
@@ -299,10 +307,10 @@ const loadContent = (semesterIndex = 0) => {
                 progress: semesterProgress,
             } = getEventDates(semester);
 
-            prevSemesterBtn.classList.toggle('disabled', semesterIndex === 0);
+            prevSemesterBtn.classList.toggle('disabled', currentSemester === 0);
             nextSemesterBtn.classList.toggle(
                 'disabled',
-                semesterIndex === semesterCount - 1
+                currentSemester === semesterCount - 1
             );
 
             tableBody.replaceChildren(
@@ -328,7 +336,7 @@ const loadContent = (semesterIndex = 0) => {
                 const toggle = (
                     <Switch
                         id={domID(
-                            `semesterzeiten-toggle-${semesterIndex}-${event.type}`
+                            `semesterzeiten-toggle-${currentSemester}-${event.type}`
                         )}
                         value={!hiddenBars.has(event.type)}
                     />
@@ -340,7 +348,7 @@ const loadContent = (semesterIndex = 0) => {
                         hiddenBars.add(event.type);
                     }
                     GM_setValue(hiddenBarsKey, Array.from(hiddenBars));
-                    loadProgressBar(semester, semesterIndex === 0);
+                    loadProgressBar(semester, currentSemester === 0);
                 });
                 if (event.type.startsWith('holiday-')) {
                     tableBody.append(
@@ -370,9 +378,9 @@ const loadContent = (semesterIndex = 0) => {
                 }
             });
 
-            loadProgressBar(semester, semesterIndex === 0);
+            loadProgressBar(semester, currentSemester === 0);
 
-            if (semesterIndex === 0) {
+            if (currentSemester === 0) {
                 block.element?.style.setProperty(
                     '--progress-percent',
                     semesterProgress.toString()
@@ -381,7 +389,7 @@ const loadContent = (semesterIndex = 0) => {
 
             block.setContent(
                 <>
-                    {semesterIndex === 0 ?
+                    {currentSemester === 0 ?
                         <div className="position-relative">{todaySpan}</div>
                     :   <></>}
                     <div className="d-flex align-items-center">
@@ -392,8 +400,7 @@ const loadContent = (semesterIndex = 0) => {
                 </>,
                 false
             );
-        }
-    );
+        });
 };
 
 /**

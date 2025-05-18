@@ -83,11 +83,13 @@ const expandRecuringEvent = (
     maxDate: Date
 ) => {
     const duration = event.end.getTime() - event.start.getTime();
-    return rawEvent.rrule.between(minDate, maxDate).map(start => ({
-        ...event,
-        start,
-        end: new Date(start.getTime() + duration),
-    }));
+    return rawEvent.rrule
+        .between(minDate, maxDate)
+        .map(start => ({
+            ...event,
+            start,
+            end: new Date(start.getTime() + duration),
+        }));
 };
 
 const rruleToText = (rrule, lang = 'en') =>

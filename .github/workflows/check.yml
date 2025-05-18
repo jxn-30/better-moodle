@@ -71,6 +71,7 @@ jobs:
         permissions:
             issues: write
             pull-requests: write
+            checks: write
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v4

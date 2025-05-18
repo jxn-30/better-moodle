@@ -1,4 +1,5 @@
 import Config from './require.js/core/config';
+import type MathJax from '@types/mathjax';
 
 declare global {
     const M: {
@@ -8,6 +9,7 @@ declare global {
             complete_js: [string][] | string[];
         };
     };
+    const MathJax: MathJax;
 }
 
 // we need an empty export, otherwise extending window object will not work.

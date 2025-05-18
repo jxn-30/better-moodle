@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { FeatureGroupID } from './FeatureGroup';
 import { FeatureID } from './Feature';
-import { getLoadingSpinner } from './DOM';
 import globalStyle from '!/index.module.scss';
 import type { JSX } from 'jsx-dom';
 import { requirePromise } from './require.js';
@@ -9,12 +8,14 @@ import { SettingTranslations } from './Setting';
 import { SimpleReady } from './CanBeReady';
 import sliderStyle from '!/settings/SliderSetting.module.scss';
 import { stringify } from '../i18n/i18n';
+import { getLoadingSpinner, ready } from './DOM';
 import { githubPath, htmlToElements, mdToHtml, PREFIX } from './helpers';
 
 type IntrinsicElements = JSX.IntrinsicElements;
 type Anchor = IntrinsicElements['a'];
 type Input = IntrinsicElements['input'];
 type HTMLFieldSet = IntrinsicElements['fieldset'];
+type HTMLDiv = IntrinsicElements['div'];
 
 // region GithubLink
 interface GithubLinkProps extends Anchor {
@@ -57,14 +58,59 @@ export const GithubLink = ({
 );
 // endregion
 
+// region
+interface NavbarItemProps extends HTMLDiv {
+    order: number;
+}
+export interface NavbarItemComponent extends HTMLDivElement {
+    put(): void;
+}
+
+/**
+ * Creates an item that lives in the moodle navbar.
+ * @param attributes - the element attributes
+ * @param attributes.order - where to position this in the navbar, should be 1 ≤ order ≤ 998 for best results
+ * @param attributes.children - children for this navbar item
+ * @param attributes.className - additional classes
+ * @returns the navbarItem
+ */
+export const NavbarItem = ({
+    order,
+    children,
+    className,
+    ...props
+}: NavbarItemProps) => {
+    const item = (
+        <div
+            className={classNames(className, globalStyle.navbarItem)}
+            {...props}
+        >
+            {children}
+        </div>
+    ) as NavbarItemComponent;
+    item.style.setProperty('order', order.toString());
+
+    Object.defineProperty(item, 'put', {
+        /**
+         * Appends the element to the navbar
+         * @returns void
+         */
+        value: () =>
+            ready().then(() =>
+                document.getElementById('usernavigation')?.append(item)
+            ),
+    });
+
+    return item;
+};
+// endregion
+
 // region Settings inputs
 type GenericSettingProps<Type, Props extends Record<string, unknown>> = Omit<
     Input,
     'value'
 > &
-    Props & {
-        value: Type;
-    };
+    Props & { value: Type };
 type GenericSettingElement<Type, Base extends JSX.Element> = Base & {
     value: Type;
     disabled: boolean;
@@ -150,6 +196,23 @@ export const Switch = ({ id, value }: SwitchComponent['props']): Switch => {
 };
 // endregion
 
+// region Text input
+export type TextComponent = GenericSetting<string, HTMLInputElement>;
+type TextInput = TextComponent['element'];
+
+/**
+ * Creates a textual input component
+ * @param attributes - the input element attributes
+ * @param attributes.id - the id of the input element
+ * @param attributes.value - the initial value of the input element
+ * @returns the input element
+ */
+export const TextInput = ({ id, value }: TextComponent['props']): TextInput =>
+    (
+        <input id={id} className="form-control" type="text" value={value} />
+    ) as HTMLInputElement;
+// endregion
+
 // region Select
 export type SelectOption = string | { key: string; title: string };
 export type SelectComponent<
@@ -158,9 +221,7 @@ export type SelectComponent<
 > = GenericSetting<
     string,
     Select<Group, Feat>,
-    {
-        options: SelectOption[] | Promise<SelectOption[]>;
-    }
+    { options: SelectOption[] | Promise<SelectOption[]> }
 >;
 type Select<
     Group extends FeatureGroupID,
@@ -279,12 +340,7 @@ export type SliderComponent<
 > = GenericSetting<
     number,
     Slider<Group, Feat, ST>,
-    {
-        min: number;
-        max: number;
-        step: number;
-        labels: number | string[];
-    }
+    { min: number; max: number; step: number; labels: number | string[] }
 >;
 type Slider<
     Group extends FeatureGroupID,

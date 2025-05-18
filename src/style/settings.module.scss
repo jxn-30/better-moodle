@@ -104,20 +104,15 @@
         @include mixins.media-down(lg) {
             position: unset !important;
 
-            > span {
+            > div > span {
                 padding: 0.25rem 0.5rem;
                 text-align: center;
             }
         }
 
         @include mixins.media-up(lg) {
-            > span {
-                margin-left: 0.5rem;
-                margin-right: 0.5rem;
-
-                &:last-of-type {
-                    margin-bottom: 0.25rem;
-                }
+            > div > span {
+                margin: 0 0.5rem;
             }
         }
     }

@@ -2,10 +2,7 @@ import type { FeatureTranslation } from '#/i18n';
 
 export const de = {
     settings: {
-        enabled: {
-            name: 'Uhr',
-            description: 'Eine ganz normale Digitaluhr',
-        },
+        enabled: { name: 'Uhr', description: 'Eine ganz normale Digitaluhr' },
         seconds: {
             name: 'Sekunden anzeigen',
             description:

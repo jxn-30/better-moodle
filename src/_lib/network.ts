@@ -22,6 +22,95 @@ export const request = (url: string, init?: RequestInit) => {
     }
 };
 
+export const NETWORK_CACHE_KEY = '_network_cache';
+
+type NetworkMethod =
+    | 'arrayBuffer'
+    | 'blob'
+    | 'bytes'
+    | 'formData'
+    | 'json'
+    | 'text';
+type NetworkResponseType<Method extends NetworkMethod> = Awaited<
+    ReturnType<Body[Method]>
+>;
+// it is known that this is not fully semantically correct, as values may have different types
+// however this makes types a lot easier and still provides a sufficient type safety
+interface NetworkCache<Method extends NetworkMethod, Processed = unknown> {
+    urls: Record<
+        string,
+        { lastUpdate: number; value: NetworkResponseType<Method> }
+    >;
+    processed: Record<string, { lastUpdate: number; value: Processed }>;
+}
+
+/**
+ * Caches the result of a request within GM storage.
+ * @param url - the url to make the fetch to
+ * @param cacheDuration - how long to cache the request in ms
+ * @param method - the body method to work with the response
+ * @param preprocess - an optional method to process the result
+ * @param init - the fetch init
+ * @returns the fetch response
+ */
+export const cachedRequest = <
+    ResultType,
+    Method extends NetworkMethod,
+    ResponseType extends NetworkResponseType<Method>,
+>(
+    url: string,
+    cacheDuration: number,
+    method: Method,
+    preprocess?: (result: ResponseType) => ResultType,
+    init?: RequestInit
+) => {
+    const cache = GM_getValue<NetworkCache<Method, ResultType>>(
+        NETWORK_CACHE_KEY
+    ) ?? { urls: {}, processed: {} };
+
+    const cacheKey =
+        preprocess ?
+            `${preprocess.length}:${preprocess.toString().length}:${url}`
+        :   url;
+
+    // We do have a non-outdated cached version
+    // => return that
+    if (
+        (cache.processed[cacheKey]?.lastUpdate ?? 0) + cacheDuration >
+        Date.now()
+    ) {
+        return Promise.resolve(cache.processed[cacheKey].value);
+    }
+
+    // We do have a non-outdated cached version of the base URL
+    // => do the preprocessing, store and return the result
+    if (
+        preprocess &&
+        (cache.urls[url]?.lastUpdate ?? 0) + cacheDuration > Date.now()
+    ) {
+        const result = preprocess(cache.urls[url].value);
+        cache.processed[cacheKey] = {
+            lastUpdate: cache.urls[url].lastUpdate,
+            value: result,
+        };
+        GM_setValue(NETWORK_CACHE_KEY, cache);
+        return Promise.resolve(result);
+    }
+
+    // We don't have any up-to-date cache at all
+    // => fetch, preprocess and store all results, return final result
+    return request(url, init)
+        .then(res => res[method]())
+        .then((result: ResponseType) => {
+            const now = Date.now();
+            cache.urls[url] = { lastUpdate: now, value: result };
+            const value = preprocess?.(result) ?? result;
+            cache.processed[cacheKey] = { lastUpdate: now, value };
+            GM_setValue(NETWORK_CACHE_KEY, cache);
+            return value;
+        });
+};
+
 /**
  * Fetches a document from the given path and returns it as a Document object
  * @param path - the path to fetch the document from

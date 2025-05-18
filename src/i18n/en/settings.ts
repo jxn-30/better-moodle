@@ -15,7 +15,5 @@ export default {
     requireReload:
         'The changes of this setting (*{name}*) will only take effect after reloading the page.  \nSaving the settings will therefore automatically reload the page.',
     saved: 'All settings have been successfully saved and applied. Have fun with your customised Better-Moodle! 😊',
-    tags: {
-        fun: 'Fun setting',
-    },
+    tags: { fun: 'Fun setting' },
 } satisfies Translation['settings'];

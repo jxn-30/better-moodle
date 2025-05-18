@@ -1,10 +1,28 @@
 {
     "$schema": "_globalSchema.json",
+    "prefix": "better-moodle",
+    "featureGroupOrder": [
+        "darkmode",
+        "dashboard",
+        "courses",
+        "messages",
+        "navbarMarquee",
+        "linkIcons",
+        "speiseplan",
+        "semesterzeiten",
+        "bookmarks",
+        "weather"
+    ],
     "defaultDisabled": [],
-    "enabledFrom": {
-        "405": ["courses.sectionCourseIndex"]
-    },
-    "disabledFrom": {
-        "402": ["courses.courseIndexDrawerControls"]
+    "enabledFrom": { "405": ["courses.sectionCourseIndex"] },
+    "disabledFrom": { "402": ["courses.courseIndexDrawerControls"] },
+    "connects": {
+        "weather": [
+            "api.open-meteo.com",
+            "api.openweathermap.org",
+            "api.pirateweather.net",
+            "weather.visualcrossing.com",
+            "wttr.in"
+        ]
     }
 }

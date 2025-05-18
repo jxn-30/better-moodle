@@ -34,9 +34,7 @@ export const en = {
             name: 'Filter the course dropdown',
             description:
                 'Which courses should be displayed in the dropdown? The filters on the "My courses" page are available.',
-            options: {
-                _sync: '[sync with filter on "my courses" page]',
-            },
+            options: { _sync: '[sync with filter on "my courses" page]' },
         },
         favouriteCoursesAtTop: {
             name: 'Show favourite courses at top',

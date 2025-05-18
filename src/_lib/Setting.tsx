@@ -24,9 +24,7 @@ export type SettingTranslations<
 
 type ComparisonCondition = '==' | '!=' | '>' | '<';
 
-const tags = {
-    fun: '🎡',
-} as const;
+const tags = { fun: '🎡' } as const;
 
 type Tags = typeof tags;
 export type Tag = keyof Tags;
@@ -394,11 +392,7 @@ export default abstract class Setting<
             require(['core/toast'] as const, ({ add }) =>
                 void add(
                     mdToHtml(LL.settings.requireReload({ name: this.title })),
-                    {
-                        type: 'info',
-                        autohide: false,
-                        closeButton: true,
-                    }
+                    { type: 'info', autohide: false, closeButton: true }
                 ));
             // remember that a reload is required
             TempStorage.settingsRequireReload = true;

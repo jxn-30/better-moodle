@@ -41,6 +41,7 @@ const getAndDelete = <Type>(key: string, defaultValue?: Type) => {
         if (oldSeenSettings.length) {
             GM_setValue(STORAGE_V2_SEEN_SETTINGS_KEY, oldSeenSettings);
         }
+
         // As said above, settings are migrating themselfes. But as language setting value is queried before the setting is able to register itself, we need to migrate it manually.
         const oldLanguage = getAndDelete<string>(
             'better-moodle-settings.general.language'
@@ -48,6 +49,13 @@ const getAndDelete = <Type>(key: string, defaultValue?: Type) => {
         if (oldLanguage) {
             GM_setValue(STORAGE_V2_LANGUAGE_KEY, oldLanguage);
         }
+
+        // We don't need these keys anymore in v2
+        GM_deleteValue('better-moodle-dashboard-sidebar-right-open'); // where does this even come from? drawer state keys look differently
+        GM_deleteValue('better-moodle-ever-opened-settings');
+        GM_deleteValue('better-moodle-myCourses.filterSyncChange'); // we use broadcast for communication in v2
+        GM_deleteValue('better-moodle-settings.dashboard.~layoutPlaceholder'); // does not exist in v2 anymore
+        GM_deleteValue('better-moodle-settings.darkmode.preview'); // v2 doesn't need this button anymore
     }
 
     GM_setValue(STORAGE_VERSION_KEY, CURRENT_STORAGE_VERSION);

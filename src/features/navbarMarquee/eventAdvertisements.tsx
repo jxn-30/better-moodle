@@ -4,6 +4,7 @@ import Feature from '@/Feature';
 import { type Locales } from '../../i18n/i18n-types';
 import { marquee } from './index';
 import { Modal } from '@/Modal';
+import { ONE_DAY } from '@/times';
 import { SliderSetting } from '@/Settings/SliderSetting';
 import style from './eventAdvertisements.module.scss';
 import { BETTER_MOODLE_LANG, LLF } from 'i18n';
@@ -131,7 +132,7 @@ const createEventSpan = (event: Event) => {
  */
 const reload = async () => {
     if (enabled.value) {
-        const noticeTimeMs = noticeTime.value * 24 * 60 * 60 * 1000;
+        const noticeTimeMs = noticeTime.value * ONE_DAY;
         const events = await getEvents();
         removeAll();
         events.forEach(event => {

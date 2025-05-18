@@ -1,8 +1,7 @@
 import awaitImports from '@/imports';
-import { GithubLink } from '@/Components';
+import { getLoadingSpinner } from '@/DOM';
 import globalStyle from '!/index.module.scss';
 import { Modal } from '@/Modal';
-import { request } from '@/network';
 import { requirePromise } from '@/require.js';
 import { lt as semverLt } from '@/semver';
 import settingsStyle from '!/settings.module.scss';
@@ -10,6 +9,7 @@ import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
 import TempStorage from '@/TempStorage';
 import type { ThemeBoostBootstrapTooltipClass } from '#/require.js/theme_boost/bootstrap/tooltip.d.ts';
 import { BETTER_MOODLE_LANG, LL } from 'i18n';
+import { cachedRequest, NETWORK_CACHE_KEY, request } from '@/network';
 import {
     debounce,
     htmlToElements,
@@ -19,7 +19,8 @@ import {
     PREFIX,
     rawGithubPath,
 } from '@/helpers';
-import { getLoadingSpinner, readyCallback } from '@/DOM';
+import { FIVE_MINUTES, ONE_DAY, ONE_SECOND } from '@/times';
+import { GithubLink, NavbarItem, type NavbarItemComponent } from '@/Components';
 import {
     highlightNewSettings as highlightNewSettingsSetting,
     newSettingsTooltip as newSettingsTooltipSetting,
@@ -28,19 +29,6 @@ import {
 
 const seenSettings = GM_getValue<string[]>(STORAGE_V2_SEEN_SETTINGS_KEY, []);
 
-// we need this to have some kind of sorting in settings
-const groups = [
-    'general',
-    'darkmode',
-    'dashboard',
-    'courses',
-    'navbarMarquee',
-    'linkIcons',
-    'speiseplan',
-    'semesterzeiten',
-    'bookmarks',
-] as const;
-
 // region trigger button for settings modal
 const settingsBtnTitle = `Better-Moodle:\xa0${LL.settings.modal.title()}`;
 
@@ -48,7 +36,7 @@ const SettingsBtnIcon = (
     <i className="fa fa-gears fa-fw" role="img" title={settingsBtnTitle}></i>
 ) as HTMLElement;
 const SettingsBtn = (
-    <div>
+    <NavbarItem order={999}>
         <div
             id={settingsStyle.openSettingsBtn}
             role="button"
@@ -58,18 +46,14 @@ const SettingsBtn = (
         >
             {SettingsBtnIcon}
         </div>
-    </div>
-) as HTMLDivElement;
+    </NavbarItem>
+) as NavbarItemComponent;
 const UpdateAvailableBadge = (
     <div className="count-container"></div>
 ) as HTMLDivElement;
 
 // append the Button to the navbar
-readyCallback(() =>
-    document
-        .querySelector('#usernavigation .usermenu-container')
-        ?.before(SettingsBtn)
-);
+SettingsBtn.put();
 // endregion
 
 // region changelog button
@@ -85,8 +69,6 @@ const ChangelogBtn = (
     </GithubLink>
 );
 
-let changelogHtml: string;
-const changelogCache = 1000 * 60 * 5; // 5 minutes
 const changelogIdPrefix = 'changelog';
 
 /**
@@ -95,28 +77,18 @@ const changelogIdPrefix = 'changelog';
  * @returns the HTML string of the changelog
  */
 const getChangelogHtml = () =>
-    changelogHtml ?
-        Promise.resolve(changelogHtml)
-    :   request(
-            rawGithubPath(
-                `CHANGELOG.md?_=${Math.floor(Date.now() / changelogCache)}`
-            )
+    cachedRequest(rawGithubPath('CHANGELOG.md'), FIVE_MINUTES, 'text', md =>
+        mdToHtml(
+            md
+                // remove the title
+                .replace(/^#\s.*/g, '')
+                // add a horizontal rule before each heading except first
+                .trim()
+                .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n'),
+            3,
+            changelogIdPrefix
         )
-            .then(res => res.text())
-            .then(md =>
-                md
-                    // remove the title
-                    .replace(/^#\s.*/g, '')
-                    // add a horizontal rule before each heading except first
-                    .trim()
-                    .replace(/(?<=\n)(?=^##\s)/gm, '---\n\n')
-            )
-            .then(md => mdToHtml(md, 3, changelogIdPrefix))
-            .then(html => {
-                changelogHtml = html;
-                setTimeout(() => (changelogHtml = ''), changelogCache);
-                return html;
-            });
+    );
 
 ChangelogBtn.addEventListener('click', e => {
     e.preventDefault();
@@ -137,8 +109,6 @@ ChangelogBtn.addEventListener('click', e => {
 
 // region support button and information
 const supportPath = `/blob/${__GITHUB_BRANCH__}/support/${BETTER_MOODLE_LANG}.md`;
-let supportHtml: string;
-const supportCache = 1000 * 60 * 60 * 24; // 24 hours
 
 /**
  * Fetches the support document from the GitHub repo and converts it to HTML.
@@ -146,19 +116,11 @@ const supportCache = 1000 * 60 * 60 * 24; // 24 hours
  * @returns the HTML string of the support document
  */
 const getSupportHtml = () =>
-    supportHtml ? supportHtml : (
-        request(
-            rawGithubPath(
-                `support/${BETTER_MOODLE_LANG}.md?_=${Math.floor(Date.now() / supportCache)}`
-            )
-        )
-            .then(res => res.text())
-            .then(md => mdToHtml(md, 3))
-            .then(html => {
-                supportHtml = html;
-                setTimeout(() => (supportHtml = ''), supportCache);
-                return html;
-            })
+    cachedRequest(
+        rawGithubPath(`support/${BETTER_MOODLE_LANG}.md`),
+        ONE_DAY,
+        'text',
+        md => mdToHtml(md, 3)
     );
 
 const SupportBtn = (
@@ -179,9 +141,7 @@ SupportBtn.addEventListener('click', e => {
             </>
         ),
         body: getSupportHtml(),
-        buttons: {
-            cancel: LL.support.close(),
-        },
+        buttons: { cancel: LL.support.close() },
         removeOnClose: true,
     }).show();
 });
@@ -193,16 +153,18 @@ const latestVersionEl = (
 const SupportWrapper = (
     <div
         id={settingsStyle.supportWrapper}
-        className="position-absolute z-index-1 d-flex flex-row flex-lg-column small card border-light mb-3"
+        className="position-absolute z-index-1 d-flex flex-row small card border-light mb-3"
     >
         {SupportBtn}
-        <span>
-            {LL.settings.modal.installedVersion()}:{' '}
-            <code>{GM_info.script.version}</code>
-        </span>
-        <span>
-            {LL.settings.modal.latestVersion()}: {latestVersionEl}
-        </span>
+        <div className="d-flex flex-row flex-lg-column align-items-center">
+            <span>
+                {LL.settings.modal.installedVersion()}:{' '}
+                <code>{GM_info.script.version}</code>
+            </span>
+            <span>
+                {LL.settings.modal.latestVersion()}: {latestVersionEl}
+            </span>
+        </div>
     </div>
 );
 
@@ -230,10 +192,7 @@ UpdateBtn.addEventListener('click', e => {
             ).forEach(el => el.remove());
             return body;
         }),
-        buttons: {
-            save: LL.update.reload(),
-            cancel: LL.update.close(),
-        },
+        buttons: { save: LL.update.reload(), cancel: LL.update.close() },
         removeOnClose: true,
     })
         .onSave(() => window.location.reload())
@@ -301,8 +260,10 @@ const ExportBtn = (
 
 ExportBtn.addEventListener('click', e => {
     e.preventDefault();
+    const unwantedKeys = new Set([NETWORK_CACHE_KEY]);
     const storage = Object.fromEntries(
         GM_listValues()
+            .filter(key => !unwantedKeys.has(key))
             .toSorted() // we want to sort the keys because why not
             .map(key => [key, GM_getValue(key)])
     );
@@ -423,7 +384,7 @@ const settingsModal = new Modal({
         <>
             {SupportWrapper}
             <form id={settingsStyle.settingsForm} className="mform">
-                {groups
+                {__FEATURE_GROUPS__
                     .map(group => featureGroups.get(group)?.FieldSet)
                     .filter(fieldset => fieldset !== undefined)}
             </form>
@@ -512,7 +473,10 @@ void settingsModal.getBody().then(([body]) => {
     body.querySelectorAll(
         `.fcontainer .${settingsStyle.newSettingBadge}`
     ).forEach(badge => newBadges.add(badge as HTMLSpanElement));
-    const debounced = debounce(() => markVisibleNewSettingsAsSeen(body), 1000);
+    const debounced = debounce(
+        () => markVisibleNewSettingsAsSeen(body),
+        ONE_SECOND
+    );
     body.addEventListener('scrollend', debounced);
 
     // initially check when modal is being shown

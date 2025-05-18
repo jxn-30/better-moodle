@@ -1,316 +1,287 @@
 {
-  "$ref": "#/definitions/Config",
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "definitions": {
-    "Config": {
-      "anyOf": [
-        {
-          "additionalProperties": false,
-          "properties": {
-            "$schema": {
-              "const": "_schema.json",
-              "description": "This is the schema file we are using.",
-              "type": "string"
-            },
-            "additionalAuthors": {
-              "description": "Additional authors for this uni-specific version of Better-Moodle. It is suggested to only list maintainers here instead of each single contributor.",
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "connects": {
-              "description": "Does this instance of Better-Moodle require a connection to the internet? If so, list the origins that need to be connected to. You do not have to add better-moodle.dev as it is included by standard.",
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "description": {
-              "additionalProperties": {
-                "type": "string"
-              },
-              "description": "A description of the userscript in multiple languages. It is suggested to provide at least english (\"\") and the native / primary language of the userbase.",
-              "type": "object"
-            },
-            "fixes": {
-              "description": "Should this instance of Better-Moodle load any additional fixes that are not included in every single instance? List the IDs of these fixes here.",
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "github": {
-              "additionalProperties": false,
-              "description": "Information about the GitHub repository this Better-Moodle lives on. This is used to generate download and update links as well as links to the repository.",
-              "properties": {
-                "branch": {
-                  "description": "The branch this instance ist developed on.",
-                  "type": "string"
+    "$ref": "#/definitions/Config",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "Config": {
+            "anyOf": [
+                {
+                    "additionalProperties": false,
+                    "properties": {
+                        "$schema": {
+                            "const": "_schema.json",
+                            "description": "This is the schema file we are using.",
+                            "type": "string"
+                        },
+                        "additionalAuthors": {
+                            "description": "Additional authors for this uni-specific version of Better-Moodle. It is suggested to only list maintainers here instead of each single contributor.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "connects": {
+                            "description": "Does this instance of Better-Moodle require a connection to the internet? If so, list the origins that need to be connected to. You do not have to add better-moodle.dev as it is included by standard.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "description": {
+                            "additionalProperties": { "type": "string" },
+                            "description": "A description of the userscript in multiple languages. It is suggested to provide at least english (\"\") and the native / primary language of the userbase.",
+                            "type": "object"
+                        },
+                        "fixes": {
+                            "description": "Should this instance of Better-Moodle load any additional fixes that are not included in every single instance? List the IDs of these fixes here.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "github": {
+                            "additionalProperties": false,
+                            "description": "Information about the GitHub repository this Better-Moodle lives on. This is used to generate download and update links as well as links to the repository.",
+                            "properties": {
+                                "branch": {
+                                    "description": "The branch this instance ist developed on.",
+                                    "type": "string"
+                                },
+                                "repo": {
+                                    "description": "The actual repository name.",
+                                    "type": "string"
+                                },
+                                "user": {
+                                    "description": "The GitHub user hosting the repository.",
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["user", "repo"],
+                            "type": "object"
+                        },
+                        "icon": {
+                            "description": "A URL that is resolved to the Better-Moodle icon.",
+                            "type": "string"
+                        },
+                        "includeNonDefaultFeatures": {
+                            "description": "Should this instance of Better-Moodle load any features or featureGroups that are not included by default? Features and feature groups can be defaultDisabled via global config. List the IDs of these features or feature groups here.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "moodleUrl": {
+                            "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
+                            "type": "string"
+                        },
+                        "moodleVersion": {
+                            "$ref": "#/definitions/MoodleVersion",
+                            "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen."
+                        },
+                        "namespace": {
+                            "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
+                            "type": "string"
+                        },
+                        "uniName": {
+                            "description": "The short name of the Uni. Used for the userscript name.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "$schema",
+                        "uniName",
+                        "namespace",
+                        "description",
+                        "github",
+                        "icon",
+                        "moodleUrl",
+                        "moodleVersion",
+                        "connects"
+                    ],
+                    "type": "object"
                 },
-                "repo": {
-                  "description": "The actual repository name.",
-                  "type": "string"
+                {
+                    "additionalProperties": false,
+                    "properties": {
+                        "$schema": {
+                            "const": "_schema.json",
+                            "description": "This is the schema file we are using.",
+                            "type": "string"
+                        },
+                        "additionalAuthors": {
+                            "description": "Additional authors for this uni-specific version of Better-Moodle. It is suggested to only list maintainers here instead of each single contributor.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "connects": {
+                            "description": "Does this instance of Better-Moodle require a connection to the internet? If so, list the origins that need to be connected to. You do not have to add better-moodle.dev as it is included by standard.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "description": {
+                            "additionalProperties": { "type": "string" },
+                            "description": "A description of the userscript in multiple languages. It is suggested to provide at least english (\"\") and the native / primary language of the userbase.",
+                            "type": "object"
+                        },
+                        "fixes": {
+                            "description": "Should this instance of Better-Moodle load any additional fixes that are not included in every single instance? List the IDs of these fixes here.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "github": {
+                            "additionalProperties": false,
+                            "description": "Information about the GitHub repository this Better-Moodle lives on. This is used to generate download and update links as well as links to the repository.",
+                            "properties": {
+                                "branch": {
+                                    "description": "The branch this instance ist developed on.",
+                                    "type": "string"
+                                },
+                                "repo": {
+                                    "description": "The actual repository name.",
+                                    "type": "string"
+                                },
+                                "user": {
+                                    "description": "The GitHub user hosting the repository.",
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["user", "repo"],
+                            "type": "object"
+                        },
+                        "icon": {
+                            "description": "A URL that is resolved to the Better-Moodle icon.",
+                            "type": "string"
+                        },
+                        "includeFeatures": {
+                            "description": "A list of features that should be included in this instance of Better-Moodle. If this is set, only the features listed here (+ general, which is always included) will be included.\n\nFeatures are included by their full ID `{group}.{feature}`. Specifying a group ID will include all features in that group.\n\nIf this is set, the `excludeFeatures` property cannot be used.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "includeNonDefaultFeatures": {
+                            "description": "Should this instance of Better-Moodle load any features or featureGroups that are not included by default? Features and feature groups can be defaultDisabled via global config. List the IDs of these features or feature groups here.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "moodleUrl": {
+                            "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
+                            "type": "string"
+                        },
+                        "moodleVersion": {
+                            "$ref": "#/definitions/MoodleVersion",
+                            "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen."
+                        },
+                        "namespace": {
+                            "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
+                            "type": "string"
+                        },
+                        "uniName": {
+                            "description": "The short name of the Uni. Used for the userscript name.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "$schema",
+                        "connects",
+                        "description",
+                        "github",
+                        "icon",
+                        "includeFeatures",
+                        "moodleUrl",
+                        "moodleVersion",
+                        "namespace",
+                        "uniName"
+                    ],
+                    "type": "object"
                 },
-                "user": {
-                  "description": "The GitHub user hosting the repository.",
-                  "type": "string"
+                {
+                    "additionalProperties": false,
+                    "properties": {
+                        "$schema": {
+                            "const": "_schema.json",
+                            "description": "This is the schema file we are using.",
+                            "type": "string"
+                        },
+                        "additionalAuthors": {
+                            "description": "Additional authors for this uni-specific version of Better-Moodle. It is suggested to only list maintainers here instead of each single contributor.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "connects": {
+                            "description": "Does this instance of Better-Moodle require a connection to the internet? If so, list the origins that need to be connected to. You do not have to add better-moodle.dev as it is included by standard.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "description": {
+                            "additionalProperties": { "type": "string" },
+                            "description": "A description of the userscript in multiple languages. It is suggested to provide at least english (\"\") and the native / primary language of the userbase.",
+                            "type": "object"
+                        },
+                        "excludeFeatures": {
+                            "description": "A list of features that should be excluded in this instance of Better-Moodle. If this is set, only the features not listed here will be included. If `general` is included in here, it will still be included as the feature group cannot be disabled.\n\nFeatures are excluded by their full ID `{group}.{feature}`. Specifying a group ID will exclude all features in that group.\n\nIf this is set, the `includeFeatures` property cannot be used.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "fixes": {
+                            "description": "Should this instance of Better-Moodle load any additional fixes that are not included in every single instance? List the IDs of these fixes here.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "github": {
+                            "additionalProperties": false,
+                            "description": "Information about the GitHub repository this Better-Moodle lives on. This is used to generate download and update links as well as links to the repository.",
+                            "properties": {
+                                "branch": {
+                                    "description": "The branch this instance ist developed on.",
+                                    "type": "string"
+                                },
+                                "repo": {
+                                    "description": "The actual repository name.",
+                                    "type": "string"
+                                },
+                                "user": {
+                                    "description": "The GitHub user hosting the repository.",
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["user", "repo"],
+                            "type": "object"
+                        },
+                        "icon": {
+                            "description": "A URL that is resolved to the Better-Moodle icon.",
+                            "type": "string"
+                        },
+                        "includeNonDefaultFeatures": {
+                            "description": "Should this instance of Better-Moodle load any features or featureGroups that are not included by default? Features and feature groups can be defaultDisabled via global config. List the IDs of these features or feature groups here.",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "moodleUrl": {
+                            "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
+                            "type": "string"
+                        },
+                        "moodleVersion": {
+                            "$ref": "#/definitions/MoodleVersion",
+                            "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen."
+                        },
+                        "namespace": {
+                            "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
+                            "type": "string"
+                        },
+                        "uniName": {
+                            "description": "The short name of the Uni. Used for the userscript name.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "$schema",
+                        "connects",
+                        "description",
+                        "excludeFeatures",
+                        "github",
+                        "icon",
+                        "moodleUrl",
+                        "moodleVersion",
+                        "namespace",
+                        "uniName"
+                    ],
+                    "type": "object"
                 }
-              },
-              "required": [
-                "user",
-                "repo"
-              ],
-              "type": "object"
-            },
-            "icon": {
-              "description": "A URL that is resolved to the Better-Moodle icon.",
-              "type": "string"
-            },
-            "moodleUrl": {
-              "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
-              "type": "string"
-            },
-            "moodleVersion": {
-              "$ref": "#/definitions/MoodleVersion",
-              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen."
-            },
-            "namespace": {
-              "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
-              "type": "string"
-            },
-            "uniName": {
-              "description": "The short name of the Uni. Used for the userscript name.",
-              "type": "string"
-            }
-          },
-          "required": [
-            "$schema",
-            "uniName",
-            "namespace",
-            "description",
-            "github",
-            "icon",
-            "moodleUrl",
-            "moodleVersion",
-            "connects"
-          ],
-          "type": "object"
+            ]
         },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "$schema": {
-              "const": "_schema.json",
-              "description": "This is the schema file we are using.",
-              "type": "string"
-            },
-            "additionalAuthors": {
-              "description": "Additional authors for this uni-specific version of Better-Moodle. It is suggested to only list maintainers here instead of each single contributor.",
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "connects": {
-              "description": "Does this instance of Better-Moodle require a connection to the internet? If so, list the origins that need to be connected to. You do not have to add better-moodle.dev as it is included by standard.",
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "description": {
-              "additionalProperties": {
-                "type": "string"
-              },
-              "description": "A description of the userscript in multiple languages. It is suggested to provide at least english (\"\") and the native / primary language of the userbase.",
-              "type": "object"
-            },
-            "fixes": {
-              "description": "Should this instance of Better-Moodle load any additional fixes that are not included in every single instance? List the IDs of these fixes here.",
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "github": {
-              "additionalProperties": false,
-              "description": "Information about the GitHub repository this Better-Moodle lives on. This is used to generate download and update links as well as links to the repository.",
-              "properties": {
-                "branch": {
-                  "description": "The branch this instance ist developed on.",
-                  "type": "string"
-                },
-                "repo": {
-                  "description": "The actual repository name.",
-                  "type": "string"
-                },
-                "user": {
-                  "description": "The GitHub user hosting the repository.",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "user",
-                "repo"
-              ],
-              "type": "object"
-            },
-            "icon": {
-              "description": "A URL that is resolved to the Better-Moodle icon.",
-              "type": "string"
-            },
-            "includeFeatures": {
-              "description": "A list of features that should be included in this instance of Better-Moodle. If this is set, only the features listed here (+ general, which is always included) will be included.\n\nFeatures are included by their full ID `{group}.{feature}`. Specifying a group ID will include all features in that group.\n\nIf this is set, the `excludeFeatures` property cannot be used.",
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "moodleUrl": {
-              "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
-              "type": "string"
-            },
-            "moodleVersion": {
-              "$ref": "#/definitions/MoodleVersion",
-              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen."
-            },
-            "namespace": {
-              "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
-              "type": "string"
-            },
-            "uniName": {
-              "description": "The short name of the Uni. Used for the userscript name.",
-              "type": "string"
-            }
-          },
-          "required": [
-            "$schema",
-            "connects",
-            "description",
-            "github",
-            "icon",
-            "includeFeatures",
-            "moodleUrl",
-            "moodleVersion",
-            "namespace",
-            "uniName"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "$schema": {
-              "const": "_schema.json",
-              "description": "This is the schema file we are using.",
-              "type": "string"
-            },
-            "additionalAuthors": {
-              "description": "Additional authors for this uni-specific version of Better-Moodle. It is suggested to only list maintainers here instead of each single contributor.",
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "connects": {
-              "description": "Does this instance of Better-Moodle require a connection to the internet? If so, list the origins that need to be connected to. You do not have to add better-moodle.dev as it is included by standard.",
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "description": {
-              "additionalProperties": {
-                "type": "string"
-              },
-              "description": "A description of the userscript in multiple languages. It is suggested to provide at least english (\"\") and the native / primary language of the userbase.",
-              "type": "object"
-            },
-            "excludeFeatures": {
-              "description": "A list of features that should be excluded in this instance of Better-Moodle. If this is set, only the features not listed here will be included. If `general` is included in here, it will still be included as the feature group cannot be disabled.\n\nFeatures are excluded by their full ID `{group}.{feature}`. Specifying a group ID will exclude all features in that group.\n\nIf this is set, the `includeFeatures` property cannot be used.",
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "fixes": {
-              "description": "Should this instance of Better-Moodle load any additional fixes that are not included in every single instance? List the IDs of these fixes here.",
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "github": {
-              "additionalProperties": false,
-              "description": "Information about the GitHub repository this Better-Moodle lives on. This is used to generate download and update links as well as links to the repository.",
-              "properties": {
-                "branch": {
-                  "description": "The branch this instance ist developed on.",
-                  "type": "string"
-                },
-                "repo": {
-                  "description": "The actual repository name.",
-                  "type": "string"
-                },
-                "user": {
-                  "description": "The GitHub user hosting the repository.",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "user",
-                "repo"
-              ],
-              "type": "object"
-            },
-            "icon": {
-              "description": "A URL that is resolved to the Better-Moodle icon.",
-              "type": "string"
-            },
-            "moodleUrl": {
-              "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
-              "type": "string"
-            },
-            "moodleVersion": {
-              "$ref": "#/definitions/MoodleVersion",
-              "description": "We haven't found a way to find out which moodle version we're currently running on. Setting a version here enables specific compatibility patches required for lower versions. If version is not known, the lowest realisticly possible value should be chosen."
-            },
-            "namespace": {
-              "description": "A namespace for the userscript to allow userscript managers to uniquely identify it.",
-              "type": "string"
-            },
-            "uniName": {
-              "description": "The short name of the Uni. Used for the userscript name.",
-              "type": "string"
-            }
-          },
-          "required": [
-            "$schema",
-            "connects",
-            "description",
-            "excludeFeatures",
-            "github",
-            "icon",
-            "moodleUrl",
-            "moodleVersion",
-            "namespace",
-            "uniName"
-          ],
-          "type": "object"
+        "MoodleVersion": {
+            "enum": [400, 401, 402, 403, 404, 405],
+            "type": "number"
         }
-      ]
-    },
-    "MoodleVersion": {
-      "enum": [
-        400,
-        401,
-        402,
-        403,
-        404,
-        405
-      ],
-      "type": "number"
     }
-  }
 }

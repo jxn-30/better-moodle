@@ -1,6 +1,7 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import classnames from 'classnames';
 import FeatureGroup from '@/FeatureGroup';
+import globalStyle from '!/index.module.scss';
 import { LLFG } from 'i18n';
 import { Modal } from '@/Modal';
 import { render } from '@/templates';
@@ -367,16 +368,8 @@ const renderDropdown = () =>
                 text: bookmark.title,
             })),
             { divider: true },
-            {
-                url: '#addBookmark',
-                title: LL.add(),
-                text: LL.add(),
-            },
-            {
-                url: '#editBookmarks',
-                title: LL.edit(),
-                text: LL.edit(),
-            },
+            { url: '#addBookmark', title: LL.add(), text: LL.add() },
+            { url: '#editBookmarks', title: LL.edit(), text: LL.edit() },
         ],
     })
         .then(template =>
@@ -388,15 +381,17 @@ const renderDropdown = () =>
                 )
             :   ready().then(() =>
                     putTemplate<[HTMLLIElement]>(
-                        '#usernavigation .usermenu-container',
+                        '#usernavigation',
                         template,
-                        'before'
+                        'append'
                     )
                 )
         )
         .then(([item]) => {
             navbarItem = item;
             navbarItem.id = style.dropdown;
+            navbarItem.classList.add(globalStyle.navbarItem);
+            navbarItem.style.setProperty('order', '900');
             navbarItem.style.setProperty(
                 '--empty-text',
                 JSON.stringify(LL.empty())

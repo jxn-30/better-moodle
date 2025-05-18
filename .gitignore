@@ -32,5 +32,6 @@ ics-parser/.wrangler
 
 # temp files
 .eslintcache
+.disteslintcache
 svg
 png

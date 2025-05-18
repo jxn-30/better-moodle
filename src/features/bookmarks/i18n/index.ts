@@ -16,10 +16,7 @@ export const de = {
     edit: 'Lesezeichen bearbeiten',
     empty: 'Es sind noch keine Lesezeichen angelegt.',
     savedNotification: 'Deine Lesezeichen wurden erfolgreich gespeichert! 😊',
-    modal: {
-        title: 'Bezeichnung',
-        url: 'Adresse',
-    },
+    modal: { title: 'Bezeichnung', url: 'Adresse' },
 } satisfies FeatureGroupTranslation;
 
 export const en = {
@@ -38,10 +35,7 @@ export const en = {
     edit: 'Edit bookmarks',
     empty: 'No bookmarks created yet.',
     savedNotification: 'Your bookmarks were saved successfully! 😊',
-    modal: {
-        title: 'Title',
-        url: 'Adress',
-    },
+    modal: { title: 'Title', url: 'Adress' },
 } as typeof de;
 
 export default { de, en };

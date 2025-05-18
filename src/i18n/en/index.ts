@@ -4,11 +4,13 @@ import { en as darkmode } from '../../features/darkmode/i18n';
 import { en as dashboard } from '../../features/dashboard/i18n';
 import { en as general } from '../../features/general/i18n';
 import { en as linkIcons } from '../../features/linkIcons/i18n';
+import { en as messages } from '../../features/messages/i18n';
 import { en as navbarMarquee } from '../../features/navbarMarquee/i18n';
 import { en as semesterzeiten } from '../../features/semesterzeiten/i18n';
 import settings from './settings';
 import { en as speiseplan } from '../../features/speiseplan/i18n';
 import type { Translation } from '../i18n-types';
+import { en as weather } from '../../features/weather/i18n';
 
 export default {
     settings,
@@ -29,10 +31,7 @@ To find out what has changed since your last update, here is the relevant extrac
         title: 'Support for Better-Moodle',
         close: 'Thanks for the great support! 😊',
     },
-    language: {
-        flag: '🇬🇧',
-        name: 'English',
-    },
+    language: { flag: '🇬🇧', name: 'English' },
     browserCheck: {
         title: 'Better-Moodle: Unsupported Browser',
         browser: 'Browser',
@@ -61,9 +60,11 @@ These Browsers are officially supported (Better-Moodle Core-Developers recommend
         dashboard,
         general,
         linkIcons,
+        messages,
         navbarMarquee,
         semesterzeiten,
         speiseplan,
+        weather,
     },
     numbers: {
         1: 'one',

@@ -49,5 +49,9 @@
         .progress-bar[data-toggle='tooltip']:hover {
             filter: brightness(1.5);
         }
+
+        .pagination .page-item.disabled {
+            cursor: not-allowed;
+        }
     }
 }

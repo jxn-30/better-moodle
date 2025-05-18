@@ -19,9 +19,7 @@ export const de = {
         'language': {
             name: 'Better-Moodle Sprache',
             description: 'Wähle die Sprache von Better-Moodle aus.',
-            options: {
-                auto: '🌐 Auto (Moodle Sprache)',
-            },
+            options: { auto: '🌐 Auto (Moodle Sprache)' },
         },
         'hideDisabledSettings': {
             name: 'Deaktivierte Einstellungen ausblenden',
@@ -67,9 +65,7 @@ export const en = {
         'language': {
             name: 'Better-Moodle Language',
             description: 'Choose the language of Better-Moodle.',
-            options: {
-                auto: '🌐 Auto (Moodle language)',
-            },
+            options: { auto: '🌐 Auto (Moodle language)' },
         },
         'hideDisabledSettings': {
             name: 'Hide disabled settings',

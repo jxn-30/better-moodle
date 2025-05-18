@@ -78,12 +78,7 @@ export const unit = (
     unit: Intl.NumberFormatOptions['unit'],
     format: Intl.NumberFormatOptions['unitDisplay'] = 'short',
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) =>
-    num.toLocaleString(lang, {
-        style: 'unit',
-        unit,
-        unitDisplay: format,
-    });
+) => num.toLocaleString(lang, { style: 'unit', unit, unitDisplay: format });
 
 /**
  * Prints a number localized to a given currency
