@@ -1,20 +1,14 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import FeatureGroup from '@/FeatureGroup';
+import { getHtml } from '@/DOM';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import { TextSetting } from '@/Settings/TextSetting';
+import { NavbarItem, type NavbarItemComponent } from '@/Components';
 
 const CITY =
     __UNI__ === 'cau' ?
-        {
-            name: 'kiel',
-            lat: 54.3388,
-            lon: 10.1225,
-        }
-    :   {
-            name: 'luebeck',
-            lat: 53.8655,
-            lon: 10.6866,
-        };
+        { display: 'Kiel', name: 'kiel', lat: 54.3388, lon: 10.1225 }
+    :   { display: 'Lübeck', name: 'luebeck', lat: 53.8655, lon: 10.6866 };
 
 const enabled = new BooleanSetting('enabled', false).addAlias(
     'weatherDisplay.show'
@@ -52,12 +46,65 @@ const apiKeys = new Map<string, TextSetting>();
     apiKeys.set(providerKey, setting);
 });
 
+const tooltipContent = <div></div>;
+
+const tooltip = (
+    <div>
+        <b>{CITY.display}</b>
+        {tooltipContent}
+    </div>
+);
+
+/**
+ * Sets the content of the navbar tooltip
+ * @param content - the content
+ */
+const setTooltipContent = (
+    content: Parameters<HTMLDivElement['append']>[0]
+) => {
+    delete navbarItem.dataset.originalTitle;
+
+    // empty the tooltip
+    tooltipContent.innerHTML = '';
+    tooltipContent.append(content);
+
+    navbarItem.title = getHtml(tooltip);
+};
+
+let navbarItem: NavbarItemComponent;
+
+/**
+ * Updates the weather using given provider.
+ */
+const updateWeather = () => {
+    if (!navbarItem) return;
+
+    // indicate that we're in a waiting state
+    setTooltipContent('⏳️');
+};
+
 /**
  * Reloads the weather feature. Starts/ends all update processes and adds/removes the elements from DOM
  */
 const reload = () => {
-    if (!enabled.value) return;
-    console.log(CITY);
+    if (!enabled.value) {
+        navbarItem?.remove();
+        return;
+    }
+
+    navbarItem ??= (
+        <NavbarItem
+            order={800}
+            data-toggle="tooltip"
+            data-placement="bottom"
+            data-html="true"
+        >
+            <div className="nav-link">🌈</div>
+        </NavbarItem>
+    ) as NavbarItemComponent;
+    navbarItem.put();
+
+    updateWeather();
 };
 
 export default FeatureGroup.register({
