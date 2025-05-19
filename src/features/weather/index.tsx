@@ -3,8 +3,8 @@ import FeatureGroup from '@/FeatureGroup';
 import { getHtml } from '@/DOM';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import { TextSetting } from '@/Settings/TextSetting';
-import { WeatherCondition } from './util/condition';
 import wttrIn from './providers/wttrIn';
+import { getWeatherEmoji, type WeatherCondition } from './util/condition';
 import { NavbarItem, type NavbarItemComponent } from '@/Components';
 
 const CITY =
@@ -21,7 +21,7 @@ export interface Weather {
     pressure: number;
     cloudCover: number;
     precipitation: number;
-    time: Date;
+    time: ReturnType<Date['toISOString']>; // needs to be an ISO string as otherwise GM_setValue cannot store it
 }
 
 const enabled = new BooleanSetting('enabled', false).addAlias(
@@ -60,8 +60,9 @@ const apiKeys = new Map<string, TextSetting>();
     apiKeys.set(providerKey, setting);
 });
 
-const tooltipContent = <div></div>;
+const navbarText = <div className="nav-link">🌈</div>;
 
+const tooltipContent = <div></div>;
 const tooltip = (
     <div>
         <b>{CITY.display}</b>
@@ -76,13 +77,11 @@ const tooltip = (
 const setTooltipContent = (
     content: Parameters<HTMLDivElement['append']>[0]
 ) => {
-    delete navbarItem.dataset.originalTitle;
-
     // empty the tooltip
     tooltipContent.innerHTML = '';
     tooltipContent.append(content);
 
-    navbarItem.title = getHtml(tooltip);
+    navbarItem.dataset.originalTitle = navbarItem.title = getHtml(tooltip);
 };
 
 let navbarItem: NavbarItemComponent;
@@ -90,14 +89,31 @@ let navbarItem: NavbarItemComponent;
 /**
  * Updates the weather using given provider.
  */
-const updateWeather = () => {
+const updateWeather = async () => {
     if (!navbarItem) return;
 
     // indicate that we're in a waiting state
+    navbarText.textContent = '🌈';
     setTooltipContent('⏳️');
 
+    let weather: Weather;
     if (provider.value === 'wttrIn') {
-        void wttrIn(CITY.name).then(console.log);
+        weather = await wttrIn(CITY.name);
+    } else return;
+    console.log(weather);
+
+    const weatherEmoji = getWeatherEmoji(weather.condition);
+
+    // set the navbar content
+    navbarText.textContent = weatherEmoji;
+
+    // TODO: Improve this with units and helper methods
+    if (tempInNav.value) {
+        if (feelLikeTempInNav.value) {
+            navbarText.textContent += ` ${weather.temperature.feel}`;
+        } else {
+            navbarText.textContent += ` ${weather.temperature.actual}`;
+        }
     }
 };
 
@@ -117,23 +133,26 @@ const reload = () => {
             data-placement="bottom"
             data-html="true"
         >
-            <div className="nav-link">🌈</div>
+            {navbarText}
         </NavbarItem>
     ) as NavbarItemComponent;
     navbarItem.put();
 
-    updateWeather();
+    void updateWeather();
 };
 
+const settings = new Set([
+    enabled,
+    tempInNav,
+    feelLikeTempInNav,
+    units,
+    provider,
+    ...apiKeys.values(),
+]);
+settings.forEach(setting => setting.onChange(reload));
+
 export default FeatureGroup.register({
-    settings: new Set([
-        enabled,
-        tempInNav,
-        feelLikeTempInNav,
-        units,
-        provider,
-        ...apiKeys.values(),
-    ]),
+    settings,
     onload: reload,
     onunload: reload,
 });
