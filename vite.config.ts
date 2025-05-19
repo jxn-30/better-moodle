@@ -1,5 +1,6 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
+import boxen from 'boxen';
 import browserslist from 'browserslist';
 import type Config from './configs/_config';
 import { createHash } from 'crypto';
@@ -285,6 +286,30 @@ const GLOBAL_CONSTANTS = {
 const fileName = `better-moodle-${configFile}.user.js`;
 const metaFileName = `better-moodle-${configFile}.meta.js`;
 
+const copyright = boxen(
+    `
+This is Better-Moodle; Version ${version}; Built for ${config.uniName} (${config.moodleUrl}).
+Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30), Yorik (@YorikHansen) and contributors.
+All rights reserved.
+Licensed under the MIT License (MIT).
+Source-Code: ${githubUrl}
+`.trim(),
+    {
+        borderStyle: {
+            topLeft: '/*!',
+            topRight: '*',
+            bottomLeft: ' *',
+            bottomRight: '*/',
+            top: '*',
+            bottom: '*',
+            left: '*',
+            right: '*',
+        },
+        title: 'Copyright ©',
+        padding: 1,
+    }
+).toString();
+
 export default defineConfig({
     esbuild: {
         jsxInject:
@@ -306,18 +331,6 @@ export default defineConfig({
                 })
             )
         ),
-        rollupOptions: {
-            output: {
-                intro: `
-/*! This is Better-Moodle; Version ${version}; Built for ${config.uniName} (${config.moodleUrl}).
- *  Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30), Yorik (@YorikHansen) and contributors.
- *  All rights reserved.
- *  Licensed under the MIT License (MIT).
- *  Source-Code: ${githubUrl}
- */
-`.trim(),
-            },
-        },
     },
     resolve: {
         alias: [
@@ -503,6 +516,22 @@ export default defineConfig({
             },
             clientAlias: 'GM',
             build: { fileName, metaFileName, autoGrant: true },
+            format: {
+                /**
+                 * Adds the copyright notice and a eslint global comment to the userscript
+                 * @param uOptions - information about the userscript, also containing the header
+                 * @returns the userscript header plus preamble
+                 */
+                generate(uOptions) {
+                    return `
+${uOptions.userscript}
+
+${copyright}
+
+/* global global, ActiveXObject, M, requirejs, DarkReader */
+`.trim();
+                },
+            },
         }),
         {
             name: 'mustache-loader',
