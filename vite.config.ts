@@ -286,29 +286,31 @@ const GLOBAL_CONSTANTS = {
 const fileName = `better-moodle-${configFile}.user.js`;
 const metaFileName = `better-moodle-${configFile}.meta.js`;
 
-const copyright = boxen(
-    `
+const copyrightContent = `
 This is Better-Moodle; Version ${version}; Built for ${config.uniName} (${config.moodleUrl}).
 Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30), Yorik (@YorikHansen) and contributors.
 All rights reserved.
 Licensed under the MIT License (MIT).
 Source-Code: ${githubUrl}
-`.trim(),
-    {
-        borderStyle: {
-            topLeft: '/*!',
-            topRight: '*',
-            bottomLeft: ' *',
-            bottomRight: '*/',
-            top: '*',
-            bottom: '*',
-            left: '*',
-            right: '*',
-        },
-        title: 'Copyright ©',
-        padding: 1,
-    }
-).toString();
+`.trim();
+const copyright = boxen(copyrightContent, {
+    borderStyle: {
+        topLeft: '/*!',
+        topRight: '*',
+        bottomLeft: ' *',
+        bottomRight: '*/',
+        top: '*',
+        bottom: '*',
+        left: '*',
+        right: '*',
+    },
+    title: 'Copyright ©',
+    padding: 1,
+    width: Math.min(
+        120, // The prettier max width for built file
+        Math.max(...copyrightContent.split(/\n/).map(l => l.length)) + 8 // Max line width + padding + border
+    ),
+}).toString();
 
 export default defineConfig({
     esbuild: {
