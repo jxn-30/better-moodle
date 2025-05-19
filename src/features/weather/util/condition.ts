@@ -1,4 +1,4 @@
-export enum WeatherCode {
+export enum WeatherCondition {
     UNKNOWN,
 
     CLEAR,

@@ -3,7 +3,7 @@ import FeatureGroup from '@/FeatureGroup';
 import { getHtml } from '@/DOM';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import { TextSetting } from '@/Settings/TextSetting';
-import { WeatherCode } from './util/codes';
+import { WeatherCondition } from './util/condition';
 import wttrIn from './providers/wttrIn';
 import { NavbarItem, type NavbarItemComponent } from '@/Components';
 
@@ -13,7 +13,7 @@ const CITY =
     :   { display: 'Lübeck', name: 'luebeck', lat: 53.8655, lon: 10.6866 };
 
 export interface Weather {
-    code: WeatherCode;
+    condition: WeatherCondition;
     temperature: { actual: number; feel: number };
     wind: { direction: number; speed: number };
     visibility: number;
