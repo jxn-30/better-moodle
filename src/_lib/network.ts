@@ -36,12 +36,22 @@ type NetworkResponseType<Method extends NetworkMethod> = Awaited<
 >;
 // it is known that this is not fully semantically correct, as values may have different types
 // however this makes types a lot easier and still provides a sufficient type safety
-interface NetworkCache<Method extends NetworkMethod, Processed = unknown> {
+export interface NetworkCache<
+    Method extends NetworkMethod = NetworkMethod,
+    Processed = unknown,
+> {
     urls: Record<
         string,
-        { lastUpdate: number; value: NetworkResponseType<Method> }
+        {
+            lastUpdate: number;
+            expires: number;
+            value: NetworkResponseType<Method>;
+        }
     >;
-    processed: Record<string, { lastUpdate: number; value: Processed }>;
+    processed: Record<
+        string,
+        { lastUpdate: number; expires: number; value: Processed }
+    >;
 }
 
 /**
@@ -90,6 +100,7 @@ export const cachedRequest = <
             const result = preprocess(cache.urls[url].value);
             cache.processed[cacheKey] = {
                 lastUpdate: cache.urls[url].lastUpdate,
+                expires: cache.urls[url].lastUpdate + cacheDuration,
                 value: result,
             };
             GM_setValue(NETWORK_CACHE_KEY, cache);
@@ -105,9 +116,10 @@ export const cachedRequest = <
         .then(res => res[method]())
         .then((result: ResponseType) => {
             const now = Date.now();
-            cache.urls[url] = { lastUpdate: now, value: result };
+            const expires = now + cacheDuration;
+            cache.urls[url] = { lastUpdate: now, expires, value: result };
             const value = preprocess?.(result) ?? result;
-            cache.processed[cacheKey] = { lastUpdate: now, value };
+            cache.processed[cacheKey] = { lastUpdate: now, expires, value };
             GM_setValue(NETWORK_CACHE_KEY, cache);
             return value;
         });
