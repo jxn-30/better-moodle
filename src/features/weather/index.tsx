@@ -3,12 +3,26 @@ import FeatureGroup from '@/FeatureGroup';
 import { getHtml } from '@/DOM';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import { TextSetting } from '@/Settings/TextSetting';
+import { WeatherCode } from './util/codes';
+import wttrIn from './providers/wttrIn';
 import { NavbarItem, type NavbarItemComponent } from '@/Components';
 
 const CITY =
     __UNI__ === 'cau' ?
         { display: 'Kiel', name: 'kiel', lat: 54.3388, lon: 10.1225 }
     :   { display: 'Lübeck', name: 'luebeck', lat: 53.8655, lon: 10.6866 };
+
+export interface Weather {
+    code: WeatherCode;
+    temperature: { actual: number; feel: number };
+    wind: { direction: number; speed: number };
+    visibility: number;
+    humidity: number;
+    pressure: number;
+    cloudCover: number;
+    precipitation: number;
+    time: Date;
+}
 
 const enabled = new BooleanSetting('enabled', false).addAlias(
     'weatherDisplay.show'
@@ -81,6 +95,10 @@ const updateWeather = () => {
 
     // indicate that we're in a waiting state
     setTooltipContent('⏳️');
+
+    if (provider.value === 'wttrIn') {
+        void wttrIn(CITY.name).then(console.log);
+    }
 };
 
 /**

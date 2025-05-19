@@ -63,7 +63,7 @@ export const cachedRequest = <
     method: Method,
     preprocess?: (result: ResponseType) => ResultType,
     init?: RequestInit
-) => {
+): Promise<ResultType> => {
     const cache = GM_getValue<NetworkCache<Method, ResultType>>(
         NETWORK_CACHE_KEY
     ) ?? { urls: {}, processed: {} };
@@ -76,25 +76,27 @@ export const cachedRequest = <
     // We do have a non-outdated cached version
     // => return that
     if (
+        preprocess &&
         (cache.processed[cacheKey]?.lastUpdate ?? 0) + cacheDuration >
-        Date.now()
+            Date.now()
     ) {
         return Promise.resolve(cache.processed[cacheKey].value);
     }
 
     // We do have a non-outdated cached version of the base URL
-    // => do the preprocessing, store and return the result
-    if (
-        preprocess &&
-        (cache.urls[url]?.lastUpdate ?? 0) + cacheDuration > Date.now()
-    ) {
-        const result = preprocess(cache.urls[url].value);
-        cache.processed[cacheKey] = {
-            lastUpdate: cache.urls[url].lastUpdate,
-            value: result,
-        };
-        GM_setValue(NETWORK_CACHE_KEY, cache);
-        return Promise.resolve(result);
+    if ((cache.urls[url]?.lastUpdate ?? 0) + cacheDuration > Date.now()) {
+        // => do the preprocessing, store and return the result
+        if (preprocess) {
+            const result = preprocess(cache.urls[url].value);
+            cache.processed[cacheKey] = {
+                lastUpdate: cache.urls[url].lastUpdate,
+                value: result,
+            };
+            GM_setValue(NETWORK_CACHE_KEY, cache);
+            return Promise.resolve(result);
+        }
+        // => no preprocessing needs to be done
+        else return Promise.resolve(cache.urls[url].value);
     }
 
     // We don't have any up-to-date cache at all
