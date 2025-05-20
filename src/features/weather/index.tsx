@@ -2,6 +2,7 @@ import { BooleanSetting } from '@/Settings/BooleanSetting';
 import FeatureGroup from '@/FeatureGroup';
 import { getHtml } from '@/DOM';
 import { SelectSetting } from '@/Settings/SelectSetting';
+import { stringify } from './util/units';
 import { TextSetting } from '@/Settings/TextSetting';
 import wttrIn from './providers/wttrIn';
 import { getWeatherEmoji, type WeatherCondition } from './util/condition';
@@ -60,6 +61,13 @@ const apiKeys = new Map<string, TextSetting>();
     apiKeys.set(providerKey, setting);
 });
 
+/**
+ * Gets the current unit system
+ * @returns the current unit system
+ */
+const currentUnit = () =>
+    units.value as unknown as 'metric' | 'scientific' | 'imperial';
+
 const navbarText = <div className="nav-link">🌈</div>;
 
 const tooltipContent = <div></div>;
@@ -110,9 +118,9 @@ const updateWeather = async () => {
     // TODO: Improve this with units and helper methods
     if (tempInNav.value) {
         if (feelLikeTempInNav.value) {
-            navbarText.textContent += ` ${weather.temperature.feel}`;
+            navbarText.textContent += ` ${stringify(weather.temperature.feel, 'temperature', currentUnit())}`;
         } else {
-            navbarText.textContent += ` ${weather.temperature.actual}`;
+            navbarText.textContent += ` ${stringify(weather.temperature.actual, 'temperature', currentUnit())}`;
         }
     }
 };
