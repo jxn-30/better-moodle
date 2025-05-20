@@ -25,7 +25,7 @@ const unitsImperial = {
     speed: 'miles-per-hour',
     distanceKm: 'miles',
     distanceMm: 'inch',
-    pressure: 'inHg',
+    pressure: 'inHg', // no supported unit
 } satisfies typeof unitsMetric;
 
 const units = {
@@ -38,58 +38,76 @@ const convertScientific = {
     /**
      * Converts a celsius temperature into a kelvin temperature
      * @param celsius - the celsius input
-     * @return the kelvin value
+     * @returns the kelvin value
      */
     temperature: (celsius: number) => celsius + 273.15,
     /**
      * Converts a degree into a radian
      * @param degree - the degree input
-     * @return the radian value
+     * @returns the radian value
      */
     angle: (degree: number) => (degree * Math.PI) / 180,
     /**
      * Converts a km/h value into a m/s value
      * @param kmh - the km/h input
-     * @return the m/s value
+     * @returns the m/s value
      */
     speed: (kmh: number) => (kmh * 1000) / 3600,
     /**
-     * @param km
+     * Converts a km value into a m value
+     * @param km - the km input
+     * @returns the m value
      */
     distanceKm: (km: number) => km * 1000,
     /**
-     * @param mm
+     * Converts a mm value into a m value
+     * @param mm - the mm input
+     * @returns the m value
      */
     distanceMm: (mm: number) => mm / 1000,
     /**
-     * @param hPa
+     * Converts a hPa value into a Pa value
+     * @param hPa - the hPa input
+     * @returns the Pa value
      */
     pressure: (hPa: number) => hPa * 100,
 };
 
 const convertImperial = {
     /**
-     * @param celsius
+     * Converts a celsius temperature into a fahrenheit temperature
+     * @param celsius - the celsius input
+     * @returns the fahrenheit value
      */
     temperature: (celsius: number) => (celsius * 9) / 5 + 32,
     /**
-     * @param degree
+     * Returns a degree
+     * @param degree - the degree input
+     * @returns the degree itself
      */
     angle: (degree: number) => degree,
     /**
-     * @param kmh
+     * Converts a km/h value into a mph value
+     * @param kmh - the km/h input
+     * @returns the mph value
      */
     speed: (kmh: number) => kmh / 1.609344,
     /**
-     * @param km
+     * Converts a km value into a miles value
+     * @param km - the km input
+     * @returns the miles value
      */
     distanceKm: (km: number) => km / 1.609344,
     /**
-     * @param mm
+     * Converts a mm value into an inches value
+     * @param mm - the mm input
+     * @returns the inches value
      */
     distanceMm: (mm: number) => mm / 25.4,
     /**
-     * @param hPa
+     * Converts a hPa value into a inHg value
+     * @param hPa - the hPa input
+     * @returns the inHg value
      */
     pressure: (hPa: number) => hPa * 0.02952998751,
 } satisfies typeof convertScientific;
@@ -100,9 +118,12 @@ const convert = {
 } as const;
 
 /**
- * @param metric
- * @param method
- * @param system
+ * Stringifies a number with a given unit according to locale specifications.
+ * Converts to another system if required
+ * @param metric - the number in metric units
+ * @param method - the conversion method and unit specification
+ * @param system - the system the number should be converted to
+ * @returns a converted, stringified and localized number with unit
  */
 export const stringify = (
     metric: number,
