@@ -244,7 +244,7 @@ export const mdlJSComplete = (action: string) => {
      * @returns void
      */
     const check = () => {
-        if (M.util.complete_js.flat().includes(action)) {
+        if (M.util?.complete_js.flat().includes(action)) {
             return resolve();
         }
         setTimeout(check, 100);
