@@ -54,6 +54,7 @@ export const de = {
                 'Ermöglicht das Umschalten zwischen der tatsächlichen Temperatur und der gefühlten  Temperatur.',
         },
     },
+    unknownWeather: 'Ich bin verwirrt, mir ist das Wetter nicht bekannt :(',
 } satisfies FeatureGroupTranslation;
 
 export const en = {
@@ -109,6 +110,7 @@ export const en = {
                 "Allows you to switch between the actual temperature and the 'feels like' temperature.",
         },
     },
+    unknownWeather: 'I am confused, the weather is unknown :(',
 } as typeof de;
 
 export default { de, en };

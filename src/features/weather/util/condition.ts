@@ -90,6 +90,15 @@ export const enum WeatherCondition {
     THUNDERY_OUTBREAKS_NEARBY,
 }
 
+/**
+ * Returns if a certain condition is unknown.
+ * We need this helper function to allow esbuild inline the enum
+ * @param condition - the condition to check
+ * @returns wether the condition is unknown
+ */
+export const isUnknownWeather = (condition: WeatherCondition) =>
+    condition === WeatherCondition.UNKNOWN;
+
 const conditionsByEmoji = new Map<string, Set<WeatherCondition>>([
     ['❓', new Set([WeatherCondition.UNKNOWN])],
 

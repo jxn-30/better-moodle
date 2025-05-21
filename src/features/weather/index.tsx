@@ -1,12 +1,19 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import FeatureGroup from '@/FeatureGroup';
 import { getHtml } from '@/DOM';
+import { LLFG } from 'i18n';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import { stringify } from './util/units';
 import { TextSetting } from '@/Settings/TextSetting';
 import wttrIn from './providers/wttrIn';
-import { getWeatherEmoji, type WeatherCondition } from './util/condition';
+import {
+    getWeatherEmoji,
+    isUnknownWeather,
+    type WeatherCondition,
+} from './util/condition';
 import { NavbarItem, type NavbarItemComponent } from '@/Components';
+
+const LL = LLFG('weather');
 
 const CITY =
     __UNI__ === 'cau' ?
@@ -114,6 +121,11 @@ const updateWeather = async () => {
 
     // set the navbar content
     navbarText.textContent = weatherEmoji;
+
+    if (isUnknownWeather(weather.condition)) {
+        setTooltipContent(`${weatherEmoji} ${LL.unknownWeather()}`);
+        return;
+    }
 
     // TODO: Improve this with units and helper methods
     if (tempInNav.value) {
