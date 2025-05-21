@@ -117,6 +117,11 @@ const convert = {
     imperial: convertImperial,
 } as const;
 
+const validUnits = Intl.supportedValuesOf('unit');
+const validUnitRegex = new RegExp(
+    `^(${validUnits.join('|')})(-per-(${validUnits.join('|')}))?$`
+);
+
 /**
  * Stringifies a number with a given unit according to locale specifications.
  * Converts to another system if required
@@ -133,7 +138,7 @@ export const stringify = (
     const converted =
         system === 'metric' ? metric : convert[system][method](metric);
     const unitStr = units[system][method];
-    if (Intl.supportedValuesOf('unit').includes(unitStr)) {
+    if (validUnitRegex.test(unitStr)) {
         return unit(converted, unitStr);
     } else {
         const stringified = numToString(converted);

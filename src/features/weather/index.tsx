@@ -5,6 +5,7 @@ import { LLFG } from 'i18n';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import { stringify } from './util/units';
 import { TextSetting } from '@/Settings/TextSetting';
+import { timeToString } from '@/localeString';
 import wttrIn from './providers/wttrIn';
 import {
     getWeatherEmoji,
@@ -86,6 +87,14 @@ const tooltip = (
 );
 
 /**
+ * Returns an arrow matching the wind direction
+ * @param degrees - the degrees
+ * @returns the arrow for this direction
+ */
+const windDirectionToArrow = (degrees: number) =>
+    ['↑', '↗', '→', '↘', '↓', '↙', '←', '↖'][Math.round(degrees / 45) % 8];
+
+/**
  * Sets the content of the navbar tooltip
  * @param content - the content
  */
@@ -115,7 +124,6 @@ const updateWeather = async () => {
     if (provider.value === 'wttrIn') {
         weather = await wttrIn(CITY.name);
     } else return;
-    console.log(weather);
 
     const weatherEmoji = getWeatherEmoji(weather.condition);
 
@@ -127,7 +135,6 @@ const updateWeather = async () => {
         return;
     }
 
-    // TODO: Improve this with units and helper methods
     if (tempInNav.value) {
         if (feelLikeTempInNav.value) {
             navbarText.textContent += ` ${stringify(weather.temperature.feel, 'temperature', currentUnit())}`;
@@ -135,6 +142,34 @@ const updateWeather = async () => {
             navbarText.textContent += ` ${stringify(weather.temperature.actual, 'temperature', currentUnit())}`;
         }
     }
+
+    const date = new Date(weather.time);
+
+    setTooltipContent(
+        <>
+            🌡️:&nbsp;
+            {stringify(
+                weather.temperature.actual,
+                'temperature',
+                currentUnit()
+            )}
+            &nbsp;(
+            {stringify(weather.temperature.feel, 'temperature', currentUnit())})
+            <br />
+            🪁:&nbsp;
+            {stringify(weather.wind.speed, 'speed', currentUnit())}
+            &nbsp;({windDirectionToArrow(weather.wind.direction)})
+            <br />
+            💦:&nbsp;
+            {stringify(weather.precipitation, 'distanceMm', currentUnit())}
+            <br />
+            <br />
+            <small>
+                {LL.settings.provider.options[provider.value]()}&nbsp;⋅&nbsp;
+                {timeToString(date, false)}
+            </small>
+        </>
+    );
 };
 
 /**
