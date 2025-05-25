@@ -34,7 +34,7 @@
     },
     "devDependencies": {
         "@babel/compat-data": "7.27.2",
-        "@cloudflare/workers-types": "4.20250523.0",
+        "@cloudflare/workers-types": "4.20250525.0",
         "@eslint/js": "9.27.0",
         "@prettier/plugin-xml": "3.4.1",
         "@rollup/plugin-terser": "0.4.4",
@@ -59,7 +59,7 @@
         "eslint-plugin-jsx-a11y": "6.10.2",
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
-        "globals": "16.1.0",
+        "globals": "16.2.0",
         "jiti": "2.4.2",
         "mini-svg-data-uri": "1.4.4",
         "node-ical": "0.20.1",

@@ -1162,10 +1162,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20250523.0":
-  version: 4.20250523.0
-  resolution: "@cloudflare/workers-types@npm:4.20250523.0"
-  checksum: 10c0/e49eade2d064ec74d70ba781c5139388946efda758185c71b8aad0921d0ad9a41bfc8590a3c0695137e9944fe5c976c83da41ff498e2b619a49df6187dd6850b
+"@cloudflare/workers-types@npm:4.20250525.0":
+  version: 4.20250525.0
+  resolution: "@cloudflare/workers-types@npm:4.20250525.0"
+  checksum: 10c0/cbc00e0179b24498dd8ec2251ce2f06ca96d477bd8ad3da72a6c6e4831865a1129924aa310ea83b1a209d03883b33c5a4bc72d16cad0dd6bb12ecc24d0f27467
   languageName: node
   linkType: hard
 
@@ -4864,10 +4864,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:16.1.0":
-  version: 16.1.0
-  resolution: "globals@npm:16.1.0"
-  checksum: 10c0/51df6319b5b9e679338baf058ecf1125af0d3148b97e57592deabd65fca5c5dcdcca321d7589282bd6afbea9f5a40bc7329c746f46d56780813d7d1c457209a2
+"globals@npm:16.2.0":
+  version: 16.2.0
+  resolution: "globals@npm:16.2.0"
+  checksum: 10c0/c2b3ea163faa6f8a38076b471b12f4bda891f7df7f7d2e8294fb4801d735a51a73431bf4c1696c5bf5dbca5e0a0db894698acfcbd3068730c6b12eef185dea25
   languageName: node
   linkType: hard
 
@@ -8437,7 +8437,7 @@ __metadata:
   resolution: "uzl-better-moodle@workspace:."
   dependencies:
     "@babel/compat-data": "npm:7.27.2"
-    "@cloudflare/workers-types": "npm:4.20250523.0"
+    "@cloudflare/workers-types": "npm:4.20250525.0"
     "@eslint/js": "npm:9.27.0"
     "@prettier/plugin-xml": "npm:3.4.1"
     "@rollup/plugin-terser": "npm:0.4.4"
@@ -8466,7 +8466,7 @@ __metadata:
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-userscripts: "npm:0.5.6"
     fast-glob: "npm:3.3.3"
-    globals: "npm:16.1.0"
+    globals: "npm:16.2.0"
     jiti: "npm:2.4.2"
     jsx-dom: "npm:8.1.6"
     mini-svg-data-uri: "npm:1.4.4"
