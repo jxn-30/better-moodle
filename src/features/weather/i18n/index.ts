@@ -55,6 +55,19 @@ export const de = {
         },
     },
     unknownWeather: 'Ich bin verwirrt, mir ist das Wetter nicht bekannt :(',
+    modal: {
+        title: 'Wetter-Moodle für {city:string}',
+        source: 'Quelle',
+        condition: 'Aktuelles Wetter',
+        temperature: 'Temperatur',
+        temperatureFeelsLike: 'gefühlt',
+        wind: 'Wind',
+        visibility: 'Sichtweite',
+        humidity: 'Luftfeuchtigkeit',
+        pressure: 'Luftdruck',
+        cloudCover: 'Bewölkung',
+        precipitation: 'Niederschlagsmenge',
+    },
 } satisfies FeatureGroupTranslation;
 
 export const en = {
@@ -111,6 +124,19 @@ export const en = {
         },
     },
     unknownWeather: 'I am confused, the weather is unknown :(',
+    modal: {
+        title: 'Weather-Moodle for {city:string}',
+        source: 'Source',
+        condition: 'Current weather',
+        temperature: 'Temperature',
+        temperatureFeelsLike: 'felt',
+        wind: 'Wind',
+        visibility: 'Visibility',
+        humidity: 'Humidity',
+        pressure: 'Pressure',
+        cloudCover: 'Cloud cover',
+        precipitation: 'Precipitation',
+    },
 } as typeof de;
 
 export default { de, en };

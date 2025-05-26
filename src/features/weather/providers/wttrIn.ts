@@ -34,9 +34,10 @@ interface WttrInResponse {
  * @param city - the city to get the weather for
  * @returns weather information
  */
-export default (city: string): Promise<Weather> =>
-    cachedRequest(
-        `https://wttr.in/${city}?format=j1&lang`, // the &lang param is required to produce a valid response
+export default (city: string): Promise<Weather> => {
+    const url = `https://wttr.in/${city}?format=j1&lang`; // the &lang param is required to produce a valid response
+    return cachedRequest(
+        url,
         FIVE_MINUTES,
         'json',
         ({ current_condition: [weather] }: WttrInResponse) => {
@@ -45,11 +46,6 @@ export default (city: string): Promise<Weather> =>
                     'wttrIn',
                     Number(weather.weatherCode)
                 ),
-                /*codeToCondition[
-                        Number(
-                            weather.weatherCode
-                        ) as keyof typeof codeToCondition
-                    ] ?? WeatherCondition.UNKNOWN,*/
                 temperature: {
                     actual: Number(weather.temp_C),
                     feel: Number(weather.FeelsLikeC),
@@ -59,13 +55,18 @@ export default (city: string): Promise<Weather> =>
                     speed: Number(weather.windspeedKmph),
                 },
                 visibility: Number(weather.visibility),
-                humidity: Number(weather.humidity),
+                humidity: Number(weather.humidity) / 100,
                 pressure: Number(weather.pressure),
-                cloudCover: Number(weather.cloudcover),
+                cloudCover: Number(weather.cloudcover) / 100,
                 precipitation: Number(weather.precipMM),
-                time: new Date(
-                    `${weather.localObsDateTime.slice(0, 10)} ${weather.observation_time} +00:00`
-                ).toISOString(),
+                meta: {
+                    providerURL: `https://wttr.in/${city}`,
+                    requestURL: url,
+                    time: new Date(
+                        `${weather.localObsDateTime.slice(0, 10)} ${weather.observation_time} +00:00`
+                    ).toISOString(),
+                },
             } satisfies Weather;
         }
     );
+};

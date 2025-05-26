@@ -31,8 +31,9 @@ export class Modal extends CanBeReady {
 
         this.#config = config;
 
-        // we cannot set footer on this type of modal, so we need to postpone prepending it
-        if (config.type === 'SAVE_CANCEL') {
+        // setting a footer will prevent creating the button(s)
+        // thus we will prepend it later
+        if (config.footer) {
             this.#savedFooter = config.footer;
             delete this.#config.footer;
         }
@@ -158,6 +159,7 @@ export class Modal extends CanBeReady {
      * @returns the modal instance itself
      */
     setTrigger(trigger: Element) {
+        trigger.classList.add(modalStyle.modalTrigger);
         trigger.addEventListener('click', e => {
             e.preventDefault();
             this.show();

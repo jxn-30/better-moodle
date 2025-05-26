@@ -1,18 +1,19 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import FeatureGroup from '@/FeatureGroup';
 import { getHtml } from '@/DOM';
-import { LLFG } from 'i18n';
+import { Modal } from '@/Modal';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import { stringify } from './util/units';
 import { TextSetting } from '@/Settings/TextSetting';
-import { timeToString } from '@/localeString';
 import wttrIn from './providers/wttrIn';
+import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
 import {
     getWeatherEmoji,
     isUnknownWeather,
     type WeatherCondition,
 } from './util/condition';
 import { NavbarItem, type NavbarItemComponent } from '@/Components';
+import { percent, timeToString } from '@/localeString';
 
 const LL = LLFG('weather');
 
@@ -30,7 +31,11 @@ export interface Weather {
     pressure: number;
     cloudCover: number;
     precipitation: number;
-    time: ReturnType<Date['toISOString']>; // needs to be an ISO string as otherwise GM_setValue cannot store it
+    meta: {
+        providerURL: string;
+        requestURL: string;
+        time: ReturnType<Date['toISOString']>; // needs to be an ISO string as otherwise GM_setValue cannot store it
+    };
 }
 
 const enabled = new BooleanSetting('enabled', false).addAlias(
@@ -91,8 +96,11 @@ const tooltip = (
  * @param degrees - the degrees
  * @returns the arrow for this direction
  */
-const windDirectionToArrow = (degrees: number) =>
-    ['↑', '↗', '→', '↘', '↓', '↙', '←', '↖'][Math.round(degrees / 45) % 8];
+const windDegreesToDirection = (degrees: number) =>
+    ({
+        de: ['N', 'NO', 'O', 'SO', 'S', 'SW', 'W', 'NW'],
+        en: ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'],
+    })[BETTER_MOODLE_LANG][Math.round(degrees / 45) % 8];
 
 /**
  * Sets the content of the navbar tooltip
@@ -109,6 +117,17 @@ const setTooltipContent = (
 };
 
 let navbarItem: NavbarItemComponent;
+
+let detailsModal: Modal;
+const detailsModalTBody = <tbody></tbody>;
+const detailsModalBody = (
+    <table className="table table-striped table-hover m-0">
+        {detailsModalTBody}
+    </table>
+) as HTMLTableElement;
+const detailsModalFooter = (
+    <span className="mr-auto"></span>
+) as HTMLSpanElement;
 
 /**
  * Updates the weather using given provider.
@@ -143,7 +162,7 @@ const updateWeather = async () => {
         }
     }
 
-    const date = new Date(weather.time);
+    const date = new Date(weather.meta.time);
 
     setTooltipContent(
         <>
@@ -158,7 +177,7 @@ const updateWeather = async () => {
             <br />
             🪁:&nbsp;
             {stringify(weather.wind.speed, 'speed', currentUnit())}
-            &nbsp;({windDirectionToArrow(weather.wind.direction)})
+            &nbsp;({windDegreesToDirection(weather.wind.direction)})
             <br />
             💦:&nbsp;
             {stringify(weather.precipitation, 'distanceMm', currentUnit())}
@@ -168,6 +187,86 @@ const updateWeather = async () => {
                 {LL.settings.provider.options[provider.value]()}&nbsp;⋅&nbsp;
                 {timeToString(date, false)}
             </small>
+        </>
+    );
+
+    detailsModal ??= new Modal({
+        type: 'ALERT',
+        title: `${weatherEmoji} ${LL.modal.title({ city: CITY.display })}`,
+        body: detailsModalBody,
+        footer: detailsModalFooter,
+        removeOnClose: false,
+    }).setTrigger(navbarItem);
+
+    void detailsModal
+        .getBody()
+        .then(([body]) => body.classList.add('table-responsive', 'p-0'));
+
+    detailsModalTBody.replaceChildren(
+        <tr>
+            <th>{LL.modal.condition()}</th>
+            <td>{weatherEmoji}</td>
+        </tr>,
+        <tr>
+            <th>
+                {LL.modal.temperature()} ({LL.modal.temperatureFeelsLike()})
+            </th>
+            <td>
+                {stringify(
+                    weather.temperature.actual,
+                    'temperature',
+                    currentUnit()
+                )}{' '}
+                (
+                {stringify(
+                    weather.temperature.feel,
+                    'temperature',
+                    currentUnit()
+                )}
+                )
+            </td>
+        </tr>,
+        <tr>
+            <th>{LL.modal.wind()}</th>
+            <td>
+                {stringify(weather.wind.speed, 'speed', currentUnit())} (
+                {windDegreesToDirection(weather.wind.direction)})
+            </td>
+        </tr>,
+        <tr>
+            <th>{LL.modal.visibility()}</th>
+            <td>
+                {stringify(weather.visibility, 'distanceKm', currentUnit())}
+            </td>
+        </tr>,
+        <tr>
+            <th>{LL.modal.humidity()}</th>
+            <td>{percent(weather.humidity)}</td>
+        </tr>,
+        <tr>
+            <th>{LL.modal.pressure()}</th>
+            <td>{stringify(weather.pressure, 'pressure', currentUnit())}</td>
+        </tr>,
+        <tr>
+            <th>{LL.modal.cloudCover()}</th>
+            <td>{percent(weather.cloudCover)}</td>
+        </tr>,
+        <tr>
+            <th>{LL.modal.precipitation()}</th>
+            <td>
+                {stringify(weather.precipitation, 'distanceMm', currentUnit())}
+            </td>
+        </tr>
+    );
+
+    detailsModalFooter.replaceChildren(
+        <>
+            {LL.modal.source()}:&nbsp;
+            <a href={weather.meta.providerURL} target="_blank">
+                {LL.settings.provider.options[provider.value]()}
+            </a>
+            {' ⋅ '}
+            {timeToString(date, false)}
         </>
     );
 };
