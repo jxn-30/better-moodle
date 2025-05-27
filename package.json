@@ -33,7 +33,7 @@
         "typesafe-i18n": "5.26.2"
     },
     "devDependencies": {
-        "@babel/compat-data": "7.27.2",
+        "@babel/compat-data": "7.27.3",
         "@cloudflare/workers-types": "4.20250525.0",
         "@eslint/js": "9.27.0",
         "@prettier/plugin-xml": "3.4.1",
