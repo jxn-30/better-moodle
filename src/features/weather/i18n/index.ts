@@ -59,6 +59,7 @@ export const de = {
     modal: {
         title: 'Wetter-Moodle für {city:string}',
         source: 'Quelle',
+        raw: 'Rohdaten',
         condition: 'Aktuelles Wetter',
         temperature: 'Temperatur',
         temperatureFeelsLike: 'gefühlt',
@@ -129,6 +130,7 @@ export const en = {
     modal: {
         title: 'Weather-Moodle for {city:string}',
         source: 'Source',
+        raw: 'Raw data',
         condition: 'Current weather',
         temperature: 'Temperature',
         temperatureFeelsLike: 'felt',

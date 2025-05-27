@@ -23,8 +23,8 @@ interface OpenMeteoResponse {
 
 /**
  * Retrieves the weather information from the API and extracts the relevant information
- * @param lat
- * @param lon
+ * @param lat - latitude of the location to get the weather of
+ * @param lon - longitude of the location to get the weather of
  * @returns weather information
  */
 export default (lat: number, lon: number): Promise<Weather> => {

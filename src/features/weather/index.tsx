@@ -273,6 +273,10 @@ const updateWeather = async () => {
             </a>
             {' ⋅ '}
             {timeToString(date, false)}
+            {' ⋅ '}
+            <a href={weather.meta.requestURL} target="_blank">
+                {LL.modal.raw()}
+            </a>
         </>
     );
 };
