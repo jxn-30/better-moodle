@@ -2,6 +2,7 @@ import { BooleanSetting } from '@/Settings/BooleanSetting';
 import FeatureGroup from '@/FeatureGroup';
 import { getHtml } from '@/DOM';
 import { Modal } from '@/Modal';
+import openMeteo from './providers/openMeteo';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import { stringify } from './util/units';
 import { TextSetting } from '@/Settings/TextSetting';
@@ -142,6 +143,8 @@ const updateWeather = async () => {
     let weather: Weather;
     if (provider.value === 'wttrIn') {
         weather = await wttrIn(CITY.name);
+    } else if (provider.value === 'openMeteo') {
+        weather = await openMeteo(CITY.lat, CITY.lon);
     } else return;
 
     const weatherEmoji = getWeatherEmoji(weather.condition);

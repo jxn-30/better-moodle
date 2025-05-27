@@ -489,13 +489,45 @@ const wttrInCodeToCondition = {
     395: WeatherCondition.MODERATE_THUNDERSTORM_WITH_SNOW,
 };
 
+const openMeteoCodeToCondition = {
+    0: WeatherCondition.CLEAR,
+    1: WeatherCondition.FEW_CLOUDS,
+    2: WeatherCondition.BROKEN_CLOUDS,
+    3: WeatherCondition.OVERCAST_CLOUDS,
+    45: WeatherCondition.FOG,
+    48: WeatherCondition.FREEZING_FOG,
+    51: WeatherCondition.LIGHT_DRIZZLE,
+    53: WeatherCondition.MODERATE_DRIZZLE,
+    55: WeatherCondition.HEAVY_DRIZZLE,
+    56: WeatherCondition.LIGHT_FREEZING_DRIZZLE,
+    57: WeatherCondition.MODERATE_FREEZING_DRIZZLE,
+    61: WeatherCondition.LIGHT_RAIN,
+    63: WeatherCondition.MODERATE_RAIN,
+    65: WeatherCondition.HEAVY_RAIN,
+    66: WeatherCondition.LIGHT_FREEZING_RAIN,
+    67: WeatherCondition.MODERATE_FREEZING_RAIN,
+    71: WeatherCondition.LIGHT_SNOW,
+    73: WeatherCondition.MODERATE_SNOW,
+    75: WeatherCondition.HEAVY_SNOW,
+    77: WeatherCondition.MODERATE_FREEZING_DRIZZLE,
+    80: WeatherCondition.LIGHT_RAIN_SHOWERS,
+    81: WeatherCondition.MODERATE_RAIN_SHOWERS,
+    82: WeatherCondition.HEAVY_RAIN_SHOWERS,
+    85: WeatherCondition.MODERATE_SNOW_SHOWERS,
+    86: WeatherCondition.HEAVY_SNOW_SHOWERS,
+    95: WeatherCondition.MODERATE_THUNDERSTORM,
+    96: WeatherCondition.MODERATE_THUNDERSTORM_WITH_HAIL,
+    99: WeatherCondition.HEAVY_THUNDERSTORM_WITH_HAIL,
+};
+
 interface ProviderCodes {
     wttrIn: number;
+    openMeteo: number;
 }
 
 /**
  * Get the weather condition of a weather code for a specific provider
- * We need this helper method within this file so that typescript will make WeatherCodes a const enum
+ * We need this helper method within this file so that typescript will make WeatherCondition a const enum
  * @param provider - the provider to use
  * @param code - the code as returned by the provider
  * @returns the matching weather code
@@ -511,5 +543,12 @@ export const codeToCondition = <Provider extends keyof ProviderCodes>(
                     code as keyof typeof wttrInCodeToCondition
                 ] ?? WeatherCondition.UNKNOWN
             );
+        case 'openMeteo':
+            return (
+                openMeteoCodeToCondition[
+                    code as keyof typeof openMeteoCodeToCondition
+                ] ?? WeatherCondition.UNKNOWN
+            );
     }
+    return WeatherCondition.UNKNOWN;
 };
