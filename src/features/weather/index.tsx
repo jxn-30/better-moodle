@@ -1,5 +1,6 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import FeatureGroup from '@/FeatureGroup';
+import { FIVE_MINUTES } from '@/times';
 import { getHtml } from '@/DOM';
 import { Modal } from '@/Modal';
 import openMeteo from './providers/openMeteo';
@@ -146,6 +147,9 @@ const updateWeather = async () => {
     } else if (provider.value === 'openMeteo') {
         weather = await openMeteo(CITY.lat, CITY.lon);
     } else return;
+
+    // trigger the next update in 5 Minutes
+    setTimeout(() => void updateWeather(), FIVE_MINUTES);
 
     const weatherEmoji = getWeatherEmoji(weather.condition);
 
