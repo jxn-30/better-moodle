@@ -1,3 +1,4 @@
+import { i18n as conditions } from '../util/condition';
 import type { FeatureGroupTranslation } from '#/i18n';
 
 export const de = {
@@ -54,7 +55,7 @@ export const de = {
                 'Ermöglicht das Umschalten zwischen der tatsächlichen Temperatur und der gefühlten  Temperatur.',
         },
     },
-    unknownWeather: 'Ich bin verwirrt, mir ist das Wetter nicht bekannt :(',
+    conditions: conditions.de,
     modal: {
         title: 'Wetter-Moodle für {city:string}',
         source: 'Quelle',
@@ -62,6 +63,7 @@ export const de = {
         temperature: 'Temperatur',
         temperatureFeelsLike: 'gefühlt',
         wind: 'Wind',
+        windDirection: 'Richtung',
         visibility: 'Sichtweite',
         humidity: 'Luftfeuchtigkeit',
         pressure: 'Luftdruck',
@@ -123,7 +125,7 @@ export const en = {
                 "Allows you to switch between the actual temperature and the 'feels like' temperature.",
         },
     },
-    unknownWeather: 'I am confused, the weather is unknown :(',
+    conditions: conditions.en,
     modal: {
         title: 'Weather-Moodle for {city:string}',
         source: 'Source',
@@ -131,6 +133,7 @@ export const en = {
         temperature: 'Temperature',
         temperatureFeelsLike: 'felt',
         wind: 'Wind',
+        windDirection: 'Direction',
         visibility: 'Visibility',
         humidity: 'Humidity',
         pressure: 'Pressure',

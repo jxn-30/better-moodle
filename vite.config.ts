@@ -393,6 +393,12 @@ export default defineConfig({
 
                     if (/^src\/features\/.*\/i18n\/index\.ts$/.test(context)) {
                         // Ah! We're loading from a translation index file!
+
+                        // okay, if the translation file is not within an i18n folder, we must include
+                        // this is e.g. for the weather condition translations
+                        // maybe we can find a better way sometime
+                        if (!sourcePath.includes('i18n')) return undefined;
+
                         // hmm, is this feature included?
                         const featureGroup = context.split('/')[2];
                         const feature = sourcePath.split('/')[4];

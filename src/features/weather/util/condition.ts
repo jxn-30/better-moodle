@@ -90,14 +90,217 @@ export const enum WeatherCondition {
     THUNDERY_OUTBREAKS_NEARBY,
 }
 
-/**
- * Returns if a certain condition is unknown.
- * We need this helper function to allow esbuild inline the enum
- * @param condition - the condition to check
- * @returns wether the condition is unknown
- */
-export const isUnknownWeather = (condition: WeatherCondition) =>
-    condition === WeatherCondition.UNKNOWN;
+// We need these translations in this file because otherwise esbuild would not inline the large enum
+const i18nDe = {
+    [WeatherCondition.UNKNOWN]:
+        'Ich bin verwirrt, mir ist das Wetter nicht bekannt :(',
+
+    [WeatherCondition.CLEAR]: 'Klarer Himmel',
+    [WeatherCondition.FEW_CLOUDS]: 'Wenige Wolken',
+    [WeatherCondition.SCATTERED_CLOUDS]: 'Vereinzelte Wolken',
+    [WeatherCondition.BROKEN_CLOUDS]: 'Zerstreute Wolken',
+    [WeatherCondition.OVERCAST_CLOUDS]: 'Bedeckter Himmel',
+
+    [WeatherCondition.MIST]: 'Nebel',
+    [WeatherCondition.FOG]: 'Nebel',
+    [WeatherCondition.FREEZING_FOG]: 'Gefrierender Nebel',
+    [WeatherCondition.DUST]: 'Staub',
+    [WeatherCondition.SAND]: 'Sand',
+    [WeatherCondition.HAZE]: 'Dunst',
+    [WeatherCondition.SMOKE]: 'Rauch',
+    [WeatherCondition.VOLCANIC_ASH]: 'Vulkanasche',
+
+    [WeatherCondition.WIND]: 'Wind',
+    [WeatherCondition.SQUALLS]: 'Windböen',
+    [WeatherCondition.TORNADO]: 'Tornado',
+
+    [WeatherCondition.LIGHT_SNOW]: 'Leichter Schnee',
+    [WeatherCondition.MODERATE_SNOW]: 'Schnee',
+    [WeatherCondition.HEAVY_SNOW]: 'Starker Schnee',
+
+    [WeatherCondition.LIGHT_RAIN]: 'Leichter Regen',
+    [WeatherCondition.MODERATE_RAIN]: 'Regen',
+    [WeatherCondition.HEAVY_RAIN]: 'Starker Regen',
+
+    [WeatherCondition.LIGHT_DRIZZLE]: 'Leichter Nieselregen',
+    [WeatherCondition.MODERATE_DRIZZLE]: 'Nieselregen',
+    [WeatherCondition.HEAVY_DRIZZLE]: 'Starker Nieselregen',
+
+    [WeatherCondition.LIGHT_SLEET]: 'Leichter Schneeregen',
+    [WeatherCondition.MODERATE_SLEET]: 'Schneeregen',
+
+    [WeatherCondition.LIGHT_THUNDERSTORM]: 'Leichtes Gewitter',
+    [WeatherCondition.MODERATE_THUNDERSTORM]: 'Gewitter',
+    [WeatherCondition.HEAVY_THUNDERSTORM]: 'Starkes Gewitter',
+
+    [WeatherCondition.LIGHT_FREEZING_RAIN]: 'Leichter gefrierender Regen',
+    [WeatherCondition.MODERATE_FREEZING_RAIN]: 'Gefrierender Regen',
+
+    [WeatherCondition.LIGHT_FREEZING_DRIZZLE]:
+        'Leichter gefrierender Nieselregen',
+    [WeatherCondition.MODERATE_FREEZING_DRIZZLE]: 'Gefrierender Nieselregen',
+    [WeatherCondition.HEAVY_FREEZING_DRIZZLE]:
+        'Starker gefrierender Nieselregen',
+
+    [WeatherCondition.LIGHT_RAIN_SHOWERS]: 'Leichte Regenschauer',
+    [WeatherCondition.MODERATE_RAIN_SHOWERS]: 'Regenschauer',
+    [WeatherCondition.HEAVY_RAIN_SHOWERS]: 'Starke Regenschauer',
+
+    [WeatherCondition.LIGHT_SLEET_SHOWERS]: 'Leichte Schneeregen-Schauer',
+    [WeatherCondition.MODERATE_SLEET_SHOWERS]: 'Schneeregen-Schauer',
+
+    [WeatherCondition.LIGHT_DRIZZLE_SHOWERS]: 'Leichte Nieselregen-Schauer',
+    [WeatherCondition.MODERATE_DRIZZLE_SHOWERS]: 'Nieselregen-Schauer',
+    [WeatherCondition.HEAVY_DRIZZLE_SHOWERS]: 'Starke Nieselregen-Schauer',
+
+    [WeatherCondition.LIGHT_SNOW_SHOWERS]: 'Leichte Schneeschauer',
+    [WeatherCondition.MODERATE_SNOW_SHOWERS]: 'Schneeschauer',
+    [WeatherCondition.HEAVY_SNOW_SHOWERS]: 'Starke Schneeschauer',
+
+    [WeatherCondition.LIGHT_HAIL_SHOWERS]: 'Leichte Hagelschauer',
+    [WeatherCondition.MODERATE_HAIL_SHOWERS]: 'Hagelschauer',
+
+    [WeatherCondition.LIGHT_THUNDERSTORM_WITH_DRIZZLE]:
+        'Leichtes Gewitter mit Nieselregen',
+    [WeatherCondition.MODERATE_THUNDERSTORM_WITH_DRIZZLE]:
+        'Gewitter mit Nieselregen',
+    [WeatherCondition.HEAVY_THUNDERSTORM_WITH_DRIZZLE]:
+        'Starkes Gewitter mit Nieselregen',
+
+    [WeatherCondition.LIGHT_THUNDERSTORM_WITH_RAIN]:
+        'Leichtes Gewitter mit Regen',
+    [WeatherCondition.MODERATE_THUNDERSTORM_WITH_RAIN]: 'Gewitter mit Regen',
+    [WeatherCondition.HEAVY_THUNDERSTORM_WITH_RAIN]:
+        'Starkes Gewitter mit Regen',
+
+    [WeatherCondition.LIGHT_THUNDERSTORM_WITH_SNOW]:
+        'Leichtes Gewitter mit Schnee',
+    [WeatherCondition.MODERATE_THUNDERSTORM_WITH_SNOW]: 'Gewitter mit Schnee',
+
+    [WeatherCondition.MODERATE_THUNDERSTORM_WITH_HAIL]: 'Gewitter mit Hagel',
+    [WeatherCondition.HEAVY_THUNDERSTORM_WITH_HAIL]:
+        'Starkes Gewitter mit Hagel',
+
+    [WeatherCondition.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS]:
+        'Gewitter mit Hagelschauern',
+
+    [WeatherCondition.EXTREME_SNOW]: 'Schneesturm',
+    [WeatherCondition.EXTREME_RAIN]: 'Extremer Regen',
+
+    [WeatherCondition.PATCHY_RAIN_NEARBY]: 'Vereinzelt Regen in der Nähe',
+    [WeatherCondition.PATCHY_SNOW_NEARBY]: 'Vereinzelt Schnee in der Nähe',
+    [WeatherCondition.PATCHY_SLEET_NEARBY]:
+        'Vereinzelt Schneeregen in der Nähe',
+    [WeatherCondition.PATCHY_FREEZING_DRIZZLE_NEARBY]:
+        'Vereinzelt gefrierender Nieselregen in der Nähe',
+    [WeatherCondition.THUNDERY_OUTBREAKS_NEARBY]: 'Gewitter in der Nähe',
+} satisfies Record<WeatherCondition, string>;
+const i18nEn = {
+    [WeatherCondition.UNKNOWN]: 'I am confused, the weather is unknown :(',
+
+    [WeatherCondition.CLEAR]: 'Clear sky',
+    [WeatherCondition.FEW_CLOUDS]: 'Few clouds',
+    [WeatherCondition.SCATTERED_CLOUDS]: 'Scattered clouds',
+    [WeatherCondition.BROKEN_CLOUDS]: 'Broken clouds',
+    [WeatherCondition.OVERCAST_CLOUDS]: 'Overcast clouds',
+
+    [WeatherCondition.MIST]: 'Mist',
+    [WeatherCondition.FOG]: 'Fog',
+    [WeatherCondition.FREEZING_FOG]: 'Freezing fog',
+    [WeatherCondition.DUST]: 'Dust',
+    [WeatherCondition.SAND]: 'Sand',
+    [WeatherCondition.HAZE]: 'Haze',
+    [WeatherCondition.SMOKE]: 'Smoke',
+    [WeatherCondition.VOLCANIC_ASH]: 'Volcanic ash',
+
+    [WeatherCondition.WIND]: 'Wind',
+    [WeatherCondition.SQUALLS]: 'Squalls',
+    [WeatherCondition.TORNADO]: 'Tornado',
+
+    [WeatherCondition.LIGHT_SNOW]: 'Light snow',
+    [WeatherCondition.MODERATE_SNOW]: 'Snow',
+    [WeatherCondition.HEAVY_SNOW]: 'Heavy snow',
+
+    [WeatherCondition.LIGHT_RAIN]: 'Light rain',
+    [WeatherCondition.MODERATE_RAIN]: 'Regen',
+    [WeatherCondition.HEAVY_RAIN]: 'Heavy rain',
+
+    [WeatherCondition.LIGHT_DRIZZLE]: 'Light drizzle',
+    [WeatherCondition.MODERATE_DRIZZLE]: 'Drizzle',
+    [WeatherCondition.HEAVY_DRIZZLE]: 'Heavy drizzle',
+
+    [WeatherCondition.LIGHT_SLEET]: 'Light sleet',
+    [WeatherCondition.MODERATE_SLEET]: 'Sleet',
+
+    [WeatherCondition.LIGHT_THUNDERSTORM]: 'Light thunderstorm',
+    [WeatherCondition.MODERATE_THUNDERSTORM]: 'Thunderstorm',
+    [WeatherCondition.HEAVY_THUNDERSTORM]: 'Heavy thunderstorm',
+
+    [WeatherCondition.LIGHT_FREEZING_RAIN]: 'Light freezing rain',
+    [WeatherCondition.MODERATE_FREEZING_RAIN]: 'Freezing rain',
+
+    [WeatherCondition.LIGHT_FREEZING_DRIZZLE]: 'Light freezing drizzle',
+    [WeatherCondition.MODERATE_FREEZING_DRIZZLE]: 'Freezing drizzle',
+    [WeatherCondition.HEAVY_FREEZING_DRIZZLE]: 'Heavy freezing drizzle',
+
+    [WeatherCondition.LIGHT_RAIN_SHOWERS]: 'Light rain showers',
+    [WeatherCondition.MODERATE_RAIN_SHOWERS]: 'Rain showes',
+    [WeatherCondition.HEAVY_RAIN_SHOWERS]: 'Heavy rain showers',
+
+    [WeatherCondition.LIGHT_SLEET_SHOWERS]: 'Light sleet showers',
+    [WeatherCondition.MODERATE_SLEET_SHOWERS]: 'Sleet showes',
+
+    [WeatherCondition.LIGHT_DRIZZLE_SHOWERS]: 'Light drizzle showers',
+    [WeatherCondition.MODERATE_DRIZZLE_SHOWERS]: 'Drizzle showers',
+    [WeatherCondition.HEAVY_DRIZZLE_SHOWERS]: 'Heavy drizzle showers',
+
+    [WeatherCondition.LIGHT_SNOW_SHOWERS]: 'Light snow showes',
+    [WeatherCondition.MODERATE_SNOW_SHOWERS]: 'Snow showers',
+    [WeatherCondition.HEAVY_SNOW_SHOWERS]: 'Heaby snow showers',
+
+    [WeatherCondition.LIGHT_HAIL_SHOWERS]: 'Light hail shower',
+    [WeatherCondition.MODERATE_HAIL_SHOWERS]: 'Hail shower',
+
+    [WeatherCondition.LIGHT_THUNDERSTORM_WITH_DRIZZLE]:
+        'Light thunderstorm with drizzle',
+    [WeatherCondition.MODERATE_THUNDERSTORM_WITH_DRIZZLE]:
+        'Thunderstorm with drizzle',
+    [WeatherCondition.HEAVY_THUNDERSTORM_WITH_DRIZZLE]:
+        'Heavy thunderstorm with drizzle',
+
+    [WeatherCondition.LIGHT_THUNDERSTORM_WITH_RAIN]:
+        'Light thunderstorm with rain',
+    [WeatherCondition.MODERATE_THUNDERSTORM_WITH_RAIN]:
+        'Thunderstorm with rain',
+    [WeatherCondition.HEAVY_THUNDERSTORM_WITH_RAIN]:
+        'Heavy thunderstorm with rain',
+
+    [WeatherCondition.LIGHT_THUNDERSTORM_WITH_SNOW]:
+        'Light thunderstorm with snow',
+    [WeatherCondition.MODERATE_THUNDERSTORM_WITH_SNOW]:
+        'Thunderstorm with snow',
+
+    [WeatherCondition.MODERATE_THUNDERSTORM_WITH_HAIL]:
+        'Thunderstorm with hail',
+    [WeatherCondition.HEAVY_THUNDERSTORM_WITH_HAIL]:
+        'Heavy thunderstorm with hail',
+
+    [WeatherCondition.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS]:
+        'Thunderstorm with rain showers',
+
+    [WeatherCondition.EXTREME_SNOW]: 'Blizzard',
+    [WeatherCondition.EXTREME_RAIN]: 'Extreme rain',
+
+    [WeatherCondition.PATCHY_RAIN_NEARBY]: 'Patchy rain nearby',
+    [WeatherCondition.PATCHY_SNOW_NEARBY]: 'Patchy snow nearby',
+    [WeatherCondition.PATCHY_SLEET_NEARBY]: 'Patchy sleet nearby',
+    [WeatherCondition.PATCHY_FREEZING_DRIZZLE_NEARBY]:
+        'Patchy freezing drizzle nearby',
+    [WeatherCondition.THUNDERY_OUTBREAKS_NEARBY]: 'Thundery outbreaks nearby',
+} satisfies typeof i18nDe;
+export const i18n = { de: i18nDe, en: i18nEn };
+
+export const unknownWeather = WeatherCondition.UNKNOWN;
 
 const conditionsByEmoji = new Map<string, Set<WeatherCondition>>([
     ['❓', new Set([WeatherCondition.UNKNOWN])],

@@ -9,7 +9,7 @@ import wttrIn from './providers/wttrIn';
 import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
 import {
     getWeatherEmoji,
-    isUnknownWeather,
+    unknownWeather,
     type WeatherCondition,
 } from './util/condition';
 import { NavbarItem, type NavbarItemComponent } from '@/Components';
@@ -149,8 +149,8 @@ const updateWeather = async () => {
     // set the navbar content
     navbarText.textContent = weatherEmoji;
 
-    if (isUnknownWeather(weather.condition)) {
-        setTooltipContent(`${weatherEmoji} ${LL.unknownWeather()}`);
+    if (weather.condition === unknownWeather) {
+        setTooltipContent(`${weatherEmoji} ${LL.conditions[unknownWeather]()}`);
         return;
     }
 
@@ -164,8 +164,12 @@ const updateWeather = async () => {
 
     const date = new Date(weather.meta.time);
 
+    const weatherSummary = `${weatherEmoji} ${LL.conditions[weather.condition]()}`;
+
     setTooltipContent(
         <>
+            <strong>{weatherSummary}</strong>
+            <br />
             🌡️:&nbsp;
             {stringify(
                 weather.temperature.actual,
@@ -205,7 +209,7 @@ const updateWeather = async () => {
     detailsModalTBody.replaceChildren(
         <tr>
             <th>{LL.modal.condition()}</th>
-            <td>{weatherEmoji}</td>
+            <td>{weatherSummary}</td>
         </tr>,
         <tr>
             <th>
@@ -227,7 +231,9 @@ const updateWeather = async () => {
             </td>
         </tr>,
         <tr>
-            <th>{LL.modal.wind()}</th>
+            <th>
+                {LL.modal.wind()} ({LL.modal.windDirection()})
+            </th>
             <td>
                 {stringify(weather.wind.speed, 'speed', currentUnit())} (
                 {windDegreesToDirection(weather.wind.direction)})
