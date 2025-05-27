@@ -201,14 +201,20 @@ const updateWeather = async () => {
         </>
     );
 
+    const modalTitle = `${weatherEmoji} ${LL.modal.title({ city: CITY.display })}`;
+
     detailsModal ??= new Modal({
         type: 'ALERT',
-        title: `${weatherEmoji} ${LL.modal.title({ city: CITY.display })}`,
+        title: modalTitle,
         body: detailsModalBody,
         bodyClass: ['table-responsive', 'p-0'],
         footer: detailsModalFooter,
         removeOnClose: false,
     }).setTrigger(navbarItem);
+
+    void detailsModal
+        .getTitle()
+        .then(([title]) => (title.textContent = modalTitle));
 
     detailsModalTBody.replaceChildren(
         <tr>
