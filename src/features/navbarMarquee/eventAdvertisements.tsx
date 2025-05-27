@@ -104,11 +104,12 @@ const createEventSpan = (event: Event) => {
             </table>
         );
 
-        const modal = new Modal({
+        new Modal({
             type: 'ALERT',
             scrollable: true,
             title: event.name[BETTER_MOODLE_LANG],
             body: table,
+            bodyClass: ['table-responsive', 'p-0'],
             footer:
                 event.url ?
                     <a className="w-100" href={event.url} target="_blank">
@@ -116,13 +117,7 @@ const createEventSpan = (event: Event) => {
                     </a>
                 :   undefined,
             removeOnClose: true,
-        });
-
-        void modal
-            .getBody()
-            .then(([body]) => body.classList.add('table-responsive', 'p-0'));
-
-        modal.show();
+        }).show();
     });
     return span;
 };

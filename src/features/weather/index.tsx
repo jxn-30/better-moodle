@@ -198,13 +198,10 @@ const updateWeather = async () => {
         type: 'ALERT',
         title: `${weatherEmoji} ${LL.modal.title({ city: CITY.display })}`,
         body: detailsModalBody,
+        bodyClass: ['table-responsive', 'p-0'],
         footer: detailsModalFooter,
         removeOnClose: false,
     }).setTrigger(navbarItem);
-
-    void detailsModal
-        .getBody()
-        .then(([body]) => body.classList.add('table-responsive', 'p-0'));
 
     detailsModalTBody.replaceChildren(
         <tr>

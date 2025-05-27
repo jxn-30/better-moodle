@@ -315,12 +315,11 @@ const openSpeiseplan = () => {
         body: getCurrentSpeiseplan().then(fieldsets => (
             <>{...Array.from(fieldsets)}</>
         )),
+        bodyClass: 'mform',
         // setting the footer here would remove the buttons 🤷
         removeOnClose: true,
         buttons: { cancel: `🍴\xa0${sLL().close()}` },
     }).show();
-
-    void modal.getBody().then(([body]) => body.classList.add('mform'));
 
     void modal
         .getFooter()

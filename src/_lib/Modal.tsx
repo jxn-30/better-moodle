@@ -1,4 +1,5 @@
 import CanBeReady from './CanBeReady';
+import classNames from 'classnames';
 import CoreModalEvents from '#/require.js/core/modal_events';
 import modalStyle from '!/modal.module.scss';
 import { require } from './require.js';
@@ -10,6 +11,7 @@ import type {
 
 interface Config extends ModalConfig {
     backgroundImage?: string;
+    bodyClass?: classNames.Argument;
 }
 
 /**
@@ -61,6 +63,13 @@ export class Modal extends CanBeReady {
     async #onReady() {
         super.instanceReady();
         await this.#prependFooter();
+        if (this.#config.bodyClass) {
+            await this.getBody().then(([body]) =>
+                body.classList.add(
+                    ...classNames(this.#config.bodyClass).split(' ')
+                )
+            );
+        }
     }
 
     /**
