@@ -7,6 +7,7 @@ import openMeteo from './providers/openMeteo';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import { stringify } from './util/units';
 import { TextSetting } from '@/Settings/TextSetting';
+import visualCrossing from './providers/visualCrossing';
 import wttrIn from './providers/wttrIn';
 import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
 import {
@@ -160,6 +161,11 @@ const updateWeather = async () => {
         weather = await wttrIn(CITY.name);
     } else if (provider.value === 'openMeteo') {
         weather = await openMeteo(CITY.lat, CITY.lon);
+    } else if (provider.value === 'visualCrossing') {
+        weather = await visualCrossing(
+            CITY.name,
+            apiKeys.get('visualCrossing')?.value ?? ''
+        );
     } else return;
 
     // trigger the next update in 5 Minutes

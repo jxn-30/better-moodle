@@ -520,9 +520,31 @@ const openMeteoCodeToCondition = {
     99: WeatherCondition.HEAVY_THUNDERSTORM_WITH_HAIL,
 };
 
+const visualCrossingCodeToCondition = {
+    'snow': WeatherCondition.MODERATE_SNOW,
+    'snow-showers-day': WeatherCondition.MODERATE_SNOW_SHOWERS,
+    'snow-showers-night': WeatherCondition.MODERATE_SNOW_SHOWERS,
+    'thunder-rain': WeatherCondition.MODERATE_THUNDERSTORM_WITH_RAIN,
+    'thunder-showers-day':
+        WeatherCondition.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS,
+    'thunder-showers-night':
+        WeatherCondition.MODERATE_THUNDERSTORM_WITH_RAIN_SHOWERS,
+    'rain': WeatherCondition.MODERATE_RAIN,
+    'rain-showers-day': WeatherCondition.MODERATE_RAIN_SHOWERS,
+    'rain-showers-night': WeatherCondition.MODERATE_RAIN_SHOWERS,
+    'fog': WeatherCondition.FOG,
+    'wind': WeatherCondition.WIND,
+    'cloudy': WeatherCondition.OVERCAST_CLOUDS,
+    'partly-cloudy-day': WeatherCondition.SCATTERED_CLOUDS,
+    'partly-cloudy-night': WeatherCondition.SCATTERED_CLOUDS,
+    'clear-day': WeatherCondition.CLEAR,
+    'clear-night': WeatherCondition.CLEAR,
+};
+
 interface ProviderCodes {
     wttrIn: number;
     openMeteo: number;
+    visualCrossing: string;
 }
 
 /**
@@ -547,6 +569,12 @@ export const codeToCondition = <Provider extends keyof ProviderCodes>(
             return (
                 openMeteoCodeToCondition[
                     code as keyof typeof openMeteoCodeToCondition
+                ] ?? WeatherCondition.UNKNOWN
+            );
+        case 'visualCrossing':
+            return (
+                visualCrossingCodeToCondition[
+                    code as keyof typeof visualCrossingCodeToCondition
                 ] ?? WeatherCondition.UNKNOWN
             );
     }

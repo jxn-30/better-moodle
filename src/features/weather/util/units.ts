@@ -11,7 +11,7 @@ const unitsMetric = {
 };
 
 const unitsScientific = {
-    temperature: 'kelvin',
+    temperature: 'K', // no supported unit
     angle: 'radian',
     speed: 'meter-per-second',
     distanceKm: 'meter',
