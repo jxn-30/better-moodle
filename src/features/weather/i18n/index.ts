@@ -5,6 +5,8 @@ export const de = {
     name: 'Wetter',
     description: '',
     apiKeyRequired: 'API-Key benötigt',
+    apiKeyWarning:
+        'Bitte hinterlege in den Einstellungen von Better-Moodle einen gültigen API-Key für {provider}. Ein API-Key für den kostenlosen Free-Plan reicht aus.',
     providers: {
         wttrIn: 'wttr.in',
         openMeteo: 'Open-Meteo',
@@ -78,6 +80,8 @@ export const en = {
     name: 'Weather',
     description: '',
     apiKeyRequired: 'API-Key required',
+    apiKeyWarning:
+        'Please enter a valid API key for {provider} in the Better-Moodle settings. An API key for the free plan is sufficient.',
     providers: {
         wttrIn: 'wttr.in',
         openMeteo: 'Open-Meteo',

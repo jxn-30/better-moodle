@@ -147,6 +147,21 @@ const detailsModalFooter = (
 ) as HTMLSpanElement;
 
 /**
+ * Sets the navbar item to a warning about the abscence of an API-Key
+ * @param provider - the name of the provider this warning happens for
+ */
+const showInvalidAPIKey = (provider: string) => {
+    navbarText.textContent = '🔒';
+    setTooltipContent(
+        <>
+            <strong>{LL.apiKeyRequired()}</strong>
+            <br />
+            {LL.apiKeyWarning({ provider })}
+        </>
+    );
+};
+
+/**
  * Updates the weather using given provider.
  */
 const updateWeather = async () => {
@@ -162,10 +177,12 @@ const updateWeather = async () => {
     } else if (provider.value === 'openMeteo') {
         weather = await openMeteo(CITY.lat, CITY.lon);
     } else if (provider.value === 'visualCrossing') {
-        weather = await visualCrossing(
-            CITY.name,
-            apiKeys.get('visualCrossing')?.value ?? ''
-        );
+        const apiKey = apiKeys.get('visualCrossing')?.value ?? '';
+        if (!apiKey) {
+            showInvalidAPIKey(LL.providers.visualCrossing());
+            return;
+        }
+        weather = await visualCrossing(CITY.name, apiKey);
     } else return;
 
     // trigger the next update in 5 Minutes
