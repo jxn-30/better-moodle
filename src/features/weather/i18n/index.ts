@@ -4,6 +4,14 @@ import type { FeatureGroupTranslation } from '#/i18n';
 export const de = {
     name: 'Wetter',
     description: '',
+    apiKeyRequired: 'API-Key benötigt',
+    providers: {
+        wttrIn: 'wttr.in',
+        openMeteo: 'Open-Meteo',
+        visualCrossing: 'Visual Crossing',
+        openWeatherMap: 'OpenWeatherMap',
+        pirateWeather: 'Pirate Weather',
+    },
     settings: {
         'enabled': {
             name: 'Wetter anzeigen',
@@ -12,13 +20,6 @@ export const de = {
         'provider': {
             name: 'Anbieter',
             description: 'Wähle den Anbieter für die Wetterdaten aus.',
-            options: {
-                wttrIn: 'wttr.in',
-                openMeteo: 'Open-Meteo',
-                visualCrossing: 'Visual Crossing (API-Key benötigt)',
-                openWeatherMap: 'OpenWeatherMap (API-Key benötigt)',
-                pirateWeather: 'Pirate Weather (API-Key benötigt)',
-            },
         },
         'api.openWeatherMap': {
             name: 'API-Key für OpenWeatherMap',
@@ -76,6 +77,14 @@ export const de = {
 export const en = {
     name: 'Weather',
     description: '',
+    apiKeyRequired: 'API-Key required',
+    providers: {
+        wttrIn: 'wttr.in',
+        openMeteo: 'Open-Meteo',
+        visualCrossing: 'Visual Crossing',
+        openWeatherMap: 'OpenWeatherMap',
+        pirateWeather: 'Pirate Weather',
+    },
     settings: {
         'enabled': {
             name: 'Show weather',
@@ -84,13 +93,6 @@ export const en = {
         'provider': {
             name: 'Provider',
             description: 'Choose the provider for the weather data.',
-            options: {
-                wttrIn: 'wttr.in',
-                openMeteo: 'Open-Meteo',
-                visualCrossing: 'Visual Crossing (requires API-Key)',
-                openWeatherMap: 'OpenWeatherMap (requires API-Key)',
-                pirateWeather: 'Pirate Weather (requires API-Key)',
-            },
         },
         'api.openWeatherMap': {
             name: 'API-Key for OpenWeatherMap',

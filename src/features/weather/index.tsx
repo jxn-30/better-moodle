@@ -40,6 +40,15 @@ export interface Weather {
     };
 }
 
+type Provider = keyof (typeof LL)['providers'];
+
+const providersWithoutAPIKey: Provider[] = ['wttrIn', 'openMeteo'];
+const providersWithAPIKey: Provider[] = [
+    'visualCrossing',
+    'openWeatherMap',
+    'pirateWeather',
+];
+
 const enabled = new BooleanSetting('enabled', false).addAlias(
     'weatherDisplay.show'
 );
@@ -57,18 +66,23 @@ const units = new SelectSetting('units', 'metric', [
 ])
     .addAlias('weatherDisplay.units')
     .disabledIf(enabled, '!=', true);
-const provider = new SelectSetting('provider', 'wttrIn', [
-    'wttrIn',
-    'openMeteo',
-    'visualCrossing',
-    'openWeatherMap',
-    'pirateWeather',
-])
+
+const providerOptions = providersWithoutAPIKey.map(p => ({
+    key: p,
+    title: LL.providers[p]() as string,
+}));
+providersWithAPIKey.forEach(p =>
+    providerOptions.push({
+        key: p,
+        title: `${LL.providers[p]()} (${LL.apiKeyRequired()})`,
+    })
+);
+const provider = new SelectSetting('provider', 'wttrIn', providerOptions)
     .addAlias('weatherDisplay.provider')
     .disabledIf(enabled, '!=', true);
 
 const apiKeys = new Map<string, TextSetting>();
-['visualCrossing', 'openWeatherMap', 'pirateWeather'].forEach(providerKey => {
+providersWithAPIKey.forEach(providerKey => {
     const setting = new TextSetting(`api.${providerKey}`, '')
         .addAlias(`weatherDisplay.${providerKey}APIKey`)
         .disabledIf(enabled, '!=', true)
@@ -195,7 +209,7 @@ const updateWeather = async () => {
             <br />
             <br />
             <small>
-                {LL.settings.provider.options[provider.value]()}&nbsp;⋅&nbsp;
+                {LL.providers[provider.value]()}&nbsp;⋅&nbsp;
                 {timeToString(date, false)}
             </small>
         </>
@@ -279,7 +293,7 @@ const updateWeather = async () => {
         <>
             {LL.modal.source()}:&nbsp;
             <a href={weather.meta.providerURL} target="_blank">
-                {LL.settings.provider.options[provider.value]()}
+                {LL.providers[provider.value]()}
             </a>
             {' ⋅ '}
             {timeToString(date, false)}
