@@ -318,7 +318,4 @@ if (__UNI__ === 'cau') {
     settings.delete(timelineSidebarEnabled);
 }
 
-export default Feature.register({
-    settings,
-    onload,
-});
+export default Feature.register({ settings, onload });

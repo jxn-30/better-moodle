@@ -197,7 +197,7 @@ const featureGlob = `${featuresBase}{${Array.from(allIncludedFeatures.values())
     .join(',')}}.{ts,tsx}`;
 
 // we're again adding random UUIDs to not have empty brace expansion
-const fixesGlob = `/src/fixes/{${crypto.randomUUID()},${crypto.randomUUID()},${(config.fixes ?? []).join(',')}}.{ts, tsx}`;
+const fixesGlob = `/src/fixes/{${crypto.randomUUID()},${crypto.randomUUID()},${(config.fixes ?? []).join(',')}}.{ts,tsx}`;
 
 // @ts-expect-error because process.env may also include undefined values
 dotenv.populate(process.env, {

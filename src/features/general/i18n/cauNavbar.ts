@@ -6,9 +6,7 @@ export const de = {
             name: 'CAU Knöpfe',
             description:
                 'Wähle einen schöneren Weg, um die SOS Knöpfe der CAU darzustellen.',
-            options: {
-                default: 'Standard',
-            },
+            options: { default: 'Standard' },
         },
     },
 } satisfies FeatureTranslation;
@@ -19,9 +17,7 @@ export const en = {
             name: 'CAU Buttons',
             description:
                 'Choose a nicer way to display the SOS buttons of the CAU.',
-            options: {
-                default: 'Default',
-            },
+            options: { default: 'Default' },
         },
     },
 } as typeof de;
