@@ -43,7 +43,7 @@ const getFilterFromEl = (
 export const getAvailableCourseFilters = async (): Promise<CourseFilter[]> => {
     if (availableFilters.length) return availableFilters;
 
-    if (!isLoggedIn) return [];
+    if (!(await isLoggedIn())) return [];
 
     const result0 = await Promise.all([
         requirePromise(['block_myoverview/selectors'] as const),

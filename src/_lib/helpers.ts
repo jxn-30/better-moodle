@@ -1,3 +1,5 @@
+import { ready } from '@/DOM';
+
 /**
  * Prefixes a given string with the global prefix.
  * @param str - the string to be prefixed
@@ -214,9 +216,10 @@ export const animate = (
 };
 
 /**
- * Checks if the user is logged in by checking the current URL.
+ * Checks if the user is logged in.
+ * @returns a promise that resolves with information about the login state
  */
-export const isLoggedIn = !window.location.pathname.startsWith('/login');
+export const isLoggedIn = () => ready().then(() => !!M.cfg.userId);
 
 /**
  * Checks if the current page is the dashboard by checking the current URL.

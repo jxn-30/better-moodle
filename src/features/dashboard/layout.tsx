@@ -276,8 +276,8 @@ const initCourseSidebar = () => {
 /**
  * Creates and instantiates the drawers.
  */
-const onload = () => {
-    if (!isDashboard || !isLoggedIn) return;
+const onload = async () => {
+    if (!isDashboard || !(await isLoggedIn())) return;
 
     if (coursesSidebarEnabled.value) {
         initCourseSidebar();

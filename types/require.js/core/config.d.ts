@@ -5,4 +5,5 @@ export default interface CoreConfig {
     sesskey: string;
 
     courseId?: number;
+    userId?: number;
 }
