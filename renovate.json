@@ -50,7 +50,7 @@
             "lockFileMaintenance": { "enabled": true },
             "matchDepNames": ["node"],
             "matchManagers": ["npm", "nvm"],
-            "rangeStrategy": "pin",
+            "rangeStrategy": "bump",
             "separateMajorMinor": false
         }
     ],
