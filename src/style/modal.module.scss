@@ -14,3 +14,7 @@
         display: none;
     }
 }
+
+:local(.modal-trigger) {
+    cursor: pointer;
+}

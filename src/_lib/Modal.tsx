@@ -1,4 +1,5 @@
 import CanBeReady from './CanBeReady';
+import classNames from 'classnames';
 import CoreModalEvents from '#/require.js/core/modal_events';
 import modalStyle from '!/modal.module.scss';
 import { require } from './require.js';
@@ -10,6 +11,7 @@ import type {
 
 interface Config extends ModalConfig {
     backgroundImage?: string;
+    bodyClass?: classNames.Argument;
 }
 
 /**
@@ -21,6 +23,7 @@ export class Modal extends CanBeReady {
 
     #modal: MoodleModal | undefined;
     #modalEvents: CoreModalEvents | undefined;
+    #triggers = new Map<Element, (event: Event) => void>();
 
     /**
      * Create a new modal with the given configuration.
@@ -31,8 +34,9 @@ export class Modal extends CanBeReady {
 
         this.#config = config;
 
-        // we cannot set footer on this type of modal, so we need to postpone prepending it
-        if (config.type === 'SAVE_CANCEL') {
+        // setting a footer will prevent creating the button(s)
+        // thus we will prepend it later
+        if (config.footer) {
             this.#savedFooter = config.footer;
             delete this.#config.footer;
         }
@@ -60,6 +64,13 @@ export class Modal extends CanBeReady {
     async #onReady() {
         super.instanceReady();
         await this.#prependFooter();
+        if (this.#config.bodyClass) {
+            await this.getBody().then(([body]) =>
+                body.classList.add(
+                    ...classNames(this.#config.bodyClass).split(' ')
+                )
+            );
+        }
     }
 
     /**
@@ -86,6 +97,16 @@ export class Modal extends CanBeReady {
      */
     show() {
         this.callWhenReady(() => this.#modal!.show()).catch(console.error);
+
+        return this;
+    }
+
+    /**
+     * Hides the modal once it is ready.
+     * @returns the modal instance itself
+     */
+    hide() {
+        this.callWhenReady(() => this.#modal!.hide()).catch(console.error);
 
         return this;
     }
@@ -158,11 +179,33 @@ export class Modal extends CanBeReady {
      * @returns the modal instance itself
      */
     setTrigger(trigger: Element) {
-        trigger.addEventListener('click', e => {
+        trigger.classList.add(modalStyle.modalTrigger);
+        /**
+         * Shows the modal on click
+         * @param e - the click event
+         */
+        const triggerFn = (e: Event) => {
             e.preventDefault();
             this.show();
-        });
+        };
+        trigger.addEventListener('click', triggerFn);
+        this.#triggers.set(trigger, triggerFn);
 
+        return this;
+    }
+
+    /**
+     * Removes a click event listener from the {@link trigger} element.
+     * @param trigger - the element that should not be used as a trigger anymore
+     * @returns the modal isntance itself
+     */
+    unsetTrigger(trigger: Element) {
+        const triggerFn = this.#triggers.get(trigger);
+        if (triggerFn) {
+            trigger.classList.remove(modalStyle.modalTrigger);
+            trigger.removeEventListener('click', triggerFn);
+            this.#triggers.delete(trigger);
+        }
         return this;
     }
 

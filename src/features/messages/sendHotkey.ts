@@ -5,7 +5,7 @@ const hotkey = new SelectSetting('sendHotkey', '', [
     '',
     'shiftEnter',
     'ctrlEnter',
-]);
+]).addAlias('messages.sendHotkey');
 
 const messageApps = new Map<
     HTMLTextAreaElement,

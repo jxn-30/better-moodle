@@ -1,5 +1,6 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
+import boxen from 'boxen';
 import browserslist from 'browserslist';
 import type Config from './configs/_config';
 import { createHash } from 'crypto';
@@ -285,6 +286,32 @@ const GLOBAL_CONSTANTS = {
 const fileName = `better-moodle-${configFile}.user.js`;
 const metaFileName = `better-moodle-${configFile}.meta.js`;
 
+const copyrightContent = `
+This is Better-Moodle; Version ${version}; Built for ${config.uniName} (${config.moodleUrl}).
+Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30), Yorik (@YorikHansen) and contributors.
+All rights reserved.
+Licensed under the MIT License (MIT).
+Source-Code: ${githubUrl}
+`.trim();
+const copyright = boxen(copyrightContent, {
+    borderStyle: {
+        topLeft: '/*!',
+        topRight: '*',
+        bottomLeft: ' *',
+        bottomRight: '*/',
+        top: '*',
+        bottom: '*',
+        left: '*',
+        right: '*',
+    },
+    title: 'Copyright ©',
+    padding: 1,
+    width: Math.min(
+        120, // The prettier max width for built file
+        Math.max(...copyrightContent.split(/\n/).map(l => l.length)) + 8 // Max line width + padding + border
+    ),
+}).toString();
+
 export default defineConfig({
     esbuild: {
         jsxInject:
@@ -306,18 +333,6 @@ export default defineConfig({
                 })
             )
         ),
-        rollupOptions: {
-            output: {
-                intro: `
-/*! This is Better-Moodle; Version ${version}; Built for ${config.uniName} (${config.moodleUrl}).
- *  Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30), Yorik (@YorikHansen) and contributors.
- *  All rights reserved.
- *  Licensed under the MIT License (MIT).
- *  Source-Code: ${githubUrl}
- */
-`.trim(),
-            },
-        },
     },
     resolve: {
         alias: [
@@ -378,6 +393,12 @@ export default defineConfig({
 
                     if (/^src\/features\/.*\/i18n\/index\.ts$/.test(context)) {
                         // Ah! We're loading from a translation index file!
+
+                        // okay, if the translation file is not within an i18n folder, we must include
+                        // this is e.g. for the weather condition translations
+                        // maybe we can find a better way sometime
+                        if (!sourcePath.includes('i18n')) return undefined;
+
                         // hmm, is this feature included?
                         const featureGroup = context.split('/')[2];
                         const feature = sourcePath.split('/')[4];
@@ -503,6 +524,22 @@ export default defineConfig({
             },
             clientAlias: 'GM',
             build: { fileName, metaFileName, autoGrant: true },
+            format: {
+                /**
+                 * Adds the copyright notice and a eslint global comment to the userscript
+                 * @param uOptions - information about the userscript, also containing the header
+                 * @returns the userscript header plus preamble
+                 */
+                generate(uOptions) {
+                    return `
+${uOptions.userscript}
+
+${copyright}
+
+/* global global, ActiveXObject, M, requirejs, DarkReader */
+`.trim();
+                },
+            },
         }),
         {
             name: 'mustache-loader',

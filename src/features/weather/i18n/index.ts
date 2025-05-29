@@ -1,8 +1,21 @@
+import { i18n as conditions } from '../util/condition';
 import type { FeatureGroupTranslation } from '#/i18n';
 
 export const de = {
     name: 'Wetter',
     description: '',
+    apiKeyRequired: 'API-Key benötigt',
+    apiKeyWarning:
+        'Bitte hinterlege in den Einstellungen von Better-Moodle einen gültigen API-Key für {provider}. Ein API-Key für den kostenlosen Free-Plan reicht aus.',
+    providers: {
+        wttrIn: 'wttr.in',
+        openMeteo: 'Open-Meteo',
+        visualCrossing: 'Visual Crossing',
+        openWeatherMap: 'OpenWeatherMap',
+        pirateWeather: 'Pirate Weather',
+    },
+    fetchError:
+        'Es kam zu einem Fehler beim Aktualisieren der Wetter-Daten. Bitte überprüfe (falls nötig) deinen API-Key oder versuche einen anderen Anbieter.',
     settings: {
         'enabled': {
             name: 'Wetter anzeigen',
@@ -11,13 +24,6 @@ export const de = {
         'provider': {
             name: 'Anbieter',
             description: 'Wähle den Anbieter für die Wetterdaten aus.',
-            options: {
-                wttrIn: 'wttr.in',
-                openMeteo: 'Open-Meteo',
-                visualCrossing: 'Visual Crossing (API-Key benötigt)',
-                openWeatherMap: 'OpenWeatherMap (API-Key benötigt)',
-                pirateWeather: 'Pirate Weather (API-Key benötigt)',
-            },
         },
         'api.openWeatherMap': {
             name: 'API-Key für OpenWeatherMap',
@@ -54,11 +60,39 @@ export const de = {
                 'Ermöglicht das Umschalten zwischen der tatsächlichen Temperatur und der gefühlten  Temperatur.',
         },
     },
+    conditions: conditions.de,
+    modal: {
+        title: 'Wetter-Moodle für {city:string}',
+        source: 'Quelle',
+        raw: 'Rohdaten',
+        condition: 'Aktuelles Wetter',
+        temperature: 'Temperatur',
+        temperatureFeelsLike: 'gefühlt',
+        wind: 'Wind',
+        windDirection: 'Richtung',
+        visibility: 'Sichtweite',
+        humidity: 'Luftfeuchtigkeit',
+        pressure: 'Luftdruck',
+        cloudCover: 'Bewölkung',
+        precipitation: 'Niederschlagsmenge',
+    },
 } satisfies FeatureGroupTranslation;
 
 export const en = {
     name: 'Weather',
     description: '',
+    apiKeyRequired: 'API-Key required',
+    apiKeyWarning:
+        'Please enter a valid API key for {provider} in the Better-Moodle settings. An API key for the free plan is sufficient.',
+    providers: {
+        wttrIn: 'wttr.in',
+        openMeteo: 'Open-Meteo',
+        visualCrossing: 'Visual Crossing',
+        openWeatherMap: 'OpenWeatherMap',
+        pirateWeather: 'Pirate Weather',
+    },
+    fetchError:
+        'There was an error updating the weather data. Please check your API key (if necessary) or try another provider.',
     settings: {
         'enabled': {
             name: 'Show weather',
@@ -67,13 +101,6 @@ export const en = {
         'provider': {
             name: 'Provider',
             description: 'Choose the provider for the weather data.',
-            options: {
-                wttrIn: 'wttr.in',
-                openMeteo: 'Open-Meteo',
-                visualCrossing: 'Visual Crossing (requires API-Key)',
-                openWeatherMap: 'OpenWeatherMap (requires API-Key)',
-                pirateWeather: 'Pirate Weather (requires API-Key)',
-            },
         },
         'api.openWeatherMap': {
             name: 'API-Key for OpenWeatherMap',
@@ -108,6 +135,22 @@ export const en = {
             description:
                 "Allows you to switch between the actual temperature and the 'feels like' temperature.",
         },
+    },
+    conditions: conditions.en,
+    modal: {
+        title: 'Weather-Moodle for {city:string}',
+        source: 'Source',
+        raw: 'Raw data',
+        condition: 'Current weather',
+        temperature: 'Temperature',
+        temperatureFeelsLike: 'felt',
+        wind: 'Wind',
+        windDirection: 'Direction',
+        visibility: 'Visibility',
+        humidity: 'Humidity',
+        pressure: 'Pressure',
+        cloudCover: 'Cloud cover',
+        precipitation: 'Precipitation',
     },
 } as typeof de;
 

@@ -22,6 +22,7 @@ export interface ModalConfig {
 
 export interface MoodleModal {
     show: () => void;
+    hide: () => void;
 
     header: JQuery<HTMLDivElement>;
 

@@ -66,6 +66,21 @@ export const datetimeToString = (
     });
 
 /**
+ * Turns a number into a localized string
+ * @param num - the number to be localized
+ * @param options - localization options
+ * @param lang - enforce a special language instead of BETTER_MOODLE_LANG
+ * @returns the localized number
+ */
+export const numToString = (
+    num: number,
+    options: Partial<
+        Pick<Intl.NumberFormatOptions, 'maximumSignificantDigits'>
+    > = {},
+    lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
+) => num.toLocaleString(lang, options);
+
+/**
  * Prints a number localized with a given unit
  * @param num - the number to be localized
  * @param unit - the unit to use

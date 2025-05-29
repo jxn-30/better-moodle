@@ -4,7 +4,7 @@
     "baseBranches": ["main", "v2"],
     "dependencyDashboard": true,
     "dependencyDashboardFooter": "Node.js and yarn updates are scheduled to the first day of the month. PRs will be created on mondays, wednesdays and fridays before 3am (CEST) for any other dependencies, dependencies for polyfills are separated to their own group. Lockfile maintenance is scheduled for saturdays.",
-    "dependencyDashboardHeader": "# ℹ️ Renovate Dependency-Dashboard ℹ\nScheduled and currently open dependency updates are listed here\n",
+    "dependencyDashboardHeader": "# ℹ️ Renovate Dependency-Dashboard ℹ️\nScheduled and currently open dependency updates are listed here\n",
     "dependencyDashboardLabels": ["dependencies"],
     "dependencyDashboardTitle": "⬆ℹ️ Renovate Dependency-Dashboard ℹ️",
     "labels": ["dependencies"],
