@@ -23,6 +23,7 @@ export class Modal extends CanBeReady {
 
     #modal: MoodleModal | undefined;
     #modalEvents: CoreModalEvents | undefined;
+    #triggers = new Map<Element, (event: Event) => void>();
 
     /**
      * Create a new modal with the given configuration.
@@ -101,6 +102,16 @@ export class Modal extends CanBeReady {
     }
 
     /**
+     * Hides the modal once it is ready.
+     * @returns the modal instance itself
+     */
+    hide() {
+        this.callWhenReady(() => this.#modal!.hide()).catch(console.error);
+
+        return this;
+    }
+
+    /**
      * The callback is called once the modal instance is ready;
      * @param callback - the function that is called
      * @returns the modal instance itself
@@ -169,11 +180,32 @@ export class Modal extends CanBeReady {
      */
     setTrigger(trigger: Element) {
         trigger.classList.add(modalStyle.modalTrigger);
-        trigger.addEventListener('click', e => {
+        /**
+         * Shows the modal on click
+         * @param e - the click event
+         */
+        const triggerFn = (e: Event) => {
             e.preventDefault();
             this.show();
-        });
+        };
+        trigger.addEventListener('click', triggerFn);
+        this.#triggers.set(trigger, triggerFn);
 
+        return this;
+    }
+
+    /**
+     * Removes a click event listener from the {@link trigger} element.
+     * @param trigger - the element that should not be used as a trigger anymore
+     * @returns the modal isntance itself
+     */
+    unsetTrigger(trigger: Element) {
+        const triggerFn = this.#triggers.get(trigger);
+        if (triggerFn) {
+            trigger.classList.remove(modalStyle.modalTrigger);
+            trigger.removeEventListener('click', triggerFn);
+            this.#triggers.delete(trigger);
+        }
         return this;
     }
 

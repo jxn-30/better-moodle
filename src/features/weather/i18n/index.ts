@@ -14,6 +14,8 @@ export const de = {
         openWeatherMap: 'OpenWeatherMap',
         pirateWeather: 'Pirate Weather',
     },
+    fetchError:
+        'Es kam zu einem Fehler beim Aktualisieren der Wetter-Daten. Bitte überprüfe (falls nötig) deinen API-Key oder versuche einen anderen Anbieter.',
     settings: {
         'enabled': {
             name: 'Wetter anzeigen',
@@ -89,6 +91,8 @@ export const en = {
         openWeatherMap: 'OpenWeatherMap',
         pirateWeather: 'Pirate Weather',
     },
+    fetchError:
+        'There was an error updating the weather data. Please check your API key (if necessary) or try another provider.',
     settings: {
         'enabled': {
             name: 'Show weather',

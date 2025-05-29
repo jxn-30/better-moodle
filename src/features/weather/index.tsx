@@ -162,6 +162,23 @@ const showInvalidAPIKey = (provider: string) => {
 };
 
 /**
+ * Sets the navbar item to a warning that indicates an error while fetching the weather
+ * @param error - the error that is thrown while fetching the weather
+ */
+const showError = (error: Error) => {
+    navbarText.textContent = '❌';
+    setTooltipContent(
+        <>
+            {LL.fetchError()}
+            <hr />
+            <pre className="text-wrap word-break text-white text-left">
+                {error.toString()}
+            </pre>
+        </>
+    );
+};
+
+/**
  * Updates the weather using given provider.
  */
 const updateWeather = async () => {
@@ -171,22 +188,26 @@ const updateWeather = async () => {
     navbarText.textContent = '🌈';
     setTooltipContent('⏳️');
 
-    let weather: Weather;
+    let weather: Weather | null | void = null;
     if (provider.value === 'wttrIn') {
-        weather = await wttrIn(CITY.name);
+        weather = await wttrIn(CITY.name).catch(showError);
     } else if (provider.value === 'openMeteo') {
-        weather = await openMeteo(CITY.lat, CITY.lon);
+        weather = await openMeteo(CITY.lat, CITY.lon).catch(showError);
     } else if (provider.value === 'visualCrossing') {
         const apiKey = apiKeys.get('visualCrossing')?.value ?? '';
-        if (!apiKey) {
-            showInvalidAPIKey(LL.providers.visualCrossing());
-            return;
-        }
-        weather = await visualCrossing(CITY.name, apiKey);
+        if (!apiKey) showInvalidAPIKey(LL.providers.visualCrossing());
+        else weather = await visualCrossing(CITY.name, apiKey).catch(showError);
     } else return;
 
     // trigger the next update in 5 Minutes
     setTimeout(() => void updateWeather(), FIVE_MINUTES);
+
+    // no weather (e.g. due to an error)? => abort
+    if (!weather) {
+        detailsModal?.unsetTrigger(navbarItem);
+        detailsModal?.hide();
+        return;
+    }
 
     const weatherEmoji = getWeatherEmoji(weather.condition);
 
