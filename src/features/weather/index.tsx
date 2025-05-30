@@ -130,7 +130,7 @@ const setTooltipContent = (
     tooltipContent.innerHTML = '';
     tooltipContent.append(content);
 
-    navbarItem.dataset.originalTitle = navbarItem.title = getHtml(tooltip);
+    navbarItem.dataset.originalTitle = getHtml(tooltip);
 };
 
 let navbarItem: NavbarItemComponent;
