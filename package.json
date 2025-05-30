@@ -34,7 +34,7 @@
     },
     "devDependencies": {
         "@babel/compat-data": "7.27.3",
-        "@cloudflare/workers-types": "4.20250525.0",
+        "@cloudflare/workers-types": "4.20250529.0",
         "@eslint/js": "9.27.0",
         "@prettier/plugin-xml": "3.4.1",
         "@rollup/plugin-terser": "0.4.4",
@@ -42,7 +42,7 @@
         "@types/eslint": "9.6.1",
         "@types/jquery": "3.5.32",
         "@types/mathjax": "0.0.40",
-        "@types/node": "22.15.23",
+        "@types/node": "22.15.27",
         "@types/tampermonkey": "5.0.4",
         "@vitejs/plugin-legacy": "6.1.1",
         "babel-plugin-polyfill-corejs3": "0.12.0",
@@ -63,7 +63,7 @@
         "jiti": "2.4.2",
         "mini-svg-data-uri": "1.4.4",
         "node-ical": "0.20.1",
-        "postcss": "8.5.3",
+        "postcss": "8.5.4",
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "10.2.0",
         "prettier": "3.5.3",
@@ -78,7 +78,7 @@
         "userscript-meta": "1.0.1",
         "vite": "6.3.5",
         "vite-plugin-monkey": "5.0.8",
-        "wrangler": "4.17.0",
+        "wrangler": "4.18.0",
         "yarn": "1.22.22"
     },
     "engines": {
