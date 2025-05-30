@@ -12,5 +12,5 @@
     "moodleVersion": 401,
     "connects": ["studentenwerk.sh", "cloud.rz.uni-kiel.de", "www.uni-kiel.de"],
     "fixes": ["cau/loginDivider"],
-    "includeNonDefaultFeatures": ["cauNavbar"]
+    "includeNonDefaultFeatures": ["general.cauNavbar"]
 }

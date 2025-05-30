@@ -13,7 +13,7 @@
         "bookmarks",
         "weather"
     ],
-    "defaultDisabled": ["cauNavbar"],
+    "defaultDisabled": ["general.cauNavbar"],
     "enabledFrom": { "405": ["courses.sectionCourseIndex"] },
     "disabledFrom": { "402": ["courses.courseIndexDrawerControls"] },
     "connects": {
