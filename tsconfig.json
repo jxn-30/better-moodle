@@ -3,7 +3,14 @@
         "target": "ESNext",
         "useDefineForClassFields": true,
         "module": "ESNext",
-        "lib": ["ESNext", "DOM"],
+        "lib": [
+            "ESNext",
+            "DOM",
+            "DOM.AsyncIterable",
+            "DOM.Iterable",
+            "scripthost",
+            "webworker.importscripts"
+        ],
         "moduleResolution": "bundler",
         "strict": true,
         "sourceMap": true,

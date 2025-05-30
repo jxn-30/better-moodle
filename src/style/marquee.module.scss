@@ -7,7 +7,7 @@ $min-marquee-width: 200px;
 $divider-img: 'https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico';
 
 @if global.$UNI == 'cau' {
-    $divider-img: 'https://www.fs-informatik.uni-kiel.de/favicon.ico';
+    $divider-img: 'https://www.fs-informatik.uni-kiel.de/favicon.min.svg';
 }
 
 :local(.marquee) {

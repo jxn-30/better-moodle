@@ -283,7 +283,7 @@ const onload = async () => {
         initCourseSidebar();
     }
 
-    if (timelineSidebarEnabled.value) {
+    if (timelineSidebarEnabled.value && __UNI__ !== 'cau') {
         const blocks = ['timeline', 'calendar_upcoming'];
 
         const selector = blocks
@@ -308,11 +308,14 @@ const onload = async () => {
     }
 };
 
-export default Feature.register({
-    settings: new Set([
-        coursesSidebarEnabled,
-        favouriteCoursesAtTop,
-        timelineSidebarEnabled,
-    ]),
-    onload,
-});
+const settings = new Set([
+    coursesSidebarEnabled,
+    favouriteCoursesAtTop,
+    timelineSidebarEnabled,
+]);
+
+if (__UNI__ === 'cau') {
+    settings.delete(timelineSidebarEnabled);
+}
+
+export default Feature.register({ settings, onload });
