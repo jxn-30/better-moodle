@@ -12,7 +12,6 @@ export const de = {
         openMeteo: 'Open-Meteo',
         visualCrossing: 'Visual Crossing',
         openWeatherMap: 'OpenWeatherMap',
-        pirateWeather: 'Pirate Weather',
     },
     fetchError:
         'Es kam zu einem Fehler beim Aktualisieren der Wetter-Daten. Bitte überprüfe (falls nötig) deinen API-Key oder versuche einen anderen Anbieter.',
@@ -29,11 +28,6 @@ export const de = {
             name: 'API-Key für OpenWeatherMap',
             description:
                 'Trage hier deinen API-Key für OpenWeatherMap ein (der Free-Plan ist ausreichend).',
-        },
-        'api.pirateWeather': {
-            name: 'API-Key für PirateWeather',
-            description:
-                'Trage hier deinen API-Key für PirateWeather ein (der Free-Plan ist ausreichend).',
         },
         'api.visualCrossing': {
             name: 'API-Key für Visual Crossing',
@@ -89,7 +83,6 @@ export const en = {
         openMeteo: 'Open-Meteo',
         visualCrossing: 'Visual Crossing',
         openWeatherMap: 'OpenWeatherMap',
-        pirateWeather: 'Pirate Weather',
     },
     fetchError:
         'There was an error updating the weather data. Please check your API key (if necessary) or try another provider.',
@@ -106,11 +99,6 @@ export const en = {
             name: 'API-Key for OpenWeatherMap',
             description:
                 'Put your API key for OpenWeatherMap here (the free plan is sufficient).',
-        },
-        'api.pirateWeather': {
-            name: 'API-Key for PirateWeather',
-            description:
-                'Put your API key for PirateWeather here (the free plan is sufficient).',
         },
         'api.visualCrossing': {
             name: 'API-Key for Visual Crossing',

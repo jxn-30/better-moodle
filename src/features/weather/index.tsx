@@ -45,11 +45,7 @@ export interface Weather {
 type Provider = keyof (typeof LL)['providers'];
 
 const providersWithoutAPIKey: Provider[] = ['wttrIn', 'openMeteo'];
-const providersWithAPIKey: Provider[] = [
-    'visualCrossing',
-    'openWeatherMap',
-    'pirateWeather',
-];
+const providersWithAPIKey: Provider[] = ['visualCrossing', 'openWeatherMap'];
 
 const enabled = new BooleanSetting('enabled', false).addAlias(
     'weatherDisplay.show'
@@ -201,10 +197,11 @@ const updateWeather = async () => {
     } else if (provider.value === 'openWeatherMap') {
         const apiKey = apiKeys.get('openWeatherMap')?.value ?? '';
         if (!apiKey) showInvalidAPIKey(LL.providers.openWeatherMap());
-        else
+        else {
             weather = await openWeatherMap(CITY.lat, CITY.lon, apiKey).catch(
                 showError
             );
+        }
     } else return;
 
     // trigger the next update in 5 Minutes
