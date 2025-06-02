@@ -541,10 +541,69 @@ const visualCrossingCodeToCondition = {
     'clear-night': WeatherCondition.CLEAR,
 };
 
+const openWeatherMapCodeToCondition = {
+    200: WeatherCondition.LIGHT_THUNDERSTORM_WITH_RAIN,
+    201: WeatherCondition.MODERATE_THUNDERSTORM_WITH_RAIN,
+    202: WeatherCondition.HEAVY_THUNDERSTORM_WITH_RAIN,
+    210: WeatherCondition.LIGHT_THUNDERSTORM,
+    211: WeatherCondition.MODERATE_THUNDERSTORM,
+    212: WeatherCondition.HEAVY_THUNDERSTORM,
+    221: WeatherCondition.MODERATE_THUNDERSTORM,
+    230: WeatherCondition.LIGHT_THUNDERSTORM_WITH_DRIZZLE,
+    231: WeatherCondition.MODERATE_THUNDERSTORM_WITH_DRIZZLE,
+    232: WeatherCondition.HEAVY_THUNDERSTORM_WITH_DRIZZLE,
+    300: WeatherCondition.LIGHT_DRIZZLE,
+    301: WeatherCondition.MODERATE_DRIZZLE,
+    302: WeatherCondition.HEAVY_DRIZZLE,
+    310: WeatherCondition.LIGHT_DRIZZLE,
+    311: WeatherCondition.MODERATE_DRIZZLE,
+    312: WeatherCondition.HEAVY_DRIZZLE,
+    313: WeatherCondition.LIGHT_DRIZZLE_SHOWERS,
+    314: WeatherCondition.MODERATE_DRIZZLE_SHOWERS,
+    321: WeatherCondition.HEAVY_DRIZZLE_SHOWERS,
+    500: WeatherCondition.LIGHT_RAIN,
+    501: WeatherCondition.MODERATE_RAIN,
+    502: WeatherCondition.HEAVY_RAIN,
+    503: WeatherCondition.HEAVY_RAIN,
+    504: WeatherCondition.EXTREME_RAIN,
+    511: WeatherCondition.MODERATE_FREEZING_RAIN,
+    520: WeatherCondition.LIGHT_RAIN_SHOWERS,
+    521: WeatherCondition.MODERATE_RAIN_SHOWERS,
+    522: WeatherCondition.HEAVY_RAIN_SHOWERS,
+    531: WeatherCondition.MODERATE_RAIN_SHOWERS,
+    600: WeatherCondition.LIGHT_SNOW,
+    601: WeatherCondition.MODERATE_SNOW,
+    602: WeatherCondition.HEAVY_SNOW,
+    611: WeatherCondition.MODERATE_SLEET,
+    612: WeatherCondition.LIGHT_SLEET_SHOWERS,
+    613: WeatherCondition.MODERATE_SLEET_SHOWERS,
+    615: WeatherCondition.LIGHT_SLEET,
+    616: WeatherCondition.MODERATE_SLEET,
+    620: WeatherCondition.LIGHT_SNOW_SHOWERS,
+    621: WeatherCondition.MODERATE_SNOW_SHOWERS,
+    622: WeatherCondition.HEAVY_SNOW_SHOWERS,
+    701: WeatherCondition.MIST,
+    711: WeatherCondition.SMOKE,
+    721: WeatherCondition.HAZE,
+    731: WeatherCondition.DUST,
+    741: WeatherCondition.FOG,
+    751: WeatherCondition.SAND,
+    761: WeatherCondition.DUST,
+    762: WeatherCondition.VOLCANIC_ASH,
+    771: WeatherCondition.SQUALLS,
+    781: WeatherCondition.TORNADO,
+    800: WeatherCondition.CLEAR,
+    801: WeatherCondition.FEW_CLOUDS,
+    802: WeatherCondition.SCATTERED_CLOUDS,
+    803: WeatherCondition.BROKEN_CLOUDS,
+    804: WeatherCondition.OVERCAST_CLOUDS,
+};
+
 interface ProviderCodes {
     wttrIn: number;
     openMeteo: number;
     visualCrossing: string;
+    openWeatherMap: number;
 }
 
 /**
@@ -575,6 +634,12 @@ export const codeToCondition = <Provider extends keyof ProviderCodes>(
             return (
                 visualCrossingCodeToCondition[
                     code as keyof typeof visualCrossingCodeToCondition
+                ] ?? WeatherCondition.UNKNOWN
+            );
+        case 'openWeatherMap':
+            return (
+                openWeatherMapCodeToCondition[
+                    code as keyof typeof openWeatherMapCodeToCondition
                 ] ?? WeatherCondition.UNKNOWN
             );
     }

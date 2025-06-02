@@ -4,6 +4,7 @@ import { FIVE_MINUTES } from '@/times';
 import { getHtml } from '@/DOM';
 import { Modal } from '@/Modal';
 import openMeteo from './providers/openMeteo';
+import openWeatherMap from './providers/openWeatherMap';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import { stringify } from './util/units';
 import { TextSetting } from '@/Settings/TextSetting';
@@ -197,6 +198,13 @@ const updateWeather = async () => {
         const apiKey = apiKeys.get('visualCrossing')?.value ?? '';
         if (!apiKey) showInvalidAPIKey(LL.providers.visualCrossing());
         else weather = await visualCrossing(CITY.name, apiKey).catch(showError);
+    } else if (provider.value === 'openWeatherMap') {
+        const apiKey = apiKeys.get('openWeatherMap')?.value ?? '';
+        if (!apiKey) showInvalidAPIKey(LL.providers.openWeatherMap());
+        else
+            weather = await openWeatherMap(CITY.lat, CITY.lon, apiKey).catch(
+                showError
+            );
     } else return;
 
     // trigger the next update in 5 Minutes
