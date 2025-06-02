@@ -5,29 +5,36 @@ import { type Weather } from '../index';
 
 // This is not the whole response but it contains all information needed
 interface OpenWeatherMapResponse {
-    current: {
-        dt: number;
-        sunrise: number;
-        sunset: number;
+    coord: { lon: number; lat: number };
+    weather: { id: number; main: string; description: string; icon: string }[];
+    base: string;
+    main: {
         temp: number;
         feels_like: number;
+        temp_min: number;
+        temp_max: number;
         pressure: number;
         humidity: number;
-        dew_point: number;
-        uvi: number;
-        clouds: number;
-        visibility: number;
-        wind_speed: number;
-        wind_deg: number;
-        wind_gust: number;
-        rain?: { ['1h']?: number };
-        weather: {
-            id: number;
-            main: string;
-            description: string;
-            icon: string;
-        }[];
+        sea_level: number;
+        grnd_level: number;
     };
+    visibility: number;
+    wind: { speed: number; deg: number };
+    clouds: { all: number };
+    rain?: { '1h'?: number };
+    snow?: { '1h'?: number };
+    dt: number;
+    sys: {
+        type: number;
+        id: number;
+        country: string;
+        sunrise: number;
+        sunset: number;
+    };
+    timezone: number;
+    id: number;
+    name: string;
+    cod: number;
 }
 
 /**
@@ -38,26 +45,29 @@ interface OpenWeatherMapResponse {
  * @returns weather information
  */
 export default (lat: number, lon: number, apiKey: string): Promise<Weather> => {
-    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily,alerts&units=metric&appid=${apiKey}`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
     return cachedRequest(
         url,
         FIVE_MINUTES,
         'json',
-        ({ current: weather }: OpenWeatherMapResponse) => {
+        (weather: OpenWeatherMapResponse) => {
             return {
                 condition: codeToCondition(
                     'openWeatherMap',
                     weather.weather[0].id
                 ),
-                temperature: { actual: weather.temp, feel: weather.feels_like },
-                wind: {
-                    direction: weather.wind_deg,
-                    speed: weather.wind_speed,
+                temperature: {
+                    actual: weather.main.temp,
+                    feel: weather.main.feels_like,
                 },
-                visibility: weather.visibility,
-                humidity: weather.humidity / 100,
-                pressure: weather.pressure,
-                cloudCover: weather.clouds / 100,
+                wind: {
+                    direction: weather.wind.deg,
+                    speed: weather.wind.speed,
+                },
+                visibility: weather.visibility / 1000,
+                humidity: weather.main.humidity / 100,
+                pressure: weather.main.pressure,
+                cloudCover: weather.clouds.all / 100,
                 precipitation: weather.rain?.['1h'] ?? 0,
                 meta: {
                     providerURL: `https://openweathermap.org`,
