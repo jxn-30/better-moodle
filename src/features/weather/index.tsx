@@ -373,8 +373,6 @@ const updateWeather = async () => {
             <a href={weather.meta.requestURL} target="_blank">
                 {LL.modal.raw()}
             </a>
-            {' ⋅ '}
-            {new Date().toISOString()}
         </>
     );
 };
