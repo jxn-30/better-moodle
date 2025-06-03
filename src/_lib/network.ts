@@ -54,6 +54,11 @@ export interface NetworkCache<
     >;
 }
 
+interface CachedResponse<ResultType> {
+    cached: boolean;
+    value: ResultType;
+}
+
 /**
  * Caches the result of a request within GM storage.
  * @param url - the url to make the fetch to
@@ -73,7 +78,7 @@ export const cachedRequest = <
     method: Method,
     preprocess?: (result: ResponseType) => ResultType,
     init?: RequestInit
-): Promise<ResultType> => {
+): Promise<CachedResponse<ResultType>> => {
     const cache = GM_getValue<NetworkCache<Method, ResultType>>(
         NETWORK_CACHE_KEY
     ) ?? { urls: {}, processed: {} };
@@ -90,7 +95,10 @@ export const cachedRequest = <
         (cache.processed[cacheKey]?.lastUpdate ?? 0) + cacheDuration >
             Date.now()
     ) {
-        return Promise.resolve(cache.processed[cacheKey].value);
+        return Promise.resolve({
+            cached: true,
+            value: cache.processed[cacheKey].value,
+        });
     }
 
     // We do have a non-outdated cached version of the base URL
@@ -104,10 +112,15 @@ export const cachedRequest = <
                 value: result,
             };
             GM_setValue(NETWORK_CACHE_KEY, cache);
-            return Promise.resolve(result);
+            return Promise.resolve({ cached: true, value: result });
         }
         // => no preprocessing needs to be done
-        else return Promise.resolve(cache.urls[url].value);
+        else {
+            return Promise.resolve({
+                cached: true,
+                value: cache.urls[url].value,
+            });
+        }
     }
 
     // We don't have any up-to-date cache at all
@@ -121,7 +134,7 @@ export const cachedRequest = <
             const value = preprocess?.(result) ?? result;
             cache.processed[cacheKey] = { lastUpdate: now, expires, value };
             GM_setValue(NETWORK_CACHE_KEY, cache);
-            return value;
+            return { cached: false, value };
         });
 };
 

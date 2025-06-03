@@ -1,7 +1,7 @@
 import { cachedRequest } from '@/network';
 import { codeToCondition } from '../util/condition';
 import { FIVE_MINUTES } from '@/times';
-import { type Weather } from '../index';
+import { type Weather, type WeatherResponse } from '../index';
 
 // This is not the whole response but it contains all information needed
 interface OpenWeatherMapResponse {
@@ -44,7 +44,11 @@ interface OpenWeatherMapResponse {
  * @param apiKey - the users API key for openweathermap.org
  * @returns weather information
  */
-export default (lat: number, lon: number, apiKey: string): Promise<Weather> => {
+export default (
+    lat: number,
+    lon: number,
+    apiKey: string
+): Promise<WeatherResponse> => {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
     return cachedRequest(
         url,

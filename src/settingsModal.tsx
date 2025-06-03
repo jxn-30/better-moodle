@@ -88,7 +88,7 @@ const getChangelogHtml = () =>
             3,
             changelogIdPrefix
         )
-    );
+    ).then(({ value }) => value);
 
 ChangelogBtn.addEventListener('click', e => {
     e.preventDefault();
@@ -121,7 +121,7 @@ const getSupportHtml = () =>
         ONE_DAY,
         'text',
         md => mdToHtml(md, 3)
-    );
+    ).then(({ value }) => value);
 
 const SupportBtn = (
     <button className="btn btn-link btn-sm">

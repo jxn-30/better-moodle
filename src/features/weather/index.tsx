@@ -5,6 +5,7 @@ import { getHtml } from '@/DOM';
 import { Modal } from '@/Modal';
 import openMeteo from './providers/openMeteo';
 import openWeatherMap from './providers/openWeatherMap';
+import { PREFIX } from '@/helpers';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import { stringify } from './util/units';
 import { TextSetting } from '@/Settings/TextSetting';
@@ -40,6 +41,11 @@ export interface Weather {
         requestURL: string;
         time: ReturnType<Date['toISOString']>; // needs to be an ISO string as otherwise GM_setValue cannot store it
     };
+}
+
+export interface WeatherResponse {
+    cached: boolean;
+    value: Weather;
 }
 
 type Provider = keyof (typeof LL)['providers'];
@@ -175,6 +181,11 @@ const showError = (error: Error) => {
     );
 };
 
+let updateTimeout: ReturnType<(typeof window)['setTimeout']>;
+const updateWeatherChannelName = PREFIX('weather-update-weather');
+const updateWeatherChannel = new BroadcastChannel(updateWeatherChannelName);
+updateWeatherChannel.addEventListener('message', () => void updateWeather());
+
 /**
  * Updates the weather using given provider.
  */
@@ -185,27 +196,36 @@ const updateWeather = async () => {
     navbarText.textContent = '🌈';
     setTooltipContent('⏳️');
 
-    let weather: Weather | null | void = null;
+    let response: WeatherResponse | null | void = null;
     if (provider.value === 'wttrIn') {
-        weather = await wttrIn(CITY.name).catch(showError);
+        response = await wttrIn(CITY.name).catch(showError);
     } else if (provider.value === 'openMeteo') {
-        weather = await openMeteo(CITY.lat, CITY.lon).catch(showError);
+        response = await openMeteo(CITY.lat, CITY.lon).catch(showError);
     } else if (provider.value === 'visualCrossing') {
         const apiKey = apiKeys.get('visualCrossing')?.value ?? '';
         if (!apiKey) showInvalidAPIKey(LL.providers.visualCrossing());
-        else weather = await visualCrossing(CITY.name, apiKey).catch(showError);
+        else {
+            response = await visualCrossing(CITY.name, apiKey).catch(showError);
+        }
     } else if (provider.value === 'openWeatherMap') {
         const apiKey = apiKeys.get('openWeatherMap')?.value ?? '';
         if (!apiKey) showInvalidAPIKey(LL.providers.openWeatherMap());
         else {
-            weather = await openWeatherMap(CITY.lat, CITY.lon, apiKey).catch(
+            response = await openWeatherMap(CITY.lat, CITY.lon, apiKey).catch(
                 showError
             );
         }
     } else return;
 
+    // on error, cached should be true as we would otherwise get an infinite loop of broadcast message sendings on persistend errors
+    const { value: weather, cached } = response ?? {
+        value: undefined,
+        cached: true,
+    };
+
     // trigger the next update in 5 Minutes
-    setTimeout(() => void updateWeather(), FIVE_MINUTES);
+    if (updateTimeout) clearTimeout(updateTimeout);
+    updateTimeout = setTimeout(() => void updateWeather(), FIVE_MINUTES);
 
     // no weather (e.g. due to an error)? => abort
     if (!weather) {
@@ -213,6 +233,9 @@ const updateWeather = async () => {
         detailsModal?.hide();
         return;
     }
+
+    // if we reveiced an updated weather, send this to everyone else! :)
+    if (!cached) updateWeatherChannel.postMessage('');
 
     const weatherEmoji = getWeatherEmoji(weather.condition);
 
@@ -350,6 +373,8 @@ const updateWeather = async () => {
             <a href={weather.meta.requestURL} target="_blank">
                 {LL.modal.raw()}
             </a>
+            {' ⋅ '}
+            {new Date().toISOString()}
         </>
     );
 };

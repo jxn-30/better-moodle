@@ -1,7 +1,7 @@
 import { cachedRequest } from '@/network';
 import { codeToCondition } from '../util/condition';
 import { FIVE_MINUTES } from '@/times';
-import { type Weather } from '../index';
+import { type Weather, type WeatherResponse } from '../index';
 
 // This is not the whole response but it contains all information needed
 interface VisualCrossingResponse {
@@ -43,7 +43,7 @@ interface VisualCrossingResponse {
  * @param apiKey - the visual crossing API key the user has set in their settings
  * @returns weather information
  */
-export default (city: string, apiKey: string): Promise<Weather> => {
+export default (city: string, apiKey: string): Promise<WeatherResponse> => {
     const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&lang=id&iconSet=icons2&include=current&key=${apiKey}&contentType=json`;
     return cachedRequest(
         url,

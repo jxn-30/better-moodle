@@ -1,7 +1,7 @@
 import { cachedRequest } from '@/network';
 import { codeToCondition } from '../util/condition';
 import { FIVE_MINUTES } from '@/times';
-import { type Weather } from '../index';
+import { type Weather, type WeatherResponse } from '../index';
 
 // This is not the whole response but it contains all information needed
 interface OpenMeteoResponse {
@@ -27,7 +27,7 @@ interface OpenMeteoResponse {
  * @param lon - longitude of the location to get the weather of
  * @returns weather information
  */
-export default (lat: number, lon: number): Promise<Weather> => {
+export default (lat: number, lon: number): Promise<WeatherResponse> => {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m&minutely_15=visibility&timeformat=unixtime&timezone=auto&forecast_days=1`;
     return cachedRequest(
         url,

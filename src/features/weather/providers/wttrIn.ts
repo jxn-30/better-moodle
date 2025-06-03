@@ -1,7 +1,7 @@
 import { cachedRequest } from '@/network';
 import { codeToCondition } from '../util/condition';
 import { FIVE_MINUTES } from '@/times';
-import { type Weather } from '../index';
+import { type Weather, type WeatherResponse } from '../index';
 
 // This is not the whole response but it contains all information needed
 interface WttrInResponse {
@@ -34,7 +34,7 @@ interface WttrInResponse {
  * @param city - the city to get the weather for
  * @returns weather information
  */
-export default (city: string): Promise<Weather> => {
+export default (city: string): Promise<WeatherResponse> => {
     const url = `https://wttr.in/${city}?format=j1&lang`; // the &lang param is required to produce a valid response
     return cachedRequest(
         url,
