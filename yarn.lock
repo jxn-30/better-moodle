@@ -33,10 +33,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/compat-data@npm:7.27.3, @babel/compat-data@npm:^7.22.6, @babel/compat-data@npm:^7.27.2":
-  version: 7.27.3
-  resolution: "@babel/compat-data@npm:7.27.3"
-  checksum: 10c0/5736c42c98e38c788c1c53e9bc7c1aa42cb3dd907f3fa2c26c5a123bc957eb3df69acb2f4e96c2f208eb164410d5beddd8b4249353a7ef6e5d6e6eb4292c3587
+"@babel/compat-data@npm:7.27.5, @babel/compat-data@npm:^7.22.6, @babel/compat-data@npm:^7.27.2":
+  version: 7.27.5
+  resolution: "@babel/compat-data@npm:7.27.5"
+  checksum: 10c0/da2751fcd0b58eea958f2b2f7ff7d6de1280712b709fa1ad054b73dc7d31f589e353bb50479b9dc96007935f3ed3cada68ac5b45ce93086b7122ddc32e60dc00
   languageName: node
   linkType: hard
 
@@ -8715,7 +8715,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "uzl-better-moodle@workspace:."
   dependencies:
-    "@babel/compat-data": "npm:7.27.3"
+    "@babel/compat-data": "npm:7.27.5"
     "@cloudflare/workers-types": "npm:4.20250601.0"
     "@eslint/js": "npm:9.28.0"
     "@prettier/plugin-xml": "npm:3.4.1"
