@@ -1162,10 +1162,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20250603.0":
-  version: 4.20250603.0
-  resolution: "@cloudflare/workers-types@npm:4.20250603.0"
-  checksum: 10c0/686d95ead514d9ed42a4fb7b2d4d399a5f9dfb157f4b94a706e5c5f031954297754ebdfde4b9b414182f47709fee14a0c3d665a977ccfff4d24fc6eff1b93bca
+"@cloudflare/workers-types@npm:4.20250605.0":
+  version: 4.20250605.0
+  resolution: "@cloudflare/workers-types@npm:4.20250605.0"
+  checksum: 10c0/dcf7e75c40f5540dfb84d543adf50c6b01982f9141aa316012bb6d1eba0177707044cff7efe36e9d8b4e975718795ac3228e8f580f9cd7af1c0855259ad27f8d
   languageName: node
   linkType: hard
 
@@ -2959,12 +2959,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.15.29":
-  version: 22.15.29
-  resolution: "@types/node@npm:22.15.29"
+"@types/node@npm:22.15.30":
+  version: 22.15.30
+  resolution: "@types/node@npm:22.15.30"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/602cc88c6150780cd9b5b44604754e0ce13983ae876a538861d6ecfb1511dff289e5576fffd26c841cde2142418d4bb76e2a72a382b81c04557ccb17cff29e1d
+  checksum: 10c0/ca330ac0e7fd502686d6df115fcc606aba46fd334220f749bbba2f639accdadcb23f7900603ceccdc8240be736739cad5c0b87c0fa92c9255a4dff245f07d664
   languageName: node
   linkType: hard
 
@@ -3596,7 +3596,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:4.25.0, browserslist@npm:^4.24.0, browserslist@npm:^4.24.4, browserslist@npm:^4.24.5":
+"browserslist@npm:4.25.0, browserslist@npm:^4.24.0, browserslist@npm:^4.24.4, browserslist@npm:^4.25.0":
   version: 4.25.0
   resolution: "browserslist@npm:4.25.0"
   dependencies:
@@ -6766,9 +6766,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-custom-properties@npm:^14.0.5":
-  version: 14.0.5
-  resolution: "postcss-custom-properties@npm:14.0.5"
+"postcss-custom-properties@npm:^14.0.6":
+  version: 14.0.6
+  resolution: "postcss-custom-properties@npm:14.0.6"
   dependencies:
     "@csstools/cascade-layer-name-parser": "npm:^2.0.5"
     "@csstools/css-parser-algorithms": "npm:^3.0.5"
@@ -6777,7 +6777,7 @@ __metadata:
     postcss-value-parser: "npm:^4.2.0"
   peerDependencies:
     postcss: ^8.4
-  checksum: 10c0/ddee0545075dc0888cd54a9bb5791a98719a5d4f31d1de33823841efb540fa79f65e48b7c4aaba753d3214102e419536c5bc46c72e6e1579e5352da4e042ef3b
+  checksum: 10c0/0eeef77bc713551f5cb8fa5982d24da4e854075f3af020f1c94366c47a23a4cc225ebfecc978bdb17f00ee0bdee9d2c784e0d01adc64a447321e408abbe2c83b
   languageName: node
   linkType: hard
 
@@ -7015,9 +7015,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-preset-env@npm:10.2.0":
-  version: 10.2.0
-  resolution: "postcss-preset-env@npm:10.2.0"
+"postcss-preset-env@npm:10.2.1":
+  version: 10.2.1
+  resolution: "postcss-preset-env@npm:10.2.1"
   dependencies:
     "@csstools/postcss-cascade-layers": "npm:^5.0.1"
     "@csstools/postcss-color-function": "npm:^4.0.10"
@@ -7053,7 +7053,7 @@ __metadata:
     "@csstools/postcss-trigonometric-functions": "npm:^4.0.9"
     "@csstools/postcss-unset-value": "npm:^4.0.0"
     autoprefixer: "npm:^10.4.21"
-    browserslist: "npm:^4.24.5"
+    browserslist: "npm:^4.25.0"
     css-blank-pseudo: "npm:^7.0.1"
     css-has-pseudo: "npm:^7.0.2"
     css-prefers-color-scheme: "npm:^10.0.0"
@@ -7064,7 +7064,7 @@ __metadata:
     postcss-color-hex-alpha: "npm:^10.0.0"
     postcss-color-rebeccapurple: "npm:^10.0.0"
     postcss-custom-media: "npm:^11.0.6"
-    postcss-custom-properties: "npm:^14.0.5"
+    postcss-custom-properties: "npm:^14.0.6"
     postcss-custom-selectors: "npm:^8.0.5"
     postcss-dir-pseudo-class: "npm:^9.0.1"
     postcss-double-position-gradients: "npm:^6.0.2"
@@ -7085,7 +7085,7 @@ __metadata:
     postcss-selector-not: "npm:^8.0.1"
   peerDependencies:
     postcss: ^8.4
-  checksum: 10c0/33406dcdd1d63fd3810f12cd97bf0d6a09a51917943ee7d75e2ccaf1d8cbce363abcb90ee68f14509d287d00de4afd6664dbdecaa4f4b95509e3578e27f54a24
+  checksum: 10c0/1a78eb86bca8f7c2bf7686ee9ed354b21d1316a7d12ae9aec2ce4b4810f6d32e23d0787d7450e55145f14f76b715df758bb54af0ea6a151858b045bd429f596e
   languageName: node
   linkType: hard
 
@@ -8307,9 +8307,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:5.40.0, terser@npm:^5.17.4":
-  version: 5.40.0
-  resolution: "terser@npm:5.40.0"
+"terser@npm:5.41.0, terser@npm:^5.17.4":
+  version: 5.41.0
+  resolution: "terser@npm:5.41.0"
   dependencies:
     "@jridgewell/source-map": "npm:^0.3.3"
     acorn: "npm:^8.14.0"
@@ -8317,7 +8317,7 @@ __metadata:
     source-map-support: "npm:~0.5.20"
   bin:
     terser: bin/terser
-  checksum: 10c0/0a6f35085217299b2e93c4c97533267f0d3a151fa771d7903bba3466345511c1ada2c474c668fc27f67b52906abac12fcf65b537dc5c177a1be9230aaa159b7f
+  checksum: 10c0/39bb99c68a16b4c8ab52e9077affcdf99716df12dcaf3f9b13fde6ff10a67bb9f5e4e47bb89d56878919af8d0c13a7de1de0b806aba556390b1b691dd5f69f4b
   languageName: node
   linkType: hard
 
@@ -8718,7 +8718,7 @@ __metadata:
   resolution: "uzl-better-moodle@workspace:."
   dependencies:
     "@babel/compat-data": "npm:7.27.5"
-    "@cloudflare/workers-types": "npm:4.20250603.0"
+    "@cloudflare/workers-types": "npm:4.20250605.0"
     "@eslint/js": "npm:9.28.0"
     "@prettier/plugin-xml": "npm:3.4.1"
     "@rollup/plugin-terser": "npm:0.4.4"
@@ -8728,7 +8728,7 @@ __metadata:
     "@types/eslint": "npm:9.6.1"
     "@types/jquery": "npm:3.5.32"
     "@types/mathjax": "npm:0.0.40"
-    "@types/node": "npm:22.15.29"
+    "@types/node": "npm:22.15.30"
     "@types/tampermonkey": "npm:5.0.4"
     "@vitejs/plugin-legacy": "npm:6.1.1"
     babel-plugin-polyfill-corejs3: "npm:0.12.0"
@@ -8754,11 +8754,11 @@ __metadata:
     node-ical: "npm:0.20.1"
     postcss: "npm:8.5.4"
     postcss-inline-svg: "npm:6.0.0"
-    postcss-preset-env: "npm:10.2.0"
+    postcss-preset-env: "npm:10.2.1"
     prettier: "npm:3.5.3"
     rrule: "npm:2.8.1"
     sass-embedded: "npm:1.89.1"
-    terser: "npm:5.40.0"
+    terser: "npm:5.41.0"
     ts-json-schema-generator: "npm:2.4.0"
     ts-node: "npm:10.9.2"
     typesafe-i18n: "npm:5.26.2"
