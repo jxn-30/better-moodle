@@ -69,9 +69,9 @@ interface CachedResponse<ResultType> {
  * @returns the fetch response
  */
 export const cachedRequest = <
-    ResultType,
     Method extends NetworkMethod,
     ResponseType extends NetworkResponseType<Method>,
+    ResultType = ResponseType,
 >(
     url: string,
     cacheDuration: number,
@@ -128,12 +128,16 @@ export const cachedRequest = <
     return request(url, init)
         .then(res => res[method]())
         .then((result: ResponseType) => {
-            const now = Date.now();
-            const expires = now + cacheDuration;
-            cache.urls[url] = { lastUpdate: now, expires, value: result };
             const value = preprocess?.(result) ?? result;
-            cache.processed[cacheKey] = { lastUpdate: now, expires, value };
-            GM_setValue(NETWORK_CACHE_KEY, cache);
+            if (cacheDuration) {
+                const lastUpdate = Date.now();
+                const expires = lastUpdate + cacheDuration;
+                cache.urls[url] = { lastUpdate, expires, value: result };
+                if (preprocess) {
+                    cache.processed[cacheKey] = { lastUpdate, expires, value };
+                }
+                GM_setValue(NETWORK_CACHE_KEY, cache);
+            }
             return { cached: false, value };
         });
 };
@@ -141,12 +145,16 @@ export const cachedRequest = <
 /**
  * Fetches a document from the given path and returns it as a Document object
  * @param path - the path to fetch the document from
+ * @param cacheDuration - how long to cache the document
  * @returns a promise that resolves to the fetched document
  */
-export const getDocument = (path: string): Promise<Document> =>
-    request(path)
-        .then(res => res.text())
-        .then(html => new DOMParser().parseFromString(html, 'text/html'));
+export const getDocument = (
+    path: string,
+    cacheDuration = 0
+): Promise<Document> =>
+    cachedRequest(path, cacheDuration, 'text').then(({ value: html }) =>
+        new DOMParser().parseFromString(html, 'text/html')
+    );
 
 /**
  * Creates the URL for parsing ics by the Better-Moodle server infrastructure.

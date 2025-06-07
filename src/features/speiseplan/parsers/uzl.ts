@@ -1,8 +1,8 @@
 import { BETTER_MOODLE_LANG } from 'i18n';
 import type { Dish } from '../speiseplan';
 import { getDocument } from '@/network';
-import { ONE_DAY } from '@/times';
 import type Parser from './index';
+import { ONE_DAY, TEN_MINUTES } from '@/times';
 
 const prices = {
     de: ['Studierende', 'Hochschulangehörige', 'Externe'],
@@ -78,7 +78,7 @@ const getDishes = (dayEl: HTMLDivElement) => {
  * @returns the speiseplan as a promise
  */
 const parse: Parser = (url: string) =>
-    getDocument(url).then(doc => {
+    getDocument(url, TEN_MINUTES).then(doc => {
         const dishes = new Map<Date, Set<Dish>>();
 
         doc.querySelectorAll<HTMLDivElement>(
