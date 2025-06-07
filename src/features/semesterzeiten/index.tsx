@@ -46,6 +46,43 @@ interface Semester extends Omit<Event, 'color'> {
 
 type Semesterzeiten = Semester[];
 
+const hoverStyle = document.createElement('style');
+/**
+ * Updates the style for hovering, based on currently existing event types.
+ */
+const updateHoverStyle = () => {
+    if (!semesterzeiten) return;
+
+    const allEventTypes = new Set<string>(['semester']);
+    semesterzeiten.forEach(({ events }) =>
+        events.forEach(({ type }) => allEventTypes.add(type))
+    );
+
+    const tableSelectors = allEventTypes
+        .values()
+        .map(
+            type =>
+                `#${block.element?.id}:has(.progress-bar:hover [data-type="${type}"]) tr[data-type="${type}"] td`
+        )
+        .toArray();
+    const barSelectors = allEventTypes
+        .values()
+        .map(
+            type =>
+                `#${block.element?.id}:has(tr[data-type="${type}"]:hover) .progress-bar [data-type="${type}"]`
+        )
+        .toArray();
+
+    hoverStyle.textContent = `
+${tableSelectors.join(',\n')} {
+    filter: brightness(1.2);
+    font-weight: bold;
+}
+${barSelectors.join(',\n')} {
+    filter: brightness(1.5);
+}`.trim();
+};
+
 let semesterzeiten: Semesterzeiten;
 /**
  * Fetches the parsed semesterzeiten from the calendar or uses the stored version if they have already been fetched since the last page load
@@ -56,7 +93,11 @@ const getSemesterzeiten = () =>
         Promise.resolve(semesterzeiten)
     :   request(icsUrl('semesterzeiten'))
             .then<Semesterzeiten>(res => res.json())
-            .then(zeiten => (semesterzeiten = zeiten));
+            .then(zeiten => {
+                semesterzeiten = zeiten;
+                updateHoverStyle();
+                return semesterzeiten;
+            });
 
 const todaySpan = (
     <span className={style.todaySpan}>{dateToString()}</span>
@@ -101,7 +142,7 @@ nextSemesterBtn.addEventListener('click', () =>
 const tableBody = (<tbody></tbody>) as HTMLTableSectionElement;
 
 const table = (
-    <table className="table table-striped table-hover hidden">
+    <table className="table table-hover hidden">
         <thead>
             <tr>
                 <th>{LL.table.name()}</th>
@@ -247,6 +288,7 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
             );
             bar.append(
                 <div
+                    data-type={event.type}
                     className={classnames(
                         'progress-bar w-100, h-100',
                         `bg-${color}`
@@ -314,7 +356,10 @@ const loadContent = (semesterIndex = 0) => {
             );
 
             tableBody.replaceChildren(
-                <tr className="table-primary font-weight-bold">
+                <tr
+                    className="table-primary font-weight-bold"
+                    data-type="semester"
+                >
                     <td>{semester.name[BETTER_MOODLE_LANG]}</td>
                     <td>{dateToString(semesterStart)}</td>
                     <td>{dateToString(semesterEnd)}</td>
@@ -352,7 +397,10 @@ const loadContent = (semesterIndex = 0) => {
                 });
                 if (event.type.startsWith('holiday-')) {
                     tableBody.append(
-                        <tr className={`table-${event.color}`}>
+                        <tr
+                            className={`table-${event.color}`}
+                            data-type={event.type}
+                        >
                             <td colSpan={4}>
                                 {/* The strings are explicit here, to avoid trimming */}
                                 {LL.publicHoliday()}
@@ -367,7 +415,10 @@ const loadContent = (semesterIndex = 0) => {
                     );
                 } else {
                     tableBody.append(
-                        <tr className={`table-${event.color}`}>
+                        <tr
+                            className={`table-${event.color}`}
+                            data-type={event.type}
+                        >
                             <td>{event.name[BETTER_MOODLE_LANG]}</td>
                             <td>{dateToString(start)}</td>
                             <td>{dateToString(end)}</td>
@@ -414,9 +465,11 @@ const reload = async () => {
         if (!region) return;
         if (!block.rendered) await block.create(region, 'prepend');
         else block.put(region, 'prepend');
+        document.head.append(hoverStyle);
         void loadContent();
     } else {
         block?.remove();
+        hoverStyle.remove();
     }
 };
 
