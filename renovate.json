@@ -30,6 +30,7 @@
                 "@babel/*",
                 "babel-plugin-polyfill-corejs3",
                 "browserslist",
+                "caniuse-lite",
                 "core-js",
                 "core-js-compat"
             ],
