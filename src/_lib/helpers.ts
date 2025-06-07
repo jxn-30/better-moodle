@@ -219,7 +219,15 @@ export const animate = (
  * Checks if the user is logged in.
  * @returns a promise that resolves with information about the login state
  */
-export const isLoggedIn = () => ready().then(() => !!M.cfg.userId);
+export const isLoggedIn = () =>
+    __MOODLE_VERSION__ >= 405 ?
+        ready().then(() => (M.cfg.userId ?? 0) > 1) // M.cfg.userId has been added for 405 https://github.com/moodle/moodle/commit/fbca10b8f320 // userId of 1 is guest user
+    :   ready().then(
+            () =>
+                !!document.querySelector(
+                    `a[href$="/login/logout.php?sesskey=${M.cfg.sesskey}"]`
+                )
+        ); // for < 405 we check the existance of a logout button
 
 /**
  * Checks if the current page is the dashboard by checking the current URL.
