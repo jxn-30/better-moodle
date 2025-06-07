@@ -56,6 +56,17 @@ const getAndDelete = <Type>(key: string, defaultValue?: Type) => {
         GM_deleteValue('better-moodle-myCourses.filterSyncChange'); // we use broadcast for communication in v2
         GM_deleteValue('better-moodle-settings.dashboard.~layoutPlaceholder'); // does not exist in v2 anymore
         GM_deleteValue('better-moodle-settings.darkmode.preview'); // v2 doesn't need this button anymore
+        // this has been integrated into native moodle in 402
+        if (__MOODLE_VERSION__ >= 402) {
+            GM_deleteValue('better-moodle-settings.courses.collapseAll');
+        }
+
+        // These are the old caches of the weather feature
+        GM_listValues().forEach(key => {
+            if (key.startsWith('better-moodle-weather-display-')) {
+                GM_deleteValue(key);
+            }
+        });
     }
 
     GM_setValue(STORAGE_VERSION_KEY, CURRENT_STORAGE_VERSION);
