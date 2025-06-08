@@ -1162,10 +1162,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20250605.0":
-  version: 4.20250605.0
-  resolution: "@cloudflare/workers-types@npm:4.20250605.0"
-  checksum: 10c0/dcf7e75c40f5540dfb84d543adf50c6b01982f9141aa316012bb6d1eba0177707044cff7efe36e9d8b4e975718795ac3228e8f580f9cd7af1c0855259ad27f8d
+"@cloudflare/workers-types@npm:4.20250607.0":
+  version: 4.20250607.0
+  resolution: "@cloudflare/workers-types@npm:4.20250607.0"
+  checksum: 10c0/62092ab159fa4d4b93970228a45254ace02f8670d0397d91077f8f451041a96da58afb4bc1a5f5937952dbe7773e1ba859dd6b1bf4aa4bdcabf88f749ee6b02b
   languageName: node
   linkType: hard
 
@@ -8735,7 +8735,7 @@ __metadata:
   resolution: "uzl-better-moodle@workspace:."
   dependencies:
     "@babel/compat-data": "npm:7.27.5"
-    "@cloudflare/workers-types": "npm:4.20250605.0"
+    "@cloudflare/workers-types": "npm:4.20250607.0"
     "@eslint/js": "npm:9.28.0"
     "@prettier/plugin-xml": "npm:3.4.1"
     "@rollup/plugin-terser": "npm:0.4.4"
