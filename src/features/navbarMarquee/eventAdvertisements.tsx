@@ -4,11 +4,11 @@ import Feature from '@/Feature';
 import { type Locales } from '../../i18n/i18n-types';
 import { marquee } from './index';
 import { Modal } from '@/Modal';
-import { ONE_DAY } from '@/times';
 import { SliderSetting } from '@/Settings/SliderSetting';
 import style from './eventAdvertisements.module.scss';
 import { BETTER_MOODLE_LANG, LLF } from 'i18n';
-import { icsUrl, request } from '@/network';
+import { cachedRequest, type CachedResponse, icsUrl } from '@/network';
+import { FIVE_MINUTES, ONE_DAY } from '@/times';
 
 const LL = LLF('navbarMarquee', 'eventAdvertisements');
 
@@ -45,9 +45,9 @@ let events: Event[];
 const getEvents = () =>
     events ?
         Promise.resolve(events)
-    :   request(icsUrl('events'))
-            .then<Event[]>(res => res.json())
-            .then(e => (events = e));
+    :   cachedRequest(icsUrl('events'), FIVE_MINUTES, 'json').then(
+            ({ value }: CachedResponse<Event[]>) => (events = value)
+        );
 
 /**
  * Removes all spans from the marquee and clears the span map
