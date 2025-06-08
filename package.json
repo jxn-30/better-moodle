@@ -34,7 +34,7 @@
     },
     "devDependencies": {
         "@babel/compat-data": "7.27.5",
-        "@cloudflare/workers-types": "4.20250605.0",
+        "@cloudflare/workers-types": "4.20250607.0",
         "@eslint/js": "9.28.0",
         "@prettier/plugin-xml": "3.4.1",
         "@rollup/plugin-terser": "0.4.4",
