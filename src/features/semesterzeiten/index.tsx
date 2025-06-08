@@ -3,14 +3,14 @@ import { BooleanSetting } from '@/Settings/BooleanSetting';
 import classnames from 'classnames';
 import FeatureGroup from '@/FeatureGroup';
 import { type Locales } from '../../i18n/i18n-types';
-import { ONE_MINUTE } from '@/times';
 import style from './style.module.scss';
 import { Switch } from '@/Components';
 import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
+import { cachedRequest, type CachedResponse, icsUrl } from '@/network';
 import { dateToString, percent } from '@/localeString';
 import { domID, isDashboard } from '@/helpers';
 import { getHtml, getLoadingSpinner, ready } from '@/DOM';
-import { icsUrl, request } from '@/network';
+import { ONE_DAY, ONE_MINUTE } from '@/times';
 
 const LL = LLFG('semesterzeiten');
 
@@ -91,13 +91,13 @@ let semesterzeiten: Semesterzeiten;
 const getSemesterzeiten = () =>
     semesterzeiten ?
         Promise.resolve(semesterzeiten)
-    :   request(icsUrl('semesterzeiten'))
-            .then<Semesterzeiten>(res => res.json())
-            .then(zeiten => {
+    :   cachedRequest(icsUrl('semesterzeiten'), ONE_DAY, 'json').then(
+            ({ value: zeiten }: CachedResponse<Semesterzeiten>) => {
                 semesterzeiten = zeiten;
                 updateHoverStyle();
                 return semesterzeiten;
-            });
+            }
+        );
 
 const todaySpan = (
     <span className={style.todaySpan}>{dateToString()}</span>

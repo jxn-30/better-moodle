@@ -54,7 +54,7 @@ export interface NetworkCache<
     >;
 }
 
-interface CachedResponse<ResultType> {
+export interface CachedResponse<ResultType> {
     cached: boolean;
     value: ResultType;
 }
