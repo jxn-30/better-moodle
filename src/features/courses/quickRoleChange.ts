@@ -21,7 +21,7 @@ let submenu: HTMLDivElement;
  */
 const getAvailableRoles = () =>
     getDocument(menuItemLink)
-        .then(doc =>
+        .then(({ value: doc }) =>
             doc.querySelectorAll<HTMLFormElement>(
                 'form[action*="switchrole.php"]'
             )

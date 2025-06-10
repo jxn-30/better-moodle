@@ -78,7 +78,7 @@ const getDishes = (dayEl: HTMLDivElement) => {
  * @returns the speiseplan as a promise
  */
 const parse: Parser = (url: string) =>
-    getDocument(url, TEN_MINUTES).then(doc => {
+    getDocument(url, TEN_MINUTES).then(({ lastUpdate, value: doc }) => {
         const dishes = new Map<Date, Set<Dish>>();
 
         doc.querySelectorAll<HTMLDivElement>(
@@ -150,6 +150,7 @@ const parse: Parser = (url: string) =>
         });
 
         return {
+            timestamp: lastUpdate,
             dishes,
             prices: prices[BETTER_MOODLE_LANG],
             allergenes,

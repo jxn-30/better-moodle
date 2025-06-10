@@ -12,7 +12,7 @@ import { PREFIX } from '@/helpers';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './style.module.scss';
 import { BETTER_MOODLE_LANG, languages, LLFG, LLMap } from 'i18n';
-import { currency, dateToString, unit } from '@/localeString';
+import { currency, dateToString, timeToString, unit } from '@/localeString';
 import { getLoadingSpinner, ready } from '@/DOM';
 
 const LL = LLFG('speiseplan');
@@ -100,10 +100,11 @@ const mobileBtn = (
 
 // textContent will be set on opening
 const footerLinkWrapper = (
-    <a className="mr-auto" href="#speiseplan" target="_blank">
+    <a href="#speiseplan" target="_blank">
         Source
     </a>
 ) as HTMLAnchorElement;
+const footerTimeSpan = (<span className="mr-auto"></span>) as HTMLSpanElement;
 
 /**
  * Gets the current speiseplan as HTML Elements
@@ -149,6 +150,10 @@ const getCurrentSpeiseplan = () => {
 
     return Promise.all([parse(url), parse(urlNextWeek)])
         .then(([thisWeek, nextWeek]) => {
+            footerTimeSpan.textContent = timeToString(
+                new Date(thisWeek.timestamp)
+            );
+
             const speiseplan = thisWeek;
             speiseplan.dishes = new Map([
                 ...thisWeek.dishes,
@@ -323,7 +328,9 @@ const openSpeiseplan = () => {
 
     void modal
         .getFooter()
-        .then(([footer]) => footer.prepend(footerLinkWrapper));
+        .then(([footer]) =>
+            footer.prepend(footerLinkWrapper, ' ⋅ ', footerTimeSpan)
+        );
 
     /**
      * Updates the modal body to the latest menu respecting curent settings

@@ -47,7 +47,7 @@ export const getAvailableCourseFilters = async (): Promise<CourseFilter[]> => {
 
     const result0 = await Promise.all([
         requirePromise(['block_myoverview/selectors'] as const),
-        getDocument('/my/courses.php'),
+        getDocument('/my/courses.php').then(({ value }) => value),
     ]);
     const [[selectors], doc] = result0;
     const customfieldname =

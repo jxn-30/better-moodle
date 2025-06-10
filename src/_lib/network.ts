@@ -56,6 +56,7 @@ export interface NetworkCache<
 
 export interface CachedResponse<ResultType> {
     cached: boolean;
+    lastUpdate: number;
     value: ResultType;
 }
 
@@ -88,21 +89,21 @@ export const cachedRequest = <
             `${preprocess.length}:${preprocess.toString().length}:${url}`
         :   url;
 
+    const cacheKeyLastUpdate = cache.processed[cacheKey]?.lastUpdate ?? 0;
+    const cacheUrlLastUpdate = cache.urls[url]?.lastUpdate ?? 0;
+
     // We do have a non-outdated cached version
     // => return that
-    if (
-        preprocess &&
-        (cache.processed[cacheKey]?.lastUpdate ?? 0) + cacheDuration >
-            Date.now()
-    ) {
+    if (preprocess && cacheKeyLastUpdate + cacheDuration > Date.now()) {
         return Promise.resolve({
             cached: true,
+            lastUpdate: cacheKeyLastUpdate,
             value: cache.processed[cacheKey].value,
         });
     }
 
     // We do have a non-outdated cached version of the base URL
-    if ((cache.urls[url]?.lastUpdate ?? 0) + cacheDuration > Date.now()) {
+    if (cacheUrlLastUpdate + cacheDuration > Date.now()) {
         // => do the preprocessing, store and return the result
         if (preprocess) {
             const result = preprocess(cache.urls[url].value);
@@ -112,12 +113,17 @@ export const cachedRequest = <
                 value: result,
             };
             GM_setValue(NETWORK_CACHE_KEY, cache);
-            return Promise.resolve({ cached: true, value: result });
+            return Promise.resolve({
+                cached: true,
+                lastUpdate: cacheUrlLastUpdate,
+                value: result,
+            });
         }
         // => no preprocessing needs to be done
         else {
             return Promise.resolve({
                 cached: true,
+                lastUpdate: cacheUrlLastUpdate,
                 value: cache.urls[url].value,
             });
         }
@@ -129,8 +135,8 @@ export const cachedRequest = <
         .then(res => res[method]())
         .then((result: ResponseType) => {
             const value = preprocess?.(result) ?? result;
+            const lastUpdate = Date.now();
             if (cacheDuration) {
-                const lastUpdate = Date.now();
                 const expires = lastUpdate + cacheDuration;
                 cache.urls[url] = { lastUpdate, expires, value: result };
                 if (preprocess) {
@@ -138,7 +144,7 @@ export const cachedRequest = <
                 }
                 GM_setValue(NETWORK_CACHE_KEY, cache);
             }
-            return { cached: false, value };
+            return { cached: false, lastUpdate, value };
         });
 };
 
@@ -151,10 +157,11 @@ export const cachedRequest = <
 export const getDocument = (
     path: string,
     cacheDuration = 0
-): Promise<Document> =>
-    cachedRequest(path, cacheDuration, 'text').then(({ value: html }) =>
-        new DOMParser().parseFromString(html, 'text/html')
-    );
+): Promise<CachedResponse<Document>> =>
+    cachedRequest(path, cacheDuration, 'text').then(res => ({
+        ...res,
+        value: new DOMParser().parseFromString(res.value, 'text/html'),
+    }));
 
 /**
  * Creates the URL for parsing ics by the Better-Moodle server infrastructure.

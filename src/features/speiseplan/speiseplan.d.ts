@@ -9,6 +9,7 @@ export interface Dish {
 }
 
 export interface Speiseplan {
+    timestamp: number;
     dishes: Map<Date, Set<Dish>>;
     prices: string[];
     allergenes: Map<string, string>;
