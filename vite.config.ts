@@ -536,7 +536,7 @@ ${uOptions.userscript}
 
 ${copyright}
 
-/* global global, ActiveXObject, M, requirejs, DarkReader */
+/* global global, ActiveXObject, Iterator, M, requirejs, DarkReader */
 `.trim();
                 },
             },
