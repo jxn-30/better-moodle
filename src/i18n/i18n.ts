@@ -5,7 +5,8 @@ import { Locales, Translation } from './i18n-types';
 
 loadAllLocales();
 
-const MOODLE_LANG = document.documentElement.lang.toLowerCase() as Locales;
+const HTML_LANG = document.documentElement.lang.toLowerCase();
+const MOODLE_LANG = ({ en: 'en-gb' }[HTML_LANG] ?? HTML_LANG) as Locales;
 export const BETTER_MOODLE_LANG = (() => {
     const savedLanguage = GM_getValue<Locales | 'auto'>(
         STORAGE_V2_LANGUAGE_KEY,

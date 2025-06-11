@@ -5,8 +5,8 @@ import type Parser from './index';
 import { ONE_DAY, TEN_MINUTES } from '@/times';
 
 const prices = {
-    de: ['Studierende', 'Hochschulangehörige', 'Externe'],
-    en: ['Students', 'University members', 'Guests'],
+    'de': ['Studierende', 'Hochschulangehörige', 'Externe'],
+    'en-gb': ['Students', 'University members', 'Guests'],
 };
 
 const todayTreshhold = new Date(Date.now() - ONE_DAY);

@@ -137,8 +137,8 @@ const getCurrentSpeiseplan = () => {
         ));
 
     const co2InfoLink = {
-        de: 'https://studentenwerk.sh/de/co2-angaben',
-        en: 'https://studentenwerk.sh/en/co2-data',
+        'de': 'https://studentenwerk.sh/de/co2-angaben',
+        'en-gb': 'https://studentenwerk.sh/en/co2-data',
     }[lang];
     const co2InfoLinkHtml = (
         <a href={co2InfoLink} target="_blank">

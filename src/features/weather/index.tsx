@@ -118,8 +118,8 @@ const tooltip = (
  */
 const windDegreesToDirection = (degrees: number) =>
     ({
-        de: ['N', 'NO', 'O', 'SO', 'S', 'SW', 'W', 'NW'],
-        en: ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'],
+        'de': ['N', 'NO', 'O', 'SO', 'S', 'SW', 'W', 'NW'],
+        'en-gb': ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'],
     })[BETTER_MOODLE_LANG][Math.round(degrees / 45) % 8];
 
 /**
