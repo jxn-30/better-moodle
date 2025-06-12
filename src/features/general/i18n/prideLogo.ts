@@ -40,7 +40,7 @@ export const en = {
         flag: {
             name: 'Pride-Logo 🏳️‍🌈',
             description:
-                'Makes the logo in Moodle appear in a new color gloss.',
+                'Makes the logo in Moodle appear in a new colour gloss.',
             options: {
                 off: 'Off :(',
                 Rainbow: 'Rainbow',

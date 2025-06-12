@@ -46,7 +46,7 @@ export const en = {
         enabled: {
             name: 'Menu in the navigation bar',
             description:
-                'Allows you to open the menu of your favorite canteen directly from the moodle navigation bar.',
+                'Allows you to open the menu of your favourite canteen directly from the moodle navigation bar.',
         },
         language: {
             name: 'Language of the menu',

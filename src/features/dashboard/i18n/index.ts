@@ -11,7 +11,7 @@ export const de = {
 export const en = {
     name: 'Dashboard',
     description:
-        'These settings allow you to customize the dashboard a little.',
+        'These settings allow you to customise the dashboard a little.',
     features: { layout: layout.en },
 } as typeof de;
 

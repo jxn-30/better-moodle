@@ -57,7 +57,7 @@ export const en = {
             description: 'Set the contrast of the dark mode.',
         },
         grayscale: {
-            name: 'Grayscale',
+            name: 'Greyscale',
             description: 'Set how few colours you want to have in Moodle.',
         },
         sepia: {

@@ -127,7 +127,7 @@ Eine vollständige Liste aller Features würde hier mittlerweile den Rahmen spre
 
 Konkrete Informationen zum Support und unsere FAQ findest du in der Datei [support/de.md][support de].
 
-🇬🇧 For english support and FAQ, please refer to the file [support/en.md][support en].
+🇬🇧 For english support and FAQ, please refer to the file [support/en-gb.md][support en].
 
 ## Mitwirken
 
@@ -175,7 +175,7 @@ Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar s
 [@YorikHansen]: https://github.com/YorikHansen
 [contributing.md]: ./CONTRIBUTING.md
 [support de]: ./support/de.md
-[support en]: ./support/en.md
+[support en]: ./support/en-gb.md
 [issue bug]: https://github.com/jxn-30/better-moodle/issues/new?template=bug.yml
 [issue feature]: https://github.com/jxn-30/better-moodle/issues/new?template=feature.yml
 [#installation]: #installation
