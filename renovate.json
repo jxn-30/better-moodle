@@ -3,7 +3,7 @@
     "assignees": ["jxn-30"],
     "baseBranches": ["main", "v2"],
     "dependencyDashboard": true,
-    "dependencyDashboardFooter": "Node.js and yarn updates are scheduled to the first day of the month. PRs will be created on mondays, wednesdays and fridays before 3am (CEST) for any other dependencies, dependencies for polyfills are separated to their own group. Lockfile maintenance is scheduled for saturdays.",
+    "dependencyDashboardFooter": "Node.js and yarn updates are scheduled to the first day of the month. Polyfill dependencies are scheduled on thursdays. PRs will be created on mondays, wednesdays and fridays before 3am (CEST) for any other dependencies. Lockfile maintenance is scheduled for saturdays.",
     "dependencyDashboardHeader": "# ℹ️ Renovate Dependency-Dashboard ℹ️\nScheduled and currently open dependency updates are listed here\n",
     "dependencyDashboardLabels": ["dependencies"],
     "dependencyDashboardTitle": "⬆ℹ️ Renovate Dependency-Dashboard ℹ️",
@@ -23,6 +23,7 @@
             "matchUpdateTypes": ["minor", "patch"]
         },
         {
+            "extends": ["before 3am on thursday"],
             "groupName": "Polyfill maintenance",
             "lockFileMaintenance": { "enabled": true },
             "groupSlug": "polyfill-maintenance",
@@ -30,6 +31,7 @@
                 "@babel/*",
                 "babel-plugin-polyfill-corejs3",
                 "browserslist",
+                "caniuse-lite",
                 "core-js",
                 "core-js-compat"
             ],
