@@ -23,7 +23,7 @@
             "matchUpdateTypes": ["minor", "patch"]
         },
         {
-            "extends": ["before 3am on thursday"],
+            "schedule": ["before 3am on thursday"],
             "groupName": "Polyfill maintenance",
             "lockFileMaintenance": { "enabled": true },
             "groupSlug": "polyfill-maintenance",
