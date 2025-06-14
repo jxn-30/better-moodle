@@ -101,6 +101,7 @@ export default class Marquee {
      */
     add<Elements extends readonly Element[]>(...els: Elements) {
         const clones = els.map(el => {
+            this.remove(el);
             const clone = el.cloneNode(true) as typeof el;
             this.#span.append(el);
             this.#cloneSpan.append(clone);
