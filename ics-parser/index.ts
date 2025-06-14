@@ -115,6 +115,7 @@ const mapSemesterzeiten = rawEvents => {
                     .matchAll(/(?<=^@name:(?<lang>[a-z]{2}):)(?<name>.*)$/gm)
                     .map(n => [n.groups.lang, n.groups.name])
             );
+            event.name['en-gb'] = event.name.en;
 
             if (event.type === 'semester') {
                 event.events = [];
@@ -169,6 +170,7 @@ const mapEvents = rawEvents => {
             if (!event) return;
 
             event.name.de = event.name.en = raw.summary;
+            event.name['en-gb'] = event.name.en;
             event.location = raw.location;
             event.url =
                 raw.attach ?
@@ -182,6 +184,7 @@ const mapEvents = rawEvents => {
                     en: rruleToText(raw.rrule),
                     de: rruleToText(raw.rrule, 'de'),
                 };
+                event.rruleString['en-gb'] = event.rruleString.en;
             }
 
             if (raw.rrule) recurringEvents.push([index, event]);
