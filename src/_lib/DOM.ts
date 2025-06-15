@@ -56,7 +56,9 @@ export const putTemplate = async <ReturnType extends Element[]>(
         typeof element === 'string' ?
             document.querySelector<HTMLElement>(element)
         :   element;
-    if (!el) throw new Error('Element not found');
+    // el cannot be falsy if element was not a string but eslint does not know that
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+    if (!el) throw new Error(`Element ${element} not found`);
     const templateElements = Array.from(
         htmlToElements(template.html)
     ) as ReturnType;

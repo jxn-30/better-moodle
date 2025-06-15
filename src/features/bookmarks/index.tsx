@@ -426,6 +426,9 @@ const renderDropdown = () =>
                     openEditModal();
                 }
             });
+        })
+        .catch(() => {
+            // if an error occurs (e.g. element not found), don't do anything for now
         });
 
 /**
