@@ -317,9 +317,9 @@ const openSpeiseplan = () => {
         large: true,
         scrollable: true,
         title: `${randomEmoji()}\xa0${sLL().name()}`,
-        body: getCurrentSpeiseplan().then(fieldsets => (
-            <>{...Array.from(fieldsets)}</>
-        )),
+        body: getCurrentSpeiseplan()
+            .then(fieldsets => <>{...Array.from(fieldsets)}</>)
+            .catch(() => sLL().errorWhileFetching()),
         bodyClass: 'mform',
         // setting the footer here would remove the buttons 🤷
         removeOnClose: true,
@@ -341,9 +341,11 @@ const openSpeiseplan = () => {
             ([[body], spinner]) => {
                 body.replaceChildren(spinner);
                 footerLinkWrapper.textContent = sLL().source();
-                void getCurrentSpeiseplan().then(fieldsets =>
-                    body.replaceChildren(...fieldsets)
-                );
+                void getCurrentSpeiseplan()
+                    .then(fieldsets => body.replaceChildren(...fieldsets))
+                    .catch(() =>
+                        body.replaceChildren(sLL().errorWhileFetching())
+                    );
             }
         );
 

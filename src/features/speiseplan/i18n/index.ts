@@ -11,6 +11,8 @@ export const de = {
         price: 'Preis',
     },
     source: 'Original Speiseplan',
+    errorWhileFetching:
+        'Hoppala, leider hat da was beim Auslesen des Speiseplans nicht geklappt :(. Manchmal hilft es, ihn einfach nochmals neu zu öffnen.',
     settings: {
         enabled: {
             name: 'Speiseplan in der Navigationsleiste',
@@ -42,6 +44,8 @@ export const en = {
         price: 'Price',
     },
     source: 'Original menu',
+    errorWhileFetching:
+        "Whoopsie, unfortunately something didn't work when reading out the menu :(. Sometimes it helps to simply open it again.",
     settings: {
         enabled: {
             name: 'Menu in the navigation bar',
