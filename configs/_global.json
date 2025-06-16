@@ -13,7 +13,7 @@
         "bookmarks",
         "weather"
     ],
-    "defaultDisabled": ["general.cauNavbar"],
+    "defaultDisabled": ["general.cauNavbar", "semesterzeiten", "speiseplan"],
     "enabledFrom": { "405": ["courses.sectionCourseIndex"] },
     "disabledFrom": { "402": ["courses.courseIndexDrawerControls"] },
     "connects": {
