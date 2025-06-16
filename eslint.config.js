@@ -1,6 +1,7 @@
 import globals from 'globals';
 import js from '@eslint/js';
 import jsdoc from 'eslint-plugin-jsdoc';
+import pluginESx from 'eslint-plugin-es-x';
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-config-prettier/flat';
 import tsEslint from 'typescript-eslint';
@@ -146,6 +147,14 @@ export default [
             'jsdoc/sort-tags': 'warn',
             ...pluginJsxA11y.configs.recommended.rules,
         },
+    },
+    {
+        // We want this rule as toplevel await in fixes will cause the whole system to wait for these before features are loaded
+        // This will make the impression that Better-Moodle was slow and imperformant and we don't want this
+        name: 'Disallow toplevel await in fixes',
+        files: ['src/fixes/**/*.{ts,tsx}'],
+        plugins: { 'es-x': pluginESx },
+        rules: { 'es-x/no-top-level-await': 'error' },
     },
     {
         name: 'Allow node globals in vite config',
