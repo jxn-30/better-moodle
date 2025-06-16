@@ -8,12 +8,12 @@ import globalStyle from '!/index.module.scss';
 import type { Locales } from '../../i18n/i18n-types';
 import { Modal } from '@/Modal';
 import Parser from './parsers';
-import { PREFIX } from '@/helpers';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './style.module.scss';
 import { BETTER_MOODLE_LANG, languages, LLFG, LLMap } from 'i18n';
 import { currency, dateToString, timeToString, unit } from '@/localeString';
 import { getLoadingSpinner, ready } from '@/DOM';
+import { htmlToElements, mdToHtml, PREFIX } from '@/helpers';
 
 const LL = LLFG('speiseplan');
 
@@ -319,7 +319,13 @@ const openSpeiseplan = () => {
         title: `${randomEmoji()}\xa0${sLL().name()}`,
         body: getCurrentSpeiseplan()
             .then(fieldsets => <>{...Array.from(fieldsets)}</>)
-            .catch(() => sLL().errorWhileFetching()),
+            .catch(error => (
+                <>
+                    {htmlToElements(
+                        mdToHtml(sLL().errorWhileFetching({ error }))
+                    )}
+                </>
+            )),
         bodyClass: 'mform',
         // setting the footer here would remove the buttons 🤷
         removeOnClose: true,
@@ -343,8 +349,12 @@ const openSpeiseplan = () => {
                 footerLinkWrapper.textContent = sLL().source();
                 void getCurrentSpeiseplan()
                     .then(fieldsets => body.replaceChildren(...fieldsets))
-                    .catch(() =>
-                        body.replaceChildren(sLL().errorWhileFetching())
+                    .catch(error =>
+                        body.replaceChildren(
+                            ...htmlToElements(
+                                mdToHtml(sLL().errorWhileFetching({ error }))
+                            )
+                        )
                     );
             }
         );
