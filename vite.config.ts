@@ -531,12 +531,17 @@ export default defineConfig({
                  * @returns the userscript header plus preamble
                  */
                 generate(uOptions) {
+                    // userscript header
+                    // copyright note
+                    // globals
+                    // allow redeclaring globals (otherwise polyfills may fail) => for the self-written code, this is already done via TS so it is okay to use this rule like this
                     return `
 ${uOptions.userscript}
 
 ${copyright}
 
 /* global global, ActiveXObject, Iterator, M, requirejs, DarkReader */
+/* eslint no-redeclare: ["error", { "builtinGlobals": false }] */
 `.trim();
                 },
             },
