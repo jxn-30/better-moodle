@@ -34,7 +34,7 @@
     },
     "devDependencies": {
         "@babel/compat-data": "7.27.5",
-        "@cloudflare/workers-types": "4.20250617.0",
+        "@cloudflare/workers-types": "4.20250618.0",
         "@eslint/js": "9.29.0",
         "@prettier/plugin-xml": "3.4.1",
         "@rollup/plugin-terser": "0.4.4",
@@ -58,7 +58,7 @@
         "eslint": "9.29.0",
         "eslint-config-prettier": "10.1.5",
         "eslint-plugin-es-x": "8.7.0",
-        "eslint-plugin-jsdoc": "51.0.1",
+        "eslint-plugin-jsdoc": "51.0.3",
         "eslint-plugin-jsx-a11y": "6.10.2",
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
@@ -72,7 +72,7 @@
         "prettier": "3.5.3",
         "rrule": "2.8.1",
         "sass-embedded": "1.89.2",
-        "terser": "5.42.0",
+        "terser": "5.43.0",
         "ts-json-schema-generator": "2.4.0",
         "ts-node": "10.9.2",
         "typescript": "5.8.3",
@@ -81,7 +81,7 @@
         "userscript-meta": "1.0.1",
         "vite": "6.3.5",
         "vite-plugin-monkey": "5.0.8",
-        "wrangler": "4.20.0",
+        "wrangler": "4.20.1",
         "yarn": "1.22.22"
     },
     "engines": {
