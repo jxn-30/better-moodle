@@ -34,7 +34,7 @@
     },
     "devDependencies": {
         "@babel/compat-data": "7.27.5",
-        "@cloudflare/workers-types": "4.20250618.0",
+        "@cloudflare/workers-types": "4.20250619.0",
         "@eslint/js": "9.29.0",
         "@prettier/plugin-xml": "3.4.1",
         "@rollup/plugin-terser": "0.4.4",
@@ -72,7 +72,7 @@
         "prettier": "3.5.3",
         "rrule": "2.8.1",
         "sass-embedded": "1.89.2",
-        "terser": "5.43.0",
+        "terser": "5.43.1",
         "ts-json-schema-generator": "2.4.0",
         "ts-node": "10.9.2",
         "typescript": "5.8.3",
@@ -80,8 +80,8 @@
         "typescript-plugin-css-modules": "5.1.0",
         "userscript-meta": "1.0.1",
         "vite": "6.3.5",
-        "vite-plugin-monkey": "5.0.8",
-        "wrangler": "4.20.1",
+        "vite-plugin-monkey": "5.0.9",
+        "wrangler": "4.20.3",
         "yarn": "1.22.22"
     },
     "engines": {
