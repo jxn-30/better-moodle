@@ -624,7 +624,7 @@ ${copyright}
                 keep_classnames: true,
                 keep_fnames: true,
                 keep_infinity: true,
-                // lhs_constants: true, // does not exist in terser types?
+                lhs_constants: true,
                 loops: true,
                 passes: 5,
                 properties: true,
