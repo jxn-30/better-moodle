@@ -134,7 +134,7 @@ jobs:
                   echo "## Built file: \`${{ steps.build.outputs.file }}\`" >> $GITHUB_STEP_SUMMARY
                   echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
                   echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
-                  echo "| **File size** | ${{ env.STATS_SIZE }} (${{ env.STATS_SIZE_DIFF }}) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **File size** | ${{ env.STATS_SIZE }} (${{ env.STATS_SIZE_DIFF }} Bytes) |" >> $GITHUB_STEP_SUMMARY
                   echo "| **Line count** | ${{ env.STATS_LINES }} (${{ env.STATS_LINES_DIFF }}) |" >> $GITHUB_STEP_SUMMARY
                   echo "| **Diff to prev build (semantic)** | ${{ env.STATS_DIFF_SEM }} |" >> $GITHUB_STEP_SUMMARY
                   echo "| **Diff to prev build (syntactic)** | ${{ env.STATS_DIFF_SYN }} |" >> $GITHUB_STEP_SUMMARY
