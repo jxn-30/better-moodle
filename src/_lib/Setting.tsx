@@ -264,6 +264,8 @@ export default abstract class Setting<
         const seenSettings = new Set(
             GM_getValue<string[]>(STORAGE_V2_SEEN_SETTINGS_KEY, [])
         );
+        // if no setting has been seen yet, do not mark setting as unseen to avoid visual overhaul
+        if (seenSettings.size === 0) return false;
         // if none of the possible IDs is within the list of seen settings, this setting is unseen / new
         return seenSettings.intersection(this.#possibleIDs).size === 0;
     }

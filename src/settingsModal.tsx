@@ -509,16 +509,17 @@ const settingIDMap = new Map([
 GM_setValue(
     STORAGE_V2_SEEN_SETTINGS_KEY,
     Array.from(
-        new Set(
-            seenSettings.values().map(id => settingIDMap.get(id)?.id)
-        ).intersection(allSettingIDs)
+        new Set(seenSettings.map(id => settingIDMap.get(id)?.id)).intersection(
+            allSettingIDs
+        )
     )
 );
 
-// "New!"-Tooltip if there are unseen settings
+// "New!"-Tooltip if there are unseen settings or no settings ever seen
 let newSettingsTooltip: ThemeBoostBootstrapTooltipClass | null;
 if (
     isNewInstallation ||
+    seenSettings.length === 0 ||
     (newSettingsTooltipSetting.value &&
         featureGroups.values().some(group => group.hasNewSetting))
 ) {
@@ -571,6 +572,14 @@ if (
             newSettingsTooltip?.update();
         };
         hide();
+
+        // if this is a new installation, we want to mark all settings as seen to avoid visual overload on next page reload
+        if (isNewInstallation || seenSettings.length === 0) {
+            GM_setValue(
+                STORAGE_V2_SEEN_SETTINGS_KEY,
+                Array.from(allSettingIDs)
+            );
+        }
 
         SettingsBtn.addEventListener('mouseenter', show);
         SettingsBtn.addEventListener('mouseleave', hide);
