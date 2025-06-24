@@ -18,9 +18,9 @@ const reload = async () => {
     await ready();
     Array.from(document.getElementsByClassName('localnavbarplus')).forEach(
         el => {
-            el
-                .querySelector<HTMLAnchorElement>('a')
-                ?.classList.add(globalStyle.noExternalLinkIcon);
+            el.querySelector<HTMLAnchorElement>('a')?.classList.add(
+                globalStyle.noExternalLinkIcon
+            );
             localNavbarPlusDiv.append(el);
         }
     );
