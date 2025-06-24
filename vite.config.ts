@@ -559,6 +559,7 @@ ${copyright}
                 return src
                     .replace(/\{\{!.*?\}\}/gs, '') // remove mustache comments
                     .replace(/\\n/g, '') // remove linebreaks
+                    .replace(/(?<=\{\{[<>/$#^]?)\s+|\s+(?=\}\})/g, '') // remove unnecessary whitespaces in mustache statements
                     .replace(/ {3,}/g, '  '); // reduce white spaces to a maximum of 2. This may break at <pre> tags but that isn't an issue yet.
             },
         },
