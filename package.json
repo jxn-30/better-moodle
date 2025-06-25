@@ -45,7 +45,7 @@
         "@types/mathjax": "0.0.40",
         "@types/node": "24.0.4",
         "@types/tampermonkey": "5.0.4",
-        "@vitejs/plugin-legacy": "6.1.1",
+        "@vitejs/plugin-legacy": "7.0.0",
         "babel-plugin-polyfill-corejs3": "0.12.0",
         "boxen": "8.0.1",
         "browserslist": "4.25.0",
