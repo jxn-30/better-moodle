@@ -51,26 +51,24 @@ const getAndDelete = <Type>(key: string, defaultValue?: Type) => {
         }
 
         // We don't need these keys anymore in v2
-        GM_deleteValue('better-moodle-dashboard-sidebar-right-open'); // where does this even come from? drawer state keys look differently
-        GM_deleteValue('better-moodle-ever-opened-settings');
-        GM_deleteValue('better-moodle-myCourses.filterSyncChange'); // we use broadcast for communication in v2
-        GM_deleteValue('better-moodle-settings.dashboard.~layoutPlaceholder'); // does not exist in v2 anymore
-        GM_deleteValue('better-moodle-settings.darkmode.preview'); // v2 doesn't need this button anymore
+        const oldKeys = [
+            'better-moodle-dashboard-sidebar-right-open', // where does this even come from? drawer state keys look differently
+            'better-moodle-ever-opened-settings',
+            'better-moodle-myCourses.filterSyncChange', // we use broadcast for communication in v2
+            'better-moodle-settings.dashboard.~layoutPlaceholder', // does not exist in v2 anymore
+            'better-moodle-settings.darkmode.preview', // v2 doesn't need this button anymore
+            ...GM_listValues().filter(key =>
+                key.startsWith('better-moodle-weather-display-')
+            ), // these are the old caches of the weather feature
+            'better-moodle-settings.weatherDisplay.pirateWeatherAPIKey', // the old pirateWeather API-Key
+        ];
+
         // this has been integrated into native moodle in 402
         if (__MOODLE_VERSION__ >= 402) {
-            GM_deleteValue('better-moodle-settings.courses.collapseAll');
+            oldKeys.push('better-moodle-settings.courses.collapseAll');
         }
 
-        // These are the old caches of the weather feature
-        GM_listValues().forEach(key => {
-            if (key.startsWith('better-moodle-weather-display-')) {
-                GM_deleteValue(key);
-            }
-        });
-        // And the old pirateWeather API-Key
-        GM_deleteValue(
-            'better-moodle-settings.weatherDisplay.pirateWeatherAPIKey'
-        );
+        oldKeys.forEach(key => GM_deleteValue(key));
     }
 
     GM_setValue(STORAGE_VERSION_KEY, CURRENT_STORAGE_VERSION);
