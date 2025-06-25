@@ -67,6 +67,10 @@ const getAndDelete = <Type>(key: string, defaultValue?: Type) => {
                 GM_deleteValue(key);
             }
         });
+        // And the old pirateWeather API-Key
+        GM_deleteValue(
+            'better-moodle-settings.weatherDisplay.pirateWeatherAPIKey'
+        );
     }
 
     GM_setValue(STORAGE_VERSION_KEY, CURRENT_STORAGE_VERSION);
