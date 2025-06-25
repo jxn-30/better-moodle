@@ -44,6 +44,7 @@
     input[type='range'] + output {
         position: absolute;
         text-align: center;
+        white-space: nowrap;
         padding: 2px;
         background-color: var(--primary);
         color: white;
