@@ -1,0 +1,10 @@
+:local(.desktop) {
+    + .dropdown-menu {
+        max-width: 500px;
+
+        a {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}

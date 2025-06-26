@@ -1,0 +1,16 @@
+@use '/src/style/mixins';
+
+a[href^='mailto:']:not(:has(.fa-envelope)) {
+    body.dir-ltr &::before,
+    body.dir-rtl &::after {
+        @include mixins.fa-icon;
+        content: '\f003' !important;
+    }
+
+    body.dir-ltr &::before {
+        padding-right: 0.25rem;
+    }
+    body.dir-rtl &::after {
+        padding-left: 0.25rem;
+    }
+}

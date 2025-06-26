@@ -1,0 +1,110 @@
+{
+    "$ref": "#/definitions/GlobalConfig",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "GlobalConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "$schema": {
+                    "const": "_globalSchema.json",
+                    "description": "This is the schema file we are using.",
+                    "type": "string"
+                },
+                "connects": {
+                    "additionalProperties": {
+                        "items": { "type": "string" },
+                        "type": "array"
+                    },
+                    "description": "These are connects, that are added conditionally, if a specific feature is included in the build.",
+                    "type": "object"
+                },
+                "defaultDisabled": {
+                    "description": "If a feature is specific to only a single moodle instance (e.g. a bugfix for instance modifications), it is a good idea to disable them in general and explicitely include them in the specific config via includeNonDefaultFeatures.",
+                    "items": { "type": "string" },
+                    "type": "array"
+                },
+                "disabledFrom": {
+                    "additionalProperties": false,
+                    "description": "For each version, we can specify features and featureGroups that should not be included if the moodle instance version is above the key, e.g. if a feature does not make sense for moodle versions since 405.",
+                    "properties": {
+                        "400": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "401": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "402": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "403": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "404": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "405": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
+                },
+                "enabledFrom": {
+                    "additionalProperties": false,
+                    "description": "For each version, we can specify features and featureGroups that should not be included if the moodle instance version is below the key, e.g. if a feature does not make sense for moodle versions before 405.",
+                    "properties": {
+                        "400": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "401": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "402": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "403": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "404": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        },
+                        "405": {
+                            "items": { "type": "string" },
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
+                },
+                "featureGroupOrder": {
+                    "description": "Defines the order in which the FeatureGroups are shown in settings. \"general\" will be added in any case at first group.",
+                    "items": { "type": "string" },
+                    "type": "array"
+                },
+                "prefix": {
+                    "description": "A global prefix that is used for internal IDs, classes etc to uniquely identify as part of Better-Moodle.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "$schema",
+                "prefix",
+                "featureGroupOrder",
+                "defaultDisabled",
+                "enabledFrom",
+                "disabledFrom",
+                "connects"
+            ],
+            "type": "object"
+        }
+    }
+}
