@@ -4,7 +4,7 @@ import { DynamicThemeFix } from 'darkreader';
 import FeatureGroup from '@/FeatureGroup';
 import fixes from './fixes.scss?inline';
 import { SelectSetting } from '@/Settings/SelectSetting';
-import Setting from '@/Setting';
+import type Setting from '@/Setting';
 import { SliderSetting } from '@/Settings/SliderSetting';
 
 /**

@@ -31,7 +31,7 @@ type NetworkMethod =
     | 'formData'
     | 'json'
     | 'text';
-type NetworkResponseType<Method extends NetworkMethod> = Awaited<
+export type NetworkResponseType<Method extends NetworkMethod> = Awaited<
     ReturnType<Body[Method]>
 >;
 // it is known that this is not fully semantically correct, as values may have different types

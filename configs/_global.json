@@ -11,12 +11,14 @@
         "speiseplan",
         "semesterzeiten",
         "bookmarks",
-        "weather"
+        "weather",
+        "nina"
     ],
     "defaultDisabled": ["general.cauNavbar", "semesterzeiten", "speiseplan"],
     "enabledFrom": { "405": ["courses.sectionCourseIndex"] },
     "disabledFrom": { "402": ["courses.courseIndexDrawerControls"] },
     "connects": {
+        "nina": ["nina.api.proxy.bund.dev"],
         "weather": [
             "api.open-meteo.com",
             "api.openweathermap.org",
