@@ -1,0 +1,1 @@
+import './zensus.scss';

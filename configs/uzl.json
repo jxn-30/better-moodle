@@ -11,5 +11,6 @@
     "moodleUrl": "https://moodle.uni-luebeck.de",
     "moodleVersion": 405,
     "connects": ["studentenwerk.sh"],
+    "fixes": ["uzl/zensus"],
     "includeNonDefaultFeatures": ["semesterzeiten", "speiseplan"]
 }

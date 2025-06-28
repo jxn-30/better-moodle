@@ -1,0 +1,4 @@
+[data-block='evaluationzensus_dashboard'] .content > div:first-child {
+    // make progress and header prettier when using fullwidth setting
+    grid-template-columns: repeat(auto-fill, minmax(49%, 1fr)) !important;
+}
