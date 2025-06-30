@@ -375,6 +375,10 @@ const loadContent = (semesterIndex = 0) => {
                 </tr>
             );
 
+            type SwitchComponent = ReturnType<typeof Switch>;
+
+            const switches = new Map<string, Set<SwitchComponent>>();
+
             semester.events.forEach(event => {
                 const { start, end, progress } = getEventDates(event);
 
@@ -385,13 +389,20 @@ const loadContent = (semesterIndex = 0) => {
                         )}
                         value={!hiddenBars.has(event.type)}
                     />
-                ) as ReturnType<typeof Switch>;
+                ) as SwitchComponent;
+                if (!switches.has(event.type)) {
+                    switches.set(event.type, new Set<SwitchComponent>());
+                }
+                switches.get(event.type)?.add(toggle);
                 toggle.addEventListener('input', () => {
                     if (toggle.value) {
                         hiddenBars.delete(event.type);
                     } else {
                         hiddenBars.add(event.type);
                     }
+                    switches
+                        .get(event.type)
+                        ?.forEach(t => (t.value = toggle.value));
                     GM_setValue(hiddenBarsKey, Array.from(hiddenBars));
                     loadProgressBar(semester, currentSemester === 0);
                 });
