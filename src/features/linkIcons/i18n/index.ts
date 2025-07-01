@@ -15,6 +15,11 @@ export const de = {
             description:
                 'Zeigt ein kleines Icon an, wenn ein Link deinen Email-Client öffnen kann.',
         },
+        phone: {
+            name: 'Telefonnummern',
+            description:
+                'Zeigt ein kleines Icon an, wenn ein Link zu einer Telefonnummer führt.',
+        },
     },
 } satisfies FeatureGroupTranslation;
 
@@ -32,6 +37,11 @@ export const en = {
             name: 'Mark links: Emails',
             description:
                 'Shows a small icon next to links that can open your Email-Client.',
+        },
+        phone: {
+            name: 'Phone',
+            description:
+                'Shows a small icon next to links that are phone numbers',
         },
     },
 } as typeof de;

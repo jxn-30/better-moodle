@@ -1,0 +1,31 @@
+@use '/src/style/mixins';
+
+@mixin insert-before($content) {
+    body.dir-ltr &::before,
+    body.dir-rtl &::after {
+        @include mixins.fa-icon;
+        content: $content !important;
+    }
+
+    body.dir-ltr &::before {
+        padding-right: 0.25rem;
+    }
+    body.dir-rtl &::after {
+        padding-left: 0.25rem;
+    }
+}
+
+@mixin insert-after($content) {
+    body.dir-ltr &::after,
+    body.dir-rtl &::before {
+        @include mixins.fa-icon;
+        content: $content !important;
+    }
+
+    body.dir-ltr &::after {
+        padding-left: 0.25rem;
+    }
+    body.dir-rtl &::after {
+        padding-right: 0.25rem;
+    }
+}

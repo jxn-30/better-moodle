@@ -1,20 +1,9 @@
-@use '/src/style/mixins';
+@use './mixins' as *;
 
 a:not([href^='#{global.$MOODLE_URL}']) {
     &[href^="https://"],
     &[href^="http://"]
     {
-        body.dir-ltr &::after,
-        body.dir-rtl &::before {
-            @include mixins.fa-icon;
-            content: '' !important;
-        }
-
-        body.dir-ltr &::after {
-            padding-left: 0.25rem;
-        }
-        body.dir-rtl &::after {
-            padding-right: 0.25rem;
-        }
+        @include insert-after('');
     }
 }

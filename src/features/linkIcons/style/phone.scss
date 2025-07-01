@@ -1,0 +1,5 @@
+@use './mixins' as *;
+
+a[href^='tel:']:not(:has(.fa-phone)) {
+    @include insert-before('\f095');
+}
