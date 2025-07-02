@@ -539,7 +539,7 @@ ${uOptions.userscript}
 
 ${copyright}
 
-/* global global, ActiveXObject, Iterator, M, requirejs, DarkReader */
+/* global global, globalThis, ActiveXObject, Iterator, M, requirejs, DarkReader */
 /* eslint no-redeclare: ["error", { "builtinGlobals": false }] */
 `.trim();
                 },
