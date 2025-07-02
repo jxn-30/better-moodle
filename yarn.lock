@@ -33,10 +33,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/compat-data@npm:7.27.7, @babel/compat-data@npm:^7.27.2, @babel/compat-data@npm:^7.27.7":
-  version: 7.27.7
-  resolution: "@babel/compat-data@npm:7.27.7"
-  checksum: 10c0/08f2d3bd1b38e7e8cd159c5ddeb458696338ef7cd3fe0cc4384a0af5353ef8577ee3f25f01f0a88544c0e7ada972d0d2826a06744c695b211bfb172b76c0ca38
+"@babel/compat-data@npm:7.28.0, @babel/compat-data@npm:^7.27.2, @babel/compat-data@npm:^7.27.7":
+  version: 7.28.0
+  resolution: "@babel/compat-data@npm:7.28.0"
+  checksum: 10c0/c4e527302bcd61052423f757355a71c3bc62362bac13f7f130de16e439716f66091ff5bdecda418e8fa0271d4c725f860f0ee23ab7bf6e769f7a8bb16dfcb531
   languageName: node
   linkType: hard
 
@@ -128,7 +128,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-define-polyfill-provider@npm:^0.6.3, @babel/helper-define-polyfill-provider@npm:^0.6.4, @babel/helper-define-polyfill-provider@npm:^0.6.5":
+"@babel/helper-define-polyfill-provider@npm:^0.6.3, @babel/helper-define-polyfill-provider@npm:^0.6.5":
   version: 0.6.5
   resolution: "@babel/helper-define-polyfill-provider@npm:0.6.5"
   dependencies:
@@ -3501,15 +3501,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs3@npm:0.12.0":
-  version: 0.12.0
-  resolution: "babel-plugin-polyfill-corejs3@npm:0.12.0"
+"babel-plugin-polyfill-corejs3@npm:0.13.0":
+  version: 0.13.0
+  resolution: "babel-plugin-polyfill-corejs3@npm:0.13.0"
   dependencies:
-    "@babel/helper-define-polyfill-provider": "npm:^0.6.4"
-    core-js-compat: "npm:^3.41.0"
+    "@babel/helper-define-polyfill-provider": "npm:^0.6.5"
+    core-js-compat: "npm:^3.43.0"
   peerDependencies:
     "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
-  checksum: 10c0/0b076936436a8631dc64bb931312fa4f116bb85dbbe3d2c303c86fba0c17c767bef9957c9f3e10832291d42d329d9222810f6339ea6cd83d06a8739a1452bc4a
+  checksum: 10c0/5d8e228da425edc040d8c868486fd01ba10b0440f841156a30d9f8986f330f723e2ee61553c180929519563ef5b64acce2caac36a5a847f095d708dda5d8206d
   languageName: node
   linkType: hard
 
@@ -3908,7 +3908,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js-compat@npm:3.43.0, core-js-compat@npm:^3.40.0, core-js-compat@npm:^3.41.0":
+"core-js-compat@npm:3.43.0, core-js-compat@npm:^3.40.0, core-js-compat@npm:^3.43.0":
   version: 3.43.0
   resolution: "core-js-compat@npm:3.43.0"
   dependencies:
@@ -8778,7 +8778,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "uzl-better-moodle@workspace:."
   dependencies:
-    "@babel/compat-data": "npm:7.27.7"
+    "@babel/compat-data": "npm:7.28.0"
     "@cloudflare/workers-types": "npm:4.20250701.0"
     "@eslint/js": "npm:9.30.1"
     "@prettier/plugin-xml": "npm:3.4.1"
@@ -8793,7 +8793,7 @@ __metadata:
     "@types/node": "npm:24.0.10"
     "@types/tampermonkey": "npm:5.0.4"
     "@vitejs/plugin-legacy": "npm:7.0.0"
-    babel-plugin-polyfill-corejs3: "npm:0.12.0"
+    babel-plugin-polyfill-corejs3: "npm:0.13.0"
     boxen: "npm:8.0.1"
     browserslist: "npm:4.25.1"
     browserslist-useragent-regexp: "npm:4.1.3"
