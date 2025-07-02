@@ -1,0 +1,6 @@
+body:not(.limitedwidth):local(.pulled)
+    .secondary-navigation
+    .navigation
+    .nav-tabs {
+    justify-content: flex-start;
+}
