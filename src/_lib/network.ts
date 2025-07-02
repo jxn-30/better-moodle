@@ -1,4 +1,5 @@
 import GM_fetch from '@trim21/gm-fetch';
+import { PREFIX } from '@/helpers';
 
 /**
  * Make a fetch request using the GM-API if @connect header exists, otherwise using native fetch
@@ -22,7 +23,29 @@ export const request = (url: string, init?: RequestInit) => {
     }
 };
 
-export const NETWORK_CACHE_KEY = '_network_cache';
+// we first used script storage for network cache but localStorage just feels more straightforward
+GM_deleteValue('_network_cache');
+
+const NETWORK_CACHE_KEY = PREFIX('network_cache');
+
+/**
+ * Gets the current network cache from localStorage and parses it ready to use
+ * @returns current network cache
+ */
+export const getNetworkCache = <
+    Method extends NetworkMethod = NetworkMethod,
+    ResultType = unknown,
+>() =>
+    JSON.parse(
+        localStorage.getItem(NETWORK_CACHE_KEY) ?? '{"urls":{},"processed":{}}'
+    ) as NetworkCache<Method, ResultType>;
+/**
+ * Saves the network cache to localStorage
+ * @param cache - the current cache state
+ * @returns void
+ */
+export const setNetworkCache = (cache: NetworkCache) =>
+    localStorage.setItem(NETWORK_CACHE_KEY, JSON.stringify(cache));
 
 type NetworkMethod =
     | 'arrayBuffer'
@@ -80,9 +103,7 @@ export const cachedRequest = <
     preprocess?: (result: ResponseType) => ResultType,
     init?: RequestInit
 ): Promise<CachedResponse<ResultType>> => {
-    const cache = GM_getValue<NetworkCache<Method, ResultType>>(
-        NETWORK_CACHE_KEY
-    ) ?? { urls: {}, processed: {} };
+    const cache = getNetworkCache<Method, ResultType>();
 
     const cacheKey =
         preprocess ?
@@ -112,7 +133,7 @@ export const cachedRequest = <
                 expires: cache.urls[url].lastUpdate + cacheDuration,
                 value: result,
             };
-            GM_setValue(NETWORK_CACHE_KEY, cache);
+            setNetworkCache(cache);
             return Promise.resolve({
                 cached: true,
                 lastUpdate: cacheUrlLastUpdate,
@@ -142,7 +163,7 @@ export const cachedRequest = <
                 if (preprocess) {
                     cache.processed[cacheKey] = { lastUpdate, expires, value };
                 }
-                GM_setValue(NETWORK_CACHE_KEY, cache);
+                setNetworkCache(cache);
             }
             return { cached: false, lastUpdate, value };
         });

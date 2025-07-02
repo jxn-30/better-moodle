@@ -9,7 +9,7 @@ import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
 import TempStorage from '@/TempStorage';
 import type { ThemeBoostBootstrapTooltipClass } from '#/require.js/theme_boost/bootstrap/tooltip.d.ts';
 import { BETTER_MOODLE_LANG, LL } from 'i18n';
-import { cachedRequest, NETWORK_CACHE_KEY, request } from '@/network';
+import { cachedRequest, request } from '@/network';
 import {
     debounce,
     htmlToElements,
@@ -260,10 +260,11 @@ const ExportBtn = (
 
 ExportBtn.addEventListener('click', e => {
     e.preventDefault();
-    const unwantedKeys = new Set([NETWORK_CACHE_KEY]);
+    // There currently are no unwanted Keys, but we could filter them out if we had any
+    // const unwantedKeys = new Set([]);
     const storage = Object.fromEntries(
         GM_listValues()
-            .filter(key => !unwantedKeys.has(key))
+            // .filter(key => !unwantedKeys.has(key))
             .toSorted() // we want to sort the keys because why not
             .map(key => [key, GM_getValue(key)])
     );
