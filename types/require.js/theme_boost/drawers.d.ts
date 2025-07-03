@@ -16,4 +16,8 @@ export default class ThemeBoostDrawers {
     } = {}): void;
     drawerNode: HTMLElement;
     isOpen: boolean;
+
+    // Moodle >= 403
+    boundingRect: ReturnType<HTMLElement['getBoundingClientRect']>;
+    preventOverlap(currentFocus: HTMLElement): void;
 }

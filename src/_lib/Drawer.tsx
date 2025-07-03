@@ -280,3 +280,35 @@ export default class Drawer {
         return this;
     }
 }
+
+// From Moodle 403 onwards, non-left sidebars will hide if an element with < 20px (=hardcoded THRESHOLD) distance is focused
+// https://github.com/moodle/moodle/commit/b594536ef075b3d0b0f6ce88bbd2c99ff7d7c759#diff-89175b8a70ee4325c556c8ff0f3e576b01547af8a9214af70d600d577ba5ef8dR592-R610
+// This interfers with our fullwidth feature, thus we need a trick to hide only if there is a real overlap, without the 20px radius
+// It is not nice to treat the sidebar like this instead of respecting their sensibility, however in this case, user experience is affected too much
+if (__MOODLE_VERSION__ >= 403) {
+    void requirePromise(['theme_boost/drawers'] as const).then(([Drawers]) => {
+        // threshold definition is within .then to allow inlining it
+        const THRESHOLD = 20;
+        // eslint-disable-next-line @typescript-eslint/unbound-method -- as we cannot bind yet and will not call without binding
+        const preventOrig = Drawers.prototype.preventOverlap;
+        type Drawer = InstanceType<typeof Drawers>;
+        /**
+         * Modifies the boundingRect to remove the threshold and then calls the original method
+         * @param args - the arguments passed to the original method
+         * @returns the result of the original method
+         */
+        Drawers.prototype.preventOverlap = function (this: Drawer, ...args) {
+            // If the drawer has no bounding rect set, we don't have to take action
+            if (!this.boundingRect) return preventOrig.call(this, ...args);
+            const origRect = this.boundingRect;
+            // Although left and right is used within original preventOverlap, we need to adjust x, y, width and height because left and right are calculated properties
+            this.boundingRect.x += THRESHOLD;
+            this.boundingRect.y += THRESHOLD;
+            this.boundingRect.width -= 2 * THRESHOLD;
+            this.boundingRect.height -= 2 * THRESHOLD;
+            const result = preventOrig.call(this, ...args);
+            this.boundingRect = origRect;
+            return result;
+        };
+    });
+}
