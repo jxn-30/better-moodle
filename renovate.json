@@ -57,7 +57,7 @@
         },
         {
             "matchPackageNames": ["darkreader"],
-            "matchCurrentVersion": "4.9.108",
+            "matchNewValue": "4.9.108",
             "enabled": false
         }
     ],
