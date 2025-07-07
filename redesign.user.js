@@ -63,6 +63,35 @@ const TRANSLATIONS = {
         courses: {
             grades: 'Bewertungen',
         },
+        customWelcomebackText: {
+            birthday: '🎉 Alles Gute zum Geburtstag, {{name}}! 🎉',
+            newYear: '🎉 Frohes neues Jahr, {{name}}! 🎉',
+            starWarsDay: 'Möge die Macht mit dir sein, {{name}}! 🛸',
+            towelDay: 'Keine Panik, {{name}}! 🚀',
+            halloween: {
+                pumpkin: 'Hallo {{name}}! 🎃',
+                ghost: 'HallooOOOooo {{name}}! 👻',
+                bat: 'Hallo {{name}}! 🦇',
+                spider: 'Hallo {{name}}! 🕷️',
+                skull: 'Buh {{name}}! 💀',
+            },
+            christmas: {
+                santa: 'Ho Ho Ho, {{name}}! 🎅',
+                snowman: 'Hallo {{name}}! ⛄',
+                reindeer: 'Frohe Weihnachten, {{name}}! 🦌',
+                elf: 'Hallo {{name}}! 🧝',
+            },
+            dayTime: {
+                morning: 'Guten Morgen, {{name}}! 🌄',
+                evening: 'Guten Abend, {{name}}! 🌇',
+                night: 'Gute Nacht, {{name}}! 🌃',
+            },
+            general: {
+                welcome: 'Willkommen zurück, {{name}}! 👋',
+                short: 'Moin {{name}}! 👋',
+                hello: 'Hallo {{name}}! 👋',
+            },
+        },
         myCourses: {
             lists: {
                 empty: 'Keine Kurse im aktuellen Filter vorhanden.',
@@ -590,6 +619,15 @@ Viele Grüße
                         'Favorisierte Kurse werden immer oben in der Kursliste angezeigt, anstelle an der normalen Stelle bei alphabetischer Sortierung.',
                 },
             },
+            customWelcomebackText: {
+                _title: 'Individuelle Begrüßungen',
+                _description:
+                    'Wenn du dich einloggst, wird dir eine individuelle Begrüßung angezeigt.',
+                enabled: {
+                    name: 'Individuelle Begrüßungen aktivieren',
+                    description: 'Aktiviert die individuellen Begrüßungen.',
+                },
+            },
             myCourses: {
                 _title: 'Meine Kurse',
                 boxesPerRow: {
@@ -829,6 +867,35 @@ Better-Moodle funktioniert bei allen angebotenen Anbiertern mit den jeweiligen k
         },
         courses: {
             grades: 'Grades',
+        },
+        customWelcomebackText: {
+            birthday: '🎉 Happy Birthday, {{name}}! 🎉',
+            newYear: '🎉 Happy New Year, {{name}}! 🎉',
+            starWarsDay: 'May the force be with you {{name}}! 🛸',
+            towelDay: "Don't panic, {{name}}! 🚀",
+            halloween: {
+                pumpkin: 'Hello {{name}}! 🎃',
+                ghost: 'HellooOOOooo {{name}}! 👻',
+                bat: 'Hello {{name}}! 🦇',
+                spider: 'Hello {{name}}! 🕷️',
+                skull: 'Boo {{name}}! 💀',
+            },
+            christmas: {
+                santa: 'Ho ho ho, {{name}}! 🎅',
+                snowman: 'Hello {{name}}! ⛄',
+                reindeer: 'Merry Christmas, {{name}}! 🦌',
+                elf: 'Hello {{name}}! 🧝',
+            },
+            dayTime: {
+                morning: 'Good morning, {{name}}! 🌄',
+                evening: 'Good evening, {{name}}! 🌇',
+                night: 'Good night, {{name}}! 🌃',
+            },
+            general: {
+                welcome: 'Welcome back, {{name}}! 👋',
+                short: 'Hi {{name}}! 👋',
+                hello: 'Hello {{name}}! 👋',
+            },
         },
         myCourses: {
             lists: {
@@ -1354,6 +1421,14 @@ Best regards
                     name: 'Show favourite courses at top',
                     description:
                         'Favourite courses are always displayed at the top of the course list instead of in the normal position when sorted alphabetically.',
+                },
+            },
+            customWelcomebackText: {
+                _title: 'Custom welcome back text',
+                _description: 'See custom welcome back text when you log in.',
+                enabled: {
+                    name: 'Enable custom welcome back text',
+                    description: 'Enables the custom welcome back text.',
                 },
             },
             myCourses: {
@@ -3315,6 +3390,8 @@ const SETTINGS = [
         getCourseGroupingOptions()
     ),
     new BooleanSetting('dashboard.courseListFavouritesAtTop', true),
+    'customWelcomebackText',
+    new BooleanSetting('customWelcomebackText.enabled', true),
     'myCourses',
     new SliderSetting('myCourses.boxesPerRow', 4, 1, 10),
     new BooleanSetting('myCourses.navbarDropdown', true),
@@ -8924,5 +9001,178 @@ if (isDashboard) {
             );
         })
     );
+}
+// endregion
+
+// region Feature: customWelcomebackText
+if (getSetting('customWelcomebackText.enabled')) {
+    /**
+     * @typedef {(Date) => boolean | () => boolean | boolean | undefined} occasionPredicate
+     * @typedef {Number | undefined} occasionProbability
+     * @typedef {{name: string, predicate: occasionPredicate, probability: occasionProbability, variants: occasionBranch[]} | string} occasionBranch
+     */
+
+    const loadingSkeletonSelector = '#page-header h1.h2.mb-3.mt-3:first-of-type';
+    const loadingDoneClass = PREFIX('loading-done');
+
+    GM_addStyle(css`
+        ${loadingSkeletonSelector}:not(.${loadingDoneClass}) {
+            color: transparent;
+            animation: bg-pulse-grey 2s infinite linear;
+        }
+    `);
+
+    /**
+     * @type {occasionBranch[]}
+     */
+    const occasionTree = [
+        {
+            name: 'newYear',
+            predicate: now => now.getMonth() === 0 && now.getDate() === 1,
+        },
+        {
+            name: 'starWarsDay',
+            predicate: now => now.getMonth() === 4 && now.getDate() === 4,
+        },
+        {
+            name: 'towelDay',
+            predicate: now => now.getMonth() === 4 && now.getDate() === 25,
+        },
+        {
+            name: 'halloween',
+            predicate: now => now.getMonth() === 9 && now.getDate() === 31,
+            variants: ['pumpkin', 'ghost', 'bat', 'spider', 'skull'],
+        },
+        {
+            name: 'christmas',
+            predicate: now =>
+                now.getMonth() === 11 &&
+                now.getDate() >= 24 &&
+                now.getDate() <= 26,
+            variants: ['santa', 'reindeer', 'snowman', 'elf'],
+        },
+        {
+            name: 'dayTime',
+            probability: 0.5,
+            variants: [
+                {
+                    name: 'morning',
+                    predicate: now =>
+                        now.getHours() >= 5 && now.getHours() < 12,
+                },
+                {
+                    name: 'evening',
+                    predicate: now =>
+                        now.getHours() >= 18 && now.getHours() < 22,
+                },
+                {
+                    name: 'night',
+                    predicate: now =>
+                        now.getHours() >= 22 || now.getHours() < 5,
+                },
+            ],
+        },
+        {
+            name: 'general',
+            variants: ['welcome', 'short', 'hello'],
+        },
+    ];
+
+    /**
+     * Get the welcome message for the user
+     *
+     * @param {Object} args The arguments to use for the welcome message
+     * @returns {string} The welcome message
+     */
+    const getWelcome = args => {
+        const name =
+            args.firstname && args.lastname ?
+                `${args.firstname} ${args.lastname}`
+            :   (args.firstname ?? args.lastname);
+        const now = new Date();
+
+        /**
+         * Get the occasion for the welcome message
+         *
+         * @param {occasionBranch[]} tree The tree to check
+         * @returns {string | undefined} The occasion
+         */
+        const getOccasion = tree => {
+            // If tree is a string array, every string is equally likely
+            if (tree.every(branch => typeof branch === 'string')) {
+                return tree[Math.floor(Math.random() * tree.length)];
+            }
+            // If there are complex rules, check them and return the first matching one
+            for (let branch of tree) {
+                if (typeof branch === 'string') {
+                    branch = { name: branch };
+                }
+                if (branch.predicate === undefined) {
+                    branch.predicate = true;
+                }
+                if (branch.probability === undefined) {
+                    branch.probability = 1;
+                }
+                if (typeof branch.predicate === 'boolean') {
+                    branch.predicate = () => branch.predicate;
+                }
+
+                // If the predicate does not match or the random number is too high, continue with the next branch
+                if (
+                    !branch.predicate(now) ||
+                    Math.random() > branch.probability
+                ) {
+                    continue;
+                }
+
+                // If there are children, check them recursively
+                if (branch.variants) {
+                    const childOccasion = getOccasion(branch.variants);
+                    if (childOccasion === undefined) {
+                        continue;
+                    }
+                    return `${branch.name}.${childOccasion}`;
+                } else {
+                    return branch.name;
+                }
+            }
+            return undefined;
+        };
+
+        return $t(`customWelcomebackText.${getOccasion(occasionTree)}`, {
+            name,
+        });
+    };
+
+    /**
+     * Escapes a string for use in a regular expression
+     *
+     * @param {string} s The string to escape
+     * @returns {string} The escaped string
+     */
+    const regExpEscape = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    ready(() => {
+        const welcomeBack = document.querySelector(loadingSkeletonSelector);
+        if (!welcomeBack) return;
+
+        require(['core/str'], ({ get_string: getString }) =>
+            getString('welcomeback', 'core')
+                .then(
+                    str =>
+                        new RegExp(
+                            `^${regExpEscape(str)}$`.replace(
+                                /\\\{[^}]*->([^}]*)\\\}/g,
+                                '(?<$1>.*)'
+                            )
+                        )
+                )
+                .then(re => re.exec(welcomeBack.innerText))
+                .then(matches =>
+                    matches ? getWelcome(matches.groups) : welcomeBack.innerText
+                )
+                .then(welcome => (welcomeBack.textContent = welcome))
+                .then(() => welcomeBack.classList.add(loadingDoneClass)));
+    });
 }
 // endregion
