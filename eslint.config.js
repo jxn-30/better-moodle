@@ -16,6 +16,7 @@ export default [
             'redesign.user.js', // this is the legacy userscript, no linting here anymore
             '.postcssrc.cts',
             'ics-parser', // TODO: see how we can include this in linting but without monkey
+            'coverage',
         ],
     },
     js.configs.recommended,
@@ -157,8 +158,8 @@ export default [
         rules: { 'es-x/no-top-level-await': 'error' },
     },
     {
-        name: 'Allow node globals in vite config',
-        files: ['vite.config.ts'],
+        name: 'Allow node globals in vite and vitest configs',
+        files: ['vite.config.ts', 'vitetest.config.ts'],
         languageOptions: { globals: { ...globals.node } },
     },
     {

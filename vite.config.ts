@@ -4,7 +4,6 @@ import boxen from 'boxen';
 import browserslist from 'browserslist';
 import type Config from './configs/_config';
 import { createHash } from 'crypto';
-import { defineConfig } from 'vite';
 import dotenv from 'dotenv';
 import fastGlob from 'fast-glob';
 import globalConfig from './configs/_global.json';
@@ -14,6 +13,7 @@ import monkey from 'vite-plugin-monkey';
 import pluginTerser from '@rollup/plugin-terser';
 import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
 import { getUserAgentRegex as uaRegex } from 'browserslist-useragent-regexp';
+import { defineConfig, type ResolverFunction } from 'vite';
 import { dependencies, version } from './package.json';
 
 const _PERF_START = process.hrtime.bigint();
@@ -312,6 +312,57 @@ const copyright = boxen(copyrightContent, {
     ),
 }).toString();
 
+/**
+ * replaces unused i18n imports with a path to a file exporting empty translations
+ * @param source - the path imported exactly as written in the import statement
+ * @param importer - the path of the file importing the source
+ * @returns undefined if the import should be resolved by the default resolver, otherwise the path to the file with empty translations
+ */
+const i18nResolver: ResolverFunction = (source, importer) => {
+    // returning undefined will fall back to default resolver
+    if (!importer) return undefined;
+
+    const undefinedPath = 'src/i18n/undefined.ts';
+
+    const sourcePath = path.relative(
+        __dirname,
+        path.resolve(path.dirname(importer), source)
+    );
+    const context = path.relative(__dirname, importer);
+
+    if (/^src\/features\/.*\/i18n(\/index(\.ts)?)?$/.test(sourcePath)) {
+        // Ah! We're trying to load index translations for this feature group!
+        // hmm, is this feature group included?
+        const featureGroup = sourcePath.split('/')[2];
+        // if not, return the undefined path
+        if (!allIncludedFeatureGroups.has(featureGroup)) {
+            return undefinedPath;
+        }
+    }
+
+    if (/^src\/features\/.*\/i18n\/index\.ts$/.test(context)) {
+        // Ah! We're loading from a translation index file!
+
+        // okay, if the translation file is not within an i18n folder, we must include
+        // this is e.g. for the weather condition translations
+        // maybe we can find a better way sometime
+        if (!sourcePath.includes('i18n')) {
+            return undefined;
+        }
+
+        // hmm, is this feature included?
+        const featureGroup = context.split('/')[2];
+        const feature = sourcePath.split('/')[4];
+        // if not, return the undefined path
+        if (!allIncludedFeatures.has(`${featureGroup}.${feature}`)) {
+            return undefinedPath;
+        }
+    }
+
+    // nothing special about the import, return undefined to fall back to default resolver
+    return undefined;
+};
+
 export default defineConfig({
     esbuild: {
         jsxInject:
@@ -356,66 +407,9 @@ export default defineConfig({
                 find: /^!(?=\/)/,
                 replacement: path.resolve(__dirname, './src/style'),
             },
-            {
-                find: /^/,
-                replacement: '',
-                /**
-                 * replaces unused i18n imports with a path to a file exporting empty translations
-                 * @param source - the path imported exactly as written in the import statement
-                 * @param importer - the path of the file importing the source
-                 * @returns undefined if the import should be resolved by the default resolver, otherwise the path to the file with empty translations
-                 */
-                customResolver: (source, importer) => {
-                    // returning undefined will fall back to default resolver
-                    if (!importer) return undefined;
-
-                    const undefinedPath = 'src/i18n/undefined.ts';
-
-                    const sourcePath = path.relative(
-                        __dirname,
-                        path.resolve(path.dirname(importer), source)
-                    );
-                    const context = path.relative(__dirname, importer);
-
-                    if (
-                        /^src\/features\/.*\/i18n(\/index(\.ts)?)?$/.test(
-                            sourcePath
-                        )
-                    ) {
-                        // Ah! We're trying to load index translations for this feature group!
-                        // hmm, is this feature group included?
-                        const featureGroup = sourcePath.split('/')[2];
-                        // if not, return the undefined path
-                        if (!allIncludedFeatureGroups.has(featureGroup)) {
-                            return undefinedPath;
-                        }
-                    }
-
-                    if (/^src\/features\/.*\/i18n\/index\.ts$/.test(context)) {
-                        // Ah! We're loading from a translation index file!
-
-                        // okay, if the translation file is not within an i18n folder, we must include
-                        // this is e.g. for the weather condition translations
-                        // maybe we can find a better way sometime
-                        if (!sourcePath.includes('i18n')) return undefined;
-
-                        // hmm, is this feature included?
-                        const featureGroup = context.split('/')[2];
-                        const feature = sourcePath.split('/')[4];
-                        // if not, return the undefined path
-                        if (
-                            !allIncludedFeatures.has(
-                                `${featureGroup}.${feature}`
-                            )
-                        ) {
-                            return undefinedPath;
-                        }
-                    }
-
-                    // nothing special about the import, return undefined to fall back to default resolver
-                    return undefined;
-                },
-            },
+            ...(process.env.VITEST ?
+                []
+            :   [{ find: /^/, replacement: '', customResolver: i18nResolver }]),
         ],
     },
     css: {

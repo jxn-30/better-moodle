@@ -42,7 +42,9 @@
         "src",
         "types",
         "vite.config.ts",
+        "vitest.config.ts",
         "postcss.config.ts",
-        "configs"
+        "configs",
+        "__tests__"
     ]
 }
