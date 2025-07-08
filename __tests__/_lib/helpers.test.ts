@@ -1,5 +1,13 @@
+import {
+    domID,
+    getSettingKey,
+    githubPath,
+    isDashboard,
+    isNewInstallation,
+    PREFIX,
+    rawGithubPath,
+} from '@/helpers';
 import { expect, test } from 'vitest';
-import { PREFIX, githubPath, getSettingKey, domID, rawGithubPath, mdID, isDashboard, isNewInstallation } from '@/helpers';
 
 // first of all, we want to test if tests are working :)
 test('1 + 2 = 3', () => expect(1 + 2).toBe(3));
@@ -25,13 +33,13 @@ test('a domID should start with the prefix', () =>
 // endsection domID
 
 // section githubPath
-test('a github path should be a valid url', () => 
-    expect(githubPath('/CHANGELOG.md')).toBeAValidURL()
-);
+test('a github path should be a valid url', () =>
+    expect(githubPath('/CHANGELOG.md')).toBeAValidURL());
 // endsection githubPath
 
 // section rawGithubPath
-test('a raw github path should be a valid url', () => expect(rawGithubPath('/CHANGELOG.md')).toBeAValidURL());
+test('a raw github path should be a valid url', () =>
+    expect(rawGithubPath('/CHANGELOG.md')).toBeAValidURL());
 // endsection rawGithubPath
 
 // section mdID
@@ -59,11 +67,13 @@ test('a raw github path should be a valid url', () => expect(rawGithubPath('/CHA
 // endsection isLoggedIn
 
 // section isDashboard
-test('constant isDashboard must be a boolean', () => expect(isDashboard).toBeABoolean());
+test('constant isDashboard must be a boolean', () =>
+    expect(isDashboard).toBeABoolean());
 // endsection isDashboard
 
 // section isNewInstallation
-test('constant isNewInstallation must be a boolean', () => expect(isNewInstallation).toBeABoolean());
+test('constant isNewInstallation must be a boolean', () =>
+    expect(isNewInstallation).toBeABoolean());
 // endsection isNewInstallation
 
 // section mdlJSComplete
