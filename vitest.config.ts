@@ -6,6 +6,7 @@ export default mergeConfig(
     defineConfig({
         test: {
             include: ['__tests__/**/*.test.tsx', '__tests__/**/*.test.ts'],
+            exclude: ['__tests__/__userscript__'],
             environment: 'jsdom',
             setupFiles: ['__tests__/gm_mocks.ts', '__tests__/matchers.ts'],
             coverage: { include: ['src/**/*.tsx', 'src/**/*.ts'] },

@@ -18,6 +18,7 @@
         "build:cau": "yarn build cau",
         "postbuild": "yarn prettier:dist && yarn lint:fix:dist && yarn prettier:dist",
         "preview": "vite preview",
+        "test:src": "vitest run --coverage -- --config=${0}",
         "i18n:watch": "typesafe-i18n",
         "i18n:once": "typesafe-i18n --no-watch",
         "config:scheme": "ts-json-schema-generator --path 'configs/_config.d.ts' --type 'Config' --out configs/_schema.json; ts-json-schema-generator --path 'configs/_global.json.d.ts' --type 'GlobalConfig' --out configs/_globalSchema.json",
