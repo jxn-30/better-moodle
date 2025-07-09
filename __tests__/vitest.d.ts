@@ -2,6 +2,7 @@ import 'vitest';
 
 interface CustomMatchers<R = unknown> {
     toStartWith: (prefix: string) => R;
+    toEndWith: (suffix: string) => R;
     toBeAValidURL: () => R;
     toBeABoolean: () => R;
 }
@@ -12,4 +13,8 @@ declare module 'vitest' {
     interface Assertion<T = any> extends CustomMatchers<T> {}
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface AsymmetricMatchersContaining extends CustomMatchers {}
+
+    export interface ProvidedContext {
+        userscriptFile: string;
+    }
 }

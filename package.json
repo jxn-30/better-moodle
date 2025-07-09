@@ -19,6 +19,7 @@
         "postbuild": "yarn prettier:dist && yarn lint:fix:dist && yarn prettier:dist",
         "preview": "vite preview",
         "test:src": "vitest run --coverage -- --config=${0}",
+        "test:userscript": "vitest run --config vitest.userscript.config.ts -- --config=${0}",
         "i18n:watch": "typesafe-i18n",
         "i18n:once": "typesafe-i18n --no-watch",
         "config:scheme": "ts-json-schema-generator --path 'configs/_config.d.ts' --type 'Config' --out configs/_schema.json; ts-json-schema-generator --path 'configs/_global.json.d.ts' --type 'GlobalConfig' --out configs/_globalSchema.json",
@@ -40,6 +41,7 @@
         "@prettier/plugin-xml": "3.4.2",
         "@rollup/plugin-terser": "0.4.4",
         "@sass-fairy/string": "1.3.1",
+        "@tomjs/unzip-crx": "1.1.3",
         "@types/caniuse-lite": "1.0.5",
         "@types/eslint": "9.6.1",
         "@types/jquery": "3.5.32",
@@ -69,10 +71,12 @@
         "jsdom": "26.1.0",
         "mini-svg-data-uri": "1.4.4",
         "node-ical": "0.20.1",
+        "nodejs-file-downloader": "4.13.0",
         "postcss": "8.5.6",
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "10.2.4",
         "prettier": "3.6.2",
+        "puppeteer": "24.12.0",
         "rrule": "2.8.1",
         "sass-embedded": "1.89.2",
         "terser": "5.43.1",
@@ -85,8 +89,7 @@
         "vite": "7.0.3",
         "vite-plugin-monkey": "5.0.9",
         "vitest": "3.2.4",
-        "wrangler": "4.24.0",
-        "yarn": "1.22.22"
+        "wrangler": "4.24.0"
     },
     "engines": {
         "node": "^22.17.0"

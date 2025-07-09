@@ -20,6 +20,25 @@ const toStartWith = (actual: unknown, prefix: string) => {
 };
 
 /**
+ * Expects a string to end with a given parameter
+ * @param actual - the string to check if it ends with {@link prefix}
+ * @param suffix - the string to check if {@link actual} end with
+ * @returns the except result
+ * @throws if {@link actual} is not a string
+ */
+const toEndWith = (actual: unknown, suffix: string) => {
+    if (typeof actual !== 'string') {
+        throw new Error('Actual value must be a string');
+    }
+    return {
+        pass: actual.endsWith(suffix),
+        // eslint-disable-next-line jsdoc/require-jsdoc
+        message: () =>
+            `Expected the string ${JSON.stringify(actual)} to end with the string ${JSON.stringify(suffix)}.`,
+    };
+};
+
+/**
  * Expects a thing to be a string of a valid URL
  * @param actual - the thing to test if it is a string of a valid URL
  * @returns the except result
@@ -57,4 +76,4 @@ const toBeABoolean = (actual: unknown) => ({
     message: () => `Expected a boolean but received a ${typeof actual}.`,
 });
 
-expect.extend({ toStartWith, toBeAValidURL, toBeABoolean });
+expect.extend({ toStartWith, toEndWith, toBeAValidURL, toBeABoolean });

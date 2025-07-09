@@ -283,7 +283,7 @@ const GLOBAL_CONSTANTS = {
     __MIN_SUPPORTED_BROWSERS__: Object.fromEntries(minSupportedBrowserVersions),
 };
 
-const fileName = `better-moodle-${configFile}.user.js`;
+export const fileName = `better-moodle-${configFile}.user.js`;
 const metaFileName = `better-moodle-${configFile}.meta.js`;
 
 const copyrightContent = `

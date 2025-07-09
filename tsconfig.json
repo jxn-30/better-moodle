@@ -43,6 +43,7 @@
         "types",
         "vite.config.ts",
         "vitest.config.ts",
+        "vitest.userscript.config.ts",
         "postcss.config.ts",
         "configs",
         "__tests__"
