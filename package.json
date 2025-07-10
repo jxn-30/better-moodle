@@ -61,7 +61,7 @@
         "esbuild-plugin-browserslist": "1.0.1",
         "eslint": "9.30.1",
         "eslint-config-prettier": "10.1.5",
-        "eslint-plugin-es-x": "8.7.0",
+        "eslint-plugin-es-x": "9.0.0",
         "eslint-plugin-jsdoc": "51.3.4",
         "eslint-plugin-jsx-a11y": "6.10.2",
         "eslint-plugin-userscripts": "0.5.6",
