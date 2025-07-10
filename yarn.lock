@@ -5186,17 +5186,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-compat-utils@npm:^0.6.3":
-  version: 0.6.5
-  resolution: "eslint-compat-utils@npm:0.6.5"
-  dependencies:
-    semver: "npm:^7.5.4"
-  peerDependencies:
-    eslint: ">=6.0.0"
-  checksum: 10c0/f3519e1460ec82c6967c4b0132801924bf5c17328999014f444ec12f075b151e992d1ebf378cb8eb0b2e00b3d04e0eaac80897209121fd115f857598b4588393
-  languageName: node
-  linkType: hard
-
 "eslint-config-prettier@npm:10.1.5":
   version: 10.1.5
   resolution: "eslint-config-prettier@npm:10.1.5"
@@ -5208,16 +5197,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-es-x@npm:8.7.0":
-  version: 8.7.0
-  resolution: "eslint-plugin-es-x@npm:8.7.0"
+"eslint-plugin-es-x@npm:9.0.0":
+  version: 9.0.0
+  resolution: "eslint-plugin-es-x@npm:9.0.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.1.2"
     "@eslint-community/regexpp": "npm:^4.12.1"
-    eslint-compat-utils: "npm:^0.6.3"
+    eslint-type-tracer: "npm:^0.4.0"
   peerDependencies:
-    eslint: ">=8"
-  checksum: 10c0/7d6a0cf85aea4cecbbb7d1f2a6389863549cea6481e22c02c2b44655d20ca20b2bbca7990ed0057ab2cafe46016056d1475f6d96093ecd5ed7b5242b120c05d5
+    eslint: ">=9.29.0"
+  checksum: 10c0/d5d4656b93ac8cc4fa3eec7c9df6c47998c767305068494495fea5a20de636e0236b65b0e8f7506dbc8033fd87453e35e2bc523b20c050170db240a2f0e8f0e2
   languageName: node
   linkType: hard
 
@@ -5284,6 +5273,17 @@ __metadata:
     esrecurse: "npm:^4.3.0"
     estraverse: "npm:^5.2.0"
   checksum: 10c0/407f6c600204d0f3705bd557f81bd0189e69cd7996f408f8971ab5779c0af733d1af2f1412066b40ee1588b085874fc37a2333986c6521669cdbdd36ca5058e0
+  languageName: node
+  linkType: hard
+
+"eslint-type-tracer@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "eslint-type-tracer@npm:0.4.0"
+  dependencies:
+    "@eslint-community/eslint-utils": "npm:^4.7.0"
+  peerDependencies:
+    eslint: ">=8"
+  checksum: 10c0/1bfb3ab17b7907a37d48c5872f944154d1e124af49288c73d35b1a07c191ced20d931575cb85d954d621c45b0d6b30cd613429ce47446abe6b1eca6081bd4d7b
   languageName: node
   linkType: hard
 
@@ -8860,7 +8860,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.3.5, semver@npm:^7.3.8, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0, semver@npm:^7.6.3, semver@npm:^7.7.2":
+"semver@npm:^7.3.5, semver@npm:^7.3.8, semver@npm:^7.5.3, semver@npm:^7.6.0, semver@npm:^7.6.3, semver@npm:^7.7.2":
   version: 7.7.2
   resolution: "semver@npm:7.7.2"
   bin:
@@ -10034,7 +10034,7 @@ __metadata:
     esbuild-plugin-browserslist: "npm:1.0.1"
     eslint: "npm:9.30.1"
     eslint-config-prettier: "npm:10.1.5"
-    eslint-plugin-es-x: "npm:8.7.0"
+    eslint-plugin-es-x: "npm:9.0.0"
     eslint-plugin-jsdoc: "npm:51.3.4"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-userscripts: "npm:0.5.6"
