@@ -31,7 +31,7 @@ jobs:
               uses: ./.github/actions/setup
 
             - name: 🧪 run tests
-              run: yarn test:src ${{ inputs.config }}
+              run: yarn test:src ${{ matrix.config }}
 
             - name: 🧾 report coverage
               if: always()

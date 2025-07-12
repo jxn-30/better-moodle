@@ -9,7 +9,10 @@ export default mergeConfig(
             exclude: ['__tests__/__userscript__'],
             environment: 'jsdom',
             setupFiles: ['__tests__/gm_mocks.ts', '__tests__/matchers.ts'],
-            coverage: { include: ['src/**/*.tsx', 'src/**/*.ts'] },
+            coverage: {
+                include: ['src/**/*.tsx', 'src/**/*.ts'],
+                reporter: ['text', 'html', 'clover', 'json', 'json-summary'],
+            },
         },
     })
 );
