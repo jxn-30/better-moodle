@@ -15,6 +15,8 @@ jobs:
     test:
         runs-on: ubuntu-latest
         name: 🧪 Test source
+        needs:
+            - find-configs
         strategy:
             matrix:
                 config: ${{ fromJson(needs.find-configs.outputs.configs) }}
