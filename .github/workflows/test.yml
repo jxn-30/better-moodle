@@ -1,0 +1,36 @@
+name: test.yml
+on:
+    push:
+        branches:
+            - v2
+    pull_request:
+        branches:
+            - v2
+
+jobs:
+    find-configs:
+        name: 📇 Find configs
+        uses: ./.github/workflows/find-configs.yml
+
+    test:
+        runs-on: ubuntu-latest
+        name: 🧪 Test source
+        strategy:
+            matrix:
+                config: ${{ fromJson(needs.find-configs.outputs.configs) }}
+        permissions:
+            contents: read
+            pull-requests: write
+        steps::
+            - name: 📥 checkout
+              uses: actions/checkout@v4
+
+            - name: 🎛  setup
+              uses: ./.github/actions/setup
+
+            - name: 🧪 run tests
+              run: yarn test:src ${{ inputs.config }}
+
+            - name: 🧾 report coverage
+              if: always()
+              uses: davelosert/vitest-coverage-report-action@v2
