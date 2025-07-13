@@ -1,4 +1,5 @@
 import { Downloader } from 'nodejs-file-downloader';
+import { isCI } from 'ci-info';
 import { join } from 'node:path';
 import { mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -37,29 +38,55 @@ vi.stubEnv('CHROME_DEVEL_SANDBOX', '/usr/local/sbin/chrome-devel-sandbox');
 
 let browser: Browser;
 let page: Page;
+let tampermonkeyID: string;
 
-beforeAll(async () => {
-    browser = await puppeteer.launch({
-        headless: false,
+const userDataDir = await mkdtemp(join(tmpdir(), 'profile-'));
+
+/**
+ * Launches a browser and enables closing all unwanted tabs
+ * @returns the launched browser instance
+ */
+const launchBrowser = async () => {
+    const browser = await puppeteer.launch({
+        headless: isCI,
+        userDataDir,
         slowMo: 100,
+        args: isCI ? ['--no-sandbox', '--disable-setuid-sandbox'] : undefined, // no sandbox can be used on Github runners
         enableExtensions: [tampermonkeyDir],
         pipe: true,
         // dumpio: true,
     });
 
-    // if the tampermonkey installation page appears, close it
-    void browser
-        .waitForTarget(target =>
-            target.url().startsWith('https://www.tampermonkey.net/')
-        )
-        .then(target => target.page())
-        .then(page => page?.close());
+    // if any unwanted page appears, close it
+    void browser.on('targetcreated', target => {
+        if (
+            target.url().startsWith(__MOODLE_URL__) ||
+            target.url().startsWith('chrome://') ||
+            target.url().startsWith('chrome-extension://') ||
+            target.url().startsWith('devtools://') ||
+            target.url() === 'about:blank'
+        ) {
+            return;
+        }
+
+        void target.page().then(page => page?.close());
+    });
+
+    return browser;
+};
+
+/**
+ * Inits a browser by launching it, enabling dev mode and allowing tampermonkey to execute userscripts
+ * Closes the browser afterwards.
+ */
+const initBrowser = async () => {
+    const browser = await launchBrowser();
 
     // enable developer mode and find tampermonkey extension-ID
     const devmodePage = await browser.newPage();
     await devmodePage.goto('chrome://extensions/');
     await devmodePage.click('body >>> #devMode');
-    const tampermonkeyID = await devmodePage.$$eval(
+    tampermonkeyID = await devmodePage.$$eval(
         'body >>> extensions-item',
         els =>
             els.find(el =>
@@ -114,7 +141,20 @@ beforeAll(async () => {
     await installPage.locator('input.button.install[type="button"]').click();
     await tampermonkeyPage.close();
 
-    // Now we need to wait like 40 seconds or so till chromium knows that tampermonkey is allowed to execute userscripts? I am confused!
+    // if we don't to this, the script seems not to be installed correctly? 🤷
+    await browser
+        .newPage()
+        .then(page =>
+            page.goto(`chrome-extension://${tampermonkeyID}/options.html`)
+        );
+
+    await browser.close();
+};
+
+beforeAll(async () => {
+    // initialising the browser and reopening it ensures that Tampermonkey knows that developer mode is enabled
+    await initBrowser();
+    browser = await launchBrowser();
 
     // open the moodle
     page = await browser.newPage();

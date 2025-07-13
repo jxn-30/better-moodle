@@ -1,3 +1,4 @@
+import { isCI } from 'ci-info';
 import { join } from 'node:path';
 import { defineConfig, mergeConfig } from 'vitest/config';
 import viteConfig, { fileName } from './vite.config';
@@ -6,7 +7,13 @@ export default mergeConfig(
     viteConfig,
     defineConfig({
         test: {
-            reporters: ['default', 'json'],
+            css: {
+                include: /.+/,
+                modules: {
+                    ...viteConfig.css.modules, // we want to use the same config as for builds to ensure the same class names and IDs
+                    classNameStrategy: 'scoped',
+                },
+            },
             include: [
                 '__tests__/__userscript__/**/*.test.tsx',
                 '__tests__/__userscript__/**/*.test.ts',
@@ -21,8 +28,7 @@ export default mergeConfig(
             },
             environment: 'node',
             setupFiles: ['__tests__/matchers.ts'],
-            testTimeout: 300_000_000, // 5 million minutes
-            //testTimeout: 30_000, // 30s
+            testTimeout: isCI ? 30_000 : 300_000_000, // 30s on CI, 5 million minutes locally
             hookTimeout: 30_000, // 30s
             provide: { userscriptFile: join(__dirname, 'dist', fileName) },
         },
