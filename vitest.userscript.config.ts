@@ -10,7 +10,7 @@ export default mergeConfig(
             css: {
                 include: /.+/,
                 modules: {
-                    ...viteConfig.css.modules, // we want to use the same config as for builds to ensure the same class names and IDs
+                    ...viteConfig.css?.modules, // we want to use the same config as for builds to ensure the same class names and IDs
                     classNameStrategy: 'scoped',
                 },
             },

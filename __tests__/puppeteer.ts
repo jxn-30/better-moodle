@@ -38,7 +38,6 @@ vi.stubEnv('CHROME_DEVEL_SANDBOX', '/usr/local/sbin/chrome-devel-sandbox');
 
 let browser: Browser;
 let page: Page;
-let tampermonkeyID: string;
 
 const userDataDir = await mkdtemp(join(tmpdir(), 'profile-'));
 
@@ -86,7 +85,7 @@ const initBrowser = async () => {
     const devmodePage = await browser.newPage();
     await devmodePage.goto('chrome://extensions/');
     await devmodePage.click('body >>> #devMode');
-    tampermonkeyID = await devmodePage.$$eval(
+    const tampermonkeyID = await devmodePage.$$eval(
         'body >>> extensions-item',
         els =>
             els.find(el =>
