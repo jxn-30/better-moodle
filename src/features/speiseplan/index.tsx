@@ -130,7 +130,7 @@ const getCurrentSpeiseplan = () => {
                 {item.info ?
                     <>
                         &nbsp;
-                        <span className="text-muted">{item.info}</span>
+                        <span className="text-muted">{item.info}</span>{' '}
                     </>
                 :   ''}
             </>
