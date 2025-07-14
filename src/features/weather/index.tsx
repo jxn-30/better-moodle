@@ -193,7 +193,7 @@ const updateWeather = async () => {
     if (!navbarItem) return;
 
     // indicate that we're in a waiting state
-    navbarText.textContent = '🌈';
+    // navbarText.textContent = '🌈'; // <- that is a little annoying as the navbar flickers when weather is updating
     setTooltipContent('⏳️');
 
     let response: WeatherResponse | null | void = null;
