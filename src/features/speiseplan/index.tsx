@@ -13,7 +13,7 @@ import style from './style.module.scss';
 import { BETTER_MOODLE_LANG, languages, LLFG, LLMap } from 'i18n';
 import { currency, dateToString, timeToString, unit } from '@/localeString';
 import { getLoadingSpinner, ready } from '@/DOM';
-import { htmlToElements, mdToHtml, PREFIX } from '@/helpers';
+import { htmlToElements, mdToHtml } from '@/helpers';
 
 const LL = LLFG('speiseplan');
 
@@ -72,8 +72,6 @@ const parse = Object.values(
     })
 )[0] as Parser;
 
-const speiseplanLink = `#${PREFIX('speiseplan')}`;
-
 // this is shorter because prettier would put each array element into a single line
 const emojis =
     '🍔,🍟,🍕,🌭,🥪,🌮,🌯,🫔,🥙,🧆,🥚,🍳,🥘,🍲,🥣,🥗,🍝,🍱,🍘,🍙,🍚,🍛,🍜,🍢,🍣,🍤,🍥,🥮,🥟,🥠,🥡'.split(
@@ -85,18 +83,27 @@ const emojis =
  * @returns a random food emoji
  */
 const randomEmoji = () => emojis[Math.floor(Math.random() * emojis.length)];
-const desktopBtn = (
-    <li className="nav-item">
-        <a className="nav-link" href={speiseplanLink} title={LL.name()}>
-            {randomEmoji()}
-        </a>
-    </li>
-);
+const desktopLink = (
+    <a
+        className={classNames('nav-link', globalStyle.noExternalLinkIcon)}
+        href="#speiseplan"
+        title={LL.name()}
+    >
+        {randomEmoji()}
+    </a>
+) as HTMLAnchorElement;
+const desktopBtn = <li className="nav-item">{desktopLink} </li>;
 const mobileBtn = (
-    <a className="list-group-item list-group-item-action" href={speiseplanLink}>
+    <a
+        className={classNames(
+            'list-group-item list-group-item-action',
+            globalStyle.noExternalLinkIcon
+        )}
+        href="#speiseplan"
+    >
         {randomEmoji()}&nbsp;{LL.name()}
     </a>
-);
+) as HTMLAnchorElement;
 
 // textContent will be set on opening
 const footerLinkWrapper = (
@@ -107,16 +114,30 @@ const footerLinkWrapper = (
 const footerTimeSpan = (<span className="mr-auto"></span>) as HTMLSpanElement;
 
 /**
- * Gets the current speiseplan as HTML Elements
- * @returns the current speiseplan as HTML Elements
+ * Gets the speiseplan URLs to parse from
+ * @returns an URL for this and next week
  */
-const getCurrentSpeiseplan = () => {
+const getCanteenUrls = () => {
     const lang = getLang();
 
     const {
         url: { [lang]: url },
         urlNextWeek: { [lang]: urlNextWeek },
     } = canteens.get(canteen.value)!;
+
+    return { url, urlNextWeek };
+};
+
+/**
+ * Gets the current speiseplan as HTML Elements
+ * @returns the current speiseplan as HTML Elements
+ */
+const getCurrentSpeiseplan = () => {
+    const lang = getLang();
+
+    const { url, urlNextWeek } = getCanteenUrls();
+
+    desktopLink.href = mobileBtn.href = url;
 
     /**
      * Creates the elements that show the dishs nam
@@ -416,6 +437,8 @@ const reload = async () => {
     }
 
     await ready();
+
+    desktopLink.href = mobileBtn.href = getCanteenUrls().url;
 
     document.querySelector('.dropdownmoremenu')?.before(desktopBtn);
     document
