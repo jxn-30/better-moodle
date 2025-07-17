@@ -26,8 +26,8 @@ $rotation-angles: (
     @for $index from 1 through $colorsAmount {
         $color: list.nth($colors, $index);
 
-        $start-point: math.round($start + ($index - 1) * $step-size);
-        $end-point: math.round($start-point + $step-size);
+        $start-point: math.floor($start + ($index - 1) * $step-size);
+        $end-point: math.ceil($start-point + $step-size);
 
         @if $index == 1 {
             // use 0% as start
@@ -158,12 +158,13 @@ img:local(.pride-logo) {
                         #f3c500 15%
                     );
                 } @else {
-                background-image: radial-gradient(
-                    circle at 50%,
-                    #f3c500 12%,
-                    #680088 12% 22%,
-                    #f3c500 22%
-                );
+                    background-image: radial-gradient(
+                        circle at 50%,
+                        #f3c500 12%,
+                        #680088 12% 22%,
+                        #f3c500 22%
+                    );
+                }
             }
         }
     }
