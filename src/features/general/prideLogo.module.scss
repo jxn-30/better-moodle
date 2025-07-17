@@ -131,7 +131,8 @@ $flags: (
 img:local(.pride-logo) {
     filter: brightness(0.8) contrast(1.5);
     object-position: -99999px -99999px; // hide original image
-    mask-origin: content-box;
+    mask: var(--pride-logo-mask-image) no-repeat content-box center/contain
+        alpha;
 
     @each $rotation in $rotation-angles {
         $angle: map.get($rotation, 'rotation');

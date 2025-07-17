@@ -1,4 +1,3 @@
-.navbar.fixed-top .navbar-brand img,
-#logoimage {
-    mask-image: svg-load('../../assets/ifi-logo.svg') !important;
+:root {
+    --pride-logo-mask-image: svg-load('../../assets/ifi-logo.svg') !important;
 }
