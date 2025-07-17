@@ -149,6 +149,15 @@ img:local(.pride-logo) {
             }
 
             &:local(.flag-intersex) {
+                // Intersex flag with radial gradient
+                @if global.$UNI == 'cau' {
+                    background-image: radial-gradient(
+                        circle at 32%,
+                        #f3c500 8%,
+                        #680088 8% 15%,
+                        #f3c500 15%
+                    );
+                } @else {
                 background-image: radial-gradient(
                     circle at 50%,
                     #f3c500 12%,
