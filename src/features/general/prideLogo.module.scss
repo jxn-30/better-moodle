@@ -26,8 +26,8 @@ $rotation-angles: (
     @for $index from 1 through $colorsAmount {
         $color: list.nth($colors, $index);
 
-        $start-point: math.round($start + ($index - 1) * $step-size);
-        $end-point: math.round($start-point + $step-size);
+        $start-point: math.floor($start + ($index - 1) * $step-size);
+        $end-point: math.ceil($start-point + $step-size);
 
         @if $index == 1 {
             // use 0% as start
@@ -131,7 +131,8 @@ $flags: (
 img:local(.pride-logo) {
     filter: brightness(0.8) contrast(1.5);
     object-position: -99999px -99999px; // hide original image
-    mask-origin: content-box;
+    mask: var(--pride-logo-mask-image) no-repeat content-box center/contain
+        alpha;
 
     @each $rotation in $rotation-angles {
         $angle: map.get($rotation, 'rotation');
@@ -149,12 +150,22 @@ img:local(.pride-logo) {
             }
 
             &:local(.flag-intersex) {
-                background-image: radial-gradient(
-                    circle at 50%,
-                    #f3c500 12%,
-                    #680088 12% 22%,
-                    #f3c500 22%
-                );
+                // Intersex flag with radial gradient
+                @if global.$UNI == 'cau' {
+                    background-image: radial-gradient(
+                        circle at 32%,
+                        #f3c500 8%,
+                        #680088 8% 15%,
+                        #f3c500 15%
+                    );
+                } @else {
+                    background-image: radial-gradient(
+                        circle at 50%,
+                        #f3c500 12%,
+                        #680088 12% 22%,
+                        #f3c500 22%
+                    );
+                }
             }
         }
     }

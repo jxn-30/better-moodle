@@ -5,16 +5,7 @@
     #logoimage {
         // Make the logo glow a little
         @if global.$UNI == 'cau' {
-            filter: grayscale(1)
-                contrast(200)
-                invert(18%)
-                sepia(93%)
-                saturate(2977%)
-                hue-rotate(204deg)
-                brightness(96%)
-                contrast(95%)
-                brightness(60%)
-                brightness(280%);
+            filter: saturate(2) brightness(1.5) contrast(3);
         } @else {
             filter: brightness(500%);
         }
