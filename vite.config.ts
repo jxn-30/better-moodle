@@ -517,18 +517,17 @@ export default defineConfig({
             },
             clientAlias: 'GM',
             build: { fileName, metaFileName, autoGrant: true },
-            format: {
-                /**
-                 * Adds the copyright notice and a eslint global comment to the userscript
-                 * @param uOptions - information about the userscript, also containing the header
-                 * @returns the userscript header plus preamble
-                 */
-                generate(uOptions) {
-                    // userscript header
-                    // copyright note
-                    // globals
-                    // allow redeclaring globals (otherwise polyfills may fail) => for the self-written code, this is already done via TS so it is okay to use this rule like this
-                    return `
+            /**
+             * Adds the copyright notice and a eslint global comment to the userscript
+             * @param uOptions - information about the userscript, also containing the header
+             * @returns the userscript header plus preamble
+             */
+            generate(uOptions) {
+                // userscript header
+                // copyright note
+                // globals
+                // allow redeclaring globals (otherwise polyfills may fail) => for the self-written code, this is already done via TS so it is okay to use this rule like this
+                return `
 ${uOptions.userscript}
 
 ${copyright}
@@ -536,7 +535,6 @@ ${copyright}
 /* global global, globalThis, ActiveXObject, Iterator, M, requirejs, DarkReader */
 /* eslint no-redeclare: ["error", { "builtinGlobals": false }] */
 `.trim();
-                },
             },
         }),
         {
