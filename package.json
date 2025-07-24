@@ -36,7 +36,7 @@
     },
     "devDependencies": {
         "@babel/compat-data": "7.28.0",
-        "@cloudflare/workers-types": "4.20250722.0",
+        "@cloudflare/workers-types": "4.20250724.0",
         "@eslint/js": "9.31.0",
         "@prettier/plugin-xml": "3.4.2",
         "@rollup/plugin-terser": "0.4.4",
@@ -68,7 +68,7 @@
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
         "globals": "16.3.0",
-        "jiti": "2.4.2",
+        "jiti": "2.5.1",
         "jsdom": "26.1.0",
         "mini-svg-data-uri": "1.4.4",
         "node-ical": "0.20.1",
@@ -77,7 +77,7 @@
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "10.2.4",
         "prettier": "3.6.2",
-        "puppeteer": "24.14.0",
+        "puppeteer": "24.15.0",
         "rrule": "2.8.1",
         "sass-embedded": "1.89.2",
         "terser": "5.43.1",
@@ -85,12 +85,12 @@
         "ts-node": "10.9.2",
         "typescript": "5.8.3",
         "typescript-eslint": "8.38.0",
-        "typescript-plugin-css-modules": "5.1.0",
+        "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
-        "vite": "7.0.5",
+        "vite": "7.0.6",
         "vite-plugin-monkey": "6.0.0",
         "vitest": "3.2.4",
-        "wrangler": "4.25.1"
+        "wrangler": "4.26.0"
     },
     "engines": {
         "node": "^22.17.0"
