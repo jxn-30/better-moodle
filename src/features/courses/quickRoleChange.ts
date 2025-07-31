@@ -68,6 +68,14 @@ const switchRole = (e: MouseEvent) => {
 };
 
 /**
+ * A simple event listener that prevents the default action
+ * Used to avoid a page jump when opening the sub-menu
+ * @param e - the event to prevent
+ * @returns undefined
+ */
+const preventDefault = (e: Event) => e.preventDefault();
+
+/**
  * Loads the quick role change menu or removes it, depending on setting state
  */
 const reload = async () => {
@@ -112,11 +120,13 @@ const reload = async () => {
         menuItem.href = '#';
         menuItem.classList.add('carousel-navigation-link');
         menuItem.dataset.carouselTargetId = submenu.id;
+        menuItem.addEventListener('click', preventDefault);
     } else {
         if (menuItem) {
             menuItem.href = menuItemLink;
             menuItem.classList.remove('carousel-navigation-link');
             delete menuItem.dataset.carouselTargetId;
+            menuItem.removeEventListener('click', preventDefault);
         }
 
         submenu?.removeEventListener('click', switchRole);
