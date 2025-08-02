@@ -1,6 +1,7 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
 import { getLoadingSpinner } from '@/DOM';
+import { getString } from '@/moodleStrings';
 import { LLF } from 'i18n';
 import { requirePromise } from '@/require.js';
 import style from './layout.module.scss';
@@ -10,8 +11,8 @@ import {
     getAvailableCourseFilters,
     onActiveFilterChanged,
 } from '@/myCourses';
+import { debounce, domID, isDashboard, isLoggedIn } from '@/helpers';
 import Drawer, { Side } from '@/Drawer';
-import { isDashboard, isLoggedIn } from '@/helpers';
 
 const LL = LLF('dashboard', 'layout');
 
@@ -45,21 +46,11 @@ let courseFilter = GM_getValue<CourseFilter | '_sync'>(
 GM_setValue(courseFilterStorageKey, courseFilter);
 
 /**
- * Loads the content of the courses sidebar and shows a loading spinner meanwhile
- * @param drawer - the Drawer to add the course content to
- * @param filterSelection - the element that contains filters and needs to be added to the sidebar content
+ * Fetches the courses using the configured filter and converts them into html blocks ready for being added to DOM
+ * @returns a promise that resolves to the html blocks being generated from courses
  */
-const loadCourseContent = (drawer: Drawer, filterSelection: HTMLDivElement) => {
-    let contentLoaded = false;
-    // TODO: Do not create a new loadingSpinner but reuse the old one?
-    void getLoadingSpinner().then(spinner => {
-        spinner.classList.add('text-center');
-        if (!contentLoaded) {
-            drawer.setContent(spinner);
-        }
-    });
-
-    void Promise.all([
+const getCourseBlocks = (): Promise<HTMLDivElement[]> =>
+    Promise.all([
         courseFilter === '_sync' ?
             getAvailableCourseFilters().then(getActiveFilter)
         :   Promise.resolve(courseFilter),
@@ -82,17 +73,8 @@ const loadCourseContent = (drawer: Drawer, filterSelection: HTMLDivElement) => {
             });
         })
         .then(({ courses }) => {
-            contentLoaded = true;
-
             if (!courses.length) {
-                return drawer.setContent(
-                    <>
-                        {filterSelection}
-                        <span className="text-muted text-center">
-                            {LL.myCourses.empty()}
-                        </span>
-                    </>
-                );
+                return [];
             }
 
             if (favouriteCoursesAtTop.value) {
@@ -101,10 +83,13 @@ const loadCourseContent = (drawer: Drawer, filterSelection: HTMLDivElement) => {
                 );
             }
 
-            const courseCards = courses.map(
+            return courses.map(
                 course =>
                     (
-                        <div className="card block mb-3">
+                        <div
+                            className="card block mb-3"
+                            data-search-text={`${course.shortname} ${course.fullname}`.toLowerCase()}
+                        >
                             <div className="card-body p-3">
                                 <a href={course.viewurl}>
                                     {course.isfavourite ?
@@ -122,20 +107,59 @@ const loadCourseContent = (drawer: Drawer, filterSelection: HTMLDivElement) => {
                         </div>
                     ) as HTMLDivElement
             );
-
-            return drawer.setContent(
-                <>
-                    {filterSelection}
-                    {...courseCards}
-                </>
-            );
         });
-};
 
 /**
  * Inits the course sidebar by creating necessary elements, registers event listeners and creates the sidebar itself.
  */
 const initCourseSidebar = () => {
+    const searchStyle = <style></style>;
+    const toggleSearchBtn = (
+        <button className="btn icon-no-margin">
+            <i className="icon fa fa-search fa-fw"></i>
+        </button>
+    ) as HTMLButtonElement;
+    const searchInput = (
+        <input className="form-control" type="search" />
+    ) as HTMLInputElement;
+    void getString('search', 'core').then(
+        search => (searchInput.placeholder = search)
+    );
+    const searchBar = (
+        <div
+            className="input-group hidden"
+            id={domID('dashboard-course-sidebar-search')}
+        >
+            <div className="input-group-prepend">
+                <span className="input-group-text">
+                    <i className="icon fa fa-search fa-fw m-0"></i>
+                </span>
+            </div>
+            {searchInput}
+        </div>
+    ) as HTMLDivElement;
+
+    const updateSearch = debounce(() => {
+        const search = searchInput.value.trim().toLowerCase();
+        if (search.length === 0) searchStyle.textContent = '';
+        else {
+            searchStyle.textContent = `#${searchBar.id} ~ .card[data-search-text]:not([data-search-text*="${CSS.escape(search)}"i]) {display: none !important;}`;
+        }
+    });
+
+    toggleSearchBtn.addEventListener('click', () => {
+        searchBar.classList.toggle('hidden');
+        // focus search on showing
+        if (!searchBar.classList.contains('hidden')) searchInput.focus();
+        // clear search on hiding
+        else {
+            searchInput.value = '';
+            updateSearch();
+        }
+    });
+
+    searchInput.addEventListener('input', updateSearch);
+
     const courseFilterDropdownBtnId = `${style.coursesSidebarFilterMenu}-toggle`;
     const filterSelection = (
         <div
@@ -209,9 +233,49 @@ const initCourseSidebar = () => {
             >
                 {LL.myCourses.title()}
             </a>
+            {toggleSearchBtn}
             {toggleFilterBtn}
         </>
     );
+
+    /**
+     * Updates the drawer content by triggering fetching the relevant course blocks
+     * shows a loading spinner while fetching
+     * also adds search bar and filter selection when needed
+     * @param drawer - the drawer to set the content of
+     */
+    const updateDrawerContent = (drawer: Drawer) => {
+        let contentLoaded = false;
+        // TODO: Do not create a new loadingSpinner but reuse the old one?
+        void getLoadingSpinner().then(spinner => {
+            spinner.classList.add('text-center');
+            if (!contentLoaded) {
+                drawer.setContent(spinner);
+            }
+        });
+        void getCourseBlocks().then(blocks => {
+            contentLoaded = true;
+            if (!blocks.length) {
+                drawer.setContent(
+                    <>
+                        {filterSelection}
+                        <span className="text-muted text-center">
+                            {LL.myCourses.empty()}
+                        </span>
+                    </>
+                );
+            } else {
+                drawer.setContent(
+                    <>
+                        {searchStyle}
+                        {searchBar}
+                        {filterSelection}
+                        {...blocks}
+                    </>
+                );
+            }
+        });
+    };
 
     void new Drawer('dashboard-courses')
         .setAlias('dashboard-left')
@@ -222,15 +286,15 @@ const initCourseSidebar = () => {
             // we set the heading here and not before creating as we need to interact with the content
             drawer.setHeading(heading);
             // load courses
-            void loadCourseContent(drawer, filterSelection);
+            void updateDrawerContent(drawer);
             // if the favourites setting has been changed, reload
-            favouriteCoursesAtTop.onChange(() =>
-                loadCourseContent(drawer, filterSelection)
+            favouriteCoursesAtTop.onChange(
+                () => void updateDrawerContent(drawer)
             );
             // and if the active filter has been changed, load the changes too (but only if we're in synced mode)!
             onActiveFilterChanged(() => {
                 if (courseFilter === '_sync') {
-                    loadCourseContent(drawer, filterSelection);
+                    void updateDrawerContent(drawer);
                 }
             });
 
@@ -270,7 +334,7 @@ const initCourseSidebar = () => {
                 GM_setValue(courseFilterStorageKey, courseFilter);
 
                 filterSelection.classList.add('hidden');
-                loadCourseContent(drawer, filterSelection);
+                void updateDrawerContent(drawer);
             });
         });
 };
