@@ -5,6 +5,7 @@
     body.dir-rtl &::after {
         @include mixins.fa-icon;
         content: $content !important;
+        display: inline;
     }
 
     body.dir-ltr &::before {
@@ -20,6 +21,7 @@
     body.dir-rtl &::before {
         @include mixins.fa-icon;
         content: $content !important;
+        display: inline;
     }
 
     body.dir-ltr &::after {
