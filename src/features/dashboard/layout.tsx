@@ -302,8 +302,10 @@ const initCourseSidebar = () => {
             toggleFilterBtn.addEventListener('click', event => {
                 event.preventDefault();
                 filterSelection.classList.toggle('hidden');
-                // make sure that the filter selection is in visible part of the drawer
-                filterSelection.scrollIntoView({ behavior: 'smooth' });
+                // focus the currently active filter element to allow keyboard navigation
+                filterSelection
+                    .querySelector<HTMLButtonElement>('.list-group-item.active')
+                    ?.focus();
             });
             // hide filter selection on window click
             document.addEventListener('click', event => {
