@@ -496,7 +496,7 @@ export default defineConfig({
         monkey({
             entry: 'src/core.tsx',
             userscript: {
-                'name': `🎓️ ${config.uniName}: better-moodle 2`,
+                'name': `🎓️ ${config.uniName}: better-moodle`,
                 'namespace': config.namespace,
                 version,
                 'author': [
