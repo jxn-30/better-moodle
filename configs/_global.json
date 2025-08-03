@@ -14,12 +14,7 @@
         "weather",
         "nina"
     ],
-    "defaultDisabled": [
-        "general.cauNavbar",
-        "semesterzeiten",
-        "speiseplan",
-        "nina"
-    ],
+    "defaultDisabled": ["general.cauNavbar", "semesterzeiten", "speiseplan"],
     "enabledFrom": { "405": ["courses.sectionCourseIndex"] },
     "disabledFrom": { "402": ["courses.courseIndexDrawerControls"] },
     "connects": {
