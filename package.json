@@ -1,6 +1,6 @@
 {
-    "name": "uzl-better-moodle",
-    "description": "Improves the new weird Moodle 4 UI on UzL-Moodle",
+    "name": "better-moodle",
+    "description": "A userscript that improves moodle instances by cool features and design improvements.",
     "version": "2.0.0-rc6",
     "packageManager": "yarn@4.9.2",
     "type": "module",
