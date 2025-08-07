@@ -23,6 +23,13 @@ runs:
               name: better-moodle-${{ inputs.config }}.user.js
               path: dist/better-moodle-${{ inputs.config }}.user.js
 
+        - name: 📤️ upload polyfill
+          uses: actions/upload-artifact@v4
+          with:
+              # hardcoded since closed envs are not allowed in composite actions
+              name: better-moodle-${{ inputs.config }}-polyfill.js
+              path: dist/better-moodle-${{ inputs.config }}-polyfill.js
+
 outputs:
     digest:
         description: The digest of the uploaded artifact

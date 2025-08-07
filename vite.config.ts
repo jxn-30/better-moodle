@@ -487,12 +487,104 @@ export default defineConfig({
     },
     define: GLOBAL_CONSTANTS,
     plugins: [
+        {
+            name: 'mustache-loader',
+            /**
+             * Minifies a mustache template a little.
+             * @param src - the mustache template code
+             * @param id - the import id of the template file
+             * @returns null or the minified mustache template
+             */
+            transform(src, id) {
+                if (!id.endsWith('.mustache?raw')) return null;
+                return src
+                    .replace(/\{\{!.*?\}\}/gs, '') // remove mustache comments
+                    .replace(/\\n/g, '') // remove linebreaks
+                    .replace(/(?<=\{\{[<>/$#^]?)\s+|\s+(?=\}\})/g, '') // remove unnecessary whitespaces in mustache statements
+                    .replace(/ {3,}/g, '  '); // reduce white spaces to a maximum of 2. This may break at <pre> tags but that isn't an issue yet.
+            },
+        },
+        pluginTerser({
+            module: true,
+            compress: {
+                defaults: false,
+                collapse_vars: true,
+                computed_props: true,
+                dead_code: true,
+                directives: true,
+                evaluate: true,
+                keep_classnames: true,
+                keep_fnames: true,
+                keep_infinity: true,
+                lhs_constants: true,
+                loops: true,
+                passes: 5,
+                properties: true,
+                reduce_vars: true,
+                side_effects: true,
+                switches: true,
+                typeofs: true,
+                unused: true,
+            },
+            format: { comments: 'all', ecma: 2020 },
+            mangle: false,
+            ecma: 2020,
+            keep_classnames: true,
+            keep_fnames: true,
+        }),
         legacy({
             modernTargets: browserslist.loadConfig({ path: process.cwd() }),
             modernPolyfills: true,
             renderLegacyChunks: false,
             renderModernChunks: true,
         }),
+        {
+            name: 'externalize-polyfill-chunk',
+            apply: 'build',
+            /**
+             * Finds the polyfill-chunk, removes it from being further processed and writes it into a seperate file
+             * @param _ - rollup output options, unused
+             * @param bundle - an object containing all output assets and chunks
+             */
+            generateBundle(_, bundle) {
+                Object.entries(bundle).forEach(([fileName, chunkOrAsset]) => {
+                    if (
+                        chunkOrAsset.type !== 'chunk' ||
+                        !fileName.startsWith('polyfills-') ||
+                        chunkOrAsset.name !== 'polyfills'
+                    ) {
+                        return;
+                    }
+
+                    const outputFileName = `better-moodle-${configFile}-polyfills.js`;
+                    // we need to make it an iife, otherwise global scope would be altered
+                    // this would cause e.g. that Moodles global `M` would not be useable without using
+                    // `unsafeWindow.M` as the core-js resource would have overwritten `M` in the userscripts scope.
+                    const outputSrc = `(() => {${chunkOrAsset.code}})();`;
+                    requires.push(
+                        `${githubUrl}/releases/download/${version}/${outputFileName}`
+                    );
+                    // TODO: How do we want to ensure subresource-integrity in combination with release versions?
+                    // Currently after a change of target-browsers or a core-js update, loading the polyfills
+                    // would fail for locally developed versions / commit-builds.
+                    // Thus we're currently omitting the hash although this does not feel good!
+                    /*#sha512=${createHash(
+                            'sha512'
+                        )
+                            .update(outputSrc)
+                            .digest('hex')}`
+                    );*/
+
+                    this.emitFile({
+                        type: 'asset',
+                        fileName: outputFileName,
+                        source: outputSrc,
+                    });
+
+                    delete bundle[fileName];
+                });
+            },
+        },
         monkey({
             entry: 'src/core.tsx',
             userscript: {
@@ -537,23 +629,6 @@ ${copyright}
 `.trim();
             },
         }),
-        {
-            name: 'mustache-loader',
-            /**
-             * Minifies a mustache template a little.
-             * @param src - the mustache template code
-             * @param id - the import id of the template file
-             * @returns null or the minified mustache template
-             */
-            transform(src, id) {
-                if (!id.endsWith('.mustache?raw')) return null;
-                return src
-                    .replace(/\{\{!.*?\}\}/gs, '') // remove mustache comments
-                    .replace(/\\n/g, '') // remove linebreaks
-                    .replace(/(?<=\{\{[<>/$#^]?)\s+|\s+(?=\}\})/g, '') // remove unnecessary whitespaces in mustache statements
-                    .replace(/ {3,}/g, '  '); // reduce white spaces to a maximum of 2. This may break at <pre> tags but that isn't an issue yet.
-            },
-        },
         {
             name: 'Better-Moodle-build-stats',
             apply: 'build',
@@ -604,34 +679,6 @@ ${copyright}
                 ]);
             },
         },
-        pluginTerser({
-            module: true,
-            compress: {
-                defaults: false,
-                collapse_vars: true,
-                computed_props: true,
-                dead_code: true,
-                directives: true,
-                evaluate: true,
-                keep_classnames: true,
-                keep_fnames: true,
-                keep_infinity: true,
-                lhs_constants: true,
-                loops: true,
-                passes: 5,
-                properties: true,
-                reduce_vars: true,
-                side_effects: true,
-                switches: true,
-                typeofs: true,
-                unused: true,
-            },
-            format: { comments: 'all', ecma: 2020 },
-            mangle: false,
-            ecma: 2020,
-            keep_classnames: true,
-            keep_fnames: true,
-        }),
     ],
 });
 

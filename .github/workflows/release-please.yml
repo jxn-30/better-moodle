@@ -56,11 +56,13 @@ jobs:
                   # get meta filename
                   file="${{ steps.build.output.file }}"
                   meta=$(sed 's/\.user\.js/\.meta\.user\.js/' <<< "$file")
+                  polyfills=$(sed 's/\.user\.js/-polyfills\.js/' <<< "$file")
 
                   # upload the release artifacts with special nice names
                   gh release upload ${{ needs.release.outputs.tag }} \
                     "${{ steps.build.output.dir }}/$file#[${{ matrix.config }}] Better-Moodle userscript version ${{ steps.release.outputs.tag_name }} ($file)" \
-                    "${{ steps.build.output.dir }}/$meta#[${{ matrix.config }}] Better-Moodle meta file for userscript managers ($meta)"
+                    "${{ steps.build.output.dir }}/$meta#[${{ matrix.config }}] Better-Moodle meta file for userscript managers ($meta)" \
+                    "${{ steps.build.output.dir }}/$polyfills#[${{ matrix.config }}] Polyfills for Better-Moodle version ${{ steps.release.outputs.tag_name }} ($polyfills)"
 
             # legacy release for uzl, please remove this at earliest in October 2025
             - name: 📤 upload legacy uzl artifact
