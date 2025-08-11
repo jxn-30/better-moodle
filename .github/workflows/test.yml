@@ -12,9 +12,9 @@ jobs:
         name: 📇 Find configs
         uses: ./.github/workflows/find-configs.yml
 
-    test:
+    test-source:
         runs-on: ubuntu-latest
-        name: 🧪 Test source
+        name: 🧪📖 Test source
         needs:
             - find-configs
         strategy:
@@ -33,11 +33,29 @@ jobs:
             - name: 🧪📖 run tests (source)
               run: yarn test:src ${{ matrix.config }}
 
-            - name: 🧪🐒 run tests (userscript)
-              run: yarn test:userscript ${{ matrix.config }}
-
             - name: 🧾 report coverage
               if: always()
               uses: davelosert/vitest-coverage-report-action@v2
               with:
                   comment-on: none
+
+    test-userscript:
+        runs-on: ubuntu-latest
+        name: 🧪🐒 Test userscript
+        needs:
+            - find-configs
+        strategy:
+            matrix:
+                config: ${{ fromJson(needs.find-configs.outputs.configs) }}
+        permissions:
+            contents: read
+            pull-requests: write
+        steps:
+            - name: 📥 checkout
+              uses: actions/checkout@v4
+
+            - name: 🎛️ setup
+              uses: ./.github/actions/setup
+
+            - name: 🧪🐒 run tests (userscript)
+              run: yarn test:userscript ${{ matrix.config }}

@@ -160,18 +160,22 @@ const initBrowser = async () => {
 };
 
 beforeAll(async () => {
+    console.time('beforeAll');
     // initialising the browser and reopening it ensures that Tampermonkey knows that developer mode is enabled
     await initBrowser();
     console.debug('Browser initialised. Reopening.');
+    console.timeLog('beforeAll');
     browser = await launchBrowser();
 
     console.debug("Launched the Browser we're testing in.");
+    console.timeLog('beforeAll');
 
     // open the moodle
     page = await browser.newPage();
     await page.goto(__MOODLE_URL__);
 
     console.debug(`Opened the Moodle page: ${__MOODLE_URL__}`);
+    console.timeEnd('beforeAll');
 });
 
 afterAll(async () => {
