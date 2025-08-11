@@ -30,8 +30,11 @@ jobs:
             - name: 🎛  setup
               uses: ./.github/actions/setup
 
-            - name: 🧪 run tests
+            - name: 🧪📖 run tests (source)
               run: yarn test:src ${{ matrix.config }}
+
+            - name: 🧪🐒 run tests (userscript)
+              run: yarn test:userscript ${{ matrix.config }}
 
             - name: 🧾 report coverage
               if: always()
