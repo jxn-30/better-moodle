@@ -27,7 +27,7 @@ jobs:
             - name: 📥 checkout
               uses: actions/checkout@v4
 
-            - name: 🎛  setup
+            - name: 🎛️ setup
               uses: ./.github/actions/setup
 
             - name: 🧪📖 run tests (source)

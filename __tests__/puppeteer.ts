@@ -2,6 +2,7 @@ import { Downloader } from 'nodejs-file-downloader';
 import { isCI } from 'ci-info';
 import { join } from 'node:path';
 import { mkdtemp } from 'node:fs/promises';
+import { PUPPETEER_REVISIONS } from 'puppeteer-core/internal/revisions.js';
 import { tmpdir } from 'node:os';
 import unzip from '@tomjs/unzip-crx';
 import { afterAll, beforeAll, inject, vi } from 'vitest';
@@ -13,7 +14,7 @@ import puppeteer, { type Browser, type Page } from 'puppeteer';
  * @returns a promise that resolves to the directory where the unpacked extension lives in
  */
 const downloadExtension = async (id: string) => {
-    const downloadUrl = `https://clients2.google.com/service/update2/crx?response=redirect&prodversion=138.0.7204.92&acceptformat=crx2,crx3&x=id%3D${id}%26uc`;
+    const downloadUrl = `https://clients2.google.com/service/update2/crx?response=redirect&prodversion=${PUPPETEER_REVISIONS.chrome}&acceptformat=crx2,crx3&x=id%3D${id}%26uc`;
     const extensionDir = await mkdtemp(join(tmpdir(), 'crx-'));
 
     const downloader = new Downloader({
@@ -55,6 +56,8 @@ const launchBrowser = async () => {
         pipe: true,
         // dumpio: true,
     });
+
+    console.debug('Launched a Browser!');
 
     // if any unwanted page appears, close it
     void browser.on('targetcreated', target => {
@@ -98,6 +101,8 @@ const initBrowser = async () => {
         throw new Error('Could not find the Extension-ID of Tampermonkey :(');
     }
 
+    console.debug(`Found the tampermonkey extension ID: ${tampermonkeyID}`);
+
     // allow tampermonkey to run userscripts
     await devmodePage.goto(`chrome://extensions/?id=${tampermonkeyID}`);
     await devmodePage
@@ -105,6 +110,8 @@ const initBrowser = async () => {
         .click();
 
     await devmodePage.close();
+
+    console.debug('Enabled userscripts in chromium.');
 
     // install the current script version
     // // this double-commented method throws a net::ERR_ABORTED ???
@@ -140,6 +147,8 @@ const initBrowser = async () => {
     await installPage.locator('input.button.install[type="button"]').click();
     await tampermonkeyPage.close();
 
+    console.debug('Successfully installed Better-Moodle!');
+
     // if we don't to this, the script seems not to be installed correctly? 🤷
     await browser
         .newPage()
@@ -153,11 +162,16 @@ const initBrowser = async () => {
 beforeAll(async () => {
     // initialising the browser and reopening it ensures that Tampermonkey knows that developer mode is enabled
     await initBrowser();
+    console.debug('Browser initialised. Reopening.');
     browser = await launchBrowser();
+
+    console.debug("Launched the Browser we're testing in.");
 
     // open the moodle
     page = await browser.newPage();
     await page.goto(__MOODLE_URL__);
+
+    console.debug(`Opened the Moodle page: ${__MOODLE_URL__}`);
 });
 
 afterAll(async () => {
