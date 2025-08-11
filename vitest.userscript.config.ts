@@ -29,7 +29,7 @@ export default mergeConfig(
             environment: 'node',
             setupFiles: ['__tests__/matchers.ts'],
             testTimeout: isCI ? 30_000 : 300_000_000, // 30s on CI, 5 million minutes locally
-            hookTimeout: 300_000_000, // TODO: Adjust this value to a good but not too low value
+            hookTimeout: 60_000, // 60s should be enough. 30s also works but is a little optimistic sometimes
             provide: { userscriptFile: join(__dirname, 'dist', fileName) },
         },
     })
