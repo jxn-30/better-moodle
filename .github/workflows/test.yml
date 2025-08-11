@@ -54,8 +54,10 @@ jobs:
             - name: 📥 checkout
               uses: actions/checkout@v4
 
-            - name: 🎛️ setup
-              uses: ./.github/actions/setup
+            - name: 🏗️ build userscript
+              uses: ./.github/actions/build
+              with:
+                  config: ${{ matrix.config }}
 
             - name: 🧪🐒 run tests (userscript)
               run: yarn test:userscript ${{ matrix.config }}
