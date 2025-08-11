@@ -27,8 +27,8 @@ runs:
           uses: actions/upload-artifact@v4
           with:
               # hardcoded since closed envs are not allowed in composite actions
-              name: better-moodle-${{ inputs.config }}-polyfill.js
-              path: dist/better-moodle-${{ inputs.config }}-polyfill.js
+              name: better-moodle-${{ inputs.config }}-polyfills.js
+              path: dist/better-moodle-${{ inputs.config }}-polyfills.js
 
 outputs:
     digest:
