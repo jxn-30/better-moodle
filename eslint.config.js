@@ -167,12 +167,13 @@ export default [
         languageOptions: { globals: { ...globals.node } },
     },
     {
-        name: 'set sourceType to module for eslint.config.js and postcss.config.ts',
+        name: 'set sourceType to module for eslint, postcss and commitlint configs',
         ...tsEslint.configs.disableTypeChecked,
         files: [
             'eslint.config.js',
             'eslint.userscript.config.js',
             'postcss.config.ts',
+            'commitlint.config.ts',
         ],
         languageOptions: { sourceType: 'module' },
     },

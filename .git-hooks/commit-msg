@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "[Better-Moodle Commit-Msg]: Runnint commitlint"
+yarn commitlint --edit $1

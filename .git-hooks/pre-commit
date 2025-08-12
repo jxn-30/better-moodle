@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo "[Better-Moodle Pre-Commit]: Running lint:fix"
+yarn lint:fix
+
+echo "[Better-Moodle Pre-Commit]: Running prettier:check"
+yarn prettier:check
+
+# TODO: Evaluate if we always want to build on uzl or also build other configurations?
+# This shouldn't change much as tsc is always run on the whole codebase
+# However an env variable that defaults to uzl shouldn't hurt too.
+
+echo "[Better-Moodle Pre-Commit]: Building once for uzl"
+yarn build uzl
+
+echo "[Better-Moodle Pre-Commit]: Testing source code on uzl"
+yarn test:src uzl
+
+# TODO Evaluate if we also want to test userscript?

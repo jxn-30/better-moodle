@@ -45,6 +45,7 @@
         "vitest.config.ts",
         "vitest.userscript.config.ts",
         "postcss.config.ts",
+        "commitlint.config.ts",
         "configs",
         "__tests__"
     ]
