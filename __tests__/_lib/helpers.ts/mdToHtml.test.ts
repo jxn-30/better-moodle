@@ -4,10 +4,11 @@ import { htmlToElements, mdToHtml } from '@/helpers';
 interface TestCase {
     description: string;
     md: string;
-    expects: ((...elements: HTMLElement[]) => Awaitable<void>)[];
+    elCount: number;
+    expects: ((...elements: Element[]) => Awaitable<void>)[];
 }
 
-const testCases = [
+const testCases: TestCase[] = [
     {
         description: 'Simple paragraph',
         md: 'Hello world!',
@@ -147,7 +148,7 @@ const testCases = [
             el => expect(el.childElementCount).toBe(1),
             el => expect(el.textContent).toBe('Moothel.pet'),
             el => {
-                const anchor = el.querySelector('a');
+                const anchor = el.querySelector('a')!;
                 expect(anchor).toBeInstanceOf(HTMLAnchorElement);
                 expect(anchor.textContent).toBe('Moothel.pet');
                 expect(anchor.href).toBeOneOf([
@@ -166,7 +167,7 @@ const testCases = [
             el => expect(el.childElementCount).toBe(1),
             el => expect(el.textContent).toBe('Moothel.pet'),
             el => {
-                const anchor = el.querySelector('a');
+                const anchor = el.querySelector('a')!;
                 expect(anchor).toBeInstanceOf(HTMLAnchorElement);
                 expect(anchor.textContent).toBe('Moothel.pet');
                 expect(anchor.href).toBeOneOf([
@@ -186,7 +187,7 @@ const testCases = [
             el => expect(el.childElementCount).toBe(1),
             el => expect(el.textContent).toBe(''),
             el => {
-                const img = el.querySelector('img');
+                const img = el.querySelector('img')!;
                 expect(img).toBeInstanceOf(HTMLImageElement);
                 expect(img.src).toBe(
                     'https://moothel.pet/assets/images/20240805-logo-png.png'
@@ -202,8 +203,8 @@ const testCases = [
             el => expect(el).toBeInstanceOf(HTMLParagraphElement),
             el =>
                 expect(el.textContent).toBe('Hello bold world and italic foo!'),
-            el => expect(el.querySelector('strong').textContent).toBe('bold'),
-            el => expect(el.querySelector('em').textContent).toBe('italic'),
+            el => expect(el.querySelector('strong')?.textContent).toBe('bold'),
+            el => expect(el.querySelector('em')?.textContent).toBe('italic'),
         ],
     },
     {
@@ -214,8 +215,8 @@ const testCases = [
             el => expect(el).toBeInstanceOf(HTMLParagraphElement),
             el =>
                 expect(el.textContent).toBe('Hello bold world and italic foo!'),
-            el => expect(el.querySelector('strong').textContent).toBe('bold'),
-            el => expect(el.querySelector('em').textContent).toBe('italic'),
+            el => expect(el.querySelector('strong')?.textContent).toBe('bold'),
+            el => expect(el.querySelector('em')?.textContent).toBe('italic'),
         ],
     },
     {
@@ -257,7 +258,7 @@ const testCases = [
         elCount: 1,
         expects: [el => expect(el).toBeInstanceOf(HTMLHRElement)],
     },
-] satisfies TestCase[];
+];
 
 // simple conversion
 testCases.forEach(({ description, md, expects, elCount }) => {
@@ -266,7 +267,7 @@ testCases.forEach(({ description, md, expects, elCount }) => {
         const html = mdToHtml(md);
         const elements = htmlToElements(html);
         expect(elements).toHaveLength(elCount);
-        expects.forEach(expect => expect(...elements));
+        expects.forEach(expectFn => void expectFn(...elements));
     });
 });
 
