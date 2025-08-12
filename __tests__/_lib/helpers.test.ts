@@ -47,7 +47,7 @@ test('a raw github path should be a valid url', () =>
 // endsection mdID
 
 // section mdToHtml
-// TODO => externalize?
+// is tested in ./helpers.ts/mdToHtml.test.ts
 // endsection mdToHtml
 
 // section htmlToElements
