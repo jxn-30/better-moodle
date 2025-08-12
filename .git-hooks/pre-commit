@@ -1,7 +1,10 @@
 #!/bin/bash
 
-echo "[Better-Moodle Pre-Commit]: Running lint:fix"
-yarn lint:fix
+# exit on non-zero code
+set -e
+
+echo "[Better-Moodle Pre-Commit]: Running lint:check"
+yarn lint:check
 
 echo "[Better-Moodle Pre-Commit]: Running prettier:check"
 yarn prettier:check

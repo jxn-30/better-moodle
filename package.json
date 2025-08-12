@@ -6,6 +6,7 @@
     "type": "module",
     "private": true,
     "scripts": {
+        "lint:check": "yarn eslint . --exit-on-fatal-error --report-unused-disable-directives --cache --cache-strategy content --cache-location .eslintcache --max-warnings 0",
         "lint:fix": "yarn eslint . --exit-on-fatal-error --report-unused-disable-directives --cache --cache-strategy content --cache-location .eslintcache --fix",
         "lint:fix:dist": "yarn eslint dist/better-moodle-*.user.js --config=eslint.userscript.config.js --exit-on-fatal-error --cache --cache-strategy content --cache-location .disteslintcache --fix",
         "prettier:check": "prettier --check --cache --cache-strategy content .",

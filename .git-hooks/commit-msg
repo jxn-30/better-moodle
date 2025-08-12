@@ -1,4 +1,7 @@
 #!/bin/bash
 
+# exit on non-zero code
+set -e
+
 echo "[Better-Moodle Commit-Msg]: Runnint commitlint"
 yarn commitlint --edit $1
