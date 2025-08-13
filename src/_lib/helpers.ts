@@ -117,15 +117,13 @@ export const mdToHtml = (
                     .join('</li><li>')}</li></ol>`;
             } else if (/^\s{4}/m.test(mdParagraph)) {
                 // preformatted text
-                html += `<pre><code>${mdParagraph
-                    .split(/^\s{4}/gm)
-                    .join('\n')}</code></pre>`;
+                html += `<pre>${mdParagraph.split(/^\s{4}/gm).join('')}</pre>`;
             } else if (/^>\s/m.test(mdParagraph)) {
                 // blockquote
                 html += `<blockquote>${mdParagraph
                     .split(/^>\s/gm)
                     .map(inlineEscape)
-                    .join('\n')}</blockquote>`;
+                    .join('')}</blockquote>`;
             } else if (/^#{1,6}\s/m.test(mdParagraph)) {
                 // heading
                 const level = mdParagraph.indexOf(' ') + headingStart - 1;

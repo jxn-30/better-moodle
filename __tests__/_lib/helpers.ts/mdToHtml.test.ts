@@ -224,8 +224,11 @@ const testCases: TestCase[] = [
         md: '    I am preformatted\n    Due to the intendation',
         elCount: 1,
         expects: [
-            // will fail => <code> in <pre>
-            // el =>
+            el => expect(el).toBeInstanceOf(HTMLPreElement),
+            el =>
+                expect(el.textContent).toBe(
+                    'I am preformatted\nDue to the intendation'
+                ),
         ],
     },
     {
@@ -233,8 +236,11 @@ const testCases: TestCase[] = [
         md: '> I am a Blockquote\n> And I quote things',
         elCount: 1,
         expects: [
-            // will fail => too many \n
-            //
+            el => expect(el).toBeInstanceOf(HTMLQuoteElement),
+            el =>
+                expect(el.textContent).toBe(
+                    'I am a Blockquote\nAnd I quote things'
+                ),
         ],
     },
     {
