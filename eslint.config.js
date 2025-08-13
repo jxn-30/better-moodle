@@ -161,7 +161,7 @@ export default [
         name: 'Allow node globals in vite and vitest configs',
         files: [
             'vite.config.ts',
-            'vitetest.config.ts',
+            'vitest.config.ts',
             'vitest.userscript.config.ts',
         ],
         languageOptions: { globals: { ...globals.node } },

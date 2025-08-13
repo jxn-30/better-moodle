@@ -12,7 +12,10 @@ export default mergeConfig(
             reporters: ['verbose'],
             coverage: {
                 include: ['src/**/*.tsx', 'src/**/*.ts'],
-                reporter: ['text', 'html', 'clover', 'json', 'json-summary'],
+                reporter:
+                    process.env.BM_NO_COVERAGE ?
+                        []
+                    :   ['text', 'html', 'clover', 'json', 'json-summary'],
             },
         },
     })
