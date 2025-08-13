@@ -278,7 +278,25 @@ testCases.forEach(({ description, md, expects, elCount }) => {
 });
 
 // testing the `headingStart` parameter
+test('Specifying a heading start', () => {
+    const md = '# Heading 1\n\n## Heading 2\n\n### Heading 3';
+    [1, 2, 3].forEach(start => {
+        const html = mdToHtml(md, start);
+        const elements = htmlToElements(html);
+        Array.from(elements).forEach((el, idx) => {
+            expect(el.tagName).toBe(`H${start + idx}`);
+        });
+    });
+});
 
 // testing the `idPrefix` parameter
+test('A set idPrefix must be included in the id', () => {
+    const md = '# Heading 1\n\n## Heading 2\n\n### Heading 3';
+    const html = mdToHtml(md, undefined, 'abcdefg');
+    const elements = htmlToElements(html);
+    Array.from(elements).forEach(el => {
+        expect(el.id).toContain('abcdefg');
+    });
+});
 
 // testing the `pWrap` parameter
