@@ -1,4 +1,6 @@
+import * as vitest from 'vitest';
 import {
+    debounce,
     domID,
     getSettingKey,
     githubPath,
@@ -7,7 +9,8 @@ import {
     PREFIX,
     rawGithubPath,
 } from '@/helpers';
-import { expect, test } from 'vitest';
+
+const { describe, expect, test, vi } = vitest;
 
 // first of all, we want to test if tests are working :)
 test('1 + 2 = 3', () => expect(1 + 2).toBe(3));
@@ -55,7 +58,60 @@ test('a raw github path should be a valid url', () =>
 // endsection htmlToElements
 
 // section debounce
-// how to test this?
+describe('debounce', () => {
+    vitest.beforeEach(() => vi.useFakeTimers());
+    vitest.afterEach(() => vi.useRealTimers());
+
+    test('function should be run once (100ms)', () => {
+        const fn = vi.fn();
+        const debounced = debounce(fn, 100);
+
+        for (let i = 0; i < 100; i++) debounced();
+
+        vi.runAllTimers();
+
+        expect(fn).toBeCalledTimes(1);
+    });
+
+    test('function should be run twice (100ms)', () => {
+        const fn = vi.fn();
+        const debounced = debounce(fn, 100);
+
+        for (let i = 0; i < 100; i++) debounced();
+        vi.advanceTimersByTime(101);
+        for (let i = 0; i < 100; i++) debounced();
+
+        vi.runAllTimers();
+
+        expect(fn).toBeCalledTimes(2);
+    });
+
+    test('function should be run once (4726ms)', () => {
+        const fn = vi.fn();
+        const debounced = debounce(fn, 4726);
+
+        for (let i = 0; i < 100; i++) debounced();
+        vi.advanceTimersByTime(4700);
+        for (let i = 0; i < 100; i++) debounced();
+
+        vi.runAllTimers();
+
+        expect(fn).toBeCalledTimes(1);
+    });
+
+    test('function should be run twice (4726ms)', () => {
+        const fn = vi.fn();
+        const debounced = debounce(fn, 4726);
+
+        for (let i = 0; i < 100; i++) debounced();
+        vi.advanceTimersByTime(4727);
+        for (let i = 0; i < 100; i++) debounced();
+
+        vi.runAllTimers();
+
+        expect(fn).toBeCalledTimes(2);
+    });
+});
 // endsection debounce
 
 // section animate
