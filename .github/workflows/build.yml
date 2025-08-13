@@ -149,7 +149,7 @@ jobs:
                           LINES_DIFF=$( printf "%+d" $(( ${{ env.STATS_LINES }} - $OLD_LINES )))
                           echo "STATS_LINES_DIFF=$LINES_DIFF" >> $GITHUB_ENV
                       fi
-                      if [[ $OLD_PF_LINES -ne $NEW_PF_LINES ]]; then
+                      if [[ $OLD_PF_LINES -ne ${{ env.STATS_PF_LINES }} ]]; then
                           LINES_PF_DIFF=$( printf "%+d" $(( ${{ env.STATS_PF_LINES }} - $OLD_PF_LINES )))
                           echo "STATS_PF_LINES_DIFF=$LINES_PF_DIFF" >> $GITHUB_ENV
                       fi
