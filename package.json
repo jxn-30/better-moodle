@@ -38,7 +38,7 @@
     },
     "devDependencies": {
         "@babel/compat-data": "7.28.0",
-        "@cloudflare/workers-types": "4.20250810.0",
+        "@cloudflare/workers-types": "4.20250813.0",
         "@commitlint/cli": "19.8.1",
         "@commitlint/config-conventional": "19.8.1",
         "@eslint/js": "9.33.0",
@@ -62,7 +62,7 @@
         "ci-info": "4.3.0",
         "core-js": "3.45.0",
         "core-js-compat": "3.45.0",
-        "esbuild": "0.25.8",
+        "esbuild": "0.25.9",
         "esbuild-plugin-browserslist": "1.0.1",
         "eslint": "9.33.0",
         "eslint-config-prettier": "10.1.8",
@@ -88,13 +88,13 @@
         "ts-json-schema-generator": "2.4.0",
         "ts-node": "10.9.2",
         "typescript": "5.9.2",
-        "typescript-eslint": "8.39.0",
+        "typescript-eslint": "8.39.1",
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
-        "vite": "7.1.1",
+        "vite": "7.1.2",
         "vite-plugin-monkey": "6.0.1",
         "vitest": "3.2.4",
-        "wrangler": "4.28.1"
+        "wrangler": "4.29.0"
     },
     "engines": {
         "node": "^22.18.0"
