@@ -81,7 +81,7 @@
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "10.2.4",
         "prettier": "3.6.2",
-        "puppeteer": "24.16.1",
+        "puppeteer": "24.16.2",
         "rrule": "2.8.1",
         "sass-embedded": "1.90.0",
         "terser": "5.43.1",
@@ -94,7 +94,7 @@
         "vite": "7.1.2",
         "vite-plugin-monkey": "6.0.1",
         "vitest": "3.2.4",
-        "wrangler": "4.29.0"
+        "wrangler": "4.30.0"
     },
     "engines": {
         "node": "^22.18.0"
