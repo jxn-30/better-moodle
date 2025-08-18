@@ -38,7 +38,7 @@
     },
     "devDependencies": {
         "@babel/compat-data": "7.28.0",
-        "@cloudflare/workers-types": "4.20250813.0",
+        "@cloudflare/workers-types": "4.20250816.0",
         "@commitlint/cli": "19.8.1",
         "@commitlint/config-conventional": "19.8.1",
         "@eslint/js": "9.33.0",
@@ -50,7 +50,7 @@
         "@types/eslint": "9.6.1",
         "@types/jquery": "3.5.32",
         "@types/mathjax": "0.0.40",
-        "@types/node": "24.2.1",
+        "@types/node": "24.3.0",
         "@types/tampermonkey": "5.0.4",
         "@vitejs/plugin-legacy": "7.2.1",
         "@vitest/coverage-v8": "3.2.4",

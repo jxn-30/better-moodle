@@ -1204,10 +1204,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20250813.0":
-  version: 4.20250813.0
-  resolution: "@cloudflare/workers-types@npm:4.20250813.0"
-  checksum: 10c0/c61370ce004c40881de9bd21f77a24afbcb9560cfc8fb156790439880ff2d6176a329a366c71909d9bed5566ced510449a1ae1fbe9a53a8e5fbb8510b3c601fd
+"@cloudflare/workers-types@npm:4.20250816.0":
+  version: 4.20250816.0
+  resolution: "@cloudflare/workers-types@npm:4.20250816.0"
+  checksum: 10c0/497a0cda3f3670c379f9af51989b85f50a1d8e2cbf86f818f425ee05fa9245e49c9ccfbb7b782d5da5274e40fea1467f11e45a233f2e82d93002036e06905835
   languageName: node
   linkType: hard
 
@@ -3313,21 +3313,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:24.3.0":
   version: 24.3.0
   resolution: "@types/node@npm:24.3.0"
   dependencies:
     undici-types: "npm:~7.10.0"
   checksum: 10c0/96bdeca01f690338957c2dcc92cb9f76c262c10398f8d91860865464412b0f9d309c24d9b03d0bdd26dd47fa7ee3f8227893d5c89bc2009d919a525a22512030
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:24.2.1":
-  version: 24.2.1
-  resolution: "@types/node@npm:24.2.1"
-  dependencies:
-    undici-types: "npm:~7.10.0"
-  checksum: 10c0/439a3c7edf88a298e0c92e46f670234070b892589c3b06e82cc86c47a7e1cf220f4a4b4736ec6ac7e4b9e1c40d7b6d443a1e22f99dd17f13f9dd15de3b32011b
   languageName: node
   linkType: hard
 
@@ -4117,7 +4108,7 @@ __metadata:
   resolution: "better-moodle@workspace:."
   dependencies:
     "@babel/compat-data": "npm:7.28.0"
-    "@cloudflare/workers-types": "npm:4.20250813.0"
+    "@cloudflare/workers-types": "npm:4.20250816.0"
     "@commitlint/cli": "npm:19.8.1"
     "@commitlint/config-conventional": "npm:19.8.1"
     "@eslint/js": "npm:9.33.0"
@@ -4131,7 +4122,7 @@ __metadata:
     "@types/eslint": "npm:9.6.1"
     "@types/jquery": "npm:3.5.32"
     "@types/mathjax": "npm:0.0.40"
-    "@types/node": "npm:24.2.1"
+    "@types/node": "npm:24.3.0"
     "@types/tampermonkey": "npm:5.0.4"
     "@vitejs/plugin-legacy": "npm:7.2.1"
     "@vitest/coverage-v8": "npm:3.2.4"
