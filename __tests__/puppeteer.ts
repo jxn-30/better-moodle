@@ -173,10 +173,22 @@ beforeAll(async () => {
     console.debug("Launched the Browser we're testing in.");
     console.timeLog('beforeAll');
 
-    // open the moodle
+    // create a new page for the Moodle
     page = await browser.newPage();
-    await page.goto(__MOODLE_URL__);
 
+    // report errors on the page
+    page.on('pageerror', err => {
+        if (
+            err.stack?.includes(
+                `chrome-extension://${tampermonkeyID}/userscript.html`
+            )
+        ) {
+            ghCore.error(`❌ ${err.message} ${chalk.dim(`@ ${page.url()}`)}`);
+            console.error(err);
+        }
+    });
+
+    // report some console outputs
     page.on('console', msg => {
         if (
             !msg
@@ -190,7 +202,7 @@ beforeAll(async () => {
             return;
         }
 
-        // Logging in a Format that is a GitHub annotation
+        // logging in a Format that is a GitHub annotation
         let msgEmoji;
         switch (msg.type()) {
             case 'warn':
@@ -217,6 +229,9 @@ ${msgEmoji} ${chalk.bold('MSG')}: ${msg.text()}
             console.table(msg.stackTrace());
         }
     });
+
+    // now open the moodle page
+    await page.goto(__MOODLE_URL__);
 
     console.debug(`Opened the Moodle page: ${__MOODLE_URL__}`);
     console.timeEnd('beforeAll');
