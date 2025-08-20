@@ -4213,7 +4213,7 @@ __metadata:
     typescript-plugin-css-modules: "npm:5.2.0"
     userscript-meta: "npm:1.0.1"
     vite: "npm:7.1.3"
-    vite-plugin-monkey: "npm:6.0.1"
+    vite-plugin-monkey: "npm:7.0.1"
     vitest: "npm:3.2.4"
     wrangler: "npm:4.31.0"
   languageName: unknown
@@ -4445,7 +4445,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:5.6.0":
+"chalk@npm:5.6.0, chalk@npm:^5.3.0":
   version: 5.6.0
   resolution: "chalk@npm:5.6.0"
   checksum: 10c0/f8558fc12fd9805f167611803b325b0098bbccdc9f1d3bafead41c9bac61f263357f3c0df0cbe28bc2fd5fca3edcf618b01d6771a5a776b4c15d061482a72b23
@@ -4459,13 +4459,6 @@ __metadata:
     ansi-styles: "npm:^4.1.0"
     supports-color: "npm:^7.1.0"
   checksum: 10c0/4a3fef5cc34975c898ffe77141450f679721df9dde00f6c304353fa9c8b571929123b26a0e4617bde5018977eb655b31970c297b91b63ee83bb82aeb04666880
-  languageName: node
-  linkType: hard
-
-"chalk@npm:^5.3.0":
-  version: 5.5.0
-  resolution: "chalk@npm:5.5.0"
-  checksum: 10c0/23063b544f7c2fe57d25ff814807de561f8adfff72e4f0051051eaa606f772586470507ccd38d89166300eeaadb0164acde8bb8a0716a0f2d56ccdf3761d5e4f
   languageName: node
   linkType: hard
 
@@ -10739,9 +10732,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-monkey@npm:6.0.1":
-  version: 6.0.1
-  resolution: "vite-plugin-monkey@npm:6.0.1"
+"vite-plugin-monkey@npm:7.0.1":
+  version: 7.0.1
+  resolution: "vite-plugin-monkey@npm:7.0.1"
   dependencies:
     acorn-walk: "npm:^8.3.4"
     cross-spawn: "npm:^7.0.6"
@@ -10758,7 +10751,7 @@ __metadata:
   peerDependenciesMeta:
     vite:
       optional: true
-  checksum: 10c0/dbbffd3d124d6e67288ce4f2b64adea6ca6e784a15eb32a404556880aff8d5edffc94c77ad9eeca5d030f9681819339221b9df840c2e2e73ce5dbceb62cff901
+  checksum: 10c0/32efb315a981641d162862498859c36dcf7182fc14d8d1662e82e9cdeaeddba09188dea1a17d3dd5c337de8e2256b1b53c2afa2a3e50cb33744ea026f7e5cada
   languageName: node
   linkType: hard
 
