@@ -1,3 +1,5 @@
+import * as ghCore from '@actions/core';
+import chalk from 'chalk';
 import { Downloader } from 'nodejs-file-downloader';
 import { isCI } from 'ci-info';
 import { join } from 'node:path';
@@ -39,6 +41,7 @@ vi.stubEnv('CHROME_DEVEL_SANDBOX', '/usr/local/sbin/chrome-devel-sandbox');
 
 let browser: Browser;
 let page: Page;
+let tampermonkeyID: string | undefined;
 
 const userDataDir = await mkdtemp(join(tmpdir(), 'profile-'));
 
@@ -88,7 +91,7 @@ const initBrowser = async () => {
     const devmodePage = await browser.newPage();
     await devmodePage.goto('chrome://extensions/');
     await devmodePage.click('body >>> #devMode');
-    const tampermonkeyID = await devmodePage.$$eval(
+    tampermonkeyID = await devmodePage.$$eval(
         'body >>> extensions-item',
         els =>
             els.find(el =>
@@ -170,8 +173,64 @@ beforeAll(async () => {
     console.debug("Launched the Browser we're testing in.");
     console.timeLog('beforeAll');
 
-    // open the moodle
+    // create a new page for the Moodle
     page = await browser.newPage();
+
+    // report errors on the page
+    page.on('pageerror', err => {
+        if (
+            err.stack?.includes(
+                `chrome-extension://${tampermonkeyID}/userscript.html`
+            )
+        ) {
+            ghCore.error(`❌ ${err.message} ${chalk.dim(`@ ${page.url()}`)}`);
+            console.error(err);
+        }
+    });
+
+    // report some console outputs
+    page.on('console', msg => {
+        if (
+            !msg
+                .stackTrace()
+                .some(({ url }) =>
+                    url?.startsWith(
+                        `chrome-extension://${tampermonkeyID}/userscript.html`
+                    )
+                )
+        ) {
+            return;
+        }
+
+        // logging in a Format that is a GitHub annotation
+        let msgEmoji;
+        switch (msg.type()) {
+            case 'warn':
+                msgEmoji = '⚠️';
+                ghCore.warning(`${msg.text()} ${chalk.dim(`@ ${page.url()}`)}`);
+                break;
+            case 'error':
+                msgEmoji = '❌';
+                ghCore.error(`${msg.text()} ${chalk.dim(`@ ${page.url()}`)}`);
+                break;
+            case 'info':
+                msgEmoji = 'ℹ️';
+                ghCore.notice(`${msg.text()} ${chalk.dim(`@ ${page.url()}`)}`);
+                break;
+        }
+
+        if (msgEmoji) {
+            console.log(
+                `
+${msgEmoji} ${chalk.bold('URL')}: ${page.url()}
+${msgEmoji} ${chalk.bold('MSG')}: ${msg.text()}
+`.trim()
+            );
+            console.table(msg.stackTrace());
+        }
+    });
+
+    // now open the moodle page
     await page.goto(__MOODLE_URL__);
 
     console.debug(`Opened the Moodle page: ${__MOODLE_URL__}`);
