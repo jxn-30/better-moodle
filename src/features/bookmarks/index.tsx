@@ -62,7 +62,7 @@ GM_addValueChangeListener(storageKey, (_, __, newBookmarks: Bookmarks) => {
 const navbarItemTemplate: HTMLElement = (
     <i className="icon fa fa-bookmark-o fa-fw mr-0" role="img"></i>
 ) as HTMLElement;
-const order: number = 900;
+const order = 900;
 
 let navbarItem: HTMLLIElement | NavbarItemComponent | null = null;
 
