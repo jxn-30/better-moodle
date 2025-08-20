@@ -8,6 +8,7 @@ import { render } from '@/templates';
 import { require } from '@/require.js';
 import style from './style.module.scss';
 import { getHtml, putTemplate, ready } from '@/DOM';
+import { NavbarItem, NavbarItemComponent } from '@/Components';
 
 const LL = LLFG('bookmarks');
 
@@ -58,7 +59,10 @@ GM_addValueChangeListener(storageKey, (_, __, newBookmarks: Bookmarks) => {
     void renderDropdown();
 });
 
-let navbarItem: HTMLLIElement | null = null;
+const navbarItemTemplate: HTMLElement = (
+    <i className="icon fa fa-bookmark-o fa-fw mr-0" role="img"></i>
+) as HTMLElement;
+let navbarItem: HTMLLIElement | NavbarItemComponent | null = null;
 
 interface EditRowProps {
     title?: string;
@@ -358,9 +362,7 @@ const openEditModal = () => {
 const renderDropdown = () =>
     render('core/custom_menu_item', {
         title: LL.bookmarks(),
-        text: getHtml(
-            <i className="icon fa fa-bookmark-o fa-fw" role="img"></i>
-        ),
+        text: getHtml(navbarItemTemplate),
         haschildren: true,
         children: [
             ...bookmarks.map(bookmark => ({
@@ -436,6 +438,14 @@ const renderDropdown = () =>
  */
 const reload = () => {
     if (enabled.value) {
+        navbarItem ??= (
+            <NavbarItem order={900}>
+                <div className="nav-link">{navbarItemTemplate}</div>
+            </NavbarItem>
+        ) as NavbarItemComponent;
+        if (!(navbarItem instanceof HTMLLIElement)) {
+            navbarItem.put();
+        }
         void renderDropdown();
     } else {
         navbarItem?.remove();
