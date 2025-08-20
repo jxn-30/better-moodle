@@ -44,13 +44,15 @@ export const getLoadingSpinner = () =>
  * @param template.html - the HTML template
  * @param template.js - JS of the template
  * @param action - where to put the template in relation to the element
+ * @param preprocess - a function to preprocess the added elements. Will be executed before the element is added to the DOM.
  * @returns a promise that resolves to the added elements
  * @throws if the element is not found
  */
 export const putTemplate = async <ReturnType extends Element[]>(
     element: HTMLElement | string,
     template: { html: string; js: string },
-    action: 'append' | 'prepend' | 'before' | 'after' | 'replaceWith'
+    action: 'append' | 'prepend' | 'before' | 'after' | 'replaceWith',
+    preprocess?: (elements: ReturnType) => void
 ): Promise<ReturnType> => {
     const el =
         typeof element === 'string' ?
@@ -62,6 +64,7 @@ export const putTemplate = async <ReturnType extends Element[]>(
     const templateElements = Array.from(
         htmlToElements(template.html)
     ) as ReturnType;
+    if (preprocess) preprocess(templateElements);
     el[action](...templateElements);
     const [templates, filterEvents] = await requirePromise([
         'core/templates',

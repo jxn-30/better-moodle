@@ -358,6 +358,20 @@ const openEditModal = () => {
 };
 
 /**
+ * Preprocesses the bookmark icon element.
+ * @param elements - The elements to preprocess.
+ * @param elements."0" - The bookmark icon element.
+ */
+const preprocessBookmarkIcon: (elements: [HTMLLIElement]) => void = ([
+    item,
+]) => {
+    item.id = style.dropdown;
+    item.classList.add(globalStyle.navbarItem);
+    item.style.setProperty('order', `${order}`);
+    item.style.setProperty('--empty-text', JSON.stringify(LL.empty()));
+};
+
+/**
  * Renders the dropdown with the current bookmarks and puts it into the correct position in DOM.
  * @returns a Promise that resolves when the rendering finished
  */
@@ -381,25 +395,20 @@ const renderDropdown = () =>
                 putTemplate<[HTMLLIElement]>(
                     navbarItem,
                     template,
-                    'replaceWith'
+                    'replaceWith',
+                    preprocessBookmarkIcon
                 )
             :   ready().then(() =>
                     putTemplate<[HTMLLIElement]>(
                         '#usernavigation',
                         template,
-                        'append'
+                        'append',
+                        preprocessBookmarkIcon
                     )
                 )
         )
         .then(([item]) => {
             navbarItem = item;
-            navbarItem.id = style.dropdown;
-            navbarItem.classList.add(globalStyle.navbarItem);
-            navbarItem.style.setProperty('order', `${order}`);
-            navbarItem.style.setProperty(
-                '--empty-text',
-                JSON.stringify(LL.empty())
-            );
 
             const currentPage = new URL(window.location.href);
             currentPage.hash = '';
