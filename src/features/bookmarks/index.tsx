@@ -62,6 +62,8 @@ GM_addValueChangeListener(storageKey, (_, __, newBookmarks: Bookmarks) => {
 const navbarItemTemplate: HTMLElement = (
     <i className="icon fa fa-bookmark-o fa-fw mr-0" role="img"></i>
 ) as HTMLElement;
+const order: number = 900;
+
 let navbarItem: HTMLLIElement | NavbarItemComponent | null = null;
 
 interface EditRowProps {
@@ -393,7 +395,7 @@ const renderDropdown = () =>
             navbarItem = item;
             navbarItem.id = style.dropdown;
             navbarItem.classList.add(globalStyle.navbarItem);
-            navbarItem.style.setProperty('order', '900');
+            navbarItem.style.setProperty('order', `${order}`);
             navbarItem.style.setProperty(
                 '--empty-text',
                 JSON.stringify(LL.empty())
@@ -439,7 +441,7 @@ const renderDropdown = () =>
 const reload = () => {
     if (enabled.value) {
         navbarItem ??= (
-            <NavbarItem order={900}>
+            <NavbarItem order={order}>
                 <div className="nav-link">{navbarItemTemplate}</div>
             </NavbarItem>
         ) as NavbarItemComponent;
