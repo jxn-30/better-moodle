@@ -17,6 +17,7 @@ echo "[Better-Moodle Pre-Commit]: Building once for uzl"
 yarn build uzl
 
 echo "[Better-Moodle Pre-Commit]: Testing source code on uzl"
+export BM_NO_COVERAGE="true"
 yarn test:src uzl
 
 # TODO Evaluate if we also want to test userscript?

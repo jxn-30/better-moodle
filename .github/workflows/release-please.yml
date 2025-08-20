@@ -41,7 +41,7 @@ jobs:
                 config: ${{ fromJson(needs.find-configs.outputs.configs) }}
         steps:
             - name: 📥️ checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
 
             - name: 🏗  build
               id: build

@@ -224,8 +224,11 @@ const testCases: TestCase[] = [
         md: '    I am preformatted\n    Due to the intendation',
         elCount: 1,
         expects: [
-            // will fail => <code> in <pre>
-            // el =>
+            el => expect(el).toBeInstanceOf(HTMLPreElement),
+            el =>
+                expect(el.textContent).toBe(
+                    'I am preformatted\nDue to the intendation'
+                ),
         ],
     },
     {
@@ -233,8 +236,11 @@ const testCases: TestCase[] = [
         md: '> I am a Blockquote\n> And I quote things',
         elCount: 1,
         expects: [
-            // will fail => too many \n
-            //
+            el => expect(el).toBeInstanceOf(HTMLQuoteElement),
+            el =>
+                expect(el.textContent).toBe(
+                    'I am a Blockquote\nAnd I quote things'
+                ),
         ],
     },
     {
@@ -272,7 +278,25 @@ testCases.forEach(({ description, md, expects, elCount }) => {
 });
 
 // testing the `headingStart` parameter
+test('Specifying a heading start', () => {
+    const md = '# Heading 1\n\n## Heading 2\n\n### Heading 3';
+    [1, 2, 3].forEach(start => {
+        const html = mdToHtml(md, start);
+        const elements = htmlToElements(html);
+        Array.from(elements).forEach((el, idx) => {
+            expect(el.tagName).toBe(`H${start + idx}`);
+        });
+    });
+});
 
 // testing the `idPrefix` parameter
+test('A set idPrefix must be included in the id', () => {
+    const md = '# Heading 1\n\n## Heading 2\n\n### Heading 3';
+    const html = mdToHtml(md, undefined, 'abcdefg');
+    const elements = htmlToElements(html);
+    Array.from(elements).forEach(el => {
+        expect(el.id).toContain('abcdefg');
+    });
+});
 
 // testing the `pWrap` parameter
