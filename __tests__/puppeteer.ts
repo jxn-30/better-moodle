@@ -1,3 +1,5 @@
+import * as ghCore from '@actions/core';
+import chalk from 'chalk';
 import { Downloader } from 'nodejs-file-downloader';
 import { isCI } from 'ci-info';
 import { join } from 'node:path';
@@ -39,6 +41,7 @@ vi.stubEnv('CHROME_DEVEL_SANDBOX', '/usr/local/sbin/chrome-devel-sandbox');
 
 let browser: Browser;
 let page: Page;
+let tampermonkeyID: string | undefined;
 
 const userDataDir = await mkdtemp(join(tmpdir(), 'profile-'));
 
@@ -88,7 +91,7 @@ const initBrowser = async () => {
     const devmodePage = await browser.newPage();
     await devmodePage.goto('chrome://extensions/');
     await devmodePage.click('body >>> #devMode');
-    const tampermonkeyID = await devmodePage.$$eval(
+    tampermonkeyID = await devmodePage.$$eval(
         'body >>> extensions-item',
         els =>
             els.find(el =>
@@ -173,6 +176,47 @@ beforeAll(async () => {
     // open the moodle
     page = await browser.newPage();
     await page.goto(__MOODLE_URL__);
+
+    page.on('console', msg => {
+        if (
+            !msg
+                .stackTrace()
+                .some(({ url }) =>
+                    url?.startsWith(
+                        `chrome-extension://${tampermonkeyID}/userscript.html`
+                    )
+                )
+        ) {
+            return;
+        }
+
+        // Logging in a Format that is a GitHub annotation
+        let msgEmoji;
+        switch (msg.type()) {
+            case 'warn':
+                msgEmoji = '⚠️';
+                ghCore.warning(`${msg.text()} ${chalk.dim(`@ ${page.url()}`)}`);
+                break;
+            case 'error':
+                msgEmoji = '❌';
+                ghCore.error(`${msg.text()} ${chalk.dim(`@ ${page.url()}`)}`);
+                break;
+            case 'info':
+                msgEmoji = 'ℹ️';
+                ghCore.notice(`${msg.text()} ${chalk.dim(`@ ${page.url()}`)}`);
+                break;
+        }
+
+        if (msgEmoji) {
+            console.log(
+                `
+${msgEmoji} ${chalk.bold('URL')}: ${page.url()}
+${msgEmoji} ${chalk.bold('MSG')}: ${msg.text()}
+`.trim()
+            );
+            console.table(msg.stackTrace());
+        }
+    });
 
     console.debug(`Opened the Moodle page: ${__MOODLE_URL__}`);
     console.timeEnd('beforeAll');
