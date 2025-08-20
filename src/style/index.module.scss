@@ -1,5 +1,6 @@
 @use './properties';
 @use './fixes';
+@use './mixins';
 
 :local(.no-external-link-icon) {
     // remove "external link" icon for specific classes (discouraged, but sometimes it doesn't look good)
@@ -10,7 +11,40 @@
 }
 
 :local(.awaits-dropdown) {
-    margin-right: 13px !important;
+    &::after {
+        margin-left: 4px;
+
+        width: 9px;
+        font-size: 9px;
+
+        @include mixins.fa-icon;
+        display: inline-block;
+        content: '\f252' !important;
+
+        :local {
+            @media (prefers-reduced-motion: no-preference) {
+                animation: fade 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+        }
+
+        @keyframes :local(fade) {
+            0% {
+                opacity: .5;
+            }
+
+            50% {
+                opacity: 0.2;
+            }
+
+            100% {
+                opacity: .5;
+            }
+        }
+    }
+
+    .icon {
+        opacity: 0.5;
+    }
 }
 
 :local(.navbar-item) {
