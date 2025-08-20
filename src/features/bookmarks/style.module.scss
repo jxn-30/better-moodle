@@ -7,7 +7,7 @@
         right: 0;
         left: auto;
 
-        &:has(.dropdown-item:only-child)::before {
+        &:has(.dropdown-item:first-child:nth-last-child(3))::before {
             display: block;
             text-align: center;
             content: var(--empty-text);
