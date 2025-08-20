@@ -1,5 +1,6 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
+import globalStyle from '!/index.module.scss';
 import mobileTemplate from './navbarDropdown/mobile.mustache?raw';
 import { PREFIX } from '@/helpers';
 import { renderCustomTemplate } from '@/templates';
@@ -210,6 +211,8 @@ const onload = async () => {
     );
 
     if (!mobileMyCoursesLink) return;
+
+    myCoursesLink.classList.add(globalStyle.awaitsDropdown);
 
     loadContent({
         desktopElement: myCoursesElement,

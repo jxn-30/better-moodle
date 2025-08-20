@@ -441,7 +441,7 @@ const renderDropdown = () =>
 const reload = () => {
     if (enabled.value) {
         navbarItem ??= (
-            <NavbarItem order={order}>
+            <NavbarItem order={order} className={globalStyle.awaitsDropdown}>
                 <div className="nav-link">{navbarItemTemplate}</div>
             </NavbarItem>
         ) as NavbarItemComponent;

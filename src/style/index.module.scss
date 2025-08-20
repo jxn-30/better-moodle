@@ -9,6 +9,10 @@
     }
 }
 
+:local(.awaits-dropdown) {
+    margin-right: 13px !important;
+}
+
 :local(.navbar-item) {
     #usernavigation > :not(&) {
         order: 0;
