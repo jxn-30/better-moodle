@@ -7,7 +7,7 @@ import { mkdtemp } from 'node:fs/promises';
 import { PUPPETEER_REVISIONS } from 'puppeteer-core/internal/revisions.js';
 import { tmpdir } from 'node:os';
 import unzip from '@tomjs/unzip-crx';
-import { afterAll, beforeAll, inject, vi } from 'vitest';
+import { afterAll, beforeAll, expect, inject, vi } from 'vitest';
 import puppeteer, { type Browser, type Page } from 'puppeteer';
 
 /**
@@ -162,6 +162,8 @@ const initBrowser = async () => {
     await browser.close();
 };
 
+const pageErrorOccured = vi.fn();
+
 beforeAll(async () => {
     console.time('beforeAll');
     // initialising the browser and reopening it ensures that Tampermonkey knows that developer mode is enabled
@@ -185,6 +187,7 @@ beforeAll(async () => {
         ) {
             ghCore.error(`❌ ${err.message} ${chalk.dim(`@ ${page.url()}`)}`);
             console.error(err);
+            pageErrorOccured();
         }
     });
 
@@ -238,6 +241,7 @@ ${msgEmoji} ${chalk.bold('MSG')}: ${msg.text()}
 });
 
 afterAll(async () => {
+    expect(pageErrorOccured).not.toHaveBeenCalled();
     await browser.close();
 });
 
