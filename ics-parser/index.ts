@@ -214,27 +214,27 @@ export default {
 
         const url = URLS[cat]?.[uni];
 
-        if (!url) return new Response(null, { status: 404 });
-
-        const icsContent = await fetch(url, {
-            cacheTtl: SERVER_CACHE_DUR,
-            cacheEverything: true,
-        }).then(res => res.text());
-        const calendar = await ical.async.parseICS(icsContent);
-
-        const rawEvents = Object.values(calendar)
-            .filter(v => v.type === 'VEVENT')
-            .toSorted((a, b) => a.start - b.start);
         let events = [];
-        switch (cat) {
-            case 'semesterzeiten':
-                events = mapSemesterzeiten(rawEvents);
-                break;
-            case 'events':
-                events = mapEvents(rawEvents);
-                break;
-            default:
-                events = rawEvents;
+        if (url) {
+            const icsContent = await fetch(url, {
+                cacheTtl: SERVER_CACHE_DUR,
+                cacheEverything: true,
+            }).then(res => res.text());
+            const calendar = await ical.async.parseICS(icsContent);
+
+            const rawEvents = Object.values(calendar)
+                .filter(v => v.type === 'VEVENT')
+                .toSorted((a, b) => a.start - b.start);
+            switch (cat) {
+                case 'semesterzeiten':
+                    events = mapSemesterzeiten(rawEvents);
+                    break;
+                case 'events':
+                    events = mapEvents(rawEvents);
+                    break;
+                default:
+                    events = rawEvents;
+            }
         }
 
         const res = new Response(JSON.stringify(events));
