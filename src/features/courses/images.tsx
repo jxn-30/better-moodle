@@ -1,6 +1,6 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
-import maxWidthStyle from './images/maxWidth.scss?inline';
+import maxWidthStyle from './images/maxWidth.scss?style';
 import { ready } from '@/DOM';
 import zoomStyle from './images/zoom.module.scss';
 
@@ -8,8 +8,6 @@ const maxWidth = new BooleanSetting('maxWidth', true).addAlias(
     'courses.imgMaxWidth'
 );
 const zoom = new BooleanSetting('zoom', true).addAlias('courses.imageZoom');
-
-let maxWidthStyleEl: HTMLStyleElement;
 
 const zoomOverlay = <div id={zoomStyle.overlay}></div>;
 let zoomCopiedImage: HTMLImageElement;
@@ -80,10 +78,9 @@ const onload = async () => {
     await ready();
 
     if (maxWidth.value) {
-        maxWidthStyleEl ??= GM_addStyle(maxWidthStyle);
-        document.head.append(maxWidthStyleEl);
+        document.head.append(maxWidthStyle);
     } else {
-        maxWidthStyleEl?.remove();
+        maxWidthStyle.remove();
     }
 
     document.body.classList.toggle(zoomStyle.zoomEnabled, zoom.value);
@@ -115,7 +112,7 @@ zoom.onInput(() => void onload());
  * Removes all event listeners and styles
  */
 const onunload = () => {
-    maxWidthStyleEl?.remove();
+    maxWidthStyle.remove();
 
     document.body.classList.remove(zoomStyle.zoomEnabled);
     document

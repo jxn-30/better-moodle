@@ -4243,7 +4243,7 @@ __metadata:
     typescript-plugin-css-modules: "npm:5.2.0"
     userscript-meta: "npm:1.0.1"
     vite: "npm:7.1.3"
-    vite-plugin-monkey: "npm:7.0.3"
+    vite-plugin-monkey: "npm:7.1.1"
     vitest: "npm:3.2.4"
     wrangler: "npm:4.32.0"
   languageName: unknown
@@ -10764,10 +10764,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-monkey@npm:7.0.3":
-  version: 7.0.3
-  resolution: "vite-plugin-monkey@npm:7.0.3"
+"vite-plugin-monkey@npm:7.1.1":
+  version: 7.1.1
+  resolution: "vite-plugin-monkey@npm:7.1.1"
   dependencies:
+    acorn: "npm:^8.15.0"
     acorn-walk: "npm:^8.3.4"
     cross-spawn: "npm:^7.0.6"
     htmlparser2: "npm:^10.0.0"
@@ -10783,7 +10784,7 @@ __metadata:
   peerDependenciesMeta:
     vite:
       optional: true
-  checksum: 10c0/a2b037f46463c54f3350f0a762bfd38845deaedda1b6c08986211f22569588d9880e3f85568d71a800bf7076e260ea73874a27044148dc084f0465965eb39b91
+  checksum: 10c0/5ec08348fd1e4a4102324dbe1126965b7be77754cf7ee081dce258f6c2d6802c28e43f3a7a9a4356ca051d766c86d776a6db231a5fc53464767e830317ca2b9b
   languageName: node
   linkType: hard
 
