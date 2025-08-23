@@ -215,7 +215,7 @@ jobs:
                           echo "STATS_DIFF_SEM=$STATS_DIFF_SEM" >> $GITHUB_ENV
                       fi
                       if [[ -n "$STATS_PF_DIFF_SEM" ]]; then
-                          echo "STATS_PF_DIFF_SEM=$STATS_PF_#DIFF_SEM" >> $GITHUB_ENV
+                          echo "STATS_PF_DIFF_SEM=$STATS_PF_DIFF_SEM" >> $GITHUB_ENV
                       fi
                   fi
               env:
