@@ -54,6 +54,11 @@
             "matchManagers": ["npm", "nvm"],
             "rangeStrategy": "bump",
             "separateMajorMinor": false
+        },
+        {
+            "matchPackageNames": ["darkreader"],
+            "matchNewValue": "4.9.108",
+            "enabled": false
         }
     ],
     "postUpdateOptions": ["yarnDedupeHighest"],
