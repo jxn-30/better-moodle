@@ -1,0 +1,37 @@
+name: 🎛️ Setup CI
+runs:
+    using: composite
+    steps:
+        - name: 🔎 get Node and yarn versions
+          run: |
+              echo "NODE_VERSION=$(grep '"node":' ./package.json | awk -F: '{ print $2 }' | sed 's/[",]//g' | sed 's/\^v//g' | tr -d '[:space:]')"  >> $GITHUB_ENV
+              echo "YARN_VERSION=$(grep '"packageManager":' ./package.json | awk -F: '{ print $2 }' | sed 's/[",]//g' | sed 's/yarn@//g' | tr -d '[:space:]')"  >> $GITHUB_ENV
+          shell: bash
+
+        - name: 🛠️ setup Node.js
+          uses: actions/setup-node@v4
+          with:
+              node-version: ${{ env.NODE_VERSION }}
+
+        - name: 🛠️ setup yarn
+          run: |
+              corepack enable
+              yarn set version "${{ env.YARN_VERSION }}"
+          shell: bash
+
+        - name: 🔎 get yarn cache directory
+          run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+          shell: bash
+
+        - name: 💿️ restore cache
+          uses: actions/cache@v4
+          with:
+              path: |
+                  ${{ steps.yarn_cache_dir.outputs.dir }}
+                  **/node_modules
+              key: ${{ runner.os }}-cache-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
+              restore-keys: ${{ runner.os }}-cache-
+
+        - name: 🍱 install dependencies
+          run: yarn install --immutable
+          shell: bash

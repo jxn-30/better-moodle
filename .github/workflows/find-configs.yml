@@ -1,0 +1,24 @@
+name: 📇 Find configs
+
+on:
+    workflow_call:
+        outputs:
+            configs:
+                description: A JSON string of all available configs
+                value: ${{ jobs.find-configs.outputs.configs }}
+permissions: {}
+
+jobs:
+    find-configs:
+        name: 📇 Find configs
+        runs-on: ubuntu-latest
+        outputs:
+            configs: ${{ steps.configs.outputs.configs }}
+        steps:
+            - uses: actions/checkout@v5
+              with:
+                  sparse-checkout: |
+                      configs
+
+            - id: configs
+              run: echo "configs=$(basename -s .json -a ./configs/*.json | jq -R | jq -s | jq -c '. - ["_schema", "_global", "_globalSchema"]')" >> $GITHUB_OUTPUT

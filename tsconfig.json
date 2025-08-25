@@ -1,0 +1,52 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "lib": [
+            "ESNext",
+            "DOM",
+            "DOM.AsyncIterable",
+            "DOM.Iterable",
+            "scripthost",
+            "webworker.importscripts"
+        ],
+        "moduleResolution": "bundler",
+        "strict": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "noEmit": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "jsx": "preserve",
+        "jsxImportSource": "jsx-dom",
+        "paths": {
+            "@/*": ["./src/_lib/*"],
+            "#/*": ["./types/*"],
+            "i18n": ["./src/i18n/i18n"],
+            "+/*": ["./src/templates"],
+            "!/*": ["./src/style"]
+        },
+        "plugins": [
+            {
+                "name": "typescript-plugin-css-modules",
+                "options": { "classNameTransform": "camelCaseOnly" }
+            }
+        ]
+    },
+    "include": [
+        "src",
+        "types",
+        "vite.config.ts",
+        "vitest.config.ts",
+        "vitest.userscript.config.ts",
+        "postcss.config.ts",
+        "commitlint.config.ts",
+        "configs",
+        "__tests__"
+    ]
+}

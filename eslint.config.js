@@ -1,29 +1,72 @@
 import globals from 'globals';
 import js from '@eslint/js';
-import prettier from 'eslint-config-prettier';
-import userscripts from 'eslint-plugin-userscripts';
+import jsdoc from 'eslint-plugin-jsdoc';
+import pluginESx from 'eslint-plugin-es-x';
+import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
+import prettier from 'eslint-config-prettier/flat';
+import tsEslint from 'typescript-eslint';
 
-/** @type {FlatConfig[]} */
 export default [
+    {
+        ignores: [
+            'node_modules/*',
+            '.yarn/*',
+            'dist/*',
+            'src/style/*.d.ts',
+            '.postcssrc.cts',
+            'ics-parser', // TODO: see how we can include this in linting but without monkey
+            'coverage',
+            'meta', // TODO: see how we can include this in linting but without monkey
+        ],
+    },
     js.configs.recommended,
     prettier,
+    ...tsEslint.configs.recommendedTypeChecked,
+    ...tsEslint.configs.stylisticTypeChecked,
+    jsdoc.configs['flat/recommended-typescript'],
     {
         name: 'better-moodle general ESLint config',
-        files: ['**/*.js'],
-        ignores: ['node_modules/*', '.yarn/*'],
+        files: ['**/*.{ts,tsx}'],
         languageOptions: {
             ecmaVersion: 'latest',
             sourceType: 'script',
             globals: {
                 ...globals.browser,
-                ...globals.es2021,
+                ...globals.es2024,
+                ...globals.greasemonkey,
+                // globals existing within moodle
+                requirejs: 'readonly',
+                M: 'readonly',
+                // jQuery exposes its namespace globally
+                JQuery: 'readonly',
+                // custom globals defined in vite config
+                __GITHUB_USER__: 'readonly',
+                __GITHUB_REPO__: 'readonly',
+                __GITHUB_URL__: 'readonly',
+                __GITHUB_BRANCH__: 'readonly',
+                __VERSION__: 'readonly',
+                __PREFIX__: 'readonly',
+                __UNI__: 'readonly',
+                __MOODLE_VERSION__: 'readonly',
+                __MOODLE_URL__: 'readonly',
+                __FEATURE_GROUPS__: 'readonly',
+                __USERSCRIPT_CONNECTS__: 'readonly',
+                __ICS_PARSER_DOMAIN__: 'readonly',
+                __UA_REGEX__: 'readonly',
+                __UA_REGEX_FLAGS__: 'readonly',
+                __MIN_SUPPORTED_BROWSERS__: 'readonly',
+                // DarkReader is included via @require
+                DarkReader: 'readonly',
+                // JSXElement is created via vite-env.d.ts
+                JSXElement: 'readonly',
             },
             parserOptions: {
-                ecmaFeatures: {
-                    globalReturn: true,
-                },
+                project: true,
+                tsconfigRootDir: import.meta.dirname,
+                ecmaFeatures: { globalReturn: true },
             },
         },
+        plugins: { 'jsx-a11y': pluginJsxA11y },
         rules: {
             'array-callback-return': ['error'],
             'block-scoped-var': 'warn',
@@ -36,12 +79,7 @@ export default [
             'no-duplicate-imports': ['error', { includeExports: true }],
             'no-eval': 'error',
             'no-extra-bind': 'warn',
-            'no-implicit-coercion': [
-                'error',
-                {
-                    allow: ['!!'],
-                },
-            ],
+            'no-implicit-coercion': ['error', { allow: ['!!'] }],
             'no-implicit-globals': 'error',
             'no-implied-eval': 'warn',
             'no-lone-blocks': 'warn',
@@ -69,9 +107,7 @@ export default [
             'prefer-const': 'error',
             'prefer-regex-literals': [
                 'error',
-                {
-                    disallowRedundantWrapping: true,
-                },
+                { disallowRedundantWrapping: true },
             ],
             'prefer-rest-params': 'error',
             'prefer-spread': 'error',
@@ -89,59 +125,61 @@ export default [
                     ],
                 },
             ],
-            'yoda': [
-                'error',
-                'never',
+            'yoda': ['error', 'never', { exceptRange: true }],
+            'jsdoc/require-asterisk-prefix': 'warn',
+            'jsdoc/no-blank-block-descriptions': 'warn',
+            'jsdoc/no-blank-blocks': 'warn',
+            'jsdoc/require-description': 'warn',
+            'jsdoc/require-hyphen-before-param-description': 'warn',
+            'jsdoc/require-jsdoc': [
+                'warn',
                 {
-                    exceptRange: true,
+                    require: {
+                        ArrowFunctionExpression: true,
+                        ClassDeclaration: true,
+                        ClassExpression: true,
+                        FunctionDeclaration: true,
+                        FunctionExpression: true,
+                        MethodDefinition: true,
+                    },
                 },
             ],
+            'jsdoc/require-throws': 'warn',
+            'jsdoc/sort-tags': 'warn',
+            ...pluginJsxA11y.configs.recommended.rules,
         },
     },
     {
-        name: 'set sourceType to module for eslint.config.js',
-        files: ['eslint.config.js'],
-        languageOptions: {
-            sourceType: 'module',
-        },
+        // We want this rule as toplevel await in fixes will cause the whole system to wait for these before features are loaded
+        // This will make the impression that Better-Moodle was slow and imperformant and we don't want this
+        name: 'Disallow toplevel await in fixes',
+        files: ['src/fixes/**/*.{ts,tsx}'],
+        plugins: { 'es-x': pluginESx },
+        rules: { 'es-x/no-top-level-await': 'error' },
     },
     {
-        name: 'userscript extended config',
-        ...userscripts.configs.recommended,
-        files: ['*.user.js'],
-        plugins: {
-            userscripts,
-        },
-        languageOptions: {
-            globals: {
-                uneval: 'readonly',
-                unsafeWindow: 'readonly',
-                GM_info: 'readonly',
-                GM: 'readonly',
-                GM_addStyle: 'readonly',
-                GM_addElement: 'readonly',
-                GM_cookie: 'readonly',
-                GM_deleteValue: 'readonly',
-                GM_listValues: 'readonly',
-                GM_getValue: 'readonly',
-                GM_download: 'readonly',
-                GM_log: 'readonly',
-                GM_registerMenuCommand: 'readonly',
-                GM_unregisterMenuCommand: 'readonly',
-                GM_openInTab: 'readonly',
-                GM_setValue: 'readonly',
-                GM_addValueChangeListener: 'readonly',
-                GM_removeValueChangeListener: 'readonly',
-                GM_xmlhttpRequest: 'readonly',
-                GM_webRequest: 'readonly',
-                GM_getTab: 'readonly',
-                GM_saveTab: 'readonly',
-                GM_getTabs: 'readonly',
-                GM_setClipboard: 'readonly',
-                GM_notification: 'readonly',
-                GM_getResourceText: 'readonly',
-                GM_getResourceURL: 'readonly',
-            },
-        },
+        name: 'Allow node globals in vite and vitest configs',
+        files: [
+            'vite.config.ts',
+            'vitest.config.ts',
+            'vitest.userscript.config.ts',
+        ],
+        languageOptions: { globals: { ...globals.node } },
+    },
+    {
+        name: 'set sourceType to module for eslint, postcss and commitlint configs',
+        ...tsEslint.configs.disableTypeChecked,
+        files: [
+            'eslint.config.js',
+            'eslint.userscript.config.js',
+            'postcss.config.ts',
+            'commitlint.config.ts',
+        ],
+        languageOptions: { sourceType: 'module' },
+    },
+    {
+        name: 'Disable TS for meta folder',
+        ...tsEslint.configs.disableTypeChecked,
+        files: ['meta/**/*.{js}'],
     },
 ];
