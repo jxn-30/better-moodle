@@ -1,7 +1,7 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "assignees": ["jxn-30"],
-    "baseBranches": ["main", "v2"],
+    "baseBranchPatterns": ["main", "v2"],
     "dependencyDashboard": true,
     "dependencyDashboardFooter": "Node.js and yarn updates are scheduled to the first day of the month. Polyfill dependencies are scheduled on thursdays. PRs will be created on mondays, wednesdays and fridays before 3am (CEST) for any other dependencies. Lockfile maintenance is scheduled for saturdays.",
     "dependencyDashboardHeader": "# ℹ️ Renovate Dependency-Dashboard ℹ️\nScheduled and currently open dependency updates are listed here\n",
@@ -17,7 +17,9 @@
     "packageRules": [
         {
             "groupName": "All non-major dependencies",
-            "lockFileMaintenance": { "enabled": true },
+            "lockFileMaintenance": {
+                "enabled": true
+            },
             "groupSlug": "all-minor-patch",
             "matchPackageNames": ["*"],
             "matchUpdateTypes": ["minor", "patch"]
@@ -25,7 +27,9 @@
         {
             "schedule": ["before 3am on thursday"],
             "groupName": "Polyfill maintenance",
-            "lockFileMaintenance": { "enabled": true },
+            "lockFileMaintenance": {
+                "enabled": true
+            },
             "groupSlug": "polyfill-maintenance",
             "matchPackageNames": [
                 "@babel/*",
@@ -40,7 +44,9 @@
         {
             "extends": ["schedule:monthly"],
             "groupName": "yarn",
-            "lockFileMaintenance": { "enabled": true },
+            "lockFileMaintenance": {
+                "enabled": true
+            },
             "matchDepNames": ["yarn"],
             "matchManagers": ["npm"],
             "rangeStrategy": "pin",
@@ -49,7 +55,9 @@
         {
             "extends": ["schedule:monthly"],
             "groupName": "node.js",
-            "lockFileMaintenance": { "enabled": true },
+            "lockFileMaintenance": {
+                "enabled": true
+            },
             "matchDepNames": ["node"],
             "matchManagers": ["npm", "nvm"],
             "rangeStrategy": "bump",
