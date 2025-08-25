@@ -56,6 +56,25 @@ export const enum STATUS {
     DRAFT = 'Draft',
 }
 
+export const enum SCOPE {
+    PUBLIC = 'Public',
+    RESTRICTED = 'Restricted',
+    PRIVATE = 'Private',
+}
+
+export const enum RESPONSE_TYPE {
+    SHELTER = 'Shelter',
+    EVACUATE = 'Evacuate',
+    PREPARE = 'Prepare',
+    EXECUTE = 'Execute',
+    AVOID = 'Avoid',
+    MONITOR = 'Monitor',
+    ASSESS = 'Assess',
+    ALL_CLEAR = 'AllClear',
+    NONE = 'None'
+}
+
+
 /**
  * Returns a Emoji that represents a severity.
  * @param severity - The severity as returned from the API
