@@ -1,3 +1,7 @@
+import { LLFG } from 'i18n';
+import { LocalizedString } from 'typesafe-i18n';
+import { getProviderCategory, providerType } from './utils';
+
 // Capitalisation and meaning as defined in https://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2.pdf
 // XML Schema: https://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2.xsd
 
@@ -71,9 +75,35 @@ export const enum RESPONSE_TYPE {
     MONITOR = 'Monitor',
     ASSESS = 'Assess',
     ALL_CLEAR = 'AllClear',
-    NONE = 'None'
+    NONE = 'None',
 }
 
+const LL = LLFG('nina');
+
+/**
+ * Get the label for a category.
+ * @param category - The category to get the label for.
+ * @returns The label for the category.
+ */
+export const getCategoryLabel = (category: CATEGORY): LocalizedString => {
+    const lowercaseCategory: Lowercase<CATEGORY> = category.toLowerCase() as Lowercase<CATEGORY>;
+    return LL.category[lowercaseCategory]();
+};
+
+/**
+ * Gets the label for a severity level.
+ * @param severity - The severity level.
+ * @param provider - The provider prefix to determine the context of the severity.
+ * @returns The label for the severity level.
+ */
+export const getSeverityLabel = (
+    severity: SEVERITY,
+    provider: providerType
+): LocalizedString => {
+    const lowercaseSeverity: Lowercase<SEVERITY> = severity.toLowerCase() as Lowercase<SEVERITY>;
+    const providerCategory = getProviderCategory(provider);
+    return LL.severity[providerCategory][lowercaseSeverity]();
+};
 
 /**
  * Returns a Emoji that represents a severity.

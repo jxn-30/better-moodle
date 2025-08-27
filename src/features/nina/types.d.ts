@@ -1,7 +1,7 @@
 import type { CATEGORY, CERTAINTY, MESSAGE_TYPE, RESPONSE_TYPE, SCOPE, SEVERITY, STATUS, URGENCY } from './util/enums';
 
 // found this by carefully reading https://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2.xsd and actual API responses
-interface WarningSummary<ID extends string = string> {
+interface AlertSummary<ID extends string = string> {
     id: ID;
     payload: {
         version: number;
@@ -84,4 +84,15 @@ interface Area {
     ceiling?: number;
 }
 
-export type Warnings = WarningSummary[];
+interface AlertCacheEntry {
+    notified: boolean;
+    seen: boolean;
+}
+
+interface AlertReferences {
+    sender: string;
+    alertId: string;
+    sent: ReturnType<(typeof Date)['toISOString']>;
+}
+
+export type AlertCache = Record<string, AlertCacheEntry>;
