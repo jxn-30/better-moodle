@@ -1,4 +1,5 @@
 import GM_fetch from '@trim21/gm-fetch';
+import { PREFIX } from '@/helpers';
 
 /**
  * Make a fetch request using the GM-API if @connect header exists, otherwise using native fetch
@@ -6,20 +7,20 @@ import GM_fetch from '@trim21/gm-fetch';
  * @param init - the fetch init
  * @returns the fetch response
  */
-export const request = (url: string, init?: RequestInit) => {
+export const request = async (url: string, init?: RequestInit) => {
     const urlUrl = new URL(url, window.location.toString());
 
-    // happens via internal GM-API
-    if (
-        __USERSCRIPT_CONNECTS__.some(connect =>
-            urlUrl.hostname.includes(connect)
-        )
-    ) {
-        return GM_fetch(url, init);
-    } else {
-        // happens via native fetch
-        return fetch(url, init);
-    }
+    const request =
+        (
+            __USERSCRIPT_CONNECTS__.some(connect =>
+                urlUrl.hostname.includes(connect)
+            )
+        ) ?
+            // happens via internal GM-API
+            () => GM_fetch(url, init)
+            // happens via native fetch
+        :   () => fetch(url, init);
+    return await navigator.locks.request(PREFIX(`request-${url}`), request);
 };
 
 export const NETWORK_CACHE_KEY = '_network_cache';
