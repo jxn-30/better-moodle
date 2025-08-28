@@ -57,6 +57,30 @@ export const getProviderCategory = (
     }
 };
 
+const providerIconEndpoint =
+    'https://nina.api.proxy.bund.dev/assets/icons/';
+
+/**
+ * Gets the icon URL for a provider.
+ * @param provider - The provider.
+ * @returns The icon URL for the provider.
+ */
+export const getProviderIcon = (
+    provider: providerType
+) =>
+    `${providerIconEndpoint}${(() => {
+        switch (getProviderCategory(provider)) {
+            case 'civilProtection':
+                return 'report_mowas';
+            case 'police':
+                return 'polizei_rund';
+            case 'weather':
+                return 'report_unwetterwarnung';
+            case 'flood':
+                return 'report_hochwasser';
+        }
+    })()}.svg`;
+
 /**
  * Gets an attribute from the alert info with language fallback (current language, then language prefix, then first available)
  * @param alert - The alert object
@@ -66,7 +90,7 @@ export const getProviderCategory = (
 export const getAlertInfoAttribute = <K extends keyof Info>(
     alert: Alert,
     attribute: K
-): Info[K] | null => {
+): NonNullable<Info[K]> | null => {
     let hierarchy = 0;
     let relevantInfo: Info | null = null;
     void alert.info?.some(info => {
@@ -168,7 +192,7 @@ export const getAlertTitle = (alert: Alert) => {
     return (
         getAlertInfoAttribute(alert, 'headline') ??
         getAlertInfoAttribute(alert, 'event') ??
-		'' // TODO: what to return in this case???
+        '' // TODO: what to return in this case???
     );
 };
 

@@ -1,20 +1,23 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import FeatureGroup from '@/FeatureGroup';
+import { getHtml } from '@/DOM';
 import globalStyle from '!/index.module.scss';
 import { JSX } from 'jsx-dom/jsx-runtime';
-import { LLFG } from 'i18n';
 import { Modal } from '@/Modal';
+import { requirePromise } from '@/require.js';
 import { SliderSetting } from '@/Settings/SliderSetting';
+import style from './style.module.scss';
 import type {
     Alert,
     AlertCache,
     AlertSummary,
 } from './types';
-import { arsToCountyLevel, getAlertInfoAttribute, getAlertInfoParameter, getAlertReferences, getAlertTitle, getProviderLabel, providerById } from './util/utils';
+import { arsToCountyLevel, getAlertInfoAttribute, getAlertInfoParameter, getAlertReferences, getAlertTitle, getProviderIcon, getProviderLabel, providerById } from './util/utils';
+import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
 import { cachedRequest, type NetworkResponseType } from '@/network';
 import { getCategoryLabel, getSeverityEmoji, getSeverityLabel } from './util/enums';
 import { NavbarItem, NavbarItemComponent } from '@/Components';
-import { TEN_MINUTES, THIRTY_SECONDS } from '@/times';
+import { TEN_MINUTES, TEN_SECONDS, THIRTY_SECONDS } from '@/times';
 
 
 // Define Constants
@@ -24,7 +27,7 @@ const LOCK_NAME = 'better-moodle-nina-cache';
 const API_BASE = 'https://nina.api.proxy.bund.dev/api31';
 
 // The amtliche Regionalschlüssel has been extracted from https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json
-const ARS = '064340005005';
+const ARS = '010010000000';//'064330006006';
 //__UNI__ === 'cau' ? '010020000000' : '091630000000'; // '010030000000'; // TODO: Always use Lübeck as fallback. The other key is only for testing purposes
 
 // Define Settings
@@ -52,7 +55,7 @@ const floodWarningsSetting = new SliderSetting('floodWarnings', 0, {
     step: 1,
     labels: ['off', 'all'],
 }).addAlias('nina.floodWarnings', old => Number(old));
-
+const inAppNotifications = new BooleanSetting('inAppNotifications', true);
 const desktopNotifications = new BooleanSetting(
     'desktopNotifications',
     false
@@ -85,13 +88,16 @@ const updateCachedActiveAlerts = (alerts: (Alert | AlertSummary)[]) =>
             newAlertCache[alertId] = {
                 notified: oldAlertCache[alertId]?.notified ?? false,
                 seen: oldAlertCache[alertId]?.seen ?? false,
+                referenceOnly: false,
             };
 
+            // Referenced alerts should also be added to the cache, but as reference only
             if ('references' in alert) {
                 getAlertReferences(alert).forEach(ref => {
                     newAlertCache[ref.alertId] = {
                         notified: oldAlertCache[ref.alertId]?.notified ?? newAlertCache[alert.identifier].notified,
                         seen: oldAlertCache[ref.alertId]?.seen ?? newAlertCache[alert.identifier].seen,
+                        referenceOnly: newAlertCache[ref.alertId]?.referenceOnly ?? true,
                     };
                 });
             }
@@ -123,12 +129,26 @@ const getAlert = (alertId: string) =>
     );
 
 /**
+ * Shortens the description of an alert to len characters.
+ * @param alert - the alert to shorten the description for
+ * @param len - the maximum length of the description
+ * @returns the shortened description
+ */
+const shortenAlertDescription = (alert: Alert, len = 200) => {
+    const description = (<p dangerouslySetInnerHTML={{ __html: getAlertInfoAttribute(alert, 'description') ?? '' }} /> as HTMLElement).innerText;
+    if (description.length > len) {
+        return `${description.substring(0, len).trim()}...`;
+    }
+    return description;
+}
+
+/**
  * Shows the details modal for a specific alert.
  * @param alertId - The ID of the alert to show.
  */
 const showAlertDetailsModal = (alertId: string) => {
     const alertTitleElem = <span />;
-    const alertBodyElem = <div />;
+    const alertBodyElem = <div className="px-3" />;
     const alertFooterElem = <span className="d-flex align-items-center text-muted mr-auto" />;
     const alertModal = new Modal({
         type: 'ALERT',
@@ -145,10 +165,26 @@ const showAlertDetailsModal = (alertId: string) => {
         const severity = getAlertInfoAttribute(alert, 'severity')!;
         alertTitleElem.append(
             <span data-original-title={getSeverityLabel(severity, provider)} data-toggle="tooltip">{getSeverityEmoji(severity)}</span>,
-            <span>{getAlertTitle(alert)}</span>
+            <span>{getAlertTitle(alert)}</span>,
         );
 
         // Body
+        const sent = new Date(alert.sent).toLocaleString(BETTER_MOODLE_LANG);
+        alertBodyElem.append(
+            <span className="small text-muted">{LL.modal.sentAt()}: {sent}</span>,
+            <br />,
+        );
+
+        const onset = getAlertInfoAttribute(alert, 'onset') ?? '';
+        const expires = getAlertInfoAttribute(alert, 'expires') ?? '';
+        if (onset && expires) {
+
+            alertBodyElem.append(
+                <span class="small text-muted">{new Date(onset).toLocaleString(BETTER_MOODLE_LANG)} - {new Date(expires).toLocaleString(BETTER_MOODLE_LANG)}</span>,
+                <br />,
+            )
+        }
+
         const description = getAlertInfoAttribute(alert, 'description');
         if (description) {
             alertBodyElem.append(
@@ -166,7 +202,9 @@ const showAlertDetailsModal = (alertId: string) => {
         const categories = getAlertInfoAttribute(alert, 'category') ?? [];
         if (categories.length > 0) {
             alertBodyElem.append(
-                <div className="small"><b>{LL.modal.categories()}:</b> <span>{categories.map((category, index) => (<><span key={category}>{getCategoryLabel(category)}</span>{index < categories.length - 1 && ', '}</>))}</span></div>,
+                <div className="small">
+                    <b>{LL.modal.categories()}:</b> <span>{categories.map((category, index) => (<><span key={category}>{getCategoryLabel(category)}</span>{index < categories.length - 1 && ', '}</>))}</span>
+                </div>,
             );
         }
 
@@ -174,7 +212,7 @@ const showAlertDetailsModal = (alertId: string) => {
         const web = getAlertInfoAttribute(alert, 'web');
         if (web) {
             const linkifiedWeb = web.startsWith('http') ? web : `https://${web}`;
-            alertFooterElem.append(<a href={linkifiedWeb} target="_blank" className={globalStyle.noExternalLinkIcon}><i className="fa fa-globe"></i></a>);
+            alertFooterElem.append(<a href={linkifiedWeb} className={globalStyle.noExternalLinkIcon} target="_blank"><i className="icon fa fa-globe fa-fw"></i></a>);
         }
 
         const alertFooterTextElem = <div className="ml-2 small" />;
@@ -182,10 +220,10 @@ const showAlertDetailsModal = (alertId: string) => {
         const senderLongname = getAlertInfoParameter(alert, 'sender_langname');
         alertFooterTextElem.append(
             <span>{LL.modal.providedBy()} {`${senderName ?? senderLongname ? `${senderName ?? senderLongname} ${LL.modal.via()}` : ''} ${getProviderLabel(provider)}`}</span>,
-            <br />
+            <br />,
         );
         alertFooterTextElem.append(
-            <a href={`https://warnung.bund.de/meldungen/${alert.identifier}/`} target="_blank"> {LL.modal.bbkLink()}</a>
+            <a href={`https://warnung.bund.de/meldungen/${alert.identifier}/`} target="_blank"> {LL.modal.bbkLink()}</a>,
         );
         alertFooterElem.append(alertFooterTextElem);
 
@@ -194,7 +232,7 @@ const showAlertDetailsModal = (alertId: string) => {
         void navigator.locks.request(LOCK_NAME, () => {
             const alertCache = getCachedActiveAlerts();
             if (!alertCache[alert.identifier]) {
-                alertCache[alert.identifier] = { seen: false, notified: false };
+                alertCache[alert.identifier] = { seen: false, notified: false, referenceOnly: false };
             }
             alertCache[alert.identifier].seen = true;
             GM_setValue(CACHE_KEY, alertCache);
@@ -212,33 +250,58 @@ const sendAlertNotification = (alert: Alert) =>
     void navigator.locks.request(LOCK_NAME, () => {
         const alertCache = getCachedActiveAlerts();
         if (!alertCache[alert.identifier]) {
-            alertCache[alert.identifier] = { seen: false, notified: false };
+            alertCache[alert.identifier] = { seen: false, notified: false, referenceOnly: false };
         }
 
-        if (alertCache[alert.identifier].notified) {
+        if (alertCache[alert.identifier].notified || alertCache[alert.identifier].seen || alertCache[alert.identifier].referenceOnly) {
             return;
         }
 
-        GM_notification({
-            title: getAlertTitle(alert),
-            text: getAlertInfoAttribute(alert, 'event')!,
-            // eslint-disable-next-line jsdoc/require-jsdoc
-            onclick: () => showAlertDetailsModal(alert.identifier)
-        });
-        alertCache[alert.identifier].notified = true;
+        // TODO: check if the alert matches the user's settings
+
+        const title = getAlertTitle(alert);
+        const severity = getAlertInfoAttribute(alert, 'severity')!;
+        const provider = providerById(alert.identifier);
+        const severityLabel = `${getSeverityEmoji(severity)} ${getSeverityLabel(severity, provider)}`;
+
+        if (inAppNotifications.value) {
+            void requirePromise(['core/toast'] as const).then(
+                ([{ add }]) => void add(title, {
+                    type: 'warning',
+                    autohide: true,
+                    closeButton: true,
+                    delay: TEN_SECONDS,
+                    title: severityLabel,
+                    subtitle: getHtml(<a href={`https://warnung.bund.de/meldungen/${alert.identifier}/`} data-alert={alert.identifier} target="_blank">{LL.modal.showMore()}</a>),
+                })
+            );
+            alertCache[alert.identifier].notified = true;
+        }
+        if (desktopNotifications.value) {
+            GM_notification({
+                title,
+                text: shortenAlertDescription(alert, 70),
+                image: getProviderIcon(provider),
+                // eslint-disable-next-line jsdoc/require-jsdoc
+                onclick: () => showAlertDetailsModal(alert.identifier),
+            });
+            alertCache[alert.identifier].notified = true;
+        }
+
         GM_setValue(CACHE_KEY, alertCache);
     });
-
 
 // Setup main modal
 let alertsModalShown = false;
 let alertsModalContent: JSX.Element[] = [];
 const alertsNavItem = (<NavbarItem order={600}>
-    <div className="nav-link">⚠️</div>
+    <div className="nav-link icon-no-margin">
+        <i className="icon fa fa-exclamation-triangle fa-fw text-warning" />
+    </div>
 </NavbarItem>) as NavbarItemComponent;
 const alertsModalReloadButton = (
     <button type="button" className="btn mr-auto">
-        <i className="fa fa-refresh" /> {LL.modal.reload()}
+        <i className="icon fa fa-refresh fa-fw" /> {LL.modal.reload()}
     </button>
 );
 const alertsModalBody = <div />;
@@ -257,18 +320,27 @@ alertsModal.onShown(() => {
 alertsModal.onHidden(() => {
     alertsModalShown = false;
 });
-alertsModalBody.addEventListener('click', event => {
-    const target = event.target as HTMLElement;
-    if (target.dataset.alert) {
-        const alertId = target.dataset.alert;
-        event.preventDefault();
-        showAlertDetailsModal(alertId);
+alertsModalReloadButton.addEventListener('click', () => {
+    const icon = alertsModalReloadButton.querySelector('i');
+    icon?.classList.add(style.spin);
+    void requestAlerts().then(reloadAlertsModal).then(() => {
+        alertsModalReloadButton.addEventListener('animationiteration', () => {
+            icon?.classList.remove(style.spin);
+        }, { once: true });
+    });
+});
+// TODO: this should be removed if the feature is turned off
+document.addEventListener('click', e => {
+    const target = (e.target as HTMLElement).closest('[data-alert]');
+    if (target && target instanceof HTMLElement) {
+        e.preventDefault();
+        const alertId = target.dataset?.alert;
+        if (alertId) {
+            showAlertDetailsModal(alertId);
+        }
     }
 });
-alertsModalReloadButton.addEventListener('click', () => {
-    // TODO: rotate icon
-    void requestAlerts().then(reloadAlertsModal);
-});
+
 
 /**
  * Reloads the alerts modal with the given alerts.
@@ -289,47 +361,47 @@ let broadcastChannel: BroadcastChannel | null = null;
  * Requests alerts from the NINA API.
  * @returns A promise that resolves when the alerts have been requested.
  */
-const requestAlerts = () =>
-    getAlerts() // TODO: fix this indentation
-        .then(resp => resp.value)
-        .then(updateCachedActiveAlerts)
-        .then(getCachedActiveAlerts)
-        .then(alertCache => {
-            const alertIds = Object.keys(alertCache);
-            // Process alerts
-            if (alertIds.length > 0) {
-                alertsNavItem.put();
-            } else {
-                alertsNavItem.remove();
-            }
-
-            // Process all alerts
-            void Promise.all(alertIds.map(getAlert))
-                .then(alertResponses => alertResponses.map(resp => resp.value))
-                .then(alerts => {
-                    alerts.forEach(alert => {
-                        sendAlertNotification(alert);
-                    });
-                    // TODO: sort and filter these
-                    alertsModalContent = (alerts.length === 0 ? (
-                        [(<p>{LL.modal.noActiveWarnings()}</p>)]
-                    ) : (
-                        alerts.map(alert => (
-                            <div className="card p-3">
-                                <h5><span data-original-title={getAlertInfoAttribute(alert, 'severity')!} data-toggle="tooltip">{getSeverityEmoji(getAlertInfoAttribute(alert, 'severity')!)}</span> {getAlertTitle(alert)}</h5>
-                                <div className="small">
-                                    <a href={`https://warnung.bund.de/meldungen/${alert.identifier}/`} data-alert={alert.identifier}>{LL.modal.showMore()}</a>
-                                </div>
+const requestAlerts = () => getAlerts() // TODO: fix this indentation
+    .then(resp => resp.value)
+    .then(updateCachedActiveAlerts)
+    .then(getCachedActiveAlerts)
+    .then(alertCache => [alertCache, Object.keys(alertCache).filter(id => !alertCache[id].referenceOnly)] as const)
+    .then(([alertCache, alertIds]) => {
+        // Display navbar item if there are any alerts
+        void (alertIds.length > 0 ? alertsNavItem.put() : alertsNavItem.remove());
+        return [alertCache, alertIds] as const;
+    })
+    .then(([alertCache, alertIds]) => void Promise.all(alertIds.map(getAlert))
+        .then(alertResponses => alertResponses.map(resp => resp.value))
+        .then(alerts => {
+            alerts.forEach(alert => {
+                sendAlertNotification(alert);
+            });
+            // TODO: sort and filter these
+            alertsModalContent = (alerts.length === 0 ? (
+                [(<p>{LL.modal.noActiveWarnings()}</p>)]
+            ) : (
+                alerts.map(alert => {
+                    const severity = getAlertInfoAttribute(alert, 'severity')!;
+                    const provider = providerById(alert.identifier);
+                    const shortDescription = shortenAlertDescription(alert);
+                    return (
+                        <div className={`card p-3 ${!alertCache[alert.identifier].seen ? style.unseen : ''}`}>
+                            <h5><span data-original-title={getSeverityLabel(severity, provider)} data-toggle="tooltip">{getSeverityEmoji(severity)}</span> {getAlertTitle(alert)}</h5>
+                            <p>{shortDescription}</p>
+                            <div className="small">
+                                <a href={`https://warnung.bund.de/meldungen/${alert.identifier}/`} data-alert={alert.identifier} target="_blank">{LL.modal.showMore()}</a>
                             </div>
-                        ))
-                    ));
+                        </div>
+                    );
+                })
+            ));
 
-                    if (alertsModalShown) {
-                        return;
-                    }
-                    reloadAlertsModal();
-                });
-        });
+            if (alertsModalShown) {
+                return;
+            }
+            reloadAlertsModal();
+        }));
 /**
  * Reloads the notification sensitivities.
  */
@@ -345,8 +417,8 @@ const reloadNotificationSensitivities = () => {
         if (scheduledInterval !== null) {
             clearInterval(scheduledInterval);
         }
-        return;
     }
+    // TODO: Implement this
 };
 
 /**
@@ -378,6 +450,7 @@ export default FeatureGroup.register({
         policeWarningSetting,
         weatherWarningsSetting,
         floodWarningsSetting,
+        inAppNotifications,
         desktopNotifications,
         notifyUpdates,
         notifyClearSignal,

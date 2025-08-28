@@ -44,6 +44,11 @@ export const de = {
                 'Benachrichtigungen zu Hochwasserereignissen an Binnengewässern (Flüsse, Kanäle, Binnenseen).',
             labels: { off: 'Nie', all: 'Immer' },
         },
+        inAppNotifications: {
+            name: 'Benachrichtigung im Moodle',
+            description:
+                'Erhalte ein kleines Popup im Moodle, über das du weitere Details zur Warnung aufrufen kannst.',
+        },
         desktopNotifications: {
             name: 'Benachrichtigung auf dem Gerät',
             description:
@@ -75,6 +80,7 @@ export const de = {
         },
         providedBy: 'Herausgegeben von',
         reload: 'Aktualisieren',
+        sentAt: 'Meldung vom',
         showMore: 'Mehr anzeigen',
         via: 'via',
     },
@@ -193,6 +199,10 @@ export const en = {
                 'Notifications about flooding events on inland waters (rivers, canals, inland lakes).',
             labels: { off: 'Never', all: 'Always' },
         },
+        inAppNotifications: {
+            name: 'Notification within Moodle',
+            description: 'Receive a small pop-up within Moodle, which you can use to call up further details about the warning.',
+        },
         desktopNotifications: {
             name: 'Notification on the device',
             description:
@@ -225,6 +235,7 @@ export const en = {
         },
         providedBy: 'Provided by',
         reload: 'Reload',
+        sentAt: 'Sent at',
         showMore: 'Show more',
         via: 'via',
     },

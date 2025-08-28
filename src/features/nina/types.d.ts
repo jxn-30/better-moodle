@@ -20,7 +20,7 @@ interface AlertSummary<ID extends string = string> {
         };
     };
     i18nTitle: Record<string, string>;
-    sent: ReturnType<(typeof Date)['toISOString']>;
+    sent: ReturnType<Date['toISOString']>;
 }
 
 
@@ -28,7 +28,7 @@ interface AlertSummary<ID extends string = string> {
 interface Alert {
     identifier: string;
     sender: string;
-    sent: ReturnType<(typeof Date)['toISOString']>;
+    sent: ReturnType<Date['toISOString']>;
     status: STATUS;
     msgType: MESSAGE_TYPE;
     source?: string;
@@ -52,9 +52,9 @@ interface Info {
     certainty: CERTAINTY;
     audience?: string;
     eventCode?: { valueName: string; value: string }[];
-    effective?: ReturnType<(typeof Date)['toISOString']>;
-    onset?: ReturnType<(typeof Date)['toISOString']>;
-    expires?: ReturnType<(typeof Date)['toISOString']>;
+    effective?: ReturnType<Date['toISOString']>;
+    onset?: ReturnType<Date['toISOString']>;
+    expires?: ReturnType<Date['toISOString']>;
     senderName?: string;
     headline?: string;
     description?: string;
@@ -87,12 +87,13 @@ interface Area {
 interface AlertCacheEntry {
     notified: boolean;
     seen: boolean;
+    referenceOnly: boolean;
 }
 
 interface AlertReferences {
     sender: string;
     alertId: string;
-    sent: ReturnType<(typeof Date)['toISOString']>;
+    sent: ReturnType<Date['toISOString']>;
 }
 
 export type AlertCache = Record<string, AlertCacheEntry>;
