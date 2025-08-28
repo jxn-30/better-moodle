@@ -1,7 +1,6 @@
 /// <reference types="vite/client" />
 /// <reference types="vite-plugin-monkey/client" />
 /// <reference types="vite-plugin-monkey/global" />
-/// <reference types="vite-plugin-monkey/style" />
 /// <reference types="jsx-dom/index" />
 /// <reference types="darkreader" />
 /// <reference types="../types/window.d.ts" />

@@ -45,7 +45,7 @@ jobs:
               run: |
                   SUMMARY="⚠️ Prettier changed some code".
                   echo "# $SUMMARY" >> $GITHUB_STEP_SUMMARY
-                  SUMMARY="$SUMMARY Plase see the summary and logs for more details."
+                  SUMMARY="$SUMMARY Please see the summary and logs for more details."
                   echo "There were a total of **${{ env.CHANGES_COUNT }}** files affected by running prettier on $(echo ${{ github.sha }} | head -c 7):" >> $GITHUB_STEP_SUMMARY
                   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
                   git diff --compact-summary >> $GITHUB_STEP_SUMMARY

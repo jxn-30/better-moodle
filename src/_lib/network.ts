@@ -1,4 +1,5 @@
 import GM_fetch from '@trim21/gm-fetch';
+import { PREFIX } from '@/helpers';
 
 /**
  * Make a fetch request using the GM-API if @connect header exists, otherwise using native fetch
@@ -6,20 +7,20 @@ import GM_fetch from '@trim21/gm-fetch';
  * @param init - the fetch init
  * @returns the fetch response
  */
-export const request = (url: string, init?: RequestInit) => {
+export const request = async (url: string, init?: RequestInit) => {
     const urlUrl = new URL(url, window.location.toString());
 
-    // happens via internal GM-API
-    if (
-        __USERSCRIPT_CONNECTS__.some(connect =>
-            urlUrl.hostname.includes(connect)
-        )
-    ) {
-        return GM_fetch(url, init);
-    } else {
-        // happens via native fetch
-        return fetch(url, init);
-    }
+    const request =
+        (
+            __USERSCRIPT_CONNECTS__.some(connect =>
+                urlUrl.hostname.includes(connect)
+            )
+        ) ?
+            // happens via internal GM-API
+            () => GM_fetch(url, init)
+            // happens via native fetch
+        :   () => fetch(url, init);
+    return await navigator.locks.request(PREFIX(`request-${url}`), request);
 };
 
 export const NETWORK_CACHE_KEY = '_network_cache';
@@ -69,7 +70,7 @@ export interface CachedResponse<ResultType> {
  * @param init - the fetch init
  * @returns the fetch response
  */
-export const cachedRequest = <
+const unlockedCachedRequest = <
     Method extends NetworkMethod,
     ResponseType extends NetworkResponseType<Method>,
     ResultType = ResponseType,
@@ -147,6 +148,31 @@ export const cachedRequest = <
             return { cached: false, lastUpdate, value };
         });
 };
+
+/**
+ * Caches the result of a request within GM storage.
+ * Ensures that concurrent requests to an URL happen sequentally
+ * @param url - the url to make the fetch to
+ * @param cacheDuration - how long to cache the request in ms
+ * @param method - the body method to work with the response
+ * @param preprocess - an optional method to process the result
+ * @param init - the fetch init
+ * @returns the fetch response
+ */
+export const cachedRequest = async <
+    Method extends NetworkMethod,
+    ResponseType extends NetworkResponseType<Method>,
+    ResultType = ResponseType,
+>(
+    url: string,
+    cacheDuration: number,
+    method: Method,
+    preprocess?: (result: ResponseType) => ResultType,
+    init?: RequestInit
+): Promise<CachedResponse<ResultType>> =>
+    await navigator.locks.request(PREFIX(`cached_request-${url}`), () =>
+        unlockedCachedRequest(url, cacheDuration, method, preprocess, init)
+    );
 
 /**
  * Fetches a document from the given path and returns it as a Document object

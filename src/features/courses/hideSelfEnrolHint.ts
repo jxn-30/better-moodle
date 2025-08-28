@@ -1,18 +1,21 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
-import hideStyle from './hideSelfEnrolHint.scss?style';
+import hideCSS from './hideSelfEnrolHint.scss?inline';
 
 const hide = new BooleanSetting('hide', false).addAlias(
     'courses.hideSelfEnrolHint'
 );
+
+let hideStyle: HTMLElement;
 
 /**
  * Adds or removes the style based on the settings value
  */
 const reload = () => {
     if (hide.value) {
-        document.head.append(hideStyle);
-    } else hideStyle.remove();
+        if (hideStyle) document.head.append(hideStyle);
+        else hideStyle = GM_addStyle(hideCSS);
+    } else hideStyle?.remove();
 };
 
 hide.onInput(reload);
