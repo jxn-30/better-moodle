@@ -70,7 +70,7 @@ export interface CachedResponse<ResultType> {
  * @param init - the fetch init
  * @returns the fetch response
  */
-export const cachedRequest = <
+const unlockedCachedRequest = <
     Method extends NetworkMethod,
     ResponseType extends NetworkResponseType<Method>,
     ResultType = ResponseType,
@@ -148,6 +148,31 @@ export const cachedRequest = <
             return { cached: false, lastUpdate, value };
         });
 };
+
+/**
+ * Caches the result of a request within GM storage.
+ * Ensures that concurrent requests to an URL happen sequentally
+ * @param url - the url to make the fetch to
+ * @param cacheDuration - how long to cache the request in ms
+ * @param method - the body method to work with the response
+ * @param preprocess - an optional method to process the result
+ * @param init - the fetch init
+ * @returns the fetch response
+ */
+export const cachedRequest = async <
+    Method extends NetworkMethod,
+    ResponseType extends NetworkResponseType<Method>,
+    ResultType = ResponseType,
+>(
+    url: string,
+    cacheDuration: number,
+    method: Method,
+    preprocess?: (result: ResponseType) => ResultType,
+    init?: RequestInit
+): Promise<CachedResponse<ResultType>> =>
+    await navigator.locks.request(PREFIX(`cached_request-${url}`), () =>
+        unlockedCachedRequest(url, cacheDuration, method, preprocess, init)
+    );
 
 /**
  * Fetches a document from the given path and returns it as a Document object
