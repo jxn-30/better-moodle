@@ -120,12 +120,12 @@ const mobileBtn = (
     <a
         className={classNames(
             'list-group-item list-group-item-action',
-            globalStyle.noExternalLinkIconn,
-            style.foodIcon
+            globalStyle.noExternalLinkIcon
         )}
         href="#speiseplan"
     >
-        {randomFoodIcon()}&nbsp;{LL.name()}
+        <span className={style.foodIcon}>{randomFoodIcon()}</span>&nbsp;
+        {LL.name()}
     </a>
 ) as HTMLAnchorElement;
 
