@@ -72,24 +72,47 @@ const parse = Object.values(
     })
 )[0] as Parser;
 
-// this is shorter because prettier would put each array element into a single line
-const emojis =
-    '🍔,🍟,🍕,🌭,🥪,🌮,🌯,🫔,🥙,🧆,🥚,🍳,🥘,🍲,🥣,🥗,🍝,🍱,🍘,🍙,🍚,🍛,🍜,🍢,🍣,🍤,🍥,🥮,🥟,🥠,🥡'.split(
-        ','
-    );
+// Moodle 405 introduced FA 6
+const foodIcons =
+    __MOODLE_VERSION__ >= 405 ?
+        [
+            '\uf094', // lemon
+            '\uf578', // fish
+            '\ue2cd', // wheat-awn
+            '\ue448', // shrimp
+            '\uf818', // pizza-slice
+            '\uf816', // pepper-hot
+            '\uf810', // ice-cream
+            '\uf80f', // hotdog
+            '\uf7fb', // egg
+            '\uf6d7', // drumstick-bite
+            '\uf563', // cookie
+            '\uf7ef', // cheese
+            '\uf787', // carrot
+            '\uf805', // burger
+            '\uf5d1', // apple-whole
+        ]
+    :   [
+            '\uf0f5', // cutlery
+        ];
 
 /**
- * Gets a random food emoji from predefined list.
- * @returns a random food emoji
+ * Gets a random food foodIcon from predefined list.
+ * @returns a random food foodIcon
  */
-const randomEmoji = () => emojis[Math.floor(Math.random() * emojis.length)];
+const randomFoodIcon = () =>
+    foodIcons[Math.floor(Math.random() * foodIcons.length)];
 const desktopLink = (
     <a
-        className={classNames('nav-link', globalStyle.noExternalLinkIcon)}
+        className={classNames(
+            'nav-link',
+            globalStyle.noExternalLinkIcon,
+            style.foodIcon
+        )}
         href="#speiseplan"
         title={LL.name()}
     >
-        {randomEmoji()}
+        {randomFoodIcon()}
     </a>
 ) as HTMLAnchorElement;
 const desktopBtn = <li className="nav-item">{desktopLink} </li>;
@@ -97,11 +120,12 @@ const mobileBtn = (
     <a
         className={classNames(
             'list-group-item list-group-item-action',
-            globalStyle.noExternalLinkIcon
+            globalStyle.noExternalLinkIconn,
+            style.foodIcon
         )}
         href="#speiseplan"
     >
-        {randomEmoji()}&nbsp;{LL.name()}
+        {randomFoodIcon()}&nbsp;{LL.name()}
     </a>
 ) as HTMLAnchorElement;
 
@@ -337,7 +361,12 @@ const openSpeiseplan = () => {
         type: 'ALERT',
         large: true,
         scrollable: true,
-        title: `${randomEmoji()}\xa0${sLL().name()}`,
+        title: (
+            <>
+                <span className={style.foodIcon}>{randomFoodIcon()}</span>&nbsp;
+                {sLL().name()}
+            </>
+        ),
         body: getCurrentSpeiseplan()
             .then(fieldsets => <>{...Array.from(fieldsets)}</>)
             .catch(error => (
