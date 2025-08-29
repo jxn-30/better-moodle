@@ -57,23 +57,21 @@ export const getProviderCategory = (
     }
 };
 
-const providerIconEndpoint =
-    'https://nina.api.proxy.bund.dev/assets/icons/';
+const providerIconEndpoint = 'https://nina.api.proxy.bund.dev/assets/icons/';
 
 /**
  * Gets the icon URL for a provider.
  * @param provider - The provider.
+ * @param canceling - Whether the alert is a CANCEL alert.
  * @returns The icon URL for the provider.
  */
-export const getProviderIcon = (
-    provider: providerType
-) =>
+export const getProviderIcon = (provider: providerType, canceling = false) =>
     `${providerIconEndpoint}${(() => {
         switch (getProviderCategory(provider)) {
             case 'civilProtection':
-                return 'report_mowas';
+                return !canceling ? 'report_mowas' : 'report_mowas_all_clear';
             case 'police':
-                return 'polizei_rund';
+                return !canceling ? 'polizei_rund' : 'report_polizei_all_clear';
             case 'weather':
                 return 'report_unwetterwarnung';
             case 'flood':

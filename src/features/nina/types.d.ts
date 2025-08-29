@@ -1,4 +1,13 @@
-import type { CATEGORY, CERTAINTY, MESSAGE_TYPE, RESPONSE_TYPE, SCOPE, SEVERITY, STATUS, URGENCY } from './util/enums';
+import type {
+    CATEGORY,
+    CERTAINTY,
+    MESSAGE_TYPE,
+    RESPONSE_TYPE,
+    SCOPE,
+    SEVERITY,
+    STATUS,
+    URGENCY,
+} from './util/enums';
 
 // found this by carefully reading https://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2.xsd and actual API responses
 interface AlertSummary<ID extends string = string> {
@@ -22,7 +31,6 @@ interface AlertSummary<ID extends string = string> {
     i18nTitle: Record<string, string>;
     sent: ReturnType<Date['toISOString']>;
 }
-
 
 // See https://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2-os.html#_Toc454352650
 interface Alert {

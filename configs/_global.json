@@ -18,7 +18,7 @@
     "enabledFrom": { "405": ["courses.sectionCourseIndex"] },
     "disabledFrom": { "402": ["courses.courseIndexDrawerControls"] },
     "connects": {
-        "nina": ["nina.api.proxy.bund.dev"],
+        "nina": ["nina.api.proxy.bund.dev", "testing.warnung.bund.de"],
         "weather": [
             "api.open-meteo.com",
             "api.openweathermap.org",

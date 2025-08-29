@@ -201,7 +201,8 @@ export const en = {
         },
         inAppNotifications: {
             name: 'Notification within Moodle',
-            description: 'Receive a small pop-up within Moodle, which you can use to call up further details about the warning.',
+            description:
+                'Receive a small pop-up within Moodle, which you can use to call up further details about the warning.',
         },
         desktopNotifications: {
             name: 'Notification on the device',

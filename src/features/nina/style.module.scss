@@ -8,19 +8,19 @@
 }
 
 :local(.spin) {
-	:local {
-		@media (prefers-reduced-motion: no-preference) {
-			animation: spin 0.5s linear infinite;
-		}
-	}
+    :local {
+        @media (prefers-reduced-motion: no-preference) {
+            animation: spin 0.5s linear infinite;
+        }
+    }
 
-	@keyframes :local(spin) {
-		0% {
-			transform: rotate(0deg);
-		}
+    @keyframes :local(spin) {
+        0% {
+            transform: rotate(0deg);
+        }
 
-		100% {
-			transform: rotate(180deg);
-		}
-	}
+        100% {
+            transform: rotate(180deg);
+        }
+    }
 }

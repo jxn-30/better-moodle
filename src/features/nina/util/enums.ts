@@ -86,7 +86,8 @@ const LL = LLFG('nina');
  * @returns The label for the category.
  */
 export const getCategoryLabel = (category: CATEGORY): LocalizedString => {
-    const lowercaseCategory: Lowercase<CATEGORY> = category.toLowerCase() as Lowercase<CATEGORY>;
+    const lowercaseCategory: Lowercase<CATEGORY> =
+        category.toLowerCase() as Lowercase<CATEGORY>;
     return LL.category[lowercaseCategory]();
 };
 
@@ -100,7 +101,8 @@ export const getSeverityLabel = (
     severity: SEVERITY,
     provider: providerType
 ): LocalizedString => {
-    const lowercaseSeverity: Lowercase<SEVERITY> = severity.toLowerCase() as Lowercase<SEVERITY>;
+    const lowercaseSeverity: Lowercase<SEVERITY> =
+        severity.toLowerCase() as Lowercase<SEVERITY>;
     const providerCategory = getProviderCategory(provider);
     return LL.severity[providerCategory][lowercaseSeverity]();
 };
