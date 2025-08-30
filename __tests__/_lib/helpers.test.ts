@@ -4,45 +4,84 @@ import {
     domID,
     getSettingKey,
     githubPath,
+    htmlToElements,
     isDashboard,
     isNewInstallation,
     PREFIX,
     rawGithubPath,
 } from '@/helpers';
 
-const { describe, expect, test, vi } = vitest;
-
-// first of all, we want to test if tests are working :)
-test('1 + 2 = 3', () => expect(1 + 2).toBe(3));
+const { describe, expect, it, vi } = vitest;
 
 // now, create some basic tests as a proof of concept
 // intelligent testing strategies are to be found in the future
 
 // section PREFIX
-test('a prefixed string should start with the defined prefix', () =>
-    expect(PREFIX('some string')).toStartWith(__PREFIX__));
-test('a prefixed string should contain the original string somewhere', () =>
-    expect(PREFIX('abcdefg')).toContain('abcdefg'));
+describe('PREFIX', () => {
+    it('a prefixed string should start with the defined prefix', () =>
+        expect(PREFIX('some string')).toStartWith(__PREFIX__));
+    it('a prefixed string should contain the original string somewhere', () =>
+        expect(PREFIX('abcdefg')).toContain('abcdefg'));
+});
 // endsection PREFIX
 
 // section getSettingKey
-test('a setting key should contain the setting id somewhere', () =>
-    expect(getSettingKey('abcdefg')).toContain('abcdefg'));
+describe('getSettingKey', () => {
+    it('returns the correct setting key for a given id', () => {
+        expect(getSettingKey('exampleId')).toBe('settings.exampleId');
+    });
+
+    it('works with a short id', () => {
+        expect(getSettingKey('abc')).toBe('settings.abc');
+    });
+
+    it('works with a long id', () => {
+        expect(getSettingKey('this-is-a-long-id')).toBe(
+            'settings.this-is-a-long-id'
+        );
+    });
+
+    it('works with an id with special characters', () => {
+        expect(getSettingKey('example!@#')).toBe('settings.example!@#');
+    });
+});
 // endsection getSettingKey
 
 // section domID
-test('a domID should start with the prefix', () =>
-    expect(domID('abcdefg')).toStartWith(__PREFIX__));
+describe('domID', () => {
+    it('a domID should start with the prefix', () =>
+        expect(domID('abcdefg')).toStartWith(__PREFIX__));
+
+    it('transforms a string into a valid DOM ID', () => {
+        expect(domID('foo bar')).toEndWith('foo_bar');
+    });
+
+    it('replaces special characters with dashes', () => {
+        expect(domID('foo!bar')).toEndWith('foo-bar');
+    });
+
+    it('removes double and single quotes', () => {
+        expect(domID('"foo\'')).toEndWith('foo');
+    });
+
+    it('transforms a string with special characters and spaces', () => {
+        expect(domID('foo!bar baz')).toEndWith('foo-bar_baz');
+    });
+});
 // endsection domID
 
 // section githubPath
-test('a github path should be a valid url', () =>
-    expect(githubPath('/CHANGELOG.md')).toBeAValidURL());
+describe('githubPath', () => {
+    it('a github path should be a valid url', () =>
+        expect(githubPath('/CHANGELOG.md')).toBeAValidURL());
+});
 // endsection githubPath
 
 // section rawGithubPath
-test('a raw github path should be a valid url', () =>
-    expect(rawGithubPath('/CHANGELOG.md')).toBeAValidURL());
+describe('rawGithubPath', () => {
+    it('a raw github path should be a valid url', () =>
+        expect(rawGithubPath('/CHANGELOG.md')).toBeAValidURL());
+});
 // endsection rawGithubPath
 
 // section mdID
@@ -54,7 +93,30 @@ test('a raw github path should be a valid url', () =>
 // endsection mdToHtml
 
 // section htmlToElements
-// TODO
+describe('htmlToElements', () => {
+    it('returns a single element for a simple HTML string', () => {
+        const html = '<p>Hello World</p>';
+        const elements = htmlToElements(html);
+        expect(elements.length).toBe(1);
+        expect(elements[0].tagName).toBe('P');
+        expect(elements[0].textContent).toBe('Hello World');
+    });
+
+    it('returns multiple elements for a multi-element HTML string', () => {
+        const html = '<li>One</li><li>Two</li><li>Three</li>';
+        const elements = htmlToElements(html);
+        expect(elements.length).toBe(3);
+        expect(elements[0].tagName).toBe('LI');
+        expect(elements[1].tagName).toBe('LI');
+        expect(elements[2].tagName).toBe('LI');
+    });
+
+    it('returns an empty array for an empty HTML string', () => {
+        const html = '';
+        const elements = htmlToElements(html);
+        expect(elements.length).toBe(0);
+    });
+});
 // endsection htmlToElements
 
 // section debounce
@@ -62,7 +124,7 @@ describe('debounce', () => {
     vitest.beforeEach(() => vi.useFakeTimers());
     vitest.afterEach(() => vi.useRealTimers());
 
-    test('function should be run once (100ms)', () => {
+    it('function should be run once (100ms)', () => {
         const fn = vi.fn();
         const debounced = debounce(fn, 100);
 
@@ -73,7 +135,7 @@ describe('debounce', () => {
         expect(fn).toBeCalledTimes(1);
     });
 
-    test('function should be run twice (100ms)', () => {
+    it('function should be run twice (100ms)', () => {
         const fn = vi.fn();
         const debounced = debounce(fn, 100);
 
@@ -86,7 +148,7 @@ describe('debounce', () => {
         expect(fn).toBeCalledTimes(2);
     });
 
-    test('function should be run once (4726ms)', () => {
+    it('function should be run once (4726ms)', () => {
         const fn = vi.fn();
         const debounced = debounce(fn, 4726);
 
@@ -99,7 +161,7 @@ describe('debounce', () => {
         expect(fn).toBeCalledTimes(1);
     });
 
-    test('function should be run twice (4726ms)', () => {
+    it('function should be run twice (4726ms)', () => {
         const fn = vi.fn();
         const debounced = debounce(fn, 4726);
 
@@ -123,12 +185,12 @@ describe('debounce', () => {
 // endsection isLoggedIn
 
 // section isDashboard
-test('constant isDashboard must be a boolean', () =>
+it('constant isDashboard must be a boolean', () =>
     expect(isDashboard).toBeABoolean());
 // endsection isDashboard
 
 // section isNewInstallation
-test('constant isNewInstallation must be a boolean', () =>
+it('constant isNewInstallation must be a boolean', () =>
     expect(isNewInstallation).toBeABoolean());
 // endsection isNewInstallation
 
