@@ -17,6 +17,10 @@ $darkmode-brightness-fixes: (
 
 $max-co2-stars: 3;
 
+:local(.food-icon) {
+    @include mixins.fa-icon;
+}
+
 :local(.table) {
     .dish {
         &[data-location]::before {

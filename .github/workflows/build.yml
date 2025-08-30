@@ -55,7 +55,7 @@ jobs:
                   config: ${{ matrix.config }}
 
             - name: 🦭 attest build provenance
-              uses: actions/attest-build-provenance@v2
+              uses: actions/attest-build-provenance@v3
               if: github.event.pull_request.head.repo.full_name == github.repository
               with:
                   subject-name: ${{ steps.build.outputs.file }}
