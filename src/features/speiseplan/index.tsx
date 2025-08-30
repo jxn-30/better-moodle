@@ -138,6 +138,12 @@ const footerLinkWrapper = (
 const footerTimeSpan = (<span className="mr-auto"></span>) as HTMLSpanElement;
 
 /**
+ * Gets the canteen currently selected
+ * @returns the currently selected canteen
+ */
+const currentCanteen = () => canteens.get(canteen.value)!;
+
+/**
  * Gets the speiseplan URLs to parse from
  * @returns an URL for this and next week
  */
@@ -147,7 +153,7 @@ const getCanteenUrls = () => {
     const {
         url: { [lang]: url },
         urlNextWeek: { [lang]: urlNextWeek },
-    } = canteens.get(canteen.value)!;
+    } = currentCanteen();
 
     return { url, urlNextWeek };
 };
@@ -193,6 +199,10 @@ const getCurrentSpeiseplan = () => {
 
     footerLinkWrapper.href = url;
 
+    const expandedDay = Number(
+        new Date().getHours() >= currentCanteen().closingHour
+    );
+
     return Promise.all([parse(url), parse(urlNextWeek)])
         .then(([thisWeek, nextWeek]) => {
             footerTimeSpan.textContent = timeToString(
@@ -220,7 +230,7 @@ const getCurrentSpeiseplan = () => {
             speiseplan.dishes.entries().map(([day, dishes], index) => (
                 <FieldSet
                     title={dateToString(day, false, true, lang)}
-                    collapsed={index > 0}
+                    collapsed={index !== expandedDay}
                 >
                     <table className={classNames(['table', style.table])}>
                         <thead>
