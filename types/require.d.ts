@@ -7,6 +7,7 @@ import CoreConfig from './require.js/core/config';
 import CoreCustomInteractionEvents from './require.js/core/custom_interaction_events';
 import CoreFiltersEvents from './require.js/core_filters/event';
 import CoreLocalstorage from './require.js/core/localstorage';
+import CoreModal from './require.js/core/modal';
 import CoreModalEvents from './require.js/core/modal_events';
 import CoreModalFactory from './require.js/core/modal_factory';
 import CorePubsub from './require.js/core/pubsub';
@@ -29,8 +30,14 @@ interface ModuleMap {
     'core/emoji/auto_complete': InitEmojiAutoComplete;
     'core/emoji/picker': InitEmojiPicker;
     'core/localstorage': CoreLocalstorage;
+    'core/local/modal/alert': CoreModal; // Wait, why is this the ONLY one in a special dicectory?
+    'core/modal': CoreModal;
+    'core/modal_cancel': CoreModal;
+    // 'core/modal_copy_to_clipboard': CoreModal; // has a different create method. will not type until needed
+    'core/modal_delete_cancel': CoreModal;
     'core/modal_factory': CoreModalFactory;
     'core/modal_events': CoreModalEvents;
+    'core/modal_save_cancel': CoreModal;
     'core/pubsub': CorePubsub;
     'core/str': CoreStr;
     'core/templates': CoreTemplates;

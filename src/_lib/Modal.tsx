@@ -1,18 +1,22 @@
 import CanBeReady from './CanBeReady';
 import classNames from 'classnames';
 import CoreModalEvents from '#/require.js/core/modal_events';
+import type { ModalFactoryConfig } from '#/require.js/core/modal_factory';
 import modalStyle from '!/modal.module.scss';
+import type MoodleModal from '#/require.js/core/modal';
 import { require } from './require.js';
-import type {
-    default as CoreModalFactory,
-    ModalConfig,
-    MoodleModal,
-} from '#/require.js/core/modal_factory';
 
-interface Config extends ModalConfig {
+interface Config extends ModalFactoryConfig {
     backgroundImage?: string;
     bodyClass?: classNames.Argument;
 }
+
+const TypeTo403Lib = {
+    ALERT: 'core/local/modal/alert',
+    CANCEL: 'core/modal_cancel',
+    DEFAULT: 'core/modal',
+    SAVE_CANCEL: 'core/modal_save_cancel',
+} as const;
 
 /**
  * A wrapper around Moodle's modal factory.
@@ -41,15 +45,7 @@ export class Modal extends CanBeReady {
             delete this.#config.footer;
         }
 
-        require(['core/modal_factory', 'core/modal_events'] as const, (
-            { create, types },
-            modalEvents
-        ) => {
-            this.#config.type = types[config.type];
-            this.#modalEvents = modalEvents;
-
-            this.#create(create).catch(console.error);
-        });
+        void this.#create();
 
         if (config.backgroundImage) {
             this.setBackgroundImage();
@@ -82,12 +78,36 @@ export class Modal extends CanBeReady {
     }
 
     /**
-     * Creates the modal using the given create function.
-     * This method is called once the modal factory is loaded.
-     * @param createFn - the create function from the modal factory
+     * Creates the modal.
+     * This method handles the changes introduced in 403
      */
-    async #create(createFn: CoreModalFactory['create']) {
-        this.#modal = await createFn(this.#config);
+    async #create() {
+        const { promise, resolve } = Promise.withResolvers<MoodleModal>();
+
+        if (__MOODLE_VERSION__ < 403) {
+            // legacy modal factory
+            require(['core/modal_factory', 'core/modal_events'] as const, (
+                { create, types },
+                modalEvents
+            ) => {
+                this.#config.type = types[this.#config.type];
+                this.#modalEvents = modalEvents;
+
+                void create(this.#config).then(resolve);
+            });
+        } else {
+            // new import for each modal type
+            require([
+                TypeTo403Lib[this.#config.type],
+                'core/modal_events',
+            ] as const, (modalClass, modalEvents) => {
+                this.#modalEvents = modalEvents;
+
+                void modalClass.create(this.#config).then(resolve);
+            });
+        }
+
+        this.#modal = await promise;
         await this.#onReady();
     }
 
