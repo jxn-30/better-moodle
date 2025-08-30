@@ -27,6 +27,7 @@ const add = (key: string, name = '', id = 0) =>
 if (__UNI__ === 'uzl') {
     add('uzl');
     add('mhl');
+    add('bitsandbytes');
 } else if (__UNI__ === 'cau') {
     add('cau1');
     add('cau2');
@@ -41,6 +42,7 @@ if (__UNI__ === 'uzl') {
 // existing canteens will be overriden but they stay at their place in order
 add('uzl', 'Lübeck: Mensa & Cafeteria', 8);
 add('mhl', 'Lübeck: Cafeteria Musikhochschule', 9);
+add('bitsandbytes', 'Lübeck: Bits + Bytes', 17);
 add('cau1', 'Kiel: Mensa I & Cafeteria & Café Lounge', 1);
 add('cau2', 'Kiel: Mensa II & Cafeteria & Café Lounge', 2);
 add('gaarden', 'Kiel: Mensa Gaarden', 3);
