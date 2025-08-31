@@ -197,11 +197,13 @@ const showAlertDetailsModal = (alertId: string) => {
             alertTitleElem.append(
                 <>
                     <span
-                        data-original-title={getSeverityLabel(
-                            severity,
-                            provider
-                        )}
-                        data-toggle="tooltip"
+                        dataset={{
+                            originalTitle: getSeverityLabel(
+                                severity,
+                                provider
+                            ),
+                            toggle: 'tooltip',
+                        }}
                     >
                         {getSeverityEmoji(severity)}
                     </span>{' '}
@@ -394,7 +396,7 @@ const sendAlertNotification = (alert: Alert) =>
                         subtitle: getHtml(
                             <a
                                 href={`https://warnung.bund.de/meldungen/${alertId}/`}
-                                data-alert={alertId}
+                                dataset={{ alert: alertId }}
                                 target="_blank"
                             >
                                 {LL.modal.showMore()}
@@ -553,11 +555,13 @@ const requestAlerts = () =>
                     <div className={`card p-3 ${!seen ? style.unseen : ''}`}>
                         <h5>
                             <span
-                                data-original-title={getSeverityLabel(
-                                    severity,
-                                    provider
-                                )}
-                                data-toggle="tooltip"
+                                dataset={{
+                                    originalTitle: getSeverityLabel(
+                                        severity,
+                                        provider
+                                    ),
+                                    toggle: 'tooltip',
+                                }}
                             >
                                 {getSeverityEmoji(severity)}
                             </span>{' '}
@@ -567,7 +571,7 @@ const requestAlerts = () =>
                         <div className="small">
                             <a
                                 href={`https://warnung.bund.de/meldungen/${alertId}/`}
-                                data-alert={alertId}
+                                dataset={{ alert: alertId }}
                                 target="_blank"
                             >
                                 {LL.modal.showMore()}
