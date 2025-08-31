@@ -42,39 +42,61 @@ const API_BASE = 'https://nina.api.proxy.bund.dev/api31';
 // The amtliche Regionalschlüssel has been extracted from https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json
 const ARS = __UNI__ === 'cau' ? '010020000000' : '010030000000';
 
+let broadcastChannel: BroadcastChannel | null = null;
+/**
+ * Posts a message to the broadcast channel to disable the feature in other tabs.
+ */
+const postDisableMessage = () => {
+    broadcastChannel?.postMessage('disableFeatureInOtherTabs');
+    reload();
+};
+
 // Define Settings
 const civilWarningsSetting = new SliderSetting('civilWarnings', 2, {
     min: 0,
     max: 3,
     step: 1,
     labels: ['off', 'extreme', 'severe', 'moderate'],
-}).addAlias('nina.civilProtectionWarnings');
+})
+    .addAlias('nina.civilProtectionWarnings')
+    .onChange(postDisableMessage);
 const policeWarningSetting = new SliderSetting('policeWarnings', 2, {
     min: 0,
     max: 3,
     step: 1,
     labels: ['off', 'extreme', 'severe', 'moderate'],
-});
+}).onChange(postDisableMessage);
 const weatherWarningsSetting = new SliderSetting('weatherWarnings', 2, {
     min: 0,
     max: 3,
     step: 1,
     labels: ['off', 'extreme', 'severe', 'moderate'],
-}).addAlias('nina.weatherWarnings');
+})
+    .addAlias('nina.weatherWarnings')
+    .onChange(postDisableMessage);
 const floodWarningsSetting = new SliderSetting('floodWarnings', 0, {
     min: 0,
     max: 1,
     step: 1,
     labels: ['off', 'all'],
-}).addAlias('nina.floodWarnings', old => Number(old));
-const inAppNotifications = new BooleanSetting('inAppNotifications', true);
-const desktopNotifications = new BooleanSetting(
-    'desktopNotifications',
-    false
-).addAlias('nina.notification');
+})
+    .addAlias('nina.floodWarnings', old => Number(old))
+    .onChange(postDisableMessage);
+const inAppNotifications = new BooleanSetting(
+    'inAppNotifications',
+    true
+).onChange(postDisableMessage);
+const desktopNotifications = new BooleanSetting('desktopNotifications', false)
+    .addAlias('nina.notification')
+    .onChange(postDisableMessage);
 
-const notifyUpdates = new BooleanSetting('notifyUpdates', false);
-const notifyClearSignal = new BooleanSetting('notifyClearSignal', true);
+const notifyUpdates = new BooleanSetting('notifyUpdates', false).onChange(
+    postDisableMessage
+);
+const notifyClearSignal = new BooleanSetting(
+    'notifyClearSignal',
+    true
+).onChange(postDisableMessage);
 
 // Handle alert caching
 /**
@@ -198,10 +220,7 @@ const showAlertDetailsModal = (alertId: string) => {
                 <>
                     <span
                         dataset={{
-                            originalTitle: getSeverityLabel(
-                                severity,
-                                provider
-                            ),
+                            originalTitle: getSeverityLabel(severity, provider),
                             toggle: 'tooltip',
                         }}
                     >
@@ -508,7 +527,6 @@ const reloadAlertsModal = (): void =>
 // TODO: NodeJS no-undef
 // eslint-disable-next-line no-undef
 let scheduledInterval: NodeJS.Timeout | null = null;
-let broadcastChannel: BroadcastChannel | null = null;
 
 /**
  * Requests alerts from the NINA API.
@@ -590,20 +608,17 @@ const requestAlerts = () =>
             reloadAlertsModal();
         });
 /**
- * Reloads the notification sensitivities.
+ * Disables the feature in the current tab.
  */
-const reloadNotificationSensitivities = () => {
-    if (isEnabled()) {
-        return;
-    }
+const disableFeatureInTab = () => {
     // Close the broadcast channel. There is no need for it to reopen as this is done
+    disabledByOtherTab = true;
+
     broadcastChannel?.close();
     broadcastChannel = null;
     if (scheduledInterval !== null) {
         clearInterval(scheduledInterval);
     }
-
-    disabledByOtherTab = true;
 };
 
 /**
@@ -616,20 +631,18 @@ const reload = () => {
      * @param event - The message event.
      */
     broadcastChannel.onmessage = event => {
-        if (event.data === 'reload') {
-            reloadNotificationSensitivities();
+        if (event.data === 'disableFeatureInOtherTabs') {
+            disableFeatureInTab();
         }
     };
-
-    if (broadcastChannel !== null) {
-        broadcastChannel.postMessage('reload');
-    }
 
     void requestAlerts();
     scheduledInterval ??= setInterval(
         () => void requestAlerts(),
         THIRTY_SECONDS
     );
+
+    disabledByOtherTab = false;
 };
 
 export default FeatureGroup.register({
