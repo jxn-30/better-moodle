@@ -14,10 +14,12 @@
 
 @mixin fa-icon {
     $default-font: 'Font Awesome 6 Free';
+    $default-weight: 900;
 
     // Moodle 402 introduced FA 6
     @if global.$MOODLE_VERSION < 402 {
         $default-font: 'FontAwesome';
+        $default-weight: normal;
     }
 
     display: var(--fa-display, inline-block);
@@ -26,7 +28,7 @@
     line-height: 1;
     text-rendering: auto;
     font-family: var(--fa-style-family, $default-font);
-    font-weight: var(--fa-style, 900);
+    font-weight: var(--fa-style, $default-weight);
 }
 
 @mixin media-up($breakpoint) {
