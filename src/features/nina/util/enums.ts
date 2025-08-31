@@ -122,3 +122,17 @@ export const getSeverityEmoji = (severity: SEVERITY) =>
             [SEVERITY.EXTREME]: '🟣',
         }) as const
     )[severity];
+
+/**
+ * Gets the numeric representation of a severity level.
+ * @param severity - The severity level.
+ * @returns The numeric representation of the severity level.
+ */
+export const severityToNumber = (severity: SEVERITY) =>
+    [
+        SEVERITY.UNKNOWN, // -1
+        SEVERITY.MINOR, // 0
+        SEVERITY.MODERATE, // 1
+        SEVERITY.SEVERE, // 2
+        SEVERITY.EXTREME, // 3
+    ].indexOf(severity) - 1;
