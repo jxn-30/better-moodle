@@ -41,6 +41,16 @@ const Tag = (tag: Tag) => (
     <span title={`${tags[tag]}: ${LL.settings.tags[tag]()}`}>{tags[tag]}</span>
 );
 
+interface SyncMessageType {
+    type: 'settingSync';
+    key: string;
+    value: unknown;
+    tab: ReturnType<typeof crypto.randomUUID>;
+}
+
+const tabId = crypto.randomUUID();
+const syncingChannel = new BroadcastChannel('better-moodle-settings-sync');
+
 /**
  * A base class
  */
@@ -66,6 +76,8 @@ export default abstract class Setting<
     #unsavedValue: Type;
 
     #conditionalDisabledStates = new Map<string, boolean>();
+    #requiresReload = false;
+    #syncUpdatePending = false;
 
     protected migrator: Migrator<Type> | null = null;
 
@@ -86,6 +98,43 @@ export default abstract class Setting<
 
         this.#id = id;
         this.#default = this.#unsavedValue = defaultValue;
+
+        syncingChannel.addEventListener(
+            'message',
+            (event: MessageEvent<SyncMessageType>) => {
+                if (
+                    event.data?.tab === tabId ||
+                    event.data?.type !== 'settingSync' ||
+                    event.data?.key !== this.settingKey
+                ) {
+                    return;
+                }
+                require(['core/toast'] as const, ({ add }) => {
+                    if (this.#requiresReload) {
+                        void add(
+                            mdToHtml(
+                                LL.settings.syncRequireReload({
+                                    name: this.title,
+                                })
+                            ),
+                            { type: 'info', autohide: false, closeButton: true }
+                        );
+                    } else {
+                        this.#syncUpdatePending = true;
+                        this.savedValue = event.data.value as Type;
+                        if (this.#formControl) {
+                            this.#formControl.value = this.savedValue;
+                            this.#formControl.dispatchEvent(new Event('input'));
+                        }
+
+                        void add(LL.settings.sync(), {
+                            type: 'success',
+                            autohide: true,
+                        });
+                    }
+                });
+            }
+        );
 
         void this.callWhenReady(() => {
             this.#formControl = createComponent({
@@ -208,6 +257,15 @@ export default abstract class Setting<
      */
     set savedValue(newVal: Type) {
         GM_setValue(this.settingKey, newVal);
+        if (!this.#syncUpdatePending) {
+            syncingChannel.postMessage({
+                type: 'settingSync',
+                key: this.settingKey,
+                value: newVal,
+                tab: tabId,
+            } as const);
+        }
+        this.#syncUpdatePending = false;
     }
 
     /**
@@ -388,6 +446,7 @@ export default abstract class Setting<
      * @returns the setting itself
      */
     requireReload() {
+        this.#requiresReload = true;
         this.onChange(() => {
             // we don't want to show or set if the value stays the same (e.g. after an undo operation)
             if (this.#unsavedValue === this.savedValue) return;
