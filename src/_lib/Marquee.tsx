@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { debounce } from '@/helpers';
 import { ready } from '@/DOM';
 import style from '!/marquee.module.scss';
@@ -16,9 +15,7 @@ export default class Marquee {
     readonly #span = document.createElement('span');
     readonly #cloneSpan = document.createElement('span');
     readonly #content = (
-        <div
-            className={classNames([style.marquee, 'd-flex align-items-center'])}
-        >
+        <div className={[style.marquee, 'd-flex align-items-center']}>
             {this.#span}
             {this.#cloneSpan}
         </div>

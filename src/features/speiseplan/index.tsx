@@ -1,6 +1,5 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import type Canteens from './canteens';
-import classNames from 'classnames';
 import type { Dish } from './speiseplan';
 import FeatureGroup from '@/FeatureGroup';
 import { FieldSet } from '@/Components';
@@ -104,11 +103,7 @@ const randomFoodIcon = () =>
     foodIcons[Math.floor(Math.random() * foodIcons.length)];
 const desktopLink = (
     <a
-        className={classNames(
-            'nav-link',
-            globalStyle.noExternalLinkIcon,
-            style.foodIcon
-        )}
+        className={['nav-link', globalStyle.noExternalLinkIcon, style.foodIcon]}
         href="#speiseplan"
         title={LL.name()}
     >
@@ -118,10 +113,10 @@ const desktopLink = (
 const desktopBtn = <li className="nav-item">{desktopLink} </li>;
 const mobileBtn = (
     <a
-        className={classNames(
+        className={[
             'list-group-item list-group-item-action',
-            globalStyle.noExternalLinkIcon
-        )}
+            globalStyle.noExternalLinkIcon,
+        ]}
         href="#speiseplan"
     >
         <span className={style.foodIcon}>{randomFoodIcon()}</span>&nbsp;
@@ -232,7 +227,7 @@ const getCurrentSpeiseplan = () => {
                     title={dateToString(day, false, true, lang)}
                     collapsed={index !== expandedDay}
                 >
-                    <table className={classNames(['table', style.table])}>
+                    <table className={['table', style.table]}>
                         <thead>
                             <tr>
                                 <th>{sLL().table.dish()}</th>

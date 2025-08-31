@@ -91,7 +91,7 @@ export const getDocumentFragmentHtml = (fragment: DocumentFragment) => {
  * @param element - the element to get the HTML of
  * @returns the HTML as a string
  */
-export const getHtml = (element: JSXElement) =>
+export const getHtml = (element: JSXElement | DocumentFragment) =>
     element instanceof DocumentFragment ?
         getDocumentFragmentHtml(element)
     :   element.outerHTML;
