@@ -212,14 +212,13 @@ export default class Drawer {
             >
                 <button
                     className="btn icon-no-margin"
-                    data-toggler="drawers"
-                    data-action="toggle"
-                    data-target={this.#id}
-                    data-toggle="tooltip"
-                    data-placement={
-                        /* this is placement of tooltip */
-                        this.#oppositeSide
-                    }
+                    dataset={{
+                        toggler: 'drawers',
+                        action: 'toggle',
+                        target: this.#id,
+                        toggle: 'tooltip',
+                        placement: this.#oppositeSide, // this is placement of tooltip
+                    }}
                     title={this.#toggleTitle}
                 >
                     <span className="sr-only">{this.#toggleTitle}</span>

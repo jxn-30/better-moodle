@@ -389,9 +389,7 @@ const reload = () => {
     navbarItem ??= (
         <NavbarItem
             order={800}
-            data-toggle="tooltip"
-            data-placement="bottom"
-            data-html="true"
+            dataset={{ toggle: 'tooltip', placement: 'bottom', html: 'true' }}
         >
             {navbarText}
         </NavbarItem>

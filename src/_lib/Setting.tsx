@@ -294,11 +294,13 @@ export default abstract class Setting<
         const descriptionBtn = (
             <button
                 className="btn btn-link p-0"
-                data-container="body"
-                data-toggle="popover"
-                data-placement="right"
-                data-content={description}
-                data-trigger="focus"
+                dataset={{
+                    container: 'body',
+                    toggle: 'popover',
+                    placement: 'right',
+                    content: description,
+                    trigger: 'focus',
+                }}
                 tabIndex={0}
             >
                 <i className="icon fa fa-question-circle text-info fa-fw"></i>
@@ -312,8 +314,7 @@ export default abstract class Setting<
         return (
             <div
                 className="form-group row fitem"
-                data-tags={JSON.stringify(tags)}
-                data-search={this.title}
+                dataset={{ tags: JSON.stringify(tags), search: this.title }}
             >
                 <div className="col-md-5 col-form-label d-flex pb-0 pt-0">
                     <label
@@ -328,7 +329,7 @@ export default abstract class Setting<
                                     globalStyle.sparkling,
                                     settingsStyle.newSettingBadge,
                                 ]}
-                                data-setting={this.id}
+                                dataset={{ setting: this.id }}
                             >
                                 {LL.settings.newBadge()}
                             </span>
@@ -344,7 +345,7 @@ export default abstract class Setting<
                 </div>
                 <div
                     className="col-md-7 form-inline align-items-start felement overflow-hidden"
-                    data-setting={this.id}
+                    dataset={{ setting: this.id }}
                 >
                     {this.formControl}
                 </div>

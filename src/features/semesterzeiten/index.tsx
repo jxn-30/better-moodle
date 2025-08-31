@@ -257,9 +257,11 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
             <div
                 className="progress-bar"
                 style={{ width: `${width}%` }}
-                data-toggle="tooltip"
-                data-placement="bottom"
-                data-html="true"
+                dataset={{
+                    toggle: 'tooltip',
+                    placement: 'bottom',
+                    html: 'true',
+                }}
             ></div>
         );
 
@@ -285,7 +287,7 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
             );
             bar.append(
                 <div
-                    data-type={event.type}
+                    dataset={{ type: event.type }}
                     className={['progress-bar w-100, h-100', `bg-${color}`]}
                 ></div>
             );
@@ -352,7 +354,7 @@ const loadContent = (semesterIndex = 0) => {
             tableBody.replaceChildren(
                 <tr
                     className="table-primary font-weight-bold"
-                    data-type="semester"
+                    dataset={{ type: 'semester' }}
                 >
                     <td>{semester.name[BETTER_MOODLE_LANG]}</td>
                     <td>{dateToString(semesterStart)}</td>
@@ -404,7 +406,7 @@ const loadContent = (semesterIndex = 0) => {
                     tableBody.append(
                         <tr
                             className={`table-${event.color}`}
-                            data-type={event.type}
+                            dataset={{ type: event.type }}
                         >
                             <td colSpan={4}>
                                 {/* The strings are explicit here, to avoid trimming */}
@@ -422,7 +424,7 @@ const loadContent = (semesterIndex = 0) => {
                     tableBody.append(
                         <tr
                             className={`table-${event.color}`}
-                            data-type={event.type}
+                            dataset={{ type: event.type }}
                         >
                             <td>{event.name[BETTER_MOODLE_LANG]}</td>
                             <td>{dateToString(start)}</td>

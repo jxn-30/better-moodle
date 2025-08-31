@@ -88,7 +88,10 @@ const getCourseBlocks = (): Promise<HTMLDivElement[]> =>
                     (
                         <div
                             className="card block mb-3"
-                            data-search-text={`${course.shortname} ${course.fullname}`.toLowerCase()}
+                            dataset={{
+                                searchText:
+                                    `${course.shortname} ${course.fullname}`.toLowerCase(),
+                            }}
                         >
                             <div className="card-body p-3">
                                 <a href={course.viewurl}>

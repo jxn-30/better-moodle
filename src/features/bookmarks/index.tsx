@@ -125,22 +125,25 @@ const EditRow = ({
     const controlsGroup =
         controls ?
             ((
-                <div className="btn-group ml-auto" data-index={index}>
+                <div
+                    className="btn-group ml-auto"
+                    dataset={{ index: index.toString() }}
+                >
                     <button
                         className="btn btn-outline-secondary"
-                        data-action="up"
+                        dataset={{ action: 'up' }}
                     >
                         <i className="fa fa-arrow-up fa-fw"></i>
                     </button>
                     <button
                         className="btn btn-outline-secondary"
-                        data-action="down"
+                        dataset={{ action: 'down' }}
                     >
                         <i className="fa fa-arrow-down fa-fw"></i>
                     </button>
                     <button
                         className="btn btn-outline-danger"
-                        data-action="delete"
+                        dataset={{ action: 'delete' }}
                     >
                         <i className="fa fa-trash fa-fw"></i>
                     </button>

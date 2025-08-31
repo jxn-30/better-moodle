@@ -244,9 +244,11 @@ const getCurrentSpeiseplan = () => {
                                         >
                                             <i
                                                 className="icon fa fa-info-circle text-info fa-fw"
-                                                data-toggle="tooltip"
-                                                data-placement="auto"
-                                                data-html="true"
+                                                dataset={{
+                                                    toggle: 'tooltip',
+                                                    placement: 'auto',
+                                                    html: 'true',
+                                                }}
                                                 title={co2InfoLinkHtml}
                                             ></i>
                                         </a>
@@ -258,8 +260,10 @@ const getCurrentSpeiseplan = () => {
                                     &nbsp;
                                     <i
                                         className="icon fa fa-info-circle text-info fa-fw"
-                                        data-toggle="tooltip"
-                                        data-placement="auto"
+                                        dataset={{
+                                            toggle: 'tooltip',
+                                            placement: 'auto',
+                                        }}
                                         title={speiseplan.prices.join(' / ')}
                                     ></i>
                                 </th>
@@ -271,7 +275,9 @@ const getCurrentSpeiseplan = () => {
                                     <tr>
                                         <td
                                             className="dish"
-                                            data-location={dish.location}
+                                            dataset={{
+                                                location: dish.location,
+                                            }}
                                         >
                                             {...getDishNameEls(dish.name)}
                                             {dish.allergenes.length ?
@@ -307,9 +313,12 @@ const getCurrentSpeiseplan = () => {
                                         </td>
                                         <td
                                             className="co2-score"
-                                            data-stars={
-                                                dish.co2 ? dish.co2.stars : 0
-                                            }
+                                            dataset={{
+                                                stars:
+                                                    dish.co2 ?
+                                                        dish.co2.stars.toString()
+                                                    :   '0',
+                                            }}
                                         >
                                             {dish.co2 && dish.co2.emission ?
                                                 unit(
