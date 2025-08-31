@@ -4207,7 +4207,6 @@ __metadata:
     caniuse-lite: "npm:1.0.30001737"
     chalk: "npm:5.6.0"
     ci-info: "npm:4.3.0"
-    classnames: "npm:2.5.1"
     core-js: "npm:3.45.1"
     core-js-compat: "npm:3.45.1"
     darkreader: "npm:4.9.109"
@@ -4554,13 +4553,6 @@ __metadata:
   version: 4.3.0
   resolution: "ci-info@npm:4.3.0"
   checksum: 10c0/60d3dfe95d75c01454ec1cfd5108617dd598a28a2a3e148bd7e1523c1c208b5f5a3007cafcbe293e6fd0a5a310cc32217c5dc54743eeabc0a2bec80072fc055c
-  languageName: node
-  linkType: hard
-
-"classnames@npm:2.5.1":
-  version: 2.5.1
-  resolution: "classnames@npm:2.5.1"
-  checksum: 10c0/afff4f77e62cea2d79c39962980bf316bacb0d7c49e13a21adaadb9221e1c6b9d3cdb829d8bb1b23c406f4e740507f37e1dcf506f7e3b7113d17c5bab787aa69
   languageName: node
   linkType: hard
 

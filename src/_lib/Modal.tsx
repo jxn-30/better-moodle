@@ -1,5 +1,5 @@
 import CanBeReady from './CanBeReady';
-import classNames from 'classnames';
+import { className } from 'jsx-dom';
 import CoreModalEvents from '#/require.js/core/modal_events';
 import type { ModalFactoryConfig } from '#/require.js/core/modal_factory';
 import modalStyle from '!/modal.module.scss';
@@ -8,7 +8,7 @@ import { require } from './require.js';
 
 interface Config extends ModalFactoryConfig {
     backgroundImage?: string;
-    bodyClass?: classNames.Argument;
+    bodyClass?: Parameters<typeof className>[0];
 }
 
 const TypeTo403Lib = {
@@ -63,7 +63,7 @@ export class Modal extends CanBeReady {
         if (this.#config.bodyClass) {
             await this.getBody().then(([body]) =>
                 body.classList.add(
-                    ...classNames(this.#config.bodyClass).split(' ')
+                    ...className(this.#config.bodyClass).split(' ')
                 )
             );
         }

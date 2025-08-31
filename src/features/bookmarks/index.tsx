@@ -1,5 +1,4 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
-import classnames from 'classnames';
 import FeatureGroup from '@/FeatureGroup';
 import globalStyle from '!/index.module.scss';
 import { LLFG } from 'i18n';
@@ -234,7 +233,7 @@ const openAddModal = () => {
         type: 'SAVE_CANCEL',
         title: LL.add(),
         body: (
-            <form className={classnames('mform', style.form, style.editForm)}>
+            <form className={['mform', style.form, style.editForm]}>
                 <div className="fcontainer">
                     <b>{LL.modal.title()}</b>
                     <b>{LL.modal.url()}</b>
@@ -336,7 +335,7 @@ const openEditModal = () => {
         type: 'SAVE_CANCEL',
         title: LL.edit(),
         body: (
-            <form className={classnames('mform', style.form)}>
+            <form className={['mform', style.form]}>
                 {container}
                 {addBtn}
             </form>

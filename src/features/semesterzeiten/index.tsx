@@ -1,6 +1,5 @@
 import Block from '@/Block';
 import { BooleanSetting } from '@/Settings/BooleanSetting';
-import classnames from 'classnames';
 import FeatureGroup from '@/FeatureGroup';
 import { type Locales } from '../../i18n/i18n-types';
 import style from './style.module.scss';
@@ -103,9 +102,7 @@ const todaySpan = (
     <span className={style.todaySpan}>{dateToString()}</span>
 ) as HTMLSpanElement;
 const toggleTableBtn = (
-    <button
-        className={classnames('btn btn-link btn-sm p-0', style.tableToggle)}
-    >
+    <button className={['btn btn-link btn-sm p-0', style.tableToggle]}>
         <i className="icon fa fa-info-circle mr-0"></i>
     </button>
 ) as HTMLButtonElement;
@@ -289,10 +286,7 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
             bar.append(
                 <div
                     data-type={event.type}
-                    className={classnames(
-                        'progress-bar w-100, h-100',
-                        `bg-${color}`
-                    )}
+                    className={['progress-bar w-100, h-100', `bg-${color}`]}
                 ></div>
             );
         });
@@ -305,10 +299,10 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
     if (currentSemester) {
         progressBar.append(
             <div
-                className={classnames(
+                className={[
                     'progress-bar bg-transparent progress-bar-striped',
-                    style.progressOverlayBar
-                )}
+                    style.progressOverlayBar,
+                ]}
             ></div>
         );
     }

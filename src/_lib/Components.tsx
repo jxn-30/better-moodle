@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { FeatureGroupID } from './FeatureGroup';
 import { FeatureID } from './Feature';
 import globalStyle from '!/index.module.scss';
@@ -45,9 +44,11 @@ export const GithubLink = ({
     <a
         href={githubPath(path)}
         target="_blank"
-        className={classNames(className, {
-            [globalStyle.noExternalLinkIcon]: !externalIcon,
-        })}
+        className={[
+            // @ts-expect-error - className may not be iterable according to types
+            className,
+            { [globalStyle.noExternalLinkIcon]: !externalIcon },
+        ]}
         {...props}
     >
         {/* if icon */}
@@ -81,10 +82,8 @@ export const NavbarItem = ({
     ...props
 }: NavbarItemProps) => {
     const item = (
-        <div
-            className={classNames(className, globalStyle.navbarItem)}
-            {...props}
-        >
+        // @ts-expect-error - className may not be iterable according to types
+        <div className={[className, globalStyle.navbarItem]} {...props}>
             {children}
         </div>
     ) as NavbarItemComponent;
@@ -437,12 +436,7 @@ export const Slider = <
     );
 
     const Slider = (
-        <div
-            className={classNames(
-                'w-100 position-relative',
-                sliderStyle.sliderSetting
-            )}
-        >
+        <div className={['w-100 position-relative', sliderStyle.sliderSetting]}>
             {Input}
             {Output}
             {datalist}
