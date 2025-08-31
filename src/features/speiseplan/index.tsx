@@ -442,7 +442,7 @@ const openSpeiseplan = () => {
         title.after(
             <div
                 className="mx-auto px-2 d-flex flex-wrap"
-                style="column-gap: 5px;"
+                style={{ columnGap: '5px' }}
             >
                 {canteenSelection}
                 {languageSelection}
