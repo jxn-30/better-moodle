@@ -1,6 +1,5 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import type Canteens from './canteens';
-import type { Dish } from './speiseplan';
 import FeatureGroup from '@/FeatureGroup';
 import { FieldSet } from '@/Components';
 import globalStyle from '!/index.module.scss';
@@ -11,6 +10,7 @@ import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './style.module.scss';
 import { BETTER_MOODLE_LANG, languages, LLFG, LLMap } from 'i18n';
 import { currency, dateToString, timeToString, unit } from '@/localeString';
+import type { Dish, Speiseplan } from './speiseplan';
 import { getLoadingSpinner, ready } from '@/DOM';
 import { htmlToElements, mdToHtml } from '@/helpers';
 
@@ -153,6 +153,160 @@ const getCanteenUrls = () => {
     return { url, urlNextWeek };
 };
 
+interface DayProps {
+    speiseplan: Speiseplan;
+    day: Date;
+    dishes: Set<Dish>;
+    expanded: boolean;
+    co2InfoLink: HTMLAnchorElement;
+    lang: Locales;
+}
+interface DishProps {
+    dish: Dish;
+}
+
+/**
+ * A Component that is a fieldset with a table that contains the dishes of the day
+ * @param attributes - the component attributes
+ * @param attributes.speiseplan - the speiseplan
+ * @param attributes.day - the timestamp of day to create the fieldset for
+ * @param attributes.dishes - a set of the dishes of the day
+ * @param attributes.expanded - wether this fieldset should be expanded
+ * @param attributes.co2InfoLink - the element that links to more infos about CO₂
+ * @param attributes.lang - the speiseplan language
+ * @returns the fieldset
+ */
+const Day = ({
+    speiseplan,
+    day,
+    dishes,
+    expanded,
+    co2InfoLink,
+    lang,
+}: DayProps) => {
+    /**
+     * A Component that is the table row of a dish
+     * @param attributes -  the component attributes
+     * @param attributes.dish - the dish
+     * @returns a table row
+     */
+    const Dish = ({ dish }: DishProps) => (
+        <tr>
+            <td className="dish" dataset={{ location: dish.location }}>
+                {...dish.name.map(item => (
+                    <>
+                        {item.text}
+                        {item.info ?
+                            <>
+                                &nbsp;
+                                <span className="text-muted">
+                                    {item.info}
+                                </span>{' '}
+                            </>
+                        :   ''}
+                    </>
+                ))}
+                {dish.allergenes.length ?
+                    <>
+                        <br />
+                        <span className="text-muted small">
+                            (
+                            {dish.allergenes
+                                .map(
+                                    a =>
+                                        `${a}:\xa0${speiseplan.allergenes.get(a)}`
+                                )
+                                .join(', ')}
+                            )
+                        </span>
+                    </>
+                :   ''}
+                {dish.additives.length ?
+                    <>
+                        <br />
+                        <span className="text-muted small">
+                            (
+                            {dish.additives
+                                .map(
+                                    a =>
+                                        `${a}:\xa0${speiseplan.additives.get(a)}`
+                                )
+                                .join(', ')}
+                            )
+                        </span>
+                    </>
+                :   ''}
+            </td>
+            <td
+                className="co2-score"
+                dataset={{ stars: dish.co2 ? dish.co2.stars.toString() : '0' }}
+            >
+                {dish.co2 && dish.co2.emission ?
+                    unit(dish.co2.emission, 'gram', 'long', lang)
+                :   ''}
+            </td>
+            <td className="dish-types">
+                {...dish.types.map(t => {
+                    const dishType = speiseplan.types.get(t);
+                    if (!dishType?.icon) return t;
+                    return (
+                        <img
+                            src={dishType.icon.toString()}
+                            title={dishType.name}
+                            alt={dishType.name}
+                        />
+                    );
+                })}
+            </td>
+            <td>
+                {dish.prices
+                    .map(p => currency(p, 'EUR', 'symbol', lang))
+                    .join('\xa0/\xa0')}
+            </td>
+        </tr>
+    );
+
+    return (
+        <FieldSet
+            title={dateToString(day, false, true, getLang())}
+            collapsed={!expanded}
+        >
+            <table className={['table', style.table]}>
+                <thead>
+                    <tr>
+                        <th>{sLL().table.dish()}</th>
+                        <th>
+                            <span className="d-flex">
+                                {sLL().table.co2score()}
+                                &nbsp;
+                                {co2InfoLink}
+                            </span>
+                        </th>
+                        <th>{sLL().table.types()}</th>
+                        <th>
+                            {sLL().table.price()}
+                            &nbsp;
+                            <i
+                                className="icon fa fa-info-circle text-info fa-fw"
+                                dataset={{
+                                    toggle: 'tooltip',
+                                    placement: 'auto',
+                                }}
+                                title={speiseplan.prices.join(' / ')}
+                            ></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {...Array.from(
+                        dishes.values().map(dish => <Dish dish={dish}></Dish>)
+                    )}
+                </tbody>
+            </table>
+        </FieldSet>
+    );
+};
+
 /**
  * Gets the current speiseplan as HTML Elements
  * @returns the current speiseplan as HTML Elements
@@ -164,33 +318,24 @@ const getCurrentSpeiseplan = () => {
 
     desktopLink.href = mobileBtn.href = url;
 
-    /**
-     * Creates the elements that show the dishs nam
-     * @param name - the name
-     * @returns the elements
-     */
-    const getDishNameEls = (name: Dish['name']) =>
-        name.map(item => (
-            <>
-                {item.text}
-                {item.info ?
-                    <>
-                        &nbsp;
-                        <span className="text-muted">{item.info}</span>{' '}
-                    </>
-                :   ''}
-            </>
-        ));
-
     const co2InfoLink = {
         'de': 'https://studentenwerk.sh/de/co2-angaben',
         'en-gb': 'https://studentenwerk.sh/en/co2-data',
     }[lang];
-    const co2InfoLinkHtml = (
-        <a href={co2InfoLink} target="_blank">
-            {co2InfoLink}
+
+    const co2InfoLinkAnchor = (
+        <a
+            className={globalStyle.noExternalLinkIcon}
+            href={co2InfoLink}
+            target="_blank"
+        >
+            <i
+                className="icon fa fa-info-circle text-info fa-fw"
+                dataset={{ toggle: 'tooltip', placement: 'auto', html: 'true' }}
+                title={co2InfoLink}
+            ></i>
         </a>
-    ).outerHTML;
+    ) as HTMLAnchorElement;
 
     footerLinkWrapper.href = url;
 
@@ -222,146 +367,22 @@ const getCurrentSpeiseplan = () => {
             return speiseplan;
         })
         .then(speiseplan =>
-            speiseplan.dishes.entries().map(([day, dishes], index) => (
-                <FieldSet
-                    title={dateToString(day, false, true, lang)}
-                    collapsed={index !== expandedDay}
-                >
-                    <table className={['table', style.table]}>
-                        <thead>
-                            <tr>
-                                <th>{sLL().table.dish()}</th>
-                                <th>
-                                    <span className="d-flex">
-                                        {sLL().table.co2score()}
-                                        &nbsp;
-                                        <a
-                                            className={
-                                                globalStyle.noExternalLinkIcon
-                                            }
-                                            href={co2InfoLink}
-                                            target="_blank"
-                                        >
-                                            <i
-                                                className="icon fa fa-info-circle text-info fa-fw"
-                                                dataset={{
-                                                    toggle: 'tooltip',
-                                                    placement: 'auto',
-                                                    html: 'true',
-                                                }}
-                                                title={co2InfoLinkHtml}
-                                            ></i>
-                                        </a>
-                                    </span>
-                                </th>
-                                <th>{sLL().table.types()}</th>
-                                <th>
-                                    {sLL().table.price()}
-                                    &nbsp;
-                                    <i
-                                        className="icon fa fa-info-circle text-info fa-fw"
-                                        dataset={{
-                                            toggle: 'tooltip',
-                                            placement: 'auto',
-                                        }}
-                                        title={speiseplan.prices.join(' / ')}
-                                    ></i>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {...Array.from(
-                                dishes.values().map(dish => (
-                                    <tr>
-                                        <td
-                                            className="dish"
-                                            dataset={{
-                                                location: dish.location,
-                                            }}
-                                        >
-                                            {...getDishNameEls(dish.name)}
-                                            {dish.allergenes.length ?
-                                                <>
-                                                    <br />
-                                                    <span className="text-muted small">
-                                                        (
-                                                        {dish.allergenes
-                                                            .map(
-                                                                a =>
-                                                                    `${a}:\xa0${speiseplan.allergenes.get(a)}`
-                                                            )
-                                                            .join(', ')}
-                                                        )
-                                                    </span>
-                                                </>
-                                            :   ''}
-                                            {dish.additives.length ?
-                                                <>
-                                                    <br />
-                                                    <span className="text-muted small">
-                                                        (
-                                                        {dish.additives
-                                                            .map(
-                                                                a =>
-                                                                    `${a}:\xa0${speiseplan.additives.get(a)}`
-                                                            )
-                                                            .join(', ')}
-                                                        )
-                                                    </span>
-                                                </>
-                                            :   ''}
-                                        </td>
-                                        <td
-                                            className="co2-score"
-                                            dataset={{
-                                                stars:
-                                                    dish.co2 ?
-                                                        dish.co2.stars.toString()
-                                                    :   '0',
-                                            }}
-                                        >
-                                            {dish.co2 && dish.co2.emission ?
-                                                unit(
-                                                    dish.co2.emission,
-                                                    'gram',
-                                                    'long',
-                                                    lang
-                                                )
-                                            :   ''}
-                                        </td>
-                                        <td className="dish-types">
-                                            {...dish.types.map(t => {
-                                                const dishType =
-                                                    speiseplan.types.get(t);
-                                                if (!dishType?.icon) return t;
-                                                return (
-                                                    <img
-                                                        src={dishType.icon.toString()}
-                                                        title={dishType.name}
-                                                        alt={dishType.name}
-                                                    />
-                                                );
-                                            })}
-                                        </td>
-                                        <td>
-                                            {dish.prices
-                                                .map(p =>
-                                                    currency(
-                                                        p,
-                                                        'EUR',
-                                                        'symbol',
-                                                        lang
-                                                    )
-                                                )
-                                                .join('\xa0/\xa0')}
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                </FieldSet>
-            ))
+            speiseplan.dishes
+                .entries()
+                .map(([day, dishes], index) => (
+                    <Day
+                        speiseplan={speiseplan}
+                        day={day}
+                        dishes={dishes}
+                        expanded={index === expandedDay}
+                        co2InfoLink={
+                            co2InfoLinkAnchor.cloneNode(
+                                true
+                            ) as HTMLAnchorElement
+                        }
+                        lang={lang}
+                    ></Day>
+                ))
         );
 };
 
