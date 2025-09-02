@@ -41,10 +41,10 @@ const Tag = (tag: Tag) => (
     <span title={`${tags[tag]}: ${LL.settings.tags[tag]()}`}>{tags[tag]}</span>
 );
 
-interface SyncMessageType {
+interface SyncMessageType<T> {
     type: 'settingSync';
     key: string;
-    value: unknown;
+    value: T;
     tab: ReturnType<typeof crypto.randomUUID>;
 }
 
@@ -77,7 +77,6 @@ export default abstract class Setting<
 
     #conditionalDisabledStates = new Map<string, boolean>();
     #requiresReload = false;
-    #syncUpdatePending = false;
 
     protected migrator: Migrator<Type> | null = null;
 
@@ -101,7 +100,7 @@ export default abstract class Setting<
 
         syncingChannel.addEventListener(
             'message',
-            (event: MessageEvent<SyncMessageType>) => {
+            (event: MessageEvent<SyncMessageType<Type>>) => {
                 if (
                     event.data?.tab === tabId ||
                     event.data?.type !== 'settingSync' ||
@@ -111,15 +110,9 @@ export default abstract class Setting<
                     return;
                 }
 
-                this.#unsavedValue = event.data.value as Type;
-                this.savedValue = event.data.value as Type;
-
-                this.#syncUpdatePending = true;
-                if (this.#formControl) {
-                    this.#formControl.value = this.savedValue;
-                    this.#formControl.dispatchEvent(new Event('input'));
-                    this.#formControl.dispatchEvent(new Event('change'));
-                }
+                this.savedValue = event.data.value;
+                this.undo();
+                this.#formControl?.dispatchEvent(new Event('change'));
 
                 require(['core/toast'] as const, ({ add }) => {
                     if (this.#requiresReload) {
@@ -262,15 +255,12 @@ export default abstract class Setting<
      */
     set savedValue(newVal: Type) {
         GM_setValue(this.settingKey, newVal);
-        if (!this.#syncUpdatePending) {
-            syncingChannel.postMessage({
-                type: 'settingSync',
-                key: this.settingKey,
-                value: newVal,
-                tab: tabId,
-            } as const);
-        }
-        this.#syncUpdatePending = false;
+        syncingChannel.postMessage({
+            type: 'settingSync',
+            key: this.settingKey,
+            value: newVal,
+            tab: tabId,
+        } as const);
     }
 
     /**
