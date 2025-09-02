@@ -105,10 +105,22 @@ export default abstract class Setting<
                 if (
                     event.data?.tab === tabId ||
                     event.data?.type !== 'settingSync' ||
-                    event.data?.key !== this.settingKey
+                    event.data?.key !== this.settingKey ||
+                    event.data?.value === this.#unsavedValue
                 ) {
                     return;
                 }
+
+                this.#unsavedValue = event.data.value as Type;
+                this.savedValue = event.data.value as Type;
+
+                this.#syncUpdatePending = true;
+                if (this.#formControl) {
+                    this.#formControl.value = this.savedValue;
+                    this.#formControl.dispatchEvent(new Event('input'));
+                    this.#formControl.dispatchEvent(new Event('change'));
+                }
+
                 require(['core/toast'] as const, ({ add }) => {
                     if (this.#requiresReload) {
                         void add(
@@ -120,14 +132,7 @@ export default abstract class Setting<
                             { type: 'info', autohide: false, closeButton: true }
                         );
                     } else {
-                        this.#syncUpdatePending = true;
-                        this.savedValue = event.data.value as Type;
-                        if (this.#formControl) {
-                            this.#formControl.value = this.savedValue;
-                            this.#formControl.dispatchEvent(new Event('input'));
-                        }
-
-                        void add(LL.settings.sync(), {
+                        void add(LL.settings.sync({ name: this.title }), {
                             type: 'success',
                             autohide: true,
                         });

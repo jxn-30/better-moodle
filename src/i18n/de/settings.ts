@@ -16,7 +16,7 @@ export default {
     requireReload:
         'Die Änderungen dieser Einstellung (*{name: string}*) werden erst nach einem Neuladen der Seite übernommen.  \nDas Speichern der Einstellungen führt daher automatisch zu einem Neuladen der Seite.',
     saved: 'Alle Einstellungen wurden erfolgreich gespeichert und angewendet. Viel Spaß mit deinem individualisierten Better-Moodle! 😊',
-    sync: 'Deine Einstellungen wurden in einem anderen Tab geändert und wurden von dort übernommen.',
+    sync: 'Die Einstellung "{name: string}" wurde in einem anderen Tab geändert und von dort übernommen.',
     syncRequireReload:
         'Du hast eine Einstellung (*{name: string}*) in einem anderen Tab geändert, die ein Neuladen der Seite erfordern.  \nBitte lade die Seite neu, um diese Änderungen zu übernehmen.',
     tags: { fun: 'Spaßeinstellung' } satisfies Record<Tag, string>,
