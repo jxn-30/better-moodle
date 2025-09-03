@@ -42,61 +42,39 @@ const API_BASE = 'https://nina.api.proxy.bund.dev/api31';
 // The amtliche Regionalschlüssel has been extracted from https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json
 const ARS = __UNI__ === 'cau' ? '010020000000' : '010030000000';
 
-let broadcastChannel: BroadcastChannel | null = null;
-/**
- * Posts a message to the broadcast channel to disable the feature in other tabs.
- */
-const postDisableMessage = () => {
-    broadcastChannel?.postMessage('disableFeatureInOtherTabs');
-    reload();
-};
-
 // Define Settings
 const civilWarningsSetting = new SliderSetting('civilWarnings', 2, {
     min: 0,
     max: 3,
     step: 1,
     labels: ['off', 'extreme', 'severe', 'moderate'],
-})
-    .addAlias('nina.civilProtectionWarnings')
-    .onChange(postDisableMessage);
+}).addAlias('nina.civilProtectionWarnings');
 const policeWarningSetting = new SliderSetting('policeWarnings', 2, {
     min: 0,
     max: 3,
     step: 1,
     labels: ['off', 'extreme', 'severe', 'moderate'],
-}).onChange(postDisableMessage);
+});
 const weatherWarningsSetting = new SliderSetting('weatherWarnings', 2, {
     min: 0,
     max: 3,
     step: 1,
     labels: ['off', 'extreme', 'severe', 'moderate'],
-})
-    .addAlias('nina.weatherWarnings')
-    .onChange(postDisableMessage);
+}).addAlias('nina.weatherWarnings');
 const floodWarningsSetting = new SliderSetting('floodWarnings', 0, {
     min: 0,
     max: 1,
     step: 1,
     labels: ['off', 'all'],
-})
-    .addAlias('nina.floodWarnings', old => Number(old))
-    .onChange(postDisableMessage);
-const inAppNotifications = new BooleanSetting(
-    'inAppNotifications',
-    true
-).onChange(postDisableMessage);
-const desktopNotifications = new BooleanSetting('desktopNotifications', false)
-    .addAlias('nina.notification')
-    .onChange(postDisableMessage);
+}).addAlias('nina.floodWarnings', old => Number(old));
+const inAppNotifications = new BooleanSetting('inAppNotifications', true);
+const desktopNotifications = new BooleanSetting(
+    'desktopNotifications',
+    false
+).addAlias('nina.notification');
 
-const notifyUpdates = new BooleanSetting('notifyUpdates', false).onChange(
-    postDisableMessage
-);
-const notifyClearSignal = new BooleanSetting(
-    'notifyClearSignal',
-    true
-).onChange(postDisableMessage);
+const notifyUpdates = new BooleanSetting('notifyUpdates', false);
+const notifyClearSignal = new BooleanSetting('notifyClearSignal', true);
 
 // Handle alert caching
 /**
@@ -607,35 +585,11 @@ const requestAlerts = () =>
             }
             reloadAlertsModal();
         });
-/**
- * Disables the feature in the current tab.
- */
-const disableFeatureInTab = () => {
-    // Close the broadcast channel. There is no need for it to reopen as this is done
-    disabledByOtherTab = true;
-
-    broadcastChannel?.close();
-    broadcastChannel = null;
-    if (scheduledInterval !== null) {
-        clearInterval(scheduledInterval);
-    }
-};
 
 /**
  * Reloads the NINA feature.
  */
 const reload = () => {
-    broadcastChannel ??= new BroadcastChannel('better-moodle-nina');
-    /**
-     * Handles incoming messages from the broadcast channel.
-     * @param event - The message event.
-     */
-    broadcastChannel.onmessage = event => {
-        if (event.data === 'disableFeatureInOtherTabs') {
-            disableFeatureInTab();
-        }
-    };
-
     void requestAlerts();
     scheduledInterval ??= setInterval(
         () => void requestAlerts(),
