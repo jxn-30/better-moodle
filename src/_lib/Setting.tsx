@@ -41,16 +41,6 @@ const Tag = (tag: Tag) => (
     <span title={`${tags[tag]}: ${LL.settings.tags[tag]()}`}>{tags[tag]}</span>
 );
 
-interface SyncMessageType<T> {
-    type: 'settingSync';
-    key: string;
-    value: T;
-    tab: ReturnType<typeof crypto.randomUUID>;
-}
-
-const tabId = crypto.randomUUID();
-const syncingChannel = new BroadcastChannel('better-moodle-settings-sync');
-
 /**
  * A base class
  */
@@ -77,6 +67,7 @@ export default abstract class Setting<
 
     #conditionalDisabledStates = new Map<string, boolean>();
     #requiresReload = false;
+    #syncListener: ReturnType<typeof GM_addValueChangeListener> | null = null;
 
     protected migrator: Migrator<Type> | null = null;
 
@@ -98,42 +89,6 @@ export default abstract class Setting<
         this.#id = id;
         this.#default = this.#unsavedValue = defaultValue;
 
-        syncingChannel.addEventListener(
-            'message',
-            (event: MessageEvent<SyncMessageType<Type>>) => {
-                if (
-                    event.data?.tab === tabId ||
-                    event.data?.type !== 'settingSync' ||
-                    event.data?.key !== this.settingKey ||
-                    event.data?.value === this.#unsavedValue
-                ) {
-                    return;
-                }
-
-                this.savedValue = event.data.value;
-                this.undo();
-                this.#formControl?.dispatchEvent(new Event('change'));
-
-                require(['core/toast'] as const, ({ add }) => {
-                    if (this.#requiresReload) {
-                        void add(
-                            mdToHtml(
-                                LL.settings.syncRequireReload({
-                                    name: this.title,
-                                })
-                            ),
-                            { type: 'info', autohide: false, closeButton: true }
-                        );
-                    } else {
-                        void add(LL.settings.sync({ name: this.title }), {
-                            type: 'success',
-                            autohide: true,
-                        });
-                    }
-                });
-            }
-        );
-
         void this.callWhenReady(() => {
             this.#formControl = createComponent({
                 id: this.inputID,
@@ -151,6 +106,8 @@ export default abstract class Setting<
             // in V1, setting keys in storage were prefixed
             // this migrates the old storage key for this setting
             this.#migrateSettingStorage();
+
+            this.#addUpdateOnSync();
         });
     }
 
@@ -181,6 +138,40 @@ export default abstract class Setting<
             }
             GM_deleteValue(oldKey);
         }
+    }
+
+    /**
+     * Adds a listener to GM storage that applies settings changed in other tabs.
+     * Ensures that the listener is only added once.
+     */
+    #addUpdateOnSync() {
+        if (this.#syncListener) return;
+        this.#syncListener = GM_addValueChangeListener(
+            this.settingKey,
+            (_, __, ___, remote) => {
+                if (!remote) return;
+
+                this.undo();
+
+                require(['core/toast'] as const, ({ add }) => {
+                    if (this.#requiresReload) {
+                        void add(
+                            mdToHtml(
+                                LL.settings.syncRequireReload({
+                                    name: this.title,
+                                })
+                            ),
+                            { type: 'info', autohide: false, closeButton: true }
+                        );
+                    } else {
+                        void add(LL.settings.sync({ name: this.title }), {
+                            type: 'success',
+                            autohide: true,
+                        });
+                    }
+                });
+            }
+        );
     }
 
     /**
@@ -255,12 +246,6 @@ export default abstract class Setting<
      */
     set savedValue(newVal: Type) {
         GM_setValue(this.settingKey, newVal);
-        syncingChannel.postMessage({
-            type: 'settingSync',
-            key: this.settingKey,
-            value: newVal,
-            tab: tabId,
-        } as const);
     }
 
     /**
