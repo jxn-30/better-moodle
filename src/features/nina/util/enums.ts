@@ -13,6 +13,8 @@ export const enum SEVERITY {
     EXTREME = 'Extreme',
 }
 
+export const MAX_SEVERITY = SEVERITY.EXTREME;
+
 export const enum URGENCY {
     UNKNOWN = 'Unknown',
     PAST = 'Past',

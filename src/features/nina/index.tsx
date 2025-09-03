@@ -26,8 +26,8 @@ import {
     getCategoryLabel,
     getSeverityEmoji,
     getSeverityLabel,
+    MAX_SEVERITY,
     MESSAGE_TYPE,
-    SEVERITY,
     severityToNumber,
     URGENCY,
 } from './util/enums';
@@ -355,6 +355,10 @@ const sendAlertNotification = (alert: Alert) =>
         const isUpdate = alert.msgType === MESSAGE_TYPE.UPDATE;
         const isCancel = alert.msgType === MESSAGE_TYPE.CANCEL;
 
+        const wasNotified = getAlertReferences(alert).some(
+            ref => alertCache[ref.alertId].notified
+        );
+
         if (
             !isEnabled() ||
             urgency !== URGENCY.PAST ||
@@ -370,9 +374,10 @@ const sendAlertNotification = (alert: Alert) =>
                         return floodWarningsSetting.value;
                 }
             })(provCat) >
-                severity - severityToNumber(SEVERITY.EXTREME) ||
-            (isUpdate && !notifyUpdates.value) || // TODO: send update anyways if previous alert not was notified
-            (isCancel && !notifyClearSignal.value) // TODO: send cancel only if previous alert was notified
+                severity - severityToNumber(MAX_SEVERITY) ||
+            (isUpdate && !notifyUpdates.value && wasNotified) ||
+            (isCancel && !notifyClearSignal.value) ||
+            (isCancel && !wasNotified)
         ) {
             return;
         }
@@ -512,28 +517,40 @@ const requestAlerts = () =>
         .then(resp => resp.value)
         .then(updateCachedActiveAlerts)
         .then(getCachedActiveAlerts)
-        .then(
-            alertCache =>
-                [
-                    alertCache,
-                    Object.keys(alertCache).filter(
-                        id => !alertCache[id].referenceOnly
-                    ),
-                ] as const
-        )
-        .then(([alertCache, alertIds]) => {
+        .then(async alertCache => {
+            // Get alertIds that have not been referenced yet
+            const alertIds = Object.keys(alertCache).filter(
+                id => !alertCache[id].referenceOnly
+            );
+
             // Display navbar item if there are any alerts
             void (alertIds.length > 0 ?
                 alertsNavItem.put()
             :   alertsNavItem.remove());
-            return [alertCache, alertIds] as const;
-        })
-        .then(([alertCache, alertIds]) =>
-            Promise.all(alertIds.map(getAlert))
-                .then(alertResponses => alertResponses.map(resp => resp.value))
-                .then(alerts => [alertCache, alerts] as const)
-        )
-        .then(([alertCache, alerts]) => {
+
+            // Fetch alert details
+            const alertResponses = await Promise.all(alertIds.map(getAlert));
+            const alerts = alertResponses.map(resp => resp.value);
+
+            // Sort alerts by seen, severity
+            alerts.sort((a, b) => {
+                const seenA = alertCache[a.identifier].seen;
+                const seenB = alertCache[b.identifier].seen;
+                const severityA = getAlertInfoAttribute(a, 'severity')!;
+                const severityB = getAlertInfoAttribute(b, 'severity')!;
+                if (seenA !== seenB) {
+                    return seenA ? 1 : -1;
+                }
+                if (severityA !== severityB) {
+                    return (
+                        severityToNumber(severityA) -
+                        severityToNumber(severityB)
+                    );
+                }
+                return 0;
+            });
+
+            // Handle the alerts
             alerts.forEach(alert => {
                 sendAlertNotification(alert);
             });
