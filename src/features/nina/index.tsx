@@ -1,8 +1,10 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
+import { dateToString } from '@/localeString';
 import FeatureGroup from '@/FeatureGroup';
 import { getHtml } from '@/DOM';
 import globalStyle from '!/index.module.scss';
 import { JSX } from 'jsx-dom/jsx-runtime';
+import { LLFG } from 'i18n';
 import { Modal } from '@/Modal';
 import { requirePromise } from '@/require.js';
 import { SliderSetting } from '@/Settings/SliderSetting';
@@ -19,7 +21,6 @@ import {
     getProviderLabel,
     providerById,
 } from './util/utils';
-import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
 import { cachedRequest, type NetworkResponseType } from '@/network';
 import {
     getCategoryLabel,
@@ -209,9 +210,7 @@ const showAlertDetailsModal = (alertId: string) => {
             );
 
             // Body
-            const sent = new Date(alert.sent).toLocaleString(
-                BETTER_MOODLE_LANG
-            );
+            const sent = dateToString(new Date(alert.sent));
             alertBodyElem.append(
                 <span className="small text-muted">
                     {LL.modal.sentAt()}: {sent}
@@ -224,9 +223,9 @@ const showAlertDetailsModal = (alertId: string) => {
             if (onset && expires) {
                 alertBodyElem.append(
                     <span className="small text-muted">
-                        {new Date(onset).toLocaleString(BETTER_MOODLE_LANG)}
+                        {dateToString(new Date(onset))}
                         {' - '}
-                        {new Date(expires).toLocaleString(BETTER_MOODLE_LANG)}
+                        {dateToString(new Date(expires))}
                     </span>,
                     <br />
                 );
