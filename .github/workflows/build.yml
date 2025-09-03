@@ -31,6 +31,7 @@ jobs:
             line_uzl: ${{ steps.output.outputs.build_uzl }}
             line_cau: ${{ steps.output.outputs.build_cau }}
             line_sandbox405: ${{ steps.output.outputs.build_sandbox405 }}
+            line_moodlemootdach: ${{ steps.output.outputs.build_moodlemootdach }}
         steps:
             - name: 🐙 Install GitHub CLI
               shell: bash
@@ -280,6 +281,6 @@ jobs:
                       ${{ needs.build.outputs.line_uzl }}
                       ${{ needs.build.outputs.line_cau }}
                       ${{ needs.build.outputs.line_sandbox405 }}
-                      ${{ needs.build.outputs.moodlemootdach }}
+                      ${{ needs.build.outputs.line_moodlemootdach }}
                   app-id: ${{ secrets.CI_APP }}
                   app-pat: ${{ secrets.CI_PAT }}
