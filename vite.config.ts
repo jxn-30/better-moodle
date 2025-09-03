@@ -28,6 +28,8 @@ const configFile =
 
 if (configFile instanceof Error) throw configFile;
 
+const isReleaseBuild = process.argv.some(arg => arg === '--release');
+
 const config = JSON.parse(
     await fs.readFile(`./configs/${configFile}.json`, 'utf-8')
 ) as Config;
@@ -213,15 +215,28 @@ dotenv.populate(process.env, {
 
 const requires: string[] = [];
 
-if (allIncludedFeatureGroups.has('darkmode')) {
+/**
+ * Adds an URL to the @require list, optionally with hash
+ * @param url - the url to use
+ * @param hashContent - the content to create the hash of
+ */
+const addRequire = (url: string, hashContent: false | string | Buffer) => {
+    if (!hashContent) {
+        requires.push(url);
+        return;
+    }
+
     requires.push(
-        `https://unpkg.com/darkreader@${dependencies.darkreader}/darkreader.js#sha512=${createHash(
-            'sha512'
-        )
-            .update(
-                await fs.readFile('./node_modules/darkreader/darkreader.js')
-            )
+        `${url}#sha512=${createHash('sha512')
+            .update(hashContent)
             .digest('hex')}`
+    );
+};
+
+if (allIncludedFeatureGroups.has('darkmode')) {
+    addRequire(
+        `https://unpkg.com/darkreader@${dependencies.darkreader}/darkreader.js`,
+        await fs.readFile('./node_modules/darkreader/darkreader.js')
     );
 }
 
@@ -561,19 +576,10 @@ export default defineConfig({
                     // this would cause e.g. that Moodles global `M` would not be useable without using
                     // `unsafeWindow.M` as the core-js resource would have overwritten `M` in the userscripts scope.
                     const outputSrc = `(() => {${chunkOrAsset.code}})();`;
-                    requires.push(
-                        `${githubUrl}/releases/download/${version}/${outputFileName}`
+                    addRequire(
+                        `${githubUrl}/releases/download/${version}/${outputFileName}`,
+                        isReleaseBuild ? outputSrc : false
                     );
-                    // TODO: How do we want to ensure subresource-integrity in combination with release versions?
-                    // Currently after a change of target-browsers or a core-js update, loading the polyfills
-                    // would fail for locally developed versions / commit-builds.
-                    // Thus we're currently omitting the hash although this does not feel good!
-                    /*#sha512=${createHash(
-                            'sha512'
-                        )
-                            .update(outputSrc)
-                            .digest('hex')}`
-                    );*/
 
                     this.emitFile({
                         type: 'asset',

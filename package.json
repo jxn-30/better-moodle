@@ -16,6 +16,7 @@
         "dev": "vite",
         "prebuild": "yarn i18n:once && tsc",
         "build": "yarn prebuild && vite build -- --config=${0} && yarn postbuild",
+        "release-build": "yarn prebuild && vite build -- --config=${0} --release && yarn postbuild",
         "build:uzl": "yarn build uzl",
         "build:cau": "yarn build cau",
         "postbuild": "yarn prettier:dist && yarn lint:fix:dist && yarn prettier:dist",
