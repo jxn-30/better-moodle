@@ -166,7 +166,7 @@
     :local(#settings-footer-btns) > :where(button, a) {
         // some special style needed for the settings modal footer: show button text only on hover
         @include mixins.media-up(lg) {
-            @media (prefers-reduced-motion: no-preference) {
+            @include mixins.animated {
                 > span {
                     font-size: 0;
                     transition: font-size 0.5s;

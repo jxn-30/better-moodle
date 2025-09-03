@@ -4,6 +4,12 @@
 @use 'sass:map';
 @use 'variables' as *;
 
+@mixin animated {
+    @media (prefers-reduced-motion: no-preference) {
+        @content;
+    }
+}
+
 @mixin darkmode {
     $s: #{if(&, '&', '')};
 

@@ -29,7 +29,7 @@ $estimated-marquee-height: 25px;
             opacity: 0;
             pointer-events: none;
         }
-        @media (prefers-reduced-motion: no-preference) {
+        @include mixins.animated {
             transition:
                 top 0.2s ease-in-out,
                 opacity 0.2s ease-in-out;
