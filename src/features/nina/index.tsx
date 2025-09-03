@@ -502,9 +502,7 @@ const reloadAlertsModal = (): void =>
             .slice(0, -1)
     );
 
-// TODO: NodeJS no-undef
-// eslint-disable-next-line no-undef
-let scheduledInterval: NodeJS.Timeout | null = null;
+let scheduledInterval: ReturnType<typeof setTimeout> | null = null;
 
 /**
  * Requests alerts from the NINA API.
