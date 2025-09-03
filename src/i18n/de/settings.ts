@@ -18,6 +18,6 @@ export default {
     saved: 'Alle Einstellungen wurden erfolgreich gespeichert und angewendet. Viel Spaß mit deinem individualisierten Better-Moodle! 😊',
     sync: 'Die Einstellung "{name: string}" wurde in einem anderen Tab geändert und von dort übernommen.',
     syncRequireReload:
-        'Du hast eine Einstellung (*{name: string}*) in einem anderen Tab geändert, die ein Neuladen der Seite erfordern.  \nBitte lade die Seite neu, um diese Änderungen zu übernehmen.',
+        'Du hast eine Einstellung (*{name: string}*) in einem anderen Tab geändert, die ein Neuladen der Seite erfordert.  \nBitte lade die Seite neu, um diese Änderungen zu übernehmen.',
     tags: { fun: 'Spaßeinstellung' } satisfies Record<Tag, string>,
 } satisfies BaseTranslation;
