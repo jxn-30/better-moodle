@@ -19,7 +19,7 @@ import {
     PREFIX,
     rawGithubPath,
 } from '@/helpers';
-import { FIVE_MINUTES, ONE_DAY, ONE_SECOND } from '@/times';
+import { FIVE_MINUTES, ONE_DAY, ONE_MINUTE, ONE_SECOND } from '@/times';
 import { GithubLink, NavbarItem, type NavbarItemComponent } from '@/Components';
 import {
     highlightNewSettings as highlightNewSettingsSetting,
@@ -204,6 +204,8 @@ UpdateBtn.addEventListener('click', e => {
         .show();
 });
 
+let updateCheckRetryTimeout: ReturnType<(typeof window)['setTimeout']> | null;
+
 /**
  * Checks if there is a newer version of Better-Moodle available.
  * If yes, an update button is added to settings modal.
@@ -225,11 +227,18 @@ const checkForUpdates = () =>
         )
         .then(res => res.json())
         .then(({ tag_name: latestVersion }: { tag_name: string }) => {
+            if (!latestVersion) {
+                throw new Error(
+                    `It is unlikely that ${JSON.stringify(latestVersion)} is the latest version. Aborting update check, please try again in a minute.`
+                );
+            }
+
             latestVersionEl.replaceChildren(latestVersion);
 
             return semverLt(GM_info.script.version, latestVersion);
         })
         .then(updateAvailable => {
+            updateCheckRetryTimeout = null;
             if (!updateAvailable) {
                 UpdateAvailableBadge.remove();
                 return;
@@ -242,6 +251,12 @@ const checkForUpdates = () =>
                     .getElementById(settingsStyle.openSettingsBtn)
                     ?.append(UpdateAvailableBadge);
             } else UpdateAvailableBadge.remove();
+        })
+        .catch(() => {
+            updateCheckRetryTimeout ??= setTimeout(
+                () => void checkForUpdates(),
+                ONE_MINUTE
+            );
         });
 
 void checkForUpdates();
