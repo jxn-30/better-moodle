@@ -38,7 +38,7 @@
     "devDependencies": {
         "@actions/core": "1.11.1",
         "@babel/compat-data": "7.28.0",
-        "@cloudflare/workers-types": "4.20250831.0",
+        "@cloudflare/workers-types": "4.20250903.0",
         "@commitlint/cli": "19.8.1",
         "@commitlint/config-conventional": "19.8.1",
         "@eslint/js": "9.34.0",
@@ -68,7 +68,7 @@
         "eslint": "9.34.0",
         "eslint-config-prettier": "10.1.8",
         "eslint-plugin-es-x": "9.1.0",
-        "eslint-plugin-jsdoc": "54.1.1",
+        "eslint-plugin-jsdoc": "54.3.0",
         "eslint-plugin-jsx-a11y": "6.10.2",
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
@@ -84,18 +84,18 @@
         "prettier": "3.6.2",
         "puppeteer": "24.18.0",
         "rrule": "2.8.1",
-        "sass-embedded": "1.91.0",
-        "terser": "5.43.1",
+        "sass-embedded": "1.92.0",
+        "terser": "5.44.0",
         "ts-json-schema-generator": "2.4.0",
         "ts-node": "10.9.2",
         "typescript": "5.9.2",
-        "typescript-eslint": "8.41.0",
+        "typescript-eslint": "8.42.0",
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
         "vite": "7.1.4",
         "vite-plugin-monkey": "7.1.2",
         "vitest": "3.2.4",
-        "wrangler": "4.33.1"
+        "wrangler": "4.33.2"
     },
     "engines": {
         "node": "^22.19.0"
