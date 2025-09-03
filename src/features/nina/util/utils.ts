@@ -189,8 +189,7 @@ export const getAlertInfoParameter = (
 export const getAlertTitle = (alert: Alert) => {
     return (
         getAlertInfoAttribute(alert, 'headline') ??
-        getAlertInfoAttribute(alert, 'event') ??
-        '' // TODO: what to return in this case???
+        getAlertInfoAttribute(alert, 'event')!
     );
 };
 
