@@ -20,6 +20,7 @@ import {
     getProviderIcon,
     getProviderLabel,
     providerById,
+    providerCategoryType,
 } from './util/utils';
 import { cachedRequest, type NetworkResponseType } from '@/network';
 import {
@@ -90,13 +91,13 @@ const getCachedActiveAlerts = () => {
  * @param alerts - The active alerts to cache.
  * @returns A promise that resolves when the alerts have been cached.
  */
-const updateCachedActiveAlerts = (alerts: (Alert | AlertSummary)[]) =>
+const updateCachedActiveAlerts = (alerts: Alert[]) =>
     navigator.locks.request(LOCK_NAME, () => {
         const oldAlertCache: AlertCache = getCachedActiveAlerts();
         const newAlertCache: AlertCache = {};
 
         alerts.forEach(alert => {
-            const alertId = 'identifier' in alert ? alert.identifier : alert.id;
+            const alertId = alert.identifier;
 
             newAlertCache[alertId] = {
                 notified: oldAlertCache[alertId]?.notified ?? false,
@@ -105,20 +106,18 @@ const updateCachedActiveAlerts = (alerts: (Alert | AlertSummary)[]) =>
             };
 
             // Referenced alerts should also be added to the cache, but as reference only
-            if ('references' in alert) {
-                getAlertReferences(alert).forEach(ref => {
-                    newAlertCache[ref.alertId] = {
-                        notified:
-                            oldAlertCache[ref.alertId]?.notified ??
-                            newAlertCache[alert.identifier].notified,
-                        seen:
-                            oldAlertCache[ref.alertId]?.seen ??
-                            newAlertCache[alert.identifier].seen,
-                        referenceOnly:
-                            newAlertCache[ref.alertId]?.referenceOnly ?? true,
-                    };
-                });
-            }
+            getAlertReferences(alert).forEach(ref => {
+                newAlertCache[ref.alertId] = {
+                    notified:
+                        oldAlertCache[ref.alertId]?.notified ??
+                        newAlertCache[alert.identifier].notified,
+                    seen:
+                        oldAlertCache[ref.alertId]?.seen ??
+                        newAlertCache[alert.identifier].seen,
+                    referenceOnly:
+                        newAlertCache[ref.alertId]?.referenceOnly ?? true,
+                };
+            });
         });
 
         GM_setValue(CACHE_KEY, newAlertCache);
@@ -193,17 +192,22 @@ const showAlertDetailsModal = (alertId: string) => {
         .then(alert => {
             const provider = providerById(alert.identifier);
 
+            const isCancel = alert.msgType === MESSAGE_TYPE.CANCEL;
+
             // Title
             const severity = getAlertInfoAttribute(alert, 'severity')!;
             alertTitleElem.append(
                 <>
                     <span
                         dataset={{
-                            originalTitle: getSeverityLabel(severity, provider),
+                            originalTitle:
+                                isCancel ?
+                                    LL.msgType.cancel()
+                                :   getSeverityLabel(severity, provider),
                             toggle: 'tooltip',
                         }}
                     >
-                        {getSeverityEmoji(severity)}
+                        {isCancel ? '✖️' : getSeverityEmoji(severity)}
                     </span>{' '}
                     <span>{getAlertTitle(alert)}</span>
                 </>
@@ -322,6 +326,27 @@ const showAlertDetailsModal = (alertId: string) => {
 };
 
 /**
+ * Checks if the severity is in the user's preferences.
+ * @param sevNum - severity as number
+ * @param provCat - provider category
+ * @returns true if the severity is in the user's preferences
+ */
+const severityInPreferences = (sevNum: number, provCat: providerCategoryType) =>
+    (provCat => {
+        switch (provCat) {
+            case 'civilProtection':
+                return civilWarningsSetting.value;
+            case 'police':
+                return policeWarningSetting.value;
+            case 'weather':
+                return weatherWarningsSetting.value;
+            case 'flood':
+                return floodWarningsSetting.value;
+        }
+    })(provCat) >
+    severityToNumber(MAX_SEVERITY) - sevNum;
+
+/**
  * Sends a notification for a specific alert.
  * @param alert - The alert to send a notification for.
  * @returns A promise that resolves when the notification has been sent.
@@ -361,20 +386,8 @@ const sendAlertNotification = (alert: Alert) =>
 
         if (
             !isEnabled() ||
-            urgency !== URGENCY.PAST ||
-            (provCat => {
-                switch (provCat) {
-                    case 'civilProtection':
-                        return civilWarningsSetting.value;
-                    case 'police':
-                        return policeWarningSetting.value;
-                    case 'weather':
-                        return weatherWarningsSetting.value;
-                    case 'flood':
-                        return floodWarningsSetting.value;
-                }
-            })(provCat) >
-                severity - severityToNumber(MAX_SEVERITY) ||
+            urgency === URGENCY.PAST ||
+            !severityInPreferences(severity, provCat) ||
             (isUpdate && !notifyUpdates.value && wasNotified) ||
             (isCancel && !notifyClearSignal.value) ||
             (isCancel && !wasNotified)
@@ -515,22 +528,31 @@ let scheduledInterval: ReturnType<typeof setTimeout> | null = null;
 const requestAlerts = () =>
     getAlerts()
         .then(resp => resp.value)
-        .then(updateCachedActiveAlerts)
-        .then(getCachedActiveAlerts)
-        .then(async alertCache => {
-            // Get alertIds that have not been referenced yet
-            const alertIds = Object.keys(alertCache).filter(
-                id => !alertCache[id].referenceOnly
-            );
+        .then(alertSummaries => alertSummaries.map(s => s.id))
+        .then(async alertIds => {
+            // Fetch alert details
+            const alertResponses = await Promise.all(alertIds.map(getAlert));
+            const alerts = alertResponses
+                .map(resp => resp.value)
+                .filter(
+                    alert =>
+                        severityInPreferences(
+                            severityToNumber(
+                                getAlertInfoAttribute(alert, 'severity')!
+                            ),
+                            getProviderCategory(providerById(alert.identifier))
+                        ) &&
+                        (alert.msgType !== MESSAGE_TYPE.CANCEL ||
+                            notifyClearSignal.value)
+                );
 
             // Display navbar item if there are any alerts
-            void (alertIds.length > 0 ?
+            void (alerts.length > 0 ?
                 alertsNavItem.put()
             :   alertsNavItem.remove());
 
-            // Fetch alert details
-            const alertResponses = await Promise.all(alertIds.map(getAlert));
-            const alerts = alertResponses.map(resp => resp.value);
+            await updateCachedActiveAlerts(alerts);
+            const alertCache = getCachedActiveAlerts();
 
             // Sort alerts by seen, severity
             alerts.sort((a, b) => {
@@ -560,20 +582,25 @@ const requestAlerts = () =>
                 const provider = providerById(alertId);
                 const shortDescription = shortenAlertDescription(alert);
 
+                const isCancel = alert.msgType === MESSAGE_TYPE.CANCEL;
+
                 const seen = alertCache[alertId].seen;
                 return (
                     <div className={`card p-3 ${!seen ? style.unseen : ''}`}>
                         <h5>
                             <span
                                 dataset={{
-                                    originalTitle: getSeverityLabel(
-                                        severity,
-                                        provider
-                                    ),
+                                    originalTitle:
+                                        isCancel ?
+                                            LL.msgType.cancel()
+                                        :   getSeverityLabel(
+                                                severity,
+                                                provider
+                                            ),
                                     toggle: 'tooltip',
                                 }}
                             >
-                                {getSeverityEmoji(severity)}
+                                {isCancel ? '✖️' : getSeverityEmoji(severity)}
                             </span>{' '}
                             {getAlertTitle(alert)}
                         </h5>
