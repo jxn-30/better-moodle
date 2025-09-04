@@ -4,6 +4,9 @@ inputs:
     config:
         description: The config to build with
         required: true
+    release:
+        description: Wether to create a release build
+        required: false
 
 runs:
     using: composite
@@ -12,7 +15,13 @@ runs:
           uses: ./.github/actions/setup
 
         - name: 🏗️ build Better-Moodle for ${{ inputs.config }}
+          if: ${{ !inputs.release }}
           run: yarn build ${{ inputs.config }}
+          shell: bash
+
+        - name: 🏗️  release-build Better-Moodle for ${{ inputs.config }}
+          if: ${{ inputs.release }}
+          run: yarn release-build ${{ inputs.config }}
           shell: bash
 
         - name: 📤️ upload build
