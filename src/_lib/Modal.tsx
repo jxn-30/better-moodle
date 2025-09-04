@@ -244,7 +244,9 @@ export class Modal extends CanBeReady {
      * @returns the body element of the modal
      */
     getBody() {
-        return this.callWhenReady(() => this.#modal!.getBody());
+        const {promise, resolve, reject } = Promise.withResolvers<JQuery<HTMLDivElement>>();
+        this.callWhenReady(async () => await this.#modal!.getBodyPromise().then(resolve, reject));
+        return promise
     }
 
     /**
