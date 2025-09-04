@@ -602,6 +602,11 @@ const requestAlerts = () =>
                             </span>{' '}
                             {getAlertTitle(alert)}
                         </h5>
+                        <span className="small text-muted">
+                            {LL.modal.sentAt()}:{' '}
+                            {dateToString(new Date(alert.sent))}
+                        </span>
+                        <br />
                         <p>{shortDescription}</p>
                         <div className="small">
                             <a
