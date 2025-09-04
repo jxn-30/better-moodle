@@ -65,19 +65,21 @@ const providerIconEndpoint = 'https://nina.api.proxy.bund.dev/assets/icons/';
  * @param canceling - Whether the alert is a CANCEL alert.
  * @returns The icon URL for the provider.
  */
-export const getProviderIcon = (provider: providerType, canceling = false) =>
-    `${providerIconEndpoint}${(() => {
-        switch (getProviderCategory(provider)) {
-            case 'civilProtection':
-                return !canceling ? 'report_mowas' : 'report_mowas_all_clear';
-            case 'police':
-                return !canceling ? 'polizei_rund' : 'report_polizei_all_clear';
-            case 'weather':
-                return 'report_unwetterwarnung';
-            case 'flood':
-                return 'report_hochwasser';
-        }
-    })()}.svg`;
+export const getProviderIcon = (provider: providerType, canceling = false) => {
+    const providerCategory = getProviderCategory(provider);
+    const filename =
+        providerCategory === 'civilProtection' ?
+            !canceling ? 'report_mowas'
+            :   'report_mowas_all_clear'
+        : providerCategory === 'police' ?
+            !canceling ? 'polizei_rund'
+            :   'report_polizei_all_clear'
+        : providerCategory === 'weather' ? 'report_unwetterwarnung'
+        : providerCategory === 'flood' ? 'report_hochwasser'
+        : '';
+
+    return `${providerIconEndpoint}${filename}.svg`;
+};
 
 /**
  * Gets an attribute from the alert info with language fallback (current language, then language prefix, then first available)

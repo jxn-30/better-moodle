@@ -328,23 +328,21 @@ const showAlertDetailsModal = (alertId: string) => {
 /**
  * Checks if the severity is in the user's preferences.
  * @param sevNum - severity as number
- * @param provCat - provider category
+ * @param providerCategory - provider category
  * @returns true if the severity is in the user's preferences
  */
-const severityInPreferences = (sevNum: number, provCat: providerCategoryType) =>
-    (provCat => {
-        switch (provCat) {
-            case 'civilProtection':
-                return civilWarningsSetting.value;
-            case 'police':
-                return policeWarningSetting.value;
-            case 'weather':
-                return weatherWarningsSetting.value;
-            case 'flood':
-                return floodWarningsSetting.value;
-        }
-    })(provCat) >
-    severityToNumber(MAX_SEVERITY) - sevNum;
+const severityInPreferences = (
+    sevNum: number,
+    providerCategory: providerCategoryType
+) => {
+    const providerSetting =
+        providerCategory === 'civilProtection' ? civilWarningsSetting
+        : providerCategory === 'police' ? policeWarningSetting
+        : providerCategory === 'weather' ? weatherWarningsSetting
+        : floodWarningsSetting;
+
+    return providerSetting.value > severityToNumber(MAX_SEVERITY) - sevNum;
+};
 
 /**
  * Sends a notification for a specific alert.
