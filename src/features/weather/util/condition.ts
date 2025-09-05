@@ -222,7 +222,7 @@ const i18nEn = {
     [WeatherCondition.HEAVY_SNOW]: 'Heavy snow',
 
     [WeatherCondition.LIGHT_RAIN]: 'Light rain',
-    [WeatherCondition.MODERATE_RAIN]: 'Regen',
+    [WeatherCondition.MODERATE_RAIN]: 'Rain',
     [WeatherCondition.HEAVY_RAIN]: 'Heavy rain',
 
     [WeatherCondition.LIGHT_DRIZZLE]: 'Light drizzle',
@@ -244,19 +244,19 @@ const i18nEn = {
     [WeatherCondition.HEAVY_FREEZING_DRIZZLE]: 'Heavy freezing drizzle',
 
     [WeatherCondition.LIGHT_RAIN_SHOWERS]: 'Light rain showers',
-    [WeatherCondition.MODERATE_RAIN_SHOWERS]: 'Rain showes',
+    [WeatherCondition.MODERATE_RAIN_SHOWERS]: 'Rain showers',
     [WeatherCondition.HEAVY_RAIN_SHOWERS]: 'Heavy rain showers',
 
     [WeatherCondition.LIGHT_SLEET_SHOWERS]: 'Light sleet showers',
-    [WeatherCondition.MODERATE_SLEET_SHOWERS]: 'Sleet showes',
+    [WeatherCondition.MODERATE_SLEET_SHOWERS]: 'Sleet showers',
 
     [WeatherCondition.LIGHT_DRIZZLE_SHOWERS]: 'Light drizzle showers',
     [WeatherCondition.MODERATE_DRIZZLE_SHOWERS]: 'Drizzle showers',
     [WeatherCondition.HEAVY_DRIZZLE_SHOWERS]: 'Heavy drizzle showers',
 
-    [WeatherCondition.LIGHT_SNOW_SHOWERS]: 'Light snow showes',
+    [WeatherCondition.LIGHT_SNOW_SHOWERS]: 'Light snow showers',
     [WeatherCondition.MODERATE_SNOW_SHOWERS]: 'Snow showers',
-    [WeatherCondition.HEAVY_SNOW_SHOWERS]: 'Heaby snow showers',
+    [WeatherCondition.HEAVY_SNOW_SHOWERS]: 'Heavy snow showers',
 
     [WeatherCondition.LIGHT_HAIL_SHOWERS]: 'Light hail shower',
     [WeatherCondition.MODERATE_HAIL_SHOWERS]: 'Hail shower',

@@ -165,7 +165,7 @@ export const en = {
         civilWarnings: {
             name: 'Civil protection warnings',
             description:
-                'Here you can set the warning lebel from which you want to receive a notification.',
+                'Here you can set the warning level from which you want to receive a notification.',
             labels: {
                 off: 'Never',
                 extreme: 'Extreme danger',
