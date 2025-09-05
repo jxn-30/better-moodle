@@ -1,7 +1,7 @@
 import { getSettingKey, isNewInstallation } from '@/helpers';
 
 const STORAGE_VERSION_KEY = 'storageVersion';
-const CURRENT_STORAGE_VERSION = 2;
+const CURRENT_STORAGE_VERSION = 2.1;
 
 export const STORAGE_V2_SEEN_SETTINGS_KEY = 'seenSettings';
 export const STORAGE_V2_LANGUAGE_KEY = getSettingKey('general.language');
@@ -32,7 +32,8 @@ const getAndDelete = <Type>(key: string, defaultValue?: Type) => {
     // features will also migrate their storage themselfes. This is only for core storage keys
 
     // migration to storage version 2
-    if (oldStorageVersion < 2) {
+    // we use 2.1 here to allow full cleanup at beta testers
+    if (oldStorageVersion < 2.1) {
         // Storage that remembers which settings have already been seen. Setting keys are not migrated here as settings are not initialized yet
         const oldSeenSettings = getAndDelete<string[]>(
             'better-moodle-seen-settings',
