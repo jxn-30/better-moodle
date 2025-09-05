@@ -1,10 +1,12 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
+import * as prettier from 'prettier';
 import boxen from 'boxen';
 import browserslist from 'browserslist';
 import type Config from './configs/_config';
 import { createHash } from 'crypto';
 import dotenv from 'dotenv';
+import { ESLint } from 'eslint';
 import fastGlob from 'fast-glob';
 import globalConfig from './configs/_global.json';
 import icsParserConfig from './ics-parser/wrangler.json';
@@ -378,6 +380,50 @@ const i18nResolver: ResolverFunction = (source, importer) => {
     return undefined;
 };
 
+const distPrettierConfig = await prettier.resolveConfig('dist');
+/**
+ * Runs prettier with dist config on a given source code
+ * @param code - the source
+ * @param path - the filename used to determine the parser
+ * @returns a promise with the prettified source
+ */
+const distPrettier = (code: string, path: string) =>
+    prettier.format(code, {
+        ...distPrettierConfig,
+        printWidth: 120,
+        tabWidth: 2,
+        filepath: path,
+    });
+
+const eslintDist = new ESLint({
+    overrideConfigFile: 'eslint.userscript.config.js',
+    fix: true,
+});
+/**
+ * Runs ESLint with dist config on a given source code
+ * @param code - the source
+ * @param path - the filename used to determine the parser
+ * @returns a promise with the linting result
+ */
+const distLint = (code: string, path: string) =>
+    eslintDist.lintText(code, { filePath: path });
+
+/**
+ * Do Postbuild-Thingies on a file or sourceCode
+ * @param path - the path of this file
+ * @param source - the source code if not to be loaded from a file
+ * @returns a promise with the modified source code
+ */
+const distPostBuild = async (path: string, source = '') => {
+    const fileContent = source || (await fs.readFile(path, 'utf8'));
+    const formatted = await distPrettier(fileContent, path);
+    const [linted] = await distLint(formatted, path);
+    const lintedCode = linted.output ?? linted.source ?? formatted;
+    const formatted2 = await distPrettier(lintedCode, path);
+    if (!source) await fs.writeFile(path, formatted2, 'utf8');
+    return formatted2;
+};
+
 export default defineConfig({
     esbuild: {
         jsxInject:
@@ -561,21 +607,24 @@ export default defineConfig({
              * @param _ - rollup output options, unused
              * @param bundle - an object containing all output assets and chunks
              */
-            generateBundle(_, bundle) {
-                Object.entries(bundle).forEach(([fileName, chunkOrAsset]) => {
+            async generateBundle(_, bundle) {
+                for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
                     if (
                         chunkOrAsset.type !== 'chunk' ||
                         !fileName.startsWith('polyfills-') ||
                         chunkOrAsset.name !== 'polyfills'
                     ) {
-                        return;
+                        continue;
                     }
 
                     const outputFileName = `better-moodle-${configFile}-polyfills.js`;
                     // we need to make it an iife, otherwise global scope would be altered
                     // this would cause e.g. that Moodles global `M` would not be useable without using
                     // `unsafeWindow.M` as the core-js resource would have overwritten `M` in the userscripts scope.
-                    const outputSrc = `(() => {${chunkOrAsset.code}})();`;
+                    const outputSrc = await distPostBuild(
+                        outputFileName,
+                        `(() => {${chunkOrAsset.code}})();`
+                    );
                     addRequire(
                         `${githubUrl}/releases/download/${version}/${outputFileName}`,
                         isReleaseBuild ? outputSrc : false
@@ -588,7 +637,7 @@ export default defineConfig({
                     });
 
                     delete bundle[fileName];
-                });
+                }
             },
         },
         monkey({
@@ -635,6 +684,15 @@ ${copyright}
 `.trim();
             },
         }),
+        {
+            name: 'Postbuild Prettier and ESLint',
+            /**
+             * Runs Prettier and ESLint on JS files in dist folder
+             */
+            async closeBundle() {
+                void (await distPostBuild(path.resolve(`./dist/${fileName}`)));
+            },
+        },
         {
             name: 'Better-Moodle-build-stats',
             apply: 'build',
