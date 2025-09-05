@@ -163,14 +163,37 @@
     }
 
     :local(#settings-footer-btns) > :where(button, a) {
-        // some special style needed for the settings modal footer: show button text only on hover
+        // some special style needed for the settings modal footer
+
+        // do not show the text by default
         > span {
             font-size: 0;
-            transition: font-size 0.5s;
         }
 
-        &:hover > span {
-            font-size: unset;
+        // but if we are on desktop devices and users are fine with animations, show the text on hover
+        // otherwise, users need to live with the icon only and the title attribute
+        @include mixins.media-up(lg) {
+            @include mixins.animated {
+                > span {
+                    font-size: 0;
+                    transition: font-size 0.5s;
+                }
+
+                &:hover > span {
+                    font-size: unset;
+                }
+            }
+        }
+        // if people cannot hover (which is on touch devices), show the text
+        @include mixins.is-touch-device {
+            // okay, on small devices, this looks better
+            @include mixins.media-down(lg) {
+                width: 100%;
+            }
+
+            > span {
+                font-size: unset;
+            }
         }
     }
 }
