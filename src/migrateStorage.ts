@@ -61,6 +61,12 @@ const getAndDelete = <Type>(key: string, defaultValue?: Type) => {
                 key.startsWith('better-moodle-weather-display-')
             ), // these are the old caches of the weather feature
             'better-moodle-settings.weatherDisplay.pirateWeatherAPIKey', // the old pirateWeather API-Key
+            // old nina keys
+            'better-moodle-nina.activeWarnings',
+            'better-moodle-nina.lastUpdate',
+            'better-moodle-settings.nina.enabled',
+            'better-moodle-settings.nina.megaAlarm',
+            'better-moodle-settings.nina.test',
         ];
 
         // this has been integrated into native moodle in 402
