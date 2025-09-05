@@ -47,21 +47,21 @@ const ARS = __UNI__ === 'cau' ? '010020000000' : '010030000000';
 // Define Settings
 const civilWarningsSetting = new SliderSetting('civilWarnings', 2, {
     min: 0,
-    max: 3,
+    max: 4,
     step: 1,
-    labels: ['off', 'extreme', 'severe', 'moderate'],
+    labels: ['off', 'extreme', 'severe', 'moderate', 'minor'],
 }).addAlias('nina.civilProtectionWarnings');
 const policeWarningSetting = new SliderSetting('policeWarnings', 2, {
     min: 0,
-    max: 3,
+    max: 4,
     step: 1,
-    labels: ['off', 'extreme', 'severe', 'moderate'],
+    labels: ['off', 'extreme', 'severe', 'moderate', 'minor'],
 });
 const weatherWarningsSetting = new SliderSetting('weatherWarnings', 2, {
     min: 0,
-    max: 3,
+    max: 4,
     step: 1,
-    labels: ['off', 'extreme', 'severe', 'moderate'],
+    labels: ['off', 'extreme', 'severe', 'moderate', 'minor'],
 }).addAlias('nina.weatherWarnings');
 const floodWarningsSetting = new SliderSetting('floodWarnings', 0, {
     min: 0,
@@ -340,6 +340,10 @@ const severityInPreferences = (
         : providerCategory === 'police' ? policeWarningSetting
         : providerCategory === 'weather' ? weatherWarningsSetting
         : floodWarningsSetting;
+
+    if (providerCategory === 'flood') {
+        return providerSetting.value > 0;
+    }
 
     return providerSetting.value > severityToNumber(MAX_SEVERITY) - sevNum;
 };
