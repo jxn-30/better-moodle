@@ -37,6 +37,12 @@
     font-weight: var(--fa-style, $default-weight);
 }
 
+@mixin is-touch-device {
+    @media (hover: none) {
+        @content;
+    }
+}
+
 @mixin media-up($breakpoint) {
     $size: $breakpoint;
     @if (map.has-key($grid-breakpoints, $breakpoint)) {
