@@ -27,6 +27,6 @@ export default interface MoodleModal {
 
     getRoot: () => JQuery<HTMLDivElement>;
     getTitle: () => JQuery<HTMLHeadingElement>;
-    getBody: () => JQuery<HTMLDivElement>;
+    getBodyPromise: () => JQuery.Deferred<JQuery<HTMLDivElement>>;
     getFooter: () => JQuery<HTMLDivElement>;
 }

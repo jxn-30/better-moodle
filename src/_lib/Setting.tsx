@@ -66,6 +66,8 @@ export default abstract class Setting<
     #unsavedValue: Type;
 
     #conditionalDisabledStates = new Map<string, boolean>();
+    #requiresReload = false;
+    #syncListener: ReturnType<typeof GM_addValueChangeListener> | null = null;
 
     protected migrator: Migrator<Type> | null = null;
 
@@ -104,6 +106,8 @@ export default abstract class Setting<
             // in V1, setting keys in storage were prefixed
             // this migrates the old storage key for this setting
             this.#migrateSettingStorage();
+
+            this.#addUpdateOnSync();
         });
     }
 
@@ -134,6 +138,40 @@ export default abstract class Setting<
             }
             GM_deleteValue(oldKey);
         }
+    }
+
+    /**
+     * Adds a listener to GM storage that applies settings changed in other tabs.
+     * Ensures that the listener is only added once.
+     */
+    #addUpdateOnSync() {
+        if (this.#syncListener) return;
+        this.#syncListener = GM_addValueChangeListener(
+            this.settingKey,
+            (_, __, ___, remote) => {
+                if (!remote) return;
+
+                this.undo();
+
+                require(['core/toast'] as const, ({ add }) => {
+                    if (this.#requiresReload) {
+                        void add(
+                            mdToHtml(
+                                LL.settings.syncRequireReload({
+                                    name: this.title,
+                                })
+                            ),
+                            { type: 'info', autohide: false, closeButton: true }
+                        );
+                    } else {
+                        void add(LL.settings.sync({ name: this.title }), {
+                            type: 'success',
+                            autohide: true,
+                        });
+                    }
+                });
+            }
+        );
     }
 
     /**
@@ -388,6 +426,7 @@ export default abstract class Setting<
      * @returns the setting itself
      */
     requireReload() {
+        this.#requiresReload = true;
         this.onChange(() => {
             // we don't want to show or set if the value stays the same (e.g. after an undo operation)
             if (this.#unsavedValue === this.savedValue) return;

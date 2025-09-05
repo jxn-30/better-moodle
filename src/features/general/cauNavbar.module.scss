@@ -23,6 +23,9 @@ $estimated-marquee-height: 25px;
 
         top: calc(var(--navbar-height));
         opacity: 1;
+
+        width: 100%;
+        height: calc(var(--navbar-height));
         &:local(.scroll-down) {
             top: 0;
             z-index: -1;
@@ -34,9 +37,6 @@ $estimated-marquee-height: 25px;
                 top 0.2s ease-in-out,
                 opacity 0.2s ease-in-out;
         }
-
-        width: 100%;
-        height: calc(var(--navbar-height));
     }
 
     @include mixins.media-down(md) {

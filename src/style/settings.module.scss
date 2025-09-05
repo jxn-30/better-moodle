@@ -38,11 +38,10 @@
                 margin-bottom: 0;
                 position: relative;
 
-                &::before {
+                i.fa-magnifying-glass {
                     width: $search-icon-width;
-                    font-family: FontAwesome;
-                    content: '\F002';
                     position: absolute;
+                    top: 0;
                     height: 100%;
                     display: flex;
                     justify-content: center;
@@ -54,7 +53,7 @@
 
                 > input[type='search'] {
                     padding-left: calc(
-                        $search-icon-padding + $search-icon-width
+                        $search-icon-padding + $search-icon-width + 0.1em
                     );
 
                     &:not(:focus) {
