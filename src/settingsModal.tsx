@@ -63,6 +63,7 @@ const ChangelogBtn = (
         path={changelogPath}
         icon={false}
         className="btn btn-outline-primary"
+        title={LL.settings.changelog()}
     >
         <i className="fa fa-history fa-fw"></i>
         <span>{LL.settings.changelog()}</span>
@@ -267,7 +268,10 @@ updateNotificationSetting.onChange(() => void checkForUpdates());
 // region export and import settings
 // region export settings
 const ExportBtn = (
-    <button className="btn btn-outline-primary">
+    <button
+        className="btn btn-outline-primary"
+        title={LL.settings.modal.export()}
+    >
         <i className="fa fa-download fa-fw"></i>
         <span>{LL.settings.modal.export()}</span>
     </button>
@@ -295,7 +299,10 @@ ExportBtn.addEventListener('click', e => {
 
 // region import settings
 const ImportBtn = (
-    <button className="btn btn-outline-primary">
+    <button
+        className="btn btn-outline-primary"
+        title={LL.settings.modal.import()}
+    >
         <i className="fa fa-upload fa-fw"></i>
         <span>{LL.settings.modal.import()}</span>
     </button>
