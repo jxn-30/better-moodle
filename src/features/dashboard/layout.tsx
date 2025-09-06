@@ -249,7 +249,6 @@ const initCourseSidebar = () => {
      */
     const updateDrawerContent = (drawer: Drawer) => {
         let contentLoaded = false;
-        // TODO: Do not create a new loadingSpinner but reuse the old one?
         void getLoadingSpinner().then(spinner => {
             spinner.classList.add('text-center');
             if (!contentLoaded) {
