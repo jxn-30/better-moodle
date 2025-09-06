@@ -16,7 +16,11 @@ const flagSetting = new SelectSetting('flag', flags[0], [
 ]).addAlias('general.prideLogo', oldValue =>
     oldValue.toString().replace(/^[a-z]/, $0 => $0.toUpperCase())
 );
-const rotationSetting = new SelectSetting('rotation', rotations[0], rotations)
+const rotationSetting = new SelectSetting(
+    'rotation',
+    __UNI__ === 'cau' ? rotations[1] : rotations[0],
+    rotations
+)
     .addAlias('general.prideLogoRotated', rotated => rotations[Number(rotated)])
     .disabledIf(flagSetting, '==', 'off');
 
