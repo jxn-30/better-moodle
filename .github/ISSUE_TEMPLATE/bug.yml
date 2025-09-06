@@ -60,6 +60,8 @@ body:
           options:
               - UzL
               - CAU
+              - Sandbox405
+              - MoodleMootDACH
       validations:
           required: true
 
