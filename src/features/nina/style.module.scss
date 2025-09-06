@@ -1,0 +1,26 @@
+:local(.unseen)::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 0;
+    bottom: 0;
+    border-left: var(--primary) 3px solid;
+}
+
+:local(.spin) {
+    :local {
+        @media (prefers-reduced-motion: no-preference) {
+            animation: spin 0.5s linear infinite;
+        }
+    }
+
+    @keyframes :local(spin) {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(180deg);
+        }
+    }
+}

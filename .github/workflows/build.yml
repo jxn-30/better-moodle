@@ -1,0 +1,286 @@
+name: build.yml
+on:
+    push:
+        branches:
+            - v2
+    pull_request:
+        branches:
+            - v2
+permissions: {}
+
+jobs:
+    find-configs:
+        name: 📇 Find configs
+        uses: ./.github/workflows/find-configs.yml
+
+    build:
+        runs-on: ubuntu-latest
+        name: 🏗️ Build
+        needs:
+            - find-configs
+        strategy:
+            matrix:
+                config: ${{ fromJson(needs.find-configs.outputs.configs) }}
+            fail-fast: false
+        permissions:
+            id-token: write
+            attestations: write
+        outputs:
+            # Hardcoded until https://github.com/actions/runner/pull/2477 is finally working...
+            # stats: ${{ toJSON(steps.output.outputs) }}
+            line_uzl: ${{ steps.output.outputs.build_uzl }}
+            line_cau: ${{ steps.output.outputs.build_cau }}
+            line_sandbox405: ${{ steps.output.outputs.build_sandbox405 }}
+            line_moodlemootdach: ${{ steps.output.outputs.build_moodlemootdach }}
+        steps:
+            - name: 🐙 Install GitHub CLI
+              shell: bash
+              if: ${{ env.ACT && runner.os == 'Linux' }}
+              run: |
+                  (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
+                    && sudo mkdir -p -m 755 /etc/apt/keyrings \
+                    && out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+                    && cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+                    && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+                    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+                    && sudo apt update \
+                    && sudo apt install gh -y
+
+            - name: 📥️ checkout
+              uses: actions/checkout@v5
+
+            - name: 🏗️ build Better-Moodle for ${{ matrix.config }}
+              id: build
+              uses: ./.github/actions/build
+              with:
+                  config: ${{ matrix.config }}
+
+            - name: 🦭 attest build provenance
+              uses: actions/attest-build-provenance@v3
+              if: github.event.pull_request.head.repo.full_name == github.repository
+              with:
+                  subject-name: ${{ steps.build.outputs.file }}
+                  subject-digest: sha256:${{ steps.build.outputs.digest }}
+                  show-summary: true
+
+            - name: 📊 aggregate build statistics
+              run: |
+                  # get the file names of userscript and polyfills file
+                  userscript="${{ steps.build.outputs.file }}"
+                  polyfills=$(sed 's/\.user\.js/-polyfills\.js/' <<< "$userscript")
+                  output_dir="${{ steps.build.outputs.dir }}"
+
+                  # stats determined from files
+                  echo "STATS_SIZE=$(ls -sh --si $output_dir/$userscript | awk '{print $1}')B" >> $GITHUB_ENV
+                  echo "STATS_LINES=$(wc -l $output_dir/$userscript | awk '{print $1}')" >> $GITHUB_ENV
+                  echo "STATS_PF_SIZE=$(ls -sh --si $output_dir/$polyfills | awk '{print $1}')B" >> $GITHUB_ENV
+                  echo "STATS_PF_LINES=$(wc -l $output_dir/$polyfills | awk '{print $1}')" >> $GITHUB_ENV
+
+                  # stats generated during build process
+                  echo "STATS_PERF_CONF=$(cat $output_dir/.stats_perf_conf)" >> $GITHUB_ENV
+                  echo "STATS_PERF_BUILD=$(cat $output_dir/.stats_perf_build)" >> $GITHUB_ENV
+                  echo "STATS_PERF_TOTAL=$(cat $output_dir/.stats_perf_total)" >> $GITHUB_ENV
+
+            - name: 🧮 calculate diff
+              run: |
+                  # PF is short for "Polyfills"
+
+                  NO_CHANGE="±0"
+
+                  # set output to no change by default
+                  echo "STATS_DIFF_SYN=$NO_CHANGE" >> $GITHUB_ENV
+                  echo "STATS_DIFF_SEM=$NO_CHANGE" >> $GITHUB_ENV
+                  echo "STATS_PF_DIFF_SYN=$NO_CHANGE" >> $GITHUB_ENV
+                  echo "STATS_PF_DIFF_SEM=$NO_CHANGE" >> $GITHUB_ENV
+
+                  echo "STATS_SIZE_DIFF=$NO_CHANGE" >> $GITHUB_ENV
+                  echo "STATS_LINES_DIFF=$NO_CHANGE" >> $GITHUB_ENV
+                  echo "STATS_PF_SIZE_DIFF=$NO_CHANGE" >> $GITHUB_ENV
+                  echo "STATS_PF_LINES_DIFF=$NO_CHANGE" >> $GITHUB_ENV
+
+
+                  # find the last successfull run on base branch (for PRs) or this branch (for commits)
+                  RUN_ID=$(gh run list \
+                    --workflow=build.yml \
+                    --branch=${{ github.base_ref || github.ref_name }} \
+                    --status=success \
+                    --limit=1 \
+                    --json databaseId \
+                    --jq '.[0].databaseId')
+
+                  # get the file names of userscript and polyfills file
+                  userscript="${{ steps.build.outputs.file }}"
+                  polyfills=$(sed 's/\.user\.js/-polyfills\.js/' <<< "$userscript")
+
+                  output_dir="${{ steps.build.outputs.dir}}"
+
+                  if [[ -n "$RUN_ID" ]]; then
+                      OLD_DIR="base_artifact"
+                      # download the userscript and polyfill file
+                      gh run download $RUN_ID \
+                        --name=$userscript \
+                        --dir=$OLD_DIR \
+                        || exit 0
+                      gh run download $RUN_ID \
+                        --name=$polyfills \
+                        --dir=$OLD_DIR \
+                        || exit 0
+
+                      # get size and lines of userscript
+                      NEW_SIZE=$(ls -n "$output_dir/$userscript" | { read _ _ _ _ size _ && echo "$size"; })
+                      OLD_SIZE=$(ls -n "$OLD_DIR/$userscript" | { read _ _ _ _ size _ && echo "$size"; })
+                      OLD_LINES=$(wc -l "$OLD_DIR/$userscript" | awk '{print $1}')
+
+                      # get size and lines of polyfills
+                      NEW_PF_SIZE=$(ls -n "$output_dir/$polyfills" | { read _ _ _ _ size _ && echo "$size"; })
+                      OLD_PF_SIZE=$(ls -n "$OLD_DIR/$polyfills" | { read _ _ _ _ size _ && echo "$size"; })
+                      OLD_PF_LINES=$(wc -l "$OLD_DIR/$polyfills" | awk '{print $1}')
+
+                      # calculate and store size diffs
+                      if [[ $NEW_SIZE -ne $OLD_SIZE ]]; then
+                          SIZE_DIFF=$( printf "%+d" $(( $NEW_SIZE - $OLD_SIZE )))
+                          echo "STATS_SIZE_DIFF=$SIZE_DIFF" >> $GITHUB_ENV
+                      fi
+                      if [[ $NEW_PF_SIZE -ne $OLD_PF_SIZE ]]; then
+                          SIZE_PF_DIFF=$( printf "%+d" $(( $NEW_PF_SIZE - $OLD_PF_SIZE )))
+                          echo "STATS_PF_SIZE_DIFF=$SIZE_PF_DIFF" >> $GITHUB_ENV
+                      fi
+
+                      # calculate and store lines diffs
+                      if [[ $OLD_LINES -ne ${{ env.STATS_LINES }} ]]; then
+                          LINES_DIFF=$( printf "%+d" $(( ${{ env.STATS_LINES }} - $OLD_LINES )))
+                          echo "STATS_LINES_DIFF=$LINES_DIFF" >> $GITHUB_ENV
+                      fi
+                      if [[ $OLD_PF_LINES -ne ${{ env.STATS_PF_LINES }} ]]; then
+                          LINES_PF_DIFF=$( printf "%+d" $(( ${{ env.STATS_PF_LINES }} - $OLD_PF_LINES )))
+                          echo "STATS_PF_LINES_DIFF=$LINES_PF_DIFF" >> $GITHUB_ENV
+                      fi
+
+                      # for calculating semantic diff, we're removing the numeric suffixes of variables
+                      # this is not perfect as sometimes variable names switch especially for polyfills
+                      perl -pe 's/([\w\$]+\$)[0-9a-z]+(?=[^\w\$])/$1/g' $output_dir/$userscript > new.normalized
+                      perl -pe 's/([\w\$]+\$)[0-9a-z]+(?=[^\w\$])/$1/g' $OLD_DIR/$userscript > old.normalized
+                      perl -pe 's/([\w\$]+\$)[0-9a-z]+(?=[^\w\$])/$1/g' $output_dir/$polyfills > new.pf.normalized
+                      perl -pe 's/([\w\$]+\$)[0-9a-z]+(?=[^\w\$])/$1/g' $OLD_DIR/$polyfills > old.pf.normalized
+
+                      # calculate the syntactic diffs
+                      STATS_DIFF_SYN=$(git diff \
+                        --numstat \
+                        --no-index \
+                        $OLD_DIR/$userscript \
+                        $output_dir/$userscript \
+                        | awk '{print $1 " insertions(+), " $2 " deletions(-)"}'
+                      )
+                      STATS_PF_DIFF_SYN=$(git diff \
+                        --numstat \
+                        --no-index \
+                        $OLD_DIR/$polyfills \
+                        $output_dir/$polyfills \
+                        | awk '{print $1 " insertions(+), " $2 " deletions(-)"}'
+                      )
+
+                      # store the syntactic diff result
+                      if [[ -n "$STATS_DIFF_SYN" ]]; then
+                          echo "STATS_DIFF_SYN=$STATS_DIFF_SYN" >> $GITHUB_ENV
+                          git --no-pager diff --color --no-index \
+                            base_artifact/$userscript \
+                            $output_dir/$userscript \
+                            || echo true
+                      fi
+                      if [[ -n "$STATS_PF_DIFF_SYN" ]]; then
+                          echo "STATS_PF_DIFF_SYN=$STATS_PF_DIFF_SYN" >> $GITHUB_ENV
+                          git --no-pager diff --color --no-index \
+                            base_artifact/$polyfills \
+                            $output_dir/$polyfills \
+                            || echo true
+                      fi
+
+                      # calulate the semantic diff
+                      STATS_DIFF_SEM=$(git diff \
+                        --numstat \
+                        --no-index \
+                        old.normalized \
+                        new.normalized \
+                        | awk '{print $1 " insertions(+), " $2 " deletions(-)"}'
+                      )
+                      STATS_PF_DIFF_SEM=$(git diff \
+                        --numstat \
+                        --no-index \
+                        old.pf.normalized \
+                        new.pf.normalized \
+                        | awk '{print $1 " insertions(+), " $2 " deletions(-)"}'
+                      )
+
+                      # store the semantic diff result
+                      if [[ -n "$STATS_DIFF_SEM" ]]; then
+                          echo "STATS_DIFF_SEM=$STATS_DIFF_SEM" >> $GITHUB_ENV
+                      fi
+                      if [[ -n "$STATS_PF_DIFF_SEM" ]]; then
+                          echo "STATS_PF_DIFF_SEM=$STATS_PF_DIFF_SEM" >> $GITHUB_ENV
+                      fi
+                  fi
+              env:
+                  GH_TOKEN: ${{ github.token }}
+
+            - name: ✍️ print build stats in summary
+              run: |
+                  echo "# 🏗️ ${{ matrix.config }}" >> $GITHUB_STEP_SUMMARY
+                  echo "## Built file: \`${{ steps.build.outputs.file }}\`" >> $GITHUB_STEP_SUMMARY
+                  echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+                  echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Userscript** | |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **File size** | ${{ env.STATS_SIZE }} (${{ env.STATS_SIZE_DIFF }} Bytes) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Line count** | ${{ env.STATS_LINES }} (${{ env.STATS_LINES_DIFF }}) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Diff to prev build (semantic)** | ${{ env.STATS_DIFF_SEM }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Diff to prev build (syntactic)** | ${{ env.STATS_DIFF_SYN }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Polyfills** | |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **File size** | ${{ env.STATS_PF_SIZE }} (${{ env.STATS_PF_SIZE_DIFF }} Bytes) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Line count** | ${{ env.STATS_PF_LINES }} (${{ env.STATS_PF_LINES_DIFF }}) |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Diff to prev build (semantic)** | ${{ env.STATS_PF_DIFF_SEM }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Diff to prev build (syntactic)** | ${{ env.STATS_PF_DIFF_SYN }} |" >> $GITHUB_STEP_SUMMARY
+
+                  echo "## Build stats" >> $GITHUB_STEP_SUMMARY
+                  echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+                  echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Creating config duration** | ${{ env.STATS_PERF_CONF }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Building duration** | ${{ env.STATS_PERF_BUILD }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "| **Total duration** | **${{ env.STATS_PERF_TOTAL }}** |" >> $GITHUB_STEP_SUMMARY
+                  echo "*Durations are mm:ss,s*"
+
+                  echo "## Included features" >> $GITHUB_STEP_SUMMARY
+                  cat ${{ steps.build.outputs.dir }}/.stats_features.md >> $GITHUB_STEP_SUMMARY
+
+            - name: 📝 generate output
+              id: output
+              run: |
+                  echo "build_${{ matrix.config }}=| ${{matrix.config}} | ${{ env.STATS_PERF_TOTAL }} | | ${{ env.STATS_SIZE }} (${{ env.STATS_SIZE_DIFF }}) | ${{ env.STATS_LINES }} (${{ env.STATS_LINES_DIFF }}) | ${{ env.STATS_DIFF_SEM }} | ${{ env.STATS_DIFF_SYN }} | | ${{ env.STATS_PF_SIZE }} (${{ env.STATS_PF_SIZE_DIFF }}) | ${{ env.STATS_PF_LINES }} (${{ env.STATS_PF_LINES_DIFF }}) | ${{ env.STATS_PF_DIFF_SEM }} | ${{ env.STATS_PF_DIFF_SYN }} |" >> $GITHUB_OUTPUT
+
+    pr-summary:
+        runs-on: ubuntu-latest
+        name: 📜 update PR Summary
+        permissions:
+            issues: write
+            pull-requests: write
+        if: ${{ github.event_name == 'pull_request' && always() }}
+        needs:
+            - build
+        steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v5
+
+            - name: 📜 update PR Summary
+              uses: ./.github/actions/pr-summary
+              with:
+                  pr-number: ${{ github.event.pull_request.number }}
+                  section: build
+                  title: 🏗️ Build
+                  # TODO: Do this automagically for all builds?
+                  content: |
+                      | Config | Duration | | Size | Lines | Diff to ${{ github.base_ref }} (semantic) | Diff to ${{ github.base_ref }} (syntactic) | | Polyfills Size | Polyfill Lines | Polyfill Diff to ${{ github.base_ref }} (semantic) | Polyfill Diff to ${{ github.base_ref }} (syntactic) |
+                      | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+                      ${{ needs.build.outputs.line_uzl }}
+                      ${{ needs.build.outputs.line_cau }}
+                      ${{ needs.build.outputs.line_sandbox405 }}
+                      ${{ needs.build.outputs.line_moodlemootdach }}
+                  app-id: ${{ secrets.CI_APP }}
+                  app-pat: ${{ secrets.CI_PAT }}

@@ -1,4 +1,16 @@
 node_modules
+dist
+coverage
+
+src/style/**/*.d.ts
+src/features/**/*.scss.d.ts
+
+src/i18n/i18n-types.ts
+src/i18n/i18n-util.async.ts
+src/i18n/i18n-util.sync.ts
+src/i18n/i18n-util.ts
+
+ics-parser/.wrangler
 
 # Editor directories and files
 .idea
@@ -21,3 +33,6 @@ node_modules
 
 # temp files
 .eslintcache
+.disteslintcache
+svg
+png

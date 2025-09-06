@@ -1,0 +1,64 @@
+// For some reason that I don't know yet, this explicit @use is required.
+// In any other files/cases the globally injected @use via vite config is enough.
+@use 'global:constants.scss' as global;
+@use 'sass:map';
+@use 'variables' as *;
+
+@mixin animated {
+    @media (prefers-reduced-motion: no-preference) {
+        @content;
+    }
+}
+
+@mixin darkmode {
+    $s: #{if(&, '&', '')};
+
+    html[data-darkreader-scheme='dark'] #{$s} {
+        @content;
+    }
+}
+
+@mixin fa-icon {
+    $default-font: 'Font Awesome 6 Free';
+    $default-weight: 900;
+
+    // Moodle 402 introduced FA 6
+    @if global.$MOODLE_VERSION < 402 {
+        $default-font: 'FontAwesome';
+        $default-weight: normal;
+    }
+
+    display: var(--fa-display, inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    font-family: var(--fa-style-family, $default-font);
+    font-weight: var(--fa-style, $default-weight);
+}
+
+@mixin is-touch-device {
+    @media (hover: none) {
+        @content;
+    }
+}
+
+@mixin media-up($breakpoint) {
+    $size: $breakpoint;
+    @if (map.has-key($grid-breakpoints, $breakpoint)) {
+        $size: map.get($grid-breakpoints, $breakpoint);
+    }
+    @media (min-width: $size) {
+        @content;
+    }
+}
+
+@mixin media-down($breakpoint) {
+    $size: $breakpoint;
+    @if (map.has-key($grid-breakpoints, $breakpoint)) {
+        $size: map.get($grid-breakpoints, $breakpoint);
+    }
+    @media (max-width: $size - 0.02) {
+        @content;
+    }
+}

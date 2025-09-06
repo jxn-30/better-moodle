@@ -1,0 +1,150 @@
+@use './properties';
+@use './fixes';
+@use './mixins';
+
+:local(.no-external-link-icon) {
+    // remove "external link" icon for specific classes (discouraged, but sometimes it doesn't look good)
+    body.dir-ltr &::after,
+    body.dir-rtl &::before {
+        display: none !important;
+    }
+}
+
+:local(.awaits-dropdown) {
+    &::after {
+        margin-left: 4px;
+
+        width: 9px;
+        font-size: 9px;
+
+        @include mixins.fa-icon;
+        display: inline-block;
+        content: '\f252' !important;
+
+        :local {
+            @include mixins.animated {
+                animation: fade 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+        }
+
+        @keyframes :local(fade) {
+            0% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 0.2;
+            }
+
+            100% {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    .icon {
+        opacity: 0.5;
+    }
+}
+
+:local(.navbar-item) {
+    #usernavigation > :not(&) {
+        order: 0;
+
+        &.usermenu-container,
+        &.editmode-switch-form,
+        &.divider:has(+ .editmode-switch-form) {
+            order: 1000;
+        }
+    }
+}
+
+:local(.shining) {
+    // Add a little shining effect onto an element
+    @include mixins.animated {
+        position: relative;
+        // add a shining effect
+        background-image: linear-gradient(
+            -75deg,
+            transparent 0%,
+            rgba(255, 255, 255, 75%) 15%,
+            transparent 30%,
+            transparent 100%
+        );
+        background-size: 200%;
+        background-repeat: no-repeat;
+
+        // this workaround is unfortunately needed for the animation name to be transformed
+        :local {
+            animation: shining 5s ease-in-out;
+        }
+    }
+
+    @keyframes :local(shining) {
+        0% {
+            background-position: 200% 0;
+        }
+        20% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 0 0;
+        }
+    }
+}
+
+@svg-load sparkle url(../assets/sparkle.svg) {
+}
+
+:local(.sparkling)::before {
+    // Add sparkels onto the element
+    $width: 10ch;
+
+    display: inline-block;
+    content: ' ';
+    position: absolute;
+    width: $width;
+    height: calc($width * 18 / 11);
+    // this is a self designed sparkle as SVG :)
+    background-image: svg-inline(sparkle);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    transform: translate(-50%, -50%);
+    transform-origin: top left;
+    top: 0;
+    left: 0;
+
+    // our local trick again
+    :local {
+        animation:
+            sparkling 1s ease-in-out infinite alternate,
+            sparkling_positions 6s step-start infinite;
+    }
+
+    @keyframes :local(sparkling) {
+        0% {
+            scale: 0;
+        }
+        10% {
+            scale: 0;
+        }
+        100% {
+            scale: 10%; // for better results, we're creating large sparkles (width: 10ch), but to keep them rendered small, max scale is 10%
+        }
+    }
+
+    @keyframes :local(sparkling_positions) {
+        0% {
+            top: 4%;
+            left: 14%;
+        }
+        33% {
+            top: 85%;
+            left: 51%;
+        }
+        66% {
+            top: 32%;
+            left: 87%;
+        }
+    }
+}

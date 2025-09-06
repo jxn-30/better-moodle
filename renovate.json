@@ -17,9 +17,7 @@
     "packageRules": [
         {
             "groupName": "All non-major dependencies",
-            "lockFileMaintenance": {
-                "enabled": true
-            },
+            "lockFileMaintenance": { "enabled": true },
             "groupSlug": "all-minor-patch",
             "matchPackageNames": ["*"],
             "matchUpdateTypes": ["minor", "patch"]
@@ -27,9 +25,7 @@
         {
             "schedule": ["before 3am on thursday"],
             "groupName": "Polyfill maintenance",
-            "lockFileMaintenance": {
-                "enabled": true
-            },
+            "lockFileMaintenance": { "enabled": true },
             "groupSlug": "polyfill-maintenance",
             "matchPackageNames": [
                 "@babel/*",
@@ -44,9 +40,7 @@
         {
             "extends": ["schedule:monthly"],
             "groupName": "yarn",
-            "lockFileMaintenance": {
-                "enabled": true
-            },
+            "lockFileMaintenance": { "enabled": true },
             "matchDepNames": ["yarn"],
             "matchManagers": ["npm"],
             "rangeStrategy": "pin",
@@ -55,9 +49,7 @@
         {
             "extends": ["schedule:monthly"],
             "groupName": "node.js",
-            "lockFileMaintenance": {
-                "enabled": true
-            },
+            "lockFileMaintenance": { "enabled": true },
             "matchDepNames": ["node"],
             "matchManagers": ["npm", "nvm"],
             "rangeStrategy": "bump",

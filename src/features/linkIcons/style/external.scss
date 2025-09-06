@@ -1,0 +1,9 @@
+@use './mixins' as *;
+
+a:not([href^='#{global.$MOODLE_URL}']) {
+    &[href^="https://"],
+    &[href^="http://"]
+    {
+        @include insert-after('');
+    }
+}
