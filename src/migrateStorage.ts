@@ -18,8 +18,6 @@ const getAndDelete = <Type>(key: string, defaultValue?: Type) => {
     return value;
 };
 
-// TODO: Export a migration helper function?
-
 (() => {
     const oldStorageVersion = GM_getValue<number>(STORAGE_VERSION_KEY, 0);
     // Yay, storage is already migrated :)
