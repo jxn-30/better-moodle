@@ -46,7 +46,7 @@ Please see the `configs/_config.d.ts` file for reference on how configs need to 
 For bundling, simply run `yarn build <config>` where `<config>` is the name of your config file, without the `.json` file extension.
 Afterwards you may copy the userscript into your clipboard to paste it into the editor of your userscript manager (On Linux systems using X11, this could for example be achieved by running `cat dist/better-moodle-<config>.user.js | xclip -selection c`).
 
-If you want to lint and prettify the codebase before bundling, you can run `yarn ci <config>` instead.
+If you want to lint and prettify the codebase before bundling, you can run `yarn ci <config>` instead. If new translations are used, ESLint will fail, you will have to run `yarn i18n:once` before to avoid this.
 
 ### Testing
 
