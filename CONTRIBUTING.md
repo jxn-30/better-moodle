@@ -50,15 +50,13 @@ If you want to lint and prettify the codebase before bundling, you can run `yarn
 
 ### Testing
 
-There currently are no automated tests available.
+We are working on providing automated testing. Proof-Of-Concept test have been done for source and built userscripts, however both are to be extended.
 Please always make sure that Better-Moodle works on latest 3 to 4 versions of common browsers (Firefox and chromium based).
 You may also want to test Better-Moodle on mobile devices if possible.
 
 > [!IMPORTANT]
-> Bundling does not include transpiling or adding polyfills.
-> When using new JavaScript / ECMAScript Features, consult [caniuse.com](https://caniuse.com) or the [MDN References](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference).
-> Features should be available in the latest devices and browser versions since minimum 6 months.
-> This is not tested or checked automatically. It currently is the developers responsibility.
+> Bundling will include polyfills to support the latest 4 versions of Firefox, Firefox Android, Chrome and Edge.
+> Polyfills are put to a seperate file to debloat the userscript itself. This has some caveats, thoughts can be found in [#714](https://github.com/jxn-30/better-moodle/issues/714)
 
 ### Pre-Commit
 
