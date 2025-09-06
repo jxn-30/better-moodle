@@ -14,7 +14,7 @@ export const de = {
                 extreme: 'Extreme Gefahr',
                 severe: 'Gefahr',
                 moderate: 'Gefahreninformation',
-                minor: 'Keine Gefahr',
+                minor: 'Immer',
             },
         },
         policeWarnings: {
@@ -26,7 +26,7 @@ export const de = {
                 extreme: 'Extreme Gefahr',
                 severe: 'Gefahr',
                 moderate: 'Gefahreninformation',
-                minor: 'Keine Gefahr',
+                minor: 'Immer',
             },
         },
         weatherWarnings: {
@@ -38,7 +38,7 @@ export const de = {
                 extreme: 'Extremes Unwetter',
                 severe: 'Unwetter',
                 moderate: 'Markantes Wetter',
-                minor: 'Keine Gefahr',
+                minor: 'Immer',
             },
         },
         floodWarnings: {
@@ -171,7 +171,7 @@ export const en = {
                 extreme: 'Extreme danger',
                 severe: 'Danger',
                 moderate: 'Hazard information',
-                minor: 'No danger',
+                minor: 'Always',
             },
         },
 
@@ -184,7 +184,7 @@ export const en = {
                 extreme: 'Extreme danger',
                 severe: 'Danger',
                 moderate: 'Hazard information',
-                minor: 'No danger',
+                minor: 'Always',
             },
         },
         weatherWarnings: {
@@ -196,7 +196,7 @@ export const en = {
                 extreme: 'Extreme storm',
                 severe: 'Storm',
                 moderate: 'Severe weather',
-                minor: 'No danger',
+                minor: 'Always',
             },
         },
         floodWarnings: {
