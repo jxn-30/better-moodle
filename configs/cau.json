@@ -6,7 +6,7 @@
         "": "Improves Moodle by cool features and design improvements.",
         "de": "Verbessert Moodle durch coole Features und Designverbesserungen."
     },
-    "github": { "user": "jxn-30", "repo": "better-moodle", "branch": "v2" },
+    "github": { "user": "jxn-30", "repo": "better-moodle", "branch": "main" },
     "icon": "https://www.uni-kiel.de/typo3temp/assets/_processed_/5/e/csm_cau-favicon_905dc65f6f.png",
     "moodleUrl": "https://elearn.informatik.uni-kiel.de",
     "moodleVersion": 401,

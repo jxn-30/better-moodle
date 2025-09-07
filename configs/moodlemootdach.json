@@ -6,7 +6,7 @@
         "": "Improves the Moodle of MoodleMootDACH by cool features and design improvements.",
         "de": "Verbessert das Moodle der MoodleMootDACH durch coole Features und Designverbesserungen."
     },
-    "github": { "user": "jxn-30", "repo": "better-moodle", "branch": "v2" },
+    "github": { "user": "jxn-30", "repo": "better-moodle", "branch": "main" },
     "icon": "https://moodlemootdach.org/pluginfile.php/1/core_admin/logocompact/300x300/1754896589/moodlemootdach_logo_klein_2025.png",
     "moodleUrl": "https://moodlemootdach.org",
     "moodleVersion": 405,
