@@ -10,7 +10,7 @@
     "icon": "https://www.uni-kiel.de/typo3temp/assets/_processed_/5/e/csm_cau-favicon_905dc65f6f.png",
     "moodleUrl": "https://elearn.informatik.uni-kiel.de",
     "moodleVersion": 401,
-    "connects": ["studentenwerk.sh", "cloud.rz.uni-kiel.de", "www.uni-kiel.de"],
+    "connects": ["studentenwerk.sh"],
     "fixes": ["cau/loginDivider", "cau/prideLogo"],
     "includeNonDefaultFeatures": [
         "general.cauNavbar",
