@@ -3,9 +3,31 @@
 ## [2.0.0](https://github.com/jxn-30/better-moodle/compare/1.42.4...2.0.0) (2025-09-07)
 
 
-### Miscellaneous Chores
+### Features
+* linkIcons
+* most settings don't require a reload anymore (#75)
+* when marking new settings as seen, only visible settings are marked as seen
+* implemented a search function in Better-Moodle settings
+* added a setting to control marquee speed
+* included the CO₂-Score to Speiseplan (#524)
+* implemented a setting to configure how many days in advance event advertisements should be shown
+* weather provider `Pirate Weather` has been removed due to bad data
+* settings now sync across tabs (#779)
+* implemented a search field in dashboard course sidebar
+* speiseplan will now show the next day by default after a location has entirely closed for a day https://github.com/jxn-30/better-moodle/issues/776
 
-* release 2.0.0 ([dfdda02](https://github.com/jxn-30/better-moodle/commit/dfdda02ac4367c4a745caef6ee1a38c25618892a))
+### Bugfixes
+* marquee will not cause random flickers anymore
+* the semesterzeiten bar does not show titles for hidden bars anymore
+
+### Refactoring
+* complete rewrite for better maintainability, easier contribution and easier customization to other unis (#168)
+* make more use of moodle native functions
+* ease the way for more integrating Better-Moodle into a customizable dashboard (#16)
+* increased general accessibility of Better-Moodle (#76)
+* cleaned up userscript storage
+* improved styles in semesterzeiten
+* speiseplan now uses FA Icons instead of emojis to better fit into moodle design
 
 ## [1.42.4](https://github.com/jxn-30/better-moodle/compare/1.42.3...1.42.4) (2025-04-06)
 
