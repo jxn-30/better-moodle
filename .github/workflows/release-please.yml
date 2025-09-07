@@ -43,7 +43,7 @@ jobs:
             - name: 📥️ checkout
               uses: actions/checkout@v5
 
-            - name: 🏗  build
+            - name: 🏗️ build
               id: build
               uses: ./.github/actions/build
               with:
@@ -55,7 +55,7 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                   # get meta filename
-                  file="${{ steps.build.output.file }}"
+                  file="${{ steps.build.outputs.file }}"
                   meta=$(sed 's/\.user\.js/\.meta\.user\.js/' <<< "$file")
                   polyfills=$(sed 's/\.user\.js/-polyfills\.js/' <<< "$file")
 
