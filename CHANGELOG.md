@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/jxn-30/better-moodle/compare/2.0.0...2.0.1) (2025-09-07)
+
+
+### Bug Fixes
+
+* base branch is now main ([286c412](https://github.com/jxn-30/better-moodle/commit/286c4128fbbcbb2db570f38c9829d0dafedd11ee))
+
 ## [2.0.0](https://github.com/jxn-30/better-moodle/compare/1.42.4...2.0.0) (2025-09-07)
 
 
