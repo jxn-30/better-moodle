@@ -61,9 +61,9 @@ jobs:
 
                   # upload the release artifacts with special nice names
                   gh release upload ${{ needs.release.outputs.tag }} \
-                    "${{ steps.build.output.dir }}/$file#[${{ matrix.config }}] Better-Moodle userscript version ${{ steps.release.outputs.tag_name }} ($file)" \
-                    "${{ steps.build.output.dir }}/$meta#[${{ matrix.config }}] Better-Moodle meta file for userscript managers ($meta)" \
-                    "${{ steps.build.output.dir }}/$polyfills#[${{ matrix.config }}] Polyfills for Better-Moodle version ${{ steps.release.outputs.tag_name }} ($polyfills)"
+                    "${{ steps.build.outputs.dir }}/$file#[${{ matrix.config }}] Better-Moodle userscript version ${{ steps.release.outputs.tag_name }} ($file)" \
+                    "${{ steps.build.outputs.dir }}/$meta#[${{ matrix.config }}] Better-Moodle meta file for userscript managers ($meta)" \
+                    "${{ steps.build.outputs.dir }}/$polyfills#[${{ matrix.config }}] Polyfills for Better-Moodle version ${{ steps.release.outputs.tag_name }} ($polyfills)"
 
             # legacy release for uzl, please remove this at earliest in October 2025
             - name: 📤 upload legacy uzl artifact
@@ -71,10 +71,10 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                  file="${{ steps.build.output.file }}"
+                  file="${{ steps.build.outputs.file }}"
                   meta=$(sed 's/\.user\.js/\.meta\.user\.js/' <<< "$file")
-                  cp "${{ steps.build.output.dir }}/$file" better-moodle.user.js
-                  cp "${{ steps.build.output.dir }}/$meta" better-moodle.meta.js
+                  cp "${{ steps.build.outputs.dir }}/$file" better-moodle.user.js
+                  cp "${{ steps.build.outputs.dir }}/$meta" better-moodle.meta.js
 
                   # upload the releases
                   gh release upload ${{ needs.release.outputs.tag }} \
