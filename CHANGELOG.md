@@ -4,6 +4,7 @@
 
 
 ### Features
+
 * linkIcons
 * most settings don't require a reload anymore (#75)
 * when marking new settings as seen, only visible settings are marked as seen
@@ -17,10 +18,12 @@
 * speiseplan will now show the next day by default after a location has entirely closed for a day https://github.com/jxn-30/better-moodle/issues/776
 
 ### Bugfixes
+
 * marquee will not cause random flickers anymore
 * the semesterzeiten bar does not show titles for hidden bars anymore
 
 ### Refactoring
+
 * complete rewrite for better maintainability, easier contribution and easier customization to other unis (#168)
 * make more use of moodle native functions
 * ease the way for more integrating Better-Moodle into a customizable dashboard (#16)
