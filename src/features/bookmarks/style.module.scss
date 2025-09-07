@@ -1,0 +1,65 @@
+@use '/src/style/mixins';
+
+:local(#dropdown) {
+    .dropdown-menu {
+        max-width: 400px;
+        // faking the .dropdown-menu-right
+        right: 0;
+        left: auto;
+
+        &:has(.dropdown-item:first-child:nth-last-child(3))::before {
+            display: block;
+            text-align: center;
+            content: var(--empty-text);
+            font-size: small;
+            padding: 0.25rem 1.5rem; // padding of .dropdown-item
+        }
+
+        .dropdown-item {
+            min-width: 100%;
+            width: fit-content;
+        }
+    }
+
+    @include mixins.media-down(sm) {
+        position: inherit;
+
+        .dropdown-menu {
+            max-width: 100%;
+
+            .dropdown-item {
+                overflow: auto;
+            }
+        }
+    }
+}
+
+:local(.form) {
+    .fcontainer {
+        display: grid;
+        grid-template-columns: 1fr 2fr auto;
+        grid-column-gap: 1ch;
+        grid-row-gap: 1ch;
+
+        @include mixins.media-down(sm) {
+            grid-template-columns: 1fr 2fr;
+
+            .btn-group {
+                grid-column-start: 1;
+                grid-column-end: 3;
+            }
+        }
+
+        .btn-group {
+            &[data-index='0'] [data-action='up'],
+            &:not(:has(~ .btn-group[data-index])) [data-action='down'] {
+                pointer-events: none;
+                opacity: 0.5;
+            }
+        }
+    }
+
+    &:local(.edit-form) .fcontainer {
+        grid-template-columns: 1fr 2fr;
+    }
+}

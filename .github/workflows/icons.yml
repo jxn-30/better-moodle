@@ -1,0 +1,79 @@
+name: icons.yml
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - v2
+        paths:
+            - configs/*.json
+            - .github/workflows/icons.yml
+permissions: {}
+
+jobs:
+    icons:
+        runs-on: ubuntu-latest
+        name: 🖼️ Create icons
+        steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v5
+              with:
+                  sparse-checkout: |
+                      configs
+                      .yarn
+                      package.json
+
+            - name: 🔎 get Node and version
+              run: |
+                  echo "NODE_VERSION=$(grep '"node":' ./package.json | awk -F: '{ print $2 }' | sed 's/[",]//g' | sed 's/\^v//g' | tr -d '[:space:]')"  >> $GITHUB_ENV
+
+            - name: 🛠 setup Node.js
+              uses: actions/setup-node@v5
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+
+            - name: 🍱 install converter
+              run: npm install -gy svgexport
+
+            - name: 🖼️ create icons
+              run: |
+                  # create output directories
+                  mkdir svg
+                  mkdir png
+
+                  # set sizes
+                  size=1000
+
+                  # find configs and print them in a line each
+                  jq -nMr '[inputs | select(.icon) | [(input_filename | gsub("^configs/|.json$"; "")), .icon, .github.user, .github.repo, (.github.branch | if . == "" then "main" else . end)] | join("\n")] | join("\n")' configs/*.json | \
+                    # for each config
+                    while read -r config; read -r icon; read -r user; read -r repo; read -r branch; do
+                      svgname="svg/$config.svg"
+                      pngname="png/$config.png"
+                      branch=${branch:="main"}
+                      moothel="https://raw.githubusercontent.com/$user/$repo/$branch/img/moothel.png"
+
+                      # write svg to a file
+                      echo "$config"
+                      echo "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 $size $size'>" > "$svgname"
+                      echo "  <image x='0' y='0' width='100%' height='100%' preserveAspectRatio='meet' href='$moothel'/>" >> "$svgname"
+                      echo "  <rect  x='66%' y='66%' width='33%' height='33%' fill='white' opacity='0.5'/>" >> "$svgname"
+                      echo "  <image x='66%' y='66%' width='33%' preserveAspectRatio='xMidYMid meet' href='$icon'/>" >> "$svgname"
+                      echo "</svg>" >> "$svgname"
+
+                      # convert to png
+                      svgexport "$svgname" "$pngname"
+                    done
+
+            - name: 📤 upload icons
+              uses: actions/upload-artifact@v4
+              with:
+                  name: icons
+                  path: png/
+
+            - name: 🚀 deploy icons
+              uses: cloudflare/wrangler-action@v3
+              with:
+                  apiToken: ${{ secrets.ICONS_UPLOAD_CLOUDFLARE_API_TOKEN }}
+                  accountId: ${{ secrets.ICONS_UPLOAD_CLOUDFLARE_ACCOUNT_ID }}
+                  command: |
+                      pages deploy png --project-name=better-moodle-icons --commit-dirty=true --branch=main

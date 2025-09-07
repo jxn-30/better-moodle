@@ -1,0 +1,29 @@
+{
+    "$schema": "_globalSchema.json",
+    "prefix": "better-moodle",
+    "featureGroupOrder": [
+        "darkmode",
+        "dashboard",
+        "courses",
+        "messages",
+        "navbarMarquee",
+        "linkIcons",
+        "speiseplan",
+        "semesterzeiten",
+        "bookmarks",
+        "weather",
+        "nina"
+    ],
+    "defaultDisabled": ["general.cauNavbar", "semesterzeiten", "speiseplan"],
+    "enabledFrom": { "405": ["courses.sectionCourseIndex"] },
+    "disabledFrom": { "402": ["courses.courseIndexDrawerControls"] },
+    "connects": {
+        "nina": ["nina.api.proxy.bund.dev"],
+        "weather": [
+            "api.open-meteo.com",
+            "api.openweathermap.org",
+            "weather.visualcrossing.com",
+            "wttr.in"
+        ]
+    }
+}

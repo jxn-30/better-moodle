@@ -1,9 +1,16 @@
 {
+    "$schema": "https://json.schemastore.org/prettierrc",
     "arrowParens": "avoid",
     "endOfLine": "lf",
+    "objectWrap": "collapse",
     "quoteProps": "consistent",
     "singleQuote": true,
     "tabWidth": 4,
     "trailingComma": "es5",
-    "experimentalTernaries": true
+    "experimentalTernaries": true,
+    "plugins": ["@prettier/plugin-xml"],
+    "overrides": [
+        { "files": "**/*.{ts,tsx}", "options": { "parser": "typescript" } },
+        { "files": "**/*.scss", "options": { "parser": "scss" } }
+    ]
 }

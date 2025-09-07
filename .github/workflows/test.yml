@@ -1,0 +1,66 @@
+name: test.yml
+on:
+    push:
+        branches:
+            - v2
+    pull_request:
+        branches:
+            - v2
+permissions: {}
+
+jobs:
+    find-configs:
+        name: 📇 Find configs
+        uses: ./.github/workflows/find-configs.yml
+
+    test-source:
+        runs-on: ubuntu-latest
+        name: 🧪📖 Test source
+        needs:
+            - find-configs
+        strategy:
+            matrix:
+                config: ${{ fromJson(needs.find-configs.outputs.configs) }}
+            fail-fast: false
+        permissions:
+            contents: read
+            # pull-requests: write
+        steps:
+            - name: 📥 checkout
+              uses: actions/checkout@v5
+
+            - name: 🎛️ setup
+              uses: ./.github/actions/setup
+
+            - name: 🧪📖 run tests (source)
+              run: yarn test:src ${{ matrix.config }}
+
+            - name: 🧾 report coverage
+              if: always()
+              uses: davelosert/vitest-coverage-report-action@v2
+              with:
+                  comment-on: none
+
+    test-userscript:
+        runs-on: ubuntu-latest
+        name: 🧪🐒 Test userscript
+        needs:
+            - find-configs
+        strategy:
+            matrix:
+                config: ${{ fromJson(needs.find-configs.outputs.configs) }}
+            fail-fast: false
+        permissions:
+            contents: read
+            pull-requests: write
+        steps:
+            - name: 📥 checkout
+              uses: actions/checkout@v5
+
+            - name: 🏗️ build userscript
+              uses: ./.github/actions/build
+              with:
+                  config: ${{ matrix.config }}
+
+            - name: 🧪🐒 run tests (userscript)
+              run: yarn test:userscript ${{ matrix.config }}

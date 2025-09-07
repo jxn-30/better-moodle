@@ -1,0 +1,53 @@
+name: 🏗 Build
+
+inputs:
+    config:
+        description: The config to build with
+        required: true
+    release:
+        description: Wether to create a release build
+        required: false
+
+runs:
+    using: composite
+    steps:
+        - name: 🎛️ setup
+          uses: ./.github/actions/setup
+
+        - name: 🏗️ build Better-Moodle for ${{ inputs.config }}
+          if: ${{ !inputs.release }}
+          run: yarn build ${{ inputs.config }}
+          shell: bash
+
+        - name: 🏗️  release-build Better-Moodle for ${{ inputs.config }}
+          if: ${{ inputs.release }}
+          run: yarn release-build ${{ inputs.config }}
+          shell: bash
+
+        - name: 📤️ upload build
+          id: upload
+          uses: actions/upload-artifact@v4
+          with:
+              # hardcoded since closed envs are not allowed in composite actions
+              name: better-moodle-${{ inputs.config }}.user.js
+              path: dist/better-moodle-${{ inputs.config }}.user.js
+
+        - name: 📤️ upload polyfill
+          uses: actions/upload-artifact@v4
+          with:
+              # hardcoded since closed envs are not allowed in composite actions
+              name: better-moodle-${{ inputs.config }}-polyfills.js
+              path: dist/better-moodle-${{ inputs.config }}-polyfills.js
+
+outputs:
+    digest:
+        description: The digest of the uploaded artifact
+        value: ${{ steps.upload.outputs.artifact-digest }}
+    file:
+        description: The filename of the built userscript
+        # using an env is not allowed => hardcoded
+        value: better-moodle-${{ inputs.config }}.user.js
+    dir:
+        description: The directory, output files live in
+        # using an env is not allowed => hardcoded
+        value: dist

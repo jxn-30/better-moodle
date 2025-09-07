@@ -1,0 +1,120 @@
+name: check.yml
+on:
+    push:
+        branches:
+            - v2
+    pull_request:
+        branches:
+            - v2
+
+jobs:
+    prettier:
+        runs-on: ubuntu-latest
+        name: 🍱 Prettier
+        permissions:
+            issues: write
+            pull-requests: write
+        steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v5
+
+            - name: 🎛️ setup
+              uses: ./.github/actions/setup
+
+            - name: 🍱 run prettier
+              run: yarn prettier:write
+
+            - name: 🔢 count changes
+              run: echo "CHANGES_COUNT=$(git status -s | wc -l)" >> $GITHUB_ENV
+
+            - name: ✅ approve prettier result
+              if: ${{ env.CHANGES_COUNT == 0 }}
+              run: |
+                  SUMMARY="✅ Prettier approves code"
+                  echo "# $SUMMARY" >> $GITHUB_STEP_SUMMARY
+                  echo "Running prettier on $(echo ${{ github.sha }} | head -c 7) did not result in any changes. 🎉" >> $GITHUB_STEP_SUMMARY
+                  echo "PR_SUMMARY=$SUMMARY" >> $GITHUB_ENV
+                  echo "EMOJI=✅" >> $GITHUB_ENV
+
+            - name: 🖨️ print diff introduced by prettier
+              if: ${{ env.CHANGES_COUNT > 0 }}
+              run: git diff
+
+            - name: ⚠️ warn over prettier result
+              if: ${{ env.CHANGES_COUNT > 0 }}
+              run: |
+                  SUMMARY="⚠️ Prettier changed some code".
+                  echo "# $SUMMARY" >> $GITHUB_STEP_SUMMARY
+                  SUMMARY="$SUMMARY Please see the summary and logs for more details."
+                  echo "There were a total of **${{ env.CHANGES_COUNT }}** files affected by running prettier on $(echo ${{ github.sha }} | head -c 7):" >> $GITHUB_STEP_SUMMARY
+                  echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+                  git diff --compact-summary >> $GITHUB_STEP_SUMMARY
+                  echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+                  echo "For a complete diff introduced by prettier, please see the workflow logs." >> $GITHUB_STEP_SUMMARY
+                  echo "PR_SUMMARY=$SUMMARY" >> $GITHUB_ENV
+                  echo "EMOJI=⚠️" >> $GITHUB_ENV
+
+            - name: 📜 Update PR Summary
+              if: github.event_name == 'pull_request'
+              uses: ./.github/actions/pr-summary
+              with:
+                  pr-number: ${{ github.event.pull_request.number }}
+                  section: prettier
+                  title: 🎨${{ env.EMOJI }} Prettier
+                  content: ${{ env.PR_SUMMARY }}
+                  app-id: ${{ secrets.CI_APP }}
+                  app-pat: ${{ secrets.CI_PAT }}
+
+    eslint:
+        runs-on: ubuntu-latest
+        name: 🚨 ESLint
+        permissions:
+            issues: write
+            pull-requests: write
+            checks: write
+        steps:
+            - name: 📥️ checkout
+              uses: actions/checkout@v5
+
+            - name: 🎛️ setup
+              uses: ./.github/actions/setup
+
+            - name: 🌐 create i18n types
+              run: yarn i18n:once
+
+            - name: 🚨 run eslint
+              run: yarn lint:fix -o .eslint-report.json --format json
+              continue-on-error: true
+
+            - name: 🖨  create annotations
+              id: annotations
+              uses: ataylorme/eslint-annotate-action@v3
+              with:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  report-json: .eslint-report.json
+                  only-pr-files: true
+                  fail-on-warning: false
+                  fail-on-error: true
+                  check-name: ESLint Report Analysis
+                  markdown-report-on-step-summary: true
+
+            - name: 🙂 get summarizing emoji
+              run: |
+                  echo "EMOJI=✅" >> $GITHUB_ENV
+                  if [[ ${{ steps.annotations.outputs.warningCount }} -gt 0 ]]; then
+                    echo "EMOJI=⚠️" >> $GITHUB_ENV
+                  fi
+                  if [[ ${{ steps.annotations.outputs.errorCount }} -gt 0 ]]; then
+                    echo "EMOJI=❌" >> $GITHUB_ENV
+                  fi
+
+            - name: 📜 update PR Summary
+              if: ${{ github.event_name == 'pull_request' && always() }}
+              uses: ./.github/actions/pr-summary
+              with:
+                  pr-number: ${{ github.event.pull_request.number }}
+                  section: eslint
+                  title: 🚨${{ env.EMOJI }} ESLint
+                  content: ${{ steps.annotations.outputs.summary }}
+                  app-id: ${{ secrets.CI_APP }}
+                  app-pat: ${{ secrets.CI_PAT }}

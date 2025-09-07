@@ -1,0 +1,112 @@
+@use '/src/style/mixins';
+@use '@sass-fairy/string';
+
+$marquee-duration: 10s;
+$min-marquee-width: 200px;
+
+$divider-img: 'https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmain/ico/favicon.ico';
+
+@if global.$UNI == 'cau' {
+    $divider-img: 'https://www.fs-informatik.uni-kiel.de/favicon.min.svg';
+}
+
+:local(.marquee) {
+    --max-width: 0px;
+    --text-width: 0;
+    --text-speed: 100;
+    --parent-left: 0px;
+    overflow: hidden;
+    position: absolute;
+    max-width: calc(var(--max-width));
+    width: calc(var(--max-width));
+    height: 100%;
+    left: calc(var(--parent-left) - var(--max-width));
+    --rolling-duration: calc(var(--text-width) * var(--text-speed) * 1ms);
+
+    &:not(:has(> span[data-rolling])) {
+        justify-content: end;
+
+        > span > *:last-child::after {
+            display: none;
+        }
+    }
+
+    > span {
+        display: inline-block;
+        white-space: nowrap;
+        will-change: transform;
+
+        > *::after {
+            content: string.repeat(' ', 11);
+            white-space: pre;
+            background-image: url($divider-img);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+
+        &[data-rolling] {
+            :local {
+                // :local-wörkaround for animation name to be transformed
+                animation: marquee var(--rolling-duration) linear infinite;
+            }
+
+            + span {
+                display: inline-block;
+
+                :local {
+                    animation: marquee var(--rolling-duration) linear infinite;
+                }
+            }
+        }
+
+        + span {
+            display: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+
+            &[data-rolling]:hover :local {
+                animation-name: marquee;
+            }
+        }
+
+        @keyframes :local(marquee) {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    }
+
+    @include mixins.media-up(md) {
+        max-width: calc(var(--max-width));
+        width: calc(var(--max-width));
+        left: calc(var(--parent-left) - var(--max-width) + $min-marquee-width);
+
+        :local(.marquee-min-width-placeholder):has(+ &) {
+            min-width: $min-marquee-width;
+        }
+    }
+
+    @include mixins.media-down(md) {
+        width: 100%;
+        max-width: 100%;
+        left: 0;
+        top: 100%;
+        padding-top: 2px;
+        height: auto;
+        background-color: rgba(255, 255, 255, 0.75);
+
+        &:not(:has(> span[data-rolling])) {
+            justify-content: center !important;
+        }
+
+        @include mixins.darkmode {
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+    }
+}

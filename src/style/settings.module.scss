@@ -1,0 +1,199 @@
+@use 'sass:math';
+@use 'sass:string';
+@use '/src/style/mixins';
+
+:local(#open-settings-btn) {
+    // if settings modal is not ready yet, settings btn should be in a loading state
+    &.loading {
+        opacity: 0.5;
+    }
+
+    .tooltip:has(:local(.new-setting-badge)) {
+        z-index: 1035;
+        cursor: pointer;
+    }
+}
+
+.modal-content:has(:local(#settings-form)) {
+    .modal-header {
+        align-items: center;
+
+        h5 {
+            $search-icon-width: 1em;
+            $search-icon-padding: 0.5em;
+
+            ~ :not(div:has(input)) {
+                // all elements in settings header except should have consistent padding and margin
+                padding: 1rem;
+                margin: -0.8rem -0.8rem -0.8rem 0;
+            }
+
+            ~ :not(button.close) {
+                // use small font size but not for the button in settings header
+                font-size: small;
+            }
+
+            ~ div:has(> input[type='search']) {
+                padding: 0;
+                margin-bottom: 0;
+                position: relative;
+
+                i.fa-magnifying-glass {
+                    width: $search-icon-width;
+                    position: absolute;
+                    top: 0;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-left: $search-icon-padding;
+                    color: grey;
+                    pointer-events: none;
+                }
+
+                > input[type='search'] {
+                    padding-left: calc(
+                        $search-icon-padding + $search-icon-width + 0.1em
+                    );
+
+                    &:not(:focus) {
+                        background-color: transparent;
+                    }
+                }
+            }
+
+            @include mixins.media-down(lg) {
+                flex-basis: 100%;
+                flex-shrink: 1;
+
+                & ~ div:has(input[type='search']) {
+                    $unfocused-width: calc(
+                        $search-icon-width + 2 * $search-icon-padding
+                    );
+
+                    &:has(> input[type='search']:focus) {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                    }
+
+                    &:has(> input[type='search']:not(:focus)) {
+                        max-width: $unfocused-width;
+
+                        &::before {
+                            margin-left: 0;
+                            width: calc(100% + 2px); // 1px border of input
+                        }
+                    }
+
+                    > input[type='search']:not(:focus) {
+                        padding-right: 0;
+                        padding-left: $unfocused-width;
+                    }
+                }
+            }
+        }
+    }
+
+    :local(#support-wrapper) {
+        top: 0.5rem;
+        right: 0.5rem;
+
+        @include mixins.media-down(lg) {
+            position: unset !important;
+
+            > div > span {
+                padding: 0.25rem 0.5rem;
+                text-align: center;
+            }
+        }
+
+        @include mixins.media-up(lg) {
+            > div > span {
+                margin: 0 0.5rem;
+            }
+        }
+    }
+
+    .fitem {
+        &:has(input[disabled], select[disabled]) {
+            .col-form-label label {
+                // disabled settings should have a grayed out label (similar to text-muted class)
+                color: var(--gray);
+            }
+
+            :local(.hide-disabled-settings) & {
+                // hide disabled settings if the user prefers
+                display: none;
+            }
+        }
+
+        :local(.new-setting-badge) {
+            // "New!"-Badges should not be cuddling with the label text!
+            margin-right: 1ch;
+        }
+    }
+
+    fieldset {
+        .ftoggler h3 :local(.new-setting-badge) {
+            // "New!"-Badges should not be cuddling with the featureGroup name!
+            margin-left: 1ch;
+        }
+
+        &:not(:has(.fcontainer :local(.new-setting-badge))) {
+            .ftoggler h3 :local(.new-setting-badge) {
+                // Hide the "New!"-Badge of a featureGroup if there are no new settings in this group anymore
+                display: none;
+            }
+        }
+    }
+
+    :local(.hide-new-setting-badges) :local(.new-setting-badge) {
+        // Hide the "New!"-Badges if the user prefers
+        display: none !important;
+    }
+
+    $tags: [ 'fun'];
+    @each $tag in $tags {
+        :local(.hide-#{$tag}-settings) & .fitem[data-tags*='#{$tag}'] {
+            // hide settings with tag #{$tag} if the user prefers
+            display: none;
+        }
+    }
+
+    :local(#settings-footer-btns) > :where(button, a) {
+        // some special style needed for the settings modal footer
+
+        // do not show the text by default
+        > span {
+            font-size: 0;
+        }
+
+        // but if we are on desktop devices and users are fine with animations, show the text on hover
+        // otherwise, users need to live with the icon only and the title attribute
+        @include mixins.media-up(lg) {
+            @include mixins.animated {
+                > span {
+                    font-size: 0;
+                    transition: font-size 0.5s;
+                }
+
+                &:hover > span {
+                    font-size: unset;
+                }
+            }
+        }
+        // if people cannot hover (which is on touch devices), show the text
+        @include mixins.is-touch-device {
+            // okay, on small devices, this looks better
+            @include mixins.media-down(lg) {
+                width: 100%;
+            }
+
+            > span {
+                font-size: unset;
+            }
+        }
+    }
+}

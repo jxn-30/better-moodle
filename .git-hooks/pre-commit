@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Restore previously stashed changes
+function unstash() {
+    git stash pop
+}
+
+# On error, restore stash
+trap unstash ERR
+
+# exit on non-zero code
+set -e
+
+# make sure that unstaged changes are not used during the hook
+git stash push --include-untracked --keep-index
+
+# Run ESLint & Prettier checks
+echo "[Better-Moodle Pre-Commit]: Running lint:check"
+yarn lint:check
+
+echo "[Better-Moodle Pre-Commit]: Running prettier:check"
+yarn prettier:check
+
+# TODO: Evaluate if we always want to build on uzl or also build other configurations?
+# This shouldn't change much as tsc is always run on the whole codebase
+# However an env variable that defaults to uzl shouldn't hurt too.
+
+echo "[Better-Moodle Pre-Commit]: Building once for uzl"
+yarn build uzl
+
+echo "[Better-Moodle Pre-Commit]: Testing source code on uzl"
+export BM_NO_COVERAGE="true"
+yarn test:src uzl
+
+# TODO Evaluate if we also want to test userscript?
+
+# Finally restore stash
+unstash

@@ -1,0 +1,13 @@
+@use '/src/style/mixins';
+
+@include mixins.darkmode {
+    .navbar.fixed-top .navbar-brand .logo,
+    #logoimage {
+        // Make the logo glow a little
+        @if global.$UNI == 'cau' {
+            filter: saturate(2) brightness(1.5) contrast(3);
+        } @else {
+            filter: brightness(500%);
+        }
+    }
+}

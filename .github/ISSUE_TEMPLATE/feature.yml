@@ -3,6 +3,20 @@ description: Mache einen Vorschlag für ein Feature / Create a feature request
 title: '[Feature request]: '
 
 body:
+    - type: dropdown
+      id: instance
+      attributes:
+          label: Instanz / Instance
+          description: Für welche Moodle-Instanz ist der Vorschlag? / What Moodle instance is this feature request for?
+          multiple: true
+          options:
+              - UzL
+              - CAU
+              - Sandbox405
+              - MoodleMootDACH
+      validations:
+          required: true
+
     - type: textarea
       id: description
       attributes:
@@ -30,4 +44,4 @@ body:
       id: additional
       attributes:
           label: Sonstiges / Additional
-          description: Hier kannst du weitere Punkte anfügen, die deine Idee besser verständlich machen (z.B. Screenshots o.ä.) /  You can use this section for any other information that may be relevant, such as Screenshots.
+          description: Hier kannst du weitere Punkte anfügen, die deine Idee besser verständlich machen (z. B. Screenshots o. ä.) /  You can use this section for any other information that may be relevant, such as Screenshots.

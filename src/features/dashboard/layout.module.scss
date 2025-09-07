@@ -1,0 +1,15 @@
+:local(#courses_sidebar-filter-menu) .list-group-item {
+    // Add some additional style to possible course filters
+    padding: 0.25rem 1.5rem;
+
+    &:hover {
+        background-color: var(--primary);
+        color: white;
+    }
+
+    &.active::before {
+        font-family: FontAwesome;
+        content: '';
+        margin-right: 0.5em;
+    }
+}

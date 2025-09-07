@@ -1,0 +1,5 @@
+@use './mixins' as *;
+
+a[href^='mailto:']:not(:has(.fa-envelope)) {
+    @include insert-before('\f003');
+}

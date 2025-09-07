@@ -1,7 +1,14 @@
-.eslintignore
 .eslintcache
 .yarn/
 node_modules/
+dist/
+src/style/**/*.d.ts
+src/features/**/*.scss.d.ts
+.release-please-manifest.json
+
+redesign.user.js
+
+ics-parser/.wrangler/
 
 CHANGELOG.md
 

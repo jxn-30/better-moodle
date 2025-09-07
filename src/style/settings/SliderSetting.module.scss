@@ -1,0 +1,64 @@
+// This styles the slider setting type
+:local(.slider-setting) {
+    // Some style to show tick-mark labels on range inputs
+    datalist[style*='--label-count'] {
+        display: grid;
+        grid-template-columns: repeat(var(--label-count), minmax(0, 1fr));
+        text-align: center;
+        // WTF? idk how and why but it seems to work. It positions the labels almost correctly
+        margin: 0
+            calc(
+                50% - 0.5 *
+                    calc((1 + 1 / (var(--label-count) - 1)) * (100% - 1em))
+            );
+
+        // overlapping text is bad => hide with ellipsis
+        > option {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            // make first and last label have custom alignments for better visibility
+            &:first-child {
+                text-align: left;
+                padding-left: calc(50% - 4px);
+            }
+
+            &:last-child {
+                text-align: right;
+                padding-right: calc(50% - 4px);
+            }
+
+            // add ticks to labels
+            &::after {
+                content: '';
+                position: absolute;
+                border: 1px solid grey;
+                height: 10px;
+                left: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                top: 0;
+            }
+        }
+    }
+
+    // style to show a bubble with current range input value
+    input[type='range'] + output {
+        position: absolute;
+        text-align: center;
+        white-space: nowrap;
+        padding: 2px;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+        z-index: 1;
+
+        // position the label correctly
+        left: calc(1% * var(--percentage));
+        transform: translateX(calc(-1% * var(--percentage)));
+    }
+
+    // adds transparency to tick-mark labels of disabled range inputs
+    input:disabled[type='range'] + output {
+        background-color: color-mix(in srgb, var(--primary) 50%, transparent);
+    }
+}
