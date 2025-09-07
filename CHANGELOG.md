@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0](https://github.com/jxn-30/better-moodle/compare/1.42.4...2.0.0) (2025-09-07)
+
+
+### Miscellaneous Chores
+
+* release 2.0.0 ([dfdda02](https://github.com/jxn-30/better-moodle/commit/dfdda02ac4367c4a745caef6ee1a38c25618892a))
+
 ## [1.42.4](https://github.com/jxn-30/better-moodle/compare/1.42.3...1.42.4) (2025-04-06)
 
 
