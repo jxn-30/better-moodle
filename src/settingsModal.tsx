@@ -347,7 +347,7 @@ const SearchStyle = <style></style>;
 const SearchWrapper = (
     <div className="form-group ml-auto mr-auto">
         {SearchInput}
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <i class="fa-solid fa-search"></i>
         {SearchStyle}
     </div>
 );
