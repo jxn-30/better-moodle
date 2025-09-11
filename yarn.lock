@@ -82,14 +82,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/compat-data@npm:7.28.0":
-  version: 7.28.0
-  resolution: "@babel/compat-data@npm:7.28.0"
-  checksum: 10c0/c4e527302bcd61052423f757355a71c3bc62362bac13f7f130de16e439716f66091ff5bdecda418e8fa0271d4c725f860f0ee23ab7bf6e769f7a8bb16dfcb531
-  languageName: node
-  linkType: hard
-
-"@babel/compat-data@npm:^7.27.2, @babel/compat-data@npm:^7.27.7, @babel/compat-data@npm:^7.28.0":
+"@babel/compat-data@npm:7.28.4, @babel/compat-data@npm:^7.27.2, @babel/compat-data@npm:^7.27.7, @babel/compat-data@npm:^7.28.0":
   version: 7.28.4
   resolution: "@babel/compat-data@npm:7.28.4"
   checksum: 10c0/9d346471e0a016641df9a325f42ad1e8324bbdc0243ce4af4dd2b10b974128590da9eb179eea2c36647b9bb987343119105e96773c1f6981732cd4f87e5a03b9
@@ -4198,7 +4191,7 @@ __metadata:
   resolution: "better-moodle@workspace:."
   dependencies:
     "@actions/core": "npm:1.11.1"
-    "@babel/compat-data": "npm:7.28.0"
+    "@babel/compat-data": "npm:7.28.4"
     "@cloudflare/workers-types": "npm:4.20250905.0"
     "@commitlint/cli": "npm:19.8.1"
     "@commitlint/config-conventional": "npm:19.8.1"
