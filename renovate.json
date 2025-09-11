@@ -1,7 +1,7 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "assignees": ["jxn-30"],
-    "baseBranchPatterns": ["main", "v2"],
+    "baseBranchPatterns": ["main"],
     "dependencyDashboard": true,
     "dependencyDashboardFooter": "Node.js and yarn updates are scheduled to the first day of the month. Polyfill dependencies are scheduled on thursdays. PRs will be created on mondays, wednesdays and fridays before 3am (CEST) for any other dependencies. Lockfile maintenance is scheduled for saturdays.",
     "dependencyDashboardHeader": "# ℹ️ Renovate Dependency-Dashboard ℹ️\nScheduled and currently open dependency updates are listed here\n",
