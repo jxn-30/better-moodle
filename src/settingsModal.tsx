@@ -16,7 +16,6 @@ import {
     isNewInstallation,
     mdID,
     mdToHtml,
-    PREFIX,
     rawGithubPath,
 } from '@/helpers';
 import { FIVE_MINUTES, ONE_DAY, ONE_MINUTE, ONE_SECOND } from '@/times';
@@ -147,9 +146,7 @@ SupportBtn.addEventListener('click', e => {
     }).show();
 });
 
-const latestVersionEl = (
-    <code id={PREFIX('settings_latest-version')}></code>
-) as HTMLElement;
+const latestVersionEl = (<code></code>) as HTMLElement;
 
 const SupportWrapper = (
     <div
@@ -216,11 +213,7 @@ let updateCheckRetryTimeout: ReturnType<(typeof window)['setTimeout']> | null;
  */
 const checkForUpdates = () =>
     getLoadingSpinner()
-        .then(spinner =>
-            document
-                .getElementById(latestVersionEl.id)
-                ?.replaceChildren(spinner)
-        )
+        .then(spinner => latestVersionEl.replaceChildren(spinner))
         .then(() =>
             request(
                 `https://api.github.com/repos/${__GITHUB_USER__}/${__GITHUB_REPO__}/releases/latest`
