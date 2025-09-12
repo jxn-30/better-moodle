@@ -36,7 +36,7 @@
     "devDependencies": {
         "@actions/core": "1.11.1",
         "@babel/compat-data": "7.28.4",
-        "@cloudflare/workers-types": "4.20250910.0",
+        "@cloudflare/workers-types": "4.20250912.0",
         "@commitlint/cli": "19.8.1",
         "@commitlint/config-conventional": "19.8.1",
         "@eslint/js": "9.35.0",
@@ -80,7 +80,7 @@
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "10.3.1",
         "prettier": "3.6.2",
-        "puppeteer": "24.19.0",
+        "puppeteer": "24.20.0",
         "rrule": "2.8.1",
         "sass-embedded": "1.92.1",
         "terser": "5.44.0",
