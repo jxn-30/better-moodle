@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.0.2](https://github.com/jxn-30/better-moodle/compare/2.0.1...2.0.2) (2025-09-13)
+
+
+### Bug Fixes
+
+* **cau:** remove unused connect urls ([#802](https://github.com/jxn-30/better-moodle/issues/802)) ([436cef8](https://github.com/jxn-30/better-moodle/commit/436cef8c6c7f3b6aa5634228995f5168b4c31368))
+* **dashboard:** fix icon in course filter ([017caeb](https://github.com/jxn-30/better-moodle/commit/017caeb0131c746889805e27593303d0abe147a7))
+* **settings:** fix search icon not always working ([1cf9ad4](https://github.com/jxn-30/better-moodle/commit/1cf9ad46fa0f91bb893c78043c1f1b7a6a6f954a))
+
 ## [2.0.1](https://github.com/jxn-30/better-moodle/compare/2.0.0...2.0.1) (2025-09-07)
 
 
