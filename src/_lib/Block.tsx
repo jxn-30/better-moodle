@@ -41,7 +41,7 @@ export default class Block {
 
     /**
      * throws an error if the block is already rendered
-     * @throws if the block is already rendered
+     * @throws {Error} if the block is already rendered
      */
     #throwOnRendered() {
         if (this.#rendered) {

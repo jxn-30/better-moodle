@@ -5,7 +5,7 @@ import { expect } from 'vitest';
  * @param actual - the string to check if it starts with {@link prefix}
  * @param prefix - the string to check if {@link actual} starts with
  * @returns the except result
- * @throws if {@link actual} is not a string
+ * @throws {Error} if {@link actual} is not a string
  */
 const toStartWith = (actual: unknown, prefix: string) => {
     if (typeof actual !== 'string') {
@@ -24,7 +24,7 @@ const toStartWith = (actual: unknown, prefix: string) => {
  * @param actual - the string to check if it ends with {@link prefix}
  * @param suffix - the string to check if {@link actual} end with
  * @returns the except result
- * @throws if {@link actual} is not a string
+ * @throws {Error} if {@link actual} is not a string
  */
 const toEndWith = (actual: unknown, suffix: string) => {
     if (typeof actual !== 'string') {
@@ -42,7 +42,7 @@ const toEndWith = (actual: unknown, suffix: string) => {
  * Expects a thing to be a string of a valid URL
  * @param actual - the thing to test if it is a string of a valid URL
  * @returns the except result
- * @throws if {@link actual} is not a string
+ * @throws {Error} if {@link actual} is not a string
  */
 const toBeAValidURL = (actual: unknown) => {
     if (typeof actual !== 'string') {

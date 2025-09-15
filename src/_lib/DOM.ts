@@ -46,7 +46,7 @@ export const getLoadingSpinner = () =>
  * @param action - where to put the template in relation to the element
  * @param preprocess - a function to preprocess the added elements. Will be executed before the element is added to the DOM.
  * @returns a promise that resolves to the added elements
- * @throws if the element is not found
+ * @throws {Error} if the element is not found
  */
 export const putTemplate = async <ReturnType extends Element[]>(
     element: HTMLElement | string,

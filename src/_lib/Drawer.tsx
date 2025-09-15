@@ -35,7 +35,7 @@ export default class Drawer {
 
     /**
      * throws an error if the drawer is already rendered
-     * @throws if the drawer is already rendered
+     * @throws {Error} if the drawer is already rendered
      */
     #throwOnRendered() {
         if (this.#rendered) {
