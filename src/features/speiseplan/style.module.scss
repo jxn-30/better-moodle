@@ -112,6 +112,11 @@ $max-co2-stars: 3;
                             hue-rotate(300deg);
                         mix-blend-mode: screen;
                     }
+
+                    &[src*='your-favourites'] {
+                        filter: invert(1) grayscale(2) brightness(2);
+                        mix-blend-mode: screen;
+                    }
                 }
             }
         }
