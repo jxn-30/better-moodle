@@ -16,7 +16,7 @@ import pluginTerser from '@rollup/plugin-terser';
 import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
 import { getUserAgentRegex as uaRegex } from 'browserslist-useragent-regexp';
 import { defineConfig, type ResolverFunction } from 'vite';
-import { dependencies, version } from './package.json';
+import { dependencies, devDependencies, version } from './package.json';
 
 const _PERF_START = process.hrtime.bigint();
 
@@ -303,6 +303,31 @@ const GLOBAL_CONSTANTS = {
 export const fileName = `better-moodle-${configFile}.user.js`;
 const metaFileName = `better-moodle-${configFile}.meta.js`;
 
+/**
+ * Creates a unicode box as a multiline-js comment.
+ * @param content - the full copyright text.
+ * @returns a unicode box
+ */
+const copyrightBox = (content: string) =>
+    boxen(content, {
+        borderStyle: {
+            topLeft: '/*!',
+            topRight: '*',
+            bottomLeft: ' *',
+            bottomRight: '*/',
+            top: '*',
+            bottom: '*',
+            left: '*',
+            right: '*',
+        },
+        title: 'Copyright ©',
+        padding: 1,
+        width: Math.min(
+            120, // The prettier max width for built file
+            Math.max(...content.split(/\n/).map(l => l.length)) + 8 // Max line width + padding + border
+        ),
+    }).toString();
+
 const copyrightContent = `
 This is Better-Moodle; Version ${version}; Built for ${config.uniName} (${config.moodleUrl}).
 Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30), Yorik (@YorikHansen) and contributors.
@@ -310,24 +335,16 @@ All rights reserved.
 Licensed under the MIT License (MIT).
 Source-Code: ${githubUrl}
 `.trim();
-const copyright = boxen(copyrightContent, {
-    borderStyle: {
-        topLeft: '/*!',
-        topRight: '*',
-        bottomLeft: ' *',
-        bottomRight: '*/',
-        top: '*',
-        bottom: '*',
-        left: '*',
-        right: '*',
-    },
-    title: 'Copyright ©',
-    padding: 1,
-    width: Math.min(
-        120, // The prettier max width for built file
-        Math.max(...copyrightContent.split(/\n/).map(l => l.length)) + 8 // Max line width + padding + border
-    ),
-}).toString();
+const copyright = copyrightBox(copyrightContent);
+const polyfillCopyrightContent = `
+This is Polyfills for Better-Moodle; Version ${version}; Built for ${config.uniName} (${config.moodleUrl}).
+Polyfills are provided by core-js@${devDependencies['core-js']}. Copyright (c) to the maintainers and contributors.
+Better-Moodle Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30), Yorik (@YorikHansen) and contributors.
+All rights reserved.
+Licensed under the MIT License (MIT).
+Source-Code: ${githubUrl}
+`.trim();
+const polyfillCopyright = copyrightBox(polyfillCopyrightContent);
 
 /**
  * replaces unused i18n imports with a path to a file exporting empty translations
@@ -623,7 +640,7 @@ export default defineConfig({
                     // `unsafeWindow.M` as the core-js resource would have overwritten `M` in the userscripts scope.
                     const outputSrc = await distPostBuild(
                         outputFileName,
-                        `(() => {${chunkOrAsset.code}})();`
+                        `${polyfillCopyright}\n(() => {${chunkOrAsset.code}})();`
                     );
                     addRequire(
                         `${githubUrl}/releases/download/${version}/${outputFileName}`,
