@@ -1,8 +1,8 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import externalCSS from './style/external.scss?inline';
 import FeatureGroup from '@/FeatureGroup';
-import mailCSS from './style/mail.scss?inline';
-import phoneCSS from './style/phone.scss?inline';
+import mailStyleEl from './style/mail.scss?style';
+import phoneStyleEl from './style/phone.scss?style';
 import type Setting from '@/Setting';
 
 const settings = new Set<Setting>();
@@ -19,8 +19,6 @@ const phone = new BooleanSetting('phone', true).onInput(() => onload());
 settings.add(mail).add(phone);
 
 let externalStyle: HTMLElement;
-let mailStyle: HTMLElement;
-let phoneStyle: HTMLElement;
 
 /**
  * Adds the event listener that handles the mouseover event
@@ -33,16 +31,12 @@ const onload = () => {
     } else externalStyle?.remove();
 
     // mail
-    if (mail.value) {
-        if (mailStyle) document.head.append(mailStyle);
-        else mailStyle = GM_addStyle(mailCSS);
-    } else mailStyle?.remove();
+    if (mail.value) document.head.append(mailStyleEl);
+    else mailStyleEl.remove();
 
     // mphone
-    if (phone.value) {
-        if (phoneStyle) document.head.append(phoneStyle);
-        else phoneStyle = GM_addStyle(phoneCSS);
-    } else phoneStyle?.remove();
+    if (phone.value) document.head.append(phoneStyleEl);
+    else phoneStyleEl.remove();
 };
 
 export default FeatureGroup.register({ settings, onload });
