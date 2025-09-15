@@ -16,12 +16,12 @@ const add = (key: string, name = '', id = 0, closingHour = 24) =>
         title: name,
         closingHour,
         url: {
-            de: `https://studentenwerk.sh/de/essen-uebersicht?mensa=${id}#mensaplan`,
-            en: `https://studentenwerk.sh/en/food-overview?mensa=${id}#mensaplan`,
+            'de': `https://studentenwerk.sh/de/essen-uebersicht?mensa=${id}#mensaplan`,
+            'en-gb': `https://studentenwerk.sh/en/food-overview?mensa=${id}#mensaplan`,
         },
         urlNextWeek: {
-            de: `https://studentenwerk.sh/de/essen-uebersicht?mensa=${id}&nw=1#mensaplan`,
-            en: `https://studentenwerk.sh/en/food-overview?mensa=${id}&nw=1#mensaplan`,
+            'de': `https://studentenwerk.sh/de/essen-uebersicht?mensa=${id}&nw=1#mensaplan`,
+            'en-gb': `https://studentenwerk.sh/en/food-overview?mensa=${id}&nw=1#mensaplan`,
         },
     });
 
