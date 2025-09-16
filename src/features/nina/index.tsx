@@ -1,5 +1,5 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
-import { dateToString } from '@/localeString';
+import { datetimeToString } from '@/localeString';
 import FeatureGroup from '@/FeatureGroup';
 import { getHtml } from '@/DOM';
 import globalStyle from '!/index.module.scss';
@@ -214,7 +214,7 @@ const showAlertDetailsModal = (alertId: string) => {
             );
 
             // Body
-            const sent = dateToString(new Date(alert.sent));
+            const sent = datetimeToString(new Date(alert.sent));
             alertBodyElem.append(
                 <span className="small text-muted">
                     {LL.modal.sentAt()}: {sent}
@@ -227,9 +227,9 @@ const showAlertDetailsModal = (alertId: string) => {
             if (onset && expires) {
                 alertBodyElem.append(
                     <span className="small text-muted">
-                        {dateToString(new Date(onset))}
+                        {datetimeToString(new Date(onset), true, false)}
                         {' - '}
-                        {dateToString(new Date(expires))}
+                        {datetimeToString(new Date(expires), true, false)}
                     </span>,
                     <br />
                 );
@@ -608,7 +608,7 @@ const requestAlerts = () =>
                         </h5>
                         <span className="small text-muted">
                             {LL.modal.sentAt()}:{' '}
-                            {dateToString(new Date(alert.sent))}
+                            {datetimeToString(new Date(alert.sent))}
                         </span>
                         <br />
                         <p>{shortDescription}</p>
