@@ -406,6 +406,7 @@ export default abstract class Setting<
         if (this.#formControl) {
             this.#formControl.value = this.savedValue;
             this.#formControl.dispatchEvent(new Event('input'));
+            this.#formControl.dispatchEvent(new Event('change'));
         }
     }
 
@@ -417,6 +418,7 @@ export default abstract class Setting<
         if (this.#formControl) {
             this.#formControl.value = this.savedValue;
             this.#formControl.dispatchEvent(new Event('input'));
+            this.#formControl.dispatchEvent(new Event('change'));
         }
     }
 
