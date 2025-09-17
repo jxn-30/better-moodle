@@ -114,7 +114,13 @@ $max-co2-stars: 3;
                     }
 
                     &[src*='your-favourites'] {
-                        filter: invert(1) grayscale(2) brightness(2);
+                        filter: invert(1)
+                            grayscale(2)
+                            brightness(2)
+                            sepia(1)
+                            sepia(1)
+                            sepia(1)
+                            sepia(1);
                         mix-blend-mode: screen;
                     }
                 }
