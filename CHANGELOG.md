@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.1.0](https://github.com/jxn-30/better-moodle/compare/2.0.1...2.1.0) (2025-09-17)
+
+
+### Features
+
+* **nina:** show time of start and end [#803](https://github.com/jxn-30/better-moodle/issues/803) ([d8a16ff](https://github.com/jxn-30/better-moodle/commit/d8a16ffcd7e815e7e31f847ad0676af7ac95abb6))
+* **style:** improve creating style elements at diverse points ([c4f697b](https://github.com/jxn-30/better-moodle/commit/c4f697bc3bc45782e0ca99c45aaaa9aa4a3e1be9))
+
+
+### Bug Fixes
+
+* **cau:** remove unused connect urls ([#802](https://github.com/jxn-30/better-moodle/issues/802)) ([436cef8](https://github.com/jxn-30/better-moodle/commit/436cef8c6c7f3b6aa5634228995f5168b4c31368))
+* **dashboard:** fix icon in course filter ([017caeb](https://github.com/jxn-30/better-moodle/commit/017caeb0131c746889805e27593303d0abe147a7))
+* **settings:** fix search icon not always working ([1cf9ad4](https://github.com/jxn-30/better-moodle/commit/1cf9ad46fa0f91bb893c78043c1f1b7a6a6f954a))
+* **settings:** fix syncing some settings such as darkmode ([c42df5d](https://github.com/jxn-30/better-moodle/commit/c42df5d23858de5a1ac957e4ee3d2ee56a6882d3))
+* **speiseplan:** add a darkmode fix for the 'your-favourites' logo ([#817](https://github.com/jxn-30/better-moodle/issues/817)) ([3ef7aeb](https://github.com/jxn-30/better-moodle/commit/3ef7aeb643ddcf7271fa108aa40adf93bfac9a0a))
+* **speiseplan:** fix english canteen menu not working ([#818](https://github.com/jxn-30/better-moodle/issues/818)) ([32c675f](https://github.com/jxn-30/better-moodle/commit/32c675f8c5fbd19212fa505924d601b7946efc0c))
+
 ## [2.0.1](https://github.com/jxn-30/better-moodle/compare/2.0.0...2.0.1) (2025-09-07)
 
 
