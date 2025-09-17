@@ -39,6 +39,7 @@ jobs:
         strategy:
             matrix:
                 config: ${{ fromJson(needs.find-configs.outputs.configs) }}
+            fail-fast: false
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v5
@@ -56,7 +57,7 @@ jobs:
               run: |
                   # get meta filename
                   file="${{ steps.build.outputs.file }}"
-                  meta=$(sed 's/\.user\.js/\.meta\.user\.js/' <<< "$file")
+                  meta=$(sed 's/\.user\.js/\.meta\.js/' <<< "$file")
                   polyfills=$(sed 's/\.user\.js/-polyfills\.js/' <<< "$file")
 
                   # upload the release artifacts with special nice names
@@ -72,7 +73,7 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                   file="${{ steps.build.outputs.file }}"
-                  meta=$(sed 's/\.user\.js/\.meta\.user\.js/' <<< "$file")
+                  meta=$(sed 's/\.user\.js/\.meta\.js/' <<< "$file")
                   cp "${{ steps.build.outputs.dir }}/$file" better-moodle.user.js
                   cp "${{ steps.build.outputs.dir }}/$meta" better-moodle.meta.js
 
