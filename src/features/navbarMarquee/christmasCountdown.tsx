@@ -10,6 +10,9 @@ const LL = LLF('navbarMarquee', 'christmasCountdown');
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('general.christmasCountdown')
     .addTag('fun');
+const short = new BooleanSetting('short', false)
+    .addTag('fun')
+    .disabledIf(enabled, '!=', true);
 
 const countdownSpan = (<span>🎄</span>) as HTMLSpanElement;
 let countdownSpanClone: HTMLSpanElement;
@@ -33,8 +36,12 @@ const updateCountdown = () => {
     }
     const tillThen = christmas.getTime() - now.getTime();
     const daysTillThen = Math.floor(tillThen / ONE_DAY);
+    const text =
+        short.value ?
+            LL.short({ days: daysTillThen })
+        :   LL.remaining({ days: daysTillThen });
     countdownSpan.innerHTML = countdownSpanClone.innerHTML = mdToHtml(
-        LL.remaining({ days: daysTillThen }),
+        text,
         undefined,
         undefined,
         false
@@ -46,6 +53,7 @@ const updateCountdown = () => {
  * Adds or removes the countdown based on setting state and triggers updating the countdown
  */
 const reload = () => {
+    if (timeout) clearTimeout(timeout);
     if (enabled.value) {
         [[, countdownSpanClone]] = marquee.add(countdownSpan);
         updateCountdown();
@@ -55,14 +63,14 @@ const reload = () => {
         timeout = setTimeout(updateCountdown, midnight.getTime() - Date.now());
     } else {
         marquee.remove(countdownSpan);
-        if (timeout) clearTimeout(timeout);
     }
 };
 
 enabled.onInput(reload);
+short.onInput(reload);
 
 export default Feature.register({
-    settings: new Set([enabled]),
+    settings: new Set([enabled, short]),
     onload: reload,
     onunload: reload,
 });
