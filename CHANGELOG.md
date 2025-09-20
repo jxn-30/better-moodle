@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/jxn-30/better-moodle/compare/2.1.0...2.2.0) (2025-09-20)
+
+
+### Features
+
+* implement short christmas countdown [#822](https://github.com/jxn-30/better-moodle/issues/822) ([18569df](https://github.com/jxn-30/better-moodle/commit/18569df4ad01fd6e63028077586f927ff30f2c2e))
+
 ## [2.1.0](https://github.com/jxn-30/better-moodle/compare/2.0.1...2.1.0) (2025-09-17)
 
 
