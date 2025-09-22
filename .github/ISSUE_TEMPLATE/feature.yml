@@ -10,7 +10,7 @@ body:
           description: Für welche Moodle-Instanz ist der Vorschlag? / What Moodle instance is this feature request for?
           multiple: true
           options:
-              - [Alle / All]
+              - '[Alle / All]'
               - UzL
               - CAU
               - Sandbox405

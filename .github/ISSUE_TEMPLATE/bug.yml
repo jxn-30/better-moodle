@@ -58,7 +58,7 @@ body:
           label: Instanz / Instance
           multiple: true
           options:
-              - [Alle / All]
+              - '[Alle / All]'
               - UzL
               - CAU
               - Sandbox405
