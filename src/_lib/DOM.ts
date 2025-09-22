@@ -1,4 +1,5 @@
 import { htmlToElements } from './helpers';
+import { renderAsElement } from './templates';
 import { requirePromise } from './require.js';
 
 /**
@@ -27,15 +28,10 @@ let loadingSpinner: HTMLElement;
 export const getLoadingSpinner = () =>
     loadingSpinner ?
         Promise.resolve(loadingSpinner.cloneNode(true) as HTMLElement)
-    :   requirePromise(['core/templates'] as const)
-            .then(([templates]) =>
-                templates.renderForPromise('core/loading', {})
-            )
-            .then(({ html }) => htmlToElements(html).item(0) as HTMLElement)
-            .then(spinner => {
-                loadingSpinner = spinner;
-                return spinner.cloneNode(true) as HTMLElement;
-            });
+    :   renderAsElement('core/loading', {}).then(spinner => {
+            loadingSpinner = spinner as HTMLElement;
+            return spinner.cloneNode(true) as HTMLElement;
+        });
 
 /**
  * Adds a template to the DOM and executes the JS.

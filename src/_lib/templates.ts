@@ -1,6 +1,6 @@
-import { mdlJSComplete } from '@/helpers';
 import { requirePromise } from '@/require.js';
 import CoreTemplates, { Context } from '#/require.js/core/templates';
+import { htmlToElements, mdlJSComplete } from '@/helpers';
 
 /**
  * OMG did Moothel just find a way to make Moodle render custom templates just by storing it hacky into the localstorage?
@@ -44,4 +44,42 @@ export const render: CoreTemplates['renderForPromise'] = (
 ) =>
     requirePromise(['core/templates'] as const).then(([templates]) =>
         templates.renderForPromise(templateName, context, themeName)
+    );
+
+type RenderAsElements = (
+    ...args: Parameters<CoreTemplates['renderForPromise']>
+) => Promise<HTMLCollection | NodeListOf<Element>>;
+/**
+ * Renders a template with a given context and returns the html elements.
+ * @param templateName - The name of the template.
+ * @param context - The context to render the template with.
+ * @param themeName - The name of the theme to render the template with.
+ * @returns The html elements as a promise.
+ */
+export const renderAsElements: RenderAsElements = (
+    templateName,
+    context,
+    themeName
+) =>
+    render(templateName, context, themeName).then(({ html }) =>
+        htmlToElements(html)
+    );
+
+type RenderAsElement = (
+    ...args: Parameters<CoreTemplates['renderForPromise']>
+) => Promise<Element>;
+/**
+ * Renders a template with a given context and returns the first html element.
+ * @param templateName - The name of the template.
+ * @param context - The context to render the template with.
+ * @param themeName - The name of the theme to render the template with.
+ * @returns The first html element as a promise.
+ */
+export const renderAsElement: RenderAsElement = (
+    templateName,
+    context,
+    themeName
+) =>
+    renderAsElements(templateName, context, themeName).then(
+        elements => elements.item(0)!
     );

@@ -2,7 +2,7 @@ import { FeatureGroupID } from './FeatureGroup';
 import { FeatureID } from './Feature';
 import globalStyle from '!/index.module.scss';
 import type { JSX } from 'jsx-dom';
-import { requirePromise } from './require.js';
+import { renderAsElements } from './templates';
 import { SettingTranslations } from './Setting';
 import { SimpleReady } from './CanBeReady';
 import sliderStyle from '!/settings/SliderSetting.module.scss';
@@ -571,34 +571,28 @@ export const FieldSet = ({
     let heading: HTMLHeadingElement | null;
     const waitForContainer = new SimpleReady();
 
-    void requirePromise(['core/templates'] as const).then(([templates]) =>
-        templates
-            .renderForPromise('core_form/element-header', {
-                header: title,
-                id: PREFIX(id),
-                collapseable: true,
-                collapsed,
-            })
-            .then(({ html }) =>
-                FieldSet.append(...Array.from(htmlToElements(html)))
-            )
-            .then(() => {
-                container =
-                    FieldSet.querySelector<HTMLDivElement>('.fcontainer');
-                container?.append(
-                    <>
-                        {description && (
-                            <p className="p-12">
-                                {htmlToElements(mdToHtml(description))}
-                            </p>
-                        )}
-                        {children}
-                    </>
-                );
-                heading = FieldSet.querySelector<HTMLHeadingElement>('h3');
-                waitForContainer.ready();
-            })
-    );
+    void renderAsElements('core_form/element-header', {
+        header: title,
+        id: PREFIX(id),
+        collapseable: true,
+        collapsed,
+    })
+        .then(elements => FieldSet.append(...Array.from(elements)))
+        .then(() => {
+            container = FieldSet.querySelector<HTMLDivElement>('.fcontainer');
+            container?.append(
+                <>
+                    {description && (
+                        <p className="p-12">
+                            {htmlToElements(mdToHtml(description))}
+                        </p>
+                    )}
+                    {children}
+                </>
+            );
+            heading = FieldSet.querySelector<HTMLHeadingElement>('h3');
+            waitForContainer.ready();
+        });
 
     Object.defineProperty(FieldSet, 'appendToContainer', {
         /**
