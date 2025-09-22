@@ -1,0 +1,19 @@
+{{#courses}}
+    <div
+        class="card block mb-3"
+        data-search-text="{{searchText}}"
+    >
+        <div class="card-body p-3">
+            <a href={{viewurl}}>
+                {{#isfavourite}}
+                    <i class="icon fa fa-star fa-fw"></i>
+                {{/isfavourite}}
+                {{#shortname}}
+                    <strong>{{{shortname}}}</strong>
+                    <br />
+                {{/shortname}}
+                <small>{{{fullname}}}</small>
+            </a>
+        </div>
+    </div>
+{{/courses}}

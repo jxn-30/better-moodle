@@ -1,8 +1,10 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
+import CourseBlockTemplate from './templates/layoutCourseBlock.mustache?raw';
 import Feature from '@/Feature';
 import { getLoadingSpinner } from '@/DOM';
 import { getString } from '@/moodleStrings';
 import { LLF } from 'i18n';
+import { renderCustomTemplateAsElements } from '@/templates';
 import { requirePromise } from '@/require.js';
 import style from './layout.module.scss';
 import {
@@ -83,33 +85,19 @@ const getCourseBlocks = (): Promise<HTMLDivElement[]> =>
                 );
             }
 
-            return courses.map(
-                course =>
-                    (
-                        <div
-                            className="card block mb-3"
-                            dataset={{
-                                searchText:
-                                    `${course.shortname} ${course.fullname}`.toLowerCase(),
-                            }}
-                        >
-                            <div className="card-body p-3">
-                                <a href={course.viewurl}>
-                                    {course.isfavourite ?
-                                        <i className="icon fa fa-star fa-fw"></i>
-                                    :   <></>}
-                                    {course.shortname ?
-                                        <>
-                                            <strong>{course.shortname}</strong>
-                                            <br />
-                                        </>
-                                    :   <></>}
-                                    <small>{course.fullname}</small>
-                                </a>
-                            </div>
-                        </div>
-                    ) as HTMLDivElement
-            );
+            const context = {
+                courses: courses.map(course => ({
+                    ...course,
+                    searchText:
+                        `${course.shortname} ${course.fullname}`.toLowerCase(),
+                })),
+            };
+
+            return renderCustomTemplateAsElements(
+                'dashboard/layout/course_block',
+                CourseBlockTemplate,
+                context
+            ).then(els => Array.from(els) as HTMLDivElement[]);
         });
 
 /**

@@ -31,6 +31,22 @@ export const renderCustomTemplate = (
     });
 
 /**
+ * This method allows rendering custom mustache templates in Moodle and returning the html elements.
+ * @param name - The name of the template.
+ * @param template - The mustache template (as a string) to render.
+ * @param context - The context to render the template with.
+ * @returns The html elements as a promise.
+ */
+export const renderCustomTemplateAsElements = (
+    name: string,
+    template: string,
+    context: Record<string, Context>
+) =>
+    renderCustomTemplate(name, template, context).then(({ html }) =>
+        htmlToElements(html)
+    );
+
+/**
  * Renders a template with the given context.
  * @param templateName - The name of the template.
  * @param context - The context to render the template with.
