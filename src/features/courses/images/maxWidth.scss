@@ -1,4 +1,4 @@
 // prevent images from overflowing
-#region-main img:not(.activityicon):not(.icon) {
+#region-main img:not(.activityicon):not(.icon):not(.img-fluid) {
     max-width: 100%;
 }
