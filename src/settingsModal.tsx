@@ -154,7 +154,7 @@ const SupportWrapper = (
         className="position-absolute z-index-1 d-flex flex-row small card border-light mb-3"
     >
         {SupportBtn}
-        <div className="d-flex flex-row flex-lg-column align-items-center">
+        <div className="d-flex flex-row flex-lg-column align-items-end">
             <span>
                 {LL.settings.modal.installedVersion()}:{' '}
                 <code>{GM_info.script.version}</code>
