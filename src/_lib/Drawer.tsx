@@ -111,9 +111,9 @@ export default class Drawer {
      */
     setHeading(heading: JSXElement) {
         if (this.#instance) {
-            this.#instance.drawerNode
-                .querySelector('.drawerheadercontent')
-                ?.replaceChildren(heading);
+            this.querySelector('.drawerheadercontent')?.replaceChildren(
+                heading
+            );
         } else {
             this.#throwOnRendered();
             this.#heading = heading;
@@ -128,14 +128,30 @@ export default class Drawer {
      */
     setContent(content: JSXElement) {
         if (this.#instance) {
-            this.#instance.drawerNode
-                .querySelector('.drawercontent')
-                ?.replaceChildren(content);
+            this.querySelector('.drawercontent')?.replaceChildren(content);
         } else {
             this.#throwOnRendered();
             this.#content = content;
         }
         return this;
+    }
+
+    /**
+     * performs a querySelector on the drawer node
+     * @param selector - the selector
+     * @returns the selector result
+     */
+    querySelector<ElementType extends Element>(selector: string) {
+        return this.#instance?.drawerNode.querySelector<ElementType>(selector);
+    }
+
+    /**
+     * adds an event listener on the drawer node
+     * @param options - the options passed to a normal addEventListener
+     * @returns void
+     */
+    addEventListener(...options: Parameters<HTMLElement['addEventListener']>) {
+        return this.#instance?.drawerNode.addEventListener(...options);
     }
 
     /**
@@ -248,32 +264,22 @@ export default class Drawer {
                 );
             });
 
-        this.#instance.drawerNode.addEventListener(
-            Drawers.eventTypes.drawerShown,
-            () => {
-                GM_setValue(this.#storageKey, this.#instance?.isOpen);
-                // show header content
-                this.#instance?.drawerNode
-                    .querySelector('.drawerheadercontent')
-                    ?.classList.remove('hidden');
-                doPubsub(true);
-            }
-        );
-        this.#instance.drawerNode.addEventListener(
-            Drawers.eventTypes.drawerHidden,
-            () => {
-                GM_setValue(this.#storageKey, this.#instance?.isOpen);
-                doPubsub(false);
-            }
-        );
+        this.addEventListener(Drawers.eventTypes.drawerShown, () => {
+            GM_setValue(this.#storageKey, this.#instance?.isOpen);
+            // show header content
+            this.querySelector('.drawerheadercontent')?.classList.remove(
+                'hidden'
+            );
+            doPubsub(true);
+        });
+        this.addEventListener(Drawers.eventTypes.drawerHidden, () => {
+            GM_setValue(this.#storageKey, this.#instance?.isOpen);
+            doPubsub(false);
+        });
         // hide the header content when hiding drawer to prevent glitchy behaviour
         // https://git.moodle.org/gw?p=moodle.git;a=blob;f=theme/boost/amd/src/drawers.js;h=86680acfb89f6be03e3ed5a1bc6ef54b9a8667c5;hb=7b04638c5261bd2b2ea3f505bdcd612c96587efa#l427
-        this.#instance.drawerNode.addEventListener(
-            Drawers.eventTypes.drawerHide,
-            () =>
-                this.#instance?.drawerNode
-                    .querySelector('.drawerheadercontent')
-                    ?.classList.add('hidden')
+        this.addEventListener(Drawers.eventTypes.drawerHide, () =>
+            this.querySelector('.drawerheadercontent')?.classList.add('hidden')
         );
 
         return this;

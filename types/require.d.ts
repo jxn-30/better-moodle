@@ -10,10 +10,12 @@ import CoreLocalstorage from './require.js/core/localstorage';
 import CoreModal from './require.js/core/modal';
 import CoreModalEvents from './require.js/core/modal_events';
 import CoreModalFactory from './require.js/core/modal_factory';
+import CoreNotification from './require.js/core/notification';
 import CorePubsub from './require.js/core/pubsub';
 import CoreStr from './require.js/core/str';
 import CoreTemplates from './require.js/core/templates';
 import CoreToast from './require.js/core/toast';
+import CoreUserRepository from './require.js/core_user/repository';
 import InitEmojiAutoComplete from './require.js/core/emoji/auto_complete';
 import InitEmojiPicker from './require.js/core/emoji/picker';
 import JQueryStatic from '@types/jquery';
@@ -38,12 +40,15 @@ interface ModuleMap {
     'core/modal_factory': CoreModalFactory;
     'core/modal_events': CoreModalEvents;
     'core/modal_save_cancel': CoreModal;
+    'core/notification': CoreNotification;
     'core/pubsub': CorePubsub;
     'core/str': CoreStr;
     'core/templates': CoreTemplates;
     'core/toast': CoreToast;
 
     'core_filters/events': CoreFiltersEvents;
+
+    'core_user/repository': CoreUserRepository;
 
     'jquery': JQueryStatic;
 

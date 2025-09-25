@@ -17,6 +17,11 @@ export default interface CoreTemplates {
 }
 
 interface ContextMap extends Record<string, Context> {
+    'block_myoverview/course-action-menu': {
+        isfavourite: boolean;
+        hidden: boolean;
+    };
+
     'core/block': {
         showskiplink: boolean;
         title: string;

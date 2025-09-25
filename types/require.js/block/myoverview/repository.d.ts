@@ -22,12 +22,15 @@ interface Course {
 }
 
 export default interface BlockMyOverviewRepository {
-    getEnrolledCoursesByTimeline(args: {
+    getEnrolledCoursesByTimeline: (args: {
         classification: string;
         customfieldname: string;
         customfieldvalue: string;
         limit: number;
         offset: number;
         sort: string;
-    }): Promise<{ nextoffset: number; courses: Course[] }>;
+    }) => Promise<{ nextoffset: number; courses: Course[] }>;
+    setFavouriteCourses: (args: {
+        courses: { id: number; favourite: boolean }[];
+    }) => Promise<{ warnings: unknown[] }>;
 }
