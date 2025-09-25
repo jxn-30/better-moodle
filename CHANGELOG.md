@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.0](https://github.com/jxn-30/better-moodle/compare/2.1.0...2.2.0) (2025-09-25)
+
+
+### Features
+
+* **dashboard:** add course actions to sidebar [#830](https://github.com/jxn-30/better-moodle/issues/830) ([adff056](https://github.com/jxn-30/better-moodle/commit/adff0566e42afcff3b11dfd8f37595646ae6872f))
+* implement short christmas countdown [#822](https://github.com/jxn-30/better-moodle/issues/822) ([18569df](https://github.com/jxn-30/better-moodle/commit/18569df4ad01fd6e63028077586f927ff30f2c2e))
+
+
+### Bug Fixes
+
+* **images:** fix some full-width images from overflowing ([4b30282](https://github.com/jxn-30/better-moodle/commit/4b30282cb1e9a3f03518f50e8c5542e441408007))
+* **settings:** make latest version be aligned to end ([089d910](https://github.com/jxn-30/better-moodle/commit/089d910ccc80d7ce65165361188e420a3f71ada5))
+
 ## [2.1.0](https://github.com/jxn-30/better-moodle/compare/2.0.1...2.1.0) (2025-09-17)
 
 
