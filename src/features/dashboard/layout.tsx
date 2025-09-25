@@ -19,7 +19,7 @@ const onload = async () => {
     if (!isDashboard || !(await isLoggedIn())) return;
 
     if (coursesSidebarEnabled.value) {
-        initCourseSidebar();
+        void initCourseSidebar();
     }
 
     if (timelineSidebarEnabled.value && __UNI__ !== 'cau') {
