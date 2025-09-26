@@ -37,7 +37,7 @@
         "@actions/core": "1.11.1",
         "@babel/compat-data": "7.28.4",
         "@cloudflare/workers-types": "4.20250924.0",
-        "@commitlint/cli": "19.8.1",
+        "@commitlint/cli": "20.0.0",
         "@commitlint/config-conventional": "19.8.1",
         "@eslint/js": "9.36.0",
         "@prettier/plugin-xml": "3.4.2",
