@@ -9,9 +9,9 @@
     "github": { "user": "jxn-30", "repo": "better-moodle", "branch": "main" },
     "icon": "https://www.uni-kiel.de/typo3temp/assets/_processed_/5/e/csm_cau-favicon_905dc65f6f.png",
     "moodleUrl": "https://elearn.informatik.uni-kiel.de",
-    "moodleVersion": 401,
+    "moodleVersion": 405,
     "connects": ["studentenwerk.sh"],
-    "fixes": ["cau/loginDivider", "cau/prideLogo"],
+    "fixes": ["cau/loginDivider"],
     "includeNonDefaultFeatures": [
         "general.cauNavbar",
         "semesterzeiten",

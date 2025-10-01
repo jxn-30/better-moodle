@@ -2,7 +2,7 @@ import GM_fetch from '@trim21/gm-fetch';
 import { PREFIX } from '@/helpers';
 
 /**
- * Make a fetch request using the GM-API if @connect header exists, otherwise using native fetch
+ * Make a fetch request using the GM-API if `@connect` header exists, otherwise using native fetch
  * @param url - the url to make the fetch to
  * @param init - the fetch init
  * @returns the fetch response
