@@ -218,7 +218,7 @@ dotenv.populate(process.env, {
 const requires: string[] = [];
 
 /**
- * Adds an URL to the @require list, optionally with hash
+ * Adds an URL to the `@require` list, optionally with hash
  * @param url - the url to use
  * @param hashContent - the content to create the hash of
  */
