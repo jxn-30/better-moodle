@@ -88,7 +88,7 @@ jobs:
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   report-json: .eslint-report.json
-                  only-pr-files: true
+                  only-pr-files: false
                   fail-on-warning: false
                   fail-on-error: true
                   check-name: ESLint Report Analysis
