@@ -322,6 +322,12 @@ const showAlertDetailsModal = (alertId: string) => {
                 }
                 alertCache[alert.identifier].seen = true;
                 GM_setValue(CACHE_KEY, alertCache);
+                // mark as seen in alert overview
+                alertsModalBody
+                    .querySelector(
+                        `.card:has([data-alert="${alert.identifier}"])`
+                    )
+                    ?.classList.remove(style.unseen);
             });
         });
 };
@@ -471,7 +477,7 @@ const alertsModal: Modal = new Modal({
     scrollable: true,
     title: (
         <>
-            <i className="icon fa fa-exclamation-triangle fa-fw" />
+            <i className="icon fa fa-exclamation-triangle fa-fw text-warning" />
             {LL.modal.activeWarnings({ municipalty: MUNICIPALTY })}
         </>
     ),
