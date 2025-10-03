@@ -43,6 +43,7 @@ const API_BASE = 'https://nina.api.proxy.bund.dev/api31';
 
 // The amtliche Regionalschlüssel has been extracted from https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json
 const ARS = __UNI__ === 'cau' ? '010020000000' : '010030000000';
+const MUNICIPALTY = __UNI__ === 'cau' ? 'Kiel' : 'Lübeck';
 
 // Define Settings
 const civilWarningsSetting = new SliderSetting('civilWarnings', 2, {
@@ -471,7 +472,7 @@ const alertsModal: Modal = new Modal({
     title: (
         <>
             <i className="icon fa fa-exclamation-triangle fa-fw" />
-            {LL.modal.activeWarnings()}
+            {LL.modal.activeWarnings({ municipalty: MUNICIPALTY })}
         </>
     ),
     body: alertsModalBody,

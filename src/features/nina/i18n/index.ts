@@ -69,7 +69,7 @@ export const de = {
         },
     },
     modal: {
-        activeWarnings: 'Aktive Warnungen',
+        activeWarnings: 'Aktive Warnungen für {municipalty}',
         bbkLink: 'Meldung auf der Seite des BBK',
         categories: 'Kategorien',
         close: 'Schließen',
@@ -227,7 +227,7 @@ export const en = {
         },
     },
     modal: {
-        activeWarnings: 'Active warnings',
+        activeWarnings: 'Active warnings for {municipalty}',
         bbkLink:
             'More information on the website of the Federal Office for Civil Protection and Disaster Assistance',
         categories: 'Categories',
