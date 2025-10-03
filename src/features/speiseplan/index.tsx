@@ -339,15 +339,25 @@ const getCurrentSpeiseplan = () => {
 
     footerLinkWrapper.href = url;
 
-    const expandedDay = Number(
-        new Date().getHours() >= currentCanteen().closingHour
-    );
+    let firstDay: Date | undefined;
+
+    /**
+     * Gets the index of the day to expand
+     * @returns the index of the day to expand
+     */
+    const getExpandedDay = () =>
+        Number(
+            new Date().toDateString() === firstDay?.toDateString() &&
+                new Date().getHours() >= currentCanteen().closingHour
+        );
 
     return Promise.all([parse(url), parse(urlNextWeek)])
         .then(([thisWeek, nextWeek]) => {
             footerTimeSpan.textContent = timeToString(
                 new Date(thisWeek.timestamp)
             );
+
+            firstDay = thisWeek.dishes.keys().next().value;
 
             const speiseplan = thisWeek;
             speiseplan.dishes = new Map([
@@ -374,7 +384,7 @@ const getCurrentSpeiseplan = () => {
                         speiseplan={speiseplan}
                         day={day}
                         dishes={dishes}
-                        expanded={index === expandedDay}
+                        expanded={index === getExpandedDay()}
                         co2InfoLink={
                             co2InfoLinkAnchor.cloneNode(
                                 true
