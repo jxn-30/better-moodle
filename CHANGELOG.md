@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.1](https://github.com/jxn-30/better-moodle/compare/2.2.0...2.2.1) (2025-10-03)
+
+
+### Bug Fixes
+
+* **nina:** mark seen alerts as seen without reopening summary modal ([dbc5cb2](https://github.com/jxn-30/better-moodle/commit/dbc5cb273ca4d0387e160ab59c9ec8077d8342d7))
+* **nina:** show location in alert summary ([d2faa64](https://github.com/jxn-30/better-moodle/commit/d2faa64c6cd2bfa58d3ad5b0c0ed756b5cef4862))
+* **speiseplan:** next day sometimes beeing hidden when there is no menu for the current day ([#845](https://github.com/jxn-30/better-moodle/issues/845)) ([0446cf8](https://github.com/jxn-30/better-moodle/commit/0446cf802bae5562a5891a8b53ce4cfc0d72a95d)), closes [#821](https://github.com/jxn-30/better-moodle/issues/821)
+
+
+### Miscellaneous Chores
+
+* **cau:** update to Moodle 4.5 ([#840](https://github.com/jxn-30/better-moodle/issues/840)) ([20b6615](https://github.com/jxn-30/better-moodle/commit/20b6615ba9112ea60f7bbaa3bf88e027e798cbe6))
+
 ## [2.2.0](https://github.com/jxn-30/better-moodle/compare/2.1.0...2.2.0) (2025-09-25)
 
 
