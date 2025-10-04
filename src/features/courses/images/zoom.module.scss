@@ -28,8 +28,5 @@
         transform: scale(0);
         transition: transform 0.2s ease-in-out;
         will-change: transform;
-        // need to unset width and height during zoomed
-        width: unset !important;
-        height: unset !important;
     }
 }

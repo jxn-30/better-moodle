@@ -68,6 +68,10 @@ const adjustZoomedImageSize = () => {
 
     const scale = Math.min(maxWidth / width, maxHeight / height);
 
+    // we need to set the base size
+    // otherwise we could try not to set scale on svgs but that would be more difficult
+    zoomCopiedImage.style.setProperty('width', `${width}px`);
+    zoomCopiedImage.style.setProperty('height', `${height}px`);
     zoomCopiedImage.style.setProperty('transform', `scale(${scale})`);
 };
 
