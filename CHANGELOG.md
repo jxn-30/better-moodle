@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/jxn-30/better-moodle/compare/2.2.1...2.2.2) (2025-10-04)
+
+
+### Bug Fixes
+
+* **courses:** fix zooming into svg images ([975e7fc](https://github.com/jxn-30/better-moodle/commit/975e7fc4d15e3515873b701ceebf729ccdb833e3))
+
 ## [2.2.1](https://github.com/jxn-30/better-moodle/compare/2.2.0...2.2.1) (2025-10-03)
 
 
