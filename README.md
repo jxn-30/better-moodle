@@ -164,7 +164,7 @@ Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar s
 </picture>
 
 [latest release]: https://github.com/jxn-30/better-moodle/releases/latest
-[changelog]: https://github.com/jxn-30/better-moodle/blob/v2/CHANGELOG.md
+[changelog]: https://github.com/jxn-30/better-moodle/blob/main/CHANGELOG.md
 [moodle uzl]: https://moodle.uni-luebeck.de
 [moodle cau]: https://elearn.informatik.uni-kiel.de/
 [download uzl]: https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle-uzl.user.js
