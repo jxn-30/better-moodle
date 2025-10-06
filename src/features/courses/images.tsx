@@ -14,9 +14,16 @@ let zoomCopiedImage: HTMLImageElement;
 let zoomEventListenerAdded = false;
 let zoomResizeListenerAdded = false;
 
-zoomOverlay.addEventListener('click', () => {
+/**
+ * Closes the zoomed in image view
+ */
+const closeZoom = () => {
     zoomOverlay.remove();
     zoomCopiedImage?.remove();
+};
+zoomOverlay.addEventListener('click', closeZoom);
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeZoom();
 });
 
 /**
