@@ -18,8 +18,15 @@ let zoomResizeListenerAdded = false;
  * Closes the zoomed in image view
  */
 const closeZoom = () => {
-    zoomOverlay.remove();
-    zoomCopiedImage?.remove();
+    zoomCopiedImage?.addEventListener(
+        'transitionend',
+        () => {
+            zoomOverlay.remove();
+            zoomCopiedImage?.remove();
+        },
+        { once: true }
+    );
+    zoomCopiedImage?.style.removeProperty('transform');
 };
 zoomOverlay.addEventListener('click', closeZoom);
 document.addEventListener('keydown', e => {
