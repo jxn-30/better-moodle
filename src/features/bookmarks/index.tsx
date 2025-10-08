@@ -317,7 +317,7 @@ const openEditModal = () => {
     });
 
     const addBtn = (
-        <button className="btn btn-outline-success pull-right">
+        <button className="btn btn-outline-success pull-right float-end">
             <i className="fa fa-plus fa-fw"></i>
         </button>
     ) as HTMLButtonElement;

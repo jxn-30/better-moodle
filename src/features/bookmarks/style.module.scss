@@ -36,10 +36,12 @@
 
 :local(.form) {
     .fcontainer {
+        $gap: 1ch;
         display: grid;
         grid-template-columns: 1fr 2fr auto;
-        grid-column-gap: 1ch;
-        grid-row-gap: 1ch;
+        grid-column-gap: $gap;
+        grid-row-gap: $gap;
+        margin-bottom: $gap;
 
         @include mixins.media-down(sm) {
             grid-template-columns: 1fr 2fr;
