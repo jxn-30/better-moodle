@@ -53,6 +53,12 @@
         }
 
         .btn-group {
+            // this seems weird at the first moment but it works!
+            // Due to the `pointer-events: none`, we need to set the cursor on the parent.
+            // As bootstrap sets the cursor on the buttons, they will not be affected.
+            // Thus, this hack works and results in the intended result.
+            cursor: not-allowed;
+
             &[data-index='0'] [data-action='up'],
             &:not(:has(~ .btn-group[data-index])) [data-action='down'] {
                 pointer-events: none;
