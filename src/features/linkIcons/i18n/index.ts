@@ -20,6 +20,11 @@ export const de = {
             description:
                 'Zeigt ein kleines Icon an, wenn ein Link zu einer Telefonnummer führt.',
         },
+        webex: {
+            name: 'Webex',
+            description:
+                'Zeigt ein kleines Icon an, wenn ein Link zu Webex führt.',
+        },
     },
 } satisfies FeatureGroupTranslation;
 
@@ -41,7 +46,11 @@ export const en = {
         phone: {
             name: 'Phone',
             description:
-                'Shows a small icon next to links that are phone numbers',
+                'Shows a small icon next to links that are phone numbers.',
+        },
+        webex: {
+            name: 'Webex',
+            description: 'Shows a small icon next to links that lead to webex.',
         },
     },
 } as typeof de;
