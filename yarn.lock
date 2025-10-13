@@ -1260,10 +1260,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20251008.0":
-  version: 4.20251008.0
-  resolution: "@cloudflare/workers-types@npm:4.20251008.0"
-  checksum: 10c0/8b3c01cd7a2e88847f4f21af5b81755442ea4a3b90fc7703950f22a0db23a1c85dc6cf12b3f769268c61cea1f19433da3ec254d6593707a07b4d98d7471fe0b6
+"@cloudflare/workers-types@npm:4.20251011.0":
+  version: 4.20251011.0
+  resolution: "@cloudflare/workers-types@npm:4.20251011.0"
+  checksum: 10c0/9bfcd5a05ca3355523b9b21ed55066f3bd3dbfa3c3d83497036975dc66d6940fe574a6b1ec9cf764a1ad77b67ac4b1d58c1535c5afeba92322f3e795dd458aec
   languageName: node
   linkType: hard
 
@@ -3054,20 +3054,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@puppeteer/browsers@npm:2.10.10":
-  version: 2.10.10
-  resolution: "@puppeteer/browsers@npm:2.10.10"
+"@puppeteer/browsers@npm:2.10.11":
+  version: 2.10.11
+  resolution: "@puppeteer/browsers@npm:2.10.11"
   dependencies:
     debug: "npm:^4.4.3"
     extract-zip: "npm:^2.0.1"
     progress: "npm:^2.0.3"
     proxy-agent: "npm:^6.5.0"
     semver: "npm:^7.7.2"
-    tar-fs: "npm:^3.1.0"
+    tar-fs: "npm:^3.1.1"
     yargs: "npm:^17.7.2"
   bin:
     browsers: lib/cjs/main-cli.js
-  checksum: 10c0/88dd1f34821d4479eed399ab6095e57e91bd4715134e5706ed86ab11b501402294db9446caf349bdd163ff38805e6a7beaa9eed4ecdeeaf2a43373079f890369
+  checksum: 10c0/0f1338fda88e6324af2ebb3434e7e7c12a990d4575306102b30ee68901fb7d919e93f8e54596a26da797acc10b6562c196b7ad8ebc56a6cf0a91eaeed30048b0
   languageName: node
   linkType: hard
 
@@ -3449,12 +3449,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:24.7.1":
-  version: 24.7.1
-  resolution: "@types/node@npm:24.7.1"
+"@types/node@npm:*, @types/node@npm:24.7.2":
+  version: 24.7.2
+  resolution: "@types/node@npm:24.7.2"
   dependencies:
     undici-types: "npm:~7.14.0"
-  checksum: 10c0/2525f2aa865d78b1c75faaf8c6bf2af51c930962d8078306620d9a76eafcbbea035142cf2cdc2fcf1b4010cd3958a1c6c59b67aba1ac205dc1e5f895ef6af673
+  checksum: 10c0/03f662f10e4b89bc97016e067101cbabe55025b54c24afb581fb50992d5eeaaf417bdae34bbc668ae8759d3cdbbbadf35fc8b9b29d26f52ede2525d48e919e49
   languageName: node
   linkType: hard
 
@@ -4264,7 +4264,7 @@ __metadata:
   dependencies:
     "@actions/core": "npm:1.11.1"
     "@babel/compat-data": "npm:7.28.4"
-    "@cloudflare/workers-types": "npm:4.20251008.0"
+    "@cloudflare/workers-types": "npm:4.20251011.0"
     "@commitlint/cli": "npm:20.1.0"
     "@commitlint/config-conventional": "npm:20.0.0"
     "@eslint/js": "npm:9.37.0"
@@ -4278,7 +4278,7 @@ __metadata:
     "@types/eslint": "npm:9.6.1"
     "@types/jquery": "npm:3.5.33"
     "@types/mathjax": "npm:0.0.40"
-    "@types/node": "npm:24.7.1"
+    "@types/node": "npm:24.7.2"
     "@types/tampermonkey": "npm:5.0.4"
     "@vitejs/plugin-legacy": "npm:7.2.1"
     "@vitest/coverage-v8": "npm:3.2.4"
@@ -4296,8 +4296,8 @@ __metadata:
     esbuild-plugin-browserslist: "npm:1.0.1"
     eslint: "npm:9.37.0"
     eslint-config-prettier: "npm:10.1.8"
-    eslint-plugin-es-x: "npm:9.1.0"
-    eslint-plugin-jsdoc: "npm:61.1.0"
+    eslint-plugin-es-x: "npm:9.1.1"
+    eslint-plugin-jsdoc: "npm:61.1.1"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-userscripts: "npm:0.5.6"
     fast-glob: "npm:3.3.3"
@@ -4312,7 +4312,7 @@ __metadata:
     postcss-inline-svg: "npm:6.0.0"
     postcss-preset-env: "npm:10.4.0"
     prettier: "npm:3.6.2"
-    puppeteer: "npm:24.23.0"
+    puppeteer: "npm:24.24.0"
     rrule: "npm:2.8.1"
     sass-embedded: "npm:1.93.2"
     terser: "npm:5.44.0"
@@ -5743,22 +5743,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-es-x@npm:9.1.0":
-  version: 9.1.0
-  resolution: "eslint-plugin-es-x@npm:9.1.0"
+"eslint-plugin-es-x@npm:9.1.1":
+  version: 9.1.1
+  resolution: "eslint-plugin-es-x@npm:9.1.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.1.2"
     "@eslint-community/regexpp": "npm:^4.12.1"
     eslint-type-tracer: "npm:^0.4.0"
   peerDependencies:
     eslint: ">=9.29.0"
-  checksum: 10c0/df9595a49cc809919f211bd99310f702850a07eef403f9b38770dc08fd67580d1f0e7e01bb54cbe21f5929748cdb3d2e56e1b67d00adfbf13957cba9dc1a7ceb
+  checksum: 10c0/62422834fc321a367b92645d534327a190dc3fd2cb1699e99a3b4b7ae4315b97fe3f2261ba0805dcce5b5264dde5270f7f02dba8008c6fb954df51ad83584a12
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:61.1.0":
-  version: 61.1.0
-  resolution: "eslint-plugin-jsdoc@npm:61.1.0"
+"eslint-plugin-jsdoc@npm:61.1.1":
+  version: 61.1.1
+  resolution: "eslint-plugin-jsdoc@npm:61.1.1"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.76.0"
     are-docs-informative: "npm:^0.0.2"
@@ -5774,7 +5774,7 @@ __metadata:
     spdx-expression-parse: "npm:^4.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/a8f7100778646348907a3e28af0fa8cb6e1569367fe7c040a8794e766b199956d7a33e6bbe8aa49fc702dd8fde3dfc367883f1c25fda3b55673dae5283bd0d3b
+  checksum: 10c0/b3a872e5b05b8b60c8d397e0535444c1905e37cfff18ddb43c4b87a53f645f4bd6b0a12dfb58ea53cdc2b806821c0255f95e39e5de7254331ca7b8d30ca262ed
   languageName: node
   linkType: hard
 
@@ -8958,34 +8958,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.23.0":
-  version: 24.23.0
-  resolution: "puppeteer-core@npm:24.23.0"
+"puppeteer-core@npm:24.24.0":
+  version: 24.24.0
+  resolution: "puppeteer-core@npm:24.24.0"
   dependencies:
-    "@puppeteer/browsers": "npm:2.10.10"
+    "@puppeteer/browsers": "npm:2.10.11"
     chromium-bidi: "npm:9.1.0"
     debug: "npm:^4.4.3"
     devtools-protocol: "npm:0.0.1508733"
     typed-query-selector: "npm:^2.12.0"
     webdriver-bidi-protocol: "npm:0.3.6"
     ws: "npm:^8.18.3"
-  checksum: 10c0/88d3f901b01330d2f923711ac09d62e76cd9fa1d35b319251800b7d6c018a4c43bb99f9f4c9d9e2fef084b26ea637f3cda4b0cd5135ec96fdfafbf503aefce96
+  checksum: 10c0/5c22c5d5c657dddc6259866dcbbbb3140f509aae550ed51f0816676b0fb5239ba7b880e44f3a2c5322f3f5da9db601c6e267c001bddb98ed933f49746eda0dfb
   languageName: node
   linkType: hard
 
-"puppeteer@npm:24.23.0":
-  version: 24.23.0
-  resolution: "puppeteer@npm:24.23.0"
+"puppeteer@npm:24.24.0":
+  version: 24.24.0
+  resolution: "puppeteer@npm:24.24.0"
   dependencies:
-    "@puppeteer/browsers": "npm:2.10.10"
+    "@puppeteer/browsers": "npm:2.10.11"
     chromium-bidi: "npm:9.1.0"
     cosmiconfig: "npm:^9.0.0"
     devtools-protocol: "npm:0.0.1508733"
-    puppeteer-core: "npm:24.23.0"
+    puppeteer-core: "npm:24.24.0"
     typed-query-selector: "npm:^2.12.0"
   bin:
     puppeteer: lib/cjs/puppeteer/node/cli.js
-  checksum: 10c0/b9bd86dceceb9ec83e8c647818fad2325b062941c553f80512cde93c55fa3e1013f92c769b436ebf296997ee775f4ce05bb6c6de87441aae1ebe63994b2aeb36
+  checksum: 10c0/5cc1aa48c074a04234fe8edcbb98049dcf49f253a87c58d95f5c212e230118dcad76c0a733279198fd3809df9ed5bce8a0b8ce4e487bc2beb973810b55ca3cd1
   languageName: node
   linkType: hard
 
@@ -10232,7 +10232,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar-fs@npm:^3.1.0":
+"tar-fs@npm:^3.1.1":
   version: 3.1.1
   resolution: "tar-fs@npm:3.1.1"
   dependencies:
