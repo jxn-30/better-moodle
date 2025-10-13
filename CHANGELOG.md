@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.3.0](https://github.com/jxn-30/better-moodle/compare/2.2.1...2.3.0) (2025-10-13)
+
+
+### Features
+
+* **courses:** close image zooming on pressing ESC ([bd82ee1](https://github.com/jxn-30/better-moodle/commit/bd82ee1bb46aaa9d9214797680f749cc3b53c9a1))
+* **courses:** implpement transition for closing zoomed images ([5882d03](https://github.com/jxn-30/better-moodle/commit/5882d034051030f9ea6bcb4bc33a756819fb630d))
+
+
+### Bug Fixes
+
+* **bookmarks:** improve cursor of disabled buttons ([d7d86ff](https://github.com/jxn-30/better-moodle/commit/d7d86ff412e07a1c28e7bc607b23203cd71876eb))
+* **bookmarks:** improve position of add-button ([a3f746a](https://github.com/jxn-30/better-moodle/commit/a3f746a15ceeb2e41c1fe24e4bf889e892c9dd3c))
+* **courses:** fix zooming into svg images ([975e7fc](https://github.com/jxn-30/better-moodle/commit/975e7fc4d15e3515873b701ceebf729ccdb833e3))
+
 ## [2.2.1](https://github.com/jxn-30/better-moodle/compare/2.2.0...2.2.1) (2025-10-03)
 
 
