@@ -56,15 +56,15 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                   # get meta filename
-                  file="${{ steps.build.outputs.file }}"
-                  meta=$(sed 's/\.user\.js/\.meta\.js/' <<< "$file")
-                  polyfills=$(sed 's/\.user\.js/-polyfills\.js/' <<< "$file")
+                  file="${{ steps.build.outputs.script }}"
+                  meta="${{ steps.build.outputs.meta }}"
+                  polyfills="${{ steps.build.outputs.polyfills }}"
 
                   # upload the release artifacts with special nice names
                   gh release upload ${{ needs.release.outputs.tag }} \
-                    "${{ steps.build.outputs.dir }}/$file#[${{ matrix.config }}] Better-Moodle userscript version ${{ steps.release.outputs.tag }} ($file)" \
-                    "${{ steps.build.outputs.dir }}/$meta#[${{ matrix.config }}] Better-Moodle meta file for userscript managers ($meta)" \
-                    "${{ steps.build.outputs.dir }}/$polyfills#[${{ matrix.config }}] Polyfills for Better-Moodle version ${{ steps.release.outputs.tag }} ($polyfills)"
+                    "${{ steps.build.outputs.dir }}/$file#➡️ [${{ matrix.config }}] ${{ needs.release.outputs.tag }}.user.js" \
+                    "${{ steps.build.outputs.dir }}/$meta#[${{ matrix.config }}] ${{ needs.release.outputs.tag }}.meta.js" \
+                    "${{ steps.build.outputs.dir }}/$polyfills#[${{ matrix.config }}] ${{ needs.release.outputs.tag }}.polyfills.js"
 
             # legacy release for uzl, please remove this at earliest in October 2025
             - name: 📤 upload legacy uzl artifact
@@ -72,8 +72,8 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                  file="${{ steps.build.outputs.file }}"
-                  meta=$(sed 's/\.user\.js/\.meta\.js/' <<< "$file")
+                  file="${{ steps.build.outputs.script }}"
+                  meta="${{ steps.build.outputs.meta }}"
                   cp "${{ steps.build.outputs.dir }}/$file" better-moodle.user.js
                   cp "${{ steps.build.outputs.dir }}/$meta" better-moodle.meta.js
 

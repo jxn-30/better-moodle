@@ -43,11 +43,19 @@ outputs:
     digest:
         description: The digest of the uploaded artifact
         value: ${{ steps.upload.outputs.artifact-digest }}
-    file:
-        description: The filename of the built userscript
-        # using an env is not allowed => hardcoded
-        value: better-moodle-${{ inputs.config }}.user.js
     dir:
         description: The directory, output files live in
         # using an env is not allowed => hardcoded
         value: dist
+    script:
+        description: The filename of the built userscript
+        # using an env is not allowed => hardcoded
+        value: better-moodle-${{ inputs.config }}.user.js
+    meta:
+        description: The filename of the meta file
+        # using an env is not allowed => hardcoded
+        value: better-moodle-${{ inputs.config }}.meta.js
+    polyfills:
+        description: The filename of the polyfills
+        # using an env is not allowed => hardcoded
+        value: better-moodle-${{ inputs.config }}-polyfills.js

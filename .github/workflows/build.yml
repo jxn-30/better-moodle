@@ -56,15 +56,15 @@ jobs:
               uses: actions/attest-build-provenance@v3
               if: github.event.pull_request.head.repo.full_name == github.repository
               with:
-                  subject-name: ${{ steps.build.outputs.file }}
+                  subject-name: ${{ steps.build.outputs.script }}
                   subject-digest: sha256:${{ steps.build.outputs.digest }}
                   show-summary: true
 
             - name: 📊 aggregate build statistics
               run: |
                   # get the file names of userscript and polyfills file
-                  userscript="${{ steps.build.outputs.file }}"
-                  polyfills=$(sed 's/\.user\.js/-polyfills\.js/' <<< "$userscript")
+                  userscript="${{ steps.build.outputs.script }}"
+                  polyfills="${{ steps.build.outputs.polyfills }}"
                   output_dir="${{ steps.build.outputs.dir }}"
 
                   # stats determined from files
@@ -106,8 +106,8 @@ jobs:
                     --jq '.[0].databaseId')
 
                   # get the file names of userscript and polyfills file
-                  userscript="${{ steps.build.outputs.file }}"
-                  polyfills=$(sed 's/\.user\.js/-polyfills\.js/' <<< "$userscript")
+                  userscript="${{ steps.build.outputs.script }}"
+                  polyfills="${{ steps.build.outputs.polyfills }}"
 
                   output_dir="${{ steps.build.outputs.dir}}"
 
@@ -222,7 +222,7 @@ jobs:
             - name: ✍️ print build stats in summary
               run: |
                   echo "# 🏗️ ${{ matrix.config }}" >> $GITHUB_STEP_SUMMARY
-                  echo "## Built file: \`${{ steps.build.outputs.file }}\`" >> $GITHUB_STEP_SUMMARY
+                  echo "## Built file: \`${{ steps.build.outputs.script }}\`" >> $GITHUB_STEP_SUMMARY
                   echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
                   echo "|-------:|:------|" >> $GITHUB_STEP_SUMMARY
                   echo "| **Userscript** | |" >> $GITHUB_STEP_SUMMARY
