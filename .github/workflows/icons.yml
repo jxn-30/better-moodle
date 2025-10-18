@@ -24,7 +24,7 @@ jobs:
 
             - name: 🔎 get Node and version
               run: |
-                  echo "NODE_VERSION=$(grep '"node":' ./package.json | awk -F: '{ print $2 }' | sed 's/[",]//g' | sed 's/\^v//g' | tr -d '[:space:]')"  >> $GITHUB_ENV
+                  echo "NODE_VERSION=$(jq -r '.engines.node' package.json)"  >> $GITHUB_ENV
 
             - name: 🛠 setup Node.js
               uses: actions/setup-node@v6

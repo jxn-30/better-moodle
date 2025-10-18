@@ -4,8 +4,8 @@ runs:
     steps:
         - name: 🔎 get Node and yarn versions
           run: |
-              echo "NODE_VERSION=$(grep '"node":' ./package.json | awk -F: '{ print $2 }' | sed 's/[",]//g' | sed 's/\^v//g' | tr -d '[:space:]')"  >> $GITHUB_ENV
-              echo "YARN_VERSION=$(grep '"packageManager":' ./package.json | awk -F: '{ print $2 }' | sed 's/[",]//g' | sed 's/yarn@//g' | tr -d '[:space:]')"  >> $GITHUB_ENV
+              echo "NODE_VERSION=$(jq -r '.engines.node' package.json)"  >> $GITHUB_ENV
+              echo "YARN_VERSION=$(jq -r '.packageManager[5:]' package.json)"  >> $GITHUB_ENV
           shell: bash
 
         - name: 🛠️ setup Node.js
