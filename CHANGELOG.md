@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.4.0](https://github.com/jxn-30/better-moodle/compare/2.3.0...2.4.0) (2025-10-18)
+
+
+### Features
+
+* **linkIcons:** implement linkIcons for Webex (UzL-only) ([93ac707](https://github.com/jxn-30/better-moodle/commit/93ac7078e87cb58d6524d6576350b8cc22274db9))
+
+
+### Bug Fixes
+
+* **courses:** fix zooming onto images with css width set ([fc6664d](https://github.com/jxn-30/better-moodle/commit/fc6664d07d36aad3998572a3008404a31918f5be))
+
 ## [2.3.0](https://github.com/jxn-30/better-moodle/compare/2.2.1...2.3.0) (2025-10-13)
 
 
