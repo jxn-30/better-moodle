@@ -1,0 +1,115 @@
+name: 🧮🏗 Calculate diff
+
+inputs:
+    old:
+        description: The filename of the previous build/version
+        required: true
+    new:
+        description: The filename of the current build/version
+        required: true
+
+runs:
+    using: composite
+    steps:
+        - name: file size diff
+          id: size
+          shell: bash
+          run: |
+              NO_CHANGE="±0"
+
+              # Get sizes of files
+              OLD_SIZE=$(ls -n "${{ inputs.old }}" | { read _ _ _ _ size _ && echo "$size"; })
+              NEW_SIZE=$(ls -n "${{ inputs.new }}" | { read _ _ _ _ size _ && echo "$size"; })
+
+              # Calculate and return size diffs
+              if [[ $NEW_SIZE -ne $OLD_SIZE ]]; then
+                  SIZE_DIFF=$( printf "%+d" $(( $NEW_SIZE - $OLD_SIZE )))
+                  echo "diff=$SIZE_DIFF" >> $GITHUB_OUTPUT
+              else
+                  echo "diff=$NO_CHANGE" >> $GITHUB_OUTPUT
+              fi
+
+        - name: lines count diff
+          id: lines
+          shell: bash
+          run: |
+              NO_CHANGE="±0"
+
+              # Get lines counts of files
+              OLD_LINES=$(wc -l "${{ inputs.old }}" | awk '{print $1}')
+              NEW_LINES=$(wc -l "${{ inputs.new }}" | awk '{print $1}')
+
+              # Calculate and return lines count diffs
+              if [[ $NEW_LINES -ne $OLD_LINES ]]; then
+                  LINES_DIFF=$( printf "%+d" $(( $NEW_LINES - $OLD_LINES )))
+                  echo "diff=$LINES_DIFF" >> $GITHUB_OUTPUT
+              else
+                  echo "diff=$NO_CHANGE" >> $GITHUB_OUTPUT
+              fi
+
+        - name: syntactic diff
+          id: syn
+          shell: bash
+          run: |
+              # Git returns non-zero exit-codes on diffs but we don't want the step to fail
+              set +e
+
+              NO_CHANGE="±0"
+
+              # Calculate git diff
+              DIFF=$(git diff \
+                --numstat --no-index "${{ inputs.old }}" "${{ inputs.new }}" \
+                | awk '{print $1 " insertions(+), " $2 " deletions(-)"}'
+              )
+
+              # Output and print diff if any
+              if [[ -n "$DIFF" ]]; then
+                  echo "diff=$DIFF" >> $GITHUB_OUTPUT
+                  git --no-pager diff --color --no-index "${{ inputs.old }}" "${{ inputs.new }}" || echo true
+              else
+                  echo "diff=$NO_CHANGE" >> $GITHUB_OUTPUT
+              fi
+
+        - name: semantic diff
+          id: sem
+          shell: bash
+          run: |
+              # Git returns non-zero exit-codes on diffs but we don't want the step to fail
+              set +e
+
+              NO_CHANGE="±0"
+
+              OLD_NORMALIZED=$(mktemp)
+              NEW_NORMALIZED=$(mktemp)
+
+              # for calculating semantic diff, we're removing the numeric suffixes of variables
+              # this is not perfect as sometimes variable names switch especially for polyfills
+              REGEX='s/([\w\$]+\$)[0-9a-z]+(?=[^\w\$])/$1/g'
+              perl -pe "$REGEX" "${{ inputs.old }}" > "$OLD_NORMALIZED"
+              perl -pe "$REGEX" "${{ inputs.new }}" > "$NEW_NORMALIZED"
+
+              # Calculate git diff
+              DIFF=$(git diff --numstat --no-index "$OLD_NORMALIZED" "$NEW_NORMALIZED" \
+                | awk '{print $1 " insertions(+), " $2 " deletions(-)"}'
+              )
+
+              # Output diff if any
+              if [[ -n "$DIFF" ]]; then
+                  echo "diff=$DIFF" >> $GITHUB_OUTPUT
+              else
+                  echo "diff=$NO_CHANGE" >> $GITHUB_OUTPUT
+              fi
+
+outputs:
+    size:
+        description: The size diff
+        value: ${{ steps.size.outputs.diff }}
+    lines:
+        description: The line count diff
+        value: ${{ steps.lines.outputs.diff }}
+    syn:
+        description: The syntactic diff
+        value: ${{ steps.syn.outputs.diff }}
+    sem:
+        description: The semantic diff
+        value: ${{ steps.sem.outputs.diff }}
