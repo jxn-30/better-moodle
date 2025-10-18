@@ -150,7 +150,7 @@ jobs:
             - name: 📝 generate output
               id: output
               run: |
-                  echo "build_${{ matrix.config }}=| ${{matrix.config}} | ${{ env.STATS_PERF_TOTAL }} | | ${{ env.STATS_SIZE }} (${{ env.STATS_SIZE_DIFF }}) | ${{ env.STATS_LINES }} (${{ env.STATS_LINES_DIFF }}) | ${{ env.STATS_DIFF_SEM }} | ${{ env.STATS_DIFF_SYN }} | | ${{ env.STATS_PF_SIZE }} (${{ env.STATS_PF_SIZE_DIFF }}) | ${{ env.STATS_PF_LINES }} (${{ env.STATS_PF_LINES_DIFF }}) | ${{ env.STATS_PF_DIFF_SEM }} | ${{ env.STATS_PF_DIFF_SYN }} |" >> $GITHUB_OUTPUT
+                  echo "build_${{ matrix.config }}=| ${{matrix.config}} | ${{ env.STATS_PERF_TOTAL }} | | ${{ env.STATS_SIZE }} (${{ steps.diff-script.outputs.size }}) | ${{ env.STATS_LINES }} (${{ steps.diff-script.outputs.lines }}) | ${{ steps.diff-script.outputs.sem }} | ${{ steps.diff-script.outputs.syn }} | | ${{ env.STATS_PF_SIZE }} (${{ steps.diff-polyfills.outputs.size }}) | ${{ env.STATS_PF_LINES }} (${{ steps.diff-polyfills.outputs.lines }}) | ${{ steps.diff-polyfills.outputs.sem }} | ${{ steps.diff-polyfills.outputs.syn }} |" >> $GITHUB_OUTPUT
 
     pr-summary:
         runs-on: ubuntu-latest
