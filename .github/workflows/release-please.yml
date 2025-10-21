@@ -28,16 +28,16 @@ jobs:
         name: 📇 find configs
         needs:
             - release
-        if: ${{ needs.release.outputs.released || needs.release.outputs.updated }}
+        # If not released, released will be null but if not updated, updated will be the string 'false'
+        if: ${{ needs.release.outputs.released || needs.release.outputs.updated != 'false' }}
         uses: ./.github/workflows/find-configs.yml
 
     assets:
-        name: 📤️ build and upload release assets
+        name: 📤️ build release assets and compare or upload
         runs-on: ubuntu-latest
         needs:
             - release
             - find-configs
-        if: ${{ needs.release.outputs.released }}
         strategy:
             matrix:
                 config: ${{ fromJson(needs.find-configs.outputs.configs) }}
@@ -54,6 +54,7 @@ jobs:
                   release: true
 
             - name: 📤 upload release artifacts
+              if: ${{ needs.release.outputs.released }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
@@ -70,7 +71,7 @@ jobs:
 
             # legacy release for uzl, please remove this at earliest in October 2025
             - name: 📤 upload legacy uzl artifact
-              if: ${{ matrix.config == 'uzl' }}
+              if: ${{ needs.release.outputs.released && matrix.config == 'uzl' }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
