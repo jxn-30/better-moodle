@@ -22,12 +22,13 @@ jobs:
         outputs:
             released: ${{ steps.release.outputs.release_created }}
             tag: ${{ steps.release.outputs.tag_name }}
+            updated: ${{ steps.release.outputs.prs_created }}
 
     find-configs:
         name: 📇 find configs
         needs:
             - release
-        if: ${{ needs.release.outputs.released }}
+        if: ${{ needs.release.outputs.released || needs.release.outputs.updated }}
         uses: ./.github/workflows/find-configs.yml
 
     assets:
@@ -36,6 +37,7 @@ jobs:
         needs:
             - release
             - find-configs
+        if: ${{ needs.release.outputs.released }}
         strategy:
             matrix:
                 config: ${{ fromJson(needs.find-configs.outputs.configs) }}
