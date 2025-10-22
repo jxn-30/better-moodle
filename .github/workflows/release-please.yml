@@ -23,6 +23,7 @@ jobs:
             released: ${{ steps.release.outputs.release_created }}
             tag: ${{ steps.release.outputs.tag_name }}
             updated: ${{ steps.release.outputs.prs_created }}
+            pr: ${{ steps.release.outputs.pr }}
 
     find-configs:
         name: 📇 find configs
@@ -43,6 +44,10 @@ jobs:
                 config: ${{ fromJson(needs.find-configs.outputs.configs) }}
             fail-fast: false
         steps:
+            # for debugging purposes and during development of the workflow file
+            - name: print PR
+              run: echo "${{ needs.release.outputs.pr }}"
+
             - name: 📥️ checkout
               uses: actions/checkout@v5
 
