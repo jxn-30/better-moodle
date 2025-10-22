@@ -181,6 +181,7 @@ beforeAll(async () => {
     // report errors on the page
     page.on('pageerror', err => {
         if (
+            err instanceof Error &&
             err.stack?.includes(
                 `chrome-extension://${tampermonkeyID}/userscript.html`
             )
