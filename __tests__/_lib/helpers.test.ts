@@ -7,6 +7,7 @@ import {
     htmlToElements,
     isDashboard,
     isNewInstallation,
+    mdID,
     PREFIX,
     rawGithubPath,
 } from '@/helpers';
@@ -67,6 +68,16 @@ describe('domID', () => {
     it('transforms a string with special characters and spaces', () => {
         expect(domID('foo!bar baz')).toEndWith('foo-bar_baz');
     });
+
+    // CSS interface (https://developer.mozilla.org/en-US/docs/Web/API/CSS)
+    // is not implemented in jsdom yet (https://github.com/jsdom/jsdom/issues/3919#issuecomment-3287409132)
+    /*
+    it('is a valid CSS identifier', () => {
+        expect(domID('"foo\'!bar baz')).toBe(
+            CSS.escape(domID('"foo\'!bar baz'))
+        );
+    });
+    */
 });
 // endsection domID
 
@@ -85,7 +96,11 @@ describe('rawGithubPath', () => {
 // endsection rawGithubPath
 
 // section mdID
-// TODO
+describe('mdID', () => {
+    it('should use the text content in the ID', () => {
+        expect(mdID('# Heading no. 1')).toEndWith('Heading_no-_1');
+    });
+});
 // endsection mdID
 
 // section mdToHtml
