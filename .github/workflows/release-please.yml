@@ -44,10 +44,6 @@ jobs:
                 config: ${{ fromJson(needs.find-configs.outputs.configs) }}
             fail-fast: false
         steps:
-            # for debugging purposes and during development of the workflow file
-            # - name: print PR
-            #  run: echo "${{ needs.release.outputs.pr }}"
-
             - name: 📥️ checkout
               uses: actions/checkout@v5
               with:
@@ -59,6 +55,31 @@ jobs:
               with:
                   config: ${{ matrix.config }}
                   release: true
+
+            - name: 🔍 find previous release and download artifacts
+              id: download-prev
+              run: |
+                  DIR=$(mktemp -d)
+
+                  gh release download --pattern "${{ steps.build.outputs.script }}" --pattern "${{ steps.build.outputs.polyfills }}" --dir=$DIR || exit 0
+
+                  echo "dir=$DIR" >> $GITHUB_OUTPUT
+
+            - name: 🧮 calculate diff (script)
+              if: ${{ steps.download-prev.outputs.dir }}
+              id: diff-script
+              uses: ./.github/actions/diff
+              with:
+                  old: ${{ steps.download-prev.outputs.dir }}/${{ steps.build.outputs.script }}
+                  new: ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.script }}
+
+            - name: 🧮 calculate diff (polyfill)
+              if: ${{ steps.download-prev.outputs.dir }}
+              id: diff-polyfills
+              uses: ./.github/actions/diff
+              with:
+                  old: ${{ steps.download-prev.outputs.dir }}/${{ steps.build.outputs.polyfills }}
+                  new: ${{ steps.build.outputs.dir }}/${{ steps.build.outputs.polyfills }}
 
             - name: 📤 upload release artifacts
               if: ${{ needs.release.outputs.released }}
