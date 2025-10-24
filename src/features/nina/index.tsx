@@ -293,8 +293,9 @@ const showAlertDetailsModal = (alertId: string) => {
             );
             alertFooterTextElem.append(
                 <span>
-                    {LL.modal.providedBy()}{' '}
-                    {`${(senderName ?? senderLongname) ? `${senderName ?? senderLongname} ${LL.modal.via()}` : ''} ${getProviderLabel(provider)}`}
+                    {LL.modal.providedBy({
+                        provider: `${(senderName ?? senderLongname) ? `${senderName ?? senderLongname} ${LL.modal.via()}` : ''} ${getProviderLabel(provider)}`,
+                    })}
                 </span>,
                 <br />
             );
@@ -593,6 +594,17 @@ const requestAlerts = () =>
 
                 const isCancel = alert.msgType === MESSAGE_TYPE.CANCEL;
 
+                const onset = getAlertInfoAttribute(alert, 'onset') ?? '';
+                const expires = getAlertInfoAttribute(alert, 'expires') ?? '';
+                const duration =
+                    onset && expires ?
+                        <span className="small text-muted ml-1">
+                            ({datetimeToString(new Date(onset), true, false)}
+                            {' - '}
+                            {datetimeToString(new Date(expires), true, false)})
+                        </span>
+                    :   <></>;
+
                 const seen = alertCache[alertId].seen;
                 return (
                     <div className={`card p-3 ${!seen ? style.unseen : ''}`}>
@@ -612,6 +624,7 @@ const requestAlerts = () =>
                                 {isCancel ? '✖️' : getSeverityEmoji(severity)}
                             </span>{' '}
                             {getAlertTitle(alert)}
+                            {duration}
                         </h5>
                         <span className="small text-muted">
                             {LL.modal.sentAt()}:{' '}

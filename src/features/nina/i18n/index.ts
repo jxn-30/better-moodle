@@ -81,7 +81,7 @@ export const de = {
             description:
                 'Die von Ihnen abgerufene Warnmeldung ist nicht mehr vorhanden. Es liegt ggf. eine Entwarnung für diese Meldung vor.',
         },
-        providedBy: 'Herausgegeben von',
+        providedBy: 'Herausgegeben von: {provider}',
         reload: 'Aktualisieren',
         sentAt: 'Meldung vom',
         showMore: 'Mehr anzeigen',
@@ -240,7 +240,7 @@ export const en = {
             description:
                 'The warning message you have called up no longer exists. There may be an all-clear for this message.',
         },
-        providedBy: 'Provided by',
+        providedBy: 'Provided by: {provider}',
         reload: 'Reload',
         sentAt: 'Sent at',
         showMore: 'Show more',
