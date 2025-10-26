@@ -11,8 +11,33 @@ $estimated-marquee-height: 25px;
         padding: 0.5rem;
     }
 
-    a i {
-        border-radius: 8px;
+    a {
+        padding: 0;
+        div {
+            min-width: 50px;
+            height: 50px;
+            color: #fff;
+            border: solid #fff;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            &,
+            .fa-stack {
+                line-height: 1em;
+            }
+        }
+    }
+
+    #localnavbarplus-sos a div {
+        background-color: #9b0a7d;
+        width: 50px; // I wan't this button to be square
+    }
+
+    #localnavbarplus-discrimination a div {
+        background-color: #003d86;
     }
 
     @include mixins.media-down(lg) {
@@ -45,6 +70,8 @@ $estimated-marquee-height: 25px;
 }
 
 #page {
+    overflow: scroll !important;
+
     @include mixins.media-down(lg) {
         padding-top: var(--navbar-height);
     }

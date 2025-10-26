@@ -1,14 +1,38 @@
 import Feature from '@/Feature';
 import globalStyle from '!/index.module.scss';
+import { LLF } from 'i18n';
 import { ready } from '@/DOM';
 // import { SelectSetting } from '@/Settings/SelectSetting';
 import styles from './cauNavbar.module.scss';
+
+const LL = LLF('general', 'cauNavbar');
 
 // const mode = new SelectSetting('mode', 'default', [
 // 	'default',
 // ]);
 
 const localNavbarPlusDiv = <div id={styles.localnavbarplus} />;
+
+const localnavbarplusSos = (
+    <div>
+        <span className="fa-stack">
+            <span className="fa fa-tower-broadcast fa-stack-1x" />
+            <span className="fa fa-bell fa-stack-1x" />
+        </span>
+        <span>{LL.buttons.sos.sos()}</span>
+    </div>
+);
+const localnavbarplusDiscrimination = (
+    <div>
+        <span>{LL.buttons.discrimination.discriminationSexism()}</span>
+        <span>
+            <span className="fa fa-fw icon fa-arrow-right" />{' '}
+            {LL.buttons.discrimination.report()}{' '}
+            <span className="fa fa-fw icon fa-arrow-right" />{' '}
+            {LL.buttons.discrimination.getHelp()}
+        </span>
+    </div>
+);
 
 /**
  * Handles the "localnavbarplus" Buttons.
@@ -24,6 +48,12 @@ const reload = async () => {
             localNavbarPlusDiv.append(el);
         }
     );
+    localNavbarPlusDiv
+        .querySelector('#localnavbarplus-sos a i')
+        ?.replaceWith(localnavbarplusSos);
+    localNavbarPlusDiv
+        .querySelector('#localnavbarplus-discrimination a i')
+        ?.replaceWith(localnavbarplusDiscrimination);
     document.getElementById('usernavigation')?.before(localNavbarPlusDiv);
 
     const page = document.getElementById('page');

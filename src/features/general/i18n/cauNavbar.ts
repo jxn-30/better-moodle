@@ -9,6 +9,14 @@ export const de = {
             options: { default: 'Standard' },
         },
     },
+    buttons: {
+        sos: { sos: 'SOS' },
+        discrimination: {
+            discriminationSexism: 'Diskriminierung / Sexismus',
+            report: 'melden',
+            getHelp: 'Hilfe erhalten',
+        },
+    },
 } satisfies FeatureTranslation;
 
 export const en = {
@@ -18,6 +26,14 @@ export const en = {
             description:
                 'Choose a nicer way to display the SOS buttons of the CAU.',
             options: { default: 'Default' },
+        },
+    },
+    buttons: {
+        sos: { sos: 'SOS' },
+        discrimination: {
+            discriminationSexism: 'Discrimination / Sexism',
+            report: 'report',
+            getHelp: 'get help',
         },
     },
 } as typeof de;
