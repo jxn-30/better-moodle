@@ -32,6 +32,50 @@
     }
 }
 
+@mixin insert-svg-before-mask($svg) {
+    body.dir-ltr &::before,
+    body.dir-rtl &::after {
+        @include mixins.fa-icon;
+        content: '\f0c8'; // .fa-square
+        display: inline;
+        background-color: currentColor;
+        mask-image: $svg;
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        mask-origin: content-box;
+        mask-position: center;
+    }
+
+    body.dir-ltr &::before {
+        padding-right: 0.25rem;
+    }
+    body.dir-rtl &::after {
+        padding-left: 0.25rem;
+    }
+}
+
+@mixin insert-svg-after-mask($svg) {
+    body.dir-ltr &::after,
+    body.dir-rtl &::before {
+        @include mixins.fa-icon;
+        content: '\f0c8'; // .fa-square
+        display: inline;
+        background-color: currentColor;
+        mask-image: $svg;
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        mask-origin: content-box;
+        mask-position: center;
+    }
+
+    body.dir-ltr &::after {
+        padding-left: 0.25rem;
+    }
+    body.dir-rtl &::before {
+        padding-right: 0.25rem;
+    }
+}
+
 @mixin insert-svg-before($svg) {
     body.dir-ltr &::before,
     body.dir-rtl &::after {

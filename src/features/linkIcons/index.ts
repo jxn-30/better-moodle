@@ -2,6 +2,7 @@ import { BooleanSetting } from '@/Settings/BooleanSetting';
 import externalCSS from './style/external.scss?inline';
 import FeatureGroup from '@/FeatureGroup';
 import mailStyleEl from './style/mail.scss?style';
+import mattermostCSS from './style/mattermost.scss?inline';
 import phoneStyleEl from './style/phone.scss?style';
 import type Setting from '@/Setting';
 import webexCSS from './style/webex.scss?inline';
@@ -13,6 +14,14 @@ let external: BooleanSetting;
 if (__UNI__ !== 'uzl') {
     external = new BooleanSetting('external', true).onInput(() => onload());
     settings.add(external);
+}
+
+let mattermostIfI: BooleanSetting;
+if (__UNI__ === 'cau') {
+    mattermostIfI = new BooleanSetting('mattermostIfI', true).onInput(() =>
+        onload()
+    );
+    settings.add(mattermostIfI);
 }
 
 let webex: BooleanSetting;
@@ -27,6 +36,7 @@ const phone = new BooleanSetting('phone', true).onInput(() => onload());
 settings.add(mail).add(phone);
 
 let externalStyle: HTMLElement;
+let mattermostStyle: HTMLElement;
 let webexStyle: HTMLElement;
 
 /**
@@ -42,6 +52,11 @@ const onload = () => {
     // mail
     if (mail.value) document.head.append(mailStyleEl);
     else mailStyleEl.remove();
+
+    if (mattermostIfI.value) {
+        if (mattermostStyle) document.head.append(mattermostStyle);
+        else mattermostStyle = GM_addStyle(mattermostCSS);
+    } else mattermostStyle?.remove();
 
     // phone
     if (phone.value) document.head.append(phoneStyleEl);

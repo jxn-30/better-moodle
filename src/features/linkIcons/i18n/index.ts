@@ -15,6 +15,11 @@ export const de = {
             description:
                 'Zeigt ein kleines Icon an, wenn ein Link deinen Email-Client öffnen kann.',
         },
+        mattermostIfI: {
+            name: 'Mattermost',
+            description:
+                'Zeigt ein kleines Icon an, wenn ein Link zur Mattermostinstanz des IfI führt.',
+        },
         phone: {
             name: 'Telefonnummern',
             description:
@@ -42,6 +47,11 @@ export const en = {
             name: 'Mark links: Emails',
             description:
                 'Shows a small icon next to links that can open your Email-Client.',
+        },
+        mattermostIfI: {
+            name: 'Mattermost',
+            description:
+                'Shows a small icon next to links that lead to the institutes mattermost instance.',
         },
         phone: {
             name: 'Phone',
