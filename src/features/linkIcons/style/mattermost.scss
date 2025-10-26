@@ -1,0 +1,10 @@
+@use './mixins' as *;
+
+@svg-load mattermost url(../icons/mattermost.svg) {
+}
+
+a[href^="https://wetalk.informatik.uni-kiel.de"],
+a[href^="https://dill.theorie.informatik.uni-kiel.de"]
+{
+    @include insert-svg-before-mask(svg-inline(mattermost));
+}
