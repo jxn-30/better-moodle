@@ -64,6 +64,8 @@ jobs:
                   gh release download --pattern "${{ steps.build.outputs.script }}" --pattern "${{ steps.build.outputs.polyfills }}" --dir=$DIR || exit 0
 
                   echo "dir=$DIR" >> $GITHUB_OUTPUT
+              env:
+                  GH_TOKEN: ${{ github.token }}
 
             - name: 🧮 calculate diff (script)
               if: ${{ steps.download-prev.outputs.dir }}
