@@ -53,7 +53,7 @@ const onload = () => {
     if (mail.value) document.head.append(mailStyleEl);
     else mailStyleEl.remove();
 
-    if (mattermostIfI.value) {
+    if (mattermostIfI?.value) {
         if (mattermostStyle) document.head.append(mattermostStyle);
         else mattermostStyle = GM_addStyle(mattermostCSS);
     } else mattermostStyle?.remove();
