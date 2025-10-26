@@ -11,8 +11,37 @@ $estimated-marquee-height: 25px;
         padding: 0.5rem;
     }
 
-    a i {
+    a div {
+        min-width: 50px;
+        height: 50px;
+        color: #fff;
+        border: solid #fff;
         border-radius: 8px;
+        line-height: 1em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #localnavbarplus-sos a div {
+        background-color: #9b0a7d;
+    }
+
+    #localnavbarplus-discrimination a div {
+        background-color: #003d86;
+    }
+
+    // This is necassary as something weird happens otherwise
+    i.fa {
+        width: unset !important;
+        height: unset !important;
+    }
+    i.fa-bell {
+        content: '\f061' !important;
+    }
+    i.fa-arrow-right {
+        content: '\f061' !important;
     }
 
     @include mixins.media-down(lg) {
@@ -45,6 +74,8 @@ $estimated-marquee-height: 25px;
 }
 
 #page {
+    overflow: scroll !important;
+
     @include mixins.media-down(lg) {
         padding-top: var(--navbar-height);
     }
