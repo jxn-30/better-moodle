@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.4.0](https://github.com/jxn-30/better-moodle/compare/2.3.0...2.4.0) (2025-10-26)
+
+
+### Features
+
+* **linkIcons:** add mattermost icon to wetalk.informatik.uni-kiel.de links (CAU-only) ([#872](https://github.com/jxn-30/better-moodle/issues/872)) ([dfae698](https://github.com/jxn-30/better-moodle/commit/dfae6982e3479d372f5a09d32901549f802d7f0f))
+* **linkIcons:** implement linkIcons for Webex (UzL-only) ([93ac707](https://github.com/jxn-30/better-moodle/commit/93ac7078e87cb58d6524d6576350b8cc22274db9))
+* **nina:** show start and end date in summary ([4503525](https://github.com/jxn-30/better-moodle/commit/45035258e95a4a87edde4edadeab5436618c4010))
+
+
+### Bug Fixes
+
+* **cauNavbar:** make buttons translateable by removing the weird icon hacks ([#871](https://github.com/jxn-30/better-moodle/issues/871)) ([43cda83](https://github.com/jxn-30/better-moodle/commit/43cda832c61a343b8bbe237cc072288cb18b0e4c))
+* **courses:** fix zooming onto images with css width set ([fc6664d](https://github.com/jxn-30/better-moodle/commit/fc6664d07d36aad3998572a3008404a31918f5be))
+
 ## [2.3.0](https://github.com/jxn-30/better-moodle/compare/2.2.1...2.3.0) (2025-10-13)
 
 
