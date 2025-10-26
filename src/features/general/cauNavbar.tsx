@@ -15,7 +15,10 @@ const localNavbarPlusDiv = <div id={styles.localnavbarplus} />;
 
 const localnavbarplusSos = (
     <div>
-        <i class="fa fa-fw icon fa-bell"></i>
+        <span className="fa-stack">
+            <span className="fa fa-tower-broadcast fa-stack-1x" />
+            <span className="fa fa-bell fa-stack-1x" />
+        </span>
         <span>{LL.buttons.sos.sos()}</span>
     </div>
 );
@@ -23,9 +26,9 @@ const localnavbarplusDiscrimination = (
     <div>
         <span>{LL.buttons.discrimination.discriminationSexism()}</span>
         <span>
-            <i class="fa fa-fw icon fa-arrow-right"></i>{' '}
+            <span className="fa fa-fw icon fa-arrow-right" />{' '}
             {LL.buttons.discrimination.report()}{' '}
-            <i class="fa fa-fw icon fa-arrow-right"></i>{' '}
+            <span className="fa fa-fw icon fa-arrow-right" />{' '}
             {LL.buttons.discrimination.getHelp()}
         </span>
     </div>

@@ -19,32 +19,25 @@ $estimated-marquee-height: 25px;
             color: #fff;
             border: solid #fff;
             border-radius: 8px;
-            line-height: 1em;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+
+            &,
+            .fa-stack {
+                line-height: 1em;
+            }
         }
     }
 
     #localnavbarplus-sos a div {
         background-color: #9b0a7d;
+        width: 50px; // I wan't this button to be square
     }
 
     #localnavbarplus-discrimination a div {
         background-color: #003d86;
-    }
-
-    // This is necassary as something weird happens otherwise
-    i.fa {
-        width: unset !important;
-        height: unset !important;
-    }
-    i.fa-bell {
-        content: '\f061' !important;
-    }
-    i.fa-arrow-right {
-        content: '\f061' !important;
     }
 
     @include mixins.media-down(lg) {
