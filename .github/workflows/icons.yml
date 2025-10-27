@@ -65,7 +65,7 @@ jobs:
                     done
 
             - name: 📤 upload icons
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v5
               with:
                   name: icons
                   path: png/
