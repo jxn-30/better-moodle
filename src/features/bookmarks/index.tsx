@@ -3,11 +3,11 @@ import FeatureGroup from '@/FeatureGroup';
 import globalStyle from '!/index.module.scss';
 import { LLFG } from 'i18n';
 import { Modal } from '@/Modal';
-import { render } from '@/templates';
 import { require } from '@/require.js';
 import style from './style.module.scss';
-import { getHtml, putTemplate, ready } from '@/DOM';
+import { getHtml, ready } from '@/DOM';
 import { NavbarItem, NavbarItemComponent } from '@/Components';
+import { putTemplate, render } from '@/templates';
 
 const LL = LLFG('bookmarks');
 

@@ -2,10 +2,10 @@ import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
 import { getDocument } from '@/network';
 import { PREFIX } from '@/helpers';
-import { renderCustomTemplate } from '@/templates';
+import { ready } from '@/DOM';
 import { requirePromise } from '@/require.js';
 import submenuTemplate from '+/userMenuCarouselSubmenu.mustache?raw';
-import { putTemplate, ready } from '@/DOM';
+import { putTemplate, renderCustomTemplate } from '@/templates';
 
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'general.quickRoleChange'

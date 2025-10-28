@@ -3,7 +3,6 @@ import Feature from '@/Feature';
 import globalStyle from '!/index.module.scss';
 import mobileTemplate from './navbarDropdown/mobile.mustache?raw';
 import { PREFIX } from '@/helpers';
-import { renderCustomTemplate } from '@/templates';
 import { requirePromise } from '@/require.js';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './navbarDropdown/style.module.scss';
@@ -14,7 +13,8 @@ import {
     getAvailableCourseFiltersAsOptions,
     onActiveFilterChanged,
 } from '@/myCourses';
-import { getHtml, getLoadingSpinner, putTemplate, ready } from '@/DOM';
+import { getHtml, getLoadingSpinner, ready } from '@/DOM';
+import { putTemplate, renderCustomTemplate } from '@/templates';
 
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('myCourses.navbarDropdown')

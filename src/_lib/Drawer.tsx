@@ -1,9 +1,9 @@
 import DrawerTemplate from './Drawer/Drawer.mustache?raw';
+import { getHtml } from '@/DOM';
 import { PREFIX } from '@/helpers';
-import { renderCustomTemplate } from '@/templates';
 import { requirePromise } from '@/require.js';
 import ThemeBoostDrawers from '#/require.js/theme_boost/drawers';
-import { getHtml, putTemplate } from '@/DOM';
+import { putTemplate, renderCustomTemplate } from '@/templates';
 
 export enum Side {
     Left = 'left',

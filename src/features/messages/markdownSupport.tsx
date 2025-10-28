@@ -1,9 +1,9 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
-import { render } from '@/templates';
+import { ready } from '@/DOM';
 import { requirePromise } from '@/require.js';
 import { domID, mdToHtml } from '@/helpers';
-import { putTemplate, ready } from '@/DOM';
+import { putTemplate, render } from '@/templates';
 
 /**
  * The setting for enabling markdown support

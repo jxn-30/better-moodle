@@ -1,8 +1,8 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import Feature from '@/Feature';
-import { renderCustomTemplate } from '@/templates';
+import { ready } from '@/DOM';
 import Template from './courseIndexDrawerControls.mustache?raw';
-import { putTemplate, ready } from '@/DOM';
+import { putTemplate, renderCustomTemplate } from '@/templates';
 
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'myCourses.collapseAll'
