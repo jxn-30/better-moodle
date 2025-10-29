@@ -6,13 +6,15 @@ import globalStyle from '!/index.module.scss';
 import type { Locales } from '../../i18n/i18n-types';
 import { Modal } from '@/Modal';
 import Parser from './parsers';
+import { renderAsElement } from '@/templates';
+import { requirePromise } from '@/require.js';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './style.module.scss';
 import { BETTER_MOODLE_LANG, languages, LLFG, LLMap } from 'i18n';
 import { currency, dateToString, timeToString, unit } from '@/localeString';
 import type { Dish, Speiseplan } from './speiseplan';
-import { getLoadingSpinner, ready } from '@/DOM';
-import { htmlToElements, mdToHtml } from '@/helpers';
+import { domID, htmlToElements, mdToHtml } from '@/helpers';
+import { getHtml, getLoadingSpinner, ready } from '@/DOM';
 
 const LL = LLFG('speiseplan');
 
@@ -251,6 +253,7 @@ const Day = ({
                     if (!dishType?.icon) return t;
                     return (
                         <img
+                            className={style.dishImg}
                             src={dishType.icon.toString()}
                             title={dishType.name}
                             alt={dishType.name}
@@ -304,7 +307,7 @@ const Day = ({
                 </tbody>
             </table>
         </FieldSet>
-    );
+    ) as ReturnType<typeof FieldSet>;
 };
 
 /**
@@ -338,6 +341,76 @@ const getCurrentSpeiseplan = () => {
     ) as HTMLAnchorElement;
 
     footerLinkWrapper.href = url;
+
+    /**
+     * Creates the filters autocomplete component
+     * Adds and initializes it when calling the returned method
+     * @param speiseplan - the current speiseplan to read the dish types from
+     * @returns a promise that resolves to the initialising function
+     */
+    const createFilters = (speiseplan: Speiseplan) => {
+        // it seems like we have to add a random component as modals are not always fully destroyed?
+        const id = domID(`speiseplan-filters-${crypto.randomUUID()}`);
+
+        return renderAsElement('core_form/element-autocomplete-inline', {
+            element: {
+                multiple: true,
+                name: 'speiseplan-filter-selection',
+                id,
+                iderror: `${id}-errors`,
+                options: speiseplan.types
+                    .entries()
+                    .map(([value, { name, icon }]) => ({
+                        value,
+                        text: name,
+                        html: getHtml(
+                            <span>
+                                {icon ?
+                                    <img
+                                        className={style.dishImg}
+                                        src={icon.toString()}
+                                        alt={name}
+                                    />
+                                :   <></>}
+                                {name}
+                            </span>
+                        ),
+                    }))
+                    .toArray(),
+                // these will be ignored as we're manually calling the enhanceMethod
+                tags: false,
+                placeholder: '',
+                casesensitive: false,
+                showsuggestions: true,
+                noselectionstring: '',
+            },
+        }).then(rawFilters => {
+            return (firstFieldset?: Element | null) => {
+                if (!firstFieldset) return;
+                const fieldset = (
+                    <FieldSet
+                        title={LL.filters.title()}
+                        description={LL.filters.description()}
+                    ></FieldSet>
+                ) as ReturnType<typeof FieldSet>;
+                firstFieldset.before(fieldset);
+                return fieldset
+                    .awaitReady()
+                    .then(() => fieldset.appendToContainer(rawFilters))
+                    .then(() =>
+                        requirePromise(['core/form-autocomplete'] as const)
+                    )
+                    .then(([{ enhanceField }]) =>
+                        enhanceField(
+                            `#${id}`,
+                            false,
+                            undefined,
+                            LL.filters.placeholder()
+                        )
+                    );
+            };
+        });
+    };
 
     let firstDay: Date | undefined;
 
@@ -376,23 +449,30 @@ const getCurrentSpeiseplan = () => {
 
             return speiseplan;
         })
-        .then(speiseplan =>
-            speiseplan.dishes
-                .entries()
-                .map(([day, dishes], index) => (
-                    <Day
-                        speiseplan={speiseplan}
-                        day={day}
-                        dishes={dishes}
-                        expanded={index === getExpandedDay()}
-                        co2InfoLink={
-                            co2InfoLinkAnchor.cloneNode(
-                                true
-                            ) as HTMLAnchorElement
-                        }
-                        lang={lang}
-                    ></Day>
-                ))
+        .then(
+            speiseplan =>
+                [
+                    speiseplan.dishes
+                        .entries()
+                        .map(
+                            ([day, dishes], index) =>
+                                (
+                                    <Day
+                                        speiseplan={speiseplan}
+                                        day={day}
+                                        dishes={dishes}
+                                        expanded={index === getExpandedDay()}
+                                        co2InfoLink={
+                                            co2InfoLinkAnchor.cloneNode(
+                                                true
+                                            ) as HTMLAnchorElement
+                                        }
+                                        lang={lang}
+                                    ></Day>
+                                ) as ReturnType<typeof Day>
+                        ),
+                    createFilters(speiseplan),
+                ] as const
         );
 };
 
@@ -413,7 +493,7 @@ const openSpeiseplan = () => {
             </>
         ),
         body: getCurrentSpeiseplan()
-            .then(fieldsets => <>{...Array.from(fieldsets)}</>)
+            .then(([fieldsets]) => <>{...Array.from(fieldsets)}</>)
             .catch(error => (
                 <>
                     {htmlToElements(
@@ -442,8 +522,12 @@ const openSpeiseplan = () => {
             ([[body], spinner]) => {
                 body.replaceChildren(spinner);
                 footerLinkWrapper.textContent = sLL().source();
-                void getCurrentSpeiseplan()
-                    .then(fieldsets => body.replaceChildren(...fieldsets))
+                return getCurrentSpeiseplan()
+                    .then(async ([fieldsets, createFilters]) => {
+                        const fieldsetArray = Array.from(fieldsets);
+                        body.replaceChildren(...fieldsetArray);
+                        void (await createFilters)?.(fieldsetArray[0]);
+                    })
                     .catch(error =>
                         body.replaceChildren(
                             ...htmlToElements(

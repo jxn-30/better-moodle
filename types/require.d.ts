@@ -6,6 +6,7 @@ import BlockMyOverviewSelectors from './require.js/block/myoverview/selectors';
 import CoreConfig from './require.js/core/config';
 import CoreCustomInteractionEvents from './require.js/core/custom_interaction_events';
 import CoreFiltersEvents from './require.js/core_filters/event';
+import CoreFormAutocomplete from './require.js/core/form-autocomplete';
 import CoreLocalstorage from './require.js/core/localstorage';
 import CoreModal from './require.js/core/modal';
 import CoreModalEvents from './require.js/core/modal_events';
@@ -31,6 +32,7 @@ interface ModuleMap {
     'core/custom_interaction_events': CoreCustomInteractionEvents;
     'core/emoji/auto_complete': InitEmojiAutoComplete;
     'core/emoji/picker': InitEmojiPicker;
+    'core/form-autocomplete': CoreFormAutocomplete;
     'core/localstorage': CoreLocalstorage;
     'core/local/modal/alert': CoreModal; // Wait, why is this the ONLY one in a special dicectory?
     'core/modal': CoreModal;

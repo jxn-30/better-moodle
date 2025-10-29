@@ -10,6 +10,12 @@ export const de = {
         types: 'Art(en)',
         price: 'Preis',
     },
+    filters: {
+        title: 'Filter',
+        description:
+            'Wähle hier aus, welche Speisearten du sehen möchtest. Hast du keine ausgewählt, wirst du alle Speisen sehen.',
+        placeholder: 'Speiseart hinzufügen',
+    },
     source: 'Original Speiseplan',
     errorWhileFetching: `
 Hoppala, leider hat da was beim Auslesen des Speiseplans nicht geklappt :(. Manchmal hilft es, ihn einfach nochmals neu zu öffnen.
@@ -47,6 +53,12 @@ export const en = {
         co2score: 'CO₂\xa0Score',
         types: 'Type(s)',
         price: 'Price',
+    },
+    filters: {
+        title: 'Filter',
+        description:
+            'Choose here, which types of dishes you want to see. If no types are selected, all dishes will be shown.',
+        placeholder: 'Add dish type',
     },
     source: 'Original menu',
     errorWhileFetching: `
