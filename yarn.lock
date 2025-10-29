@@ -2055,10 +2055,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@es-joy/resolve.exports@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@es-joy/resolve.exports@npm:1.0.0"
-  checksum: 10c0/08f9483abba56ce3f7c9e7fea0ee44d6c46b679aa810bf1901e735d587ef8d5dcd2e72503487248612d2971056c09dbeb3f3413dded5b535626a4ccf77493ddc
+"@es-joy/resolve.exports@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@es-joy/resolve.exports@npm:1.2.0"
+  checksum: 10c0/7e4713471f5eccb17a925a12415a2d9e372a42376813a19f6abd9c35e8d01ab1403777265817da67c6150cffd4f558d9ad51e26a8de6911dad89d9cb7eedacd8
   languageName: node
   linkType: hard
 
@@ -3471,12 +3471,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:24.9.1":
-  version: 24.9.1
-  resolution: "@types/node@npm:24.9.1"
+"@types/node@npm:*, @types/node@npm:24.9.2":
+  version: 24.9.2
+  resolution: "@types/node@npm:24.9.2"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10c0/c52f8168080ef9a7c3dc23d8ac6061fab5371aad89231a0f6f4c075869bc3de7e89b075b1f3e3171d9e5143d0dda1807c3dab8e32eac6d68f02e7480e7e78576
+  checksum: 10c0/7905d43f65cee72ef475fe76316e10bbf6ac5d08a7f0f6c38f2b6285d7ca3009e8fcafc8f8a1d2bf3f55889c9c278dbb203a9081fd0cf2d6d62161703924c6fa
   languageName: node
   linkType: hard
 
@@ -4300,7 +4300,7 @@ __metadata:
     "@types/eslint": "npm:9.6.1"
     "@types/jquery": "npm:3.5.33"
     "@types/mathjax": "npm:0.0.40"
-    "@types/node": "npm:24.9.1"
+    "@types/node": "npm:24.9.2"
     "@types/tampermonkey": "npm:5.0.5"
     "@vitejs/plugin-legacy": "npm:7.2.1"
     "@vitest/coverage-v8": "npm:3.2.4"
@@ -4319,7 +4319,7 @@ __metadata:
     eslint: "npm:9.38.0"
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-es-x: "npm:9.1.2"
-    eslint-plugin-jsdoc: "npm:61.1.9"
+    eslint-plugin-jsdoc: "npm:61.1.10"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-userscripts: "npm:0.5.6"
     fast-glob: "npm:3.3.3"
@@ -4334,7 +4334,7 @@ __metadata:
     postcss-inline-svg: "npm:6.0.0"
     postcss-preset-env: "npm:10.4.0"
     prettier: "npm:3.6.2"
-    puppeteer: "npm:24.26.1"
+    puppeteer: "npm:24.27.0"
     rrule: "npm:2.8.1"
     sass-embedded: "npm:1.93.2"
     terser: "npm:5.44.0"
@@ -4348,7 +4348,7 @@ __metadata:
     vite: "npm:7.1.12"
     vite-plugin-monkey: "npm:7.1.4"
     vitest: "npm:3.2.4"
-    wrangler: "npm:4.45.0"
+    wrangler: "npm:4.45.1"
   languageName: unknown
   linkType: soft
 
@@ -5194,10 +5194,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devtools-protocol@npm:0.0.1508733":
-  version: 0.0.1508733
-  resolution: "devtools-protocol@npm:0.0.1508733"
-  checksum: 10c0/d8d15e0a79b7343b9fe165fca70fabb77da29f7e3d72aa38b2776de795f8a24a3ea592da7b4edd9bf86344114e1431b0dd1b663c8c4efcd7f130db42d5360d88
+"devtools-protocol@npm:0.0.1521046":
+  version: 0.0.1521046
+  resolution: "devtools-protocol@npm:0.0.1521046"
+  checksum: 10c0/ba4b83a94e2b9c26772b22a8f6029ff296976a72db8e4567c9076393fccc39a452f6c0530869eebe2e1ad483db0e6233cd6b7b723ce466a05660c758f5e06db0
   languageName: node
   linkType: hard
 
@@ -5762,12 +5762,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:61.1.9":
-  version: 61.1.9
-  resolution: "eslint-plugin-jsdoc@npm:61.1.9"
+"eslint-plugin-jsdoc@npm:61.1.10":
+  version: 61.1.10
+  resolution: "eslint-plugin-jsdoc@npm:61.1.10"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.76.0"
-    "@es-joy/resolve.exports": "npm:1.0.0"
+    "@es-joy/resolve.exports": "npm:1.2.0"
     are-docs-informative: "npm:^0.0.2"
     comment-parser: "npm:1.4.1"
     debug: "npm:^4.4.3"
@@ -5782,7 +5782,7 @@ __metadata:
     to-valid-identifier: "npm:^1.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/40aa8fad92c8f09ef9e8cf92b7f27763b706e04772b72f32956b0c4225d7d4b946376b4a262680ea813256573774831771ef4bf429065a1de81e0fff2713e7e8
+  checksum: 10c0/0fb56a7eb776fc1017bb43ae173a8c1effecb23f5de67aae265fe93468aa0efa01da4b830fa0ef6387ac48ca82ac682da9fa9b4989de91f78a36d8e71b89cb19
   languageName: node
   linkType: hard
 
@@ -8946,34 +8946,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.26.1":
-  version: 24.26.1
-  resolution: "puppeteer-core@npm:24.26.1"
+"puppeteer-core@npm:24.27.0":
+  version: 24.27.0
+  resolution: "puppeteer-core@npm:24.27.0"
   dependencies:
     "@puppeteer/browsers": "npm:2.10.12"
     chromium-bidi: "npm:10.5.1"
     debug: "npm:^4.4.3"
-    devtools-protocol: "npm:0.0.1508733"
+    devtools-protocol: "npm:0.0.1521046"
     typed-query-selector: "npm:^2.12.0"
     webdriver-bidi-protocol: "npm:0.3.8"
     ws: "npm:^8.18.3"
-  checksum: 10c0/30e6424dc48862ca325bd16f1af09220441e23aeaf13ae4fec06aae13abd8a864160e17686967e26fa087694ea74fa06d43915ab3467a3f1873b90dac036e76f
+  checksum: 10c0/1b9bba7a730d64257bca208f0a02979b60bb48bed334207c9bdf2b68e57e1a2a0902ab1f476c9360001c84a6fb1c8b42118fa8f7c5f99cd783ceff5368c1691b
   languageName: node
   linkType: hard
 
-"puppeteer@npm:24.26.1":
-  version: 24.26.1
-  resolution: "puppeteer@npm:24.26.1"
+"puppeteer@npm:24.27.0":
+  version: 24.27.0
+  resolution: "puppeteer@npm:24.27.0"
   dependencies:
     "@puppeteer/browsers": "npm:2.10.12"
     chromium-bidi: "npm:10.5.1"
     cosmiconfig: "npm:^9.0.0"
-    devtools-protocol: "npm:0.0.1508733"
-    puppeteer-core: "npm:24.26.1"
+    devtools-protocol: "npm:0.0.1521046"
+    puppeteer-core: "npm:24.27.0"
     typed-query-selector: "npm:^2.12.0"
   bin:
     puppeteer: lib/cjs/puppeteer/node/cli.js
-  checksum: 10c0/da339d917ea02de1b751e98f724b795746f203e20da57acc34841dd2eef29b8ba457b82f16b18ee291f0dbee5e83a8f583dc0cd0082ad635a30a2fd82d7c63d0
+  checksum: 10c0/4d64e4635e118bef521afb2bb0ef409fb5158a58e3b38154c11110c5de79eb9d173ac550f422d2fe4d466871531f79d9b0c71ef93dab021b1556f6c2f9569f60
   languageName: node
   linkType: hard
 
@@ -11194,9 +11194,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrangler@npm:4.45.0":
-  version: 4.45.0
-  resolution: "wrangler@npm:4.45.0"
+"wrangler@npm:4.45.1":
+  version: 4.45.1
+  resolution: "wrangler@npm:4.45.1"
   dependencies:
     "@cloudflare/kv-asset-handler": "npm:0.4.0"
     "@cloudflare/unenv-preset": "npm:2.7.8"
@@ -11218,7 +11218,7 @@ __metadata:
   bin:
     wrangler: bin/wrangler.js
     wrangler2: bin/wrangler.js
-  checksum: 10c0/4c268e279329c1e07b589963666a39327602f3f95324717069162118f0ee4a40cb9f231b20309234d30f69b81a8a8925c8327d8bbdcf5a150f4cd059baa43652
+  checksum: 10c0/b03bd788d1d0aacce537849c728a4721bdc69641d4da941cea4bdb0c51941fc9bde083eb8099260bebcb1185bec2ad5ffc5781456665147866237c423619c5a5
   languageName: node
   linkType: hard
 
