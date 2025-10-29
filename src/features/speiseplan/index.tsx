@@ -342,6 +342,13 @@ const getCurrentSpeiseplan = () => {
 
     footerLinkWrapper.href = url;
 
+    const filtersFieldset = (
+        <FieldSet
+            title={LL.filters.title()}
+            description={LL.filters.description()}
+        ></FieldSet>
+    ) as ReturnType<typeof FieldSet>;
+
     /**
      * Creates the filters autocomplete component
      * Adds and initializes it when calling the returned method
@@ -384,19 +391,11 @@ const getCurrentSpeiseplan = () => {
                 showsuggestions: true,
                 noselectionstring: '',
             },
-        }).then(rawFilters => {
-            return (firstFieldset?: Element | null) => {
-                if (!firstFieldset) return;
-                const fieldset = (
-                    <FieldSet
-                        title={LL.filters.title()}
-                        description={LL.filters.description()}
-                    ></FieldSet>
-                ) as ReturnType<typeof FieldSet>;
-                firstFieldset.before(fieldset);
-                return fieldset
+        }).then(
+            rawFilters => () =>
+                filtersFieldset
                     .awaitReady()
-                    .then(() => fieldset.appendToContainer(rawFilters))
+                    .then(() => filtersFieldset.appendToContainer(rawFilters))
                     .then(() =>
                         requirePromise(['core/form-autocomplete'] as const)
                     )
@@ -407,9 +406,8 @@ const getCurrentSpeiseplan = () => {
                             undefined,
                             LL.filters.placeholder()
                         )
-                    );
-            };
-        });
+                    )
+        );
     };
 
     let firstDay: Date | undefined;
@@ -449,31 +447,32 @@ const getCurrentSpeiseplan = () => {
 
             return speiseplan;
         })
-        .then(
-            speiseplan =>
-                [
-                    speiseplan.dishes
-                        .entries()
-                        .map(
-                            ([day, dishes], index) =>
-                                (
-                                    <Day
-                                        speiseplan={speiseplan}
-                                        day={day}
-                                        dishes={dishes}
-                                        expanded={index === getExpandedDay()}
-                                        co2InfoLink={
-                                            co2InfoLinkAnchor.cloneNode(
-                                                true
-                                            ) as HTMLAnchorElement
-                                        }
-                                        lang={lang}
-                                    ></Day>
-                                ) as ReturnType<typeof Day>
-                        ),
-                    createFilters(speiseplan),
-                ] as const
-        );
+        .then(speiseplan => {
+            const fieldsets = speiseplan.dishes
+                .entries()
+                .map(
+                    ([day, dishes], index) =>
+                        (
+                            <Day
+                                speiseplan={speiseplan}
+                                day={day}
+                                dishes={dishes}
+                                expanded={index === getExpandedDay()}
+                                co2InfoLink={
+                                    co2InfoLinkAnchor.cloneNode(
+                                        true
+                                    ) as HTMLAnchorElement
+                                }
+                                lang={lang}
+                            ></Day>
+                        ) as ReturnType<typeof Day>
+                )
+                .toArray();
+            return [
+                [filtersFieldset, ...fieldsets],
+                createFilters(speiseplan),
+            ] as const;
+        });
 };
 
 /**
@@ -481,6 +480,8 @@ const getCurrentSpeiseplan = () => {
  */
 const openSpeiseplan = () => {
     footerLinkWrapper.textContent = sLL().source();
+
+    let initialCreateFilters: Promise<() => void>;
 
     const modal = new Modal({
         type: 'ALERT',
@@ -493,7 +494,10 @@ const openSpeiseplan = () => {
             </>
         ),
         body: getCurrentSpeiseplan()
-            .then(([fieldsets]) => <>{...Array.from(fieldsets)}</>)
+            .then(([fieldsets, createFilters]) => {
+                initialCreateFilters = createFilters;
+                return <>{...Array.from(fieldsets)}</>;
+            })
             .catch(error => (
                 <>
                     {htmlToElements(
@@ -506,6 +510,8 @@ const openSpeiseplan = () => {
         removeOnClose: true,
         buttons: { cancel: `🍴\xa0${sLL().close()}` },
     }).show();
+
+    void modal.getBody().then(async () => (await initialCreateFilters)?.());
 
     void modal
         .getFooter()
@@ -524,9 +530,8 @@ const openSpeiseplan = () => {
                 footerLinkWrapper.textContent = sLL().source();
                 return getCurrentSpeiseplan()
                     .then(async ([fieldsets, createFilters]) => {
-                        const fieldsetArray = Array.from(fieldsets);
-                        body.replaceChildren(...fieldsetArray);
-                        void (await createFilters)?.(fieldsetArray[0]);
+                        body.replaceChildren(...fieldsets);
+                        void (await createFilters)?.();
                     })
                     .catch(error =>
                         body.replaceChildren(
