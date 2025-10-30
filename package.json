@@ -35,7 +35,7 @@
     },
     "devDependencies": {
         "@actions/core": "1.11.1",
-        "@babel/compat-data": "7.28.4",
+        "@babel/compat-data": "7.28.5",
         "@cloudflare/workers-types": "4.20251014.0",
         "@commitlint/cli": "20.1.0",
         "@commitlint/config-conventional": "20.0.0",
