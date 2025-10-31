@@ -66,13 +66,13 @@
         "eslint": "9.38.0",
         "eslint-config-prettier": "10.1.8",
         "eslint-plugin-es-x": "9.1.2",
-        "eslint-plugin-jsdoc": "61.1.10",
+        "eslint-plugin-jsdoc": "61.1.11",
         "eslint-plugin-jsx-a11y": "6.10.2",
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
         "globals": "16.4.0",
         "jiti": "2.6.1",
-        "jsdom": "27.0.1",
+        "jsdom": "27.1.0",
         "mini-svg-data-uri": "1.4.4",
         "node-ical": "0.22.1",
         "nodejs-file-downloader": "4.13.0",
@@ -93,7 +93,7 @@
         "vite": "7.1.12",
         "vite-plugin-monkey": "7.1.4",
         "vitest": "3.2.4",
-        "wrangler": "4.45.1"
+        "wrangler": "4.45.3"
     },
     "engines": {
         "node": "^22.20.0"
