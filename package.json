@@ -35,7 +35,7 @@
     },
     "devDependencies": {
         "@actions/core": "1.11.1",
-        "@babel/compat-data": "7.28.4",
+        "@babel/compat-data": "7.28.5",
         "@cloudflare/workers-types": "4.20251014.0",
         "@commitlint/cli": "20.1.0",
         "@commitlint/config-conventional": "20.0.0",
@@ -48,7 +48,7 @@
         "@types/eslint": "9.6.1",
         "@types/jquery": "3.5.33",
         "@types/mathjax": "0.0.40",
-        "@types/node": "24.9.1",
+        "@types/node": "24.9.2",
         "@types/tampermonkey": "5.0.5",
         "@vitejs/plugin-legacy": "7.2.1",
         "@vitest/coverage-v8": "3.2.4",
@@ -66,13 +66,13 @@
         "eslint": "9.38.0",
         "eslint-config-prettier": "10.1.8",
         "eslint-plugin-es-x": "9.1.2",
-        "eslint-plugin-jsdoc": "61.1.9",
+        "eslint-plugin-jsdoc": "61.1.11",
         "eslint-plugin-jsx-a11y": "6.10.2",
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
         "globals": "16.4.0",
         "jiti": "2.6.1",
-        "jsdom": "27.0.1",
+        "jsdom": "27.1.0",
         "mini-svg-data-uri": "1.4.4",
         "node-ical": "0.22.1",
         "nodejs-file-downloader": "4.13.0",
@@ -80,7 +80,7 @@
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "10.4.0",
         "prettier": "3.6.2",
-        "puppeteer": "24.26.1",
+        "puppeteer": "24.27.0",
         "rrule": "2.8.1",
         "sass-embedded": "1.93.2",
         "terser": "5.44.0",
@@ -93,10 +93,10 @@
         "vite": "7.1.12",
         "vite-plugin-monkey": "7.1.4",
         "vitest": "3.2.4",
-        "wrangler": "4.45.0"
+        "wrangler": "4.45.3"
     },
     "engines": {
-        "node": "^22.20.0"
+        "node": "^24.11.0"
     },
     "browserslist": [
         "last 4 versions",
