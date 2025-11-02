@@ -61,6 +61,10 @@ interface ContextMap extends Record<string, Context> {
 
     // context dependencies are left out here on purpose
     'core_form/element-autocomplete-inline': FormElement<{
+        type:
+            | 'autocomplete'
+            | `autocomplete-${string}`
+            | `${string}-autocomplete`;
         frozen?: boolean;
         multiple?: boolean;
         nameraw?: string; // required if multiple is truthy, otherwise ignored

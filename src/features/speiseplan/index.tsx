@@ -1,15 +1,13 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import type Canteens from './canteens';
 import FeatureGroup from '@/FeatureGroup';
-import { FieldSet } from '@/Components';
 import globalStyle from '!/index.module.scss';
 import type { Locales } from '../../i18n/i18n-types';
 import { Modal } from '@/Modal';
 import Parser from './parsers';
-import { renderAsElement } from '@/templates';
-import { requirePromise } from '@/require.js';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './style.module.scss';
+import { AutoComplete, FieldSet } from '@/Components';
 import { BETTER_MOODLE_LANG, languages, LLFG, LLMap } from 'i18n';
 import { currency, dateToString, timeToString, unit } from '@/localeString';
 import type { Dish, Speiseplan } from './speiseplan';
@@ -359,8 +357,39 @@ const getCurrentSpeiseplan = () => {
         // it seems like we have to add a random component as modals are not always fully destroyed?
         const id = domID(`speiseplan-filters-${crypto.randomUUID()}`);
 
+        const filtersElement = (
+            <AutoComplete
+                id={id}
+                value={['G', 'AGR']}
+                placeholder={LL.filters.placeholder()}
+                options={speiseplan.types
+                    .entries()
+                    .map(([value, { name, icon }]) => ({
+                        value,
+                        text: name,
+                        html: getHtml(
+                            <span>
+                                {icon ?
+                                    <img
+                                        className={style.dishImg}
+                                        src={icon.toString()}
+                                        alt={name}
+                                    />
+                                :   <></>}
+                                {name}
+                            </span>
+                        ),
+                    }))
+                    .toArray()}
+            />
+        ) as ReturnType<typeof AutoComplete>;
+
+        return () => filtersFieldset.appendToContainer(filtersElement);
+
+        /*
         return renderAsElement('core_form/element-autocomplete-inline', {
             element: {
+                type: 'speiseplan-filter-autocomplete',
                 multiple: true,
                 name: 'speiseplan-filter-selection',
                 id,
@@ -407,7 +436,7 @@ const getCurrentSpeiseplan = () => {
                             LL.filters.placeholder()
                         )
                     )
-        );
+        );*/
     };
 
     let firstDay: Date | undefined;
@@ -481,7 +510,7 @@ const getCurrentSpeiseplan = () => {
 const openSpeiseplan = () => {
     footerLinkWrapper.textContent = sLL().source();
 
-    let initialCreateFilters: Promise<() => void>;
+    let initialCreateFilters: () => Promise<void>;
 
     const modal = new Modal({
         type: 'ALERT',
@@ -511,7 +540,7 @@ const openSpeiseplan = () => {
         buttons: { cancel: `🍴\xa0${sLL().close()}` },
     }).show();
 
-    void modal.getBody().then(async () => (await initialCreateFilters)?.());
+    void modal.getBody().then(() => initialCreateFilters?.());
 
     void modal
         .getFooter()
@@ -529,9 +558,9 @@ const openSpeiseplan = () => {
                 body.replaceChildren(spinner);
                 footerLinkWrapper.textContent = sLL().source();
                 return getCurrentSpeiseplan()
-                    .then(async ([fieldsets, createFilters]) => {
+                    .then(([fieldsets, createFilters]) => {
                         body.replaceChildren(...fieldsets);
-                        void (await createFilters)?.();
+                        void createFilters?.();
                     })
                     .catch(error =>
                         body.replaceChildren(
