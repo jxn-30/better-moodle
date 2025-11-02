@@ -16,6 +16,8 @@ import { getHtml, getLoadingSpinner, ready } from '@/DOM';
 
 const LL = LLFG('speiseplan');
 
+const FILTER_STORAGE_KEY = 'speiseplan.activeFilters';
+
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'general.speiseplan'
 );
@@ -191,7 +193,7 @@ const Day = ({
      * @returns a table row
      */
     const Dish = ({ dish }: DishProps) => (
-        <tr>
+        <tr dataset={{ types: dish.types.values().toArray().join(' ') }}>
             <td className="dish" dataset={{ location: dish.location }}>
                 {...dish.name.map(item => (
                     <>
@@ -360,7 +362,7 @@ const getCurrentSpeiseplan = () => {
         const filtersElement = (
             <AutoComplete
                 id={id}
-                value={['G', 'AGR']}
+                value={GM_getValue<string[]>(FILTER_STORAGE_KEY, [])}
                 placeholder={LL.filters.placeholder()}
                 options={speiseplan.types
                     .entries()
@@ -384,59 +386,14 @@ const getCurrentSpeiseplan = () => {
             />
         ) as ReturnType<typeof AutoComplete>;
 
-        return () => filtersFieldset.appendToContainer(filtersElement);
+        filtersElement.addEventListener('change', () => {
+            GM_setValue(FILTER_STORAGE_KEY, filtersElement.value);
+            updateFilterStyle(filtersElement.value);
+        });
 
-        /*
-        return renderAsElement('core_form/element-autocomplete-inline', {
-            element: {
-                type: 'speiseplan-filter-autocomplete',
-                multiple: true,
-                name: 'speiseplan-filter-selection',
-                id,
-                iderror: `${id}-errors`,
-                options: speiseplan.types
-                    .entries()
-                    .map(([value, { name, icon }]) => ({
-                        value,
-                        text: name,
-                        html: getHtml(
-                            <span>
-                                {icon ?
-                                    <img
-                                        className={style.dishImg}
-                                        src={icon.toString()}
-                                        alt={name}
-                                    />
-                                :   <></>}
-                                {name}
-                            </span>
-                        ),
-                    }))
-                    .toArray(),
-                // these will be ignored as we're manually calling the enhanceMethod
-                tags: false,
-                placeholder: '',
-                casesensitive: false,
-                showsuggestions: true,
-                noselectionstring: '',
-            },
-        }).then(
-            rawFilters => () =>
-                filtersFieldset
-                    .awaitReady()
-                    .then(() => filtersFieldset.appendToContainer(rawFilters))
-                    .then(() =>
-                        requirePromise(['core/form-autocomplete'] as const)
-                    )
-                    .then(([{ enhanceField }]) =>
-                        enhanceField(
-                            `#${id}`,
-                            false,
-                            undefined,
-                            LL.filters.placeholder()
-                        )
-                    )
-        );*/
+        updateFilterStyle();
+
+        return () => filtersFieldset.appendToContainer(filtersElement);
     };
 
     let firstDay: Date | undefined;
@@ -504,6 +461,25 @@ const getCurrentSpeiseplan = () => {
         });
 };
 
+const filterStyle = <style></style>;
+/**
+ * Updates the filtering style to hide dishes that do not match the current filters
+ * @param activeFilters - the list of current filters
+ */
+const updateFilterStyle = (
+    activeFilters = GM_getValue<string[]>(FILTER_STORAGE_KEY, [])
+) => {
+    if (!activeFilters.length) {
+        filterStyle.textContent = '';
+        return;
+    }
+
+    filterStyle.textContent = `
+    tr${activeFilters.map(f => `:not([data-types~="${f}"])`).join('')} {
+        display: none;
+    }`;
+};
+
 /**
  * Opens the Speiseplan modal and loads content
  */
@@ -525,7 +501,12 @@ const openSpeiseplan = () => {
         body: getCurrentSpeiseplan()
             .then(([fieldsets, createFilters]) => {
                 initialCreateFilters = createFilters;
-                return <>{...Array.from(fieldsets)}</>;
+                return (
+                    <>
+                        {filterStyle}
+                        {...Array.from(fieldsets)}
+                    </>
+                );
             })
             .catch(error => (
                 <>
@@ -559,7 +540,7 @@ const openSpeiseplan = () => {
                 footerLinkWrapper.textContent = sLL().source();
                 return getCurrentSpeiseplan()
                     .then(([fieldsets, createFilters]) => {
-                        body.replaceChildren(...fieldsets);
+                        body.replaceChildren(filterStyle, ...fieldsets);
                         void createFilters?.();
                     })
                     .catch(error =>

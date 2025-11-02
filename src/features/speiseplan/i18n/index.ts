@@ -13,7 +13,7 @@ export const de = {
     filters: {
         title: 'Filter',
         description:
-            'Wähle hier aus, welche Speisearten du sehen möchtest. Hast du keine ausgewählt, wirst du alle Speisen sehen.',
+            'Wähle hier aus, welche Speisearten du sehen möchtest. Es werden alle Speisen angezeigt, die mindestens einem der ausgewählten Speisearten entspricht. Hast du keine Arten ausgewählt, wirst du alle Speisen sehen.',
         placeholder: 'Speiseart hinzufügen',
     },
     source: 'Original Speiseplan',
@@ -57,7 +57,7 @@ export const en = {
     filters: {
         title: 'Filter',
         description:
-            'Choose here, which types of dishes you want to see. If no types are selected, all dishes will be shown.',
+            'Choose here, which types of dishes you want to see. Any dishes that match at least one selected filter will be shown. If no types are selected, all dishes will be shown.',
         placeholder: 'Add dish type',
     },
     source: 'Original menu',
