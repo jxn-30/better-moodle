@@ -1,7 +1,7 @@
 import { BETTER_MOODLE_LANG } from 'i18n';
-import type { Dish } from '../speiseplan';
 import { getDocument } from '@/network';
 import type Parser from './index';
+import type { Dish, DishType } from '../speiseplan';
 import { ONE_DAY, TEN_MINUTES } from '@/times';
 
 const prices = {
@@ -124,20 +124,18 @@ const parse: Parser = (url: string) =>
                 // .src returns with Moodle instance as hostname so we need to do some URL tricks here
                 const icon = el.querySelector<HTMLImageElement>('img')?.src;
                 const iconPath = icon ? new URL(icon).pathname : undefined;
-                let name = el.textContent?.trim() ?? '';
+                const dishType = {
+                    name: el.textContent?.trim() ?? '',
+                    icon: iconPath ? new URL(iconPath, url) : undefined,
+                } as DishType;
                 if (el.dataset.ex === '1' && icon) {
-                    name =
+                    dishType.name =
                         doc.querySelector<HTMLImageElement>(
                             `:not(.filterbutton) > img[src*="${iconPath}"]`
-                        )?.title ?? name;
+                        )?.title ?? dishType.name;
+                    dishType.isExclusive = true;
                 }
-                return [
-                    el.dataset.wert ?? '',
-                    {
-                        name,
-                        icon: iconPath ? new URL(iconPath, url) : undefined,
-                    },
-                ];
+                return [el.dataset.wert ?? '', dishType];
             })
         );
 

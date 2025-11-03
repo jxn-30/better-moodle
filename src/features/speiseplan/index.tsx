@@ -366,6 +366,7 @@ const getCurrentSpeiseplan = () => {
                 placeholder={LL.filters.placeholder()}
                 options={speiseplan.types
                     .entries()
+                    .filter(([, { isExclusive }]) => !isExclusive)
                     .map(([value, { name, icon }]) => ({
                         value,
                         text: name,

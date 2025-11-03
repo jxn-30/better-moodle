@@ -8,11 +8,17 @@ export interface Dish {
     co2: { stars: number; emission: number } | false;
 }
 
+export interface DishType {
+    name: string;
+    icon?: URL;
+    isExclusive?: true;
+}
+
 export interface Speiseplan {
     timestamp: number;
     dishes: Map<Date, Set<Dish>>;
     prices: string[];
     allergenes: Map<string, string>;
     additives: Map<string, string>;
-    types: Map<string, { name: string; icon?: URL }>;
+    types: Map<string, DishType>;
 }
