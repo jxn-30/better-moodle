@@ -726,11 +726,9 @@ export const FieldSet = ({
             container = FieldSet.querySelector<HTMLDivElement>('.fcontainer');
             container?.append(
                 <>
-                    {description && (
-                        <p className="p-12">
-                            {htmlToElements(mdToHtml(description))}
-                        </p>
-                    )}
+                    {description ?
+                        htmlToElements(mdToHtml(description))
+                    :   <></>}
                     {children}
                 </>
             );

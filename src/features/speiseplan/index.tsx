@@ -344,10 +344,17 @@ const getCurrentSpeiseplan = () => {
 
     const filtersFieldset = (
         <FieldSet
-            title={LL.filters.title()}
+            title={getHtml(
+                <>
+                    <i className="fa fa-filter fa-fw mr-1"></i>
+                    {LL.filters.title()}
+                </>
+            )}
             description={LL.filters.description()}
         ></FieldSet>
     ) as ReturnType<typeof FieldSet>;
+
+    filtersFieldset.id = 'speiseplan-filters-fieldset';
 
     /**
      * Creates the filters autocomplete component

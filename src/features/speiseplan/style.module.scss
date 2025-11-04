@@ -128,9 +128,28 @@ $max-co2-stars: 3;
 }
 
 .modal-body:has(:local(.table)) {
-    .form-autocomplete-selection :local(.dish-img),
-    .form-autocomplete-suggestions :local(.dish-img) {
-        max-height: 2ch;
-        margin-right: 0.3em;
+    #speiseplan-filters-fieldset {
+        a.fheader:has(.fa-filter) {
+            zoom: 0.75;
+        }
+
+        h3 {
+            font-size: medium;
+        }
+
+        :local(.dish-img) {
+            max-height: 2ch;
+            margin-right: 0.3em;
+        }
+
+        .fcontainer:is(.collapsing, .show) {
+            padding-bottom: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+
+            .form-autocomplete-selection {
+                order: 1;
+            }
+        }
     }
 }
