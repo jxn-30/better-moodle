@@ -385,7 +385,7 @@ const getCurrentSpeiseplan = () => {
                                         src={icon.toString()}
                                         alt={name}
                                     />
-                                :   <></>}
+                                :   null}
                                 {name}
                             </span>
                         ),
