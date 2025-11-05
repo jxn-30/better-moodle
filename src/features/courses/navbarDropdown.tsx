@@ -109,10 +109,10 @@ const loadContent = ({
                     <>
                         {course.isfavourite ?
                             <i className="icon fa fa-star fa-fw"></i>
-                        :   <></>}
+                        :   null}
                         {course.shortname ?
                             <strong>{course.shortname}</strong>
-                        :   <></>}{' '}
+                        :   null}{' '}
                         <small>{course.fullname}</small>
                     </>
                 ),

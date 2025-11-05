@@ -603,7 +603,7 @@ const requestAlerts = () =>
                             {' - '}
                             {datetimeToString(new Date(expires), true, false)})
                         </span>
-                    :   <></>;
+                    :   null;
 
                 const seen = alertCache[alertId].seen;
                 return (
