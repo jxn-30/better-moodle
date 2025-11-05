@@ -448,7 +448,7 @@ const loadContent = (semesterIndex = 0) => {
                 <>
                     {currentSemester === 0 ?
                         <div className="position-relative">{todaySpan}</div>
-                    :   <></>}
+                    :   null}
                     <div className="d-flex align-items-center">
                         {toggleTableBtn}
                         {progressBar}

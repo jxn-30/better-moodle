@@ -99,7 +99,7 @@ export default class Block {
                 <div className="card-body p-3">
                     {this.#showTitle ?
                         <h5 className="card-title d-inline">{this.#title}</h5>
-                    :   <></>}
+                    :   null}
                     <div className="card-text content mt-3">
                         {this.#content}
                     </div>
