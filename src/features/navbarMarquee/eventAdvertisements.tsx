@@ -72,7 +72,11 @@ const createEventSpan = (event: Event) => {
 
     spans.set(span, event);
 
-    span.addEventListener('click', e => {
+    /**
+     * The event-listener to open the modal with details
+     * @param e - the click event
+     */
+    const clickListener = (e: MouseEvent) => {
         e.preventDefault();
         const table = (
             <table className="table table-striped table-hover m-0">
@@ -118,8 +122,11 @@ const createEventSpan = (event: Event) => {
                 :   undefined,
             removeOnClose: true,
         }).show();
-    });
-    return span;
+    };
+
+    span.addEventListener('click', clickListener);
+
+    return [span, clickListener] as const;
 };
 
 /**
@@ -132,7 +139,10 @@ const reload = async () => {
         removeAll();
         events.forEach(event => {
             if (new Date(event.start).getTime() <= Date.now() + noticeTimeMs) {
-                marquee.add(createEventSpan(event));
+                const [eventSpan, clickListener] = createEventSpan(event);
+                marquee
+                    .add(eventSpan)[0][1]
+                    .addEventListener('click', clickListener);
             }
         });
     } else removeAll();
