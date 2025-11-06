@@ -58,23 +58,24 @@ export class Modal extends CanBeReady {
      * It also prepends the footer to the modal if it was saved before the modal was ready.
      */
     async #onReady() {
-        super.instanceReady();
-        await this.#prependFooter();
+        if (this.#savedFooter) {
+            // We cannot use this.getFooter() as it relies on super.instanceReady being called,
+            // which should be called last to avoid visual glitches
+            this.#modal!.getFooter().prepend(await this.#savedFooter);
+        }
+
         if (this.#config.bodyClass) {
-            await this.getBody().then(([body]) =>
+            // We cannot use this.getBody() as it relies on super.instanceReady being called,
+            // which should be called last to avoid visual glitches
+            await this.#modal!.getBodyPromise().then(([body]) =>
                 body.classList.add(
                     ...className(this.#config.bodyClass).split(' ')
                 )
             );
         }
-    }
 
-    /**
-     * Prepends the saved footer to the modal's footer.
-     */
-    async #prependFooter() {
-        if (!this.#savedFooter || !this.instanceIsReady) return;
-        this.#modal!.getFooter().prepend(await this.#savedFooter);
+        // the instance is ready once modifications are done
+        super.instanceReady();
     }
 
     /**
