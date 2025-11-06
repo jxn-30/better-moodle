@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.1](https://github.com/jxn-30/better-moodle/compare/2.4.0...2.4.1) (2025-11-06)
+
+
+### Bug Fixes
+
+* **marquee:** fix events sometimes not clickable [#884](https://github.com/jxn-30/better-moodle/issues/884) ([2477407](https://github.com/jxn-30/better-moodle/commit/2477407b452db3698aeeea8bf8b05b146c3babc7))
+
 ## [2.4.0](https://github.com/jxn-30/better-moodle/compare/2.3.0...2.4.0) (2025-10-26)
 
 
