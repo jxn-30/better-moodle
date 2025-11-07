@@ -13,7 +13,7 @@ export const de = {
     filters: {
         title: 'Filter',
         description:
-            'Wähle hier aus, welche Speisearten du sehen möchtest. Es werden alle Speisen angezeigt, die mindestens einem der ausgewählten Speisearten entspricht. Hast du keine Arten ausgewählt, wirst du alle Speisen sehen.',
+            'Wähle hier aus, welche Speisearten du sehen möchtest. Es werden alle Speisen angezeigt, die mindestens einer der ausgewählten Speisearten entspricht. Hast du keine Arten ausgewählt, wirst du alle Speisen sehen.',
         placeholder: 'Speiseart hinzufügen',
     },
     source: 'Original Speiseplan',
