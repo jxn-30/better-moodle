@@ -8,6 +8,7 @@ import settingsStyle from '!/settings.module.scss';
 import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
 import TempStorage from '@/TempStorage';
 import type { ThemeBoostBootstrapTooltipClass } from '#/require.js/theme_boost/bootstrap/tooltip.d.ts';
+import toast from '@/toast';
 import { BETTER_MOODLE_LANG, LL } from 'i18n';
 import { cachedRequest, NETWORK_CACHE_KEY, request } from '@/network';
 import {
@@ -426,14 +427,11 @@ const settingsModal = new Modal({
     .onCancel(() => featureGroups.forEach(group => group.undoSettings()))
     .onSave(event => {
         featureGroups.forEach(group => group.saveSettings());
-        void requirePromise(['core/toast'] as const).then(
-            ([{ add }]) =>
-                void add(LL.settings.saved(), {
-                    type: 'success',
-                    autohide: true,
-                    closeButton: true,
-                })
-        );
+        void toast(LL.settings.saved(), {
+            type: 'success',
+            autohide: true,
+            closeButton: true,
+        });
         // reload the page if required
         if (TempStorage.settingsRequireReload) {
             // do not close the modal

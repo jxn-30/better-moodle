@@ -6,9 +6,9 @@ import globalStyle from '!/index.module.scss';
 import { JSX } from 'jsx-dom/jsx-runtime';
 import { LLFG } from 'i18n';
 import { Modal } from '@/Modal';
-import { requirePromise } from '@/require.js';
 import { SliderSetting } from '@/Settings/SliderSetting';
 import style from './style.module.scss';
+import toast from '@/toast';
 import type { Alert, AlertCache, AlertSummary } from './types';
 import {
     arsToCountyLevel,
@@ -409,25 +409,22 @@ const sendAlertNotification = (alert: Alert) =>
         const shortDescription = shortenAlertDescription(alert, 75);
 
         if (inAppNotifications.value) {
-            void requirePromise(['core/toast'] as const).then(
-                ([{ add }]) =>
-                    void add(shortDescription, {
-                        type: 'warning',
-                        autohide: true,
-                        closeButton: true,
-                        delay: TEN_SECONDS,
-                        title,
-                        subtitle: getHtml(
-                            <a
-                                href={`https://warnung.bund.de/meldungen/${alertId}/`}
-                                dataset={{ alert: alertId }}
-                                target="_blank"
-                            >
-                                {LL.modal.showMore()}
-                            </a>
-                        ),
-                    })
-            );
+            void toast(shortDescription, {
+                type: 'warning',
+                autohide: true,
+                closeButton: true,
+                delay: TEN_SECONDS,
+                title,
+                subtitle: getHtml(
+                    <a
+                        href={`https://warnung.bund.de/meldungen/${alertId}/`}
+                        dataset={{ alert: alertId }}
+                        target="_blank"
+                    >
+                        {LL.modal.showMore()}
+                    </a>
+                ),
+            });
             alertCache[alertId].notified = true;
         }
         if (desktopNotifications.value) {
