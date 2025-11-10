@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.5.0](https://github.com/jxn-30/better-moodle/compare/2.4.1...2.5.0) (2025-11-10)
+
+
+### Features
+
+* **speiseplan:** implement filters [#859](https://github.com/jxn-30/better-moodle/issues/859) ([#882](https://github.com/jxn-30/better-moodle/issues/882)) ([b16ad90](https://github.com/jxn-30/better-moodle/commit/b16ad90ab06126d8c53aa6f15a268f09b8e45d2b))
+
+
+### Bug Fixes
+
+* **modals:** fix some modals taking long to load ([f218809](https://github.com/jxn-30/better-moodle/commit/f2188098b92d05f3eb45c6091863579b9cf211b7))
+* **modals:** fix visual glitches in some Better-Moodle modals ([c493e3a](https://github.com/jxn-30/better-moodle/commit/c493e3ac93316c86c3372f2a52e6af71965dd78a))
+
 ## [2.4.1](https://github.com/jxn-30/better-moodle/compare/2.4.0...2.4.1) (2025-11-06)
 
 
