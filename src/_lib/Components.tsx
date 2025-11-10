@@ -3,6 +3,7 @@ import { FeatureID } from './Feature';
 import globalStyle from '!/index.module.scss';
 import type { JSX } from 'jsx-dom';
 import { renderAsElements } from './templates';
+import { requirePromise } from '@/require.js';
 import { SettingTranslations } from './Setting';
 import { SimpleReady } from './CanBeReady';
 import sliderStyle from '!/settings/SliderSetting.module.scss';
@@ -328,6 +329,150 @@ export const Select = <
 };
 // endregion
 
+// region AutoComplete / MultiSelect
+export interface AutoCompleteOption {
+    value: string;
+    selected?: boolean;
+    html?: string;
+    text: string;
+}
+export type AutoCompleteComponent<
+    Group extends FeatureGroupID,
+    Feat extends FeatureID<Group>,
+> = GenericSetting<
+    string[],
+    AutoComplete<Group, Feat>,
+    {
+        options: AutoCompleteOption[] | Promise<AutoCompleteOption[]>;
+        multiple?: boolean;
+        tags?: boolean;
+        placeholder?: string | Promise<string>;
+    }
+>;
+type AutoComplete<
+    Group extends FeatureGroupID,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Feat extends FeatureID<Group>,
+> = HTMLSelectElement & { value: string[]; initialized: boolean };
+
+/**
+ * creates an autocomplete input
+ * uses a normal select as the base and initializes it once added to DOM
+ * @param attributes - the input element attributes
+ * @param attributes.id - the id of the input element
+ * @param attributes.value - the initial value of the input element
+ * @param attributes.options - the options of this select
+ * @param attributes.multiple - whether multiple values can be selected at once
+ * @param attributes.tags - whether the user can define new values
+ * @param attributes.placeholder - a custom text that will be the placeholder of the input field
+ * @returns the basis select element
+ */
+export const AutoComplete = <
+    Group extends FeatureGroupID,
+    Feat extends FeatureID<Group>,
+>({
+    id,
+    value,
+    options,
+    multiple = true,
+    tags = false,
+    placeholder = '',
+}: AutoCompleteComponent<Group, Feat>['props']): AutoComplete<Group, Feat> => {
+    const Select = (
+        <select id={id} multiple={multiple}></select>
+    ) as AutoComplete<Group, Feat>;
+    const waitForOptions = new SimpleReady();
+
+    void Promise.resolve(options).then(options => {
+        Select.append(
+            ...options.map(option => (
+                <option
+                    value={option.value}
+                    selected={value.includes(option.value)}
+                    data-html={option.html}
+                >
+                    {option.text}
+                </option>
+            ))
+        );
+        waitForOptions.ready();
+    });
+
+    let initing = false;
+
+    // initialize whenever the select gets added to the document
+    new MutationObserver((records, observer) =>
+        records.forEach(record => {
+            if (initing) return;
+            if (record.type !== 'childList') return;
+            if (!record.addedNodes.values().find(el => el === Select)) return;
+            observer.disconnect();
+            initing = true;
+            void waitForOptions
+                .awaitReady()
+                .then(() => requirePromise(['core/form-autocomplete'] as const))
+                .then(([{ enhanceField }]) =>
+                    enhanceField(
+                        `#${id}`,
+                        tags,
+                        undefined, // for now only components without extra ajax are supported.
+                        placeholder
+                    )
+                )
+                .then(() => (initing = false));
+        })
+    ).observe(document, { subtree: true, childList: true });
+
+    Object.defineProperty(Select, 'value', {
+        /**
+         * Extracts the current value of the component
+         * @returns an array of the currently active option values
+         */
+        get() {
+            return Array.from(Select.selectedOptions).map(
+                option => option.value
+            );
+        },
+        /**
+         * Sets a new value of the component
+         * @param newValue - an array of the option values that should be active.
+         * @throws {Error} if any of the required DOM elements are not found
+         */
+        set(newValue: string[]) {
+            const selectionElement =
+                Select.parentElement?.querySelector<HTMLDivElement>(
+                    '.form-autocomplete-selection'
+                );
+            const suggestionsElement =
+                Select.parentElement?.querySelector<HTMLDivElement>(
+                    '.form-autocomplete-suggestions'
+                );
+            if (!selectionElement || !suggestionsElement) {
+                throw new Error(
+                    "Couldn't find required elements in autocomplete!"
+                );
+            }
+
+            // first, deselect old values
+            selectionElement
+                .querySelectorAll<HTMLSpanElement>(
+                    `[role="option"]${newValue.map(v => `:not([data-value="${v}"])`).join('')}`
+                )
+                .forEach(el => el.click());
+
+            // now select new values
+            suggestionsElement
+                .querySelectorAll<HTMLLIElement>(
+                    `[role="option"]:is(${newValue.map(v => `[data-value="${v}"]`).join(',')})`
+                )
+                .forEach(el => el.click());
+        },
+    });
+
+    return Select;
+};
+// endregion
+
 // region Slider
 export type SliderComponent<
     Group extends FeatureGroupID,
@@ -582,11 +727,7 @@ export const FieldSet = ({
             container = FieldSet.querySelector<HTMLDivElement>('.fcontainer');
             container?.append(
                 <>
-                    {description && (
-                        <p className="p-12">
-                            {htmlToElements(mdToHtml(description))}
-                        </p>
-                    )}
+                    {description ? htmlToElements(mdToHtml(description)) : null}
                     {children}
                 </>
             );

@@ -16,6 +16,14 @@ export default interface CoreTemplates {
     runTemplateJS(js: string): void;
 }
 
+interface FormElement<ElementContext> {
+    label?: string;
+    required?: boolean;
+    advanced?: boolean;
+    error?: string;
+    element: ElementContext;
+}
+
 interface ContextMap extends Record<string, Context> {
     'block_myoverview/course-action-menu': {
         isfavourite: boolean;
@@ -50,4 +58,31 @@ interface ContextMap extends Record<string, Context> {
         collapsed?: boolean;
         helpbutton?: string;
     };
+
+    // context dependencies are left out here on purpose
+    'core_form/element-autocomplete-inline': FormElement<{
+        type:
+            | 'autocomplete'
+            | `autocomplete-${string}`
+            | `${string}-autocomplete`;
+        frozen?: boolean;
+        multiple?: boolean;
+        nameraw?: string; // required if multiple is truthy, otherwise ignored
+        name: string;
+        id: string;
+        iderror: string;
+        attributes?: string;
+        options: {
+            value: string;
+            selected?: boolean;
+            html?: string;
+            text: string;
+        }[];
+        tags: boolean; // do we want to allow new entries?
+        ajax?: string;
+        placeholder: string;
+        casesensitive: boolean;
+        showsuggestions: boolean;
+        noselectionstring: string;
+    }>;
 }

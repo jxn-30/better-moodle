@@ -1,20 +1,22 @@
 import { BooleanSetting } from '@/Settings/BooleanSetting';
 import type Canteens from './canteens';
 import FeatureGroup from '@/FeatureGroup';
-import { FieldSet } from '@/Components';
 import globalStyle from '!/index.module.scss';
 import type { Locales } from '../../i18n/i18n-types';
 import { Modal } from '@/Modal';
 import Parser from './parsers';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './style.module.scss';
+import { AutoComplete, FieldSet } from '@/Components';
 import { BETTER_MOODLE_LANG, languages, LLFG, LLMap } from 'i18n';
 import { currency, dateToString, timeToString, unit } from '@/localeString';
 import type { Dish, Speiseplan } from './speiseplan';
-import { getLoadingSpinner, ready } from '@/DOM';
-import { htmlToElements, mdToHtml } from '@/helpers';
+import { domID, htmlToElements, mdToHtml } from '@/helpers';
+import { getHtml, getLoadingSpinner, ready } from '@/DOM';
 
 const LL = LLFG('speiseplan');
+
+const FILTER_STORAGE_KEY = 'speiseplan.activeFilters';
 
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'general.speiseplan'
@@ -191,7 +193,7 @@ const Day = ({
      * @returns a table row
      */
     const Dish = ({ dish }: DishProps) => (
-        <tr>
+        <tr dataset={{ types: dish.types.values().toArray().join(' ') }}>
             <td className="dish" dataset={{ location: dish.location }}>
                 {...dish.name.map(item => (
                     <>
@@ -251,6 +253,7 @@ const Day = ({
                     if (!dishType?.icon) return t;
                     return (
                         <img
+                            className={style.dishImg}
                             src={dishType.icon.toString()}
                             title={dishType.name}
                             alt={dishType.name}
@@ -304,7 +307,7 @@ const Day = ({
                 </tbody>
             </table>
         </FieldSet>
-    );
+    ) as ReturnType<typeof FieldSet>;
 };
 
 /**
@@ -338,6 +341,68 @@ const getCurrentSpeiseplan = () => {
     ) as HTMLAnchorElement;
 
     footerLinkWrapper.href = url;
+
+    const filtersFieldset = (
+        <FieldSet
+            title={getHtml(
+                <>
+                    <i className="fa fa-filter fa-fw mr-1"></i>
+                    {LL.filters.title()}
+                </>
+            )}
+            description={LL.filters.description()}
+        ></FieldSet>
+    ) as ReturnType<typeof FieldSet>;
+
+    filtersFieldset.id = 'speiseplan-filters-fieldset';
+
+    /**
+     * Creates the filters autocomplete component
+     * Adds and initializes it when calling the returned method
+     * @param speiseplan - the current speiseplan to read the dish types from
+     * @returns a promise that resolves to the initialising function
+     */
+    const createFilters = (speiseplan: Speiseplan) => {
+        // it seems like we have to use a random ID as modals are not always fully destroyed?
+        const id = domID(`speiseplan-filters-${crypto.randomUUID()}`);
+
+        const filtersElement = (
+            <AutoComplete
+                id={id}
+                value={GM_getValue<string[]>(FILTER_STORAGE_KEY, [])}
+                placeholder={LL.filters.placeholder()}
+                options={speiseplan.types
+                    .entries()
+                    .filter(([, { isExclusive }]) => !isExclusive)
+                    .map(([value, { name, icon }]) => ({
+                        value,
+                        text: name,
+                        html: getHtml(
+                            <span>
+                                {icon ?
+                                    <img
+                                        className={style.dishImg}
+                                        src={icon.toString()}
+                                        alt={name}
+                                    />
+                                :   null}
+                                {name}
+                            </span>
+                        ),
+                    }))
+                    .toArray()}
+            />
+        ) as ReturnType<typeof AutoComplete>;
+
+        filtersElement.addEventListener('change', () => {
+            GM_setValue(FILTER_STORAGE_KEY, filtersElement.value);
+            updateFilterStyle(filtersElement.value);
+        });
+
+        updateFilterStyle();
+
+        return () => filtersFieldset.appendToContainer(filtersElement);
+    };
 
     let firstDay: Date | undefined;
 
@@ -376,24 +441,51 @@ const getCurrentSpeiseplan = () => {
 
             return speiseplan;
         })
-        .then(speiseplan =>
-            speiseplan.dishes
+        .then(speiseplan => {
+            const fieldsets = speiseplan.dishes
                 .entries()
-                .map(([day, dishes], index) => (
-                    <Day
-                        speiseplan={speiseplan}
-                        day={day}
-                        dishes={dishes}
-                        expanded={index === getExpandedDay()}
-                        co2InfoLink={
-                            co2InfoLinkAnchor.cloneNode(
-                                true
-                            ) as HTMLAnchorElement
-                        }
-                        lang={lang}
-                    ></Day>
-                ))
-        );
+                .map(
+                    ([day, dishes], index) =>
+                        (
+                            <Day
+                                speiseplan={speiseplan}
+                                day={day}
+                                dishes={dishes}
+                                expanded={index === getExpandedDay()}
+                                co2InfoLink={
+                                    co2InfoLinkAnchor.cloneNode(
+                                        true
+                                    ) as HTMLAnchorElement
+                                }
+                                lang={lang}
+                            ></Day>
+                        ) as ReturnType<typeof Day>
+                )
+                .toArray();
+            return [
+                [filtersFieldset, ...fieldsets],
+                createFilters(speiseplan),
+            ] as const;
+        });
+};
+
+const filterStyle = <style></style>;
+/**
+ * Updates the filtering style to hide dishes that do not match the current filters
+ * @param activeFilters - the list of current filters
+ */
+const updateFilterStyle = (
+    activeFilters = GM_getValue<string[]>(FILTER_STORAGE_KEY, [])
+) => {
+    if (!activeFilters.length) {
+        filterStyle.textContent = '';
+        return;
+    }
+
+    filterStyle.textContent = `
+    tr${activeFilters.map(f => `:not([data-types~="${f}"])`).join('')} {
+        display: none;
+    }`;
 };
 
 /**
@@ -401,6 +493,8 @@ const getCurrentSpeiseplan = () => {
  */
 const openSpeiseplan = () => {
     footerLinkWrapper.textContent = sLL().source();
+
+    let initialCreateFilters: () => Promise<void>;
 
     const modal = new Modal({
         type: 'ALERT',
@@ -413,7 +507,15 @@ const openSpeiseplan = () => {
             </>
         ),
         body: getCurrentSpeiseplan()
-            .then(fieldsets => <>{...Array.from(fieldsets)}</>)
+            .then(([fieldsets, createFilters]) => {
+                initialCreateFilters = createFilters;
+                return (
+                    <>
+                        {filterStyle}
+                        {...Array.from(fieldsets)}
+                    </>
+                );
+            })
             .catch(error => (
                 <>
                     {htmlToElements(
@@ -426,6 +528,8 @@ const openSpeiseplan = () => {
         removeOnClose: true,
         buttons: { cancel: `🍴\xa0${sLL().close()}` },
     }).show();
+
+    void modal.getBody().then(() => initialCreateFilters?.());
 
     void modal
         .getFooter()
@@ -442,8 +546,11 @@ const openSpeiseplan = () => {
             ([[body], spinner]) => {
                 body.replaceChildren(spinner);
                 footerLinkWrapper.textContent = sLL().source();
-                void getCurrentSpeiseplan()
-                    .then(fieldsets => body.replaceChildren(...fieldsets))
+                return getCurrentSpeiseplan()
+                    .then(([fieldsets, createFilters]) => {
+                        body.replaceChildren(filterStyle, ...fieldsets);
+                        void createFilters?.();
+                    })
                     .catch(error =>
                         body.replaceChildren(
                             ...htmlToElements(

@@ -21,6 +21,49 @@ $max-co2-stars: 3;
     @include mixins.fa-icon;
 }
 
+:local(.dish-img) {
+    @include mixins.darkmode {
+        $stroke-pos: 0.5px;
+        $stroke-neg: -1 * $stroke-pos;
+        --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
+        filter: drop-shadow($stroke-pos 0 0 var(--stroke-color))
+            drop-shadow($stroke-neg 0 0 var(--stroke-color))
+            drop-shadow(0 $stroke-neg 0 var(--stroke-color))
+            drop-shadow($stroke-pos $stroke-pos 0 var(--stroke-color))
+            drop-shadow($stroke-pos $stroke-neg 0 var(--stroke-color))
+            drop-shadow($stroke-neg $stroke-pos 0 var(--stroke-color))
+            drop-shadow($stroke-neg $stroke-neg 0 var(--stroke-color));
+
+        @each $type, $brightness in $darkmode-brightness-fixes {
+            &[src*='#{$type}'] {
+                filter: brightness($brightness);
+            }
+        }
+
+        @if global.$UNI == 'uzl' or global.$UNI == 'cau' {
+            &[src*='kuechen-klassiker'] {
+                filter: invert(1)
+                    saturate(1500%)
+                    hue-rotate(230deg)
+                    saturate(30%)
+                    hue-rotate(300deg);
+                mix-blend-mode: screen;
+            }
+
+            &[src*='your-favourites'] {
+                filter: invert(1)
+                    grayscale(2)
+                    brightness(2)
+                    sepia(1)
+                    sepia(1)
+                    sepia(1)
+                    sepia(1);
+                mix-blend-mode: screen;
+            }
+        }
+    }
+}
+
 :local(.table) {
     .dish {
         &[data-location]::before {
@@ -77,53 +120,35 @@ $max-co2-stars: 3;
     .dish-types {
         text-align: center;
 
-        img {
+        :local(.dish-img) {
             max-width: 40px;
             max-height: 40px;
+        }
+    }
+}
 
-            @include mixins.darkmode {
-                $stroke-pos: 0.5px;
-                $stroke-neg: -1 * $stroke-pos;
-                --stroke-color: color-mix(
-                    in srgb,
-                    currentColor 20%,
-                    transparent
-                );
-                filter: drop-shadow($stroke-pos 0 0 var(--stroke-color))
-                    drop-shadow($stroke-neg 0 var(--stroke-color))
-                    drop-shadow(0 $stroke-neg 0 var(--stroke-color))
-                    drop-shadow($stroke-pos $stroke-pos 0 var(--stroke-color))
-                    drop-shadow($stroke-pos $stroke-neg 0 var(--stroke-color))
-                    drop-shadow($stroke-neg $stroke-pos 0 var(--stroke-color))
-                    drop-shadow($stroke-neg $stroke-neg 0 var(--stroke-color));
+.modal-body:has(:local(.table)) {
+    #speiseplan-filters-fieldset {
+        a.fheader:has(.fa-filter) {
+            zoom: 0.75;
+        }
 
-                @each $type, $brightness in $darkmode-brightness-fixes {
-                    &[src*='#{$type}'] {
-                        filter: brightness($brightness);
-                    }
-                }
+        h3 {
+            font-size: medium;
+        }
 
-                @if global.$UNI == 'uzl' or global.$UNI == 'cau' {
-                    &[src*='kuechen-klassiker'] {
-                        filter: invert(1)
-                            saturate(1500%)
-                            hue-rotate(230deg)
-                            saturate(30%)
-                            hue-rotate(300deg);
-                        mix-blend-mode: screen;
-                    }
+        :local(.dish-img) {
+            max-height: 2ch;
+            margin-right: 0.3em;
+        }
 
-                    &[src*='your-favourites'] {
-                        filter: invert(1)
-                            grayscale(2)
-                            brightness(2)
-                            sepia(1)
-                            sepia(1)
-                            sepia(1)
-                            sepia(1);
-                        mix-blend-mode: screen;
-                    }
-                }
+        .fcontainer:is(.collapsing, .show) {
+            padding-bottom: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+
+            .form-autocomplete-selection {
+                order: 1;
             }
         }
     }
