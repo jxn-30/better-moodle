@@ -27,7 +27,7 @@ $max-co2-stars: 3;
         $stroke-neg: -1 * $stroke-pos;
         --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
         filter: drop-shadow($stroke-pos 0 0 var(--stroke-color))
-            drop-shadow($stroke-neg 0 var(--stroke-color))
+            drop-shadow($stroke-neg 0 0 var(--stroke-color))
             drop-shadow(0 $stroke-neg 0 var(--stroke-color))
             drop-shadow($stroke-pos $stroke-pos 0 var(--stroke-color))
             drop-shadow($stroke-pos $stroke-neg 0 var(--stroke-color))

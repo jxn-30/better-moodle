@@ -362,8 +362,8 @@ type AutoComplete<
  * @param attributes.id - the id of the input element
  * @param attributes.value - the initial value of the input element
  * @param attributes.options - the options of this select
- * @param attributes.multiple - wether multiple values can be selected at once
- * @param attributes.tags - wether the user can define new values
+ * @param attributes.multiple - whether multiple values can be selected at once
+ * @param attributes.tags - whether the user can define new values
  * @param attributes.placeholder - a custom text that will be the placeholder of the input field
  * @returns the basis select element
  */

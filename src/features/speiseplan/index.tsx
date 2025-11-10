@@ -363,7 +363,7 @@ const getCurrentSpeiseplan = () => {
      * @returns a promise that resolves to the initialising function
      */
     const createFilters = (speiseplan: Speiseplan) => {
-        // it seems like we have to add a random component as modals are not always fully destroyed?
+        // it seems like we have to use a random ID as modals are not always fully destroyed?
         const id = domID(`speiseplan-filters-${crypto.randomUUID()}`);
 
         const filtersElement = (
