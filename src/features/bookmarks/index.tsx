@@ -3,8 +3,8 @@ import FeatureGroup from '@/FeatureGroup';
 import globalStyle from '!/index.module.scss';
 import { LLFG } from 'i18n';
 import { Modal } from '@/Modal';
-import { require } from '@/require.js';
 import style from './style.module.scss';
+import toast from '@/toast';
 import { getHtml, ready } from '@/DOM';
 import { NavbarItem, NavbarItemComponent } from '@/Components';
 import { putTemplate, render } from '@/templates';
@@ -44,12 +44,11 @@ const bookmarks = GM_getValue<Bookmarks>(storageKey, []).map(bookmark => ({
  */
 const saveBookmarks = () => {
     GM_setValue(storageKey, bookmarks);
-    require(['core/toast'] as const, ({ add }) =>
-        void add(LL.savedNotification(), {
-            type: 'success',
-            autohide: true,
-            closeButton: true,
-        }));
+    void toast(LL.savedNotification(), {
+        type: 'success',
+        autohide: true,
+        closeButton: true,
+    });
 };
 
 GM_addValueChangeListener(storageKey, (_, __, newBookmarks: Bookmarks) => {

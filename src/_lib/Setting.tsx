@@ -4,10 +4,10 @@ import globalStyle from '!/index.module.scss';
 import { JSX } from 'jsx-dom';
 import { LL } from 'i18n';
 import { LocalizedString } from 'typesafe-i18n';
-import { require } from './require.js';
 import settingsStyle from '!/settings.module.scss';
 import { STORAGE_V2_SEEN_SETTINGS_KEY } from '../migrateStorage';
 import TempStorage from './TempStorage';
+import toast from '@/toast';
 import { UUID } from 'node:crypto';
 import { domID, isNewInstallation, mdToHtml } from './helpers';
 import Feature, { FeatureID, FeatureTranslations } from './Feature';
@@ -153,23 +153,19 @@ export default abstract class Setting<
 
                 this.undo();
 
-                require(['core/toast'] as const, ({ add }) => {
-                    if (this.#requiresReload) {
-                        void add(
-                            mdToHtml(
-                                LL.settings.syncRequireReload({
-                                    name: this.title,
-                                })
-                            ),
-                            { type: 'info', autohide: false, closeButton: true }
-                        );
-                    } else {
-                        void add(LL.settings.sync({ name: this.title }), {
-                            type: 'success',
-                            autohide: true,
-                        });
-                    }
-                });
+                if (this.#requiresReload) {
+                    void toast(
+                        mdToHtml(
+                            LL.settings.syncRequireReload({ name: this.title })
+                        ),
+                        { type: 'info', autohide: false, closeButton: true }
+                    );
+                } else {
+                    void toast(LL.settings.sync({ name: this.title }), {
+                        type: 'success',
+                        autohide: true,
+                    });
+                }
             }
         );
     }
@@ -433,11 +429,10 @@ export default abstract class Setting<
             // we don't want to show or set if the value stays the same (e.g. after an undo operation)
             if (this.#unsavedValue === this.savedValue) return;
             // show a toast notification
-            require(['core/toast'] as const, ({ add }) =>
-                void add(
-                    mdToHtml(LL.settings.requireReload({ name: this.title })),
-                    { type: 'info', autohide: false, closeButton: true }
-                ));
+            void toast(
+                mdToHtml(LL.settings.requireReload({ name: this.title })),
+                { type: 'info', autohide: false, closeButton: true }
+            );
             // remember that a reload is required
             TempStorage.settingsRequireReload = true;
         });
