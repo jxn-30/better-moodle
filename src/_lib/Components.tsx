@@ -401,11 +401,12 @@ export const AutoComplete = <
     let initing = false;
 
     // initialize whenever the select gets added to the document
-    new MutationObserver(records =>
+    new MutationObserver((records, observer) =>
         records.forEach(record => {
             if (initing) return;
             if (record.type !== 'childList') return;
             if (!record.addedNodes.values().find(el => el === Select)) return;
+            observer.disconnect();
             initing = true;
             void waitForOptions
                 .awaitReady()
