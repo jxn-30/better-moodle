@@ -29,14 +29,14 @@
     "dependencies": {
         "@sass-fairy/map": "1.1.1",
         "@trim21/gm-fetch": "0.3.0",
-        "darkreader": "4.9.113",
+        "darkreader": "4.9.114",
         "jsx-dom": "8.1.6",
         "typesafe-i18n": "5.26.2"
     },
     "devDependencies": {
         "@actions/core": "1.11.1",
         "@babel/compat-data": "7.28.5",
-        "@cloudflare/workers-types": "4.20251111.0",
+        "@cloudflare/workers-types": "4.20251113.0",
         "@commitlint/cli": "20.1.0",
         "@commitlint/config-conventional": "20.0.0",
         "@eslint/js": "9.39.1",
@@ -66,13 +66,13 @@
         "eslint": "9.39.1",
         "eslint-config-prettier": "10.1.8",
         "eslint-plugin-es-x": "9.1.2",
-        "eslint-plugin-jsdoc": "61.1.12",
+        "eslint-plugin-jsdoc": "61.2.1",
         "eslint-plugin-jsx-a11y": "6.10.2",
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
         "globals": "16.5.0",
         "jiti": "2.6.1",
-        "jsdom": "27.1.0",
+        "jsdom": "27.2.0",
         "mini-svg-data-uri": "1.4.4",
         "node-ical": "0.22.1",
         "nodejs-file-downloader": "4.13.0",
@@ -80,7 +80,7 @@
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "10.4.0",
         "prettier": "3.6.2",
-        "puppeteer": "24.29.1",
+        "puppeteer": "24.30.0",
         "rrule": "2.8.1",
         "sass-embedded": "1.93.3",
         "terser": "5.44.1",
@@ -93,7 +93,7 @@
         "vite": "7.2.2",
         "vite-plugin-monkey": "7.1.5",
         "vitest": "3.2.4",
-        "wrangler": "4.47.0"
+        "wrangler": "4.48.0"
     },
     "engines": {
         "node": "^24.11.0"
