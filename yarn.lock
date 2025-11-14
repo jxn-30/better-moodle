@@ -5,7 +5,7 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@acemir/cssom@npm:^0.9.19":
+"@acemir/cssom@npm:^0.9.23":
   version: 0.9.23
   resolution: "@acemir/cssom@npm:0.9.23"
   checksum: 10c0/a71a7b09ca7bff4b783221bc1eaaea57e57dbf40af219c1f55a764bceed1ba90ed6e7d37e95ff14a61c95a6276b665fe8926c7a0c698dacb9a972b1e60653aa1
@@ -78,7 +78,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@asamuzakjp/dom-selector@npm:^6.7.3":
+"@asamuzakjp/dom-selector@npm:^6.7.4":
   version: 6.7.4
   resolution: "@asamuzakjp/dom-selector@npm:6.7.4"
   dependencies:
@@ -1267,10 +1267,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20251111.0":
-  version: 4.20251111.0
-  resolution: "@cloudflare/workers-types@npm:4.20251111.0"
-  checksum: 10c0/1e96988f5793d0d7cfcff22be32dbfa170654b9f739f66be60dc0224824491ffb19b1c6d25065575d572fc693a4f916314c90e2ea431ce3d31fc356d3e4e3fb5
+"@cloudflare/workers-types@npm:4.20251113.0":
+  version: 4.20251113.0
+  resolution: "@cloudflare/workers-types@npm:4.20251113.0"
+  checksum: 10c0/dde2bf66e13f5c72166017f99e647f9b1352f7e5d08936b61a938da0a12e50e4d62853279424b0c6ab83c47f1429a386a4ce17c7f51d44d0e72dc92c8a78b8d2
   languageName: node
   linkType: hard
 
@@ -4466,7 +4466,7 @@ __metadata:
   dependencies:
     "@actions/core": "npm:1.11.1"
     "@babel/compat-data": "npm:7.28.5"
-    "@cloudflare/workers-types": "npm:4.20251111.0"
+    "@cloudflare/workers-types": "npm:4.20251113.0"
     "@commitlint/cli": "npm:20.1.0"
     "@commitlint/config-conventional": "npm:20.0.0"
     "@eslint/js": "npm:9.39.1"
@@ -4493,19 +4493,19 @@ __metadata:
     ci-info: "npm:4.3.1"
     core-js: "npm:3.46.0"
     core-js-compat: "npm:3.46.0"
-    darkreader: "npm:4.9.113"
+    darkreader: "npm:4.9.114"
     esbuild: "npm:0.27.0"
     esbuild-plugin-browserslist: "npm:2.0.0"
     eslint: "npm:9.39.1"
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-es-x: "npm:9.1.2"
-    eslint-plugin-jsdoc: "npm:61.1.12"
+    eslint-plugin-jsdoc: "npm:61.2.1"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-userscripts: "npm:0.5.6"
     fast-glob: "npm:3.3.3"
     globals: "npm:16.5.0"
     jiti: "npm:2.6.1"
-    jsdom: "npm:27.1.0"
+    jsdom: "npm:27.2.0"
     jsx-dom: "npm:8.1.6"
     mini-svg-data-uri: "npm:1.4.4"
     node-ical: "npm:0.22.1"
@@ -4514,7 +4514,7 @@ __metadata:
     postcss-inline-svg: "npm:6.0.0"
     postcss-preset-env: "npm:10.4.0"
     prettier: "npm:3.6.2"
-    puppeteer: "npm:24.29.1"
+    puppeteer: "npm:24.30.0"
     rrule: "npm:2.8.1"
     sass-embedded: "npm:1.93.3"
     terser: "npm:5.44.1"
@@ -4528,7 +4528,7 @@ __metadata:
     vite: "npm:7.2.2"
     vite-plugin-monkey: "npm:7.1.5"
     vitest: "npm:3.2.4"
-    wrangler: "npm:4.47.0"
+    wrangler: "npm:4.48.0"
   languageName: unknown
   linkType: soft
 
@@ -4817,15 +4817,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromium-bidi@npm:10.5.1":
-  version: 10.5.1
-  resolution: "chromium-bidi@npm:10.5.1"
+"chromium-bidi@npm:11.0.0":
+  version: 11.0.0
+  resolution: "chromium-bidi@npm:11.0.0"
   dependencies:
     mitt: "npm:^3.0.1"
     zod: "npm:^3.24.1"
   peerDependencies:
     devtools-protocol: "*"
-  checksum: 10c0/094fca13c1361a1cd6b951cf21f7d68f9cb0d1a5aee31b55f0ace5bb144c4606f2cff5625a6328146e5c326f3baaae45a2cc1e11ca47cb9ad36aaf35107647fe
+  checksum: 10c0/3da4a0db0c375464a8cafec31b6676fcc7f692f82246c6eb431d4e97cc6e89ad14e2989f5875ccecb57138df3b873ed7b517ef6f1c116607760019f688611765
   languageName: node
   linkType: hard
 
@@ -5147,7 +5147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cssstyle@npm:^5.3.2":
+"cssstyle@npm:^5.3.3":
   version: 5.3.3
   resolution: "cssstyle@npm:5.3.3"
   dependencies:
@@ -5186,9 +5186,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"darkreader@npm:4.9.113":
-  version: 4.9.113
-  resolution: "darkreader@npm:4.9.113"
+"darkreader@npm:4.9.114":
+  version: 4.9.114
+  resolution: "darkreader@npm:4.9.114"
   dependencies:
     "@rollup/rollup-linux-x64-gnu": "npm:4.52.5"
     "@rollup/rollup-win32-x64-msvc": "npm:4.52.5"
@@ -5198,7 +5198,7 @@ __metadata:
       optional: true
     "@rollup/rollup-win32-x64-msvc":
       optional: true
-  checksum: 10c0/5dbe378ac3ba3460abaf433ba899255abd66c16a330c15df93f9fe8d83ffb9c2b0a3caf30f8e4b9d6de53e2939d71c03f8836277fe660a2bc854440688d0dd2d
+  checksum: 10c0/3fafb4f11aa3a4318ca009404ce519fd577787d2d9a8ce5f70842ab7c620e59643f8d0a13bfea6efe1b03e4bc7c480689b604ef80a7e49dbc72d6731a9aecf40
   languageName: node
   linkType: hard
 
@@ -6024,9 +6024,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:61.1.12":
-  version: 61.1.12
-  resolution: "eslint-plugin-jsdoc@npm:61.1.12"
+"eslint-plugin-jsdoc@npm:61.2.1":
+  version: 61.2.1
+  resolution: "eslint-plugin-jsdoc@npm:61.2.1"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.76.0"
     "@es-joy/resolve.exports": "npm:1.2.0"
@@ -6044,7 +6044,7 @@ __metadata:
     to-valid-identifier: "npm:^1.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/a0d291796029f8c3711ece955afde3cbac2b366735ad99f22723e4d53e54b9dcb6224a7a23369d9bf95a25c01e64b7cf6e7807218b73a18fd33bfe6eabf0bbdd
+  checksum: 10c0/c2288ab5cffcb8a21adc4b7baa26d253c616463367d52157bdcce322135fd9d141fa5f0d27bd1a8c9d93db16dc1727d9a5c58bf6d2008ed0849e6c4b2f811384
   languageName: node
   linkType: hard
 
@@ -7443,13 +7443,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsdom@npm:27.1.0":
-  version: 27.1.0
-  resolution: "jsdom@npm:27.1.0"
+"jsdom@npm:27.2.0":
+  version: 27.2.0
+  resolution: "jsdom@npm:27.2.0"
   dependencies:
-    "@acemir/cssom": "npm:^0.9.19"
-    "@asamuzakjp/dom-selector": "npm:^6.7.3"
-    cssstyle: "npm:^5.3.2"
+    "@acemir/cssom": "npm:^0.9.23"
+    "@asamuzakjp/dom-selector": "npm:^6.7.4"
+    cssstyle: "npm:^5.3.3"
     data-urls: "npm:^6.0.0"
     decimal.js: "npm:^10.6.0"
     html-encoding-sniffer: "npm:^4.0.0"
@@ -7472,7 +7472,7 @@ __metadata:
   peerDependenciesMeta:
     canvas:
       optional: true
-  checksum: 10c0/b3da39ab7c858df28a2300362924925327f5bff5727371523b99cac7f51bc2891c4b8516205c9acbd34430819f7e69f7790a2092a965359ed65d8111b3a79507
+  checksum: 10c0/52d847e1aef099071d66d1d9aedcdd2f15e7ea781da9cfb41dc0d4caf741c5870c346396f8d1182d611427ae47a53f69a6f16410c698950e5809d3fed5a1672d
   languageName: node
   linkType: hard
 
@@ -7972,9 +7972,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"miniflare@npm:4.20251109.0":
-  version: 4.20251109.0
-  resolution: "miniflare@npm:4.20251109.0"
+"miniflare@npm:4.20251109.1":
+  version: 4.20251109.1
+  resolution: "miniflare@npm:4.20251109.1"
   dependencies:
     "@cspotcode/source-map-support": "npm:0.8.1"
     acorn: "npm:8.14.0"
@@ -7990,7 +7990,7 @@ __metadata:
     zod: "npm:3.22.3"
   bin:
     miniflare: bootstrap.js
-  checksum: 10c0/64a4a7f9659faf6cc8c8a966caddad9616963502fe931797d3a42c2de4047a10c3537e2c6652ab95b5ee7157d0afad576c380cc8b753f0a136aa57dac8760427
+  checksum: 10c0/d94ce238be88d2e34bb94f45ded8f19f1408a15943e2316ed9feeed6b022a1aa4a9cff66e535917b503eb62d842dfb50514ba175362ca469dee264cda4bbf599
   languageName: node
   linkType: hard
 
@@ -9194,34 +9194,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.29.1":
-  version: 24.29.1
-  resolution: "puppeteer-core@npm:24.29.1"
+"puppeteer-core@npm:24.30.0":
+  version: 24.30.0
+  resolution: "puppeteer-core@npm:24.30.0"
   dependencies:
     "@puppeteer/browsers": "npm:2.10.13"
-    chromium-bidi: "npm:10.5.1"
+    chromium-bidi: "npm:11.0.0"
     debug: "npm:^4.4.3"
     devtools-protocol: "npm:0.0.1521046"
     typed-query-selector: "npm:^2.12.0"
     webdriver-bidi-protocol: "npm:0.3.8"
     ws: "npm:^8.18.3"
-  checksum: 10c0/dd767012045a497ba29f8367fa4d149a1cd75db00c01528b5082548d5920278f76b88314a820b470a22a103e9c87dc7b1f09852d81a4958fe97fdae5acc7288f
+  checksum: 10c0/fbf0d0aff36268452f9f816c19df216c353d47806023dd98dc5dac9d5b26646d55edbe606c357432cdc6bd3cfa2c2b906daf456f7a17f7023ed771f66b748d5f
   languageName: node
   linkType: hard
 
-"puppeteer@npm:24.29.1":
-  version: 24.29.1
-  resolution: "puppeteer@npm:24.29.1"
+"puppeteer@npm:24.30.0":
+  version: 24.30.0
+  resolution: "puppeteer@npm:24.30.0"
   dependencies:
     "@puppeteer/browsers": "npm:2.10.13"
-    chromium-bidi: "npm:10.5.1"
+    chromium-bidi: "npm:11.0.0"
     cosmiconfig: "npm:^9.0.0"
     devtools-protocol: "npm:0.0.1521046"
-    puppeteer-core: "npm:24.29.1"
+    puppeteer-core: "npm:24.30.0"
     typed-query-selector: "npm:^2.12.0"
   bin:
     puppeteer: lib/cjs/puppeteer/node/cli.js
-  checksum: 10c0/2ca726f077929b190b50a96c8e968162194cd7b83af324005aa767f73862926223eb9cd60d00de81d71f435b74aad274103c644b1b773a39d804d47fefe687bb
+  checksum: 10c0/fc0196e1303ce3b26b951b70c70b9a3fc052e62ce3f0bea572b191ceeeac17ea2ce91b96e687efd249adb1ad11b099a3d28fa876e952436df7d6bfbdb4d5f9fe
   languageName: node
   linkType: hard
 
@@ -11424,16 +11424,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrangler@npm:4.47.0":
-  version: 4.47.0
-  resolution: "wrangler@npm:4.47.0"
+"wrangler@npm:4.48.0":
+  version: 4.48.0
+  resolution: "wrangler@npm:4.48.0"
   dependencies:
     "@cloudflare/kv-asset-handler": "npm:0.4.0"
     "@cloudflare/unenv-preset": "npm:2.7.10"
     blake3-wasm: "npm:2.1.5"
     esbuild: "npm:0.25.4"
     fsevents: "npm:~2.3.2"
-    miniflare: "npm:4.20251109.0"
+    miniflare: "npm:4.20251109.1"
     path-to-regexp: "npm:6.3.0"
     unenv: "npm:2.0.0-rc.24"
     workerd: "npm:1.20251109.0"
@@ -11448,7 +11448,7 @@ __metadata:
   bin:
     wrangler: bin/wrangler.js
     wrangler2: bin/wrangler.js
-  checksum: 10c0/93a4cdea601c631e064e7ed5b6008b8a34ab98b12940df779113befc404c6a846d8a8096769cfee80422dd21b757ebb7d0c41bfc42064d6b11f22b92342cb87c
+  checksum: 10c0/a7cf5005b03c4812304c07250c534d0a551078ee1a854e2ebdd31cb42cdebe4f65d8bd2681df4ad115c1993d4384d8b6d6ca7bb78c9d80aaccd9803925520abf
   languageName: node
   linkType: hard
 
