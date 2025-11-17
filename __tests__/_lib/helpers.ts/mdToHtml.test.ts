@@ -1,4 +1,5 @@
-import { type Awaitable, expect, test } from 'vitest';
+import { type Awaitable } from '@vitest/utils';
+import { expect, test } from 'vitest';
 import { htmlToElements, mdToHtml } from '@/helpers';
 
 interface TestCase {
