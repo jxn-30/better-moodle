@@ -36,7 +36,7 @@
     "devDependencies": {
         "@actions/core": "1.11.1",
         "@babel/compat-data": "7.28.5",
-        "@cloudflare/workers-types": "4.20251113.0",
+        "@cloudflare/workers-types": "4.20251119.0",
         "@commitlint/cli": "20.1.0",
         "@commitlint/config-conventional": "20.0.0",
         "@eslint/js": "9.39.1",
@@ -87,13 +87,13 @@
         "ts-json-schema-generator": "2.4.0",
         "ts-node": "10.9.2",
         "typescript": "5.9.3",
-        "typescript-eslint": "8.46.4",
+        "typescript-eslint": "8.47.0",
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
         "vite": "7.2.2",
         "vite-plugin-monkey": "7.1.5",
         "vitest": "4.0.10",
-        "wrangler": "4.48.0"
+        "wrangler": "4.49.0"
     },
     "engines": {
         "node": "^24.11.0"
