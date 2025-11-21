@@ -24,7 +24,7 @@ jobs:
             # pull-requests: write
         steps:
             - name: 📥 checkout
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
 
             - name: 🎛️ setup
               uses: ./.github/actions/setup
@@ -52,7 +52,7 @@ jobs:
             pull-requests: write
         steps:
             - name: 📥 checkout
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
 
             - name: 🏗️ build userscript
               uses: ./.github/actions/build
