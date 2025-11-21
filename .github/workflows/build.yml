@@ -44,7 +44,7 @@ jobs:
                     && sudo apt install gh -y
 
             - name: 📥️ checkout
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
 
             - name: 🏗️ build Better-Moodle for ${{ matrix.config }}
               id: build
@@ -163,7 +163,7 @@ jobs:
             - build
         steps:
             - name: 📥️ checkout
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
 
             - name: 📜 update PR Summary
               uses: ./.github/actions/pr-summary
