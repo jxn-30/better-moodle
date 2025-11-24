@@ -4476,8 +4476,8 @@ __metadata:
     esbuild-plugin-browserslist: "npm:2.0.0"
     eslint: "npm:9.39.1"
     eslint-config-prettier: "npm:10.1.8"
-    eslint-plugin-es-x: "npm:9.1.2"
-    eslint-plugin-jsdoc: "npm:61.4.0"
+    eslint-plugin-es-x: "npm:9.2.0"
+    eslint-plugin-jsdoc: "npm:61.4.1"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-userscripts: "npm:0.5.6"
     fast-glob: "npm:3.3.3"
@@ -5961,22 +5961,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-es-x@npm:9.1.2":
-  version: 9.1.2
-  resolution: "eslint-plugin-es-x@npm:9.1.2"
+"eslint-plugin-es-x@npm:9.2.0":
+  version: 9.2.0
+  resolution: "eslint-plugin-es-x@npm:9.2.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.1.2"
     "@eslint-community/regexpp": "npm:^4.12.1"
     eslint-type-tracer: "npm:^0.4.0"
   peerDependencies:
     eslint: ">=9.29.0"
-  checksum: 10c0/8bdcda5bd6960b578617948fc2b9e382526745dd5d796119eab1ced4108390e8d5599b8655024a67baf7a9a099509a70ea65958eb2b4c468bb313a6c774a7ec3
+  checksum: 10c0/02a51aaffd0a1736ac12bbc5729627ae1e5ba11f33d0d36903ebbc8654195808c4c71706c064c979cf2e8cd93f84941367db4de5ebbae9abefd687a29d29b83c
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:61.4.0":
-  version: 61.4.0
-  resolution: "eslint-plugin-jsdoc@npm:61.4.0"
+"eslint-plugin-jsdoc@npm:61.4.1":
+  version: 61.4.1
+  resolution: "eslint-plugin-jsdoc@npm:61.4.1"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.76.0"
     "@es-joy/resolve.exports": "npm:1.2.0"
@@ -5994,7 +5994,7 @@ __metadata:
     to-valid-identifier: "npm:^1.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/e7eb90f8d4d28603e7bd485a1d4f97f0ee2d60dfd66af145af98f4a5c064b9c13a28a195a1e3284065355e5f89635d6a0f0b342dc78283d1591add08b1527ba2
+  checksum: 10c0/564f89bad71dcdbf6a45c27d16113333a5251f97a60bcc0e7346ea1b19dc1258991e1f585c89a2978e279288be2e180dde58c57f63cd49ac3db6604a5d4c581c
   languageName: node
   linkType: hard
 
