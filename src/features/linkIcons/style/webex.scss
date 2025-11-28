@@ -3,8 +3,7 @@
 @svg-load webex url(../icons/webex.svg) {
 }
 
-a[href^="webexteams://"],
-a[href^="https://uni-luebeck.webex.com"]
-{
+a[href^='webexteams://'],
+a[href^='https://uni-luebeck.webex.com'] {
     @include insert-svg-before(svg-inline(webex));
 }
