@@ -12,6 +12,7 @@ export default mergeConfig(
             reporters: ['verbose'],
             coverage: {
                 include: ['src/**/*.tsx', 'src/**/*.ts'],
+                exclude: ['src/**/*.d.ts'],
                 reporter:
                     process.env.BM_NO_COVERAGE ?
                         []
