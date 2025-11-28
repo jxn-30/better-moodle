@@ -16,8 +16,8 @@ import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
 export type SettingTranslations<
     Group extends FeatureGroupID,
     Feat extends FeatureID<Group>,
-    T extends
-        FeatureTranslations<Group>[Feat] = FeatureTranslations<Group>[Feat],
+    T extends FeatureTranslations<Group>[Feat] =
+        FeatureTranslations<Group>[Feat],
 > =
     'settings' extends keyof T ? T['settings'][keyof T['settings']]
     :   Record<string, never>;
@@ -49,11 +49,8 @@ export default abstract class Setting<
     Feat extends FeatureID<Group> = FeatureID<Group>,
     Type = unknown,
     Params extends Record<string, unknown> = Record<string, unknown>,
-    Component extends GenericSetting<
-        Type,
-        JSX.Element,
-        Params
-    > = GenericSetting<Type, JSX.Element, Params>,
+    Component extends GenericSetting<Type, JSX.Element, Params> =
+        GenericSetting<Type, JSX.Element, Params>,
 > extends CanBeReady {
     readonly #id: string;
     readonly #default: Type;
