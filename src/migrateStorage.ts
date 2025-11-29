@@ -68,11 +68,6 @@ const getAndDelete = <Type>(key: string, defaultValue?: Type) => {
             'better-moodle-settings.nina.test',
         ];
 
-        // this has been integrated into native moodle in 402
-        if (__MOODLE_VERSION__ >= 402) {
-            oldKeys.push('better-moodle-settings.courses.collapseAll');
-        }
-
         oldKeys.forEach(key => GM_deleteValue(key));
     }
 

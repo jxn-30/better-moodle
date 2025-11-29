@@ -9,6 +9,7 @@ const features = new Set<string>([
     'noDownload',
     'sectionCourseIndex',
     'hideSelfEnrolHint',
+    'sidebarCollapseAll',
 ]);
 
 // this was introduced during 401.

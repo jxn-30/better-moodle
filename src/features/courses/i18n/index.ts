@@ -8,6 +8,7 @@ import navbarDropdown from './navbarDropdown';
 import noDownload from './noDownload';
 import quickRoleChange from './quickRoleChange';
 import sectionCourseIndex from './sectionCourseIndex';
+import sidebarCollapseAll from './sidebarCollapseAll';
 
 export const de = {
     name: 'Kurse & Meine Kurse',
@@ -23,6 +24,7 @@ export const de = {
         noDownload: noDownload.de,
         hideSelfEnrolHint: hideSelfEnrolHint.de,
         sectionCourseIndex: sectionCourseIndex.de,
+        sidebarCollapseAll: sidebarCollapseAll.de,
     },
 } satisfies FeatureGroupTranslation;
 
@@ -40,6 +42,7 @@ export const en = {
         noDownload: noDownload.en,
         hideSelfEnrolHint: hideSelfEnrolHint.en,
         sectionCourseIndex: sectionCourseIndex.en,
+        sidebarCollapseAll: sidebarCollapseAll.en,
     },
 } as typeof de;
 
