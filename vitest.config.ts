@@ -10,6 +10,7 @@ export default mergeConfig(
             environment: 'jsdom',
             setupFiles: ['__tests__/gm_mocks.ts', '__tests__/matchers.ts'],
             reporters: ['verbose'],
+            css: true,
             coverage: {
                 include: ['src/**/*.tsx', 'src/**/*.ts'],
                 exclude: ['src/**/*.d.ts'],
