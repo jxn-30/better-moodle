@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/jxn-30/better-moodle/compare/2.5.0...2.6.0) (2025-12-06)
+
+
+### Features
+
+* **courses:** re-introduce sidebarCollapseAll ([ac98a6b](https://github.com/jxn-30/better-moodle/commit/ac98a6b85a165d94e56352ec2ce491c878a599bb))
+
 ## [2.5.0](https://github.com/jxn-30/better-moodle/compare/2.4.1...2.5.0) (2025-11-10)
 
 
