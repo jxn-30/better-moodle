@@ -48,7 +48,7 @@
         "@types/eslint": "9.6.1",
         "@types/jquery": "3.5.33",
         "@types/mathjax": "0.0.40",
-        "@types/node": "24.10.3",
+        "@types/node": "25.0.1",
         "@types/tampermonkey": "5.0.5",
         "@vitejs/plugin-legacy": "7.2.1",
         "@vitest/coverage-v8": "4.0.15",
