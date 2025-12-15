@@ -26,14 +26,14 @@ runs:
 
         - name: 📤️ upload build
           id: upload
-          uses: actions/upload-artifact@v5
+          uses: actions/upload-artifact@v6
           with:
               # hardcoded since closed envs are not allowed in composite actions
               name: better-moodle-${{ inputs.config }}.user.js
               path: dist/better-moodle-${{ inputs.config }}.user.js
 
         - name: 📤️ upload polyfill
-          uses: actions/upload-artifact@v5
+          uses: actions/upload-artifact@v6
           with:
               # hardcoded since closed envs are not allowed in composite actions
               name: better-moodle-${{ inputs.config }}-polyfills.js
