@@ -243,6 +243,7 @@ const Day = ({
                 className="co2-score"
                 dataset={{ stars: dish.co2 ? dish.co2.stars.toString() : '0' }}
             >
+                <span></span>
                 {dish.co2 && dish.co2.emission ?
                     unit(dish.co2.emission, 'gram', 'long', lang)
                 :   ''}

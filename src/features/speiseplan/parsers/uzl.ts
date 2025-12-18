@@ -55,8 +55,9 @@ const getDishes = (dayEl: HTMLDivElement) => {
                 ),
                 co2: {
                     stars: Number(
-                        dishEl.querySelector<HTMLDivElement>('.co2star')
-                            ?.dataset.anz ?? '0'
+                        dishEl.querySelector<HTMLDivElement>(
+                            '.co2box .co2blatt[data-anz]'
+                        )?.dataset.anz ?? '0'
                     ),
                     emission: Number(
                         dishEl

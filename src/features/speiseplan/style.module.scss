@@ -94,7 +94,7 @@ $max-co2-stars: 3;
     .co2-score[data-stars] {
         text-align: center;
 
-        &::before {
+        > span {
             @include mixins.fa-icon;
             background-image: linear-gradient(
                 90deg,
@@ -108,11 +108,17 @@ $max-co2-stars: 3;
         }
 
         @for $i from 1 through $max-co2-stars {
-            &[data-stars='#{$i}']::before {
-                content: string.quote(
-                    fairystring.repeat('\f005', $i) +
-                        fairystring.repeat('\f006', $max-co2-stars - $i)
-                );
+            &[data-stars='#{$i}'] > span {
+                &::before {
+                    content: string.quote(fairystring.repeat('\f005', $i));
+                    font-weight: 900;
+                }
+                &::after {
+                    content: string.quote(
+                        fairystring.repeat('\f005', $max-co2-stars - $i)
+                    );
+                    font-weight: 400;
+                }
             }
         }
     }
