@@ -11,7 +11,9 @@
 }
 
 @mixin darkmode {
-    $s: #{if(&, '&', '')};
+    $s: #{if(
+            sass(&): '&' ; else: '',
+        )};
 
     html[data-darkreader-scheme='dark'] #{$s} {
         @content;
