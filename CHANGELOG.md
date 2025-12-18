@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.1](https://github.com/jxn-30/better-moodle/compare/2.6.0...2.6.1) (2025-12-18)
+
+
+### Bug Fixes
+
+* **speiseplan:** fix co2-score ([542909c](https://github.com/jxn-30/better-moodle/commit/542909cc608b4611fb0be57f9e7b26a8180c68ac))
+
 ## [2.6.0](https://github.com/jxn-30/better-moodle/compare/2.5.0...2.6.0) (2025-12-06)
 
 
