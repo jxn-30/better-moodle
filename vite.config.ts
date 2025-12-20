@@ -10,13 +10,13 @@ import { ESLint } from 'eslint';
 import fastGlob from 'fast-glob';
 import globalConfig from './configs/_global.json';
 import icsParserConfig from './ics-parser/wrangler.json';
-import legacy from '@vitejs/plugin-legacy';
 import monkey from 'vite-plugin-monkey';
 import pluginTerser from '@rollup/plugin-terser';
 import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
 import { getUserAgentRegex as uaRegex } from 'browserslist-useragent-regexp';
 import { defineConfig, type ResolverFunction } from 'vite';
 import { dependencies, devDependencies, version } from './package.json';
+import legacy, { detectPolyfills } from '@vitejs/plugin-legacy';
 
 const _PERF_START = process.hrtime.bigint();
 
@@ -441,6 +441,8 @@ const distPostBuild = async (path: string, source = '') => {
     return formatted2;
 };
 
+const modernTargets = browserslist.loadConfig({ path: process.cwd() });
+
 export default defineConfig({
     esbuild: {
         jsxInject:
@@ -614,7 +616,7 @@ export default defineConfig({
             keep_fnames: true,
         }),
         legacy({
-            modernTargets: browserslist.loadConfig({ path: process.cwd() }),
+            modernTargets,
             modernPolyfills: true,
             renderLegacyChunks: false,
             renderModernChunks: true,
@@ -733,6 +735,10 @@ ${copyright}
                 const perfConfFile = path.join(base, `${prefix}perf_conf`);
                 const perfBuildFile = path.join(base, `${prefix}perf_build`);
                 const perfTotalFile = path.join(base, `${prefix}perf_total`);
+                const polyfillsListFile = path.join(
+                    base,
+                    `${prefix}polyfills.md`
+                );
 
                 const timeConfig = {
                     minute: '2-digit',
@@ -760,6 +766,26 @@ ${copyright}
                             Number(_PERF_TOTAL / 1_000_000n)
                         ).toLocaleTimeString([], timeConfig)
                     ),
+                    fs
+                        .readFile(path.join(base, fileName), 'utf8')
+                        .then(userscript => {
+                            const polyfillsSet = new Set<string>();
+                            return detectPolyfills(
+                                userscript,
+                                modernTargets,
+                                {},
+                                polyfillsSet
+                            ).then(() => polyfillsSet);
+                        })
+                        .then(polyfills =>
+                            polyfills
+                                .values()
+                                .map(p => `* ${p}`)
+                                .toArray()
+                                .sort()
+                                .join('\n')
+                        )
+                        .then(md => fs.writeFile(polyfillsListFile, md)),
                 ]);
             },
         },

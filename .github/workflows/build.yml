@@ -147,6 +147,9 @@ jobs:
                   echo "## Included features" >> $GITHUB_STEP_SUMMARY
                   cat ${{ steps.build.outputs.dir }}/.stats_features.md >> $GITHUB_STEP_SUMMARY
 
+                  echo "## Included polyfills" >> $GITHUB_STEP_SUMMARY
+                  cat ${{ steps.build.outputs.dir }}/.stats_polyfills.md >> $GITHUB_STEP_SUMMARY
+
             - name: 📝 generate output
               id: output
               run: |
