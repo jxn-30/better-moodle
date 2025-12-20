@@ -144,11 +144,22 @@ jobs:
                   echo "| **Total duration** | **${{ env.STATS_PERF_TOTAL }}** |" >> $GITHUB_STEP_SUMMARY
                   echo "*Durations are mm:ss,s*"
 
-                  echo "## Included features" >> $GITHUB_STEP_SUMMARY
-                  cat ${{ steps.build.outputs.dir }}/.stats_features.md >> $GITHUB_STEP_SUMMARY
+                  # list of included features
+                  FEATURE_FILE="${{ steps.build.outputs.dir }}/.stats_features.md"
+                  FEATURE_GROUP_COUNT=$(grep "^*" "$FEATURE_FILE" | wc -l)
+                  FEATURE_COUNT=$(grep "^ +*" "$FEATURE_FILE" | wc -l)
 
-                  echo "## Included polyfills" >> $GITHUB_STEP_SUMMARY
-                  cat ${{ steps.build.outputs.dir }}/.stats_polyfills.md >> $GITHUB_STEP_SUMMARY
+                  echo "## Included features ($FEATURE_GROUP_COUNT/$FEATURE_COUNT)" >> $GITHUB_STEP_SUMMARY
+                  cat "$FEATURE_FILE" >> $GITHUB_STEP_SUMMARY
+                  printf "\n\n" >> $GITHUB_STEP_SUMMARY
+
+                  # list of polyfills
+                  POLYFILL_FILE="${{ steps.build.outputs.dir }}/.stats_polyfills.md"
+                  POLYFILL_COUNT=$(grep "^*" "$POLYFILL_FILE" | wc -l)
+
+                  echo "## Included polyfills ($POLYFILL_COUNT)" >> $GITHUB_STEP_SUMMARY
+                  cat "$POLYFILL_FILE" >> $GITHUB_STEP_SUMMARY
+                  printf "\n\n" >> $GITHUB_STEP_SUMMARY
 
             - name: 📝 generate output
               id: output
