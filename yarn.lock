@@ -1257,10 +1257,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20251223.0":
-  version: 4.20251223.0
-  resolution: "@cloudflare/workers-types@npm:4.20251223.0"
-  checksum: 10c0/d0f995dd69e847cb413fbd80853549dea87d7df34a2a9f2dd5206ec8cb54f187575acf8d4f17a04c1067ee27e742a5ecc1d1b09606b5b0fc12a25247cc13df1a
+"@cloudflare/workers-types@npm:4.20251224.0":
+  version: 4.20251224.0
+  resolution: "@cloudflare/workers-types@npm:4.20251224.0"
+  checksum: 10c0/fec0deb6701bc4ab5cf6d55fc49f85443711d09137ef39e1e6aeb929b082d0d38314cacf83820dc2cc54d56155d5780281c0359623c51febe83882fac12ca6e1
   languageName: node
   linkType: hard
 
@@ -4287,7 +4287,7 @@ __metadata:
   dependencies:
     "@actions/core": "npm:2.0.1"
     "@babel/compat-data": "npm:7.28.5"
-    "@cloudflare/workers-types": "npm:4.20251223.0"
+    "@cloudflare/workers-types": "npm:4.20251224.0"
     "@commitlint/cli": "npm:20.2.0"
     "@commitlint/config-conventional": "npm:20.2.0"
     "@eslint/js": "npm:9.39.2"
