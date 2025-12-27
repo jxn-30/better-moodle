@@ -6,9 +6,9 @@ __metadata:
   cacheKey: 10c0
 
 "@acemir/cssom@npm:^0.9.28":
-  version: 0.9.29
-  resolution: "@acemir/cssom@npm:0.9.29"
-  checksum: 10c0/029fdaf1f7e6e9e6267ba0d94301de15001066cc729956851cedfe486a82e6d925eb8fc8f7f488e6618ce0a615ae9a5e660d9ab13406c8396e2852df5bcbbdd6
+  version: 0.9.30
+  resolution: "@acemir/cssom@npm:0.9.30"
+  checksum: 10c0/f90dd766826315904ab71361aa7b3e0f1ff01124c73b2abc4c6f676ccb036cc6d4fe7c834f89384302e3dfbbd1e819681816fd29da594bb94a5739c634e8282f
   languageName: node
   linkType: hard
 
@@ -1514,9 +1514,9 @@ __metadata:
   linkType: hard
 
 "@csstools/css-syntax-patches-for-csstree@npm:^1.0.21":
-  version: 1.0.21
-  resolution: "@csstools/css-syntax-patches-for-csstree@npm:1.0.21"
-  checksum: 10c0/5e9430f174fc4845d498ca400932c987d4a36df2c16a973ed72939f407a55cf8423707a64614df81f02df7c9f3dd95908648d6e8d5a8e0c1872a426467a6868f
+  version: 1.0.22
+  resolution: "@csstools/css-syntax-patches-for-csstree@npm:1.0.22"
+  checksum: 10c0/5ec39dc28b30bb0d5e212e598979707786e152698be820502bdee4b0204983604170dd960a8684de8de89f28376cf4a151de81d9da166d97eeb35f869a44ae08
   languageName: node
   linkType: hard
 
@@ -4074,13 +4074,13 @@ __metadata:
   linkType: hard
 
 "ast-v8-to-istanbul@npm:^0.3.8":
-  version: 0.3.9
-  resolution: "ast-v8-to-istanbul@npm:0.3.9"
+  version: 0.3.10
+  resolution: "ast-v8-to-istanbul@npm:0.3.10"
   dependencies:
     "@jridgewell/trace-mapping": "npm:^0.3.31"
     estree-walker: "npm:^3.0.3"
     js-tokens: "npm:^9.0.1"
-  checksum: 10c0/63a70a54e4ad0136cfaee99d468c9d3335f52ec7d3edb25d31ad892bb4e05ea4cd7a4425ff02a937158b01d378388b371352b2e01c884fd450901f887c6970bd
+  checksum: 10c0/8a7a07c04f8f130b8a5abb76cdb31cce06a8eb4b7d4abbe207bc721132127ae332e857b96aa415ac43ec2c6c9312508210c598f61a7de2d0e3db5615e6b03183
   languageName: node
   linkType: hard
 
@@ -4569,9 +4569,9 @@ __metadata:
   linkType: hard
 
 "chai@npm:^6.2.1":
-  version: 6.2.1
-  resolution: "chai@npm:6.2.1"
-  checksum: 10c0/0c2d84392d7c6d44ca5d14d94204f1760e22af68b83d1f4278b5c4d301dabfc0242da70954dd86b1eda01e438f42950de6cf9d569df2103678538e4014abe50b
+  version: 6.2.2
+  resolution: "chai@npm:6.2.2"
+  checksum: 10c0/e6c69e5f0c11dffe6ea13d0290936ebb68fcc1ad688b8e952e131df6a6d5797d5e860bc55cef1aca2e950c3e1f96daf79e9d5a70fb7dbaab4e46355e2635ed53
   languageName: node
   linkType: hard
 
@@ -4932,9 +4932,9 @@ __metadata:
   linkType: hard
 
 "cssdb@npm:^8.5.2":
-  version: 8.5.2
-  resolution: "cssdb@npm:8.5.2"
-  checksum: 10c0/12f7ed29dda0d74b209d6470acd246b335aac507c2786c17f20709f856eabb24e6d43ff44507898f5a1b0a101b286b997d95682e44b06f4c7cb4bd7081db7c32
+  version: 8.6.0
+  resolution: "cssdb@npm:8.6.0"
+  checksum: 10c0/4bb7b77ba24902e8d481e9514ec0be56e205186a2b7d9f5027fedfe718952c559c62acfd2859f92869f8090da7c2170f83d68170db5058a6ba8d9d5e8ded3b3e
   languageName: node
   linkType: hard
 
@@ -6033,11 +6033,11 @@ __metadata:
   linkType: hard
 
 "fastq@npm:^1.6.0":
-  version: 1.19.1
-  resolution: "fastq@npm:1.19.1"
+  version: 1.20.1
+  resolution: "fastq@npm:1.20.1"
   dependencies:
     reusify: "npm:^1.0.4"
-  checksum: 10c0/ebc6e50ac7048daaeb8e64522a1ea7a26e92b3cee5cd1c7f2316cdca81ba543aa40a136b53891446ea5c3a67ec215fbaca87ad405f102dd97012f62916905630
+  checksum: 10c0/e5dd725884decb1f11e5c822221d76136f239d0236f176fab80b7b8f9e7619ae57e6b4e5b73defc21e6b9ef99437ee7b545cff8e6c2c337819633712fa9d352e
   languageName: node
   linkType: hard
 
