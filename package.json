@@ -35,7 +35,7 @@
     "devDependencies": {
         "@actions/core": "2.0.1",
         "@babel/compat-data": "7.28.5",
-        "@cloudflare/workers-types": "4.20251229.0",
+        "@cloudflare/workers-types": "4.20251231.0",
         "@commitlint/cli": "20.2.0",
         "@commitlint/config-conventional": "20.2.0",
         "@eslint/js": "9.39.2",
@@ -87,7 +87,7 @@
         "ts-json-schema-generator": "2.4.0",
         "ts-node": "10.9.2",
         "typescript": "5.9.3",
-        "typescript-eslint": "8.50.1",
+        "typescript-eslint": "8.51.0",
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
         "vite": "7.3.0",
