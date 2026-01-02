@@ -35,9 +35,9 @@
     "devDependencies": {
         "@actions/core": "2.0.1",
         "@babel/compat-data": "7.28.5",
-        "@cloudflare/workers-types": "4.20251231.0",
-        "@commitlint/cli": "20.2.0",
-        "@commitlint/config-conventional": "20.2.0",
+        "@cloudflare/workers-types": "4.20260101.0",
+        "@commitlint/cli": "20.3.0",
+        "@commitlint/config-conventional": "20.3.0",
         "@eslint/js": "9.39.2",
         "@prettier/plugin-xml": "3.4.2",
         "@rollup/plugin-terser": "0.4.4",
