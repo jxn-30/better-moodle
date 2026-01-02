@@ -2459,13 +2459,13 @@ __metadata:
   linkType: hard
 
 "@eslint-community/eslint-utils@npm:^4.1.2, @eslint-community/eslint-utils@npm:^4.7.0, @eslint-community/eslint-utils@npm:^4.8.0":
-  version: 4.9.0
-  resolution: "@eslint-community/eslint-utils@npm:4.9.0"
+  version: 4.9.1
+  resolution: "@eslint-community/eslint-utils@npm:4.9.1"
   dependencies:
     eslint-visitor-keys: "npm:^3.4.3"
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
-  checksum: 10c0/8881e22d519326e7dba85ea915ac7a143367c805e6ba1374c987aa2fbdd09195cc51183d2da72c0e2ff388f84363e1b220fd0d19bef10c272c63455162176817
+  checksum: 10c0/dc4ab5e3e364ef27e33666b11f4b86e1a6c1d7cbf16f0c6ff87b1619b3562335e9201a3d6ce806221887ff780ec9d828962a290bb910759fd40a674686503f02
   languageName: node
   linkType: hard
 
@@ -2547,14 +2547,14 @@ __metadata:
   linkType: hard
 
 "@exodus/bytes@npm:^1.6.0":
-  version: 1.7.0
-  resolution: "@exodus/bytes@npm:1.7.0"
+  version: 1.8.0
+  resolution: "@exodus/bytes@npm:1.8.0"
   peerDependencies:
     "@exodus/crypto": ^1.0.0-rc.4
   peerDependenciesMeta:
     "@exodus/crypto":
       optional: true
-  checksum: 10c0/f919d7d26c44a31ae71a280baf821b38826bdca97ac6c6dbe7d02bf6952104ef2106534cb5566c17f7a1dc1ae627a78f2fabce3a09d6bbc65a9b1bdaeaeebfc5
+  checksum: 10c0/1878868519230fa564b80d3d12fa7e2b559dfed143f4e48969eb5f98083caea431bbc70356d6b2f90ba80c8148295fe85af6a5ed8a746dd53baefe4f1ed086e8
   languageName: node
   linkType: hard
 
@@ -3371,16 +3371,16 @@ __metadata:
   linkType: hard
 
 "@sindresorhus/is@npm:^7.0.2":
-  version: 7.1.1
-  resolution: "@sindresorhus/is@npm:7.1.1"
-  checksum: 10c0/96f021b8c5680e0687ceba5619c2e56fe6b089b190b3149280a1e418e6315c66839e3f1519cf1c89f7a888b5a0017a0ef1db17436d783ee398b7d5a515caa3ef
+  version: 7.2.0
+  resolution: "@sindresorhus/is@npm:7.2.0"
+  checksum: 10c0/0040c17d7826414363f99f5d56077c200789d51e6dfe5542920bfb29ab3828ec0ebf2845e8bae796bee461debb646b5e4c0a623140131cf3143471e915b50b54
   languageName: node
   linkType: hard
 
 "@speed-highlight/core@npm:^1.2.7":
-  version: 1.2.12
-  resolution: "@speed-highlight/core@npm:1.2.12"
-  checksum: 10c0/37613c7a031af3b239282cc09211cefc1c9e164df07110520d2116ae7b4741512c1905bf1e011706ee2e652cef24df834f2068c4c4fff71e0257ec22fa655ff2
+  version: 1.2.14
+  resolution: "@speed-highlight/core@npm:1.2.14"
+  checksum: 10c0/8391bbfa04e9ea1677119b463f9a1413024a83319d271f5eacbc64dcd6d05394f092b876a5e47612eb98b4b55c1abe6c1b16270462ad4ac0f21311a1736e540f
   languageName: node
   linkType: hard
 
@@ -4310,9 +4310,9 @@ __metadata:
   linkType: hard
 
 "basic-ftp@npm:^5.0.2":
-  version: 5.0.5
-  resolution: "basic-ftp@npm:5.0.5"
-  checksum: 10c0/be983a3997749856da87b839ffce6b8ed6c7dbf91ea991d5c980d8add275f9f2926c19f80217ac3e7f353815be879371d636407ca72b038cea8cab30e53928a6
+  version: 5.1.0
+  resolution: "basic-ftp@npm:5.1.0"
+  checksum: 10c0/397d5ed490f4d3b8b2dcd7afdf8e9fcf714a7d1c394a6c66b31704baf49c9fc250f1742f6189136a76b983675edf3d986b7ed93d253dc6477e65a567cf1e04c0
   languageName: node
   linkType: hard
 
@@ -4983,13 +4983,14 @@ __metadata:
   linkType: hard
 
 "cssstyle@npm:^5.3.4":
-  version: 5.3.5
-  resolution: "cssstyle@npm:5.3.5"
+  version: 5.3.6
+  resolution: "cssstyle@npm:5.3.6"
   dependencies:
     "@asamuzakjp/css-color": "npm:^4.1.1"
     "@csstools/css-syntax-patches-for-csstree": "npm:^1.0.21"
     css-tree: "npm:^3.1.0"
-  checksum: 10c0/9b2fa7f068f05533b62746db3b2942040807c8e9d4c52ca2d0977052936ac68c8cb031faccef0669d55806a7ab4f85e167bf43f4ee381e2f6da8bd147a763bfe
+    lru-cache: "npm:^11.2.4"
+  checksum: 10c0/246aba502819f42817fb88ba3d69e0c52b6fd8874779721ef39dc279ea87c96431f2c322f306bd4656d2c7a2d3b3b42ca00c7f223718c0f58c1b2a1f0ed4e89f
   languageName: node
   linkType: hard
 
@@ -5932,11 +5933,11 @@ __metadata:
   linkType: hard
 
 "esquery@npm:^1.5.0, esquery@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "esquery@npm:1.6.0"
+  version: 1.7.0
+  resolution: "esquery@npm:1.7.0"
   dependencies:
     estraverse: "npm:^5.1.0"
-  checksum: 10c0/cb9065ec605f9da7a76ca6dadb0619dfb611e37a81e318732977d90fab50a256b95fee2d925fba7c2f3f0523aa16f91587246693bc09bc34d5a59575fe6e93d2
+  checksum: 10c0/77d5173db450b66f3bc685d11af4c90cffeedb340f34a39af96d43509a335ce39c894fd79233df32d38f5e4e219fa0f7076f6ec90bae8320170ba082c0db4793
   languageName: node
   linkType: hard
 
@@ -10323,11 +10324,11 @@ __metadata:
   linkType: hard
 
 "ts-api-utils@npm:^2.2.0":
-  version: 2.3.0
-  resolution: "ts-api-utils@npm:2.3.0"
+  version: 2.4.0
+  resolution: "ts-api-utils@npm:2.4.0"
   peerDependencies:
     typescript: ">=4.8.4"
-  checksum: 10c0/9f2aadb8ac55926c79db03e37ee3b014135923d1705f6868b9e787e6b8822d2fd8e19df2f9002563f4e6268c994425ddaad61df24d0dad833a4be9f26f789213
+  checksum: 10c0/ed185861aef4e7124366a3f6561113557a57504267d4d452a51e0ba516a9b6e713b56b4aeaab9fa13de9db9ab755c65c8c13a777dba9133c214632cb7b65c083
   languageName: node
   linkType: hard
 
@@ -10892,9 +10893,9 @@ __metadata:
   linkType: hard
 
 "webidl-conversions@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "webidl-conversions@npm:8.0.0"
-  checksum: 10c0/3244e8a6534163bc3ee5f5f48b507b4bb74e34e7cc7c86a50cd02734753042b88343dae48321f34ad61ddc6b5c90cb1a5b2ee757b8be8e6fadc587a9f3db76cd
+  version: 8.0.1
+  resolution: "webidl-conversions@npm:8.0.1"
+  checksum: 10c0/3f6f327ca5fa0c065ed8ed0ef3b72f33623376e68f958e9b7bd0df49fdb0b908139ac2338d19fb45bd0e05595bda96cb6d1622222a8b413daa38a17aacc4dd46
   languageName: node
   linkType: hard
 
@@ -11308,8 +11309,8 @@ __metadata:
   linkType: hard
 
 "zod@npm:^4.1.12":
-  version: 4.2.1
-  resolution: "zod@npm:4.2.1"
-  checksum: 10c0/ecb5219bddf76a42d092a843fb98ad4cb78f1e1077082772b03ef032ee5cbc80790a4051836b962d26fb4af854323bc784d628bd1b8d9898149eba7af21c5560
+  version: 4.3.4
+  resolution: "zod@npm:4.3.4"
+  checksum: 10c0/a096102c8b31ecdb913bacb08d5a0fe8447bbe4f54cff421a0c5830a5552da76aae9fd8a01f2e9fdeaae35da1a73762551bc9d14cfedb13a44056de1ed2eb76f
   languageName: node
   linkType: hard
