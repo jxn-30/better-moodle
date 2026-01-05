@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.2](https://github.com/jxn-30/better-moodle/compare/2.6.1...2.6.2) (2026-01-05)
+
+
+### Bug Fixes
+
+* **images:** remove max-width and max-height from copied image style ([#942](https://github.com/jxn-30/better-moodle/issues/942)) ([c9493b7](https://github.com/jxn-30/better-moodle/commit/c9493b7bf9ca3469361c94253f4f1506901fc8a6))
+
 ## [2.6.1](https://github.com/jxn-30/better-moodle/compare/2.6.0...2.6.1) (2025-12-18)
 
 
