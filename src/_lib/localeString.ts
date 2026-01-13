@@ -1,6 +1,33 @@
 import { BETTER_MOODLE_LANG } from 'i18n';
 
 /**
+ * Returns a DateTimeFormatOptions for a date
+ * @param root0 - the format options
+ * @param root0.weekday - wether to print the weekday
+ * @param root0.year - wether to print the year
+ * @returns the DateTimeFormatOptions
+ */
+const dateFormat = ({ weekday, year }: { weekday: boolean; year: boolean }) =>
+    ({
+        weekday: weekday ? 'long' : undefined,
+        year: year ? 'numeric' : undefined,
+        month: '2-digit',
+        day: '2-digit',
+    }) as const;
+
+/**
+ * Returns a DateTimeFormatOptions for a time
+ * @param seconds - wether to print the seconds
+ * @returns the DateTimeFormatOptions
+ */
+const timeFormat = (seconds: boolean) =>
+    ({
+        hour: '2-digit',
+        minute: '2-digit',
+        second: seconds ? '2-digit' : undefined,
+    }) as const;
+
+/**
  * Returns the localized string representation of a date
  * @param date - the date to localize
  * @param year - wether to show the year
@@ -13,13 +40,7 @@ export const dateToString = (
     year = true,
     weekday = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) =>
-    date.toLocaleDateString(lang, {
-        weekday: weekday ? 'long' : undefined,
-        year: year ? 'numeric' : undefined,
-        month: '2-digit',
-        day: '2-digit',
-    });
+) => date.toLocaleDateString(lang, dateFormat({ year, weekday }));
 
 /**
  * Returns the localized string representation of a time
@@ -32,12 +53,7 @@ export const timeToString = (
     date: Date,
     seconds = true,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) =>
-    date.toLocaleTimeString(lang, {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: seconds ? '2-digit' : undefined,
-    });
+) => date.toLocaleTimeString(lang, timeFormat(seconds));
 
 /**
  * Returns the localized string representation of a datetime
@@ -56,13 +72,8 @@ export const datetimeToString = (
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
 ) =>
     date.toLocaleString(lang, {
-        weekday: weekday ? 'long' : undefined,
-        year: year ? 'numeric' : undefined,
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: seconds ? '2-digit' : undefined,
+        ...dateFormat({ year, weekday }),
+        ...timeFormat(seconds),
     });
 
 /**
