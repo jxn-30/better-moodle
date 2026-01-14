@@ -75,5 +75,4 @@ void Promise.all(
 export default awaitImports;
 
 // Now also import the fixes that have been specified in the config file :)
-// TODO: Find out, if this breaks anything or if we need to build a plugin therefore too, as now the fixes-imports will be before the feature-imports and feature-group-imports. Check on CAU!
-import.meta.fixes(); // import.meta.env.VITE_INCLUDE_FIXES_GLOB, { eager: true });
+import.meta.fixes();
