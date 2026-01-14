@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.3](https://github.com/jxn-30/better-moodle/compare/2.6.2...2.6.3) (2026-01-14)
+
+
+### Bug Fixes
+
+* **uzl:** fix evaluationsende should be 31.03 ([80a1726](https://github.com/jxn-30/better-moodle/commit/80a1726ed31404f449aafc6f750fc67fc7365cb2))
+
 ## [2.6.2](https://github.com/jxn-30/better-moodle/compare/2.6.1...2.6.2) (2026-01-05)
 
 
