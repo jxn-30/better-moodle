@@ -2,23 +2,15 @@ import Feature from './Feature';
 import { isFeatureGroup } from 'i18n';
 import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
 
-const featureGroupImports = Object.fromEntries(
-    Object.entries<ReturnType<(typeof FeatureGroup)['register']>>(
-        import.meta.glob(import.meta.env.VITE_INCLUDE_FEATURE_GROUPS_GLOB, {
-            import: 'default',
-            eager: true,
-        })
-    ).map(([key, value]) => [key.replace(/\.tsx?$/, ''), value])
-);
+const featureGroupImports = import.meta.featureGroups as Record<
+    string,
+    ReturnType<(typeof FeatureGroup)['register']>
+>;
 
-const featureImports = Object.fromEntries(
-    Object.entries<ReturnType<(typeof Feature)['register']>>(
-        import.meta.glob(import.meta.env.VITE_INCLUDE_FEATURES_GLOB, {
-            import: 'default',
-            eager: true,
-        })
-    ).map(([key, value]) => [key.replace(/\.tsx?$/, ''), value])
-);
+const featureImports = import.meta.features as Record<
+    string,
+    ReturnType<(typeof Feature)['register']>
+>;
 
 /**
  * inits a feature by instantiating the feature class and calling its init method
@@ -30,10 +22,7 @@ const initFeature = (
     group: FeatureGroup<FeatureGroupID>,
     featureId: string
 ) => {
-    const Feature =
-        featureImports[
-            `${import.meta.env.VITE_FEATURES_BASE}${group.id}/${featureId}`
-        ];
+    const Feature = featureImports[`${group.id}_${featureId}`];
     if (!Feature) return;
     const feature = new Feature(featureId, group);
     return feature;
@@ -41,13 +30,12 @@ const initFeature = (
 
 const featureGroups = new Map<string, FeatureGroup<FeatureGroupID>>();
 
-Object.entries(featureGroupImports).forEach(([id, FeatureGroup]) => {
-    const groupId = id.split('/')[3];
+Object.entries(featureGroupImports).forEach(([groupId, FeatureGroup]) => {
     if (!isFeatureGroup(groupId)) return;
     const featureGroup = new FeatureGroup(groupId);
     featureGroup.loadSettings();
     featureGroup.load();
-    featureGroup.loadFeatures(id => initFeature(featureGroup, id));
+    featureGroup.loadFeatures(fId => initFeature(featureGroup, fId));
     featureGroups.set(groupId, featureGroup);
 });
 
@@ -87,4 +75,5 @@ void Promise.all(
 export default awaitImports;
 
 // Now also import the fixes that have been specified in the config file :)
-import.meta.glob(import.meta.env.VITE_INCLUDE_FIXES_GLOB, { eager: true });
+// TODO: Find out, if this breaks anything or if we need to build a plugin therefore too, as now the fixes-imports will be before the feature-imports and feature-group-imports. Check on CAU!
+import.meta.fixes(); // import.meta.env.VITE_INCLUDE_FIXES_GLOB, { eager: true });

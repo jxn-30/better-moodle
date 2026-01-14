@@ -5,8 +5,10 @@
 /// <reference types="jsx-dom/index" />
 /// <reference types="darkreader" />
 /// <reference types="../types/window.d.ts" />
+/// <reference types="./_lib/FeatureGroup" />
+/// <reference types="./_lib/Feature" />
 
-/* global jsxDom:readonly */
+/* global jsxDom:readonly, FeatureGroup:readonly, Feature:readonly */
 
 // constants defined in the config file
 declare const __GITHUB_USER__: string;
@@ -43,4 +45,10 @@ interface ImportMetaEnv {
 
 interface ImportMeta {
     readonly env: ImportMetaEnv;
+    readonly featureGroups: Record<
+        string,
+        ReturnType<(typeof FeatureGroup)['register']>
+    >;
+    readonly features: Record<string, ReturnType<(typeof Feature)['register']>>;
+    readonly fixes: () => void;
 }

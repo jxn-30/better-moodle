@@ -207,7 +207,7 @@ const fixesGlob = `/src/fixes/{${crypto.randomUUID()},${crypto.randomUUID()},${(
 dotenv.populate(process.env, {
     VITE_FEATURES_BASE: featuresBase,
     VITE_INCLUDE_FEATURE_GROUPS_GLOB: featureGroupsGlob,
-    VITE_INCLUDE_FEATURES_GLOB: featureGlob,
+    VITE_INCLUDE_7FEATURES_GLOB: featureGlob,
     VITE_INCLUDE_FIXES_GLOB: fixesGlob,
 
     // import globs defined for specific features
@@ -568,7 +568,91 @@ export default defineConfig({
     define: GLOBAL_CONSTANTS,
     plugins: [
         {
+            name: 'import-fixes',
+            transform: {
+                filter: { code: 'import.meta.fixes()' },
+                /**
+                 * This transformer handles importing the fixes
+                 * @param src - the source code which contains the import
+                 * @returns the source code with fixes imports
+                 */
+                handler(src) {
+                    return (
+                        fastGlob
+                            .sync(`.${fixesGlob}`)
+                            .toSorted()
+                            .map(
+                                fix =>
+                                    `import ${JSON.stringify(fix.replace(/^\./, ''))};`
+                            )
+                            .join('') +
+                        src.replace(/import\.meta\.fixes\(\)/g, '')
+                    );
+                },
+            },
+        },
+        {
+            name: 'import-features',
+            transform: {
+                filter: {
+                    code: {
+                        include: [
+                            'import.meta.featureGroups',
+                            'import.meta.features',
+                        ],
+                    },
+                },
+                /**
+                 * This transformer handles importing featureGroups and features
+                 * @param src - the source code which contains the import
+                 * @returns the source code with featureGroups and features imports and import object
+                 */
+                handler(src) {
+                    const featureGroupIds = allIncludedFeatureGroups
+                        .values()
+                        .toArray()
+                        .toSorted();
+                    const featureGroupImports = featureGroupIds
+                        .map(
+                            group =>
+                                `import { default as ${group} } from ${JSON.stringify(`${featuresBase}${group}`)};`
+                        )
+                        .join('');
+                    const featureGroupObject = `{${featureGroupIds
+                        .map(group => `${JSON.stringify(group)}: ${group},`)
+                        .join('')}}`;
+                    const featureIds = fastGlob
+                        .sync(`.${featureGlob}`)
+                        .map(f =>
+                            f
+                                .replace(`.${featuresBase}`, '')
+                                .replace(/\//g, '_')
+                                .replace(/\.tsx?$/g, '')
+                        )
+                        .toSorted();
+                    const featureImports = featureIds
+                        .map(
+                            feat =>
+                                `import { default as ${feat} } from ${JSON.stringify(featuresBase + feat.replace(/_/g, '/'))};`
+                        )
+                        .join('');
+                    const featureObject = `{${featureIds.map(feat => `${JSON.stringify(feat)}: ${feat},`).join('')}}`;
+                    const replaced =
+                        featureGroupImports +
+                        featureImports +
+                        src
+                            .replace(
+                                /import\.meta\.featureGroups/g,
+                                featureGroupObject
+                            )
+                            .replace(/import\.meta\.features/g, featureObject);
+                    return replaced;
+                },
+            },
+        },
+        {
             name: 'mustache-loader',
+            // TODO: Use the filter approach from import-features plugin
             /**
              * Minifies a mustache template a little.
              * @param src - the mustache template code
