@@ -99,10 +99,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/compat-data@npm:7.28.5, @babel/compat-data@npm:^7.27.2, @babel/compat-data@npm:^7.27.7, @babel/compat-data@npm:^7.28.5":
-  version: 7.28.5
-  resolution: "@babel/compat-data@npm:7.28.5"
-  checksum: 10c0/702a25de73087b0eba325c1d10979eed7c9b6662677386ba7b5aa6eace0fc0676f78343bae080a0176ae26f58bd5535d73b9d0fbb547fef377692e8b249353a7
+"@babel/compat-data@npm:7.28.6, @babel/compat-data@npm:^7.27.2, @babel/compat-data@npm:^7.27.7, @babel/compat-data@npm:^7.28.5":
+  version: 7.28.6
+  resolution: "@babel/compat-data@npm:7.28.6"
+  checksum: 10c0/2d047431041281eaf33e9943d1a269d3374dbc9b498cafe6a18f5ee9aee7bb96f7f6cac0304eab4d13c41fc4db00fe4ca16c7aa44469ca6a211b8b6343b78fc4
   languageName: node
   linkType: hard
 
@@ -4402,7 +4402,7 @@ __metadata:
   resolution: "better-moodle@workspace:."
   dependencies:
     "@actions/core": "npm:2.0.2"
-    "@babel/compat-data": "npm:7.28.5"
+    "@babel/compat-data": "npm:7.28.6"
     "@cloudflare/workers-types": "npm:4.20260113.0"
     "@commitlint/cli": "npm:20.3.1"
     "@commitlint/config-conventional": "npm:20.3.1"
@@ -4425,7 +4425,7 @@ __metadata:
     boxen: "npm:8.0.1"
     browserslist: "npm:4.28.1"
     browserslist-useragent-regexp: "npm:4.1.3"
-    caniuse-lite: "npm:1.0.30001762"
+    caniuse-lite: "npm:1.0.30001764"
     chalk: "npm:5.6.2"
     ci-info: "npm:4.3.1"
     core-js: "npm:3.47.0"
@@ -4677,17 +4677,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:1.0.30001762":
-  version: 1.0.30001762
-  resolution: "caniuse-lite@npm:1.0.30001762"
-  checksum: 10c0/93707eac5b0240af3f2ce6e2d7ab504a6fefcf9c2f9cd8fb9d488e496a333c61e557dab0472c1b00c17bc386a5dbb792aa4c778cda2d768e17f986617d7aec53
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001759, caniuse-lite@npm:^1.0.30001760":
-  version: 1.0.30001763
-  resolution: "caniuse-lite@npm:1.0.30001763"
-  checksum: 10c0/4524f6ae15a18c8510849e43baed01441940c50cab29687cba62dde6354a49549d5bcb7f79b864dadf3f0c8c342038c63131cdb64af382a501593106b1d0028b
+"caniuse-lite@npm:1.0.30001764, caniuse-lite@npm:^1.0.30001759, caniuse-lite@npm:^1.0.30001760":
+  version: 1.0.30001764
+  resolution: "caniuse-lite@npm:1.0.30001764"
+  checksum: 10c0/3fbc2bcb35792bd860e20210283e7c700aab10c5af435dbb8bfbf952edccaa3e7de8b479af0f600c4d23f269dbc166e16b7b72df5cd1981653b252174c9cbfa8
   languageName: node
   linkType: hard
 
