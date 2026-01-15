@@ -78,7 +78,7 @@
         "nodejs-file-downloader": "4.13.0",
         "postcss": "8.5.6",
         "postcss-inline-svg": "6.0.0",
-        "postcss-preset-env": "10.6.1",
+        "postcss-preset-env": "11.1.1",
         "prettier": "3.8.0",
         "puppeteer": "24.35.0",
         "rrule": "2.8.1",
