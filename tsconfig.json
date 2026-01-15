@@ -47,6 +47,7 @@
         "postcss.config.ts",
         "commitlint.config.ts",
         "configs",
-        "__tests__"
+        "__tests__",
+        "vite-plugins"
     ]
 }

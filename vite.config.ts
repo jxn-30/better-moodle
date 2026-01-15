@@ -11,6 +11,7 @@ import fastGlob from 'fast-glob';
 import globalConfig from './configs/_global.json';
 import icsParserConfig from './ics-parser/wrangler.json';
 import monkey from 'vite-plugin-monkey';
+import pluginConfigImports from './vite-plugins/configImports';
 import pluginTerser from '@rollup/plugin-terser';
 import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
 import { getUserAgentRegex as uaRegex } from 'browserslist-useragent-regexp';
@@ -184,32 +185,8 @@ const featureMd = Array.from(
     )
 ).join('\n');
 
-// brace expansion wouldn't work with a single element only
-if (allIncludedFeatureGroups.size === 1) {
-    allIncludedFeatureGroups.add(crypto.randomUUID());
-}
-
-const featureGroupsGlob = `${featuresBase}{${Array.from(allIncludedFeatureGroups.values()).join(',')}}/index.{ts,tsx}`;
-
-// brace expansion wouldn't work with no elements or a single element only
-while (allIncludedFeatures.size <= 1) {
-    allIncludedFeatures.add(crypto.randomUUID());
-}
-
-const featureGlob = `${featuresBase}{${Array.from(allIncludedFeatures.values())
-    .map(f => (f.includes('.') ? f.replace('.', '/') : `${f}/!(index)`))
-    .join(',')}}.{ts,tsx}`;
-
-// we're again adding random UUIDs to not have empty brace expansion
-const fixesGlob = `/src/fixes/{${crypto.randomUUID()},${crypto.randomUUID()},${(config.fixes ?? []).join(',')}}.{ts,tsx}`;
-
 // @ts-expect-error because process.env may also include undefined values
 dotenv.populate(process.env, {
-    VITE_FEATURES_BASE: featuresBase,
-    VITE_INCLUDE_FEATURE_GROUPS_GLOB: featureGroupsGlob,
-    VITE_INCLUDE_7FEATURES_GLOB: featureGlob,
-    VITE_INCLUDE_FIXES_GLOB: fixesGlob,
-
     // import globs defined for specific features
     VITE_SPEISEPLAN_CANTEEN_GLOB: `${featuresBase}speiseplan/canteens/${configFile}.ts`,
     VITE_SPEISEPLAN_PARSER_GLOB: `${featuresBase}speiseplan/parsers/${configFile}.ts`,
@@ -567,89 +544,13 @@ export default defineConfig({
     },
     define: GLOBAL_CONSTANTS,
     plugins: [
-        {
-            name: 'import-fixes',
-            transform: {
-                filter: { code: 'import.meta.fixes()' },
-                /**
-                 * This transformer handles importing the fixes
-                 * @param src - the source code which contains the import
-                 * @returns the source code with fixes imports
-                 */
-                handler(src) {
-                    return (
-                        fastGlob
-                            .sync(`.${fixesGlob}`)
-                            .toSorted()
-                            .map(
-                                fix =>
-                                    `import ${JSON.stringify(fix.replace(/^\./, ''))};`
-                            )
-                            .join('') +
-                        src.replace(/import\.meta\.fixes\(\)/g, '')
-                    );
-                },
-            },
-        },
-        {
-            name: 'import-features',
-            transform: {
-                filter: {
-                    code: {
-                        include: [
-                            'import.meta.featureGroups',
-                            'import.meta.features',
-                        ],
-                    },
-                },
-                /**
-                 * This transformer handles importing featureGroups and features
-                 * @param src - the source code which contains the import
-                 * @returns the source code with featureGroups and features imports and import object
-                 */
-                handler(src) {
-                    const featureGroupIds = allIncludedFeatureGroups
-                        .values()
-                        .toArray()
-                        .toSorted();
-                    const featureGroupImports = featureGroupIds
-                        .map(
-                            group =>
-                                `import { default as ${group} } from ${JSON.stringify(`${featuresBase}${group}`)};`
-                        )
-                        .join('');
-                    const featureGroupObject = `{${featureGroupIds
-                        .map(group => `${JSON.stringify(group)}: ${group},`)
-                        .join('')}}`;
-                    const featureIds = fastGlob
-                        .sync(`.${featureGlob}`)
-                        .map(f =>
-                            f
-                                .replace(`.${featuresBase}`, '')
-                                .replace(/\//g, '_')
-                                .replace(/\.tsx?$/g, '')
-                        )
-                        .toSorted();
-                    const featureImports = featureIds
-                        .map(
-                            feat =>
-                                `import { default as ${feat} } from ${JSON.stringify(featuresBase + feat.replace(/_/g, '/'))};`
-                        )
-                        .join('');
-                    const featureObject = `{${featureIds.map(feat => `${JSON.stringify(feat)}: ${feat},`).join('')}}`;
-                    const replaced =
-                        featureGroupImports +
-                        featureImports +
-                        src
-                            .replace(
-                                /import\.meta\.featureGroups/g,
-                                featureGroupObject
-                            )
-                            .replace(/import\.meta\.features/g, featureObject);
-                    return replaced;
-                },
-            },
-        },
+        pluginConfigImports(
+            featuresBase,
+            allIncludedFeatureGroups,
+            allIncludedFeatures,
+            '/src/fixes/',
+            config.fixes
+        ),
         {
             name: 'mustache-loader',
             // TODO: Use the filter approach from import-features plugin

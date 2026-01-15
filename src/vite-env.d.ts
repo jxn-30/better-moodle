@@ -34,11 +34,6 @@ declare type JSXElement = jsxDom.ReactElement;
 
 // env variables defined in the .env file or in vite config
 interface ImportMetaEnv {
-    readonly VITE_FEATURES_BASE: string;
-    readonly VITE_INCLUDE_FEATURE_GROUPS_GLOB: string;
-    readonly VITE_INCLUDE_FEATURES_GLOB: string;
-    readonly VITE_INCLUDE_FIXES_GLOB: string;
-
     readonly VITE_SPEISEPLAN_CANTEEN_GLOB: string;
     readonly VITE_SPEISEPLAN_PARSER_GLOB: string;
 }
