@@ -28,14 +28,14 @@
     },
     "dependencies": {
         "@trim21/gm-fetch": "0.3.0",
-        "darkreader": "4.9.118",
+        "darkreader": "4.9.119",
         "jsx-dom": "8.1.6",
         "typesafe-i18n": "5.26.2"
     },
     "devDependencies": {
         "@actions/core": "2.0.2",
         "@babel/compat-data": "7.28.6",
-        "@cloudflare/workers-types": "4.20260113.0",
+        "@cloudflare/workers-types": "4.20260115.0",
         "@commitlint/cli": "20.3.1",
         "@commitlint/config-conventional": "20.3.1",
         "@eslint/js": "9.39.2",
@@ -48,7 +48,7 @@
         "@types/eslint": "9.6.1",
         "@types/jquery": "3.5.33",
         "@types/mathjax": "0.0.40",
-        "@types/node": "25.0.8",
+        "@types/node": "25.0.9",
         "@types/tampermonkey": "5.0.5",
         "@vitejs/plugin-legacy": "7.2.1",
         "@vitest/coverage-v8": "4.0.17",
@@ -79,11 +79,11 @@
         "postcss": "8.5.6",
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "10.6.1",
-        "prettier": "3.7.4",
+        "prettier": "3.8.0",
         "puppeteer": "24.35.0",
         "rrule": "2.8.1",
         "sass-embedded": "1.97.2",
-        "terser": "5.44.1",
+        "terser": "5.46.0",
         "ts-json-schema-generator": "2.4.0",
         "ts-node": "10.9.2",
         "typescript": "5.9.3",
@@ -93,7 +93,7 @@
         "vite": "7.3.1",
         "vite-plugin-monkey": "7.1.8",
         "vitest": "4.0.17",
-        "wrangler": "4.59.1"
+        "wrangler": "4.59.2"
     },
     "engines": {
         "node": "^24.12.0"
