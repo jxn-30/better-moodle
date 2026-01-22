@@ -4451,11 +4451,11 @@ __metadata:
     boxen: "npm:8.0.1"
     browserslist: "npm:4.28.1"
     browserslist-useragent-regexp: "npm:4.1.3"
-    caniuse-lite: "npm:1.0.30001764"
+    caniuse-lite: "npm:1.0.30001765"
     chalk: "npm:5.6.2"
     ci-info: "npm:4.3.1"
-    core-js: "npm:3.47.0"
-    core-js-compat: "npm:3.47.0"
+    core-js: "npm:3.48.0"
+    core-js-compat: "npm:3.48.0"
     darkreader: "npm:4.9.119"
     esbuild: "npm:0.27.2"
     esbuild-plugin-browserslist: "npm:2.0.0"
@@ -4593,7 +4593,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:4.28.1, browserslist@npm:^4.24.0, browserslist@npm:^4.25.1, browserslist@npm:^4.28.0, browserslist@npm:^4.28.1":
+"browserslist@npm:4.28.1, browserslist@npm:^4.24.0, browserslist@npm:^4.25.1, browserslist@npm:^4.28.1":
   version: 4.28.1
   resolution: "browserslist@npm:4.28.1"
   dependencies:
@@ -4703,10 +4703,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:1.0.30001764, caniuse-lite@npm:^1.0.30001759, caniuse-lite@npm:^1.0.30001760":
-  version: 1.0.30001764
-  resolution: "caniuse-lite@npm:1.0.30001764"
-  checksum: 10c0/3fbc2bcb35792bd860e20210283e7c700aab10c5af435dbb8bfbf952edccaa3e7de8b479af0f600c4d23f269dbc166e16b7b72df5cd1981653b252174c9cbfa8
+"caniuse-lite@npm:1.0.30001765, caniuse-lite@npm:^1.0.30001759, caniuse-lite@npm:^1.0.30001760":
+  version: 1.0.30001765
+  resolution: "caniuse-lite@npm:1.0.30001765"
+  checksum: 10c0/2bab28b322ec040dde2b6f56019ffd1e0bbd719111e45f58cb0fb06a783812d8ba8df65755320fd253aa1926dffc7bf0864adc11f6b231ac2b3a5b8221199c29
   languageName: node
   linkType: hard
 
@@ -4919,19 +4919,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js-compat@npm:3.47.0, core-js-compat@npm:^3.43.0":
-  version: 3.47.0
-  resolution: "core-js-compat@npm:3.47.0"
+"core-js-compat@npm:3.48.0, core-js-compat@npm:^3.43.0":
+  version: 3.48.0
+  resolution: "core-js-compat@npm:3.48.0"
   dependencies:
-    browserslist: "npm:^4.28.0"
-  checksum: 10c0/71da415899633120db7638dd7b250eee56031f63c4560dcba8eeeafd1168fae171d59b223e3fd2e0aa543a490d64bac7d946764721e2c05897056fdfb22cce33
+    browserslist: "npm:^4.28.1"
+  checksum: 10c0/7bb6522127928fff5d56c7050f379a034de85fe2d5c6e6925308090d4b51fb0cb88e0db99619c932ee84d8756d531bf851232948fe1ad18598cb1e7278e8db13
   languageName: node
   linkType: hard
 
-"core-js@npm:3.47.0, core-js@npm:^3.45.0":
-  version: 3.47.0
-  resolution: "core-js@npm:3.47.0"
-  checksum: 10c0/9b1a7088b7c660c7b8f1d4c90bb1816a8d5352ebdcb7bc742e3a0e4eb803316b5aa17bacb8769522342196351a5430178f46914644f2bfdb94ce0ced3c7fd523
+"core-js@npm:3.48.0, core-js@npm:^3.45.0":
+  version: 3.48.0
+  resolution: "core-js@npm:3.48.0"
+  checksum: 10c0/6c3115900dd7cce9fab74c07cb262b3517fc250d02e8fd2ff34f80bda5f43a28482a909dbc4491dc6e1ddd9807f57a7df4c3eeecd1f202b7d9c8bfe25f9d680c
   languageName: node
   linkType: hard
 
