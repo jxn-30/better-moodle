@@ -1,4 +1,7 @@
 // prevent images from overflowing
-#region-main img:not(.activityicon):not(.icon):not(.img-fluid) {
+#region-main
+    img:not(.activityicon):not(.icon):not(.img-fluid):not(.draghome):not(
+        .droppreview
+    ) {
     max-width: 100%;
 }
