@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.4](https://github.com/jxn-30/better-moodle/compare/2.6.3...2.6.4) (2026-01-25)
+
+
+### Bug Fixes
+
+* **courses/images:** don't apply maxWidth on drag and drop question images ([#964](https://github.com/jxn-30/better-moodle/issues/964)) ([c02e97f](https://github.com/jxn-30/better-moodle/commit/c02e97f6aa02066a93439007a5b081c962fecd34)), closes [#963](https://github.com/jxn-30/better-moodle/issues/963)
+
 ## [2.6.3](https://github.com/jxn-30/better-moodle/compare/2.6.2...2.6.3) (2026-01-14)
 
 
