@@ -1,40 +1,47 @@
 @use '/src/style/mixins';
 
+@mixin _insert-before {
+    // If is has no children and is not empty (=> text only)
+    body.dir-ltr &:not(:has(*)):not(:empty)::before,
+    body.dir-rtl &:not(:has(*)):not(:empty)::after,
+    // Otherwise: If has a non-empty child
+    body.dir-ltr &:has(*:not(:empty))::before,
+    body.dir-rtl &:has(*:not(:empty))::after {
+        padding-inline-end: 0.25rem;
+        @content;
+    }
+}
+
+@mixin _insert-after {
+    // If is has no children and is not empty (=> text only)
+    body.dir-ltr &:not(:has(*)):not(:empty)::after,
+    body.dir-rtl &:not(:has(*)):not(:empty)::before,
+    // Otherwise: If has a non-empty child
+    body.dir-ltr &:has(*:not(:empty))::after,
+    body.dir-rtl &:has(*:not(:empty))::before {
+        padding-inline-end: 0.25rem;
+        @content;
+    }
+}
+
 @mixin insert-before($content) {
-    body.dir-ltr &::before,
-    body.dir-rtl &::after {
+    @include _insert-before {
         @include mixins.fa-icon;
         content: $content !important;
         display: inline;
-    }
-
-    body.dir-ltr &::before {
-        padding-right: 0.25rem;
-    }
-    body.dir-rtl &::after {
-        padding-left: 0.25rem;
     }
 }
 
 @mixin insert-after($content) {
-    body.dir-ltr &::after,
-    body.dir-rtl &::before {
+    @include _insert-after {
         @include mixins.fa-icon;
         content: $content !important;
         display: inline;
     }
-
-    body.dir-ltr &::after {
-        padding-left: 0.25rem;
-    }
-    body.dir-rtl &::before {
-        padding-right: 0.25rem;
-    }
 }
 
 @mixin insert-svg-before-mask($svg) {
-    body.dir-ltr &::before,
-    body.dir-rtl &::after {
+    @include _insert-before {
         @include mixins.fa-icon;
         content: '\f0c8'; // .fa-square
         display: inline;
@@ -44,19 +51,11 @@
         mask-repeat: no-repeat;
         mask-origin: content-box;
         mask-position: center;
-    }
-
-    body.dir-ltr &::before {
-        padding-right: 0.25rem;
-    }
-    body.dir-rtl &::after {
-        padding-left: 0.25rem;
     }
 }
 
 @mixin insert-svg-after-mask($svg) {
-    body.dir-ltr &::after,
-    body.dir-rtl &::before {
+    @include _insert-after {
         @include mixins.fa-icon;
         content: '\f0c8'; // .fa-square
         display: inline;
@@ -67,18 +66,10 @@
         mask-origin: content-box;
         mask-position: center;
     }
-
-    body.dir-ltr &::after {
-        padding-left: 0.25rem;
-    }
-    body.dir-rtl &::before {
-        padding-right: 0.25rem;
-    }
 }
 
 @mixin insert-svg-before($svg) {
-    body.dir-ltr &::before,
-    body.dir-rtl &::after {
+    @include _insert-before {
         @include mixins.fa-icon;
         content: 'W';
         display: inline;
@@ -88,19 +79,11 @@
         background-repeat: no-repeat;
         background-origin: content-box;
         background-position: center;
-    }
-
-    body.dir-ltr &::before {
-        padding-right: 0.25rem;
-    }
-    body.dir-rtl &::after {
-        padding-left: 0.25rem;
     }
 }
 
 @mixin insert-svg-after($svg) {
-    body.dir-ltr &::after,
-    body.dir-rtl &::before {
+    @include _insert-after {
         @include mixins.fa-icon;
         content: 'W';
         display: inline;
@@ -110,12 +93,5 @@
         background-repeat: no-repeat;
         background-origin: content-box;
         background-position: center;
-    }
-
-    body.dir-ltr &::after {
-        padding-left: 0.25rem;
-    }
-    body.dir-rtl &::before {
-        padding-right: 0.25rem;
     }
 }
