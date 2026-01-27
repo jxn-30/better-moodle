@@ -5,5 +5,5 @@
 
 a[href^='webexteams://'],
 a[href^='https://uni-luebeck.webex.com'] {
-    @include insert-svg-before(svg-inline(webex));
+    @include insert-svg('before', svg-inline(webex));
 }

@@ -24,52 +24,30 @@
     }
 }
 
-@mixin insert-before($content) {
-    @include _insert-before {
+@mixin _insert($position) {
+    @if $position == 'before' {
+        @include _insert-before {
+            @content;
+        }
+    } @else if $position == 'after' {
+        @include _insert-after {
+            @content;
+        }
+    } @else {
+        @error "Unknown position #{$position}.";
+    }
+}
+
+@mixin insert($position, $content) {
+    @include _insert($position) {
         @include mixins.fa-icon;
         content: $content !important;
         display: inline;
     }
 }
 
-@mixin insert-after($content) {
-    @include _insert-after {
-        @include mixins.fa-icon;
-        content: $content !important;
-        display: inline;
-    }
-}
-
-@mixin insert-svg-before-mask($svg) {
-    @include _insert-before {
-        @include mixins.fa-icon;
-        content: '\f0c8'; // .fa-square
-        display: inline;
-        background-color: currentColor;
-        mask-image: $svg;
-        mask-size: contain;
-        mask-repeat: no-repeat;
-        mask-origin: content-box;
-        mask-position: center;
-    }
-}
-
-@mixin insert-svg-after-mask($svg) {
-    @include _insert-after {
-        @include mixins.fa-icon;
-        content: '\f0c8'; // .fa-square
-        display: inline;
-        background-color: currentColor;
-        mask-image: $svg;
-        mask-size: contain;
-        mask-repeat: no-repeat;
-        mask-origin: content-box;
-        mask-position: center;
-    }
-}
-
-@mixin insert-svg-before($svg) {
-    @include _insert-before {
+@mixin insert-svg($position, $svg) {
+    @include _insert($position) {
         @include mixins.fa-icon;
         content: 'W';
         display: inline;
@@ -82,16 +60,16 @@
     }
 }
 
-@mixin insert-svg-after($svg) {
-    @include _insert-after {
+@mixin insert-svg-mask($position, $svg) {
+    @include _insert($position) {
         @include mixins.fa-icon;
-        content: 'W';
+        content: '\f0c8'; // .fa-square
         display: inline;
-        color: transparent; // hide the "W" content
-        background-image: $svg;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-origin: content-box;
-        background-position: center;
+        background-color: currentColor;
+        mask-image: $svg;
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        mask-origin: content-box;
+        mask-position: center;
     }
 }
