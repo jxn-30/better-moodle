@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.5](https://github.com/jxn-30/better-moodle/compare/2.6.4...2.6.5) (2026-01-28)
+
+
+### Bug Fixes
+
+* **linkIcons:** do not show icon on de-facto empty links ([959e437](https://github.com/jxn-30/better-moodle/commit/959e437e0cd9b12e2adf28c2d076ef6f92bfc35b))
+
 ## [2.6.4](https://github.com/jxn-30/better-moodle/compare/2.6.3...2.6.4) (2026-01-25)
 
 
