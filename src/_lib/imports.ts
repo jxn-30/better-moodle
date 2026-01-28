@@ -4,7 +4,7 @@ import FeatureGroup, {
     FeatureGroupID,
     type FeatureGroupLoadTiming,
 } from './FeatureGroup';
-import { waitForMoodle, waitForMoodleAndDom } from './helpers';
+import { moodleAndDomReady, moodleReady } from './helpers';
 
 const featureGroupImports = import.meta.featureGroups as Record<
     string,
@@ -71,12 +71,12 @@ const loadFeatureGroupsWithTiming = (timing: FeatureGroupLoadTiming) => {
 loadFeatureGroupsWithTiming('immediate');
 
 // Load moodle-ready features as soon as M is available
-void waitForMoodle().then(() => {
+void moodleReady().then(() => {
     loadFeatureGroupsWithTiming('moodle-ready');
 });
 
 // Load dom-ready features once both M and DOM are ready
-void waitForMoodleAndDom().then(() => {
+void moodleAndDomReady().then(() => {
     loadFeatureGroupsWithTiming('dom-ready');
 
     // After all features are loaded, mark imports as done

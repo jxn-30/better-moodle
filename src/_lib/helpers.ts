@@ -219,8 +219,8 @@ export const animate = (
  */
 export const isLoggedIn = () =>
     __MOODLE_VERSION__ >= 405 ?
-        waitForMoodleAndDom().then(() => (M.cfg.userId ?? 0) > 1) // M.cfg.userId has been added for 405 https://github.com/moodle/moodle/commit/fbca10b8f320 // userId of 1 is guest user
-    :   waitForMoodleAndDom().then(
+        moodleAndDomReady().then(() => (M.cfg.userId ?? 0) > 1) // M.cfg.userId has been added for 405 https://github.com/moodle/moodle/commit/fbca10b8f320 // userId of 1 is guest user
+    :   moodleAndDomReady().then(
             () =>
                 !!document.querySelector(
                     `a[href$="/login/logout.php?sesskey=${M.cfg.sesskey}"]`
@@ -244,7 +244,7 @@ export const isNewInstallation = GM_listValues().length === 0;
  * @param checkDelay - Time between checks for M in ms
  * @returns a promise that resolves once M is defined
  */
-export const waitForMoodle = (checkDelay = 10) => {
+export const moodleReady = (checkDelay = 10) => {
     const { promise, resolve } = Promise.withResolvers<void>();
 
     /**
@@ -266,8 +266,7 @@ export const waitForMoodle = (checkDelay = 10) => {
  * Waits for both Moodle's M object and the dom to be available.
  * @returns a promise that resolves once M is defined and the dom is loaded
  */
-export const waitForMoodleAndDom = () =>
-    Promise.all([ready(), waitForMoodle()]);
+export const moodleAndDomReady = () => Promise.all([ready(), moodleReady()]);
 
 /**
  * Checks if the certain JS action in moodle has been completed.
@@ -276,7 +275,7 @@ export const waitForMoodleAndDom = () =>
  */
 export const mdlJSComplete = async (action: string) => {
     // Ensure M is available
-    await waitForMoodle();
+    await moodleReady();
 
     const { promise, resolve } = Promise.withResolvers<void>();
 
