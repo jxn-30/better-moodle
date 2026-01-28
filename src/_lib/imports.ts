@@ -1,6 +1,10 @@
 import Feature from './Feature';
 import { isFeatureGroup } from 'i18n';
-import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
+import FeatureGroup, {
+    FeatureGroupID,
+    type FeatureGroupLoadTiming,
+} from './FeatureGroup';
+import { waitForMoodle, waitForMoodleAndDom } from './helpers';
 
 const featureGroupImports = import.meta.featureGroups as Record<
     string,
@@ -30,14 +34,7 @@ const initFeature = (
 
 const featureGroups = new Map<string, FeatureGroup<FeatureGroupID>>();
 
-Object.entries(featureGroupImports).forEach(([groupId, FeatureGroup]) => {
-    if (!isFeatureGroup(groupId)) return;
-    const featureGroup = new FeatureGroup(groupId);
-    featureGroup.loadSettings();
-    featureGroup.load();
-    featureGroup.loadFeatures(fId => initFeature(featureGroup, fId));
-    featureGroups.set(groupId, featureGroup);
-});
+let importsAreDone = false;
 
 const onImportsDoneResolvers = new Set<
     PromiseWithResolvers<typeof featureGroups>['resolve']
@@ -53,7 +50,44 @@ const createImportDoneResolver = () => {
     return promise;
 };
 
-let importsAreDone = false;
+/**
+ * Loads feature groups based on their load timing
+ * @param timing - the load timing to filter by
+ */
+const loadFeatureGroupsWithTiming = (timing: FeatureGroupLoadTiming) => {
+    Object.entries(featureGroupImports).forEach(([groupId, FeatureGroup]) => {
+        if (!isFeatureGroup(groupId)) return;
+        if (FeatureGroup.loadTiming !== timing) return;
+
+        const featureGroup = new FeatureGroup(groupId);
+        featureGroup.loadSettings();
+        featureGroup.load();
+        featureGroup.loadFeatures(fId => initFeature(featureGroup, fId));
+        featureGroups.set(groupId, featureGroup);
+    });
+};
+
+// Load immediate features right away (document-start)
+loadFeatureGroupsWithTiming('immediate');
+
+// Load moodle-ready features as soon as M is available
+void waitForMoodle().then(() => {
+    loadFeatureGroupsWithTiming('moodle-ready');
+});
+
+// Load dom-ready features once both M and DOM are ready
+void waitForMoodleAndDom().then(() => {
+    loadFeatureGroupsWithTiming('dom-ready');
+
+    // After all features are loaded, mark imports as done
+    void Promise.all(
+        featureGroups.values().map(group => group.FieldSet.awaitReady())
+    )
+        .then(() => (importsAreDone = true))
+        .then(() =>
+            onImportsDoneResolvers.forEach(resolver => resolver(featureGroups))
+        );
+});
 
 /**
  * Wait for all featureGroups to be fully loaded
@@ -63,14 +97,6 @@ const awaitImports = () =>
     importsAreDone ?
         Promise.resolve(featureGroups)
     :   createImportDoneResolver();
-
-void Promise.all(
-    featureGroups.values().map(group => group.FieldSet.awaitReady())
-)
-    .then(() => (importsAreDone = true))
-    .then(() =>
-        onImportsDoneResolvers.forEach(resolver => resolver(featureGroups))
-    );
 
 export default awaitImports;
 
