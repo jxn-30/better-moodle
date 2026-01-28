@@ -1,6 +1,9 @@
 import Feature from './Feature';
 import { isFeatureGroup } from 'i18n';
-import FeatureGroup, { FeatureGroupID, type FeatureGroupLoadTiming } from './FeatureGroup';
+import FeatureGroup, {
+    FeatureGroupID,
+    type FeatureGroupLoadTiming,
+} from './FeatureGroup';
 import { waitForMoodle, waitForMoodleAndDom } from './helpers';
 
 const featureGroupImports = import.meta.featureGroups as Record<
@@ -31,6 +34,22 @@ const initFeature = (
 
 const featureGroups = new Map<string, FeatureGroup<FeatureGroupID>>();
 
+let importsAreDone = false;
+
+const onImportsDoneResolvers = new Set<
+    PromiseWithResolvers<typeof featureGroups>['resolve']
+>();
+
+/**
+ * Creates a promise, adds the resolver to the set and returns the promise
+ * @returns a promise that will be resolved once all featuregroups are fully loaded
+ */
+const createImportDoneResolver = () => {
+    const { promise, resolve } = Promise.withResolvers<typeof featureGroups>();
+    onImportsDoneResolvers.add(resolve);
+    return promise;
+};
+
 /**
  * Loads feature groups based on their load timing
  * @param timing - the load timing to filter by
@@ -39,7 +58,7 @@ const loadFeatureGroupsWithTiming = (timing: FeatureGroupLoadTiming) => {
     Object.entries(featureGroupImports).forEach(([groupId, FeatureGroup]) => {
         if (!isFeatureGroup(groupId)) return;
         if (FeatureGroup.loadTiming !== timing) return;
-        
+
         const featureGroup = new FeatureGroup(groupId);
         featureGroup.loadSettings();
         featureGroup.load();
@@ -69,22 +88,6 @@ void waitForMoodleAndDom().then(() => {
             onImportsDoneResolvers.forEach(resolver => resolver(featureGroups))
         );
 });
-
-const onImportsDoneResolvers = new Set<
-    PromiseWithResolvers<typeof featureGroups>['resolve']
->();
-
-/**
- * Creates a promise, adds the resolver to the set and returns the promise
- * @returns a promise that will be resolved once all featuregroups are fully loaded
- */
-const createImportDoneResolver = () => {
-    const { promise, resolve } = Promise.withResolvers<typeof featureGroups>();
-    onImportsDoneResolvers.add(resolve);
-    return promise;
-};
-
-let importsAreDone = false;
 
 /**
  * Wait for all featureGroups to be fully loaded

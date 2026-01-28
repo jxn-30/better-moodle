@@ -266,7 +266,8 @@ export const waitForMoodle = (checkDelay = 10) => {
  * Waits for both Moodle's M object and the dom to be available.
  * @returns a promise that resolves once M is defined and the dom is loaded
  */
-export const waitForMoodleAndDom = () => Promise.all([ready(), waitForMoodle()])
+export const waitForMoodleAndDom = () =>
+    Promise.all([ready(), waitForMoodle()]);
 
 /**
  * Checks if the certain JS action in moodle has been completed.
@@ -276,7 +277,7 @@ export const waitForMoodleAndDom = () => Promise.all([ready(), waitForMoodle()])
 export const mdlJSComplete = async (action: string) => {
     // Ensure M is available
     await waitForMoodle();
-    
+
     const { promise, resolve } = Promise.withResolvers<void>();
 
     /**
