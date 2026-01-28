@@ -12,20 +12,16 @@ interface CachedCourseData {
 
 /**
  * Gets cached course data from localStorage
- * @param activeFilter - The filter to get cached data for
  * @returns The cached courses or null if not found/expired
  */
-export const getCachedCourses = (
-    activeFilter: CourseFilter
-): Course[] | null => {
+export const getCachedCourses = (): Course[] | null => {
     try {
-        const cacheKey = `${PREFIX('navbar-dropdown-cache')}-${JSON.stringify(activeFilter)}`;
+        const cacheKey = PREFIX('navbar-dropdown-courses');
         const cached = localStorage.getItem(cacheKey);
         if (!cached) return null;
 
         const data = JSON.parse(cached) as CachedCourseData;
         const maxAge = 24 * 60 * 60 * 1000; // Keep cache for max. 1 day
-        console.log(`Cached courses: ${data.courses.length}`);
         if (Date.now() - data.timestamp < maxAge) {
             return data.courses;
         }
@@ -37,15 +33,11 @@ export const getCachedCourses = (
 
 /**
  * Stores course data in localStorage
- * @param activeFilter - The filter to cache data for
  * @param courses - The courses to cache
  */
-export const setCachedCourses = (
-    activeFilter: CourseFilter,
-    courses: Course[]
-): void => {
+export const setCachedCourses = (courses: Course[]): void => {
     try {
-        const cacheKey = `${PREFIX('navbar-dropdown-cache')}-${JSON.stringify(activeFilter)}`;
+        const cacheKey = PREFIX('navbar-dropdown-courses');
         const data: CachedCourseData = { courses, timestamp: Date.now() };
         localStorage.setItem(cacheKey, JSON.stringify(data));
     } catch (e) {
@@ -59,7 +51,7 @@ export const setCachedCourses = (
  */
 export const getCachedCourseFilter = (): CourseFilter | null => {
     try {
-        const cacheKey = `${PREFIX('navbar-dropdown-last-filter')}`;
+        const cacheKey = PREFIX('navbar-dropdown-last-filter');
         const cached = localStorage.getItem(cacheKey);
         if (!cached) return null;
         return JSON.parse(cached) as CourseFilter;
@@ -75,10 +67,22 @@ export const getCachedCourseFilter = (): CourseFilter | null => {
  */
 export const setCachedCourseFilter = (activeFilter: CourseFilter): void => {
     try {
-        const cacheKey = `${PREFIX('navbar-dropdown-last-filter')}`;
+        const cacheKey = PREFIX('navbar-dropdown-last-filter');
         localStorage.setItem(cacheKey, JSON.stringify(activeFilter));
     } catch (e) {
         console.error('Error caching last active filter:', e);
+    }
+};
+
+/**
+ * Clears the cached courses
+ */
+export const clearCachedCourses = (): void => {
+    try {
+        const cacheKey = PREFIX('navbar-dropdown-courses');
+        localStorage.removeItem(cacheKey);
+    } catch (e) {
+        console.error('Error clearing cached courses:', e);
     }
 };
 
@@ -107,8 +111,9 @@ export const fetchCourses = (
         })
         .then(({ courses }) => {
             if (!writeToCache) return courses;
+            console.log(`Fetched ${courses.length} courses`);
 
-            setCachedCourses(activeFilter, courses);
+            setCachedCourses(courses);
             if (filter.value === '_sync') {
                 setCachedCourseFilter(activeFilter);
             }

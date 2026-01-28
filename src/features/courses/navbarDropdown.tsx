@@ -8,17 +8,18 @@ import { requirePromise } from '@/require.js';
 import { SelectSetting } from '@/Settings/SelectSetting';
 import style from './navbarDropdown/style.module.scss';
 import {
+    clearCachedCourses,
+    fetchCourses,
+    getCachedCourseFilter,
+    getCachedCourses,
+} from '@/courseCache';
+import {
     type CourseFilter,
     getActiveFilter,
     getAvailableCourseFilters,
     getAvailableCourseFiltersAsOptions,
     onActiveFilterChanged,
 } from '@/myCourses';
-import {
-    fetchCourses,
-    getCachedCourseFilter,
-    getCachedCourses,
-} from '@/courseCache';
 import { getHtml, getLoadingSpinner, ready } from '@/DOM';
 import { putTemplate, renderCustomTemplate } from '@/templates';
 
@@ -196,22 +197,14 @@ const loadContent = ({
             (JSON.parse(filter.value) as CourseFilter)
         :   getCachedCourseFilter();
 
-    const cachedCourses = syncFilter ? getCachedCourses(syncFilter) : null;
+    const cachedCourses = getCachedCourses();
 
     // If we have cached data, render dropdown button immediately
     if (cachedCourses) {
         console.log(`Found ${cachedCourses.length} cached courses`);
         const dropdownToggle = document.createElement('a');
-        dropdownToggle.className = 'nav-link dropdown-toggle';
-        dropdownToggle.href = '#';
-        dropdownToggle.setAttribute('data-toggle', 'dropdown');
-        dropdownToggle.setAttribute('role', 'button');
-        dropdownToggle.setAttribute('aria-haspopup', 'true');
-        dropdownToggle.setAttribute('aria-expanded', 'false');
+        dropdownToggle.className = 'dropdown-toggle nav-link';
         dropdownToggle.textContent = myCoursesText;
-        if (myCoursesIsActive) {
-            dropdownToggle.classList.add('active');
-        }
 
         const dropdownMenu = document.createElement('div');
         dropdownMenu.className = 'dropdown-menu';
@@ -226,6 +219,7 @@ const loadContent = ({
         desktopNavItem = newNavItem;
     } else {
         // Show loading spinner if we don't have cached data
+        desktopNavItem = desktopElement;
         void getLoadingSpinner().then(spinner => {
             spinner.classList.add('text-center');
             if (!contentLoaded) {
@@ -253,7 +247,7 @@ const loadContent = ({
         }
 
         // Try to get courses from cache first
-        let courses = getCachedCourses(activeFilter);
+        let courses = getCachedCourses();
         const usedCache = !!courses;
 
         // Fetch fresh data if no cache
@@ -278,9 +272,28 @@ const loadContent = ({
             mobileElement
         );
 
-        // If we used cache, fetch fresh data in background
+        // If we used cache, fetch fresh data in background and update dropdown
         if (usedCache) {
-            void fetchCourses(myCourses, filter, activeFilter);
+            void fetchCourses(myCourses, filter, activeFilter).then(
+                freshCourses => {
+                    // Re-render dropdown with fresh data
+                    const freshChildren = coursesToTemplateData(
+                        freshCourses,
+                        myCoursesUrl,
+                        myCoursesText,
+                        favouriteCoursesAtTop.value
+                    );
+                    void renderDropdownTemplates(
+                        templates,
+                        freshChildren,
+                        myCoursesText,
+                        myCoursesIsActive,
+                        myCoursesUrl,
+                        desktopNavItem,
+                        mobileElement
+                    );
+                }
+            );
         }
     });
 };
@@ -313,13 +326,7 @@ const onload = async () => {
     if (!mobileMyCoursesLink) return;
 
     // Check if we have cached data to avoid showing loading indicator
-    const syncFilter =
-        filter.value !== '_sync' ?
-            (JSON.parse(filter.value) as CourseFilter)
-        :   getCachedCourseFilter();
-    const hasCachedData =
-        syncFilter ? getCachedCourses(syncFilter) !== null : false;
-
+    const hasCachedData = getCachedCourses() !== null;
     if (!hasCachedData) {
         myCoursesLink.classList.add(globalStyle.awaitsDropdown);
     }
@@ -335,12 +342,18 @@ const onload = async () => {
     favouriteCoursesAtTop.onChange(() =>
         loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText })
     );
-    filter.onChange(() =>
-        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText })
-    );
 
-    onActiveFilterChanged(() => {
+    filter.onChange(() => {
+        console.log('filter change - manual setting changed');
+        clearCachedCourses(); // Clear cache to force fresh fetch
+        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
+    });
+
+    // Listen to filter changes (both from same page and other tabs)
+    onActiveFilterChanged(changedFilter => {
+        console.log('filter change - active', changedFilter);
         if (filter.value === '_sync') {
+            clearCachedCourses(); // Clear cache to force fresh fetch
             loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
         }
     });
