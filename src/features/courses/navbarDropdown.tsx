@@ -240,7 +240,7 @@ const loadContent = ({
     void Promise.all([
         filter.value === '_sync' ?
             getAvailableCourseFilters().then(getActiveFilter)
-        :   Promise.resolve(syncFilter!),
+        :   Promise.resolve(syncFilter),
         requirePromise([
             'core/templates',
             'block_myoverview/repository',
