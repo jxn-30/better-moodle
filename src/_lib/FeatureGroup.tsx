@@ -19,6 +19,14 @@ type FeatureGroupMethods<ID extends FeatureGroupID> = Partial<
 >;
 
 /**
+ * Defines when a feature group should be loaded
+ * - 'immediate': Load as soon as the script starts (document-start)
+ * - 'moodle-ready': Load once Moodle's M object is available
+ * - 'dom-ready': Load once both M object and DOM are ready
+ */
+export type FeatureGroupLoadTiming = 'immediate' | 'moodle-ready' | 'dom-ready';
+
+/**
  * A class that represents a group of features
  * cannot be instantiated directly but using the register method will return an instantiable version of this class
  */
@@ -28,20 +36,25 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
      * @param args - the methods that are to be implemented
      * @param args.settings - a set of settings for this group (but not settings for features)
      * @param args.features - a set of feature-IDs this group contains in order of appearance in settings
+     * @param args.loadTiming - when this feature group should be loaded
      * @returns a class that can be instantiated
      */
     static register<ID extends FeatureGroupID>({
         settings = new Set<Setting<ID>>(),
         features = new Set<string>(),
+        loadTiming = 'dom-ready',
         ...methods
     }: {
         settings?: Set<Setting<ID>>;
         features?: Set<string>;
+        loadTiming?: FeatureGroupLoadTiming;
     } & FeatureGroupMethods<ID>) {
         /**
          * The instantiable version of the FeatureGroup class
          */
         return class FeatureGroup extends this<ID> {
+            static readonly loadTiming = loadTiming;
+
             /**
              * The constructor for the FeatureGroup class
              * methods are not passed via constructor but via the register method
