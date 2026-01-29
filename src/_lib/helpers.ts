@@ -219,8 +219,8 @@ export const animate = (
  */
 export const isLoggedIn = () =>
     __MOODLE_VERSION__ >= 405 ?
-        ready().then(() => (M.cfg.userId ?? 0) > 1) // M.cfg.userId has been added for 405 https://github.com/moodle/moodle/commit/fbca10b8f320 // userId of 1 is guest user
-    :   ready().then(
+        waitForMoodleAndDom().then(() => (M.cfg.userId ?? 0) > 1) // M.cfg.userId has been added for 405 https://github.com/moodle/moodle/commit/fbca10b8f320 // userId of 1 is guest user
+    :   waitForMoodleAndDom().then(
             () =>
                 !!document.querySelector(
                     `a[href$="/login/logout.php?sesskey=${M.cfg.sesskey}"]`
@@ -240,11 +240,44 @@ export const isDashboard = /^\/my\/(index\.php)?$/.test(
 export const isNewInstallation = GM_listValues().length === 0;
 
 /**
+ * Waits for Moodle's M object to be available.
+ * @param checkDelay - Time between checks for M in ms
+ * @returns a promise that resolves once M is defined
+ */
+export const waitForMoodle = (checkDelay = 10) => {
+    const { promise, resolve } = Promise.withResolvers<void>();
+
+    /**
+     * Checks if M is available and resolves the promise.
+     * @returns void
+     */
+    const check = () => {
+        if (typeof M !== 'undefined') {
+            return resolve();
+        }
+        setTimeout(check, checkDelay);
+    };
+    check();
+
+    return promise;
+};
+
+/**
+ * Waits for both Moodle's M object and the dom to be available.
+ * @returns a promise that resolves once M is defined and the dom is loaded
+ */
+export const waitForMoodleAndDom = () =>
+    Promise.all([ready(), waitForMoodle()]);
+
+/**
  * Checks if the certain JS action in moodle has been completed.
  * @param action - the action string to wait for
  * @returns a promise that resolves once the action string is present in M.util.complete_js
  */
-export const mdlJSComplete = (action: string) => {
+export const mdlJSComplete = async (action: string) => {
+    // Ensure M is available
+    await waitForMoodle();
+
     const { promise, resolve } = Promise.withResolvers<void>();
 
     /**
