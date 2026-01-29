@@ -19,7 +19,7 @@
     // Otherwise: If has a non-empty child
     body.dir-ltr &:has(*:not(:empty))::after,
     body.dir-rtl &:has(*:not(:empty))::before {
-        padding-inline-end: 0.25rem;
+        padding-inline-start: 0.25rem;
         @content;
     }
 }
