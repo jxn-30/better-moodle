@@ -1,13 +1,13 @@
 import CanBeReady from './CanBeReady';
 import { GenericSetting } from './Components';
-import globalStyle from '!/index.module.scss';
+import globalStyle from '#style/index.module.scss';
 import { JSX } from 'jsx-dom';
-import { LL } from 'i18n';
+import { LL } from '#i18n';
 import { LocalizedString } from 'typesafe-i18n';
-import settingsStyle from '!/settings.module.scss';
+import settingsStyle from '#style/settings.module.scss';
 import { STORAGE_V2_SEEN_SETTINGS_KEY } from '../migrateStorage';
 import TempStorage from './TempStorage';
-import toast from '@/toast';
+import toast from '#lib/toast';
 import { UUID } from 'node:crypto';
 import { domID, isNewInstallation, mdToHtml } from './helpers';
 import Feature, { FeatureID, FeatureTranslations } from './Feature';

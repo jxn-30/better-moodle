@@ -1,4 +1,4 @@
-import * as times from '@/times';
+import * as times from '#lib/times';
 import { describe, expect, it } from 'vitest';
 
 describe('times', () => {

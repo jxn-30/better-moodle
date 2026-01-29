@@ -1,19 +1,19 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import CourseBlockTemplate from './courseBlock.mustache?raw';
-import { getLoadingSpinner } from '@/DOM';
-import { getString } from '@/moodleStrings';
-import { LLF } from 'i18n';
-import { renderCustomTemplateAsElements } from '@/templates';
-import { requirePromise } from '@/require.js';
+import { getLoadingSpinner } from '#lib/DOM';
+import { getString } from '#lib/moodleStrings';
+import { LLF } from '#i18n';
+import { renderCustomTemplateAsElements } from '#lib/templates';
+import { requirePromise } from '#lib/require.js';
 import style from '../layout.module.scss';
 import {
     type CourseFilter,
     getActiveFilter,
     getAvailableCourseFilters,
     onActiveFilterChanged,
-} from '@/myCourses';
-import { debounce, domID } from '@/helpers';
-import Drawer, { Side } from '@/Drawer';
+} from '#lib/myCourses';
+import { debounce, domID } from '#lib/helpers';
+import Drawer, { Side } from '#lib/Drawer';
 
 const LL = LLF('dashboard', 'layout');
 

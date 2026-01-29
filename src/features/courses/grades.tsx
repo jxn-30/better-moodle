@@ -1,8 +1,8 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
-import { LLF } from 'i18n';
-import { ready } from '@/DOM';
-import { requirePromise } from '@/require.js';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
+import { LLF } from '#i18n';
+import { ready } from '#lib/DOM';
+import { requirePromise } from '#lib/require.js';
 
 const enabled = new BooleanSetting('enabled', true).addAlias('courses.grades');
 const newTab = new BooleanSetting('newTab', false)

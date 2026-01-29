@@ -1,4 +1,4 @@
-import '!/index.module.scss';
+import '#style/index.module.scss';
 import './migrateStorage';
 import './cleanupStorage';
 

@@ -1,5 +1,5 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
 import hideStyleEl from './hideSelfEnrolHint.scss?style';
 
 const hide = new BooleanSetting('hide', false).addAlias(

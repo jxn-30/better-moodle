@@ -1,4 +1,4 @@
-import { ready } from '@/DOM';
+import { ready } from '#lib/DOM';
 
 if (window.location.pathname.startsWith('/login/')) {
     void ready().then(() =>

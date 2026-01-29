@@ -1,5 +1,5 @@
 import { requirePromise } from './require.js';
-import type { StringRequest } from '#/require.js/core/str.d.ts';
+import type { StringRequest } from '#types/require.js/core/str.d.ts';
 
 /**
  * Calls the correct method for fetching a string from moodle translations.

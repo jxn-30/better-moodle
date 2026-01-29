@@ -1,11 +1,11 @@
-import { animate } from '@/helpers';
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
-import { LLF } from 'i18n';
+import { animate } from '#lib/helpers';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
+import { LLF } from '#i18n';
 import { marquee } from './index';
-import { SliderSetting } from '@/Settings/SliderSetting';
-import { timeToString } from '@/localeString';
-import { ONE_HOUR, ONE_MINUTE, ONE_SECOND } from '@/times';
+import { SliderSetting } from '#lib/Settings/SliderSetting';
+import { timeToString } from '#lib/localeString';
+import { ONE_HOUR, ONE_MINUTE, ONE_SECOND } from '#lib/times';
 
 const enum FUZZYNESS {
     off,

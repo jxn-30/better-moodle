@@ -1,5 +1,5 @@
-import { BETTER_MOODLE_LANG } from 'i18n';
-import { numToString, unit } from '@/localeString';
+import { BETTER_MOODLE_LANG } from '#i18n';
+import { numToString, unit } from '#lib/localeString';
 
 const unitsMetric = {
     temperature: 'celsius',

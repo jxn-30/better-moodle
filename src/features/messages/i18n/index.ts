@@ -1,4 +1,4 @@
-import type { FeatureGroupTranslation } from '#/i18n';
+import type { FeatureGroupTranslation } from '#types/i18n';
 import markdownSupport from './markdownSupport';
 import sendHotkey from './sendHotkey';
 

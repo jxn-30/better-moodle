@@ -1,4 +1,4 @@
-import { getSettingKey, isNewInstallation } from '@/helpers';
+import { getSettingKey, isNewInstallation } from '#lib/helpers';
 
 const STORAGE_VERSION_KEY = 'storageVersion';
 const CURRENT_STORAGE_VERSION = 2.1;

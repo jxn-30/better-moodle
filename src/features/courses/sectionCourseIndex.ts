@@ -1,6 +1,6 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
-import { mdlJSComplete } from '@/helpers';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
+import { mdlJSComplete } from '#lib/helpers';
 
 const enabled = new BooleanSetting('enabled', true);
 

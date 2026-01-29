@@ -1,14 +1,14 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import { datetimeToString } from '@/localeString';
-import FeatureGroup from '@/FeatureGroup';
-import { getHtml } from '@/DOM';
-import globalStyle from '!/index.module.scss';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import { datetimeToString } from '#lib/localeString';
+import FeatureGroup from '#lib/FeatureGroup';
+import { getHtml } from '#lib/DOM';
+import globalStyle from '#style/index.module.scss';
 import { JSX } from 'jsx-dom/jsx-runtime';
-import { LLFG } from 'i18n';
-import { Modal } from '@/Modal';
-import { SliderSetting } from '@/Settings/SliderSetting';
+import { LLFG } from '#i18n';
+import { Modal } from '#lib/Modal';
+import { SliderSetting } from '#lib/Settings/SliderSetting';
 import style from './style.module.scss';
-import toast from '@/toast';
+import toast from '#lib/toast';
 import type { Alert, AlertCache, AlertSummary } from './types';
 import {
     arsToCountyLevel,
@@ -22,7 +22,7 @@ import {
     providerById,
     providerCategoryType,
 } from './util/utils';
-import { cachedRequest, type NetworkResponseType } from '@/network';
+import { cachedRequest, type NetworkResponseType } from '#lib/network';
 import {
     getCategoryLabel,
     getSeverityEmoji,
@@ -32,8 +32,8 @@ import {
     severityToNumber,
     URGENCY,
 } from './util/enums';
-import { NavbarItem, NavbarItemComponent } from '@/Components';
-import { TEN_MINUTES, TEN_SECONDS, THIRTY_SECONDS } from '@/times';
+import { NavbarItem, NavbarItemComponent } from '#lib/Components';
+import { TEN_MINUTES, TEN_SECONDS, THIRTY_SECONDS } from '#lib/times';
 
 // Define Constants
 const LL = LLFG('nina');

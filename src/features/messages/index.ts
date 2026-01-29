@@ -1,4 +1,4 @@
-import FeatureGroup from '@/FeatureGroup';
+import FeatureGroup from '#lib/FeatureGroup';
 
 const features = new Set<string>(['markdownSupport', 'sendHotkey']);
 

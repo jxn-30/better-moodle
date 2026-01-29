@@ -1,10 +1,10 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import externalCSS from './style/external.scss?inline';
-import FeatureGroup from '@/FeatureGroup';
+import FeatureGroup from '#lib/FeatureGroup';
 import mailStyleEl from './style/mail.scss?style';
 import mattermostCSS from './style/mattermost.scss?inline';
 import phoneStyleEl from './style/phone.scss?style';
-import type Setting from '@/Setting';
+import type Setting from '#lib/Setting';
 import webexCSS from './style/webex.scss?inline';
 
 const settings = new Set<Setting>();

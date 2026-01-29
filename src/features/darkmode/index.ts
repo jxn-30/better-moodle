@@ -1,11 +1,11 @@
 import './darkmode.scss';
-import { debounce } from '@/helpers';
+import { debounce } from '#lib/helpers';
 import { DynamicThemeFix } from 'darkreader';
-import FeatureGroup from '@/FeatureGroup';
+import FeatureGroup from '#lib/FeatureGroup';
 import fixes from './fixes.scss?inline';
-import { SelectSetting } from '@/Settings/SelectSetting';
-import type Setting from '@/Setting';
-import { SliderSetting } from '@/Settings/SliderSetting';
+import { SelectSetting } from '#lib/Settings/SelectSetting';
+import type Setting from '#lib/Setting';
+import { SliderSetting } from '#lib/Settings/SliderSetting';
 
 /**
  * Updates the Dark Reader style based on the settings

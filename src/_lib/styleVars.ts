@@ -1,4 +1,4 @@
-import styleVars from '!/variables.module.scss';
+import styleVars from '#style/variables.module.scss';
 
 export const breakpoints = Object.fromEntries(
     (JSON.parse(styleVars.gridBreakpoints) as string).split(';').map(i => {

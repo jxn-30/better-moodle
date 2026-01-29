@@ -1,4 +1,4 @@
-import tempStorage from '@/TempStorage';
+import tempStorage from '#lib/TempStorage';
 import { describe, expect, it } from 'vitest';
 
 describe('TempStorage', () => {

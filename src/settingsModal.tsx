@@ -1,16 +1,16 @@
-import awaitImports from '@/imports';
-import { getLoadingSpinner } from '@/DOM';
-import globalStyle from '!/index.module.scss';
-import { Modal } from '@/Modal';
-import { requirePromise } from '@/require.js';
-import { lt as semverLt } from '@/semver';
-import settingsStyle from '!/settings.module.scss';
+import awaitImports from '#lib/imports';
+import { getLoadingSpinner } from '#lib/DOM';
+import globalStyle from '#style/index.module.scss';
+import { Modal } from '#lib/Modal';
+import { requirePromise } from '#lib/require.js';
+import { lt as semverLt } from '#lib/semver';
+import settingsStyle from '#style/settings.module.scss';
 import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
-import TempStorage from '@/TempStorage';
-import type { ThemeBoostBootstrapTooltipClass } from '#/require.js/theme_boost/bootstrap/tooltip.d.ts';
-import toast from '@/toast';
-import { BETTER_MOODLE_LANG, LL } from 'i18n';
-import { cachedRequest, NETWORK_CACHE_KEY, request } from '@/network';
+import TempStorage from '#lib/TempStorage';
+import type { ThemeBoostBootstrapTooltipClass } from '#types/require.js/theme_boost/bootstrap/tooltip.d.ts';
+import toast from '#lib/toast';
+import { BETTER_MOODLE_LANG, LL } from '#i18n';
+import { cachedRequest, NETWORK_CACHE_KEY, request } from '#lib/network';
 import {
     debounce,
     htmlToElements,
@@ -18,9 +18,13 @@ import {
     mdID,
     mdToHtml,
     rawGithubPath,
-} from '@/helpers';
-import { FIVE_MINUTES, ONE_DAY, ONE_MINUTE, ONE_SECOND } from '@/times';
-import { GithubLink, NavbarItem, type NavbarItemComponent } from '@/Components';
+} from '#lib/helpers';
+import { FIVE_MINUTES, ONE_DAY, ONE_MINUTE, ONE_SECOND } from '#lib/times';
+import {
+    GithubLink,
+    NavbarItem,
+    type NavbarItemComponent,
+} from '#lib/Components';
 import {
     highlightNewSettings as highlightNewSettingsSetting,
     newSettingsTooltip as newSettingsTooltipSetting,

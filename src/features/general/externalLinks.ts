@@ -1,5 +1,5 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
 
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'general.externalLinks'
