@@ -33,7 +33,7 @@
         "typesafe-i18n": "5.26.2"
     },
     "devDependencies": {
-        "@actions/core": "2.0.3",
+        "@actions/core": "3.0.0",
         "@babel/compat-data": "7.28.6",
         "@cloudflare/workers-types": "4.20260129.0",
         "@commitlint/cli": "20.3.1",
