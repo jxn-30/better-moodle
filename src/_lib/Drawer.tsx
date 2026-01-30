@@ -2,7 +2,7 @@ import DrawerTemplate from './Drawer/Drawer.mustache?raw';
 import { getHtml } from '#lib/DOM';
 import { PREFIX } from '#lib/helpers';
 import { requirePromise } from '#lib/require.js';
-import ThemeBoostDrawers from '#types/require.js/theme_boost/drawers';
+import type ThemeBoostDrawers from '#types/require.js/theme_boost/drawers';
 import { putTemplate, renderCustomTemplate } from '#lib/templates';
 
 export enum Side {

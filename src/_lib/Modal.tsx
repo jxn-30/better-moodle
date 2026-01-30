@@ -1,6 +1,6 @@
 import CanBeReady from './CanBeReady';
 import { className } from 'jsx-dom';
-import CoreModalEvents from '#types/require.js/core/modal_events';
+import type CoreModalEvents from '#types/require.js/core/modal_events';
 import type { ModalFactoryConfig } from '#types/require.js/core/modal_factory';
 import modalStyle from '#style/modal.module.scss';
 import type MoodleModal from '#types/require.js/core/modal';

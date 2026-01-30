@@ -1,5 +1,6 @@
+import type { Context } from '#types/require.js/core/templates';
+import type CoreTemplates from '#types/require.js/core/templates';
 import { requirePromise } from '#lib/require.js';
-import CoreTemplates, { Context } from '#types/require.js/core/templates';
 import { htmlToElements, mdlJSComplete } from '#lib/helpers';
 
 /**
