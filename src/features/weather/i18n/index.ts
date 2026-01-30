@@ -1,5 +1,5 @@
 import { i18n as conditions } from '../util/condition';
-import type { FeatureGroupTranslation } from '#/i18n';
+import type { FeatureGroupTranslation } from '#types/i18n';
 
 export const de = {
     name: 'Wetter',

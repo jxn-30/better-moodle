@@ -1,4 +1,4 @@
-import { BETTER_MOODLE_LANG } from 'i18n';
+import { BETTER_MOODLE_LANG } from '#i18n';
 
 /**
  * Returns a DateTimeFormatOptions for a date

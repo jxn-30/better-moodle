@@ -466,31 +466,10 @@ export default defineConfig({
         ),
     },
     resolve: {
-        alias: [
-            {
-                find: /^@(?=\/)/,
-                replacement: path.resolve(__dirname, './src/_lib'),
-            },
-            {
-                find: /^#(?=\/)/,
-                replacement: path.resolve(__dirname, './types'),
-            },
-            {
-                find: /^i18n$/,
-                replacement: path.resolve(__dirname, './src/i18n/i18n'),
-            },
-            {
-                find: /^\+(?=\/)/,
-                replacement: path.resolve(__dirname, './src/templates'),
-            },
-            {
-                find: /^!(?=\/)/,
-                replacement: path.resolve(__dirname, './src/style'),
-            },
-            ...(process.env.VITEST ?
+        alias:
+            process.env.VITEST ?
                 []
-            :   [{ find: /^/, replacement: '', customResolver: i18nResolver }]),
-        ],
+            :   [{ find: /^/, replacement: '', customResolver: i18nResolver }],
     },
     css: {
         preprocessorOptions: {

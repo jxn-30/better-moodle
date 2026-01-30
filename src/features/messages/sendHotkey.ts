@@ -1,5 +1,5 @@
-import Feature from '@/Feature';
-import { SelectSetting } from '@/Settings/SelectSetting';
+import Feature from '#lib/Feature';
+import { SelectSetting } from '#lib/Settings/SelectSetting';
 
 const hotkey = new SelectSetting('sendHotkey', '', [
     '',

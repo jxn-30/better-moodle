@@ -1,10 +1,10 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
-import globalStyle from '!/index.module.scss';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
+import globalStyle from '#style/index.module.scss';
 import mobileTemplate from './navbarDropdown/mobile.mustache?raw';
-import { PREFIX } from '@/helpers';
-import { requirePromise } from '@/require.js';
-import { SelectSetting } from '@/Settings/SelectSetting';
+import { PREFIX } from '#lib/helpers';
+import { requirePromise } from '#lib/require.js';
+import { SelectSetting } from '#lib/Settings/SelectSetting';
 import style from './navbarDropdown/style.module.scss';
 import {
     type CourseFilter,
@@ -12,9 +12,9 @@ import {
     getAvailableCourseFilters,
     getAvailableCourseFiltersAsOptions,
     onActiveFilterChanged,
-} from '@/myCourses';
-import { getHtml, getLoadingSpinner, ready } from '@/DOM';
-import { putTemplate, renderCustomTemplate } from '@/templates';
+} from '#lib/myCourses';
+import { getHtml, getLoadingSpinner, ready } from '#lib/DOM';
+import { putTemplate, renderCustomTemplate } from '#lib/templates';
 
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('myCourses.navbarDropdown')

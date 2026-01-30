@@ -1,11 +1,11 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
-import Drawer, { Side } from '@/Drawer';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
+import Drawer, { Side } from '#lib/Drawer';
 import initCourseSidebar, {
     coursesSidebarEnabled,
     favouriteCoursesAtTop,
 } from './layout/courseSidebar';
-import { isDashboard, isLoggedIn } from '@/helpers';
+import { isDashboard, isLoggedIn } from '#lib/helpers';
 
 const timelineSidebarEnabled = new BooleanSetting(
     'timelineSidebar',

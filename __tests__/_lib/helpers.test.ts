@@ -10,7 +10,7 @@ import {
     mdID,
     PREFIX,
     rawGithubPath,
-} from '@/helpers';
+} from '#lib/helpers';
 
 const { describe, expect, it, vi } = vitest;
 

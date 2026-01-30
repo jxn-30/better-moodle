@@ -1,7 +1,7 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
 import leftStyle from './leftSecondaryNav.module.scss';
-import { ready } from '@/DOM';
+import { ready } from '#lib/DOM';
 
 const enabled = new BooleanSetting('enabled', __UNI__ === 'cau');
 

@@ -1,6 +1,6 @@
-import { debounce } from '@/helpers';
-import { ready } from '@/DOM';
-import style from '!/marquee.module.scss';
+import { debounce } from '#lib/helpers';
+import { ready } from '#lib/DOM';
+import style from '#style/marquee.module.scss';
 
 type Position = 'prepend';
 

@@ -1,14 +1,14 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import { datetimeToString } from '@/localeString';
-import Feature from '@/Feature';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import { datetimeToString } from '#lib/localeString';
+import Feature from '#lib/Feature';
 import { type Locales } from '../../i18n/i18n-types';
 import { marquee } from './index';
-import { Modal } from '@/Modal';
-import { SliderSetting } from '@/Settings/SliderSetting';
+import { Modal } from '#lib/Modal';
+import { SliderSetting } from '#lib/Settings/SliderSetting';
 import style from './eventAdvertisements.module.scss';
-import { BETTER_MOODLE_LANG, LLF } from 'i18n';
-import { cachedRequest, type CachedResponse, icsUrl } from '@/network';
-import { FIVE_MINUTES, ONE_DAY } from '@/times';
+import { BETTER_MOODLE_LANG, LLF } from '#i18n';
+import { cachedRequest, type CachedResponse, icsUrl } from '#lib/network';
+import { FIVE_MINUTES, ONE_DAY } from '#lib/times';
 
 const LL = LLF('navbarMarquee', 'eventAdvertisements');
 

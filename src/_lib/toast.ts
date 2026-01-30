@@ -1,5 +1,8 @@
-import { requirePromise } from '@/require.js';
-import type { ToastConfiguration, ToastMessage } from '#/require.js/core/toast';
+import { requirePromise } from '#lib/require.js';
+import type {
+    ToastConfiguration,
+    ToastMessage,
+} from '#types/require.js/core/toast';
 
 /**
  * Shows a toast message within moodle

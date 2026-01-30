@@ -1,24 +1,24 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import FeatureGroup from '@/FeatureGroup';
-import { FIVE_MINUTES } from '@/times';
-import { getHtml } from '@/DOM';
-import { Modal } from '@/Modal';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import FeatureGroup from '#lib/FeatureGroup';
+import { FIVE_MINUTES } from '#lib/times';
+import { getHtml } from '#lib/DOM';
+import { Modal } from '#lib/Modal';
 import openMeteo from './providers/openMeteo';
 import openWeatherMap from './providers/openWeatherMap';
-import { PREFIX } from '@/helpers';
-import { SelectSetting } from '@/Settings/SelectSetting';
+import { PREFIX } from '#lib/helpers';
+import { SelectSetting } from '#lib/Settings/SelectSetting';
 import { stringify } from './util/units';
-import { TextSetting } from '@/Settings/TextSetting';
+import { TextSetting } from '#lib/Settings/TextSetting';
 import visualCrossing from './providers/visualCrossing';
 import wttrIn from './providers/wttrIn';
-import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
+import { BETTER_MOODLE_LANG, LLFG } from '#i18n';
 import {
     getWeatherEmoji,
     unknownWeather,
     type WeatherCondition,
 } from './util/condition';
-import { NavbarItem, type NavbarItemComponent } from '@/Components';
-import { percent, timeToString } from '@/localeString';
+import { NavbarItem, type NavbarItemComponent } from '#lib/Components';
+import { percent, timeToString } from '#lib/localeString';
 
 const LL = LLFG('weather');
 

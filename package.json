@@ -26,6 +26,23 @@
         "ics-parser:dev": "wrangler dev --config=ics-parser/wrangler.json --ip=127.0.0.1",
         "ci": "yarn lint:fix && yarn prettier:write && yarn build ${0}"
     },
+    "imports": {
+        "#lib/*": [
+            "./src/_lib/*",
+            "./src/_lib/*.ts",
+            "./src/_lib/*.tsx",
+            "./src/_lib/*/index.ts",
+            "./src/_lib/*/index.tsx"
+        ],
+        "#types/*": [
+            "./types/*",
+            "./types/*.d.ts",
+            "./types/*/index.d.ts"
+        ],
+        "#i18n": "./src/i18n/i18n.ts",
+        "#templates/*": "./src/templates/*",
+        "#style/*": "./src/style/*"
+    },
     "dependencies": {
         "@trim21/gm-fetch": "0.3.0",
         "darkreader": "4.9.119",

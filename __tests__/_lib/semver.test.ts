@@ -1,5 +1,5 @@
 import * as vitest from 'vitest';
-import { lt } from '@/semver';
+import { lt } from '#lib/semver';
 
 const { describe, expect, it } = vitest;
 

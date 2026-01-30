@@ -1,5 +1,5 @@
 import GM_fetch from '@trim21/gm-fetch';
-import { PREFIX } from '@/helpers';
+import { PREFIX } from '#lib/helpers';
 
 /**
  * Make a fetch request using the GM-API if `@connect` header exists, otherwise using native fetch

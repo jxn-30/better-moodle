@@ -1,6 +1,6 @@
-import { cachedRequest } from '@/network';
+import { cachedRequest } from '#lib/network';
 import { codeToCondition } from '../util/condition';
-import { FIVE_MINUTES } from '@/times';
+import { FIVE_MINUTES } from '#lib/times';
 import { type Weather, type WeatherResponse } from '../index';
 
 // This is not the whole response but it contains all information needed

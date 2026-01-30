@@ -1,6 +1,6 @@
 import cauNavbar from './cauNavbar';
 import externalLinks from './externalLinks';
-import type { FeatureGroupTranslation } from '#/i18n';
+import type { FeatureGroupTranslation } from '#types/i18n';
 import fullWidth from './fullWidth';
 import googlyEyes from './googlyEyes';
 import leftSecondaryNav from './leftSecondaryNav';

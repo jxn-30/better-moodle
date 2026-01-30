@@ -1,13 +1,13 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import FeatureGroup from '@/FeatureGroup';
-import globalStyle from '!/index.module.scss';
-import { LLFG } from 'i18n';
-import { Modal } from '@/Modal';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import FeatureGroup from '#lib/FeatureGroup';
+import globalStyle from '#style/index.module.scss';
+import { LLFG } from '#i18n';
+import { Modal } from '#lib/Modal';
 import style from './style.module.scss';
-import toast from '@/toast';
-import { getHtml, ready } from '@/DOM';
-import { NavbarItem, NavbarItemComponent } from '@/Components';
-import { putTemplate, render } from '@/templates';
+import toast from '#lib/toast';
+import { getHtml, ready } from '#lib/DOM';
+import { NavbarItem, NavbarItemComponent } from '#lib/Components';
+import { putTemplate, render } from '#lib/templates';
 
 const LL = LLFG('bookmarks');
 

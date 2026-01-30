@@ -1,6 +1,6 @@
-import { getHtml } from '@/DOM';
-import { PREFIX } from '@/helpers';
-import { putTemplate, render } from '@/templates';
+import { getHtml } from '#lib/DOM';
+import { PREFIX } from '#lib/helpers';
+import { putTemplate, render } from '#lib/templates';
 
 /**
  * A utility class to create a fully working block / sidebar.

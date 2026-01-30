@@ -1,7 +1,7 @@
-import { LL } from 'i18n';
-import { Modal } from '@/Modal';
-import { requirePromise } from '@/require.js';
-import { htmlToElements, mdToHtml, PREFIX } from '@/helpers';
+import { LL } from '#i18n';
+import { Modal } from '#lib/Modal';
+import { requirePromise } from '#lib/require.js';
+import { htmlToElements, mdToHtml, PREFIX } from '#lib/helpers';
 
 if (!new RegExp(__UA_REGEX__, __UA_REGEX_FLAGS__).test(navigator.userAgent)) {
     void requirePromise(['core/config'] as const).then(([config]) => {

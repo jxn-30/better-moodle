@@ -1,6 +1,6 @@
-import { capitalize } from '@/localeString';
+import { capitalize } from '#lib/localeString';
 import type { FormattersInitializer } from 'typesafe-i18n';
-import { LLMap } from 'i18n';
+import { LLMap } from '#i18n';
 import type { Formatters, Locales } from './i18n-types';
 
 /**

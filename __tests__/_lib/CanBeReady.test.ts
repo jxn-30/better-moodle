@@ -1,5 +1,5 @@
 import * as vitest from 'vitest';
-import { SimpleReady } from '@/CanBeReady';
+import { SimpleReady } from '#lib/CanBeReady';
 
 const { afterEach, describe, expect, it, vi } = vitest;
 

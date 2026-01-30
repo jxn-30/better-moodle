@@ -1,8 +1,8 @@
-import { BETTER_MOODLE_LANG } from 'i18n';
-import { getDocument } from '@/network';
+import { BETTER_MOODLE_LANG } from '#i18n';
+import { getDocument } from '#lib/network';
 import type Parser from './index';
 import type { Dish, DishType } from '../speiseplan';
-import { ONE_DAY, TEN_MINUTES } from '@/times';
+import { ONE_DAY, TEN_MINUTES } from '#lib/times';
 
 const prices = {
     'de': ['Studierende', 'Hochschulangehörige', 'Externe'],

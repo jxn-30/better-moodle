@@ -1,11 +1,11 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
-import { getDocument } from '@/network';
-import { PREFIX } from '@/helpers';
-import { ready } from '@/DOM';
-import { requirePromise } from '@/require.js';
-import submenuTemplate from '+/userMenuCarouselSubmenu.mustache?raw';
-import { putTemplate, renderCustomTemplate } from '@/templates';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
+import { getDocument } from '#lib/network';
+import { PREFIX } from '#lib/helpers';
+import { ready } from '#lib/DOM';
+import { requirePromise } from '#lib/require.js';
+import submenuTemplate from '#templates/userMenuCarouselSubmenu.mustache?raw';
+import { putTemplate, renderCustomTemplate } from '#lib/templates';
 
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'general.quickRoleChange'
