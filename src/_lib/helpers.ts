@@ -1,4 +1,4 @@
-import { ready } from '@/DOM';
+import { ready } from '#lib/DOM';
 
 /**
  * Prefixes a given string with the global prefix.

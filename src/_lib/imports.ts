@@ -1,5 +1,5 @@
 import Feature from './Feature';
-import { isFeatureGroup } from 'i18n';
+import { isFeatureGroup } from '#i18n';
 import FeatureGroup, {
     FeatureGroupID,
     type FeatureGroupLoadTiming,

@@ -1,5 +1,5 @@
 import { Alert, AlertReferences, Info } from '../types';
-import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
+import { BETTER_MOODLE_LANG, LLFG } from '#i18n';
 
 const LL = LLFG('nina');
 

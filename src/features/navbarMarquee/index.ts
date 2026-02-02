@@ -1,9 +1,9 @@
-import { breakpoints } from '@/styleVars';
-import FeatureGroup from '@/FeatureGroup';
-import Marquee from '@/Marquee';
-import marqueeStyle from '!/marquee.module.scss';
-import { ready } from '@/DOM';
-import { SliderSetting } from '@/Settings/SliderSetting';
+import { breakpoints } from '#lib/styleVars';
+import FeatureGroup from '#lib/FeatureGroup';
+import Marquee from '#lib/Marquee';
+import marqueeStyle from '#style/marquee.module.scss';
+import { ready } from '#lib/DOM';
+import { SliderSetting } from '#lib/Settings/SliderSetting';
 
 const marquee = new Marquee('#usernavigation', 'prepend');
 

@@ -1,7 +1,7 @@
 import christmasCountdown from './christmasCountdown';
 import clock from './clock';
 import eventAdvertisements from './eventAdvertisements';
-import type { FeatureGroupTranslation } from '#/i18n';
+import type { FeatureGroupTranslation } from '#types/i18n';
 
 export const de = {
     name: 'Laufband (Navigationsleiste)',

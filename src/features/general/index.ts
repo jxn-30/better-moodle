@@ -1,8 +1,8 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import FeatureGroup from '@/FeatureGroup';
-import { languages } from 'i18n';
-import { SelectSetting } from '@/Settings/SelectSetting';
-import settingsStyle from '!/settings.module.scss';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import FeatureGroup from '#lib/FeatureGroup';
+import { languages } from '#i18n';
+import { SelectSetting } from '#lib/Settings/SelectSetting';
+import settingsStyle from '#style/settings.module.scss';
 
 export const updateNotification = new BooleanSetting(
     'updateNotification',

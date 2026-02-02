@@ -1,7 +1,7 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
 import maxWidthStyleEl from './images/maxWidth.scss?style';
-import { ready } from '@/DOM';
+import { ready } from '#lib/DOM';
 import zoomStyle from './images/zoom.module.scss';
 
 const maxWidth = new BooleanSetting('maxWidth', true).addAlias(

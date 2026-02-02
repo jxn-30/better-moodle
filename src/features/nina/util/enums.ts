@@ -1,4 +1,4 @@
-import { LLFG } from 'i18n';
+import { LLFG } from '#i18n';
 import { LocalizedString } from 'typesafe-i18n';
 import { getProviderCategory, providerType } from './utils';
 

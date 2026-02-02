@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getDocumentFragmentHtml, getHtml } from '@/DOM';
+import { getDocumentFragmentHtml, getHtml } from '#lib/DOM';
 
 describe('getDocumentFragmentHtml & getHtml for Fragments', () => {
     // A basic a test

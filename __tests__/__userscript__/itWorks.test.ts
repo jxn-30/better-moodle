@@ -1,6 +1,6 @@
 import { isCI } from 'ci-info';
 import { page } from '../puppeteer';
-import settingsStyle from '!/settings.module.scss';
+import settingsStyle from '#style/settings.module.scss';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 // first of all, we want to test if tests are working :)

@@ -1,6 +1,6 @@
 import { type Awaitable } from '@vitest/utils';
 import { expect, test } from 'vitest';
-import { htmlToElements, mdToHtml } from '@/helpers';
+import { htmlToElements, mdToHtml } from '#lib/helpers';
 
 interface TestCase {
     description: string;

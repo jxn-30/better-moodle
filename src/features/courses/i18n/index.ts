@@ -1,6 +1,6 @@
 import cardsPerRow from './cardsPerRow';
 import courseIndexDrawerControls from './courseIndexDrawerControls';
-import type { FeatureGroupTranslation } from '#/i18n';
+import type { FeatureGroupTranslation } from '#types/i18n';
 import grades from './grades';
 import hideSelfEnrolHint from './hideSelfEnrolHint';
 import images from './images';

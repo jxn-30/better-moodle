@@ -1,18 +1,18 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import type Canteens from './canteens';
-import FeatureGroup from '@/FeatureGroup';
-import globalStyle from '!/index.module.scss';
+import FeatureGroup from '#lib/FeatureGroup';
+import globalStyle from '#style/index.module.scss';
 import type { Locales } from '../../i18n/i18n-types';
-import { Modal } from '@/Modal';
+import { Modal } from '#lib/Modal';
 import Parser from './parsers';
-import { SelectSetting } from '@/Settings/SelectSetting';
+import { SelectSetting } from '#lib/Settings/SelectSetting';
 import style from './style.module.scss';
-import { AutoComplete, FieldSet } from '@/Components';
-import { BETTER_MOODLE_LANG, languages, LLFG, LLMap } from 'i18n';
-import { currency, dateToString, timeToString, unit } from '@/localeString';
+import { AutoComplete, FieldSet } from '#lib/Components';
+import { BETTER_MOODLE_LANG, languages, LLFG, LLMap } from '#i18n';
+import { currency, dateToString, timeToString, unit } from '#lib/localeString';
 import type { Dish, Speiseplan } from './speiseplan';
-import { domID, htmlToElements, mdToHtml } from '@/helpers';
-import { getHtml, getLoadingSpinner, ready } from '@/DOM';
+import { domID, htmlToElements, mdToHtml } from '#lib/helpers';
+import { getHtml, getLoadingSpinner, ready } from '#lib/DOM';
 
 const LL = LLFG('speiseplan');
 

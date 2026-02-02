@@ -1,6 +1,6 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
-import { ready } from '@/DOM';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
+import { ready } from '#lib/DOM';
 
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'general.noDownload'

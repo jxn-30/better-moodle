@@ -1,15 +1,15 @@
-import Block from '@/Block';
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import FeatureGroup from '@/FeatureGroup';
+import Block from '#lib/Block';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import FeatureGroup from '#lib/FeatureGroup';
 import { type Locales } from '../../i18n/i18n-types';
 import style from './style.module.scss';
-import { Switch } from '@/Components';
-import { BETTER_MOODLE_LANG, LLFG } from 'i18n';
-import { cachedRequest, type CachedResponse, icsUrl } from '@/network';
-import { dateToString, percent } from '@/localeString';
-import { domID, isDashboard } from '@/helpers';
-import { getHtml, getLoadingSpinner, ready } from '@/DOM';
-import { ONE_DAY, ONE_MINUTE } from '@/times';
+import { Switch } from '#lib/Components';
+import { BETTER_MOODLE_LANG, LLFG } from '#i18n';
+import { cachedRequest, type CachedResponse, icsUrl } from '#lib/network';
+import { dateToString, percent } from '#lib/localeString';
+import { domID, isDashboard } from '#lib/helpers';
+import { getHtml, getLoadingSpinner, ready } from '#lib/DOM';
+import { ONE_DAY, ONE_MINUTE } from '#lib/times';
 
 const LL = LLFG('semesterzeiten');
 

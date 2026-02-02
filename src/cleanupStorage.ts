@@ -1,4 +1,4 @@
-import { NETWORK_CACHE_KEY, type NetworkCache } from '@/network';
+import { NETWORK_CACHE_KEY, type NetworkCache } from '#lib/network';
 
 const networkCache = GM_getValue<NetworkCache>(NETWORK_CACHE_KEY, {
     urls: {},

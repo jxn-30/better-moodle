@@ -1,9 +1,9 @@
-import { BooleanSetting } from '@/Settings/BooleanSetting';
-import Feature from '@/Feature';
-import { LLF } from 'i18n';
+import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import Feature from '#lib/Feature';
+import { LLF } from '#i18n';
 import { marquee } from './index';
-import { mdToHtml } from '@/helpers';
-import { ONE_DAY } from '@/times';
+import { mdToHtml } from '#lib/helpers';
+import { ONE_DAY } from '#lib/times';
 
 const LL = LLF('navbarMarquee', 'christmasCountdown');
 

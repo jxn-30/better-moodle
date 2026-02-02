@@ -1,4 +1,4 @@
-import { breakpoints } from '@/styleVars';
+import { breakpoints } from '#lib/styleVars';
 import { describe, expect, it } from 'vitest';
 
 describe('breakpoints', () => {

@@ -1,6 +1,6 @@
-import Feature from '@/Feature';
-import { ready } from '@/DOM';
-import { SelectSetting } from '@/Settings/SelectSetting';
+import Feature from '#lib/Feature';
+import { ready } from '#lib/DOM';
+import { SelectSetting } from '#lib/Settings/SelectSetting';
 import style from './prideLogo.module.scss';
 
 const flags = Object.keys(style)

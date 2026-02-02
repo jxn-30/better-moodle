@@ -1,8 +1,8 @@
-import Feature from '@/Feature';
-import globalStyle from '!/index.module.scss';
-import { LLF } from 'i18n';
-import { ready } from '@/DOM';
-// import { SelectSetting } from '@/Settings/SelectSetting';
+import Feature from '#lib/Feature';
+import globalStyle from '#style/index.module.scss';
+import { LLF } from '#i18n';
+import { ready } from '#lib/DOM';
+// import { SelectSetting } from '#lib/Settings/SelectSetting';
 import styles from './cauNavbar.module.scss';
 
 const LL = LLF('general', 'cauNavbar');

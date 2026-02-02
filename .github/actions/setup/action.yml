@@ -4,7 +4,8 @@ runs:
     steps:
         - name: 🔎 get Node and yarn versions
           run: |
-              echo "NODE_VERSION=$(jq -r '.engines.node' package.json)"  >> $GITHUB_ENV
+              NODE_VERSION=$(jq -r '.engines.node | sub("^[^0-9]*v?"; "")' package.json)
+              echo "NODE_VERSION=$NODE_VERSION"  >> $GITHUB_ENV
               echo "YARN_VERSION=$(jq -r '.packageManager[5:]' package.json)"  >> $GITHUB_ENV
           shell: bash
 

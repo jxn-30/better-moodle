@@ -1,6 +1,7 @@
-import { requirePromise } from '@/require.js';
-import CoreTemplates, { Context } from '#/require.js/core/templates';
-import { htmlToElements, mdlJSComplete } from '@/helpers';
+import type { Context } from '#types/require.js/core/templates';
+import type CoreTemplates from '#types/require.js/core/templates';
+import { requirePromise } from '#lib/require.js';
+import { htmlToElements, mdlJSComplete } from '#lib/helpers';
 
 /**
  * OMG did Moothel just find a way to make Moodle render custom templates just by storing it hacky into the localstorage?
