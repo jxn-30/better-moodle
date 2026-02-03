@@ -411,16 +411,20 @@ const getCurrentSpeiseplan = () => {
      * Gets the index of the day to expand
      * @returns the index of the day to expand
      */
-    const getExpandedDay = () =>
-        Number(
-            new Date().toDateString() === firstDay?.toDateString() &&
-                new Date().getHours() >= currentCanteen().closingHour
+    const getExpandedDay = () => {
+        const now = Temporal.Now.zonedDateTimeISO();
+        const firstDayStr = firstDay?.toDateString();
+        const nowStr = new Date(now.epochMilliseconds).toDateString();
+        return Number(
+            nowStr === firstDayStr &&
+                now.hour >= currentCanteen().closingHour
         );
+    };
 
     return Promise.all([parse(url), parse(urlNextWeek)])
         .then(([thisWeek, nextWeek]) => {
             footerTimeSpan.textContent = timeToString(
-                new Date(thisWeek.timestamp)
+                Temporal.Instant.fromEpochMilliseconds(thisWeek.timestamp)
             );
 
             firstDay = thisWeek.dishes.keys().next().value;

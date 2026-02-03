@@ -65,7 +65,7 @@ const removeAll = () => {
 const createEventSpan = (event: Event) => {
     const span = (
         <span className={style.eventAdvertisement}>
-            {datetimeToString(new Date(event.start), true, false)}
+            {datetimeToString(Temporal.Instant.from(event.start), true, false)}
             {`: ${event.name[BETTER_MOODLE_LANG]}`}
         </span>
     ) as HTMLSpanElement;
@@ -83,11 +83,11 @@ const createEventSpan = (event: Event) => {
                 <tbody>
                     <tr>
                         <th>{LL.start()}:</th>
-                        <td>{datetimeToString(new Date(event.start))}</td>
+                        <td>{datetimeToString(Temporal.Instant.from(event.start))}</td>
                     </tr>
                     <tr>
                         <th>{LL.end()}:</th>
-                        <td>{datetimeToString(new Date(event.end))}</td>
+                        <td>{datetimeToString(Temporal.Instant.from(event.end))}</td>
                     </tr>
                     {event.rruleString ?
                         <tr>
@@ -137,8 +137,9 @@ const reload = async () => {
         const noticeTimeMs = noticeTime.value * ONE_DAY;
         const events = await getEvents();
         removeAll();
+        const nowMs = Temporal.Now.instant().epochMilliseconds;
         events.forEach(event => {
-            if (new Date(event.start).getTime() <= Date.now() + noticeTimeMs) {
+            if (Temporal.Instant.from(event.start).epochMilliseconds <= nowMs + noticeTimeMs) {
                 const [eventSpan, clickListener] = createEventSpan(event);
                 marquee
                     .add(eventSpan)[0][1]

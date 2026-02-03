@@ -215,7 +215,7 @@ const showAlertDetailsModal = (alertId: string) => {
             );
 
             // Body
-            const sent = datetimeToString(new Date(alert.sent));
+            const sent = datetimeToString(Temporal.Instant.from(alert.sent));
             alertBodyElem.append(
                 <span className="small text-muted">
                     {LL.modal.sentAt()}: {sent}
@@ -228,9 +228,9 @@ const showAlertDetailsModal = (alertId: string) => {
             if (onset && expires) {
                 alertBodyElem.append(
                     <span className="small text-muted">
-                        {datetimeToString(new Date(onset), true, false)}
+                        {datetimeToString(Temporal.Instant.from(onset), true, false)}
                         {' - '}
-                        {datetimeToString(new Date(expires), true, false)}
+                        {datetimeToString(Temporal.Instant.from(expires), true, false)}
                     </span>,
                     <br />
                 );
@@ -596,9 +596,9 @@ const requestAlerts = () =>
                 const duration =
                     onset && expires ?
                         <span className="small text-muted ml-1">
-                            ({datetimeToString(new Date(onset), true, false)}
+                            ({datetimeToString(Temporal.Instant.from(onset), true, false)}
                             {' - '}
-                            {datetimeToString(new Date(expires), true, false)})
+                            {datetimeToString(Temporal.Instant.from(expires), true, false)})
                         </span>
                     :   null;
 
@@ -625,7 +625,7 @@ const requestAlerts = () =>
                         </h5>
                         <span className="small text-muted">
                             {LL.modal.sentAt()}:{' '}
-                            {datetimeToString(new Date(alert.sent))}
+                            {datetimeToString(Temporal.Instant.from(alert.sent))}
                         </span>
                         <br />
                         <p>{shortDescription}</p>

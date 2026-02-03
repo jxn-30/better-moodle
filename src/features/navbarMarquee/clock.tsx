@@ -47,10 +47,10 @@ const fuzzyTranslations = LLF('navbarMarquee', 'clock').fuzzy;
 
 /**
  * Gets the time in the currently set fuzzy format
- * @param now - the current time as a Date
+ * @param now - the current time as a Temporal.ZonedDateTime
  * @returns the fuzzy time string
  */
-const fuzzyTime = (now: Date): string => {
+const fuzzyTime = (now: Temporal.ZonedDateTime): string => {
     const fuzzyness = fuzzy.value as FUZZYNESS;
     if (fuzzyness === FUZZYNESS.off) return '';
     else if (
@@ -61,22 +61,22 @@ const fuzzyTime = (now: Date): string => {
         const sectorSize = (
             { [FUZZYNESS['5min']]: 5, [FUZZYNESS['15min']]: 15 } as const
         )[fuzzyness];
-        const minutes = (now.getTime() % ONE_HOUR) / ONE_MINUTE;
+        const minutes = now.minute + (now.hour % 1) * 60;
         const section = (Math.floor((minutes + sectorSize / 2) / sectorSize) *
             sectorSize) as unknown as keyof typeof translations; // need this unknown conversion here
-        return translations[section]({ hour: now.getHours() % 12 || 12 });
+        return translations[section]({ hour: now.hour % 12 || 12 });
     } else if (fuzzyness === FUZZYNESS.food || fuzzyness === FUZZYNESS.day) {
         const translationKey = (
             { [FUZZYNESS.food]: 'food', [FUZZYNESS.day]: 'day' } as const
         )[fuzzyness];
         const translations = fuzzyTranslations[translationKey];
-        const hour = now.getHours();
+        const hour = now.hour;
         const section = Math.floor(
             hour / (24 / Object.keys(translations).length)
         ).toString() as keyof typeof translations;
         return translations[section]();
     } else if (fuzzyness === FUZZYNESS.week) {
-        const dayOfWeek = now.getDay();
+        const dayOfWeek = now.dayOfWeek;
         const weekSection =
             dayOfWeek === 1 ?
                 0 // Monday
@@ -110,7 +110,7 @@ const onload = () => {
         cancelAnimation = animate(
             ONE_SECOND,
             () => {
-                const now = new Date();
+                const now = Temporal.Now.zonedDateTimeISO();
 
                 if (enabled.value && clockSpanClone) {
                     clockSpan.textContent = clockSpanClone.textContent =

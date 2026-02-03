@@ -2970,7 +2970,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@js-temporal/polyfill@npm:^0.5.1":
+"@js-temporal/polyfill@npm:0.5.1, @js-temporal/polyfill@npm:^0.5.1":
   version: 0.5.1
   resolution: "@js-temporal/polyfill@npm:0.5.1"
   dependencies:
@@ -4426,6 +4426,7 @@ __metadata:
     "@commitlint/cli": "npm:20.4.0"
     "@commitlint/config-conventional": "npm:20.4.0"
     "@eslint/js": "npm:9.39.2"
+    "@js-temporal/polyfill": "npm:0.5.1"
     "@prettier/plugin-xml": "npm:3.4.2"
     "@rollup/plugin-terser": "npm:0.4.4"
     "@sass-fairy/map": "npm:1.1.1"

@@ -99,7 +99,7 @@ const getSemesterzeiten = () =>
         );
 
 const todaySpan = (
-    <span className={style.todaySpan}>{dateToString()}</span>
+    <span className={style.todaySpan}>{dateToString(Temporal.Now.zonedDateTimeISO())}</span>
 ) as HTMLSpanElement;
 const toggleTableBtn = (
     <button className={['btn btn-link btn-sm p-0', style.tableToggle]}>
@@ -163,18 +163,29 @@ toggleTableBtn.addEventListener('click', () =>
  * @returns the parsed dates and the progress
  */
 const getEventDates = (event: Event | Semester) => {
-    const start = new Date(event.start);
+    let start = Temporal.Instant.from(event.start);
     if (event.startDateOnly) {
-        start.setTime(start.getTime() + start.getTimezoneOffset() * ONE_MINUTE);
+        // Adjust for timezone offset when date-only
+        start = start.add({ 
+            nanoseconds: Temporal.Now.zonedDateTimeISO().offsetNanoseconds 
+        });
     }
-    const end = new Date(event.end);
+    let end = Temporal.Instant.from(event.end);
     if (event.endDateOnly) {
-        end.setTime(end.getTime() + end.getTimezoneOffset() * ONE_MINUTE);
+        // Adjust for timezone offset when date-only
+        end = end.add({ 
+            nanoseconds: Temporal.Now.zonedDateTimeISO().offsetNanoseconds 
+        });
     }
-    const duration = end.getTime() - start.getTime();
-    const passed = Date.now() - start.getTime();
+    const duration = end.epochMilliseconds - start.epochMilliseconds;
+    const passed = Temporal.Now.instant().epochMilliseconds - start.epochMilliseconds;
     const progress = Math.max(0, Math.min(passed / duration, 1));
-    return { start, end, duration, progress };
+    return { 
+        start: new Date(start.epochMilliseconds), 
+        end: new Date(end.epochMilliseconds), 
+        duration, 
+        progress 
+    };
 };
 
 let currentSemester = 0;

@@ -28,36 +28,56 @@ const timeFormat = (seconds: boolean) =>
     }) as const;
 
 /**
+ * Converts a Date or Temporal type to a Temporal.ZonedDateTime
+ * @param dateInput - the date input (Date, Temporal.Instant, Temporal.ZonedDateTime, or Temporal.PlainDate)
+ * @returns a Temporal.ZonedDateTime in the system timezone
+ */
+const toZonedDateTime = (
+    dateInput: Date | Temporal.Instant | Temporal.ZonedDateTime | Temporal.PlainDate = Temporal.Now.zonedDateTimeISO()
+): Temporal.ZonedDateTime => {
+    if (dateInput instanceof Date) {
+        return Temporal.Instant.fromEpochMilliseconds(dateInput.getTime()).toZonedDateTimeISO(
+            Temporal.Now.timeZoneId()
+        );
+    } else if (dateInput instanceof Temporal.Instant) {
+        return dateInput.toZonedDateTimeISO(Temporal.Now.timeZoneId());
+    } else if (dateInput instanceof Temporal.PlainDate) {
+        return dateInput.toZonedDateTime({ timeZone: Temporal.Now.timeZoneId(), plainTime: '00:00' });
+    }
+    return dateInput;
+};
+
+/**
  * Returns the localized string representation of a date
- * @param date - the date to localize
+ * @param date - the date to localize (Date, Temporal.Instant, Temporal.ZonedDateTime, or Temporal.PlainDate)
  * @param year - wether to show the year
  * @param weekday - wether to show the weekday
  * @param lang - enforce a special language instead of BETTER_MOODLE_LANG
  * @returns the day as a localized string
  */
 export const dateToString = (
-    date = new Date(),
+    date: Date | Temporal.Instant | Temporal.ZonedDateTime | Temporal.PlainDate = Temporal.Now.zonedDateTimeISO(),
     year = true,
     weekday = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) => date.toLocaleDateString(lang, dateFormat({ year, weekday }));
+) => toZonedDateTime(date).toLocaleString(lang, dateFormat({ year, weekday }));
 
 /**
  * Returns the localized string representation of a time
- * @param date - the date to localize
+ * @param date - the date to localize (Date, Temporal.Instant, Temporal.ZonedDateTime, or Temporal.PlainDate)
  * @param seconds - wether to show seconds
  * @param lang - enforce a special language instead of BETTER_MOODLE_LANG
  * @returns the time as a localized string
  */
 export const timeToString = (
-    date: Date,
+    date: Date | Temporal.Instant | Temporal.ZonedDateTime | Temporal.PlainDate,
     seconds = true,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) => date.toLocaleTimeString(lang, timeFormat(seconds));
+) => toZonedDateTime(date).toLocaleString(lang, timeFormat(seconds));
 
 /**
  * Returns the localized string representation of a datetime
- * @param date - the date to localize
+ * @param date - the date to localize (Date, Temporal.Instant, Temporal.ZonedDateTime, or Temporal.PlainDate)
  * @param year - wether to show the year
  * @param weekday - wether to show the weekday
  * @param seconds - wether to show seconds
@@ -65,13 +85,13 @@ export const timeToString = (
  * @returns the datetime as a localized string
  */
 export const datetimeToString = (
-    date: Date,
+    date: Date | Temporal.Instant | Temporal.ZonedDateTime | Temporal.PlainDate,
     year = true,
     weekday = true,
     seconds = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
 ) =>
-    date.toLocaleString(lang, {
+    toZonedDateTime(date).toLocaleString(lang, {
         ...dateFormat({ year, weekday }),
         ...timeFormat(seconds),
     });

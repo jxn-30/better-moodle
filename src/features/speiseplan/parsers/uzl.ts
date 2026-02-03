@@ -9,7 +9,7 @@ const prices = {
     'en-gb': ['Students', 'University members', 'Guests'],
 };
 
-const todayTreshhold = new Date(Date.now() - ONE_DAY);
+const todayTreshhold = Temporal.Now.instant().subtract({ days: 1 });
 
 /**
  * Extracts the dishes from a day table
@@ -85,9 +85,11 @@ const parse: Parser = (url: string) =>
         doc.querySelectorAll<HTMLDivElement>(
             '.mensatag .tag_headline[data-day]'
         ).forEach(dayEl => {
-            const day = new Date(dayEl.dataset.day ?? '');
+            const dayStr = dayEl.dataset.day ?? '';
+            const day = new Date(dayStr);
+            const dayInstant = Temporal.Instant.fromEpochMilliseconds(day.getTime());
             // invalid date or day is in the past
-            if (isNaN(day.getTime()) || day < todayTreshhold) return;
+            if (isNaN(day.getTime()) || Temporal.Instant.compare(dayInstant, todayTreshhold) < 0) return;
             const dayDishes = getDishes(dayEl);
             if (dayDishes.size > 0) {
                 dishes.set(day, dayDishes);

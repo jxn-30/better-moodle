@@ -42,9 +42,10 @@ interface Semester extends Semesterzeit {
 
 const getBaseEvent = (rawEvent, timeOver = 0): Event => {
     // do not abort parsing events that do have a rrule
+    const nowMs = Temporal.Now.instant().epochMilliseconds;
     if (
         !rawEvent.rrule &&
-        new Date(rawEvent.end).getTime() < Date.now() - timeOver
+        new Date(rawEvent.end).getTime() < nowMs - timeOver
     )
         return null;
     const desc =
@@ -53,11 +54,13 @@ const getBaseEvent = (rawEvent, timeOver = 0): Event => {
         :   (rawEvent.description?.val ?? '');
     const start = new Date(rawEvent.start);
     const end = new Date(rawEvent.end);
+    const endZdt = Temporal.Instant.fromEpochMilliseconds(end.getTime())
+        .toZonedDateTimeISO('UTC');
     if (
-        end.getHours() === 0 &&
-        end.getMinutes() === 0 &&
-        end.getSeconds() === 0 &&
-        end.getMilliseconds() === 0
+        endZdt.hour === 0 &&
+        endZdt.minute === 0 &&
+        endZdt.second === 0 &&
+        endZdt.millisecond === 0
     )
         end.setTime(end.getTime() - 1);
 
@@ -188,17 +191,20 @@ const mapEvents = rawEvents => {
             }
 
             if (raw.rrule) recurringEvents.push([index, event]);
-            else if (event.end >= Date.now()) return event;
+            else if (event.end >= Temporal.Now.instant().epochMilliseconds) return event;
         })
         .filter(Boolean);
 
+    const nowInstant = Temporal.Now.instant();
+    const oneYearLater = nowInstant.add({ days: 365 });
+    
     recurringEvents.forEach(([index, event]) =>
         events.push(
             ...expandRecuringEvent(
                 rawEvents[index],
                 event,
-                new Date(),
-                new Date(Date.now() + ONE_YEAR)
+                new Date(nowInstant.epochMilliseconds),
+                new Date(oneYearLater.epochMilliseconds)
             )
         )
     );

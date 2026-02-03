@@ -44,6 +44,7 @@
         "#style/*": "./src/style/*"
     },
     "dependencies": {
+        "@js-temporal/polyfill": "0.5.1",
         "@trim21/gm-fetch": "0.3.0",
         "darkreader": "4.9.119",
         "jsx-dom": "8.1.6",

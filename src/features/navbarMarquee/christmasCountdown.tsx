@@ -23,19 +23,21 @@ let timeout: ReturnType<typeof setTimeout>;
  */
 const updateCountdown = () => {
     if (!countdownSpanClone) return;
-    const now = new Date();
-    if (now.getDate() === 24 && now.getMonth() === 11) {
+    const now = Temporal.Now.plainDateISO();
+    if (now.day === 24 && now.month === 12) {
         countdownSpan.innerHTML = countdownSpanClone.innerHTML = LL.christmas();
         return;
     }
-    const christmas = new Date(now);
-    christmas.setDate(24);
-    christmas.setMonth(11);
-    if (now > christmas) {
-        christmas.setFullYear(christmas.getFullYear() + 1);
-    }
-    const tillThen = christmas.getTime() - now.getTime();
-    const daysTillThen = Math.floor(tillThen / ONE_DAY);
+    const christmas = Temporal.PlainDate.from({
+        year: now.year,
+        month: 12,
+        day: 24,
+    });
+    const tillThen = 
+        now.until(christmas).total('days') < 0 ?
+            now.until(christmas.add({ years: 1 })).total('days')
+        :   now.until(christmas).total('days');
+    const daysTillThen = Math.floor(tillThen);
     const text =
         short.value ?
             LL.short({ days: daysTillThen })
@@ -57,10 +59,11 @@ const reload = () => {
     if (enabled.value) {
         [[, countdownSpanClone]] = marquee.add(countdownSpan);
         updateCountdown();
-        const midnight = new Date();
-        midnight.setHours(0, 0, 0, 0);
-        midnight.setTime(midnight.getTime() + ONE_DAY);
-        timeout = setTimeout(updateCountdown, midnight.getTime() - Date.now());
+        const midnight = Temporal.Now.zonedDateTimeISO()
+            .startOfDay()
+            .add({ days: 1 });
+        const msUntilMidnight = midnight.epochMilliseconds - Temporal.Now.instant().epochMilliseconds;
+        timeout = setTimeout(updateCountdown, msUntilMidnight);
     } else {
         marquee.remove(countdownSpan);
     }
