@@ -1,4 +1,5 @@
 import { BETTER_MOODLE_LANG } from '#i18n';
+import { Temporal } from '@js-temporal/polyfill';
 
 /**
  * Returns a DateTimeFormatOptions for a date
@@ -60,7 +61,7 @@ export const dateToString = (
     year = true,
     weekday = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) => toZonedDateTime(date).toLocaleString(lang, dateFormat({ year, weekday }));
+) => toZonedDateTime(date).toLocaleString(Array.isArray(lang) ? lang : lang ? String(lang) : undefined, dateFormat({ year, weekday }));
 
 /**
  * Returns the localized string representation of a time
@@ -73,7 +74,7 @@ export const timeToString = (
     date: Date | Temporal.Instant | Temporal.ZonedDateTime | Temporal.PlainDate,
     seconds = true,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) => toZonedDateTime(date).toLocaleString(lang, timeFormat(seconds));
+) => toZonedDateTime(date).toLocaleString(Array.isArray(lang) ? lang : lang ? String(lang) : undefined, timeFormat(seconds));
 
 /**
  * Returns the localized string representation of a datetime
@@ -91,7 +92,7 @@ export const datetimeToString = (
     seconds = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
 ) =>
-    toZonedDateTime(date).toLocaleString(lang, {
+    toZonedDateTime(date).toLocaleString(Array.isArray(lang) ? lang : lang ? String(lang) : undefined, {
         ...dateFormat({ year, weekday }),
         ...timeFormat(seconds),
     });

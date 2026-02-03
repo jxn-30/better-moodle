@@ -1,3 +1,4 @@
+import { Temporal } from '@js-temporal/polyfill';
 import ical from 'node-ical';
 import rruleToWords from './rruleToWords';
 

@@ -1,3 +1,4 @@
+import { Temporal } from '@js-temporal/polyfill';
 import Block from '#lib/Block';
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import FeatureGroup from '#lib/FeatureGroup';
@@ -9,7 +10,7 @@ import { cachedRequest, type CachedResponse, icsUrl } from '#lib/network';
 import { dateToString, percent } from '#lib/localeString';
 import { domID, isDashboard } from '#lib/helpers';
 import { getHtml, getLoadingSpinner, ready } from '#lib/DOM';
-import { ONE_DAY, ONE_MINUTE } from '#lib/times';
+import { ONE_DAY } from '#lib/times';
 
 const LL = LLFG('semesterzeiten');
 

@@ -1,9 +1,9 @@
+import { Temporal } from '@js-temporal/polyfill';
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import Feature from '#lib/Feature';
 import { LLF } from '#i18n';
 import { marquee } from './index';
 import { mdToHtml } from '#lib/helpers';
-import { ONE_DAY } from '#lib/times';
 
 const LL = LLF('navbarMarquee', 'christmasCountdown');
 

@@ -70,7 +70,7 @@ export const LLF = <
     // @ts-expect-error we need extends oneof :(
 ): I18nObject['features'][FeatureGroup]['features'][Feature] =>
     // @ts-expect-error we need extends oneof :(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     LLFG(featureGroup).features[feature];
 
 export const languages = new Map<Locales, Translation['language']>();

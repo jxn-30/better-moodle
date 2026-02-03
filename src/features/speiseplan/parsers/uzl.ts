@@ -1,15 +1,16 @@
+import { Temporal } from '@js-temporal/polyfill';
 import { BETTER_MOODLE_LANG } from '#i18n';
 import { getDocument } from '#lib/network';
 import type Parser from './index';
 import type { Dish, DishType } from '../speiseplan';
-import { ONE_DAY, TEN_MINUTES } from '#lib/times';
+import { TEN_MINUTES } from '#lib/times';
 
 const prices = {
     'de': ['Studierende', 'Hochschulangehörige', 'Externe'],
     'en-gb': ['Students', 'University members', 'Guests'],
 };
 
-const todayTreshhold = Temporal.Now.instant().subtract({ days: 1 });
+const todayTreshhold = Temporal.Now.instant().subtract({ hours: 24 });
 
 /**
  * Extracts the dishes from a day table

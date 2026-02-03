@@ -1,3 +1,4 @@
+import { Temporal } from '@js-temporal/polyfill';
 import { animate } from '#lib/helpers';
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import Feature from '#lib/Feature';
@@ -5,7 +6,7 @@ import { LLF } from '#i18n';
 import { marquee } from './index';
 import { SliderSetting } from '#lib/Settings/SliderSetting';
 import { timeToString } from '#lib/localeString';
-import { ONE_HOUR, ONE_MINUTE, ONE_SECOND } from '#lib/times';
+import { ONE_SECOND } from '#lib/times';
 
 const enum FUZZYNESS {
     off,

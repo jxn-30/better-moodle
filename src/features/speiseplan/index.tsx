@@ -1,3 +1,4 @@
+import { Temporal } from '@js-temporal/polyfill';
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import type Canteens from './canteens';
 import FeatureGroup from '#lib/FeatureGroup';
