@@ -1,3 +1,4 @@
+import { Temporal } from '@js-temporal/polyfill';
 import { cachedRequest } from '#lib/network';
 import { codeToCondition } from '../util/condition';
 import { FIVE_MINUTES } from '#lib/times';
@@ -62,9 +63,9 @@ export default (city: string): Promise<WeatherResponse> => {
                 meta: {
                     providerURL: `https://wttr.in/${city}`,
                     requestURL: url,
-                    time: new Date(
-                        `${weather.localObsDateTime.slice(0, 10)} ${weather.observation_time} +00:00`
-                    ).toISOString(),
+                    time: Temporal.Instant.from(
+                        `${weather.localObsDateTime.slice(0, 10)}T${weather.observation_time}Z`
+                    ).toString(),
                 },
             } satisfies Weather;
         }

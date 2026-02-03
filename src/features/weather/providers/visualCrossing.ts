@@ -1,3 +1,4 @@
+import { Temporal } from '@js-temporal/polyfill';
 import { cachedRequest } from '#lib/network';
 import { codeToCondition } from '../util/condition';
 import { FIVE_MINUTES } from '#lib/times';
@@ -62,7 +63,7 @@ export default (city: string, apiKey: string): Promise<WeatherResponse> => {
                 meta: {
                     providerURL: `https://visualcrossing.com`,
                     requestURL: url,
-                    time: new Date(weather.datetimeEpoch * 1000).toISOString(),
+                    time: Temporal.Instant.fromEpochMilliseconds(weather.datetimeEpoch * 1000).toString(),
                 },
             } satisfies Weather;
         }

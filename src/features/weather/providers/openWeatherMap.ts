@@ -1,3 +1,4 @@
+import { Temporal } from '@js-temporal/polyfill';
 import { cachedRequest } from '#lib/network';
 import { codeToCondition } from '../util/condition';
 import { FIVE_MINUTES } from '#lib/times';
@@ -76,7 +77,7 @@ export default (
                 meta: {
                     providerURL: `https://openweathermap.org`,
                     requestURL: url,
-                    time: new Date(weather.dt * 1000).toISOString(),
+                    time: Temporal.Instant.fromEpochMilliseconds(weather.dt * 1000).toString(),
                 },
             } satisfies Weather;
         }

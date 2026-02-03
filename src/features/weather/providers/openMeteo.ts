@@ -1,3 +1,4 @@
+import { Temporal } from '@js-temporal/polyfill';
 import { cachedRequest } from '#lib/network';
 import { codeToCondition } from '../util/condition';
 import { FIVE_MINUTES } from '#lib/times';
@@ -34,10 +35,11 @@ export default (lat: number, lon: number): Promise<WeatherResponse> => {
         FIVE_MINUTES,
         'json',
         (data: OpenMeteoResponse) => {
-            const timestamp = new Date(data.current.time * 1000);
+            const timestamp = Temporal.Instant.fromEpochMilliseconds(data.current.time * 1000)
+                .toZonedDateTimeISO(Temporal.Now.timeZoneId());
             const minutelyIndex =
-                timestamp.getHours() * 4 +
-                Math.ceil((timestamp.getMinutes() + 1) / 15);
+                timestamp.hour * 4 +
+                Math.ceil((timestamp.minute + 1) / 15);
             return {
                 condition: codeToCondition(
                     'openMeteo',
@@ -59,7 +61,7 @@ export default (lat: number, lon: number): Promise<WeatherResponse> => {
                 meta: {
                     providerURL: `https://open-meteo.com`,
                     requestURL: url,
-                    time: timestamp.toISOString(),
+                    time: timestamp.toInstant().toString(),
                 },
             } satisfies Weather;
         }
