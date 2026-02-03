@@ -167,15 +167,17 @@ const getEventDates = (event: Event | Semester) => {
     let start = Temporal.Instant.from(event.start);
     if (event.startDateOnly) {
         // Adjust for timezone offset when date-only
+        const startZdt = start.toZonedDateTimeISO(Temporal.Now.timeZoneId());
         start = start.add({ 
-            nanoseconds: Temporal.Now.zonedDateTimeISO().offsetNanoseconds 
+            nanoseconds: startZdt.offsetNanoseconds 
         });
     }
     let end = Temporal.Instant.from(event.end);
     if (event.endDateOnly) {
         // Adjust for timezone offset when date-only
+        const endZdt = end.toZonedDateTimeISO(Temporal.Now.timeZoneId());
         end = end.add({ 
-            nanoseconds: Temporal.Now.zonedDateTimeISO().offsetNanoseconds 
+            nanoseconds: endZdt.offsetNanoseconds 
         });
     }
     const duration = end.epochMilliseconds - start.epochMilliseconds;

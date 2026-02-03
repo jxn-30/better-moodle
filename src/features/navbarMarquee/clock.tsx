@@ -62,7 +62,7 @@ const fuzzyTime = (now: Temporal.ZonedDateTime): string => {
         const sectorSize = (
             { [FUZZYNESS['5min']]: 5, [FUZZYNESS['15min']]: 15 } as const
         )[fuzzyness];
-        const minutes = now.minute + (now.hour % 1) * 60;
+        const minutes = now.minute;
         const section = (Math.floor((minutes + sectorSize / 2) / sectorSize) *
             sectorSize) as unknown as keyof typeof translations; // need this unknown conversion here
         return translations[section]({ hour: now.hour % 12 || 12 });

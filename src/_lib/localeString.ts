@@ -29,6 +29,14 @@ const timeFormat = (seconds: boolean) =>
     }) as const;
 
 /**
+ * Normalizes Intl.LocalesArgument to a format acceptable by Temporal.toLocaleString
+ * @param lang - the locale argument
+ * @returns a string, string array, or undefined
+ */
+const normalizeLang = (lang: Intl.LocalesArgument): string | string[] | undefined =>
+    Array.isArray(lang) ? lang : lang ? String(lang) : undefined;
+
+/**
  * Converts a Date or Temporal type to a Temporal.ZonedDateTime
  * @param dateInput - the date input (Date, Temporal.Instant, Temporal.ZonedDateTime, or Temporal.PlainDate)
  * @returns a Temporal.ZonedDateTime in the system timezone
@@ -61,7 +69,7 @@ export const dateToString = (
     year = true,
     weekday = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) => toZonedDateTime(date).toLocaleString(Array.isArray(lang) ? lang : lang ? String(lang) : undefined, dateFormat({ year, weekday }));
+) => toZonedDateTime(date).toLocaleString(normalizeLang(lang), dateFormat({ year, weekday }));
 
 /**
  * Returns the localized string representation of a time
@@ -74,7 +82,7 @@ export const timeToString = (
     date: Date | Temporal.Instant | Temporal.ZonedDateTime | Temporal.PlainDate,
     seconds = true,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) => toZonedDateTime(date).toLocaleString(Array.isArray(lang) ? lang : lang ? String(lang) : undefined, timeFormat(seconds));
+) => toZonedDateTime(date).toLocaleString(normalizeLang(lang), timeFormat(seconds));
 
 /**
  * Returns the localized string representation of a datetime
@@ -92,7 +100,7 @@ export const datetimeToString = (
     seconds = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
 ) =>
-    toZonedDateTime(date).toLocaleString(Array.isArray(lang) ? lang : lang ? String(lang) : undefined, {
+    toZonedDateTime(date).toLocaleString(normalizeLang(lang), {
         ...dateFormat({ year, weekday }),
         ...timeFormat(seconds),
     });

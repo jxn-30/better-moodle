@@ -33,10 +33,11 @@ const updateCountdown = () => {
         month: 12,
         day: 24,
     });
+    const daysUntil = now.until(christmas).total('days');
     const tillThen = 
-        now.until(christmas).total('days') < 0 ?
+        daysUntil < 0 ?
             now.until(christmas.add({ years: 1 })).total('days')
-        :   now.until(christmas).total('days');
+        :   daysUntil;
     const daysTillThen = Math.floor(tillThen);
     const text =
         short.value ?

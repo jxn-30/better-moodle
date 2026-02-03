@@ -192,7 +192,7 @@ const mapEvents = rawEvents => {
             }
 
             if (raw.rrule) recurringEvents.push([index, event]);
-            else if (event.end >= Temporal.Now.instant().epochMilliseconds) return event;
+            else if (event.end.getTime() >= Temporal.Now.instant().epochMilliseconds) return event;
         })
         .filter(Boolean);
 
