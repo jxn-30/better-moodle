@@ -52,9 +52,9 @@
     "devDependencies": {
         "@actions/core": "3.0.0",
         "@babel/compat-data": "7.28.6",
-        "@cloudflare/workers-types": "4.20260131.0",
-        "@commitlint/cli": "20.4.0",
-        "@commitlint/config-conventional": "20.4.0",
+        "@cloudflare/workers-types": "4.20260203.0",
+        "@commitlint/cli": "20.4.1",
+        "@commitlint/config-conventional": "20.4.1",
         "@eslint/js": "9.39.2",
         "@prettier/plugin-xml": "3.4.2",
         "@rollup/plugin-terser": "0.4.4",
@@ -89,9 +89,9 @@
         "fast-glob": "3.3.3",
         "globals": "17.3.0",
         "jiti": "2.6.1",
-        "jsdom": "27.4.0",
+        "jsdom": "28.0.0",
         "mini-svg-data-uri": "1.4.4",
-        "node-ical": "0.24.2",
+        "node-ical": "0.25.0",
         "nodejs-file-downloader": "4.13.0",
         "postcss": "8.5.6",
         "postcss-inline-svg": "6.0.0",
@@ -110,7 +110,7 @@
         "vite": "7.3.1",
         "vite-plugin-monkey": "7.1.9",
         "vitest": "4.0.18",
-        "wrangler": "4.61.1"
+        "wrangler": "4.62.0"
     },
     "engines": {
         "node": "^24.13.0"
