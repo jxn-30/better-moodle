@@ -1,10 +1,11 @@
-import Feature from './Feature';
+import { featurePrerequisitesReady } from './helpers';
 import { FieldSet } from './Components';
 import globalStyle from '#style/index.module.scss';
 import { LL } from '#i18n';
 import Setting from './Setting';
 import settingsStyle from '#style/settings.module.scss';
 import { Translation } from '../i18n/i18n-types';
+import Feature, { FeatureLoadPrerequisites } from './Feature';
 
 export type FeatureGroupID = keyof Translation['features'];
 export type FeatureGroupTranslations<
@@ -19,14 +20,6 @@ type FeatureGroupMethods<ID extends FeatureGroupID> = Partial<
 >;
 
 /**
- * Defines when a feature group should be loaded
- * - 'immediate': Load as soon as the script starts (document-start)
- * - 'moodle-ready': Load once Moodle's M object is available
- * - 'dom-ready': Load once both M object and DOM are ready
- */
-export type FeatureGroupLoadTiming = 'immediate' | 'moodle-ready' | 'dom-ready';
-
-/**
  * A class that represents a group of features
  * cannot be instantiated directly but using the register method will return an instantiable version of this class
  */
@@ -36,32 +29,38 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
      * @param args - the methods that are to be implemented
      * @param args.settings - a set of settings for this group (but not settings for features)
      * @param args.features - a set of feature-IDs this group contains in order of appearance in settings
-     * @param args.loadTiming - when this feature group should be loaded
+     * @param args.loadPrerequisites - when this feature group should be loaded
+     * @param args.featuresInheritPrerequisites - Wether features should inherit prerequisites from the group if their own are `null`
      * @returns a class that can be instantiated
      */
     static register<ID extends FeatureGroupID>({
         settings = new Set<Setting<ID>>(),
         features = new Set<string>(),
-        loadTiming = 'dom-ready',
+        loadPrerequisites = null,
+        featuresInheritPrerequisites = false,
         ...methods
     }: {
         settings?: Set<Setting<ID>>;
         features?: Set<string>;
-        loadTiming?: FeatureGroupLoadTiming;
+        loadPrerequisites?: FeatureLoadPrerequisites;
+        featuresInheritPrerequisites?: boolean;
     } & FeatureGroupMethods<ID>) {
         /**
          * The instantiable version of the FeatureGroup class
          */
         return class FeatureGroup extends this<ID> {
-            static readonly loadTiming = loadTiming;
-
             /**
              * The constructor for the FeatureGroup class
              * methods are not passed via constructor but via the register method
              * @param id - the ID of this feature group
              */
             constructor(id: ID) {
-                super(id, settings ?? new Set<Setting<ID>>(), methods);
+                super(
+                    id,
+                    settings ?? new Set<Setting<ID>>(),
+                    methods,
+                    loadPrerequisites
+                );
             }
 
             /**
@@ -75,10 +74,17 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
                 if (this.#features.size) throw Error('Features already loaded');
                 if (!features) return;
                 const formGroups = new Set<Element>();
+                let inheritedPrerequisites:
+                    | FeatureLoadPrerequisites
+                    | undefined = undefined;
+                if (featuresInheritPrerequisites) {
+                    inheritedPrerequisites = this.#loadPrerequisites;
+                }
+
                 for (const id of features) {
                     const feature = loadFn(id);
                     if (feature) {
-                        feature.load();
+                        feature.load(inheritedPrerequisites);
                         this.#features.add(feature);
                         feature.formGroups.forEach(formGroup =>
                             formGroups.add(formGroup)
@@ -116,6 +122,7 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
     readonly #features = new Set<Feature<ID>>();
 
     readonly #FieldSet: ReturnType<typeof FieldSet>;
+    readonly #loadPrerequisites: FeatureLoadPrerequisites;
 
     #settingsLoaded = false;
     #loaded = false;
@@ -125,16 +132,19 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
      * @param id - the id of this feature group
      * @param settings - the settings for this feature group that are independent of a specific feature
      * @param methods - the methods that are to be implemented (init, onload, onunload)
+     * @param loadTiming - when the feature group should be loaded
      */
     protected constructor(
         id: ID,
         settings: Set<Setting<ID>>,
-        methods: FeatureGroupMethods<ID>
+        methods: FeatureGroupMethods<ID>,
+        loadTiming: FeatureLoadPrerequisites
     ) {
         this.#id = id;
         this.#settings = settings;
         this.#onload = methods.onload;
         this.#onunload = methods.onunload;
+        this.#loadPrerequisites = loadTiming;
 
         this.#FieldSet = FieldSet({
             id: `settings-fieldset-${this.id}`,
@@ -250,9 +260,14 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
         if (this.#loaded) {
             throw Error(`FeatureGroup ${this.id} already loaded.`);
         }
-        this.#loaded = true;
 
-        void this.#onload?.();
+        featurePrerequisitesReady(this.#loadPrerequisites)
+            .then(() => {
+                this.#loaded = true;
+
+                void this.#onload?.();
+            })
+            .catch(console.error);
     }
 
     /**

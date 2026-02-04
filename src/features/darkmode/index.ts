@@ -102,5 +102,5 @@ const onload = () =>
 export default FeatureGroup.register({
     settings,
     onload,
-    loadTiming: 'moodle-ready',
+    loadPrerequisites: 'moodle-ready',
 });

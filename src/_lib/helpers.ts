@@ -1,3 +1,4 @@
+import { FeatureLoadPrerequisites } from './Feature';
 import { ready } from '#lib/DOM';
 
 /**
@@ -244,7 +245,7 @@ export const isNewInstallation = GM_listValues().length === 0;
  * @param checkDelay - Time between checks for M in ms
  * @returns a promise that resolves once M is defined
  */
-export const moodleReady = (checkDelay = 10) => {
+const moodleReady = (checkDelay = 1) => {
     const { promise, resolve } = Promise.withResolvers<void>();
 
     /**
@@ -266,7 +267,34 @@ export const moodleReady = (checkDelay = 10) => {
  * Waits for both Moodle's M object and the dom to be available.
  * @returns a promise that resolves once M is defined and the dom is loaded
  */
-export const moodleAndDomReady = () => Promise.all([ready(), moodleReady()]);
+const moodleAndDomReady = () => Promise.all([ready(), moodleReady()]);
+
+/**
+ * Waits for the specified feature prerequisites to be met.
+ * @param loadPrerequisites - The specified feature prerequisites
+ * @param defaultPrerequisites - Default behaviour if `loadPrerequisites` is `null`
+ */
+export const featurePrerequisitesReady = async (
+    loadPrerequisites: FeatureLoadPrerequisites,
+    defaultPrerequisites: FeatureLoadPrerequisites = 'moodle-and-dom-ready'
+): Promise<void> => {
+    switch (loadPrerequisites ?? defaultPrerequisites) {
+        case 'moodle-ready':
+            await moodleReady();
+            break;
+
+        case 'dom-ready':
+            await ready();
+            break;
+
+        case 'moodle-and-dom-ready':
+            await moodleAndDomReady();
+            break;
+
+        default:
+            break;
+    }
+};
 
 /**
  * Checks if the certain JS action in moodle has been completed.
