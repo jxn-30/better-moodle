@@ -29,7 +29,9 @@ const language = new SelectSetting('language', 'auto', [
             key: locale,
             title: `${flag} ${name}`,
         })),
-]).addAlias('speiseplan.language');
+])
+    .addAlias('speiseplan.language')
+    .disabledIf(enabled, '!=', true);
 
 /**
  * Gets the currently set speiseplan language
@@ -57,7 +59,7 @@ const canteen = new SelectSetting(
     'canteen',
     Array.from(canteens.keys())[0],
     Array.from(canteens.values())
-);
+).disabledIf(enabled, '!=', true);
 
 if (__UNI__ === 'cau') {
     canteen.addAlias(

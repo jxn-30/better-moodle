@@ -18,6 +18,7 @@ Thanks for reading this contribution guide! 😊
     - [Changelog](#changelog)
     - [How-Tos](#how-tos)
         - [Adding a new `FeatureGroup`](#adding-a-new-featuregroup)
+        - [Supporting a new moodle instance][#new-config]
     - [Calendars](#calendars)
         - [Semesterzeiten](#semesterzeiten)
         - [Events](#events)
@@ -40,11 +41,10 @@ The basic contribution steps are:
 
 ### Bundling
 
-In order to create a working userscript, the project needs to be bundled. If not existend, create a config for the target moodle instance in the `configs` folder.
-Please see the `configs/_config.d.ts` file for reference on how configs need to be defined.
+In order to create a working userscript, the project needs to be bundled. If not existend, create a config for the target moodle instance in the `configs` folder, see [Supporting a new moodle instance][#new-config] for further information.
 
 For bundling, simply run `yarn build <config>` where `<config>` is the name of your config file, without the `.json` file extension.
-Afterwards you may copy the userscript into your clipboard to paste it into the editor of your userscript manager (On Linux systems using X11, this could for example be achieved by running `cat dist/better-moodle-<config>.user.js | xclip -selection c`).
+Afterwards you may copy the userscript into your clipboard to paste it into the editor of your userscript manager (On Linux systems using X11, this could for example be achieved by running `cat dist/better-moodle-<config>.user.js | xclip -selection c`, using Wayland by running `wl-copy < dist/better-moodle-<config>.user.js`).
 
 If you want to lint and prettify the codebase before bundling, you can run `yarn ci <config>` instead. If new translations are used, ESLint will fail, you will have to run `yarn i18n:once` before to avoid this.
 
@@ -94,6 +94,14 @@ The position within the array determines the position of the fieldset within the
 
 It is also important to import and use the translations in `src/i18n/*/index.ts`, otherwise it will not be recognized as a `FeatureGroup`.
 
+#### Supporting a new moodle instance
+
+Better-Moodle is built using config files. For each moodle instance, one config file is required, defining attributes such as the URL of the moodle instance and features included in the Better-Moodle build.
+
+Existing config files such as [`/configs/uzl.json`][config-uzl] and [`/configs/cau.json`][config-cau] will give an idea on how configs look in general.
+
+Please see the [`configs/_config.d.ts`][config-types] file for reference on how configs need to be defined. Out of these Types, a JSON schema [`configs/_schema.json`][config-schema] is created, allowing IDEs to help creating a new config file.
+
 ### Calendars
 
 Calendars MUST[^keyword] provide a link that returns an iCalendar ([RFC 5545](https://www.rfc-editor.org/rfc/rfc5545.txt)) string.
@@ -123,5 +131,10 @@ TBD
 
 [cc]: https://www.conventionalcommits.org/
 [rp]: https://github.com/googleapis/release-please/
+[#new-config]: #supporting-a-new-moodle-instance
+[config-types]: ./configs/_config.d.ts
+[config-schema]: ./configs/_schema.json
+[config-uzl]: ./configs/uzl.json
+[config-cau]: ./configs/cau.json
 
 [^keyword]: The key words `MUST`, `MUST NOT`, `REQUIRED`, `SHALL`, `SHALL NOT`, `SHOULD`, `SHOULD NOT`, `RECOMMENDED`, `MAY`, and `OPTIONAL` in this document are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
