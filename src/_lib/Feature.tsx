@@ -26,14 +26,14 @@ type FeatureMethods<
 /**
  * Defines when a feature should be loaded
  * - `null` - Default behaviour should be followed
- * - `immediate` - Load as soon as the script starts (document-start)
+ * - `none` - Load as soon as the script starts (document-start)
  * - `moodle-ready` - Load once Moodle's M object is available
  * - `dom-ready` - Load once DOM is ready
  * - `moodle-and-dom-ready` - Load once both M object and DOM are ready
  */
 export type FeatureLoadPrerequisites =
     | null
-    | 'immediate'
+    | 'none'
     | 'moodle-ready'
     | 'dom-ready'
     | 'moodle-and-dom-ready';
