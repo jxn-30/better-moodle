@@ -1,3 +1,4 @@
+import { featurePrerequisitesReady } from './helpers';
 import Setting from './Setting';
 import FeatureGroup, {
     FeatureGroupID,
@@ -23,6 +24,21 @@ type FeatureMethods<
 >;
 
 /**
+ * Defines when a feature should be loaded
+ * - `null` - Default behaviour should be followed
+ * - `none` - Load as soon as the script starts (document-start)
+ * - `moodle-ready` - Load once Moodle's M object is available
+ * - `dom-ready` - Load once DOM is ready
+ * - `moodle-and-dom-ready` - Load once both M object and DOM are ready
+ */
+export type FeatureLoadPrerequisites =
+    | null
+    | 'none'
+    | 'moodle-ready'
+    | 'dom-ready'
+    | 'moodle-and-dom-ready';
+
+/**
  * A class that represents a single feature
  * cannot be instantiated directly but using the register method will return an instantiable version of this class
  */
@@ -34,12 +50,17 @@ export default abstract class Feature<
      * This registering workaround is necessary so that we can have readonly private id that is automatically generated from the filepath
      * @param args - the methods that are to be implemented
      * @param args.settings - the settings for this feature
+     * @param args.loadPrerequisites - when this feature should be loaded
      * @returns a class that can be instantiated
      */
     static register<Group extends FeatureGroupID, ID extends FeatureID<Group>>({
         settings,
+        loadPrerequisites = null,
         ...methods
-    }: { settings?: Set<Setting<Group, ID>> } & FeatureMethods<Group, ID>) {
+    }: {
+        settings?: Set<Setting<Group, ID>>;
+        loadPrerequisites?: FeatureLoadPrerequisites;
+    } & FeatureMethods<Group, ID>) {
         /**
          * The instantiable version of the Feature class
          */
@@ -55,7 +76,8 @@ export default abstract class Feature<
                     id,
                     group,
                     settings ?? new Set<Setting<Group, ID>>(),
-                    methods
+                    methods,
+                    loadPrerequisites
                 );
             }
         };
@@ -68,6 +90,7 @@ export default abstract class Feature<
     readonly #onunload: FeatureMethods<Group, ID>['onunload'];
 
     readonly #FormGroups: Element[] = [];
+    readonly #loadPrerequisites: FeatureLoadPrerequisites;
 
     #loaded = false;
 
@@ -77,18 +100,21 @@ export default abstract class Feature<
      * @param group - the group this feature belongs to
      * @param settings - the settings of this group
      * @param methods - the methods that are to be implemented (init, onload, onunload)
+     * @param loadPrerequisites - when the feature group should be loaded
      */
     protected constructor(
         id: ID,
         group: FeatureGroup<Group>,
         settings: Set<Setting<Group, ID>>,
-        methods: FeatureMethods<Group, ID>
+        methods: FeatureMethods<Group, ID>,
+        loadPrerequisites: FeatureLoadPrerequisites
     ) {
         this.#id = id;
         this.#group = group;
         this.#settings = settings;
         this.#onload = methods.onload;
         this.#onunload = methods.onunload;
+        this.#loadPrerequisites = loadPrerequisites;
 
         this.#settings.forEach(setting => {
             setting.feature = this;
@@ -156,15 +182,23 @@ export default abstract class Feature<
     /**
      * Load the feature
      * calls #onload internally
+     * @param groupPrerequisites - Can be inherited by the feature's group if its own prerequisites are `null`
      * @throws {Error} if the feature is already loaded
      */
-    load() {
+    load(groupPrerequisites?: FeatureLoadPrerequisites) {
         if (this.#loaded) {
             throw Error(`Feature ${this.id} already loaded.`);
         }
-        this.#loaded = true;
 
-        void this.#onload?.();
+        featurePrerequisitesReady(
+            this.#loadPrerequisites ?? groupPrerequisites ?? null
+        )
+            .then(() => {
+                this.#loaded = true;
+
+                void this.#onload?.();
+            })
+            .catch(console.error);
     }
 
     /**

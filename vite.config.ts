@@ -743,7 +743,7 @@ export default defineConfig({
                 'updateURL': `${releaseDownloadUrl}/${metaFileName}`,
                 'downloadURL': `${releaseDownloadUrl}/${fileName}`,
                 'match': `${config.moodleUrl}/*`,
-                'run-at': 'document-body',
+                'run-at': 'document-start',
                 'connect': connects,
                 'require': requires,
             },
