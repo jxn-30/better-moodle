@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.6.6](https://github.com/jxn-30/better-moodle/compare/2.6.5...2.6.6) (2026-02-07)
+
+
+### Bug Fixes
+
+* **speiseplan:** disable speiseplan settings if speiseplan is disabled ([87ad4c1](https://github.com/jxn-30/better-moodle/commit/87ad4c18216462980f30400c731ec101e61fa857))
+
+
+### Performance Improvements
+
+* Run userscript at document-start to improve startup time ([#968](https://github.com/jxn-30/better-moodle/issues/968)) ([4a6c2f1](https://github.com/jxn-30/better-moodle/commit/4a6c2f15d971b3637106b3620aabfec088a70091))
+
 ## [2.6.5](https://github.com/jxn-30/better-moodle/compare/2.6.4...2.6.5) (2026-01-31)
 
 
