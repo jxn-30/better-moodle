@@ -1255,10 +1255,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20260205.0":
-  version: 4.20260205.0
-  resolution: "@cloudflare/workers-types@npm:4.20260205.0"
-  checksum: 10c0/b4673a8b430f793fda5f59bbb8402031c6ee78dab042206950009ec3e079b0ad8312791f5d5ebdc0268b0fd4df379068f0b2bf50b889deb8fb838b6e9f9591f8
+"@cloudflare/workers-types@npm:4.20260207.0":
+  version: 4.20260207.0
+  resolution: "@cloudflare/workers-types@npm:4.20260207.0"
+  checksum: 10c0/6b78281fa5f19c7100fc6639615f801af907882be66ea8b9c2a502c28b61ba5d93dc6d953667fc9e0cf7cf030715065039a5ff64c9b58c8d5f3685ad6a179257
   languageName: node
   linkType: hard
 
@@ -2013,7 +2013,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@csstools/postcss-text-decoration-shorthand@npm:^5.0.1":
+"@csstools/postcss-text-decoration-shorthand@npm:^5.0.2":
   version: 5.0.2
   resolution: "@csstools/postcss-text-decoration-shorthand@npm:5.0.2"
   dependencies:
@@ -3576,12 +3576,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:25.2.1":
-  version: 25.2.1
-  resolution: "@types/node@npm:25.2.1"
+"@types/node@npm:*, @types/node@npm:25.2.2":
+  version: 25.2.2
+  resolution: "@types/node@npm:25.2.2"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10c0/ce42fa07495093c55b6398e3c4346d644a61b8c4f59d2e0c0ed152ea0e4327c60a41d5fdfa3e0fc4f4776eb925e2b783b6b942501fc044328a44980bc2de4dc6
+  checksum: 10c0/45aa45b00df0aac4712c2d6e934a6ed21ac54e0284dd726df1c7620b8c7d36a4fb601b9f8fe1d2951298d1ee7618cf8275688e329c295eb36e8b8fa827a8e334
   languageName: node
   linkType: hard
 
@@ -4366,7 +4366,7 @@ __metadata:
   dependencies:
     "@actions/core": "npm:3.0.0"
     "@babel/compat-data": "npm:7.29.0"
-    "@cloudflare/workers-types": "npm:4.20260205.0"
+    "@cloudflare/workers-types": "npm:4.20260207.0"
     "@commitlint/cli": "npm:20.4.1"
     "@commitlint/config-conventional": "npm:20.4.1"
     "@eslint/js": "npm:9.39.2"
@@ -4380,7 +4380,7 @@ __metadata:
     "@types/eslint": "npm:9.6.1"
     "@types/jquery": "npm:3.5.33"
     "@types/mathjax": "npm:0.0.40"
-    "@types/node": "npm:25.2.1"
+    "@types/node": "npm:25.2.2"
     "@types/tampermonkey": "npm:5.0.5"
     "@vitejs/plugin-legacy": "npm:7.2.1"
     "@vitest/coverage-v8": "npm:4.0.18"
@@ -4398,8 +4398,8 @@ __metadata:
     esbuild-plugin-browserslist: "npm:2.0.0"
     eslint: "npm:9.39.2"
     eslint-config-prettier: "npm:10.1.8"
-    eslint-plugin-es-x: "npm:9.3.0"
-    eslint-plugin-jsdoc: "npm:62.5.2"
+    eslint-plugin-es-x: "npm:9.4.0"
+    eslint-plugin-jsdoc: "npm:62.5.4"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-userscripts: "npm:0.5.6"
     fast-glob: "npm:3.3.3"
@@ -4408,13 +4408,13 @@ __metadata:
     jsdom: "npm:28.0.0"
     jsx-dom: "npm:8.1.6"
     mini-svg-data-uri: "npm:1.4.4"
-    node-ical: "npm:0.25.0"
+    node-ical: "npm:0.25.1"
     nodejs-file-downloader: "npm:4.13.0"
     postcss: "npm:8.5.6"
     postcss-inline-svg: "npm:6.0.0"
-    postcss-preset-env: "npm:11.1.2"
+    postcss-preset-env: "npm:11.1.3"
     prettier: "npm:3.8.1"
-    puppeteer: "npm:24.37.1"
+    puppeteer: "npm:24.37.2"
     rrule: "npm:2.8.1"
     sass-embedded: "npm:1.97.3"
     terser: "npm:5.46.0"
@@ -5766,22 +5766,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-es-x@npm:9.3.0":
-  version: 9.3.0
-  resolution: "eslint-plugin-es-x@npm:9.3.0"
+"eslint-plugin-es-x@npm:9.4.0":
+  version: 9.4.0
+  resolution: "eslint-plugin-es-x@npm:9.4.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.1.2"
     "@eslint-community/regexpp": "npm:^4.12.1"
     eslint-type-tracer: "npm:^0.4.0"
   peerDependencies:
     eslint: ">=9.29.0"
-  checksum: 10c0/1e6721609668624af0562c8b12e5f47a6aa6c7c694a31dcfe773fa7f558b99ba1b6925d6aaca6f8312474cea40a244aaaa382732ae49b112d6783203209d493e
+  checksum: 10c0/446959690dfc109ef0b954d47ec1f4f1085d209edf1353daf72e51dba1560cd3698d9e14e5440aa0f61996afc05aa4b89710ca21eed0e61ed63e7c96b8a206f3
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:62.5.2":
-  version: 62.5.2
-  resolution: "eslint-plugin-jsdoc@npm:62.5.2"
+"eslint-plugin-jsdoc@npm:62.5.4":
+  version: 62.5.4
+  resolution: "eslint-plugin-jsdoc@npm:62.5.4"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.84.0"
     "@es-joy/resolve.exports": "npm:1.2.0"
@@ -5799,7 +5799,7 @@ __metadata:
     to-valid-identifier: "npm:^1.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/1872627695be78d30f7073e16393564012ea0b4560bec421cc95a8dfdb405272469c00d509e3a128d17f6abbe2c21201c85f37da42b7e572ddbe8e6dec44b4ab
+  checksum: 10c0/576a3dd2279c09ec579cbb944afed78029d5525a18dbef37097d510a0241c3792a597c440e80a299240772d49a6d0624bc90ffec32a72fca1e806e0554ac2119
   languageName: node
   linkType: hard
 
@@ -7821,12 +7821,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-ical@npm:0.25.0":
-  version: 0.25.0
-  resolution: "node-ical@npm:0.25.0"
+"node-ical@npm:0.25.1":
+  version: 0.25.1
+  resolution: "node-ical@npm:0.25.1"
   dependencies:
     rrule-temporal: "npm:^1.4.5"
-  checksum: 10c0/ff257ebe444631c379fb9d66fbf088e9c056ca851edb5143d5d3c1eb86cea982c44efb56f3e2290f6a7f028316606861516508c8ca2da128500a3cdf82d4b591
+  checksum: 10c0/725daa9f91e7cfd7a4ad8ddcddb001c15a9bbcdc832042fc714b7fc1ab06e2394cebc408fb1299e9038704e5ad49656641642c8e6107af64b4df58f81f0d14ed
   languageName: node
   linkType: hard
 
@@ -8517,9 +8517,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-preset-env@npm:11.1.2":
-  version: 11.1.2
-  resolution: "postcss-preset-env@npm:11.1.2"
+"postcss-preset-env@npm:11.1.3":
+  version: 11.1.3
+  resolution: "postcss-preset-env@npm:11.1.3"
   dependencies:
     "@csstools/postcss-alpha-function": "npm:^2.0.2"
     "@csstools/postcss-cascade-layers": "npm:^6.0.0"
@@ -8559,7 +8559,7 @@ __metadata:
     "@csstools/postcss-stepped-value-functions": "npm:^5.0.0"
     "@csstools/postcss-syntax-descriptor-syntax-production": "npm:^2.0.0"
     "@csstools/postcss-system-ui-font-family": "npm:^2.0.0"
-    "@csstools/postcss-text-decoration-shorthand": "npm:^5.0.1"
+    "@csstools/postcss-text-decoration-shorthand": "npm:^5.0.2"
     "@csstools/postcss-trigonometric-functions": "npm:^5.0.0"
     "@csstools/postcss-unset-value": "npm:^5.0.0"
     autoprefixer: "npm:^10.4.23"
@@ -8595,7 +8595,7 @@ __metadata:
     postcss-selector-not: "npm:^9.0.0"
   peerDependencies:
     postcss: ^8.4
-  checksum: 10c0/01cf7e5bc399e9c7521a8fdb6ef20763addd16c9e0fdf57ab6d3fa8da9ddfbc937db36bf6ea0d55492f2c788bb5ec3b43f40eb91ee1abf78622a30fbc812107f
+  checksum: 10c0/824c0bdeb9652c73edd4430df141f1c1b7497173b2de3b37a2cf968ce4c5bf21ae374ecdae6a90699c0e6224a5a011b86752547aa8781ee139f02e4cfe7878e2
   languageName: node
   linkType: hard
 
@@ -8766,9 +8766,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.37.1":
-  version: 24.37.1
-  resolution: "puppeteer-core@npm:24.37.1"
+"puppeteer-core@npm:24.37.2":
+  version: 24.37.2
+  resolution: "puppeteer-core@npm:24.37.2"
   dependencies:
     "@puppeteer/browsers": "npm:2.12.0"
     chromium-bidi: "npm:13.1.1"
@@ -8777,23 +8777,23 @@ __metadata:
     typed-query-selector: "npm:^2.12.0"
     webdriver-bidi-protocol: "npm:0.4.0"
     ws: "npm:^8.19.0"
-  checksum: 10c0/fc95704731761824094e539afd0654e97cba7d306a7aa6b570a21454a09a8b846b8f9d5f6a3cd1767ca622bd8192044b7fe2b40e8335348b71dd09e7747be459
+  checksum: 10c0/2effc9783f119acfd59a66ec66dc027ca9c601a05081e038ad29ac51e2bebb85d5c0aa70919b11f752c08d900f4b6573db5e7433a5d46f5633e31a99d72526de
   languageName: node
   linkType: hard
 
-"puppeteer@npm:24.37.1":
-  version: 24.37.1
-  resolution: "puppeteer@npm:24.37.1"
+"puppeteer@npm:24.37.2":
+  version: 24.37.2
+  resolution: "puppeteer@npm:24.37.2"
   dependencies:
     "@puppeteer/browsers": "npm:2.12.0"
     chromium-bidi: "npm:13.1.1"
     cosmiconfig: "npm:^9.0.0"
     devtools-protocol: "npm:0.0.1566079"
-    puppeteer-core: "npm:24.37.1"
+    puppeteer-core: "npm:24.37.2"
     typed-query-selector: "npm:^2.12.0"
   bin:
     puppeteer: lib/cjs/puppeteer/node/cli.js
-  checksum: 10c0/259436b57c5db6641be838340359507b5ebee97f5dc7bac96c1ebe22fa8d25ef708e09747d181b8e0b2e01214530b93b5c49633395d0d8617a093bd2ad36a144
+  checksum: 10c0/813c39cdf6aee37a5aa1292a7d941346b89fcb65cd42eccadb0f801027762d0c44ebc06ee246e10634d3574ebf78b087079e4047a445eab931888aa38cc53b3b
   languageName: node
   linkType: hard
 
