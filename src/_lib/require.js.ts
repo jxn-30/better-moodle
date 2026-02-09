@@ -1,5 +1,5 @@
 import type { PromisedRequire } from '#types/require';
-import { readyCallback } from './DOM';
+import { ready } from './DOM';
 
 /**
  * Awaits the DOM to be ready and then imports the modules. Imports the modules immediately if DOM is already ready and thus requirejs already available.
@@ -8,7 +8,7 @@ import { readyCallback } from './DOM';
  * @returns void
  */
 export const require: typeof requirejs = (modules, callback) =>
-    readyCallback(() => requirejs(modules, callback));
+    void ready().then(() => requirejs(modules, callback));
 
 /**
  * Awaits the DOM to be ready and then imports the modules. Imports the modules immediately if DOM is already ready and thus requirejs already available.

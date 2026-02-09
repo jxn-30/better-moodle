@@ -1,21 +1,18 @@
 import { renderAsElement } from './templates';
 
 /**
- * Awaits the DOM to be ready.
+ * Awaits the DOM to be ready and resolves the promise or resolves immediately if DOM is already ready.
+ * @returns a promise that resolves once DOM is ready
  */
 export const ready = () =>
-    new Promise<void>(resolve => readyCallback(() => resolve()));
-
-/**
- * Awaits the DOM to be ready and then calls the callback or calls it immediately if DOM is already ready.
- * @param callback - the function that is to be called
- */
-export const readyCallback = (callback: () => void) => {
-    if (document.readyState !== 'loading') callback();
-    else {
-        document.addEventListener('DOMContentLoaded', callback, { once: true });
-    }
-};
+    new Promise<void>(resolve => {
+        if (document.readyState !== 'loading') resolve();
+        else {
+            document.addEventListener('DOMContentLoaded', () => resolve(), {
+                once: true,
+            });
+        }
+    });
 
 let loadingSpinner: HTMLElement;
 
