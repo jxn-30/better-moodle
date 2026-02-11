@@ -1,6 +1,6 @@
 import type { Context } from '#types/require.js/core/templates';
 import type CoreTemplates from '#types/require.js/core/templates';
-import { requirePromise } from '#lib/require.js';
+import { require } from '#lib/require.js';
 import { htmlToElements, mdlJSComplete } from '#lib/helpers';
 
 /**
@@ -16,7 +16,7 @@ export const renderCustomTemplate = (
     template: string,
     context: Record<string, Context>
 ) =>
-    requirePromise([
+    require([
         'core/localstorage',
         'core/templates',
         'core/config',
@@ -59,7 +59,7 @@ export const render: CoreTemplates['renderForPromise'] = (
     context,
     themeName
 ) =>
-    requirePromise(['core/templates'] as const).then(([templates]) =>
+    require(['core/templates'] as const).then(([templates]) =>
         templates.renderForPromise(templateName, context, themeName)
     );
 
@@ -130,7 +130,7 @@ export const putTemplate = async <ReturnType extends Element[]>(
     ) as ReturnType;
     if (preprocess) preprocess(templateElements);
     el[action](...templateElements);
-    const [templates, filterEvents] = await requirePromise([
+    const [templates, filterEvents] = await require([
         'core/templates',
         'core_filters/events',
     ] as const);

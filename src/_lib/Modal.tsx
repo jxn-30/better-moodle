@@ -93,10 +93,10 @@ export class Modal extends CanBeReady {
 
         if (__MOODLE_VERSION__ < 403) {
             // legacy modal factory
-            require(['core/modal_factory', 'core/modal_events'] as const, (
-                { create, types },
-                modalEvents
-            ) => {
+            void require([
+                'core/modal_factory',
+                'core/modal_events',
+            ] as const).then(([{ create, types }, modalEvents]) => {
                 this.#config.type = types[this.#config.type];
                 this.#modalEvents = modalEvents;
 
@@ -104,10 +104,10 @@ export class Modal extends CanBeReady {
             });
         } else {
             // new import for each modal type
-            require([
+            void require([
                 TypeTo403Lib[this.#config.type],
                 'core/modal_events',
-            ] as const, (modalClass, modalEvents) => {
+            ] as const).then(([modalClass, modalEvents]) => {
                 this.#modalEvents = modalEvents;
 
                 void modalClass.create(this.#config).then(resolve);

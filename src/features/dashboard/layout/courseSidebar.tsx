@@ -4,7 +4,7 @@ import { getLoadingSpinner } from '#lib/DOM';
 import { getString } from '#lib/moodleStrings';
 import { LLF } from '#i18n';
 import { renderCustomTemplateAsElements } from '#lib/templates';
-import { requirePromise } from '#lib/require.js';
+import { require } from '#lib/require.js';
 import style from '../layout.module.scss';
 import {
     type CourseFilter,
@@ -56,7 +56,7 @@ const getCourseBlocks = (): Promise<HTMLDivElement[]> =>
         courseFilter === '_sync' ?
             getAvailableCourseFilters().then(getActiveFilter)
         :   Promise.resolve(courseFilter),
-        requirePromise(['block_myoverview/repository'] as const),
+        require(['block_myoverview/repository'] as const),
     ])
         .then(([filter, [myCourses]]) => {
             if (!filter) {
@@ -107,7 +107,7 @@ const getCourseBlocks = (): Promise<HTMLDivElement[]> =>
  * @returns a void promise
  */
 const setCourseHiddenState = (courseId: number, state: boolean) =>
-    requirePromise(['core_user/repository', 'core/notification'] as const)
+    require(['core_user/repository', 'core/notification'] as const)
         .then(([{ setUserPreference }, Notification]) =>
             setUserPreference(
                 `block_myoverview_hidden_course_${courseId}`,
@@ -137,7 +137,7 @@ const setCourseFavouriteState = (courseId: number, state: boolean) => {
         `.block.card[data-course-id="${courseId}"] .fa-star`
     );
 
-    void requirePromise([
+    void require([
         'block_myoverview/repository',
         'core/notification',
     ] as const).then(([{ setFavouriteCourses }, Notification]) =>

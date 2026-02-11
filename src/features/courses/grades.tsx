@@ -2,7 +2,7 @@ import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import Feature from '#lib/Feature';
 import { LLF } from '#i18n';
 import { ready } from '#lib/DOM';
-import { requirePromise } from '#lib/require.js';
+import { require } from '#lib/require.js';
 
 const enabled = new BooleanSetting('enabled', true).addAlias('courses.grades');
 const newTab = new BooleanSetting('newTab', false)
@@ -28,7 +28,7 @@ const reload = async () => {
     );
 
     if (enabled.value && header) {
-        void requirePromise(['core/config'] as const).then(([config]) => {
+        void require(['core/config'] as const).then(([config]) => {
             const courseId = config.courseId;
             if (!courseId || courseId === 1) return;
 

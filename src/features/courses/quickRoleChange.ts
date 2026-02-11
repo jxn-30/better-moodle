@@ -3,7 +3,7 @@ import Feature from '#lib/Feature';
 import { getDocument } from '#lib/network';
 import { PREFIX } from '#lib/helpers';
 import { ready } from '#lib/DOM';
-import { requirePromise } from '#lib/require.js';
+import { require } from '#lib/require.js';
 import submenuTemplate from '#templates/userMenuCarouselSubmenu.mustache?raw';
 import { putTemplate, renderCustomTemplate } from '#lib/templates';
 
@@ -51,7 +51,7 @@ const switchRole = (e: MouseEvent) => {
     if (!role || role === '-1') return;
     e.preventDefault();
 
-    void requirePromise(['core/config'] as const)
+    void require(['core/config'] as const)
         .then(([{ courseId, sesskey }]) => {
             const formData = new FormData();
             formData.set('id', courseId?.toString() ?? '');

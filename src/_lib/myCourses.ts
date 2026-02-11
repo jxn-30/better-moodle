@@ -1,5 +1,5 @@
 import { getDocument } from './network';
-import { requirePromise } from './require.js';
+import { require } from './require.js';
 import { SelectOption } from './Components';
 import { isDashboard, isLoggedIn, PREFIX } from './helpers';
 
@@ -46,7 +46,7 @@ export const getAvailableCourseFilters = async (): Promise<CourseFilter[]> => {
     if (!(await isLoggedIn())) return [];
 
     const result0 = await Promise.all([
-        requirePromise(['block_myoverview/selectors'] as const),
+        require(['block_myoverview/selectors'] as const),
         getDocument('/my/courses.php').then(({ value }) => value),
     ]);
     const [[selectors], doc] = result0;
@@ -109,7 +109,7 @@ if (isDashboard) {
 }
 // send an update message if on the myCourses page
 if (window.location.pathname === '/my/courses.php') {
-    void requirePromise([
+    void require([
         'jquery',
         'block_myoverview/selectors',
         'core/custom_interaction_events',

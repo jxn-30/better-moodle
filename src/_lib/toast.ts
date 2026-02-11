@@ -1,4 +1,4 @@
-import { requirePromise } from '#lib/require.js';
+import { require } from '#lib/require.js';
 import type {
     ToastConfiguration,
     ToastMessage,
@@ -11,8 +11,6 @@ import type {
  * @returns a void promise that resolves once the toast is shown
  */
 const toast = (message: ToastMessage, config: ToastConfiguration) =>
-    requirePromise(['core/toast'] as const).then(([{ add }]) =>
-        add(message, config)
-    );
+    require(['core/toast'] as const).then(([{ add }]) => add(message, config));
 
 export default toast;

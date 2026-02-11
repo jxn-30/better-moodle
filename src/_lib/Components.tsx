@@ -3,7 +3,7 @@ import { FeatureID } from './Feature';
 import globalStyle from '#style/index.module.scss';
 import type { JSX } from 'jsx-dom';
 import { renderAsElements } from './templates';
-import { requirePromise } from '#lib/require.js';
+import { require } from '#lib/require.js';
 import { SettingTranslations } from './Setting';
 import { SimpleReady } from './CanBeReady';
 import sliderStyle from '#style/settings/SliderSetting.module.scss';
@@ -410,7 +410,7 @@ export const AutoComplete = <
             initing = true;
             void waitForOptions
                 .awaitReady()
-                .then(() => requirePromise(['core/form-autocomplete'] as const))
+                .then(() => require(['core/form-autocomplete'] as const))
                 .then(([{ enhanceField }]) =>
                     enhanceField(
                         `#${id}`,

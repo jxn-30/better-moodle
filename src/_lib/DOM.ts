@@ -1,10 +1,11 @@
 import { renderAsElement } from './templates';
 
+/* eslint-disable jsdoc/require-returns-check */
 /**
  * Awaits the DOM to be ready and resolves the promise or resolves immediately if DOM is already ready.
  * @returns a promise that resolves once DOM is ready
  */
-export const ready = () =>
+export const ready = (): Promise<void> =>
     new Promise<void>(resolve => {
         if (document.readyState !== 'loading') resolve();
         else {
@@ -13,6 +14,7 @@ export const ready = () =>
             });
         }
     });
+/* eslint-enable jsdoc/require-returns-check */
 
 let loadingSpinner: HTMLElement;
 

@@ -3,7 +3,7 @@ import Feature from '#lib/Feature';
 import globalStyle from '#style/index.module.scss';
 import mobileTemplate from './navbarDropdown/mobile.mustache?raw';
 import { PREFIX } from '#lib/helpers';
-import { requirePromise } from '#lib/require.js';
+import { require } from '#lib/require.js';
 import { SelectSetting } from '#lib/Settings/SelectSetting';
 import style from './navbarDropdown/style.module.scss';
 import {
@@ -71,10 +71,7 @@ const loadContent = ({
         filter.value === '_sync' ?
             getAvailableCourseFilters().then(getActiveFilter)
         :   Promise.resolve(JSON.parse(filter.value) as CourseFilter),
-        requirePromise([
-            'core/templates',
-            'block_myoverview/repository',
-        ] as const),
+        require(['core/templates', 'block_myoverview/repository'] as const),
     ])
         .then(([filter, [templates, myCourses]]) => {
             if (!filter) {

@@ -2,7 +2,7 @@ import awaitImports from '#lib/imports';
 import { getLoadingSpinner } from '#lib/DOM';
 import globalStyle from '#style/index.module.scss';
 import { Modal } from '#lib/Modal';
-import { requirePromise } from '#lib/require.js';
+import { require } from '#lib/require.js';
 import { lt as semverLt } from '#lib/semver';
 import settingsStyle from '#style/settings.module.scss';
 import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
@@ -541,7 +541,7 @@ if (
     (newSettingsTooltipSetting.value &&
         featureGroups.values().some(group => group.hasNewSetting))
 ) {
-    void requirePromise(['theme_boost/bootstrap/tooltip'] as const)
+    void require(['theme_boost/bootstrap/tooltip'] as const)
         .then(([Tooltip]) => {
             SettingsBtnIcon.title = LL.settings.newBadge();
             return new Tooltip(SettingsBtnIcon, {

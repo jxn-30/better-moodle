@@ -1,7 +1,7 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import Feature from '#lib/Feature';
 import { ready } from '#lib/DOM';
-import { requirePromise } from '#lib/require.js';
+import { require } from '#lib/require.js';
 import { domID, mdToHtml } from '#lib/helpers';
 import { putTemplate, render } from '#lib/templates';
 
@@ -177,7 +177,7 @@ const putEmojiAutoComplete = async (messageApp: HTMLDivElement) => {
     void render('core/emoji/auto_complete', {})
         .then(template =>
             Promise.all([
-                requirePromise(['core/emoji/auto_complete'] as const),
+                require(['core/emoji/auto_complete'] as const),
                 putTemplate<HTMLDivElement[]>(container, template, 'append'),
             ])
         )
@@ -206,7 +206,7 @@ const putEmojiPicker = async (messageApp: HTMLDivElement) => {
     void render('core/emoji/picker', {})
         .then(template =>
             Promise.all([
-                requirePromise(['core/emoji/picker'] as const),
+                require(['core/emoji/picker'] as const),
                 putTemplate<HTMLDivElement[]>(container, template, 'append'),
             ])
         )

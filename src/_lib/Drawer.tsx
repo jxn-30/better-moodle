@@ -1,7 +1,7 @@
 import DrawerTemplate from './Drawer/Drawer.mustache?raw';
 import { getHtml } from '#lib/DOM';
 import { PREFIX } from '#lib/helpers';
-import { requirePromise } from '#lib/require.js';
+import { require } from '#lib/require.js';
 import type ThemeBoostDrawers from '#types/require.js/theme_boost/drawers';
 import { putTemplate, renderCustomTemplate } from '#lib/templates';
 
@@ -199,10 +199,7 @@ export default class Drawer {
         const template = await this.#render();
         const [[element], [Drawer, Drawers]] = await Promise.all([
             putTemplate('#page', template, 'before'),
-            requirePromise([
-                'theme_boost/drawer',
-                'theme_boost/drawers',
-            ] as const),
+            require(['theme_boost/drawer', 'theme_boost/drawers'] as const),
         ]);
 
         // Moodle 4.3 introduced `.drawerheadercontent` field
@@ -256,7 +253,7 @@ export default class Drawer {
          * @returns undefined
          */
         const doPubsub = (isOpen: boolean) =>
-            void requirePromise(['core/pubsub'] as const).then(([pubsub]) => {
+            void require(['core/pubsub'] as const).then(([pubsub]) => {
                 pubsub.publish('nav-drawer-toggle-start', isOpen);
                 setTimeout(
                     () => pubsub.publish('nav-drawer-toggle-end', isOpen),
@@ -291,7 +288,7 @@ export default class Drawer {
 // This interfers with our fullwidth feature, thus we need a trick to hide only if there is a real overlap, without the 20px radius
 // It is not nice to treat the sidebar like this instead of respecting their sensibility, however in this case, user experience is affected too much
 if (__MOODLE_VERSION__ >= 403) {
-    void requirePromise(['theme_boost/drawers'] as const).then(([Drawers]) => {
+    void require(['theme_boost/drawers'] as const).then(([Drawers]) => {
         // threshold definition is within .then to allow inlining it
         const THRESHOLD = 20;
         // eslint-disable-next-line @typescript-eslint/unbound-method -- as we cannot bind yet and will not call without binding
