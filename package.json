@@ -45,14 +45,14 @@
     },
     "dependencies": {
         "@trim21/gm-fetch": "0.3.0",
-        "darkreader": "4.9.119",
+        "darkreader": "4.9.120",
         "jsx-dom": "8.1.6",
-        "typesafe-i18n": "5.26.2"
+        "typesafe-i18n": "5.27.1"
     },
     "devDependencies": {
         "@actions/core": "3.0.0",
         "@babel/compat-data": "7.29.0",
-        "@cloudflare/workers-types": "4.20260207.0",
+        "@cloudflare/workers-types": "4.20260210.0",
         "@commitlint/cli": "20.4.1",
         "@commitlint/config-conventional": "20.4.1",
         "@eslint/js": "9.39.2",
@@ -65,7 +65,7 @@
         "@types/eslint": "9.6.1",
         "@types/jquery": "3.5.33",
         "@types/mathjax": "0.0.40",
-        "@types/node": "25.2.2",
+        "@types/node": "25.2.3",
         "@types/tampermonkey": "5.0.5",
         "@vitejs/plugin-legacy": "7.2.1",
         "@vitest/coverage-v8": "4.0.18",
@@ -104,13 +104,13 @@
         "ts-json-schema-generator": "2.5.0",
         "ts-node": "10.9.2",
         "typescript": "5.9.3",
-        "typescript-eslint": "8.54.0",
+        "typescript-eslint": "8.55.0",
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
         "vite": "7.3.1",
         "vite-plugin-monkey": "7.1.9",
         "vitest": "4.0.18",
-        "wrangler": "4.63.0"
+        "wrangler": "4.64.0"
     },
     "engines": {
         "node": "^24.13.0"
