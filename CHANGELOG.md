@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.7](https://github.com/jxn-30/better-moodle/compare/2.6.6...2.6.7) (2026-02-11)
+
+
+### Bug Fixes
+
+* **speiseplan:** show alternative info if speiseplan is empty ([16b1c0e](https://github.com/jxn-30/better-moodle/commit/16b1c0e64044c0c334b6a51415e671a4ef951f3c))
+
 ## [2.6.6](https://github.com/jxn-30/better-moodle/compare/2.6.5...2.6.6) (2026-02-07)
 
 
