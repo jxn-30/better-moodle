@@ -24,6 +24,8 @@ Hoppala, leider hat da was beim Auslesen des Speiseplans nicht geklappt :(. Manc
 <summary><em>Fehlermeldung für wens interessiert</em></summary>
 <pre>{error}</pre>
 </details>`.trim(),
+    isEmpty:
+        'Hmm, der Speiseplan ist leer. Ist diese Mensa vielleicht gerade geschlossen?',
     settings: {
         enabled: {
             name: 'Speiseplan in der Navigationsleiste',
@@ -68,6 +70,7 @@ Whoopsie, unfortunately something didn't work when reading out the menu :(. Some
 <summary><em>The error, for whoever might be interested</em></summary>
 <pre>{error}</pre>
 </details>`.trim(),
+    isEmpty: 'Hmm, the menu is empty. Is this canteen currently closed?',
     settings: {
         enabled: {
             name: 'Menu in the navigation bar',

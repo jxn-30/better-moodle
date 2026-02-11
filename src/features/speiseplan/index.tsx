@@ -445,6 +445,13 @@ const getCurrentSpeiseplan = () => {
             return speiseplan;
         })
         .then(speiseplan => {
+            if (speiseplan.dishes.size === 0) {
+                return [
+                    [<p>{LL.isEmpty()}</p>],
+                    createFilters(speiseplan),
+                ] as const;
+            }
+
             const fieldsets = speiseplan.dishes
                 .entries()
                 .map(
