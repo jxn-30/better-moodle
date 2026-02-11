@@ -30,6 +30,7 @@ const updateDarkReaderMode = () => {
         disableStyleSheetsProxy: false,
         ignoreImageAnalysis: [],
         ignoreInlineStyle: [],
+        ignoreCSSUrl: [],
     } satisfies DynamicThemeFix;
 
     if (mode.value === 'auto') {
