@@ -1,7 +1,8 @@
 import { isCI } from 'ci-info';
 import { join } from 'node:path';
 import { defineConfig, mergeConfig } from 'vitest/config';
-import viteConfig, { fileName } from './vite.config';
+import viteConfig from './vite.config';
+import { scriptFileName } from './tooling/context/config';
 
 export default mergeConfig(
     viteConfig,
@@ -30,7 +31,9 @@ export default mergeConfig(
             setupFiles: ['__tests__/matchers.ts'],
             testTimeout: isCI ? 30_000 : 300_000_000, // 30s on CI, 5 million minutes locally
             hookTimeout: 60_000, // 60s should be enough. 30s also works but is a little optimistic sometimes
-            provide: { userscriptFile: join(__dirname, 'dist', fileName) },
+            provide: {
+                userscriptFile: join(__dirname, 'dist', scriptFileName),
+            },
         },
     })
 );
