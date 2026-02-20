@@ -55,7 +55,7 @@
         "@cloudflare/workers-types": "4.20260227.0",
         "@commitlint/cli": "20.4.2",
         "@commitlint/config-conventional": "20.4.2",
-        "@eslint/js": "9.39.2",
+        "@eslint/js": "10.0.1",
         "@prettier/plugin-xml": "3.4.2",
         "@rollup/plugin-terser": "0.4.4",
         "@sass-fairy/map": "1.1.1",
