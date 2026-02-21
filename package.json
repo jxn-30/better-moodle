@@ -80,7 +80,7 @@
         "core-js-compat": "3.48.0",
         "esbuild": "0.27.3",
         "esbuild-plugin-browserslist": "2.0.0",
-        "eslint": "9.39.2",
+        "eslint": "10.0.1",
         "eslint-config-prettier": "10.1.8",
         "eslint-plugin-es-x": "9.4.1",
         "eslint-plugin-jsdoc": "62.6.1",
