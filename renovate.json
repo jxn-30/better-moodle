@@ -59,6 +59,10 @@
             "matchPackageNames": ["darkreader"],
             "matchNewValue": "4.9.108",
             "enabled": false
+        },
+        {
+            "groupName": "eslint-maintenance",
+            "matchPackageNames": ["eslint", "eslint/js"]
         }
     ],
     "postUpdateOptions": ["yarnDedupeHighest"],
