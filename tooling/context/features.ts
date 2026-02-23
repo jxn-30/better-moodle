@@ -6,7 +6,7 @@ import { config, globalConfig } from './config';
 
 const groupsInGlobalConfig = new Set(globalConfig.featureGroupOrder);
 const defaultDisabled = new Set(globalConfig.defaultDisabled);
-const nonDefaultIncluded = new Set(config.includeNonDefaultFeatures);
+const nonDefaultIncluded = new Set(config.includeNonDefaultFeatures ?? []);
 
 // Discover available featureGroups
 const featuresOfGroups = new Map<string, Set<string>>();

@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 /**
@@ -5,7 +6,8 @@ import path from 'node:path';
  * @param path - the import path
  * @returns the absolute file path of the resolved import
  */
-const resolve = (path: string) => new URL(import.meta.resolve(path)).pathname; // import.meta.resolve returns a file:// url
+export const resolve = (path: string) =>
+    fileURLToPath(import.meta.resolve(path)); // import.meta.resolve returns a file:// url
 
 export const root = path.dirname(resolve('#_/package.json'));
 

@@ -1,5 +1,5 @@
-import createPlugin from './createPlugin';
 import { type Context } from '../context';
+import createPlugin from './createPlugin';
 import path from 'node:path';
 import { type Plugin, type PluginOption } from 'vite';
 

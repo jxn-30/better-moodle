@@ -17,15 +17,17 @@ const runPrettier = (code: string, path: string) =>
         filepath: path,
     });
 
+const eslint = new ESLint({
+    overrideConfigFile: 'eslint.userscript.config.js',
+    fix: true,
+});
+
 /**
  * @param code
  * @param path
  */
 const runESLint = (code: string, path: string) =>
-    new ESLint({
-        overrideConfigFile: 'eslint.userscript.config.js',
-        fix: true,
-    }).lintText(code, { filePath: path });
+    eslint.lintText(code, { filePath: path });
 
 /**
  * @param code

@@ -34,7 +34,7 @@ requires.add(polyfillsFileName);
 if (features.isEnabled('darkmode')) {
     requires.add(
         `https://unpkg.com/darkreader@${dependencies.darkreader}/darkreader.js`,
-        await fs.readFile(new URL(import.meta.resolve('darkreader')).pathname)
+        await fs.readFile(subpaths.resolve('darkreader'))
     );
 }
 

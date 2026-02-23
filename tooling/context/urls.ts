@@ -19,6 +19,6 @@ export const versionDownloadUrl = (version: string, fileName: string) =>
 export const updateUrl = `${releaseDownloadUrl}/${metaFileName}`;
 export const downloadUrl = `${releaseDownloadUrl}/${scriptFileName}`;
 
-export const match = `${config.moodleUrl}/*`; /* */
+export const match = `${config.moodleUrl}/*`;
 
 export const icsParserDomain = icsParserConfig.routes[0].pattern;

@@ -84,7 +84,7 @@ export default function (ctx: Context): Plugin[] {
     generatePlugin.generateBundle = async function (options, bundle) {
         if ('handler' in generateBundleOrig) {
             throw new Error(
-                'Legacy-plugin cannot be altered if generateBundle'
+                "Cannot enhance legacy plugin: its generateBundle hook uses the object form (has a 'handler' property)."
             );
         }
 
