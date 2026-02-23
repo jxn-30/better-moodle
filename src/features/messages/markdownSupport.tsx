@@ -346,17 +346,9 @@ const disable = () => {
             const app = messageApps.get(messageApp);
             if (!app) return;
 
-            const {
-                inputField,
-                dummyField,
-                sendBtn,
-            } = app;
+            const { inputField, dummyField, sendBtn } = app;
 
-            let {
-                inputEvent,
-                sendEvent,
-                keyRelayEvent,
-            } = app;
+            let { inputEvent, sendEvent, keyRelayEvent } = app;
 
             if (!inputField || !dummyField) return;
 
