@@ -13,6 +13,7 @@ import terserPlugin from './plugins/terser';
 import legacyPlugin from './plugins/legacy';
 import postBuildFormatPlugin from './plugins/postBuildFormat';
 import buildStatsPlugin from './plugins/buildStats';
+import debugPlugin from './plugins/debug';
 import type { PluginOption } from 'vite';
 
 type EnvValue = string | ((ctx: Context) => string);
@@ -57,12 +58,6 @@ export default function (config: FrameworkConfig): PluginOption[] {
         postBuildFormatPlugin(ctx),
         buildStatsPlugin(config, ctx),
 
-        // for debugging purposes!
-        /*{
-            name: 'userscript:debug',
-            writeBundle() {
-                this.getModuleIds().forEach(mod => console.log(mod, this.getModuleInfo(mod)));
-            }
-        }*/
+        debugPlugin(ctx),
     ];
 }
