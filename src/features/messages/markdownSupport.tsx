@@ -346,10 +346,13 @@ const disable = () => {
             const app = messageApps.get(messageApp);
             if (!app) return;
 
-            let {
+            const {
                 inputField,
                 dummyField,
                 sendBtn,
+            } = app;
+
+            let {
                 inputEvent,
                 sendEvent,
                 keyRelayEvent,
@@ -375,9 +378,6 @@ const disable = () => {
             inputField.dataset.region = dummyField.dataset.region;
             dummyField.dataset.region = '';
             dummyField.remove();
-            inputField = undefined;
-            dummyField = undefined;
-            sendBtn = undefined;
 
             const originalInputField =
                 messageApp.querySelector<HTMLTextAreaElement>(
@@ -386,8 +386,8 @@ const disable = () => {
 
             messageApps.set(messageApp, {
                 inputField: originalInputField ?? undefined,
-                dummyField,
-                sendBtn,
+                dummyField: undefined,
+                sendBtn: undefined,
                 inputEvent,
                 sendEvent,
                 keyRelayEvent,
