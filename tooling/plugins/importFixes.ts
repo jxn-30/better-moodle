@@ -1,5 +1,5 @@
-import createPlugin from './createPlugin';
 import { type Context } from '../context';
+import createPlugin from './createPlugin';
 import { type Plugin } from 'vite';
 
 const VIRTUAL_PUBLIC_ID = 'virtual:fixes';

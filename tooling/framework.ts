@@ -1,20 +1,20 @@
-import { type Context, BuildContext as ctx } from './context';
+import buildStatsPlugin from './plugins/buildStats';
+import debugPlugin from './plugins/debug';
+import dotenv from 'dotenv';
+import i18nResolverPlugin from './plugins/i18nResolver';
+import importFeaturesPlugin from './plugins/importFeatures';
+import importFixesPlugin from './plugins/importFixes';
+import legacyPlugin from './plugins/legacy';
+import mustacheMinifyPlugin from './plugins/mustacheLoader';
+import type { PluginOption } from 'vite';
+import postBuildFormatPlugin from './plugins/postBuildFormat';
+import scssPlugin from './plugins/scss';
+import terserPlugin from './plugins/terser';
+import userscriptPlugin from './plugins/userscript';
 import alterConfigPlugin, {
     type ESBuildJSXConfigs,
 } from './plugins/alterConfig';
-import dotenv from 'dotenv';
-import i18nResolverPlugin from './plugins/i18nResolver';
-import importFixesPlugin from './plugins/importFixes';
-import importFeaturesPlugin from './plugins/importFeatures';
-import mustacheMinifyPlugin from './plugins/mustacheLoader';
-import scssPlugin from './plugins/scss';
-import userscriptPlugin from './plugins/userscript';
-import terserPlugin from './plugins/terser';
-import legacyPlugin from './plugins/legacy';
-import postBuildFormatPlugin from './plugins/postBuildFormat';
-import buildStatsPlugin from './plugins/buildStats';
-import debugPlugin from './plugins/debug';
-import type { PluginOption } from 'vite';
+import { type Context, BuildContext as ctx } from './context';
 
 type EnvValue = string | ((ctx: Context) => string);
 
@@ -25,8 +25,9 @@ export interface FrameworkConfig {
 }
 
 /**
- * A Plugin constructor function extending the config
- * @param config
+ * A Framework that adds multiple plugins to vite
+ * @param config - the framework config
+ * @returns the list of plugins created by the framework
  */
 export default function (config: FrameworkConfig): PluginOption[] {
     const env: Record<string, string> = {};

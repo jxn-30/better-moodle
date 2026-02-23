@@ -2,7 +2,9 @@ import createPlugin from './createPlugin';
 import { type Plugin } from 'vite';
 
 /**
- * @param src
+ * Minify a mustache template by some simple regex rules.
+ * @param src - the mustache source string
+ * @returns a minified version of the mustache template
  */
 const minify = (src: string) =>
     src
@@ -15,7 +17,8 @@ const minify = (src: string) =>
         .replace(/ {3,}/g, '  '); // reduce white spaces to a maximum of 2. This may break at <pre> tags but that isn't an issue yet.
 
 /**
- *
+ * A plugin that minifies mustache templates
+ * @returns the mustache template minifier plugin
  */
 export default function (): Plugin {
     return createPlugin('mustache-loader', {

@@ -2,7 +2,8 @@ import type { Plugin } from 'vite';
 import terserPlugin from '@rollup/plugin-terser';
 
 /**
- *
+ * The terser plugin to minify and optimize the output a little
+ * @returns the configured terser plugin
  */
 export default function (): Plugin {
     return terserPlugin({

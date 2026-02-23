@@ -1,5 +1,5 @@
-import createPlugin from './createPlugin';
 import type { Context } from '../context';
+import createPlugin from './createPlugin';
 import type { FrameworkConfig } from '../framework';
 import type { ESBuildOptions, Plugin, UserConfig } from 'vite';
 
@@ -21,8 +21,10 @@ const esbuildJSXConfigs: Record<string, ESBuildJSXConfig> = {
 export type ESBuildJSXConfigs = typeof esbuildJSXConfigs;
 
 /**
- * @param config
- * @param ctx
+ * A plugin to alter the base vite config, such as build, esbuild and define
+ * @param config - the framework config
+ * @param ctx - the build context
+ * @returns a plugin, altering the base vite config
  */
 export default function (config: FrameworkConfig, ctx: Context): Plugin {
     const esbuildJSXConfig = config.jsx ? esbuildJSXConfigs[config.jsx] : null;
@@ -30,7 +32,8 @@ export default function (config: FrameworkConfig, ctx: Context): Plugin {
     return createPlugin('base-config', {
         enforce: 'pre',
         /**
-         *
+         * Alter the config
+         * @returns the new config that shall be merged with existing config
          */
         config(): UserConfig {
             return {

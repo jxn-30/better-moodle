@@ -1,8 +1,8 @@
-import createPlugin from './createPlugin';
 import { type Context } from '../context';
+import createPlugin from './createPlugin';
+import { type Importer } from 'sass-embedded';
 import path from 'node:path';
 import { type Plugin, type UserConfig } from 'vite';
-import { type Importer } from 'sass-embedded';
 
 const CONSTANTS_FILE = 'global:constants.scss';
 

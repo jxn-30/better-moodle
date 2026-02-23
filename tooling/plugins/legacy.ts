@@ -1,7 +1,7 @@
-import { polyfillsCopyright } from '../utils/copyright';
 import type { Context } from '../context';
-import type { Plugin } from 'vite';
 import legacy from '@vitejs/plugin-legacy';
+import { polyfillsCopyright } from '../utils/copyright';
+import type { Plugin } from 'vite';
 
 // we need to make it an iife, otherwise global scope would be altered
 // this would cause e.g. that Moodles global `M` would not be useable without using

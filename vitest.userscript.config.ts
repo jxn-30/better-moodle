@@ -1,8 +1,8 @@
 import { isCI } from 'ci-info';
 import { join } from 'node:path';
-import { defineConfig, mergeConfig } from 'vitest/config';
-import viteConfig from './vite.config';
 import { scriptFileName } from './tooling/context/config';
+import viteConfig from './vite.config';
+import { defineConfig, mergeConfig } from 'vitest/config';
 
 export default mergeConfig(
     viteConfig,

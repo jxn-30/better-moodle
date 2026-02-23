@@ -160,7 +160,8 @@ featuresOfGroups.forEach((features, group) => {
 
 // Sort the sets
 /**
- * @param unsortedSet
+ * Sorts a set
+ * @param unsortedSet - a set with possibly unsorted elements
  */
 const sortSet = (unsortedSet: Set<string>) => {
     const sortedValues = unsortedSet.values().toArray().toSorted();

@@ -7,7 +7,6 @@ import * as requires from './requires';
 import * as subpaths from './subpaths';
 import * as urls from './urls';
 import fs from 'node:fs/promises';
-import { dependencies, devDependencies, version } from '../../package.json';
 import {
     authors,
     config,
@@ -16,6 +15,7 @@ import {
     polyfillsFileName,
     scriptFileName,
 } from './config';
+import { dependencies, devDependencies, version } from '../../package.json';
 
 // Populate connects
 // Global connects

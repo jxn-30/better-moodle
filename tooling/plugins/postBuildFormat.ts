@@ -1,6 +1,6 @@
 import * as prettier from 'prettier';
-import createPlugin from './createPlugin';
 import { type Context } from '../context';
+import createPlugin from './createPlugin';
 import { ESLint } from 'eslint';
 
 const prettierConfig = await prettier.resolveConfig('dist');

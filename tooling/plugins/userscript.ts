@@ -3,7 +3,9 @@ import monkey from 'vite-plugin-monkey';
 import { scriptCopyright } from '../utils/copyright';
 
 /**
- * @param ctx
+ * A userscript plugin that makes the output being a userscript
+ * @param ctx - the build context
+ * @returns the configured userscript plugin
  */
 export default function (ctx: Context) {
     return monkey({

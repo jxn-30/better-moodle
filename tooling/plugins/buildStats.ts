@@ -1,9 +1,9 @@
-import createPlugin from './createPlugin';
 import { type Context } from '../context';
-import fs from 'node:fs/promises';
-import path from 'node:path';
+import createPlugin from './createPlugin';
 import type { FrameworkConfig } from '../framework';
+import fs from 'node:fs/promises';
 import { includedPolyfillsList } from './legacy';
+import path from 'node:path';
 
 /**
  * @param cfg

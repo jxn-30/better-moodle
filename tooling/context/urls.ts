@@ -8,11 +8,13 @@ export const homepage = `${githubUrl}${config.github.branch ? `/tree/${config.gi
 export const icon = `https://icons.better-moodle.dev/${configFile}.png`;
 
 /**
- * @param version
- * @param path
+ * Constructs a url to download a specific file for a specific release
+ * @param version - the version to download the file from
+ * @param fileName - the name of the file to download
+ * @returns a fully qualified URL for downloading a file of a release
  */
-export const versionDownloadUrl = (version: string, path: string) =>
-    `${githubUrl}/releases/download/${version}/${path}`;
+export const versionDownloadUrl = (version: string, fileName: string) =>
+    `${githubUrl}/releases/download/${version}/${fileName}`;
 
 export const updateUrl = `${releaseDownloadUrl}/${metaFileName}`;
 export const downloadUrl = `${releaseDownloadUrl}/${scriptFileName}`;

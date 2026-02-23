@@ -11,8 +11,10 @@ export const getHash = (content: string | Buffer) =>
     createHash('sha512').update(content).digest('hex');
 
 /**
- * @param url
- * @param hashContent
+ * Gets a url, possibly extended by the hash of its content
+ * @param url - the base url
+ * @param hashContent - the content to generate the hash of or false if no hash is to be generated
+ * @returns the full url, extended by the content hash if required
  */
 export const getUrl = (
     url: string,
