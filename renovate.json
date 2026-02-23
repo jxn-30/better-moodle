@@ -62,7 +62,7 @@
         },
         {
             "groupName": "eslint-maintenance",
-            "matchPackageNames": ["eslint", "eslint/js"]
+            "matchPackageNames": ["eslint", "@eslint/js"]
         }
     ],
     "postUpdateOptions": ["yarnDedupeHighest"],
