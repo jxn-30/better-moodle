@@ -52,7 +52,7 @@
     "devDependencies": {
         "@actions/core": "3.0.0",
         "@babel/compat-data": "7.29.0",
-        "@cloudflare/workers-types": "4.20260304.0",
+        "@cloudflare/workers-types": "4.20260305.0",
         "@commitlint/cli": "20.4.2",
         "@commitlint/config-conventional": "20.4.2",
         "@eslint/js": "10.0.1",
@@ -65,7 +65,7 @@
         "@types/eslint": "9.6.1",
         "@types/jquery": "4.0.0",
         "@types/mathjax": "0.0.40",
-        "@types/node": "25.3.0",
+        "@types/node": "25.3.2",
         "@types/tampermonkey": "5.0.5",
         "@vitejs/plugin-legacy": "7.2.1",
         "@vitest/coverage-v8": "4.0.18",
@@ -110,7 +110,7 @@
         "vite": "7.3.1",
         "vite-plugin-monkey": "7.1.9",
         "vitest": "4.0.18",
-        "wrangler": "4.68.1"
+        "wrangler": "4.69.0"
     },
     "engines": {
         "node": "^24.13.0"
