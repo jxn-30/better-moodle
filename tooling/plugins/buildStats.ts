@@ -6,14 +6,20 @@ import { includedPolyfillsList } from './legacy';
 import path from 'node:path';
 
 /**
- * @param cfg
- * @param ctx
+ * Creates a build statistics plugin for the Vite framework.
+ * This plugin writes performance data and configuration details to files during the build process.
+ * @param cfg - The framework configuration object
+ * @param ctx - The build context object containing metadata
+ * @returns The plugin object with the build hook
  */
 export default function (cfg: FrameworkConfig, ctx: Context) {
     return createPlugin('build-stats', {
         apply: 'build',
         /**
-         * @param options
+         * Writes build statistics to files during the build process.
+         * This method records performance metrics, configuration data, and build artifacts.
+         * @param options - The options object containing build paths
+         * @param options.dir - The output directory for statistics files
          */
         async writeBundle(options) {
             const dir = options.dir;
@@ -35,12 +41,16 @@ export default function (cfg: FrameworkConfig, ctx: Context) {
             } as const;
 
             /**
-             * @param start
-             * @param end
+             * Calculates the duration between two timestamps in nanoseconds.
+             * @param start - Start timestamp in nanoseconds
+             * @param end - End timestamp in nanoseconds
+             * @returns The duration in nanoseconds
              */
             const getDur = (start: bigint, end: bigint) => end - start;
             /**
-             * @param dur
+             * Converts a duration in nanoseconds to a human-readable string.
+             * @param dur - Duration in nanoseconds
+             * @returns Formatted time string (e.g., "00:00.000")
              */
             const getDurString = (dur: bigint) =>
                 new Date(Number(dur / 1_000_000n)).toLocaleTimeString(

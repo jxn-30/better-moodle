@@ -6,8 +6,10 @@ import { ESLint } from 'eslint';
 const prettierConfig = await prettier.resolveConfig('dist');
 
 /**
- * @param code
- * @param path
+ * Formats code using Prettier with a specified configuration.
+ * @param code - The source code to format.
+ * @param path - The file path to use for determining the parser.
+ * @returns The formatted code as a promise.
  */
 const runPrettier = (code: string, path: string) =>
     prettier.format(code, {
@@ -23,15 +25,19 @@ const eslint = new ESLint({
 });
 
 /**
- * @param code
- * @param path
+ * Lints code using ESLint with a specified configuration.
+ * @param code - The source code to lint.
+ * @param path - The file path to use to determine the parser.
+ * @returns A promise of the lint result containing the formatted code.
  */
 const runESLint = (code: string, path: string) =>
     eslint.lintText(code, { filePath: path });
 
 /**
- * @param code
- * @param path
+ * Formats and lints code using Prettier and ESLint in sequence.
+ * @param code - The source code to process.
+ * @param path - The file path to use to determine the parser.
+ * @returns The final formatted and linted code.
  */
 const lintAndFormat = async (code: string, path: string) => {
     const formatted = await runPrettier(code, path);
@@ -43,7 +49,10 @@ const lintAndFormat = async (code: string, path: string) => {
 };
 
 /**
- * @param ctx
+ * Creates Vite plugins for code formatting and linting.
+ * It also replaces the local `@require` userscript headers with valid URLs and valid hashes.
+ * @param ctx - The Vite plugin context object.
+ * @returns An array containing the formatting and require replacement plugins.
  */
 export default function (ctx: Context) {
     const requireReplacements = new Map<string, string>();
@@ -51,8 +60,10 @@ export default function (ctx: Context) {
     const lintAndFormatPlugin = createPlugin('post-build-format-and-lint', {
         enforce: 'post',
         /**
-         * @param _
-         * @param bundle
+         * Processes the bundle to format and lint code.
+         * @param _ - The output options (unused).
+         * @param bundle - The bundle object containing chunks and assets.
+         * @returns a promise that resolves once all files are processed
          */
         generateBundle(_, bundle) {
             const runners: Promise<[string, string]>[] = [];
@@ -91,8 +102,10 @@ export default function (ctx: Context) {
     const replaceRequiresPlugin = createPlugin('post-build-replace-requires', {
         enforce: 'post',
         /**
-         * @param _
-         * @param bundle
+         * Replaces `@require`-headers in the dist script with resolved URLs.
+         * @param _ - The output options (unused).
+         * @param bundle - The bundle object containing chunks and assets.
+         * @throws {Error} if the generated userscript could not be found.
          */
         generateBundle(_, bundle) {
             const scriptFile = Object.values(bundle).find(
@@ -101,7 +114,7 @@ export default function (ctx: Context) {
 
             if (!scriptFile) {
                 throw new Error(
-                    'Could not find the dist script chunk/file. How should I replace internal @require-rules?'
+                    'Could not find the dist script chunk/file. How should I replace internal @require-headers?'
                 );
             }
 

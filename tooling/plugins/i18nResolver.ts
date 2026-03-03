@@ -7,7 +7,11 @@ const VIRTUAL_PUBLIC_ID = 'virtual:userscript-framework/i18n-undefined';
 const VIRTUAL_RESOLVED_ID = `\0${VIRTUAL_PUBLIC_ID}`;
 
 /**
- * @param ctx
+ * Create a function that resolves module imports for i18n files.
+ * The returned function checks if the requested module is a virtual i18n module
+ * and returns a fallback ID if the translation is not available.
+ * @param ctx - The build context object containing metadata
+ * @returns the resolver function
  */
 const resolveId =
     (ctx: Context): Plugin['resolveId'] =>
@@ -79,7 +83,11 @@ export default { de, en };
 `;
 
 /**
- * @param ctx
+ * Creates a Vite plugin for handling i18n (internationalization) resolution.
+ * This plugin resolves virtual modules for translations of disabled features.
+ * Disabled features will receive undefined translations, removing clutter and noise in the userscript.
+ * @param ctx - The build context object containing metadata
+ * @returns The plugin object with the resolveId and load hooks
  */
 export default function (ctx: Context): PluginOption {
     // This plugin should be disabled in tests (because it breaks tests?)
@@ -89,7 +97,9 @@ export default function (ctx: Context): PluginOption {
         enforce: 'pre',
         resolveId: resolveId(ctx),
         /**
-         * @param id
+         * Loads the virtual module for disabled i18n files.
+         * @param id - The resolved module ID
+         * @returns The module content or null
          */
         load(id) {
             if (id !== VIRTUAL_RESOLVED_ID) return null;

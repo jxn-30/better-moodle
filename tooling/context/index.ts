@@ -108,7 +108,7 @@ export const BuildContext = {
 
     // Userscript data
     userscript: {
-        name: `🎓 ${config.uniName}: better-moodle`,
+        name: `🎓️ ${config.uniName}: better-moodle`,
         namespace: config.namespace,
         version,
         authors,

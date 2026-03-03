@@ -1,14 +1,16 @@
 import type { Context } from '../context';
 import legacy from '@vitejs/plugin-legacy';
-import { polyfillsCopyright } from '../utils/copyright';
 import type { Plugin } from 'vite';
+import { polyfillsCopyright } from '../utils/copyright';
 
 // we need to make it an iife, otherwise global scope would be altered
 // this would cause e.g. that Moodles global `M` would not be useable without using
 // `unsafeWindow.M` as the core-js resource would have overwritten `M` in the userscripts scope.
 /**
- * @param ctx
- * @param raw
+ * Generates polyfill code for the Vite plugin.
+ * @param ctx - The Vite plugin context object.
+ * @param raw - The source code string to be processed.
+ * @returns The generated polyfill code wrapped in an IIFE.
  */
 const getPolyfillsCode = (ctx: Context, raw: string) =>
     `
@@ -19,7 +21,9 @@ ${polyfillsCopyright(ctx)}
 const includedPolyfills = new Set<string>();
 
 /**
- * @param imports
+ * Processes imports to collect polyfill modules.
+ * Mutates the state of included polyfills.
+ * @param imports - An array of module paths to analyze.
  */
 const getPolyfillsFromImports = (imports: string[]) => {
     includedPolyfills.clear();
@@ -43,13 +47,17 @@ const getPolyfillsFromImports = (imports: string[]) => {
 };
 
 /**
- *
+ * Returns the sorted list of included polyfill modules.
+ * @returns An array of polyfill module names.
  */
 export const includedPolyfillsList = () =>
     includedPolyfills.values().toArray().toSorted();
 
 /**
- * @param ctx
+ * Vite plugin for handling polyfill generation in legacy builds.
+ * @param ctx - The Vite plugin context object.
+ * @returns An array of Vite plugins configured for polyfill handling.
+ * @throws {Error} If the legacy plugin is not found or lacks required hooks.
  */
 export default function (ctx: Context): Plugin[] {
     const plugins = legacy({
@@ -78,8 +86,11 @@ export default function (ctx: Context): Plugin[] {
     }
 
     /**
-     * @param options
-     * @param bundle
+     * Enhances the legacy plugin's generateBundle hook to handle polyfill generation.
+     * It wraps the polyfills into an IIFE and ensures, they are emitted in an extra file.
+     * @param options - Vite build options.
+     * @param bundle - The bundle object containing chunks and assets.
+     * @returns A promise resolving when the bundle is processed.
      */
     generatePlugin.generateBundle = async function (options, bundle) {
         if ('handler' in generateBundleOrig) {
