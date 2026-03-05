@@ -6,7 +6,7 @@ import globalConfig from '#_configs/_global.json';
 // Subpath imports seem not to work when imported from node_modules.
 // Vite stores temp files in node_modules, thus this import magically happens from within node_modules.
 export const { default: config } = (await import(
-    `${configsBase}/${configFile}.json`,
+    `file://${configsBase}/${configFile}.json`,
     { with: { type: 'json' } }
 )) as { default: Config };
 
