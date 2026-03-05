@@ -118,6 +118,21 @@ export default function (ctx: Context): Plugin {
          * @returns The css configuration created by the plugin.
          */
         config() {
+            // If we are testing the userscript, we need also need to alter test config
+            if (process.env.VITEST && process.env.VITEST_USERSCRIPT) {
+                return {
+                    css: config,
+                    test: {
+                        css: {
+                            include: /.+/,
+                            modules: {
+                                ...config.modules,
+                                classNameStrategy: 'scoped',
+                            },
+                        },
+                    },
+                };
+            }
             return { css: config };
         },
     });

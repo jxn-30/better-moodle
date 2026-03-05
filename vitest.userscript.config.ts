@@ -1,23 +1,21 @@
+import dotenv from 'dotenv';
 import { isCI } from 'ci-info';
 import { join } from 'node:path';
 import { scriptFileName } from './tooling/context/config';
 import viteConfig from './vite.config';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
+const extendedEnv = { VITEST_USERSCRIPT: 'true' };
+
+// @ts-expect-error because process.env may also include undefined values
+dotenv.populate(process.env, extendedEnv, { debug: true });
+
+// console.log(process.env);
+
 export default mergeConfig(
     viteConfig,
     defineConfig({
         test: {
-            /*
-            // We had this before refactoring vite.config (#977) but we're not sure, if we really still need this. So let's just keep it but commented for now :)
-            css: {
-                include: /.+/,
-                modules: {
-                    ...viteConfig.css?.modules, // we want to use the same config as for builds to ensure the same class names and IDs
-                    classNameStrategy: 'scoped',
-                },
-            },
-            */
             include: [
                 '__tests__/__userscript__/**/*.test.tsx',
                 '__tests__/__userscript__/**/*.test.ts',
