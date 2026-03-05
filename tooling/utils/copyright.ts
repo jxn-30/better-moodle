@@ -15,7 +15,7 @@ const copyrightBox = (content: string) =>
             bottomRight: '*/',
             top: '*',
             bottom: '*',
-            left: '*',
+            left: ' *',
             right: '*',
         },
         title: 'Copyright ©',
