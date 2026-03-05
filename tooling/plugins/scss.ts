@@ -115,7 +115,7 @@ export default function (ctx: Context): Plugin {
     return createPlugin('scss', {
         /**
          * Configures the SCSS use for vite.
-         * @returns The css congiguration created by the plugin.
+         * @returns The css configuration created by the plugin.
          */
         config() {
             return { css: config };

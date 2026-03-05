@@ -27,7 +27,7 @@ export const getUrl = (
 /**
  * Adds a url with optional hash to the list of requires
  * @param url - the url to add
- * @param hashContent - wether to omit the cache or the content to create the hash of otherwise
+ * @param hashContent - whether to omit the cache or the content to create the hash of otherwise
  */
 export const add = (
     url: string,

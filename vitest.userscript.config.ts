@@ -8,6 +8,8 @@ export default mergeConfig(
     viteConfig,
     defineConfig({
         test: {
+            /*
+            // We had this before refactoring vite.config (#977) but we're not sure, if we really still need this. So let's just keep it but commented for now :)
             css: {
                 include: /.+/,
                 modules: {
@@ -15,6 +17,7 @@ export default mergeConfig(
                     classNameStrategy: 'scoped',
                 },
             },
+            */
             include: [
                 '__tests__/__userscript__/**/*.test.tsx',
                 '__tests__/__userscript__/**/*.test.ts',
