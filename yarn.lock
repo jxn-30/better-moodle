@@ -4222,7 +4222,7 @@ __metadata:
     boxen: "npm:8.0.1"
     browserslist: "npm:4.28.1"
     browserslist-useragent-regexp: "npm:4.1.3"
-    caniuse-lite: "npm:1.0.30001774"
+    caniuse-lite: "npm:1.0.30001776"
     chalk: "npm:5.6.2"
     ci-info: "npm:4.4.0"
     core-js: "npm:3.48.0"
@@ -4467,10 +4467,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:1.0.30001774, caniuse-lite@npm:^1.0.30001759, caniuse-lite@npm:^1.0.30001774":
-  version: 1.0.30001774
-  resolution: "caniuse-lite@npm:1.0.30001774"
-  checksum: 10c0/cc6a340a5421b9a67d8fa80889065ee27b2839ad62993571dded5296e18f02bbf685ce7094e93fe908cddc9fefdfad35d6c010b724cc3d22a6479b0d0b679f8c
+"caniuse-lite@npm:1.0.30001776, caniuse-lite@npm:^1.0.30001759, caniuse-lite@npm:^1.0.30001774":
+  version: 1.0.30001776
+  resolution: "caniuse-lite@npm:1.0.30001776"
+  checksum: 10c0/d5a7624ea50548c6c4381979a2900ac451caa7ecbeafec209309da25d547ba1406355cf66d6c6d537d8532ab5a56f2bbc0bf62300a4c3f66aa6fca5954264735
   languageName: node
   linkType: hard
 
