@@ -59,3 +59,5 @@ declare module 'virtual:features' {
     const features: Record<string, ReturnType<(typeof Feature)['register']>>;
     export default features;
 }
+// A virtual file importing the fixes
+declare module 'virtual:fixes' {}
