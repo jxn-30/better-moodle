@@ -21,6 +21,11 @@ yarn lint:check
 echo "[Better-Moodle Pre-Commit]: Running prettier:check"
 yarn prettier:check
 
+# Check if the JSON schemas are in sync with their TS-Definitions
+echo "[Better-Moodle Pre-Commit]: Checking for up-to-date JSON schemas"
+yarn config:scheme
+git diff --exit-code --quiet
+
 # TODO: Evaluate if we always want to build on uzl or also build other configurations?
 # This shouldn't change much as tsc is always run on the whole codebase
 # However an env variable that defaults to uzl shouldn't hurt too.
