@@ -93,11 +93,24 @@
                 "prefix": {
                     "description": "A global prefix that is used for internal IDs, classes etc to uniquely identify as part of Better-Moodle.",
                     "type": "string"
+                },
+                "userscript": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "coreAuthors": {
+                            "description": "Authors that will appear in the authors list of every instance",
+                            "items": { "type": "string" },
+                            "type": "array"
+                        }
+                    },
+                    "required": ["coreAuthors"],
+                    "type": "object"
                 }
             },
             "required": [
                 "$schema",
                 "prefix",
+                "userscript",
                 "featureGroupOrder",
                 "defaultDisabled",
                 "enabledFrom",

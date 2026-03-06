@@ -1,13 +1,22 @@
-import Feature from './Feature';
+// imports generated during bundling
+/* eslint-disable */
+import featureGroupImport from 'virtual:featureGroups';
+import featureImport from 'virtual:features';
+import 'virtual:fixes';
+/* eslint-enable */
+// normal imports
+import type Feature from './Feature';
 import { isFeatureGroup } from '#i18n';
-import FeatureGroup, { FeatureGroupID } from './FeatureGroup';
+import FeatureGroup, { FeatureGroupID } from './FeatureGroup'; // type import but we cannot use type modifier here
 
-const featureGroupImports = import.meta.featureGroups as Record<
+// Maybe one day we will be able to do this without the assignment-workaround
+
+const featureGroupImports = featureGroupImport as Record<
     string,
     ReturnType<(typeof FeatureGroup)['register']>
 >;
 
-const featureImports = import.meta.features as Record<
+const featureImports = featureImport as Record<
     string,
     ReturnType<(typeof Feature)['register']>
 >;
@@ -73,6 +82,3 @@ void Promise.all(
     );
 
 export default awaitImports;
-
-// Now also import the fixes that have been specified in the config file :)
-import.meta.fixes();

@@ -1,6 +1,7 @@
 {
     "$schema": "_globalSchema.json",
     "prefix": "better-moodle",
+    "userscript": { "coreAuthors": ["Jan (jxn_30)", "Yorik (YorikHansen)"] },
     "featureGroupOrder": [
         "darkmode",
         "dashboard",
@@ -18,6 +19,7 @@
     "enabledFrom": { "405": ["courses.sectionCourseIndex"] },
     "disabledFrom": { "402": ["courses.courseIndexDrawerControls"] },
     "connects": {
+        "": ["better-moodle.dev"],
         "nina": ["nina.api.proxy.bund.dev"],
         "weather": [
             "api.open-meteo.com",
