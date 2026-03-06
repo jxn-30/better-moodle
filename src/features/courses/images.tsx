@@ -48,11 +48,11 @@ const zoomImage = (e: MouseEvent) => {
     zoomCopiedImage = target.cloneNode(true) as HTMLImageElement;
 
     // remove additional styles that could produce weird results
-    zoomCopiedImage.style.removeProperty('margin');
-    zoomCopiedImage.style.removeProperty('width');
-    zoomCopiedImage.style.removeProperty('height');
-    zoomCopiedImage.style.removeProperty('max-width');
-    zoomCopiedImage.style.removeProperty('max-height');
+    zoomCopiedImage.style.setProperty('margin', 'unset', 'important');
+    zoomCopiedImage.style.setProperty('width', 'unset', 'important');
+    zoomCopiedImage.style.setProperty('height', 'unset', 'important');
+    zoomCopiedImage.style.setProperty('max-width', 'unset', 'important');
+    zoomCopiedImage.style.setProperty('max-height', 'unset', 'important');
     zoomCopiedImage.style.setProperty('display', 'block');
     zoomCopiedImage.removeAttribute('width');
     zoomCopiedImage.removeAttribute('height');
