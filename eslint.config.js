@@ -163,6 +163,7 @@ export default [
             'vite.config.ts',
             'vitest.config.ts',
             'vitest.userscript.config.ts',
+            'tooling/**/*.{ts,tsx}',
         ],
         languageOptions: { globals: { ...globals.node } },
     },

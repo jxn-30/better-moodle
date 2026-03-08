@@ -34,6 +34,7 @@
     "include": [
         "src",
         "types",
+        "tooling",
         "vite.config.ts",
         "vitest.config.ts",
         "vitest.userscript.config.ts",

@@ -45,10 +45,19 @@ interface ImportMetaEnv {
 
 interface ImportMeta {
     readonly env: ImportMetaEnv;
-    readonly featureGroups: Record<
+}
+
+// Imports for FeatureGroups and features
+declare module 'virtual:featureGroups' {
+    const featureGroups: Record<
         string,
         ReturnType<(typeof FeatureGroup)['register']>
     >;
-    readonly features: Record<string, ReturnType<(typeof Feature)['register']>>;
-    readonly fixes: () => void;
+    export default featureGroups;
 }
+declare module 'virtual:features' {
+    const features: Record<string, ReturnType<(typeof Feature)['register']>>;
+    export default features;
+}
+// A virtual file importing the fixes
+declare module 'virtual:fixes' {}

@@ -22,7 +22,7 @@
         "test:userscript": "vitest run --config vitest.userscript.config.ts -- --config=${0}",
         "i18n:watch": "typesafe-i18n",
         "i18n:once": "typesafe-i18n --no-watch",
-        "config:scheme": "ts-json-schema-generator --path 'configs/_config.d.ts' --type 'Config' --out configs/_schema.json; ts-json-schema-generator --path 'configs/_global.json.d.ts' --type 'GlobalConfig' --out configs/_globalSchema.json",
+        "config:scheme": "ts-json-schema-generator --path 'configs/_config.d.ts' --type 'Config' --out configs/_schema.json; ts-json-schema-generator --path 'configs/_global.json.d.ts' --type 'GlobalConfig' --out configs/_globalSchema.json; yarn prettier --write configs/*.json",
         "ics-parser:dev": "wrangler dev --config=ics-parser/wrangler.json --ip=127.0.0.1",
         "ci": "yarn lint:fix && yarn prettier:write && yarn build ${0}"
     },
@@ -34,6 +34,20 @@
             "./src/_lib/*/index.ts",
             "./src/_lib/*/index.tsx"
         ],
+        "#feats/*": [
+            "./src/features/*",
+            "./src/features/*.ts",
+            "./src/features/*.tsx",
+            "./src/features/*/index.ts",
+            "./src/features/*/index.tsx"
+        ],
+        "#fixes/*": [
+            "./src/fixes/*",
+            "./src/fixes/*.ts",
+            "./src/fixes/*.tsx",
+            "./src/fixes/*/index.ts",
+            "./src/fixes/*/index.tsx"
+        ],
         "#types/*": [
             "./types/*",
             "./types/*.d.ts",
@@ -41,7 +55,9 @@
         ],
         "#i18n": "./src/i18n/i18n.ts",
         "#templates/*": "./src/templates/*",
-        "#style/*": "./src/style/*"
+        "#style/*": "./src/style/*",
+        "#_configs/*": "./configs/*",
+        "#_/*": "./*"
     },
     "dependencies": {
         "@trim21/gm-fetch": "0.3.0",

@@ -8,6 +8,10 @@ export interface GlobalConfig {
     $schema: '_globalSchema.json';
     /** A global prefix that is used for internal IDs, classes etc to uniquely identify as part of Better-Moodle. */
     prefix: string;
+    userscript: {
+        /** Authors that will appear in the authors list of every instance */
+        coreAuthors: string[];
+    };
     /** Defines the order in which the FeatureGroups are shown in settings. "general" will be added in any case at first group. */
     featureGroupOrder: string[];
     /** If a feature is specific to only a single moodle instance (e.g. a bugfix for instance modifications), it is a good idea to disable them in general and explicitely include them in the specific config via includeNonDefaultFeatures. */

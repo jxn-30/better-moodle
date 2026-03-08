@@ -1,19 +1,21 @@
+import dotenv from 'dotenv';
 import { isCI } from 'ci-info';
 import { join } from 'node:path';
+import { scriptFileName } from './tooling/context/config';
+import viteConfig from './vite.config';
 import { defineConfig, mergeConfig } from 'vitest/config';
-import viteConfig, { fileName } from './vite.config';
+
+const extendedEnv = { VITEST_USERSCRIPT: 'true' };
+
+// @ts-expect-error because process.env may also include undefined values
+dotenv.populate(process.env, extendedEnv, { debug: true });
+
+// console.log(process.env);
 
 export default mergeConfig(
     viteConfig,
     defineConfig({
         test: {
-            css: {
-                include: /.+/,
-                modules: {
-                    ...viteConfig.css?.modules, // we want to use the same config as for builds to ensure the same class names and IDs
-                    classNameStrategy: 'scoped',
-                },
-            },
             include: [
                 '__tests__/__userscript__/**/*.test.tsx',
                 '__tests__/__userscript__/**/*.test.ts',
@@ -30,7 +32,9 @@ export default mergeConfig(
             setupFiles: ['__tests__/matchers.ts'],
             testTimeout: isCI ? 30_000 : 300_000_000, // 30s on CI, 5 million minutes locally
             hookTimeout: 60_000, // 60s should be enough. 30s also works but is a little optimistic sometimes
-            provide: { userscriptFile: join(__dirname, 'dist', fileName) },
+            provide: {
+                userscriptFile: join(__dirname, 'dist', scriptFileName),
+            },
         },
     })
 );

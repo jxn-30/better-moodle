@@ -51,8 +51,8 @@ const saveBookmarks = () => {
     });
 };
 
-GM_addValueChangeListener(storageKey, (_, __, newBookmarks: Bookmarks) => {
-    if (!enabled.value) return;
+GM_addValueChangeListener(storageKey, (_, __, newBookmarks?: Bookmarks) => {
+    if (!enabled.value || !newBookmarks) return;
     bookmarks.splice(0, bookmarks.length, ...newBookmarks);
     void renderDropdown();
 });
