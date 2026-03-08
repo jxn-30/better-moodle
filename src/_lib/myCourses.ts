@@ -1,3 +1,4 @@
+import { getCachedCourseFilter } from './courseCache';
 import { getDocument } from './network';
 import { require } from './require.js';
 import { SelectOption } from './Components';
@@ -81,13 +82,21 @@ export const getAvailableCourseFiltersAsOptions = (): Promise<SelectOption[]> =>
  * Gets the currently active course filter / grouping from the myCourses page.
  * @returns the active course filter
  */
-export const getActiveFilter = () => activeFilter;
+export const getActiveFilter = async (): Promise<CourseFilter | null> => {
+    if (activeFilter) return activeFilter;
+
+    const cachedFilter = getCachedCourseFilter();
+    if (cachedFilter) return cachedFilter;
+
+    await getAvailableCourseFilters();
+    return activeFilter;
+};
 
 const activeFilterChangedHooks = new Set<(current: CourseFilter) => void>();
 
 /**
  * Adds a hook to execute when the active filter has been updated
- * @param callback - te method to execute
+ * @param callback - the method to execute
  * @returns void
  */
 export const onActiveFilterChanged = (
@@ -114,7 +123,7 @@ if (window.location.pathname === '/my/courses.php') {
         'block_myoverview/selectors',
         'core/custom_interaction_events',
     ] as const).then(([jquery, selectors, events]) =>
-        // as long as moodle uses jQuery there seems to be no way to do it whitout jQuery
+        // as long as moodle uses jQuery there seems to be no way to do it whithout jQuery
         jquery('.block-myoverview')
             ?.find(selectors.FILTERS)
             ?.on(
@@ -129,6 +138,11 @@ if (window.location.pathname === '/my/courses.php') {
                         )?.dataset.customfieldname ?? '',
                         true
                     );
+
+                    // Trigger local hooks first
+                    activeFilterChangedHooks.forEach(hook => hook(filter));
+
+                    // Then broadcast to other tabs
                     const channel = new BroadcastChannel(
                         updateActiveFilterChannelName
                     );
