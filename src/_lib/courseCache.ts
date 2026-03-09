@@ -10,13 +10,17 @@ interface CachedCourseData {
     timestamp: number;
 }
 
+const CACHED_COURSES_KEY = 'navbar-dropdown-courses';
+const CACHED_COURSE_FILTER_KEY = 'navbar-dropdown-last-filter';
+const CACHED_COURSE_FILTERS_KEY = 'navbar-dropdown-filters';
+
 /**
  * Gets cached course data from localStorage
  * @returns The cached courses or null if not found/expired
  */
 export const getCachedCourses = (): Course[] | null => {
     try {
-        const cacheKey = PREFIX('navbar-dropdown-courses');
+        const cacheKey = PREFIX(CACHED_COURSES_KEY);
         const cached = localStorage.getItem(cacheKey);
         if (!cached) return null;
 
@@ -40,7 +44,7 @@ export const getCachedCourses = (): Course[] | null => {
  */
 export const setCachedCourses = (courses: Course[]): void => {
     try {
-        const cacheKey = PREFIX('navbar-dropdown-courses');
+        const cacheKey = PREFIX(CACHED_COURSES_KEY);
         const data: CachedCourseData = { courses, timestamp: Date.now() };
         localStorage.setItem(cacheKey, JSON.stringify(data));
     } catch (e) {
@@ -54,7 +58,7 @@ export const setCachedCourses = (courses: Course[]): void => {
  */
 export const getCachedCourseFilter = (): CourseFilter | null => {
     try {
-        const cacheKey = PREFIX('navbar-dropdown-last-filter');
+        const cacheKey = PREFIX(CACHED_COURSE_FILTER_KEY);
         const cached = localStorage.getItem(cacheKey);
         if (!cached) return null;
         return JSON.parse(cached) as CourseFilter;
@@ -70,10 +74,39 @@ export const getCachedCourseFilter = (): CourseFilter | null => {
  */
 export const setCachedCourseFilter = (activeFilter: CourseFilter): void => {
     try {
-        const cacheKey = PREFIX('navbar-dropdown-last-filter');
+        const cacheKey = PREFIX(CACHED_COURSE_FILTER_KEY);
         localStorage.setItem(cacheKey, JSON.stringify(activeFilter));
     } catch (e) {
         console.error('Error caching last active filter:', e);
+    }
+};
+
+/**
+ * Gets the last active filter from cache
+ * @returns The cached filter or null if not found
+ */
+export const getCachedCourseFilters = (): CourseFilter[] | null => {
+    try {
+        const cacheKey = PREFIX(CACHED_COURSE_FILTERS_KEY);
+        const cached = localStorage.getItem(cacheKey);
+        if (!cached) return null;
+        return JSON.parse(cached) as CourseFilter[];
+    } catch (e) {
+        console.error('Error reading course filters:', e);
+        return null;
+    }
+};
+
+/**
+ * Stores the last active filter in cache
+ * @param filters - The filters to cache
+ */
+export const setCachedCourseFilters = (filters: CourseFilter[]): void => {
+    try {
+        const cacheKey = PREFIX(CACHED_COURSE_FILTERS_KEY);
+        localStorage.setItem(cacheKey, JSON.stringify(filters));
+    } catch (e) {
+        console.error('Error caching course filters:', e);
     }
 };
 

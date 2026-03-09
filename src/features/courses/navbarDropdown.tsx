@@ -190,7 +190,6 @@ const loadContent = ({
 
     // If we have cached data, render dropdown button immediately
     if (courses) {
-        console.log(`Found ${courses.length} cached courses`);
         const dropdownToggle = document.createElement('a');
         dropdownToggle.className = 'dropdown-toggle nav-link';
         dropdownToggle.textContent = myCoursesText;

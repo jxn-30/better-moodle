@@ -1,4 +1,8 @@
-import { getCachedCourseFilter } from './courseCache';
+import {
+    getCachedCourseFilter,
+    getCachedCourseFilters,
+    setCachedCourseFilters,
+} from './courseCache';
 import { getDocument } from './network';
 import { require } from './require.js';
 import { SelectOption } from './Components';
@@ -39,10 +43,18 @@ const getFilterFromEl = (
 
 /**
  * Gets all available course filters / groupings from the myCourses page.
+ * @param useCache - Wether possible cached course filters should be considered
  * @returns a list of available course filters
  */
-export const getAvailableCourseFilters = async (): Promise<CourseFilter[]> => {
+export const getAvailableCourseFilters = async (
+    useCache = true
+): Promise<CourseFilter[]> => {
     if (availableFilters.length) return availableFilters;
+
+    if (useCache) {
+        const cached = getCachedCourseFilters();
+        if (cached) return cached;
+    }
 
     if (!(await isLoggedIn())) return [];
 
@@ -60,6 +72,8 @@ export const getAvailableCourseFilters = async (): Promise<CourseFilter[]> => {
         )
     ).map(el => getFilterFromEl(el, customfieldname));
     availableFilters.splice(0, availableFilters.length, ...filters);
+
+    setCachedCourseFilters(availableFilters);
     return availableFilters;
 };
 
@@ -88,7 +102,7 @@ export const getActiveFilter = async (): Promise<CourseFilter | null> => {
     const cachedFilter = getCachedCourseFilter();
     if (cachedFilter) return cachedFilter;
 
-    await getAvailableCourseFilters();
+    await getAvailableCourseFilters(false); // force fetch to ensure active filter gets updated
     return activeFilter;
 };
 
