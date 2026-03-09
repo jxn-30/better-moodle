@@ -1266,10 +1266,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20260305.1":
-  version: 4.20260305.1
-  resolution: "@cloudflare/workers-types@npm:4.20260305.1"
-  checksum: 10c0/17df460b3cfa457121b59789896da6df2594ecf7f244973fd44098fc6fcc02cd1112ee608088a4b25d965e6a62e101757ecb6d48a7dc925eb53b726de1a9df24
+"@cloudflare/workers-types@npm:4.20260307.1":
+  version: 4.20260307.1
+  resolution: "@cloudflare/workers-types@npm:4.20260307.1"
+  checksum: 10c0/994ef7a35a3d9b32dc514df89f94d47e4e024e91ea8fe35aae432b76f17cd66531da2ef4047709a510780b531405defaab45d3f6dce5585a08b35e4153c1accf
   languageName: node
   linkType: hard
 
@@ -4212,7 +4212,7 @@ __metadata:
   dependencies:
     "@actions/core": "npm:3.0.0"
     "@babel/compat-data": "npm:7.29.0"
-    "@cloudflare/workers-types": "npm:4.20260305.1"
+    "@cloudflare/workers-types": "npm:4.20260307.1"
     "@commitlint/cli": "npm:20.4.3"
     "@commitlint/config-conventional": "npm:20.4.3"
     "@eslint/js": "npm:10.0.1"
@@ -4254,7 +4254,7 @@ __metadata:
     jsdom: "npm:28.1.0"
     jsx-dom: "npm:8.1.6"
     mini-svg-data-uri: "npm:1.4.4"
-    node-ical: "npm:0.25.4"
+    node-ical: "npm:0.25.5"
     nodejs-file-downloader: "npm:4.13.0"
     postcss: "npm:8.5.8"
     postcss-inline-svg: "npm:6.0.0"
@@ -7520,13 +7520,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-ical@npm:0.25.4":
-  version: 0.25.4
-  resolution: "node-ical@npm:0.25.4"
+"node-ical@npm:0.25.5":
+  version: 0.25.5
+  resolution: "node-ical@npm:0.25.5"
   dependencies:
-    rrule-temporal: "npm:^1.4.6"
+    rrule-temporal: "npm:^1.4.7"
     temporal-polyfill: "npm:^0.3.0"
-  checksum: 10c0/d8bbece61e11c12e52acbac4fe51fe0fb0ff01d97ed38eb8805e6eb7e192dc161610844bf8b378044ae1eea3b6d940c1b07a0f6863e2e402f2bceb5597c8844d
+  checksum: 10c0/d6c522f4e3baed72931820b5005399ac73b284a9e192451cbea99023d8c04efdadd2f62123bc8f254702461f894f16417c69c27bcdab08661916c8d8ae9ac758
   languageName: node
   linkType: hard
 
@@ -8790,12 +8790,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rrule-temporal@npm:^1.4.6":
-  version: 1.4.7
-  resolution: "rrule-temporal@npm:1.4.7"
+"rrule-temporal@npm:^1.4.7":
+  version: 1.5.1
+  resolution: "rrule-temporal@npm:1.5.1"
   dependencies:
     "@js-temporal/polyfill": "npm:^0.5.1"
-  checksum: 10c0/13b51acc9bff2add96ff02f9e80d0ab34837fa3c9ab19edf772e2a3880d07a909c3aa274d8368874711c7558be2e6c674e08c40757c37a8d5414a075a5b54779
+  checksum: 10c0/5411bb6f60f5a7c4ba74c49958e6a2590fefd3f32d76703eaaf708c6b6fc81d7595b52f33ebdba004373dc20e457684f77499f4ebe72e05da73426f32bfc78fb
   languageName: node
   linkType: hard
 
