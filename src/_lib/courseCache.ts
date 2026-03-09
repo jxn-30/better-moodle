@@ -21,13 +21,16 @@ export const getCachedCourses = (): Course[] | null => {
         if (!cached) return null;
 
         const data = JSON.parse(cached) as CachedCourseData;
-        const maxAge = 24 * 60 * 60 * 1000; // Keep cache for max. 1 day
+        const maxAge = 10 * 60 * 1000; // Keep cache for max. 10 min
         if (Date.now() - data.timestamp < maxAge) {
             return data.courses;
+        } else {
+            localStorage.removeItem(cacheKey);
         }
     } catch (e) {
         console.error('Error reading cached courses:', e);
     }
+
     return null;
 };
 

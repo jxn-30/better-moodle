@@ -186,11 +186,11 @@ const loadContent = ({
     if (!desktopElement || !mobileElement) return;
 
     let contentLoaded = false;
-    const cachedCourses = getCachedCourses();
+    let courses = getCachedCourses();
 
     // If we have cached data, render dropdown button immediately
-    if (cachedCourses) {
-        console.log(`Found ${cachedCourses.length} cached courses`);
+    if (courses) {
+        console.log(`Found ${courses.length} cached courses`);
         const dropdownToggle = document.createElement('a');
         dropdownToggle.className = 'dropdown-toggle nav-link';
         dropdownToggle.textContent = myCoursesText;
@@ -232,10 +232,6 @@ const loadContent = ({
             );
         }
 
-        // Try to get courses from cache first
-        let courses = getCachedCourses();
-        const usedCache = !!courses;
-
         // Fetch fresh data if no cache
         courses ??= await fetchCourses(myCourses, filter, activeFilter);
         contentLoaded = true;
@@ -257,30 +253,6 @@ const loadContent = ({
             desktopNavItem,
             mobileElement
         );
-
-        // If we used cache, fetch fresh data in background and update dropdown
-        if (usedCache) {
-            void fetchCourses(myCourses, filter, activeFilter).then(
-                freshCourses => {
-                    // Re-render dropdown with fresh data
-                    const freshChildren = coursesToTemplateData(
-                        freshCourses,
-                        myCoursesUrl,
-                        myCoursesText,
-                        favouriteCoursesAtTop.value
-                    );
-                    void renderDropdownTemplates(
-                        templates,
-                        freshChildren,
-                        myCoursesText,
-                        myCoursesIsActive,
-                        myCoursesUrl,
-                        desktopNavItem,
-                        mobileElement
-                    );
-                }
-            );
-        }
     });
 };
 
