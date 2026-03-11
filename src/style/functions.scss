@@ -1,0 +1,35 @@
+@use 'sass:list';
+
+@function repeat($str, $n) {
+    $result: '';
+
+    @if $n == 0 {
+        @return $result;
+    }
+
+    @for $i from 1 through $n {
+        $result: $result + $str;
+    }
+
+    @return $result;
+}
+
+// This is only capable of simple maps.
+// Needs to be extended or replaced by a lib if more complex maps are required.
+@function map-to-str($map) {
+    $length: list.length($map);
+    $result: '';
+    $idx: 1;
+
+    @each $key, $value in $map {
+        $result: $result + '#{$key}: #{$value}';
+
+        @if $idx < $length {
+            $result: $result + '; ';
+        }
+
+        $idx: $idx + 1;
+    }
+
+    @return $result;
+}

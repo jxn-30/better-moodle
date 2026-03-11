@@ -3197,63 +3197,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sass-fairy/exception@npm:^1.0.0, @sass-fairy/exception@npm:^1.1.0":
-  version: 1.1.1
-  resolution: "@sass-fairy/exception@npm:1.1.1"
-  checksum: 10c0/2c221cd2bd0e8fd072bdb4900e3b8d72927ad81cae7183a9410832e3e752097db2827b9d030eddc00739c1c9073e953aa7b983a36b4eccb8b34eecb7f110e803
-  languageName: node
-  linkType: hard
-
-"@sass-fairy/list@npm:^1.0.0":
-  version: 1.2.4
-  resolution: "@sass-fairy/list@npm:1.2.4"
-  dependencies:
-    "@sass-fairy/exception": "npm:^1.0.0"
-    "@sass-fairy/math": "npm:^1.0.0"
-    "@sass-fairy/meta": "npm:^1.0.0"
-  checksum: 10c0/8700e27186bdeab710e43c7f79777e1ae7c87b0c39be2cbaa475da832860ce70a05855fad7c65d5235903e003bc1010f5938dac41c96e4f017da17dd18982c97
-  languageName: node
-  linkType: hard
-
-"@sass-fairy/map@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@sass-fairy/map@npm:1.1.1"
-  dependencies:
-    "@sass-fairy/exception": "npm:^1.1.0"
-    "@sass-fairy/list": "npm:^1.0.0"
-    "@sass-fairy/meta": "npm:^1.0.0"
-  checksum: 10c0/c4866ed638484e2b6d2db60621f32da5b701e1bf193b594a3181f2999080183026f39c126c03f985a5bdc44f4a2fa097f063857c4877b60c500d51f02d17dd05
-  languageName: node
-  linkType: hard
-
-"@sass-fairy/math@npm:^1.0.0":
-  version: 1.0.3
-  resolution: "@sass-fairy/math@npm:1.0.3"
-  dependencies:
-    "@sass-fairy/exception": "npm:^1.0.0"
-  checksum: 10c0/b1c975b8148029a9e91c7862091e844df2f7717a845ab8d7836f0fd3d7cca23c606826f2775b4ca925550beb9eb443c20c7f711bfed216f9a1da768e4f7e40c2
-  languageName: node
-  linkType: hard
-
-"@sass-fairy/meta@npm:^1.0.0":
-  version: 1.0.2
-  resolution: "@sass-fairy/meta@npm:1.0.2"
-  dependencies:
-    "@sass-fairy/exception": "npm:^1.0.0"
-  checksum: 10c0/d0c244687511a008abc37b677762da86cc73f9adfc93449bb9a364aec136219bf900cdadd7d47f0e9e1fe910898a21a5d3e866cda3569aff9c7d0988edc78894
-  languageName: node
-  linkType: hard
-
-"@sass-fairy/string@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@sass-fairy/string@npm:1.3.1"
-  dependencies:
-    "@sass-fairy/exception": "npm:^1.0.0"
-    "@sass-fairy/list": "npm:^1.0.0"
-  checksum: 10c0/bcdac343d05932b96627827f4e920c31297567407d6cafd05f8d58844b25046dc8386f6d559b0c44e7199d71b04f749193d53387a296ac017677105e9051ad52
-  languageName: node
-  linkType: hard
-
 "@simple-libs/stream-utils@npm:^1.2.0":
   version: 1.2.0
   resolution: "@simple-libs/stream-utils@npm:1.2.0"
@@ -4218,8 +4161,6 @@ __metadata:
     "@eslint/js": "npm:10.0.1"
     "@prettier/plugin-xml": "npm:3.4.2"
     "@rollup/plugin-terser": "npm:1.0.0"
-    "@sass-fairy/map": "npm:1.1.1"
-    "@sass-fairy/string": "npm:1.3.1"
     "@tomjs/unzip-crx": "npm:1.1.3"
     "@trim21/gm-fetch": "npm:0.3.0"
     "@types/caniuse-lite": "npm:1.0.5"
