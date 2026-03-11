@@ -68,7 +68,7 @@
     "devDependencies": {
         "@actions/core": "3.0.0",
         "@babel/compat-data": "7.29.0",
-        "@cloudflare/workers-types": "4.20260307.1",
+        "@cloudflare/workers-types": "4.20260310.1",
         "@commitlint/cli": "20.4.3",
         "@commitlint/config-conventional": "20.4.3",
         "@eslint/js": "10.0.1",
@@ -81,7 +81,7 @@
         "@types/eslint": "9.6.1",
         "@types/jquery": "4.0.0",
         "@types/mathjax": "0.0.40",
-        "@types/node": "25.3.5",
+        "@types/node": "25.4.0",
         "@types/tampermonkey": "5.0.5",
         "@vitejs/plugin-legacy": "7.2.1",
         "@vitest/coverage-v8": "4.0.18",
@@ -113,20 +113,20 @@
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "11.2.0",
         "prettier": "3.8.1",
-        "puppeteer": "24.38.0",
+        "puppeteer": "24.39.0",
         "rrule": "2.8.1",
-        "sass-embedded": "1.97.3",
+        "sass-embedded": "1.98.0",
         "terser": "5.46.0",
         "ts-json-schema-generator": "2.9.0",
         "ts-node": "10.9.2",
         "typescript": "5.9.3",
-        "typescript-eslint": "8.56.1",
+        "typescript-eslint": "8.57.0",
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
         "vite": "7.3.1",
         "vite-plugin-monkey": "7.1.9",
         "vitest": "4.0.18",
-        "wrangler": "4.71.0"
+        "wrangler": "4.72.0"
     },
     "engines": {
         "node": "^24.14.0"
