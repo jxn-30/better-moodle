@@ -18,6 +18,9 @@ const resolveId =
     (source, importer) => {
         if (!importer) return undefined;
 
+        // For some reason, with vite@8, jsx-dom suddenly passed all checks and the undefined-i18n was about to be used instead.
+        if (source === 'jsx-dom') return undefined;
+
         // TODO: Improve this to rely less on the exact i18n structure
 
         // Resolve virtual module itself
