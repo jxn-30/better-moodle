@@ -81,7 +81,7 @@
         "@types/mathjax": "0.0.40",
         "@types/node": "25.5.0",
         "@types/tampermonkey": "5.0.5",
-        "@vitejs/plugin-legacy": "7.2.1",
+        "@vitejs/plugin-legacy": "8.0.0",
         "@vitest/coverage-v8": "4.1.0",
         "babel-plugin-polyfill-corejs3": "0.14.1",
         "boxen": "8.0.1",
