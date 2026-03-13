@@ -47,6 +47,19 @@ interface ImportMeta {
     readonly env: ImportMetaEnv;
 }
 
+// Importing a scss module as JSON returns some JSON that we don't know how it looks like.
+declare module '*.module.scss?json' {
+    type JSValue =
+        | boolean
+        | number
+        | string
+        | JSValue[]
+        | { [key: string | number]: JSValue };
+
+    const exports: Record<string, JSValue>;
+    export default exports;
+}
+
 // Imports for FeatureGroups and features
 declare module 'virtual:featureGroups' {
     const featureGroups: Record<

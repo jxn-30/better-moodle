@@ -1,3 +1,4 @@
+import * as sass from 'sass-embedded';
 import { type Context } from '../context';
 import createPlugin from './createPlugin';
 import { type Importer } from 'sass-embedded';
@@ -90,6 +91,71 @@ const generateScopedName =
         return className.replace(/_{3,}/g, '__'); // reduce 3+ underscores to 2
     };
 
+type JSValue =
+    | boolean
+    | number
+    | string
+    | JSValue[]
+    | { [key: string | number]: JSValue };
+
+/**
+ * Converts a sass value to its corresponding JS value
+ * @param value - a sass value
+ * @returns a serializable JS version of the sass value
+ * @throws {Error} if converting is not available (yet) for the sass values' type
+ */
+const sassValueToJS = (value: sass.Value): JSValue => {
+    // boolean
+    if (value instanceof sass.SassBoolean) return value.value;
+    // color
+    if (value instanceof sass.SassColor) {
+        return value.toString();
+        /* // This doesn't work with alpha values yet, needs to be improved at latest when needed.
+        const red = value.channel('red', {space: 'rgb'}).toString(16);
+        const green = value.channel('green', {space: 'rgb'}).toString(16);
+        const blue = value.channel('blue', {space: 'rgb'}).toString(16);
+        const alpha = value.channel('alpha');
+        if (alpha) return `#${red}${green}${blue}${alpha}`.toUpperCase();
+        return `#${red}${green}${blue}`.toUpperCase();
+        */
+    }
+    // list
+    if (value instanceof sass.SassList) {
+        return value.asList.map(v => sassValueToJS(v)).toArray();
+    }
+    // map
+    if (value instanceof sass.SassMap) {
+        const jsObject: Record<string | number, JSValue> = {};
+        Object.entries(value.contents.toJSON()).forEach(
+            ([key, value]) => (jsObject[key] = sassValueToJS(value))
+        );
+        return jsObject;
+    }
+    // number
+    if (value instanceof sass.SassNumber) {
+        if (value.hasUnits) return value.toString();
+        return value.value;
+    }
+    // string
+    if (value instanceof sass.SassString) return value.text;
+
+    // Fallback: throw
+    throw new Error(
+        `JSONifying a sass value of type ${JSON.stringify(
+            value.constructor.name
+        )} seems not to be implemented yet :(`
+    );
+};
+
+/**
+ * Turns a sass value into a sass string, representing the stringified sass value
+ * @param root0 - a list of sass values where the first one is processed
+ * @param root0."0" - the sass value that should be stringified
+ * @returns the stringified version of the sass value, as a sass string
+ */
+const sassValueToJSON = ([arg]: sass.Value[]) =>
+    new sass.SassString(JSON.stringify(sassValueToJS(arg)));
+
 /**
  * Creates a SCSS plugin for the Vite framework.
  * @param ctx - The Vite plugin context object.
@@ -101,6 +167,7 @@ export default function (ctx: Context): Plugin {
             scss: {
                 additionalData: `@use ${JSON.stringify(CONSTANTS_FILE)} as global;`,
                 importers: [getImporter(ctx.GLOBAL_CONSTANTS)],
+                functions: { 'JSON($value)': sassValueToJSON },
             },
         },
         modules: {
@@ -109,6 +176,21 @@ export default function (ctx: Context): Plugin {
             hashPrefix: ctx.prefix,
             localsConvention: 'camelCaseOnly',
             generateScopedName: generateScopedName(ctx),
+            /**
+             * The getJSON method for postcss-modules, parsing imported variables if necessary
+             * @param fileName - the file imported, including possible query parameters
+             * @param modules - the exported content of the style file
+             */
+            getJSON: (fileName, modules) => {
+                if (fileName.endsWith('.module.scss?json')) {
+                    Object.entries(modules).forEach(([key, value]) => {
+                        // JSON strings will be enclosed in single quotes for a reason that surely is obvious but we didn't find it yet
+                        const sanitizedValue = value.replace(/^'|'$/g, '');
+                        // actually, this would be a JSValue but Types say that it can only be a string (for some reason)
+                        modules[key] = JSON.parse(sanitizedValue) as string;
+                    });
+                }
+            },
         },
     } satisfies UserConfig['css'];
 

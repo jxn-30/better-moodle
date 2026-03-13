@@ -1,9 +1,11 @@
-import { breakpoints } from '#lib/styleVars';
 import FeatureGroup from '#lib/FeatureGroup';
 import Marquee from '#lib/Marquee';
 import marqueeStyle from '#style/marquee.module.scss';
 import { ready } from '#lib/DOM';
 import { SliderSetting } from '#lib/Settings/SliderSetting';
+import styleVars from '#style/variables.module.scss?json';
+
+const breakpoints = styleVars.gridBreakpoints as Record<string, number>;
 
 const marquee = new Marquee('#usernavigation', 'prepend');
 

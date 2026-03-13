@@ -1,4 +1,6 @@
 @use 'sass:list';
+@use 'sass:math';
+@use 'sass:meta';
 
 @function repeat($str, $n) {
     $result: '';
@@ -14,22 +16,11 @@
     @return $result;
 }
 
-// This is only capable of simple maps.
-// Needs to be extended or replaced by a lib if more complex maps are required.
-@function map-to-str($map) {
-    $length: list.length($map);
-    $result: '';
-    $idx: 1;
-
-    @each $key, $value in $map {
-        $result: $result + '#{$key}: #{$value}';
-
-        @if $idx < $length {
-            $result: $result + '; ';
-        }
-
-        $idx: $idx + 1;
+@function strip-unit($number) {
+    @if meta.type-of($number) == 'number' and not math.is-unitless($number) {
+        // Dividing by 1 unit
+        @return math.div($number, ($number * 0 + 1));
     }
 
-    @return $result;
+    @return $number;
 }
