@@ -1,7 +1,7 @@
 import type { Context } from '../context';
 import createPlugin from './createPlugin';
 import type { FrameworkConfig } from '../framework';
-import type { ESBuildOptions, Plugin, UserConfig } from 'vite';
+import type { ESBuildOptions, PluginOption, UserConfig } from 'vite';
 
 type ESBuildJSXConfig = Pick<
     ESBuildOptions,
@@ -26,7 +26,7 @@ export type ESBuildJSXConfigs = typeof esbuildJSXConfigs;
  * @param ctx - the build context
  * @returns a plugin, altering the base vite config
  */
-export default function (config: FrameworkConfig, ctx: Context): Plugin {
+export default function (config: FrameworkConfig, ctx: Context): PluginOption {
     const esbuildJSXConfig = config.jsx ? esbuildJSXConfigs[config.jsx] : null;
 
     return createPlugin('base-config', {

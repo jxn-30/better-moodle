@@ -1,5 +1,5 @@
 import createPlugin from './createPlugin';
-import { type Plugin } from 'vite';
+import { type PluginOption } from 'vite';
 
 /**
  * Minify a mustache template by some simple regex rules.
@@ -20,7 +20,7 @@ const minify = (src: string) =>
  * A plugin that minifies mustache templates
  * @returns the mustache template minifier plugin
  */
-export default function (): Plugin {
+export default function (): PluginOption {
     return createPlugin('mustache-loader', {
         transform: { filter: { id: /\.mustache\?raw$/ }, handler: minify },
     });

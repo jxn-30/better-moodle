@@ -1,4 +1,4 @@
-import { type Plugin } from 'vite';
+import { type Plugin, type PluginOption } from 'vite';
 
 /**
  * A small helper function to create a plugin but keep its name consistent within the framework
@@ -6,6 +6,9 @@ import { type Plugin } from 'vite';
  * @param plugin - the plugin but without name
  * @returns the new plugin with a structured name
  */
-export default function (name: string, plugin: Omit<Plugin, 'name'>): Plugin {
+export default function (
+    name: string,
+    plugin: Omit<Plugin, 'name'>
+): PluginOption {
     return { ...plugin, name: `userscript:${name}` };
 }
