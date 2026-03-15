@@ -1,4 +1,5 @@
 import type { Context } from '../context';
+import createPlugin from './createPlugin';
 import legacy from '@vitejs/plugin-legacy';
 import type { PluginOption } from 'vite';
 import { polyfillsCopyright } from '../utils/copyright';
@@ -67,69 +68,53 @@ export default function (ctx: Context): PluginOption {
         renderModernChunks: true,
     });
 
-    const generatePlugin = plugins.find(
+    const generatePluginIndex = plugins.findIndex(
         ({ name }) => name === 'vite:legacy-generate-polyfill-chunk'
     );
 
-    if (!generatePlugin) {
+    if (generatePluginIndex === -1) {
         throw new Error(
             "We couldn't enhance the legacy plugin because we couldn't find it."
         );
     }
 
-    const generateBundleOrig = generatePlugin.generateBundle;
+    const externalizePlugin = createPlugin(
+        'vite:legacy-externalize-polyfill-chunk',
+        {
+            /**
+             * Wraps the generated polyfills into an IIFE and ensures, they are emitted in an extra file.
+             * @param _ - Vite build options.
+             * @param bundle - The bundle object containing chunks and assets.
+             */
+            generateBundle(_, bundle) {
+                // console.log(Object.keys(bundle));
+                for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
+                    // console.log(fileName, chunkOrAsset);
+                    if (
+                        chunkOrAsset.type !== 'chunk' ||
+                        !fileName.startsWith('polyfills-') ||
+                        chunkOrAsset.name !== 'polyfills'
+                    ) {
+                        continue;
+                    }
 
-    if (!generateBundleOrig) {
-        throw new Error(
-            'The legacy-plugin does not have a generateBundle hook.'
-        );
-    }
+                    getPolyfillsFromImports(chunkOrAsset.moduleIds);
 
-    /**
-     * Enhances the legacy plugin's generateBundle hook to handle polyfill generation.
-     * It wraps the polyfills into an IIFE and ensures, they are emitted in an extra file.
-     * @param options - Vite build options.
-     * @param bundle - The bundle object containing chunks and assets.
-     * @returns A promise resolving when the bundle is processed.
-     */
-    generatePlugin.generateBundle = async function (options, bundle) {
-        if ('handler' in generateBundleOrig) {
-            throw new Error(
-                "Cannot enhance legacy plugin: its generateBundle hook uses the object form (has a 'handler' property)."
-            );
+                    const output = getPolyfillsCode(ctx, chunkOrAsset.code);
+
+                    this.emitFile({
+                        type: 'asset',
+                        fileName: ctx.dist.polyfills,
+                        source: output,
+                    });
+
+                    delete bundle[fileName];
+                }
+            },
         }
+    );
 
-        const result = await generateBundleOrig.call(
-            this,
-            options,
-            bundle,
-            false
-        );
-
-        for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
-            if (
-                chunkOrAsset.type !== 'chunk' ||
-                !fileName.startsWith('polyfills-') ||
-                chunkOrAsset.name !== 'polyfills'
-            ) {
-                continue;
-            }
-
-            getPolyfillsFromImports(chunkOrAsset.moduleIds);
-
-            const output = getPolyfillsCode(ctx, chunkOrAsset.code);
-
-            this.emitFile({
-                type: 'asset',
-                fileName: ctx.dist.polyfills,
-                source: output,
-            });
-
-            delete bundle[fileName];
-        }
-
-        return result;
-    };
+    plugins.splice(generatePluginIndex + 1, 0, externalizePlugin);
 
     return plugins;
 }
