@@ -4,6 +4,7 @@ import type { FrameworkConfig } from '../framework';
 import fs from 'node:fs/promises';
 import { includedPolyfillsList } from './legacy';
 import path from 'node:path';
+import { type PluginOption } from 'vite';
 
 /**
  * Creates a build statistics plugin for the Vite framework.
@@ -12,7 +13,7 @@ import path from 'node:path';
  * @param ctx - The build context object containing metadata
  * @returns The plugin object with the build hook
  */
-export default function (cfg: FrameworkConfig, ctx: Context) {
+export default function (cfg: FrameworkConfig, ctx: Context): PluginOption {
     return createPlugin('build-stats', {
         apply: 'build',
         /**

@@ -29,7 +29,7 @@ export interface FrameworkConfig {
  * @param config - the framework config
  * @returns the list of plugins created by the framework
  */
-export default function (config: FrameworkConfig): PluginOption[] {
+export default function (config: FrameworkConfig): PluginOption {
     const env: Record<string, string> = {};
     Object.entries(config.env ?? {}).forEach(
         ([key, value]: [string, EnvValue]) => {
