@@ -103,7 +103,7 @@
         "fast-glob": "3.3.3",
         "globals": "17.4.0",
         "jiti": "2.6.1",
-        "jsdom": "28.1.0",
+        "jsdom": "29.0.0",
         "mini-svg-data-uri": "1.4.4",
         "node-ical": "0.25.6",
         "nodejs-file-downloader": "4.13.0",
