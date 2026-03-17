@@ -1,6 +1,6 @@
 import { type Context } from '../context';
 import createPlugin from './createPlugin';
-import { type Plugin } from 'vite';
+import { type PluginOption } from 'vite';
 
 const VIRTUAL_PUBLIC_ID = 'virtual:fixes';
 const VIRTUAL_RESOLVED_ID = `\0${VIRTUAL_PUBLIC_ID}`;
@@ -10,7 +10,7 @@ const VIRTUAL_RESOLVED_ID = `\0${VIRTUAL_PUBLIC_ID}`;
  * @param ctx - The Vite plugin context object.
  * @returns The plugin configuration object.
  */
-export default function (ctx: Context): Plugin {
+export default function (ctx: Context): PluginOption {
     const importString = ctx.fixes
         .map(fix => `import ${JSON.stringify(`#fixes/${fix}`)};`)
         .join('');

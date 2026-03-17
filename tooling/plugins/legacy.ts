@@ -1,6 +1,6 @@
 import type { Context } from '../context';
 import legacy from '@vitejs/plugin-legacy';
-import type { Plugin } from 'vite';
+import type { PluginOption } from 'vite';
 import { polyfillsCopyright } from '../utils/copyright';
 
 // we need to make it an iife, otherwise global scope would be altered
@@ -59,7 +59,7 @@ export const includedPolyfillsList = () =>
  * @returns An array of Vite plugins configured for polyfill handling.
  * @throws {Error} If the legacy plugin is not found or lacks required hooks.
  */
-export default function (ctx: Context): Plugin[] {
+export default function (ctx: Context): PluginOption {
     const plugins = legacy({
         modernTargets: ctx.browsers,
         modernPolyfills: true, // vorher auslesen, damit wirs für später wissen?

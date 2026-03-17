@@ -3,7 +3,7 @@ import { type Context } from '../context';
 import createPlugin from './createPlugin';
 import { type Importer } from 'sass-embedded';
 import path from 'node:path';
-import { type Plugin, type UserConfig } from 'vite';
+import { type PluginOption, type UserConfig } from 'vite';
 
 const CONSTANTS_FILE = 'global:constants.scss';
 
@@ -161,7 +161,7 @@ const sassValueToJSON = ([arg]: sass.Value[]) =>
  * @param ctx - The Vite plugin context object.
  * @returns The resolved plugin configuration for Vite.
  */
-export default function (ctx: Context): Plugin {
+export default function (ctx: Context): PluginOption {
     const config = {
         preprocessorOptions: {
             scss: {

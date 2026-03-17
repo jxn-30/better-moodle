@@ -1,11 +1,11 @@
-import type { Plugin } from 'vite';
+import type { PluginOption } from 'vite';
 import terserPlugin from '@rollup/plugin-terser';
 
 /**
  * The terser plugin to minify and optimize the output a little
  * @returns the configured terser plugin
  */
-export default function (): Plugin {
+export default function (): PluginOption {
     return terserPlugin({
         module: true,
         compress: {
