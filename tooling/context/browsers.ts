@@ -7,10 +7,24 @@ const queries = browserslist.loadConfig({ path: process.cwd() });
 export const browsers = browserslist(queries);
 
 // determine targets for ESBuild and vite-plugin-legacy
-export const targets = new Set(
+const allTargets = new Set(
     resolveToEsbuildTarget(browsers, { printUnknownTargets: false })
 )
     .values()
+    .toArray()
+    .toSorted();
+
+// determine the minimum supported targets as each target browser must not occure more than once anymore
+const minTargetsMap = new Map<string, number>();
+allTargets.forEach(target => {
+    const [browser, version] = target.split(/(?<=^\D+)(?=\d+$)/);
+
+    const minVersion = minTargetsMap.get(browser) ?? Number.MAX_SAFE_INTEGER;
+    minTargetsMap.set(browser, Math.min(Number(version), minVersion));
+});
+export const targets = minTargetsMap
+    .entries()
+    .map(([browser, version]) => `${browser}${version}`)
     .toArray()
     .toSorted();
 
