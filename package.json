@@ -68,7 +68,7 @@
     "devDependencies": {
         "@actions/core": "3.0.0",
         "@babel/compat-data": "7.29.0",
-        "@cloudflare/workers-types": "4.20260316.1",
+        "@cloudflare/workers-types": "4.20260317.1",
         "@commitlint/cli": "20.5.0",
         "@commitlint/config-conventional": "20.5.0",
         "@eslint/js": "10.0.1",
@@ -114,17 +114,17 @@
         "puppeteer": "24.39.1",
         "rrule": "2.8.1",
         "sass-embedded": "1.98.0",
-        "terser": "5.46.0",
+        "terser": "5.46.1",
         "ts-json-schema-generator": "2.9.0",
         "ts-node": "10.9.2",
         "typescript": "5.9.3",
-        "typescript-eslint": "8.57.0",
+        "typescript-eslint": "8.57.1",
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
         "vite": "7.3.1",
         "vite-plugin-monkey": "7.1.9",
         "vitest": "4.1.0",
-        "wrangler": "4.73.0"
+        "wrangler": "4.75.0"
     },
     "engines": {
         "node": "^24.14.0"
