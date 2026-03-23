@@ -1211,16 +1211,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/unenv-preset@npm:2.15.0":
-  version: 2.15.0
-  resolution: "@cloudflare/unenv-preset@npm:2.15.0"
+"@cloudflare/unenv-preset@npm:2.16.0":
+  version: 2.16.0
+  resolution: "@cloudflare/unenv-preset@npm:2.16.0"
   peerDependencies:
     unenv: 2.0.0-rc.24
     workerd: 1.20260301.1 || ~1.20260302.1 || ~1.20260303.1 || ~1.20260304.1 || >1.20260305.0 <2.0.0-0
   peerDependenciesMeta:
     workerd:
       optional: true
-  checksum: 10c0/4154080f3ff4e9c69422a9b113acb1abec67eab007913f089b8aba48ce461f0727ff11fb0fd0d0c041056c6340b1de0d3635d6c1dcb4a06dfad6a30356ef7c7e
+  checksum: 10c0/ddb2939cd05b5a0cb17d44b98a11b5c8e24dc6fa31171e98d8f1d7ffbb9cd35fde2ad2873715dc90db63183d6768ea43256ce3e4eb8c359542a2051f2d8bd919
   languageName: node
   linkType: hard
 
@@ -4548,7 +4548,7 @@ __metadata:
     esbuild-plugin-browserslist: "npm:2.0.0"
     eslint: "npm:10.0.3"
     eslint-config-prettier: "npm:10.1.8"
-    eslint-plugin-es-x: "npm:9.5.0"
+    eslint-plugin-es-x: "npm:9.6.0"
     eslint-plugin-jsdoc: "npm:62.8.0"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-userscripts: "npm:0.5.6"
@@ -4578,7 +4578,7 @@ __metadata:
     vite: "npm:7.3.1"
     vite-plugin-monkey: "npm:7.1.9"
     vitest: "npm:4.1.0"
-    wrangler: "npm:4.75.0"
+    wrangler: "npm:4.76.0"
   languageName: unknown
   linkType: soft
 
@@ -5864,16 +5864,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-es-x@npm:9.5.0":
-  version: 9.5.0
-  resolution: "eslint-plugin-es-x@npm:9.5.0"
+"eslint-plugin-es-x@npm:9.6.0":
+  version: 9.6.0
+  resolution: "eslint-plugin-es-x@npm:9.6.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.1.2"
     "@eslint-community/regexpp": "npm:^4.12.1"
-    eslint-type-tracer: "npm:^0.4.0"
+    eslint-type-tracer: "npm:^0.5.1"
   peerDependencies:
     eslint: ">=9.29.0"
-  checksum: 10c0/f086897f0a8bf2a3ba2b86ea8defe2098513190dd2ef276152b381379a5064afab9422def1d715a02e8b2ca3a62dacb0534b50f5642c21ddce918e3e2d556428
+  checksum: 10c0/8fecf67718c40ddf55e1141a808cbda519039f2ce7d196031cc4d8f7162a1c48810f08f28ebc43a081b349630eb488974ec7158cb69325c0dd6f7fc074f5a8aa
   languageName: node
   linkType: hard
 
@@ -5949,14 +5949,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-type-tracer@npm:^0.4.0":
-  version: 0.4.1
-  resolution: "eslint-type-tracer@npm:0.4.1"
+"eslint-type-tracer@npm:^0.5.1":
+  version: 0.5.2
+  resolution: "eslint-type-tracer@npm:0.5.2"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.7.0"
   peerDependencies:
     eslint: ">=8"
-  checksum: 10c0/c50aef52d47e3467aae6e04fdd3900ac90bdaf5ffa70e232f31d316a194a746ede8d77011338bf2f7f814d4869104453337e95ad9bf649bbcf5cf569c644b02b
+  checksum: 10c0/5e678631b366ca1d597b24c17abb31271a8100f043551eeb9ecc5ece2253e6092ea9e05fc9a3191b9b4c4009bd6e659be947542b2e5c344413dfb55c5d5f3083
   languageName: node
   linkType: hard
 
@@ -7780,9 +7780,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"miniflare@npm:4.20260317.0":
-  version: 4.20260317.0
-  resolution: "miniflare@npm:4.20260317.0"
+"miniflare@npm:4.20260317.1":
+  version: 4.20260317.1
+  resolution: "miniflare@npm:4.20260317.1"
   dependencies:
     "@cspotcode/source-map-support": "npm:0.8.1"
     sharp: "npm:^0.34.5"
@@ -7792,7 +7792,7 @@ __metadata:
     youch: "npm:4.1.0-beta.10"
   bin:
     miniflare: bootstrap.js
-  checksum: 10c0/53f09de71565ec7629b7dbb8c0a1ccc5fdcf4f856eca103621f24b26fbc70b63d1853f94e525f2c3e70c8a12fbe20b2e0102e368fc36e5673eb028d7545498dc
+  checksum: 10c0/de7e5ef4c5a1ce7efaf70c8618737921f0e3c0391f6a9ad4d2c243f27d2452c43d47c5070cd0456c3225e124e3c48ebd866251ae32d2909b000236a3a4f59a1e
   languageName: node
   linkType: hard
 
@@ -11173,16 +11173,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrangler@npm:4.75.0":
-  version: 4.75.0
-  resolution: "wrangler@npm:4.75.0"
+"wrangler@npm:4.76.0":
+  version: 4.76.0
+  resolution: "wrangler@npm:4.76.0"
   dependencies:
     "@cloudflare/kv-asset-handler": "npm:0.4.2"
-    "@cloudflare/unenv-preset": "npm:2.15.0"
+    "@cloudflare/unenv-preset": "npm:2.16.0"
     blake3-wasm: "npm:2.1.5"
     esbuild: "npm:0.27.3"
     fsevents: "npm:~2.3.2"
-    miniflare: "npm:4.20260317.0"
+    miniflare: "npm:4.20260317.1"
     path-to-regexp: "npm:6.3.0"
     unenv: "npm:2.0.0-rc.24"
     workerd: "npm:1.20260317.1"
@@ -11197,7 +11197,7 @@ __metadata:
   bin:
     wrangler: bin/wrangler.js
     wrangler2: bin/wrangler.js
-  checksum: 10c0/43f49883349a07d01eebcb5694a304dd31c880d6af7bc276494019382fc57df8868cfca066927e3021ef3f80547eabb861d34420edbdc220993af97dc8ef9028
+  checksum: 10c0/40061288c9d70f30e044fedd62ea10161582bbd39aaa6ca9c21916ae0daac7a321a7c93638385cedac847a08fce96724cd6c39b2c327b0ab881931bf314ae3c8
   languageName: node
   linkType: hard
 
