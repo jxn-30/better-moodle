@@ -12,7 +12,7 @@
         "prettier:write": "prettier --write --cache --cache-strategy content .",
         "prettier:i18n": "prettier --write src/i18n",
         "dev": "vite",
-        "prebuild": "yarn i18n:once && tsc",
+        "prebuild": "yarn i18n:once && yarn i18n:new && tsc",
         "build": "yarn prebuild && vite build -- --config=${0}",
         "release-build": "yarn prebuild && vite build -- --config=${0} --release",
         "build:uzl": "yarn build uzl",
@@ -22,6 +22,7 @@
         "test:userscript": "vitest run --config vitest.userscript.config.ts -- --config=${0}",
         "i18n:watch": "typesafe-i18n",
         "i18n:once": "typesafe-i18n --no-watch",
+        "i18n:new": "yarn paraglide-js compile --project ./src/i18n/project.inlang --outdir ./src/i18n/paraglide --strategy baseLocal --emit-ts-declarations",
         "config:scheme": "ts-json-schema-generator --path 'configs/_config.d.ts' --type 'Config' --out configs/_schema.json; ts-json-schema-generator --path 'configs/_global.json.d.ts' --type 'GlobalConfig' --out configs/_globalSchema.json; yarn prettier --write configs/*.json",
         "ics-parser:dev": "wrangler dev --config=ics-parser/wrangler.json --ip=127.0.0.1",
         "ci": "yarn lint:fix && yarn prettier:write && yarn build ${0}"
@@ -54,12 +55,14 @@
             "./types/*/index.d.ts"
         ],
         "#i18n": "./src/i18n/i18n.ts",
+        "#i18n-p": "./src/i18n/i18n.paraglide.ts",
         "#templates/*": "./src/templates/*",
         "#style/*": "./src/style/*",
         "#_configs/*": "./configs/*",
         "#_/*": "./*"
     },
     "dependencies": {
+        "@inlang/paraglide-js": "2.15.1",
         "@trim21/gm-fetch": "0.3.0",
         "darkreader": "4.9.120",
         "jsx-dom": "8.1.6",

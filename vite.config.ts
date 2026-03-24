@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { paraglideVitePlugin } from '@inlang/paraglide-js';
 import UserscriptFrameworkPlugin from './tooling/framework';
 
 const performanceStops = new Map<string, bigint>();
@@ -14,6 +15,14 @@ addPerfStop('start');
 
 export default defineConfig({
     plugins: [
+        paraglideVitePlugin({
+            project: './src/i18n/project.inlang',
+            outdir: './src/i18n/paraglide',
+            // Nur baseLocale als Strategie – wir überschreiben getLocale() selbst in i18n.ts
+            strategy: ['baseLocale'],
+            emitTsDeclarations: true,
+        }),
+
         UserscriptFrameworkPlugin({
             jsx: 'jsx-dom',
             env: {

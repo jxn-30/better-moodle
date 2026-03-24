@@ -1,15 +1,13 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import FeatureGroup from '#lib/FeatureGroup';
 import globalStyle from '#style/index.module.scss';
-import { LLFG } from '#i18n';
+import { LL } from '#i18n-p';
 import { Modal } from '#lib/Modal';
 import style from './style.module.scss';
 import toast from '#lib/toast';
 import { getHtml, ready } from '#lib/DOM';
 import { NavbarItem, NavbarItemComponent } from '#lib/Components';
 import { putTemplate, render } from '#lib/templates';
-
-const LL = LLFG('bookmarks');
 
 const enabled = new BooleanSetting('enabled', false).addAlias(
     'general.bookmarkManager'
@@ -44,7 +42,7 @@ const bookmarks = GM_getValue<Bookmarks>(storageKey, []).map(bookmark => ({
  */
 const saveBookmarks = () => {
     GM_setValue(storageKey, bookmarks);
-    void toast(LL.savedNotification(), {
+    void toast(LL.bookmarks_savedNotification(), {
         type: 'success',
         autohide: true,
         closeButton: true,
@@ -233,12 +231,12 @@ const openAddModal = () => {
     ) as EditRowElement;
     new Modal({
         type: 'SAVE_CANCEL',
-        title: LL.add(),
+        title: LL.bookmarks_add(),
         body: (
             <form className={['mform', style.form, style.editForm]}>
                 <div className="fcontainer">
-                    <b>{LL.modal.title()}</b>
-                    <b>{LL.modal.url()}</b>
+                    <b>{LL.bookmarks_modal_title()}</b>
+                    <b>{LL.bookmarks_modal_url()}</b>
                     {input}
                 </div>
             </form>
@@ -269,8 +267,8 @@ const openEditModal = () => {
 
     const container = (
         <div className="fcontainer">
-            <b>{LL.modal.title()}</b>
-            <b>{LL.modal.url()}</b>
+            <b>{LL.bookmarks_modal_title()}</b>
+            <b>{LL.bookmarks_modal_url()}</b>
             <div className="d-none d-sm-block"></div>
             {...Array.from(inputs.values())}
         </div>
@@ -335,7 +333,7 @@ const openEditModal = () => {
 
     new Modal({
         type: 'SAVE_CANCEL',
-        title: LL.edit(),
+        title: LL.bookmarks_edit(),
         body: (
             <form className={['mform', style.form]}>
                 {container}
@@ -369,7 +367,10 @@ const preprocessBookmarkIcon: (elements: [HTMLLIElement]) => void = ([
     item.id = style.dropdown;
     item.classList.add(globalStyle.navbarItem);
     item.style.setProperty('order', `${order}`);
-    item.style.setProperty('--empty-text', JSON.stringify(LL.empty()));
+    item.style.setProperty(
+        '--empty-text',
+        JSON.stringify(LL.bookmarks_empty())
+    );
 };
 
 /**
@@ -378,7 +379,7 @@ const preprocessBookmarkIcon: (elements: [HTMLLIElement]) => void = ([
  */
 const renderDropdown = () =>
     render('core/custom_menu_item', {
-        title: LL.bookmarks(),
+        title: LL.bookmarks_bookmarks(),
         text: getHtml(navbarItemTemplate),
         haschildren: true,
         children: [
@@ -387,8 +388,16 @@ const renderDropdown = () =>
                 text: bookmark.title,
             })),
             { divider: true },
-            { url: '#addBookmark', title: LL.add(), text: LL.add() },
-            { url: '#editBookmarks', title: LL.edit(), text: LL.edit() },
+            {
+                url: '#addBookmark',
+                title: LL.bookmarks_add(),
+                text: LL.bookmarks_add(),
+            },
+            {
+                url: '#editBookmarks',
+                title: LL.bookmarks_edit(),
+                text: LL.bookmarks_edit(),
+            },
         ],
     })
         .then(template =>
