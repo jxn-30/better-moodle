@@ -63,7 +63,7 @@
         "@trim21/gm-fetch": "0.3.0",
         "darkreader": "4.9.120",
         "jsx-dom": "8.1.6",
-        "typesafe-i18n": "5.27.1"
+        "typesafe-i18n": "patch:typesafe-i18n@npm%3A5.27.1#~/.yarn/patches/typesafe-i18n-npm-5.27.1-37bc79b222.patch"
     },
     "devDependencies": {
         "@actions/core": "3.0.0",

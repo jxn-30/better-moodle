@@ -4570,7 +4570,7 @@ __metadata:
     terser: "npm:5.46.1"
     ts-json-schema-generator: "npm:2.9.0"
     ts-node: "npm:10.9.2"
-    typesafe-i18n: "npm:5.27.1"
+    typesafe-i18n: "patch:typesafe-i18n@npm%3A5.27.1#~/.yarn/patches/typesafe-i18n-npm-5.27.1-37bc79b222.patch"
     typescript: "npm:6.0.2"
     typescript-eslint: "npm:8.57.1"
     typescript-plugin-css-modules: "npm:5.2.0"
@@ -10576,6 +10576,17 @@ __metadata:
   bin:
     typesafe-i18n: cli/typesafe-i18n.mjs
   checksum: 10c0/acc33ba6f7f48f8efb9a7e64324255f4cc0fb02fd685d16deba910c81b675a853d7393e44405245adbc7aa627c2e91b14273d37b000dfa5f40439586b3f5b871
+  languageName: node
+  linkType: hard
+
+"typesafe-i18n@patch:typesafe-i18n@npm%3A5.27.1#~/.yarn/patches/typesafe-i18n-npm-5.27.1-37bc79b222.patch":
+  version: 5.27.1
+  resolution: "typesafe-i18n@patch:typesafe-i18n@npm%3A5.27.1#~/.yarn/patches/typesafe-i18n-npm-5.27.1-37bc79b222.patch::version=5.27.1&hash=d2ed1b"
+  peerDependencies:
+    typescript: ">=3.5.1"
+  bin:
+    typesafe-i18n: cli/typesafe-i18n.mjs
+  checksum: 10c0/6234c32932b8b72036995b71e0ae4ccdf72ffbe1e723b0769a85f317fa05ba54b3c57e9bb0b4db0e0174018f150af6957307db80835010068ea75f1e95404fe1
   languageName: node
   linkType: hard
 

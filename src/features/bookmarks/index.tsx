@@ -19,17 +19,16 @@ interface Bookmark {
     title: string;
     url: string;
 }
+type Bookmarks = Bookmark[];
 
 const storageKey = 'bookmarks.list';
 const oldStorageKey = 'better-moodle-bookmarks';
 
-const oldValue = GM_getValue(oldStorageKey);
+const oldValue = GM_getValue<Bookmarks>(oldStorageKey);
 if (oldValue) {
     GM_setValue(storageKey, oldValue);
     GM_deleteValue(oldStorageKey);
 }
-
-type Bookmarks = Bookmark[];
 
 const bookmarks = GM_getValue<Bookmarks>(storageKey, []).map(bookmark => ({
     ...bookmark,
