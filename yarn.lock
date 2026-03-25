@@ -4570,8 +4570,8 @@ __metadata:
     terser: "npm:5.46.1"
     ts-json-schema-generator: "npm:2.9.0"
     ts-node: "npm:10.9.2"
-    typesafe-i18n: "npm:5.27.1"
-    typescript: "npm:5.9.3"
+    typesafe-i18n: "patch:typesafe-i18n@npm%3A5.27.1#~/.yarn/patches/typesafe-i18n-npm-5.27.1-37bc79b222.patch"
+    typescript: "npm:6.0.2"
     typescript-eslint: "npm:8.57.1"
     typescript-plugin-css-modules: "npm:5.2.0"
     userscript-meta: "npm:1.0.1"
@@ -10579,6 +10579,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typesafe-i18n@patch:typesafe-i18n@npm%3A5.27.1#~/.yarn/patches/typesafe-i18n-npm-5.27.1-37bc79b222.patch":
+  version: 5.27.1
+  resolution: "typesafe-i18n@patch:typesafe-i18n@npm%3A5.27.1#~/.yarn/patches/typesafe-i18n-npm-5.27.1-37bc79b222.patch::version=5.27.1&hash=d2ed1b"
+  peerDependencies:
+    typescript: ">=3.5.1"
+  bin:
+    typesafe-i18n: cli/typesafe-i18n.mjs
+  checksum: 10c0/6234c32932b8b72036995b71e0ae4ccdf72ffbe1e723b0769a85f317fa05ba54b3c57e9bb0b4db0e0174018f150af6957307db80835010068ea75f1e95404fe1
+  languageName: node
+  linkType: hard
+
 "typescript-eslint@npm:8.57.1":
   version: 8.57.1
   resolution: "typescript-eslint@npm:8.57.1"
@@ -10623,7 +10634,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.9.3, typescript@npm:^5.9.3":
+"typescript@npm:6.0.2":
+  version: 6.0.2
+  resolution: "typescript@npm:6.0.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/4b860b0bf87cc0fee0f66d8ef2640b5a8a8a8c74d1129adb82e389e5f97124383823c47946bef8a73ede371461143a3aa8544399d2133c7b2e4f07e81860af7f
+  languageName: node
+  linkType: hard
+
+"typescript@npm:^5.9.3":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -10633,7 +10654,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.9.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>":
+  version: 6.0.2
+  resolution: "typescript@patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/49f0b84fc6ca55653e77752b8a61beabc09ee3dae5d965c31596225aa6ef213c5727b1d2e895b900416dc603854ba0872ac4a812c2a4ed6793a601f9c675de02
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.9.3#optional!builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:

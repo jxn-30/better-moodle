@@ -120,9 +120,7 @@ export default function (ctx: Context): PluginOption {
             }
 
             requireReplacements.forEach((url, fileName) => {
-                // @ts-expect-error - TS does not know of RegExp.escape yet
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                const escapedFileName = RegExp.escape(fileName) as string;
+                const escapedFileName = RegExp.escape(fileName);
                 const regex = new RegExp(
                     `(?<=^//\\s+@require\\s+)${escapedFileName}$`,
                     'gm'

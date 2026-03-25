@@ -1,0 +1,14 @@
+diff --git a/cli/typesafe-i18n.mjs b/cli/typesafe-i18n.mjs
+index 7667fc7d110f887baa3c99a80f78d92db168cb4b..0ae8f4f32127ee79447cf8312a4630ab6a0356e8 100644
+--- a/cli/typesafe-i18n.mjs
++++ b/cli/typesafe-i18n.mjs
+@@ -22862,7 +22862,8 @@ var transpileTypescriptFiles = async (outputPath, outputFormat2, languageFilePat
+     resolveJsonModule: true,
+     skipLibCheck: true,
+     sourceMap: false,
+-    noLib: true
++    noLib: true,
++    module: ts.ModuleKind.CommonJS // Tell TS to use CommonJS imports
+   });
+   program3.emit();
+   const baseTranslationPath = await detectLocationOfCompiledBaseTranslation(
