@@ -1,8 +1,9 @@
 import { parseArgs } from 'node:util';
 
 const options = {
-    config: { type: 'string' },
-    release: { type: 'boolean', default: false },
+    'config': { type: 'string' },
+    'release': { type: 'boolean', default: false },
+    'single-file': { type: 'boolean', default: false },
 } as const;
 
 const { values: args } = parseArgs({
@@ -22,3 +23,5 @@ if (!args.config) {
 export const configFile = args.config;
 
 export const isReleaseBuild = args.release;
+
+export const produceSingleFile = args['single-file'];

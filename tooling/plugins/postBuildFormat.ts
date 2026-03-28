@@ -92,7 +92,7 @@ export default function (ctx: Context): PluginOption {
                         fileName,
                         ctx.userscript.require.getUrl(
                             ctx.urls.versionDownloadUrl(ctx.version, fileName),
-                            ctx.isReleaseBuild ? code : false
+                            ctx.args.isReleaseBuild ? code : false
                         )
                     )
                 )

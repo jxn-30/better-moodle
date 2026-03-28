@@ -63,7 +63,7 @@ export const includedPolyfillsList = () =>
 export default function (ctx: Context): PluginOption {
     const plugins = legacy({
         modernTargets: ctx.browsers,
-        modernPolyfills: true, // vorher auslesen, damit wirs für später wissen?
+        modernPolyfills: true,
         renderLegacyChunks: false,
         renderModernChunks: true,
     });
@@ -76,6 +76,31 @@ export default function (ctx: Context): PluginOption {
         throw new Error(
             "We couldn't enhance the legacy plugin because we couldn't find it."
         );
+    }
+
+    const listPlugin = createPlugin('vite:legacy-list-polyfills', {
+        /**
+         * Collects the polyfills included by \@vitejs/plugin-legacy
+         * @param _ - Vite build options
+         * @param bundle - The bundle object containing chunks and assets.
+         */
+        generateBundle(_, bundle) {
+            for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
+                if (
+                    chunkOrAsset.type !== 'chunk' ||
+                    !fileName.startsWith('polyfills-') ||
+                    chunkOrAsset.name !== 'polyfills'
+                ) {
+                    continue;
+                }
+
+                getPolyfillsFromImports(chunkOrAsset.moduleIds);
+            }
+        },
+    });
+
+    if (ctx.args.produceSingleFile) {
+        return plugins.toSpliced(generatePluginIndex + 1, 0, listPlugin);
     }
 
     const externalizePlugin = createPlugin(
@@ -96,8 +121,6 @@ export default function (ctx: Context): PluginOption {
                         continue;
                     }
 
-                    getPolyfillsFromImports(chunkOrAsset.moduleIds);
-
                     const output = getPolyfillsCode(ctx, chunkOrAsset.code);
 
                     this.emitFile({
@@ -112,7 +135,10 @@ export default function (ctx: Context): PluginOption {
         }
     );
 
-    plugins.splice(generatePluginIndex + 1, 0, externalizePlugin);
-
-    return plugins;
+    return plugins.toSpliced(
+        generatePluginIndex + 1,
+        0,
+        listPlugin,
+        externalizePlugin
+    );
 }

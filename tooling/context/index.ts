@@ -76,7 +76,7 @@ Source-Code: ${urls.githubUrl}
 export const BuildContext = {
     // Meta
     configId: args.configFile,
-    isReleaseBuild: args.isReleaseBuild,
+    args,
     prefix: globalConfig.prefix,
     version,
 
