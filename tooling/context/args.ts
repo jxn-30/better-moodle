@@ -1,13 +1,24 @@
-const args = process.argv;
+import { parseArgs } from 'node:util';
 
-const configArg = args
-    .find(arg => arg.startsWith('--config='))
-    ?.replace('--config=', '');
-if (!configArg) {
+const options = {
+    config: { type: 'string' },
+    release: { type: 'boolean', default: false },
+} as const;
+
+const { values: args } = parseArgs({
+    // We need to only respect args behind the --, as -- is considered an option terminator and will end option parsing
+    args: process.argv.slice(process.argv.indexOf('--') + 1),
+    options,
+    strict: true,
+    allowPositionals: true,
+});
+
+if (!args.config) {
     throw new Error(
         'No config specified. Please set a config with --config=...'
     );
 }
-export const configFile = configArg;
 
-export const isReleaseBuild = args.some(arg => arg === '--release');
+export const configFile = args.config;
+
+export const isReleaseBuild = args.release;
