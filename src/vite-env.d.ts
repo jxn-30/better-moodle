@@ -74,3 +74,19 @@ declare module 'virtual:features' {
 }
 // A virtual file importing the fixes
 declare module 'virtual:fixes' {}
+
+// Virtual files for Speiseplan feature
+declare module 'virtual:speiseplan-canteens' {
+    type Canteens = import('./features/speiseplan/canteens').default;
+
+    const canteens: Canteens;
+
+    export { canteens };
+}
+declare module 'virtual:speiseplan-parser' {
+    type Parser = import('./features/speiseplan/parsers').default;
+
+    const parse: Parser;
+
+    export { parse };
+}

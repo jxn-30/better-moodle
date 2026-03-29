@@ -11,16 +11,18 @@ import postBuildFormatPlugin from './plugins/postBuildFormat';
 import scssPlugin from './plugins/scss';
 import terserPlugin from './plugins/terser';
 import userscriptPlugin from './plugins/userscript';
+import virtualFilesPlugin from './plugins/virtualFiles';
 import alterConfigPlugin, {
     type ESBuildJSXConfigs,
 } from './plugins/alterConfig';
 import { type Context, BuildContext as ctx } from './context';
 
-type EnvValue = string | ((ctx: Context) => string);
+type StringOrContextString = string | ((ctx: Context) => string);
 
 export interface FrameworkConfig {
     jsx?: false | keyof ESBuildJSXConfigs;
-    env?: Record<`VITE_${string}`, EnvValue>;
+    env?: Record<`VITE_${string}`, StringOrContextString>;
+    virtualFiles?: Record<string, StringOrContextString>;
     performanceStops: Map<string, bigint>;
 }
 
@@ -32,7 +34,7 @@ export interface FrameworkConfig {
 export default function (config: FrameworkConfig): PluginOption {
     const env: Record<string, string> = {};
     Object.entries(config.env ?? {}).forEach(
-        ([key, value]: [string, EnvValue]) => {
+        ([key, value]: [string, StringOrContextString]) => {
             if (typeof value === 'string') env[key] = value;
             else env[key] = value(ctx);
         }
@@ -49,6 +51,7 @@ export default function (config: FrameworkConfig): PluginOption {
 
         importFeaturesPlugin(ctx),
         importFixesPlugin(ctx),
+        virtualFilesPlugin(ctx, config.virtualFiles),
         mustacheMinifyPlugin(),
 
         terserPlugin(),
