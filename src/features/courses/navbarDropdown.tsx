@@ -58,7 +58,7 @@ const loadContent = ({
     if (!desktopElement || !mobileElement) return;
 
     let contentLoaded = false;
-    void getLoadingSpinner().then(spinner => {
+    void getLoadingSpinner('navbarDropdown').then(spinner => {
         spinner.classList.add('text-center');
         if (!contentLoaded) {
             desktopElement

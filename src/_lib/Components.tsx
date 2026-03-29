@@ -263,7 +263,9 @@ export const Select = <
             Loading...
         </option>
     ) as HTMLOptionElement;
-    void getLoadingSpinner().then(spinner => loadingOption.append(spinner));
+    void getLoadingSpinner(`select_${id}`).then(spinner =>
+        loadingOption.append(spinner)
+    );
     Select.append(loadingOption);
 
     void optionsPromise

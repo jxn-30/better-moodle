@@ -299,7 +299,7 @@ const initCourseSidebar = async () => {
      */
     const updateDrawerContent = () => {
         let contentLoaded = false;
-        void getLoadingSpinner().then(spinner => {
+        void getLoadingSpinner('courseSidebar').then(spinner => {
             spinner.classList.add('text-center');
             if (!contentLoaded) {
                 drawer.setContent(spinner);

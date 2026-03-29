@@ -538,7 +538,7 @@ const openSpeiseplan = () => {
      * @returns a Promise
      */
     const updateSpeiseplan = () =>
-        Promise.all([modal.getBody(), getLoadingSpinner()]).then(
+        Promise.all([modal.getBody(), getLoadingSpinner('speiseplan')]).then(
             ([[body], spinner]) => {
                 body.replaceChildren(spinner);
                 footerLinkWrapper.textContent = sLL().source();

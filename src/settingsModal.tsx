@@ -217,7 +217,7 @@ let updateCheckRetryTimeout: ReturnType<(typeof window)['setTimeout']> | null;
  * @returns void
  */
 const checkForUpdates = () =>
-    getLoadingSpinner()
+    getLoadingSpinner('settings')
         .then(spinner => latestVersionEl.replaceChildren(spinner))
         .then(() =>
             request(
