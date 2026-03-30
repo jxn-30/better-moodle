@@ -245,7 +245,7 @@ export const isNewInstallation = GM_listValues().length === 0;
  * @param checkDelay - Time between checks for M in ms
  * @returns a promise that resolves once M is defined
  */
-const moodleReady = (checkDelay = 1) => {
+export const moodleReady = (checkDelay = 1) => {
     const { promise, resolve } = Promise.withResolvers<void>();
 
     /**

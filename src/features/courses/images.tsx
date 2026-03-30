@@ -1,6 +1,7 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import Feature from '#lib/Feature';
 import maxWidthStyleEl from './images/maxWidth.scss?style';
+import { moodleReady } from '#lib/helpers';
 import { ready } from '#lib/DOM';
 import zoomStyle from './images/zoom.module.scss';
 
@@ -47,6 +48,16 @@ const zoomImage = (e: MouseEvent) => {
 
     zoomCopiedImage = target.cloneNode(true) as HTMLImageElement;
 
+    // use a profile picture with a higher resolution
+    void moodleReady().then(() => {
+        zoomCopiedImage.src = target.src = target.src.replace(
+            new RegExp(
+                `(?<=/pluginfile.php/\\d+/user/icon/${M.cfg.theme}/f)\\d(?=$|\\?)`
+            ),
+            '3'
+        );
+    });
+
     // remove additional styles that could produce weird results
     zoomCopiedImage.style.setProperty('margin', 'unset', 'important');
     zoomCopiedImage.style.setProperty('width', 'unset', 'important');
@@ -57,7 +68,9 @@ const zoomImage = (e: MouseEvent) => {
     zoomCopiedImage.removeAttribute('width');
     zoomCopiedImage.removeAttribute('height');
 
-    zoomCopiedImage.addEventListener('load', adjustZoomedImageSize);
+    zoomCopiedImage.addEventListener('load', adjustZoomedImageSize, {
+        once: true,
+    });
 
     zoomOverlay.append(zoomCopiedImage);
     document.body.append(zoomOverlay);
