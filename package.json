@@ -68,7 +68,7 @@
     "devDependencies": {
         "@actions/core": "3.0.0",
         "@babel/compat-data": "7.29.0",
-        "@cloudflare/workers-types": "4.20260317.1",
+        "@cloudflare/workers-types": "4.20260329.1",
         "@commitlint/cli": "20.5.0",
         "@commitlint/config-conventional": "20.5.0",
         "@eslint/js": "10.0.1",
@@ -124,7 +124,7 @@
         "vite": "7.3.1",
         "vite-plugin-monkey": "7.1.9",
         "vitest": "4.1.2",
-        "wrangler": "4.77.0"
+        "wrangler": "4.78.0"
     },
     "engines": {
         "node": "^24.14.0"
