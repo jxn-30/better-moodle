@@ -103,6 +103,8 @@ export default function (ctx: Context): PluginOption {
         return plugins.toSpliced(generatePluginIndex + 1, 0, listPlugin);
     }
 
+    ctx.userscript.require.add(ctx.dist.polyfills);
+
     const externalizePlugin = createPlugin(
         'vite:legacy-externalize-polyfill-chunk',
         {

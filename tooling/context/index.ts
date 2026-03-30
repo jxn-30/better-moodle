@@ -28,8 +28,6 @@ Object.entries(globalConfig.connects).forEach(([feature, connectArray]) => {
 });
 
 // Populate requires
-// Extra files bundled we don't want to have in the main script
-requires.add(polyfillsFileName);
 // For features
 if (features.isEnabled('darkmode')) {
     requires.add(
