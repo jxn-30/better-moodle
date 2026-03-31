@@ -16,19 +16,31 @@ export const ready = (): Promise<void> =>
     });
 /* eslint-enable jsdoc/require-returns-check */
 
-let loadingSpinner: HTMLElement;
+const loadingSpinners = new Map<string, Promise<HTMLElement>>();
+
+/**
+ * Renders a loading spinner from the moodle native template
+ * @returns the rendered template
+ */
+const renderLoadingSpinner = () =>
+    renderAsElement('core/loading', {}) as Promise<HTMLElement>;
+
+/**
+ * Clones the default loading spinner or creates it if needed
+ * @returns the cloned loading spinner
+ */
+const cloneLoadingSpinner = () =>
+    loadingSpinners
+        .getOrInsertComputed('', renderLoadingSpinner)
+        .then(spinner => spinner.cloneNode(true) as HTMLElement);
 
 /**
  * Returns a loading spinner element or renders it if it's not available yet.
+ * @param key - the key for using a cached loading spinner
  * @returns a promise that resolves to a loading spinner element
  */
-export const getLoadingSpinner = () =>
-    loadingSpinner ?
-        Promise.resolve(loadingSpinner.cloneNode(true) as HTMLElement)
-    :   renderAsElement('core/loading', {}).then(spinner => {
-            loadingSpinner = spinner as HTMLElement;
-            return spinner.cloneNode(true) as HTMLElement;
-        });
+export const getLoadingSpinner = (key: string) =>
+    loadingSpinners.getOrInsertComputed(key, cloneLoadingSpinner);
 
 /**
  * Get's the HTML of a document fragment.

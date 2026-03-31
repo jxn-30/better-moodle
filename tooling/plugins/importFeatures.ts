@@ -1,6 +1,6 @@
 import { type Context } from '../context';
 import createPlugin from './createPlugin';
-import { type Plugin } from 'vite';
+import { type PluginOption } from 'vite';
 
 const VIRTUAL_FEAT_PUBLIC_ID = 'virtual:features';
 const VIRTUAL_FEAT_RESOLVED_ID = `\0${VIRTUAL_FEAT_PUBLIC_ID}`;
@@ -16,7 +16,7 @@ const VIRTUAL_GROUP_RESOLVED_ID = `\0${VIRTUAL_GROUP_PUBLIC_ID}`;
  * @param ctx - The build context object containing metadata
  * @returns The plugin object with the resolveId and load hooks
  */
-export default function (ctx: Context): Plugin[] {
+export default function (ctx: Context): PluginOption[] {
     /**
      * Generates an import string for a feature module.
      * This function constructs the import statement for a specific

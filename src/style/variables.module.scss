@@ -1,6 +1,17 @@
-@use '@sass-fairy/map';
+@use 'sass:map';
+@use 'functions' as fn;
 @use 'variables' as *;
 
+$unitless-grid-breakpoints: ();
+
+@each $name, $width in $grid-breakpoints {
+    $unitless-grid-breakpoints: map.set(
+        $unitless-grid-breakpoints,
+        $name,
+        fn.strip-unit($width)
+    );
+}
+
 :export {
-    grid-breakpoints: map.to-string($grid-breakpoints);
+    grid-breakpoints: JSON($unitless-grid-breakpoints);
 }

@@ -1,3 +1,5 @@
+import { type Context } from './tooling/context';
+import { createImportExport } from './tooling/utils/importBuilder';
 import { defineConfig } from 'vite';
 import UserscriptFrameworkPlugin from './tooling/framework';
 
@@ -12,29 +14,34 @@ const addPerfStop = (id: string) =>
 
 addPerfStop('start');
 
+/**
+ * A virtual file that forwards the build-specific Speiseplan canteens list
+ * @param ctx - build context
+ * @returns content of the virtual file
+ */
+const speiseplanCanteensImport = (ctx: Context) =>
+    createImportExport(
+        `${ctx.paths.featureBase}/speiseplan/canteens/${ctx.configId}.ts`,
+        { default: 'canteens' }
+    );
+/**
+ * A virtual file that forwards the build-specific Speiseplan parser
+ * @param ctx - build context
+ * @returns content of the virtual file
+ */
+const speiseplanParserImport = (ctx: Context) =>
+    createImportExport(
+        `${ctx.paths.featureBase}/speiseplan/parsers/${ctx.configId}.ts`,
+        { default: 'parse' }
+    );
+
 export default defineConfig({
     plugins: [
         UserscriptFrameworkPlugin({
             jsx: 'jsx-dom',
-            env: {
-                /**
-                 * Generates a glob pattern for the speiseplan to import relevant canteens.
-                 * @param ctx - The Vite plugin context object.
-                 * @returns The resolved glob pattern.
-                 */
-                VITE_SPEISEPLAN_CANTEEN_GLOB: ctx =>
-                    ctx.paths.toPOSIX(
-                        `${ctx.paths.featureBase.replace(ctx.paths.root, '')}/speiseplan/canteens/${ctx.configId}.ts`
-                    ),
-                /**
-                 * Generates a glob pattern for the speiseplan to import relevant parsers.
-                 * @param ctx - The Vite plugin context object.
-                 * @returns The resolved glob pattern.
-                 */
-                VITE_SPEISEPLAN_PARSER_GLOB: ctx =>
-                    ctx.paths.toPOSIX(
-                        `${ctx.paths.featureBase.replace(ctx.paths.root, '')}/speiseplan/parsers/${ctx.configId}.ts`
-                    ),
+            virtualFiles: {
+                'speiseplan-canteens': speiseplanCanteensImport,
+                'speiseplan-parser': speiseplanParserImport,
             },
             performanceStops,
         }),

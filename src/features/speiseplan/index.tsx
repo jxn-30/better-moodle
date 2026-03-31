@@ -1,10 +1,10 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
-import type Canteens from './canteens';
+import { canteens } from 'virtual:speiseplan-canteens';
 import FeatureGroup from '#lib/FeatureGroup';
 import globalStyle from '#style/index.module.scss';
 import type { Locales } from '../../i18n/i18n-types';
 import { Modal } from '#lib/Modal';
-import Parser from './parsers';
+import { parse } from 'virtual:speiseplan-parser';
 import { SelectSetting } from '#lib/Settings/SelectSetting';
 import style from './style.module.scss';
 import { AutoComplete, FieldSet } from '#lib/Components';
@@ -48,13 +48,6 @@ const getLang = () =>
  */
 const sLL = () => LLMap.get(getLang()).features.speiseplan;
 
-const canteens = Object.values(
-    import.meta.glob(import.meta.env.VITE_SPEISEPLAN_CANTEEN_GLOB, {
-        import: 'default',
-        eager: true,
-    })
-)[0] as Canteens;
-
 const canteen = new SelectSetting(
     'canteen',
     Array.from(canteens.keys())[0],
@@ -67,13 +60,6 @@ if (__UNI__ === 'cau') {
         old => ['', 'cau1', 'cau2', 'gaarden'][Number(old)] ?? 'cau1'
     );
 }
-
-const parse = Object.values(
-    import.meta.glob(import.meta.env.VITE_SPEISEPLAN_PARSER_GLOB, {
-        import: 'default',
-        eager: true,
-    })
-)[0] as Parser;
 
 // Moodle 405 introduced FA 6
 const foodIcons =
@@ -552,7 +538,7 @@ const openSpeiseplan = () => {
      * @returns a Promise
      */
     const updateSpeiseplan = () =>
-        Promise.all([modal.getBody(), getLoadingSpinner()]).then(
+        Promise.all([modal.getBody(), getLoadingSpinner('speiseplan')]).then(
             ([[body], spinner]) => {
                 body.replaceChildren(spinner);
                 footerLinkWrapper.textContent = sLL().source();

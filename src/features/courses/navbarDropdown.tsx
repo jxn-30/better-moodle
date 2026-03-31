@@ -208,7 +208,7 @@ const loadContent = ({
     } else {
         // Show loading spinner if we don't have cached data
         desktopNavItem = desktopElement;
-        void getLoadingSpinner().then(spinner => {
+        void getLoadingSpinner('navbarDropdown').then(spinner => {
             spinner.classList.add('text-center');
             if (!contentLoaded) {
                 desktopElement

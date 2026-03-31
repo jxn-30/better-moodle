@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.8](https://github.com/jxn-30/better-moodle/compare/2.6.7...2.6.8) (2026-03-30)
+
+
+### Bug Fixes
+
+* **images:** avoid stretched images when zooming ([034257d](https://github.com/jxn-30/better-moodle/commit/034257dedcf12bfd1a39a0b80f2c186b43be9727))
+
 ## [2.6.7](https://github.com/jxn-30/better-moodle/compare/2.6.6...2.6.7) (2026-02-11)
 
 

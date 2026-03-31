@@ -5,10 +5,10 @@
 /// <reference types="jsx-dom/index" />
 /// <reference types="darkreader" />
 /// <reference types="../types/window.d.ts" />
-/// <reference types="./_lib/FeatureGroup" />
-/// <reference types="./_lib/Feature" />
 
-/* global jsxDom:readonly, FeatureGroup:readonly, Feature:readonly */
+/// <reference types="./features/speiseplan/virtual.d.ts" />
+
+/* global jsxDom:readonly */
 
 // constants defined in the config file
 declare const __GITHUB_USER__: string;
@@ -47,16 +47,30 @@ interface ImportMeta {
     readonly env: ImportMetaEnv;
 }
 
+// Importing a scss module as JSON returns some JSON that we don't know how it looks like.
+declare module '*.module.scss?json' {
+    type JSValue =
+        | boolean
+        | number
+        | string
+        | JSValue[]
+        | { [key: string | number]: JSValue };
+
+    const exports: Record<string, JSValue>;
+    export default exports;
+}
+
 // Imports for FeatureGroups and features
 declare module 'virtual:featureGroups' {
-    const featureGroups: Record<
-        string,
-        ReturnType<(typeof FeatureGroup)['register']>
-    >;
+    type FeatureGroup = typeof import('./_lib/FeatureGroup').default;
+
+    const featureGroups: Record<string, ReturnType<FeatureGroup['register']>>;
     export default featureGroups;
 }
 declare module 'virtual:features' {
-    const features: Record<string, ReturnType<(typeof Feature)['register']>>;
+    type Feature = typeof import('./_lib/Feature').default;
+
+    const features: Record<string, ReturnType<Feature['register']>>;
     export default features;
 }
 // A virtual file importing the fixes

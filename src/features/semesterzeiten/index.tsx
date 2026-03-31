@@ -319,7 +319,7 @@ const loadContent = (semesterIndex = 0) => {
     let contentLoaded = false;
     // Show the loading spinner if this is the initial load
     if (semesterzeiten === void 0) {
-        void getLoadingSpinner().then(spinner => {
+        void getLoadingSpinner('semesterzeiten').then(spinner => {
             spinner.classList.add('text-center');
             if (!contentLoaded) {
                 block.setContent(spinner, false);

@@ -1,5 +1,5 @@
 @use '/src/style/mixins';
-@use '@sass-fairy/string';
+@use '/src/style/functions' as fn;
 
 $marquee-duration: 10s;
 $min-marquee-width: 200px;
@@ -37,7 +37,7 @@ $divider-img: 'https://www.fsmain.uni-luebeck.de/fileadmin/gremientemplate/fsmai
         will-change: transform;
 
         > *::after {
-            content: string.repeat(' ', 11);
+            content: fn.repeat(' ', 11);
             white-space: pre;
             background-image: url($divider-img);
             background-repeat: no-repeat;

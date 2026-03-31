@@ -1,25 +1,12 @@
 // imports generated during bundling
 /* eslint-disable */
-import featureGroupImport from 'virtual:featureGroups';
-import featureImport from 'virtual:features';
+import featureGroupImports from 'virtual:featureGroups';
+import featureImports from 'virtual:features';
 import 'virtual:fixes';
 /* eslint-enable */
 // normal imports
-import type Feature from './Feature';
 import { isFeatureGroup } from '#i18n';
 import FeatureGroup, { FeatureGroupID } from './FeatureGroup'; // type import but we cannot use type modifier here
-
-// Maybe one day we will be able to do this without the assignment-workaround
-
-const featureGroupImports = featureGroupImport as Record<
-    string,
-    ReturnType<(typeof FeatureGroup)['register']>
->;
-
-const featureImports = featureImport as Record<
-    string,
-    ReturnType<(typeof Feature)['register']>
->;
 
 /**
  * inits a feature by instantiating the feature class and calling its init method

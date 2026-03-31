@@ -2,6 +2,7 @@ import * as prettier from 'prettier';
 import { type Context } from '../context';
 import createPlugin from './createPlugin';
 import { ESLint } from 'eslint';
+import { type PluginOption } from 'vite';
 
 const prettierConfig = await prettier.resolveConfig('dist');
 
@@ -54,7 +55,7 @@ const lintAndFormat = async (code: string, path: string) => {
  * @param ctx - The Vite plugin context object.
  * @returns An array containing the formatting and require replacement plugins.
  */
-export default function (ctx: Context) {
+export default function (ctx: Context): PluginOption {
     const requireReplacements = new Map<string, string>();
 
     const lintAndFormatPlugin = createPlugin('post-build-format-and-lint', {
@@ -91,7 +92,7 @@ export default function (ctx: Context) {
                         fileName,
                         ctx.userscript.require.getUrl(
                             ctx.urls.versionDownloadUrl(ctx.version, fileName),
-                            ctx.isReleaseBuild ? code : false
+                            ctx.args.isReleaseBuild ? code : false
                         )
                     )
                 )
@@ -119,9 +120,7 @@ export default function (ctx: Context) {
             }
 
             requireReplacements.forEach((url, fileName) => {
-                // @ts-expect-error - TS does not know of RegExp.escape yet
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                const escapedFileName = RegExp.escape(fileName) as string;
+                const escapedFileName = RegExp.escape(fileName);
                 const regex = new RegExp(
                     `(?<=^//\\s+@require\\s+)${escapedFileName}$`,
                     'gm'

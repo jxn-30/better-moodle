@@ -1,5 +1,6 @@
 import { type Context } from '../context';
 import monkey from 'vite-plugin-monkey';
+import { type PluginOption } from 'vite';
 import { scriptCopyright } from '../utils/copyright';
 
 /**
@@ -7,7 +8,7 @@ import { scriptCopyright } from '../utils/copyright';
  * @param ctx - the build context
  * @returns the configured userscript plugin
  */
-export default function (ctx: Context) {
+export default function (ctx: Context): PluginOption {
     return monkey({
         entry: 'src/core.tsx',
         userscript: {

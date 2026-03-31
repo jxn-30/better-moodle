@@ -1,0 +1,26 @@
+@use 'sass:list';
+@use 'sass:math';
+@use 'sass:meta';
+
+@function repeat($str, $n) {
+    $result: '';
+
+    @if $n == 0 {
+        @return $result;
+    }
+
+    @for $i from 1 through $n {
+        $result: $result + $str;
+    }
+
+    @return $result;
+}
+
+@function strip-unit($number) {
+    @if meta.type-of($number) == 'number' and not math.is-unitless($number) {
+        // Dividing by 1 unit
+        @return math.div($number, ($number * 0 + 1));
+    }
+
+    @return $number;
+}
