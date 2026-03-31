@@ -102,7 +102,7 @@ jobs:
                       START_MARKER="<!-- $SECTION -->"
                       END_MARKER="<!-- >$SECTION -->"
                       NOW=$(date)
-                      RUN_LINK="Run: [\`${{ github.run_id }}/${{ github.run_attempt }}\`](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}) ($NOW)"
+                      RUN_LINK="Run: [\`${{ github.event.workflow_run.id }}/${{ github.event.workflow_run.run_attempt }}\`](https://github.com/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/attempts/${{ github.event.workflow_run.run_attempt }}) ($NOW)"
 
                       NEW_SECTION="$START_MARKER
                   <details>
@@ -119,6 +119,11 @@ jobs:
                           gh pr comment "$PR_NUMBER" \
                               --repo "${{ github.repository }}" \
                               --body "<!-- Better-Moodle PR-Summary -->
+                  <h1>CI Summary</h1>
+
+                  This comment summarizes the current state of CI of this PR.
+                  It shows information about ESLint & Prettier, as well as how the builds changed to the base branch.
+
                   $NEW_SECTION"
                       else
                           # A summary comment already exists — update only the relevant section.
