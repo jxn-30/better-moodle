@@ -3,6 +3,8 @@ on:
     push:
     pull_request:
 
+# No top-level write permissions — see comment in check.yml for the full explanation.
+# PR comments are posted by pr-comment.yml via workflow_run.
 permissions: {}
 
 jobs:
@@ -22,6 +24,7 @@ jobs:
         permissions:
             id-token: write
             attestations: write
+            contents: read
         outputs:
             # Hardcoded until https://github.com/actions/runner/pull/2477 is finally working...
             # stats: ${{ toJSON(steps.output.outputs) }}
@@ -54,6 +57,9 @@ jobs:
 
             - name: 🦭 attest build provenance
               uses: actions/attest-build-provenance@v4
+              # Attestation requires the id-token permission which is only available
+              # for internal branches (not fork PRs). This condition ensures we only
+              # run it when we actually have that permission.
               if: github.event.pull_request.head.repo.full_name == github.repository
               with:
                   subject-name: ${{ steps.build.outputs.script }}
@@ -166,30 +172,34 @@ jobs:
               run: |
                   echo "build_${{ matrix.config }}=| ${{matrix.config}} | ${{ env.STATS_PERF_TOTAL }} | | ${{ env.STATS_SIZE }} (${{ steps.diff-script.outputs.size }}) | ${{ env.STATS_LINES }} (${{ steps.diff-script.outputs.lines }}) | ${{ steps.diff-script.outputs.sem }} | ${{ steps.diff-script.outputs.syn }} | | ${{ env.STATS_PF_SIZE }} (${{ steps.diff-polyfills.outputs.size }}) | ${{ env.STATS_PF_LINES }} (${{ steps.diff-polyfills.outputs.lines }}) | ${{ steps.diff-polyfills.outputs.sem }} | ${{ steps.diff-polyfills.outputs.syn }} |" >> $GITHUB_OUTPUT
 
-    pr-summary:
+    # This job saves the PR summary data for all configs as a single artifact.
+    # It runs after all build matrix jobs complete (always, even on failure),
+    # so that pr-comment.yml can post the summary regardless of build outcome.
+    # See check.yml for the full explanation of the artifact-based comment pattern.
+    save-pr-summary:
         runs-on: ubuntu-latest
-        name: 📜 update PR Summary
-        permissions:
-            issues: write
-            pull-requests: write
+        name: 💾 Save PR summary data
         if: ${{ github.event_name == 'pull_request' && always() }}
         needs:
             - build
         steps:
-            - name: 📥️ checkout
-              uses: actions/checkout@v6
-
-            - name: 📜 update PR Summary
-              uses: ./.github/actions/pr-summary
-              with:
-                  pr-number: ${{ github.event.pull_request.number }}
-                  section: build
-                  title: 🏗️ Build
+            - name: 💾 write PR summary data
+              run: |
+                  mkdir -p pr-summary-data
+                  echo '${{ github.event.pull_request.number }}' > pr-summary-data/pr-number
+                  echo 'build' > pr-summary-data/section
+                  echo '🏗️ Build' > pr-summary-data/title
                   # TODO: Do this automagically for all builds?
-                  content: |
-                      | Config | Duration | | Size | Lines | Diff to ${{ github.base_ref }} (semantic) | Diff to ${{ github.base_ref }} (syntactic) | | Polyfills Size | Polyfill Lines | Polyfill Diff to ${{ github.base_ref }} (semantic) | Polyfill Diff to ${{ github.base_ref }} (syntactic) |
-                      | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
-                      ${{ needs.build.outputs.line_uzl }}
-                      ${{ needs.build.outputs.line_cau }}
-                  app-id: ${{ secrets.CI_APP }}
-                  app-pat: ${{ secrets.CI_PAT }}
+                  cat > pr-summary-data/content << 'EOF'
+                  | Config | Duration | | Size | Lines | Diff to ${{ github.base_ref }} (semantic) | Diff to ${{ github.base_ref }} (syntactic) | | Polyfills Size | Polyfill Lines | Polyfill Diff to ${{ github.base_ref }} (semantic) | Polyfill Diff to ${{ github.base_ref }} (syntactic) |
+                  | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+                  ${{ needs.build.outputs.line_uzl }}
+                  ${{ needs.build.outputs.line_cau }}
+                  EOF
+
+            - name: 📤 upload PR summary artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: pr-summary-build
+                  path: pr-summary-data/
+                  retention-days: 1

@@ -3,13 +3,19 @@ on:
     push:
     pull_request:
 
+# No top-level permissions here — each job declares only what it needs.
+# Importantly: pull_request events from forks have no write access to secrets.
+# PR comments are therefore NOT posted here — they are handled by pr-comment.yml,
+# which runs via workflow_run (trusted context) and posts on behalf of this workflow.
+permissions: {}
+
 jobs:
     prettier:
         runs-on: ubuntu-latest
         name: 🍱 Prettier
+        # Read-only: this job only checks code, never writes to the PR.
         permissions:
-            issues: write
-            pull-requests: write
+            contents: read
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v6
@@ -39,9 +45,8 @@ jobs:
             - name: ⚠️ warn over prettier result
               if: ${{ env.CHANGES_COUNT > 0 }}
               run: |
-                  SUMMARY="⚠️ Prettier changed some code".
+                  SUMMARY="⚠️ Prettier changed some code. Please see the summary and logs for more details."
                   echo "# $SUMMARY" >> $GITHUB_STEP_SUMMARY
-                  SUMMARY="$SUMMARY Please see the summary and logs for more details."
                   echo "There were a total of **${{ env.CHANGES_COUNT }}** files affected by running prettier on $(echo ${{ github.sha }} | head -c 7):" >> $GITHUB_STEP_SUMMARY
                   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
                   git diff --compact-summary >> $GITHUB_STEP_SUMMARY
@@ -50,23 +55,42 @@ jobs:
                   echo "PR_SUMMARY=$SUMMARY" >> $GITHUB_ENV
                   echo "EMOJI=⚠️" >> $GITHUB_ENV
 
-            - name: 📜 Update PR Summary
+            # Save the PR summary data as an artifact so that pr-comment.yml
+            # (running in trusted context) can pick it up and post the comment.
+            # This pattern is necessary because pull_request events from forks
+            # do not have write access, so comments must be posted by a separate
+            # trusted workflow triggered via workflow_run.
+            - name: 💾 save PR summary data for comment workflow
               if: github.event_name == 'pull_request'
-              uses: ./.github/actions/pr-summary
+              run: |
+                  mkdir -p pr-summary-data
+                  echo '${{ github.event.pull_request.number }}' > pr-summary-data/pr-number
+                  echo 'prettier' > pr-summary-data/section
+                  printf '🎨${{ env.EMOJI }} Prettier' > pr-summary-data/title
+                  # Write content to file to safely handle special characters
+                  cat > pr-summary-data/content << 'EOF'
+                  ${{ env.PR_SUMMARY }}
+                  EOF
+
+            - name: 📤 upload PR summary artifact
+              if: github.event_name == 'pull_request'
+              uses: actions/upload-artifact@v4
               with:
-                  pr-number: ${{ github.event.pull_request.number }}
-                  section: prettier
-                  title: 🎨${{ env.EMOJI }} Prettier
-                  content: ${{ env.PR_SUMMARY }}
-                  app-id: ${{ secrets.CI_APP }}
-                  app-pat: ${{ secrets.CI_PAT }}
+                  # Artifact name must be unique per workflow run section.
+                  # pr-comment.yml downloads all artifacts matching pr-summary-*.
+                  name: pr-summary-prettier
+                  path: pr-summary-data/
+                  # Artifacts are only needed until pr-comment.yml has posted the comment.
+                  retention-days: 1
 
     eslint:
         runs-on: ubuntu-latest
         name: 🚨 ESLint
+        # Read-only: ESLint annotations are written via checks API using GITHUB_TOKEN,
+        # which works for internal branches. For forks, annotations may not appear
+        # inline but the artifact-based PR comment will still be posted.
         permissions:
-            issues: write
-            pull-requests: write
+            contents: read
             checks: write
         steps:
             - name: 📥️ checkout
@@ -104,13 +128,22 @@ jobs:
                     echo "EMOJI=❌" >> $GITHUB_ENV
                   fi
 
-            - name: 📜 update PR Summary
+            # See prettier job above for explanation of this artifact pattern.
+            - name: 💾 save PR summary data for comment workflow
               if: ${{ github.event_name == 'pull_request' && always() }}
-              uses: ./.github/actions/pr-summary
+              run: |
+                  mkdir -p pr-summary-data
+                  echo '${{ github.event.pull_request.number }}' > pr-summary-data/pr-number
+                  echo 'eslint' > pr-summary-data/section
+                  printf '🚨${{ env.EMOJI }} ESLint' > pr-summary-data/title
+                  cat > pr-summary-data/content << 'EOF'
+                  ${{ steps.annotations.outputs.summary }}
+                  EOF
+
+            - name: 📤 upload PR summary artifact
+              if: ${{ github.event_name == 'pull_request' && always() }}
+              uses: actions/upload-artifact@v4
               with:
-                  pr-number: ${{ github.event.pull_request.number }}
-                  section: eslint
-                  title: 🚨${{ env.EMOJI }} ESLint
-                  content: ${{ steps.annotations.outputs.summary }}
-                  app-id: ${{ secrets.CI_APP }}
-                  app-pat: ${{ secrets.CI_PAT }}
+                  name: pr-summary-eslint
+                  path: pr-summary-data/
+                  retention-days: 1
