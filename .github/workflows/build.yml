@@ -198,7 +198,7 @@ jobs:
                   EOF
 
             - name: 📤 upload PR summary artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: pr-summary-build
                   path: pr-summary-data/
