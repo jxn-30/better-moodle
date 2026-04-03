@@ -53,7 +53,7 @@ jobs:
             # Each check (prettier, eslint, build) uploads one such artifact,
             # so a single run of this workflow handles all sections at once.
             - name: 📦 download PR summary artifacts
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v8
               with:
                   # The run-id of the triggering workflow (check.yml or build.yml),
                   # not this workflow's own run-id.
