@@ -39,7 +39,7 @@ import { TEN_MINUTES, TEN_SECONDS, THIRTY_SECONDS } from '#lib/times';
 const LL = LLFG('nina');
 const CACHE_KEY = 'nina.cache';
 const LOCK_NAME = 'better-moodle-nina-cache';
-const API_BASE = 'https://nina.api.proxy.bund.dev/api31';
+const API_BASE = 'https://warnung.bund.de/api31';
 
 // The amtliche Regionalschlüssel has been extracted from https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json
 const ARS = __UNI__ === 'cau' ? '010020000000' : '010030000000';
