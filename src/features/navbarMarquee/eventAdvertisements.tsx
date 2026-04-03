@@ -1,16 +1,13 @@
+import { BETTER_MOODLE_LANG } from '#i18n';
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import { datetimeToString } from '#lib/localeString';
 import Feature from '#lib/Feature';
 import { type Locales } from '../../i18n/i18n-types';
 import { marquee } from './index';
-import { Modal } from '#lib/Modal';
+import { ONE_DAY } from '#lib/times';
 import { SliderSetting } from '#lib/Settings/SliderSetting';
 import style from './eventAdvertisements.module.scss';
-import { BETTER_MOODLE_LANG, LLF } from '#i18n';
-import { cachedRequest, type CachedResponse, icsUrl } from '#lib/network';
-import { FIVE_MINUTES, ONE_DAY } from '#lib/times';
-
-const LL = LLF('navbarMarquee', 'eventAdvertisements');
+import { getEvents, openEventModal } from './eventAdvertisements/util';
 
 const enabled = new BooleanSetting('enabled', true).addAlias(
     'general.eventAdvertisements'
@@ -22,12 +19,12 @@ const noticeTime = new SliderSetting('noticeTime', 14, {
     labels: 5,
 }).disabledIf(enabled, '!=', true);
 
-interface Event {
+export interface Event {
     start: string;
     end: string;
     startDateOnly: boolean;
     endDateOnly: boolean;
-    desc: string;
+    desc?: string;
     name: Record<Locales, string>;
     location?: string;
     url?: string;
@@ -35,19 +32,6 @@ interface Event {
 }
 
 const spans = new Map<HTMLSpanElement, Event>();
-
-let events: Event[];
-
-/**
- * Fetches the parsed events from the calendar or uses the stored version if they have already been fetched since the last page load
- * @returns the parsed semesterzeiten
- */
-const getEvents = () =>
-    events ?
-        Promise.resolve(events)
-    :   cachedRequest(icsUrl('events'), FIVE_MINUTES, 'json').then(
-            ({ value }: CachedResponse<Event[]>) => (events = value)
-        );
 
 /**
  * Removes all spans from the marquee and clears the span map
@@ -78,50 +62,7 @@ const createEventSpan = (event: Event) => {
      */
     const clickListener = (e: MouseEvent) => {
         e.preventDefault();
-        const table = (
-            <table className="table table-striped table-hover m-0">
-                <tbody>
-                    <tr>
-                        <th>{LL.start()}:</th>
-                        <td>{datetimeToString(new Date(event.start))}</td>
-                    </tr>
-                    <tr>
-                        <th>{LL.end()}:</th>
-                        <td>{datetimeToString(new Date(event.end))}</td>
-                    </tr>
-                    {event.rruleString ?
-                        <tr>
-                            <th>{LL.rrule()}:</th>
-                            <td>{event.rruleString[BETTER_MOODLE_LANG]}</td>
-                        </tr>
-                    :   null}
-                    {event.location ?
-                        <tr>
-                            <th>{LL.location()}:</th>
-                            <td>{event.location}</td>
-                        </tr>
-                    :   null}
-                    <tr>
-                        <td colSpan={2}>{event.desc}</td>
-                    </tr>
-                </tbody>
-            </table>
-        );
-
-        new Modal({
-            type: 'ALERT',
-            scrollable: true,
-            title: event.name[BETTER_MOODLE_LANG],
-            body: table,
-            bodyClass: ['table-responsive', 'p-0'],
-            footer:
-                event.url ?
-                    <a className="w-100" href={event.url} target="_blank">
-                        {event.url}
-                    </a>
-                :   undefined,
-            removeOnClose: true,
-        }).show();
+        openEventModal(event);
     };
 
     span.addEventListener('click', clickListener);
