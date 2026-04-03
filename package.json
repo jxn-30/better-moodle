@@ -68,7 +68,7 @@
     "devDependencies": {
         "@actions/core": "3.0.0",
         "@babel/compat-data": "7.29.0",
-        "@cloudflare/workers-types": "4.20260401.1",
+        "@cloudflare/workers-types": "4.20260403.1",
         "@commitlint/cli": "20.5.0",
         "@commitlint/config-conventional": "20.5.0",
         "@eslint/js": "10.0.1",
@@ -79,7 +79,7 @@
         "@types/eslint": "9.6.1",
         "@types/jquery": "4.0.0",
         "@types/mathjax": "0.0.40",
-        "@types/node": "25.5.0",
+        "@types/node": "25.5.2",
         "@types/tampermonkey": "5.0.5",
         "@vitejs/plugin-legacy": "7.2.1",
         "@vitest/coverage-v8": "4.1.2",
@@ -92,12 +92,12 @@
         "ci-info": "4.4.0",
         "core-js": "3.49.0",
         "core-js-compat": "3.49.0",
-        "esbuild": "0.27.4",
+        "esbuild": "0.28.0",
         "esbuild-plugin-browserslist": "2.0.0",
         "eslint": "10.1.0",
         "eslint-config-prettier": "10.1.8",
         "eslint-plugin-es-x": "9.6.0",
-        "eslint-plugin-jsdoc": "62.8.1",
+        "eslint-plugin-jsdoc": "62.9.0",
         "eslint-plugin-jsx-a11y": "6.10.2",
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
@@ -113,7 +113,7 @@
         "prettier": "3.8.1",
         "puppeteer": "24.40.0",
         "rrule": "2.8.1",
-        "sass-embedded": "1.98.0",
+        "sass-embedded": "1.99.0",
         "terser": "5.46.1",
         "ts-json-schema-generator": "2.9.0",
         "ts-node": "10.9.2",
@@ -124,7 +124,7 @@
         "vite": "7.3.1",
         "vite-plugin-monkey": "7.1.9",
         "vitest": "4.1.2",
-        "wrangler": "4.79.0"
+        "wrangler": "4.80.0"
     },
     "engines": {
         "node": "^24.14.1"
