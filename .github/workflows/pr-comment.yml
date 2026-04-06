@@ -71,7 +71,12 @@ jobs:
             - name: 📜 post PR summary sections
               shell: bash
               run: |
-                  # if there was only one a-rtifact, move it into a subdir
+                  # if no artifacts were downloaded, exit gracefully
+                  if [[ ! -d pr-summary-artifacts ]]; then
+                      exit 0
+                  fi
+
+                  # if there was only one artifact, move it into a subdir
                   if [[ $(find pr-summary-artifacts/* -maxdepth 0 -type d | wc -l) == 0 ]]; then
                       mkdir -p pr-summary-single
                       mv pr-summary-artifacts/* pr-summary-single/
