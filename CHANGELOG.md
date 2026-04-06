@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.1](https://github.com/jxn-30/better-moodle/compare/2.7.0...2.7.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* **semesterzeiten:** do not include events after end of semester ([395a38e](https://github.com/jxn-30/better-moodle/commit/395a38e566708a5697741e175a09ce5ab4e49a04))
+
 ## [2.7.0](https://github.com/jxn-30/better-moodle/compare/2.6.8...2.7.0) (2026-04-03)
 
 
