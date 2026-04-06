@@ -387,11 +387,13 @@ const loadContent = (semesterIndex = 0) => {
 
             const switches = new Map<string, Set<SwitchComponent>>();
 
-            const adEvents = extraEvents.map(event => ({
-                ...event,
-                type: `ad-${event.name.de.toLowerCase()}`,
-                color: 'secondary',
-            }));
+            const adEvents = extraEvents
+                .filter(event => new Date(event.start) < semesterEnd)
+                .map(event => ({
+                    ...event,
+                    type: `ad-${event.name.de.toLowerCase()}`,
+                    color: 'secondary',
+                }));
 
             const allEvents = [...semester.events, ...adEvents].toSorted(
                 (a, b) => (a.start > b.start ? 1 : -1)
