@@ -1259,10 +1259,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20260403.1":
-  version: 4.20260403.1
-  resolution: "@cloudflare/workers-types@npm:4.20260403.1"
-  checksum: 10c0/74f2e6c7dd2e7ee7fb9aa06db53e3e88a02ac67de2ede3d33c4c9fdc01b044ab3afbb1e46c612160a170dd88349ae7edc23fcfabe0a798cf3410aef991416375
+"@cloudflare/workers-types@npm:4.20260405.1":
+  version: 4.20260405.1
+  resolution: "@cloudflare/workers-types@npm:4.20260405.1"
+  checksum: 10c0/931bc1566dc61ea48e78dbd6a3c3d50465bf5031e66f9d19b085cc9b106f110f625b35d5258c111e41fa45a37fd8f84920ce1aecc8f1cb66a282179e5e8b96ae
   languageName: node
   linkType: hard
 
@@ -4703,7 +4703,7 @@ __metadata:
   dependencies:
     "@actions/core": "npm:3.0.0"
     "@babel/compat-data": "npm:7.29.0"
-    "@cloudflare/workers-types": "npm:4.20260403.1"
+    "@cloudflare/workers-types": "npm:4.20260405.1"
     "@commitlint/cli": "npm:20.5.0"
     "@commitlint/config-conventional": "npm:20.5.0"
     "@eslint/js": "npm:10.0.1"
@@ -4722,7 +4722,7 @@ __metadata:
     babel-plugin-polyfill-corejs3: "npm:0.14.2"
     boxen: "npm:8.0.1"
     browserslist: "npm:4.28.2"
-    browserslist-useragent-regexp: "npm:4.1.3"
+    browserslist-useragent-regexp: "npm:4.1.4"
     caniuse-lite: "npm:1.0.30001784"
     chalk: "npm:5.6.2"
     ci-info: "npm:4.4.0"
@@ -4743,7 +4743,7 @@ __metadata:
     jsdom: "npm:29.0.1"
     jsx-dom: "npm:8.1.6"
     mini-svg-data-uri: "npm:1.4.4"
-    node-ical: "npm:0.25.6"
+    node-ical: "npm:0.26.0"
     nodejs-file-downloader: "npm:4.13.0"
     postcss: "npm:8.5.8"
     postcss-inline-svg: "npm:6.0.0"
@@ -4760,7 +4760,7 @@ __metadata:
     typescript-eslint: "npm:8.58.0"
     typescript-plugin-css-modules: "npm:5.2.0"
     userscript-meta: "npm:1.0.1"
-    vite: "npm:7.3.1"
+    vite: "npm:7.3.2"
     vite-plugin-monkey: "npm:7.1.9"
     vitest: "npm:4.1.2"
     wrangler: "npm:4.80.0"
@@ -4847,9 +4847,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist-useragent-regexp@npm:4.1.3":
-  version: 4.1.3
-  resolution: "browserslist-useragent-regexp@npm:4.1.3"
+"browserslist-useragent-regexp@npm:4.1.4":
+  version: 4.1.4
+  resolution: "browserslist-useragent-regexp@npm:4.1.4"
   dependencies:
     argue-cli: "npm:^2.1.0"
     easy-table: "npm:^1.2.0"
@@ -4861,7 +4861,7 @@ __metadata:
   bin:
     bluare: dist/cli.js
     browserslist-useragent-regexp: dist/cli.js
-  checksum: 10c0/58e9204790b11b8383869dde2a78393babe4d8aa3da4d20832d744bbe79b21bd50ed3741e3d58320a3e252737a60da6c0e3887a0c01d1fab9c537a675e87b4f8
+  checksum: 10c0/98d694c3c7a98b91b610bb1f5a234c427ec7c2e01381fe0960957e7bea4d00815ff4022d4ea754122ba7eb1ba57ee90f6c912718d10b7e14e02dcbf42734a9a3
   languageName: node
   linkType: hard
 
@@ -8272,13 +8272,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-ical@npm:0.25.6":
-  version: 0.25.6
-  resolution: "node-ical@npm:0.25.6"
+"node-ical@npm:0.26.0":
+  version: 0.26.0
+  resolution: "node-ical@npm:0.26.0"
   dependencies:
-    rrule-temporal: "npm:^1.4.7"
-    temporal-polyfill: "npm:^0.3.0"
-  checksum: 10c0/209c0e0ee117bafd2fb809bdd3e1d34e6e724de4dcfbc038357ff857b26e20edac32224afaef140f0040d65815b37ae02b020c9795f7de85b7c1194d6c34921b
+    rrule-temporal: "npm:^1.5.1"
+    temporal-polyfill: "npm:^0.3.2"
+  checksum: 10c0/e801e3679cb78ef3c25232f46fd5548bcddb5704bfb88270558cefcdd9ccfc7010688f73cdbad6cb4c59816902da8f25c4023e7379504c75051e499f5c71fc66
   languageName: node
   linkType: hard
 
@@ -9593,12 +9593,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rrule-temporal@npm:^1.4.7":
-  version: 1.5.1
-  resolution: "rrule-temporal@npm:1.5.1"
+"rrule-temporal@npm:^1.5.1":
+  version: 1.5.2
+  resolution: "rrule-temporal@npm:1.5.2"
   dependencies:
     "@js-temporal/polyfill": "npm:^0.5.1"
-  checksum: 10c0/5411bb6f60f5a7c4ba74c49958e6a2590fefd3f32d76703eaaf708c6b6fc81d7595b52f33ebdba004373dc20e457684f77499f4ebe72e05da73426f32bfc78fb
+  checksum: 10c0/9ebd0d938b3c4441d62a4fe4384773c6530d7c8b35915bddea287f6670b01f21b155f188e82e8d8bd0fc47960aa935d1e8818cd1aa1091f7369d1733b99da586
   languageName: node
   linkType: hard
 
@@ -10542,7 +10542,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"temporal-polyfill@npm:^0.3.0":
+"temporal-polyfill@npm:^0.3.2":
   version: 0.3.2
   resolution: "temporal-polyfill@npm:0.3.2"
   dependencies:
@@ -11117,9 +11117,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:7.3.1":
-  version: 7.3.1
-  resolution: "vite@npm:7.3.1"
+"vite@npm:7.3.2":
+  version: 7.3.2
+  resolution: "vite@npm:7.3.2"
   dependencies:
     esbuild: "npm:^0.27.0"
     fdir: "npm:^6.5.0"
@@ -11168,7 +11168,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/5c7548f5f43a23533e53324304db4ad85f1896b1bfd3ee32ae9b866bac2933782c77b350eb2b52a02c625c8ad1ddd4c000df077419410650c982cd97fde8d014
+  checksum: 10c0/74be36907e208916f18bfec81c8eba18b869f0a170f1ece0a4dcb14874d0f0e7c022fb6c2ad896e3ee6c973fe88f53ac23b4078879ada340d8b263260868b8d4
   languageName: node
   linkType: hard
 
