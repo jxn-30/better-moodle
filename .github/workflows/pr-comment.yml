@@ -71,16 +71,12 @@ jobs:
             - name: 📜 post PR summary sections
               shell: bash
               run: |
-                  tree pr-summary-artifacts
-
                   # if there was only one a-rtifact, move it into a subdir
                   if [[ $(find pr-summary-artifacts/* -maxdepth 0 -type d | wc -l) == 0 ]]; then
                       mkdir -p pr-summary-single
                       mv pr-summary-artifacts/* pr-summary-single/
                       mv pr-summary-single pr-summary-artifacts/
                   fi
-
-                  tree pr-summary-artifacts
 
                   # Iterate over each artifact subdirectory
                   for artifact_dir in pr-summary-artifacts/pr-summary-*/; do
