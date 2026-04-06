@@ -65,6 +65,11 @@ jobs:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   path: pr-summary-artifacts/
 
+            - name: '🧪 debug: list downloaded artifacts'
+              run: |
+                  echo "Workflow run id: ${{ github.event.workflow_run.id }}"
+                  ls -R pr-summary-artifacts || echo "no artifacts directory"
+
             # Post or update one PR comment section per downloaded artifact.
             # If no artifacts were uploaded (e.g. on a plain push, not a PR),
             # this step simply finds nothing and exits cleanly.
