@@ -73,10 +73,11 @@ jobs:
               run: |
                   tree pr-summary-artifacts
 
-                  # if there was only one artifact, move it into a subdir
-                  if [[ $(find support/* -maxdepth 0 -type d | wc -l) == 0 ]]; then
-                      mkdir -p pr-summary-artifacts/pr-summary-single
-                      mv pr-summary-artifacts/* pr-summary-artifacts/pr-summary-single/
+                  # if there was only one a-rtifact, move it into a subdir
+                  if [[ $(find pr-summary-artifacts/* -maxdepth 0 -type d | wc -l) == 0 ]]; then
+                      mkdir -p pr-summary-single
+                      mv pr-summary-artifacts/* pr-summary-single/
+                      mv pr-summary-single pr-summary-artifacts/
                   fi
 
                   tree pr-summary-artifacts
