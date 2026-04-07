@@ -92,6 +92,7 @@ jobs:
         permissions:
             contents: read
             checks: write
+            pull-requests: read
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v6
