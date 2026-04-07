@@ -388,7 +388,11 @@ const loadContent = (semesterIndex = 0) => {
             const switches = new Map<string, Set<SwitchComponent>>();
 
             const adEvents = extraEvents
-                .filter(event => new Date(event.start) < semesterEnd)
+                .filter(
+                    event =>
+                        new Date(event.end) >= semesterStart &&
+                        new Date(event.start) < semesterEnd
+                )
                 .map(event => ({
                     ...event,
                     type: `ad-${event.name.de.toLowerCase()}`,
