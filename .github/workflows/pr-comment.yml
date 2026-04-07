@@ -53,7 +53,7 @@ jobs:
             # Each check (prettier, eslint, build) uploads one such artifact,
             # so a single run of this workflow handles all sections at once.
             - name: 📦 download PR summary artifacts
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v8
               with:
                   # The run-id of the triggering workflow (check.yml or build.yml),
                   # not this workflow's own run-id.
@@ -71,6 +71,18 @@ jobs:
             - name: 📜 post PR summary sections
               shell: bash
               run: |
+                  # if no artifacts were downloaded, exit gracefully
+                  if [[ ! -d pr-summary-artifacts ]]; then
+                      exit 0
+                  fi
+
+                  # if there was only one artifact, move it into a subdir
+                  if [[ $(find pr-summary-artifacts/* -maxdepth 0 -type d | wc -l) == 0 ]]; then
+                      mkdir -p pr-summary-single
+                      mv pr-summary-artifacts/* pr-summary-single/
+                      mv pr-summary-single pr-summary-artifacts/
+                  fi
+
                   # Iterate over each artifact subdirectory
                   for artifact_dir in pr-summary-artifacts/pr-summary-*/; do
                       [[ -d "$artifact_dir" ]] || continue

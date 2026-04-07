@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.7.1](https://github.com/jxn-30/better-moodle/compare/2.7.0...2.7.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* **semesterzeiten:** do not include events after end of semester ([395a38e](https://github.com/jxn-30/better-moodle/commit/395a38e566708a5697741e175a09ce5ab4e49a04))
+
+## [2.7.0](https://github.com/jxn-30/better-moodle/compare/2.6.8...2.7.0) (2026-04-03)
+
+
+### Features
+
+* **images:** use a higher resolution version when zooming into profile pictures ([e42de90](https://github.com/jxn-30/better-moodle/commit/e42de909c5a13018142edc408063b77324e8a6f5))
+* **semesterzeiten:** include advertised events in semesterzeiten ([64477db](https://github.com/jxn-30/better-moodle/commit/64477dbec5b4826a30f67df241e0304219bb882c))
+
+
+### Bug Fixes
+
+* **nina:** make use of warnung.bund.de as bund.dev shut down their proxy ([c5101ba](https://github.com/jxn-30/better-moodle/commit/c5101bac2ca3a7b367f0aefa6b2faa8972ff5e25))
+
 ## [2.6.8](https://github.com/jxn-30/better-moodle/compare/2.6.7...2.6.8) (2026-03-30)
 
 

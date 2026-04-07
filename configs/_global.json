@@ -20,7 +20,7 @@
     "disabledFrom": { "402": ["courses.courseIndexDrawerControls"] },
     "connects": {
         "": ["better-moodle.dev"],
-        "nina": ["nina.api.proxy.bund.dev"],
+        "nina": ["warnung.bund.de"],
         "weather": [
             "api.open-meteo.com",
             "api.openweathermap.org",

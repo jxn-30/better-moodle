@@ -8,6 +8,10 @@ import { BETTER_MOODLE_LANG, LLFG } from '#i18n';
 import { cachedRequest, type CachedResponse, icsUrl } from '#lib/network';
 import { dateToString, percent } from '#lib/localeString';
 import { domID, isDashboard } from '#lib/helpers';
+import {
+    getEvents,
+    openEventModal,
+} from '#feats/navbarMarquee/eventAdvertisements/util';
 import { getHtml, getLoadingSpinner, ready } from '#lib/DOM';
 import { ONE_DAY, ONE_MINUTE } from '#lib/times';
 
@@ -182,9 +186,14 @@ let currentSemester = 0;
 /**
  * Loads the content of a progress bar
  * @param semester - the semester to load the content for
+ * @param allEvents - all events during this semester, including those of event advertisement
  * @param currentSemester - wether this is the current semester and an overlay needs to be added
  */
-const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
+const loadProgressBar = (
+    semester: Semester,
+    allEvents: Semester['events'],
+    currentSemester: boolean
+) => {
     const {
         start: semesterStart,
         end: semesterEnd,
@@ -205,7 +214,7 @@ const loadProgressBar = (semester: Semester, currentSemester: boolean) => {
         end: new Set<Semester | Event>([semester]),
     });
 
-    semester.events.forEach(event => {
+    allEvents.forEach(event => {
         const { start, end } = getEventDates(event);
 
         if (!hiddenBars.has(event.type)) {
@@ -328,14 +337,18 @@ const loadContent = (semesterIndex = 0) => {
     }
 
     void getSemesterzeiten()
-        .then(zeiten => {
+        .then(async zeiten => {
             currentSemester = Math.max(
                 0,
                 Math.min(zeiten.length - 1, currentSemester)
             );
-            return [zeiten[currentSemester], zeiten.length] as const;
+            return [
+                zeiten[currentSemester],
+                zeiten.length,
+                await getEvents(),
+            ] as const;
         })
-        .then(([semester, semesterCount]) => {
+        .then(([semester, semesterCount, extraEvents]) => {
             contentLoaded = true;
 
             const {
@@ -374,7 +387,19 @@ const loadContent = (semesterIndex = 0) => {
 
             const switches = new Map<string, Set<SwitchComponent>>();
 
-            semester.events.forEach(event => {
+            const adEvents = extraEvents
+                .filter(event => new Date(event.start) < semesterEnd)
+                .map(event => ({
+                    ...event,
+                    type: `ad-${event.name.de.toLowerCase()}`,
+                    color: 'secondary',
+                }));
+
+            const allEvents = [...semester.events, ...adEvents].toSorted(
+                (a, b) => (a.start > b.start ? 1 : -1)
+            );
+
+            allEvents.forEach(event => {
                 const { start, end, progress } = getEventDates(event);
 
                 const toggle = (
@@ -399,8 +424,14 @@ const loadContent = (semesterIndex = 0) => {
                         .get(event.type)
                         ?.forEach(t => (t.value = toggle.value));
                     GM_setValue(hiddenBarsKey, Array.from(hiddenBars));
-                    loadProgressBar(semester, currentSemester === 0);
+                    loadProgressBar(semester, allEvents, currentSemester === 0);
                 });
+                const infoBtn = (
+                    <button className="btn btn-link btn-sm p-0 mr-1">
+                        <i className="icon fa fa-info-circle mr-0"></i>
+                    </button>
+                ) as HTMLButtonElement;
+                infoBtn.addEventListener('click', () => openEventModal(event));
                 if (event.type.startsWith('holiday-')) {
                     tableBody.append(
                         <tr
@@ -409,6 +440,7 @@ const loadContent = (semesterIndex = 0) => {
                         >
                             <td colSpan={4}>
                                 {/* The strings are explicit here, to avoid trimming */}
+                                {infoBtn}
                                 {LL.publicHoliday()}
                                 {': '}
                                 {event.name[BETTER_MOODLE_LANG]}
@@ -425,7 +457,10 @@ const loadContent = (semesterIndex = 0) => {
                             className={`table-${event.color}`}
                             dataset={{ type: event.type }}
                         >
-                            <td>{event.name[BETTER_MOODLE_LANG]}</td>
+                            <td>
+                                {infoBtn}
+                                {event.name[BETTER_MOODLE_LANG]}
+                            </td>
                             <td>{dateToString(start)}</td>
                             <td>{dateToString(end)}</td>
                             <td>{percent(progress)}</td>
@@ -435,7 +470,7 @@ const loadContent = (semesterIndex = 0) => {
                 }
             });
 
-            loadProgressBar(semester, currentSemester === 0);
+            loadProgressBar(semester, allEvents, currentSemester === 0);
 
             if (currentSemester === 0) {
                 block.element?.style.setProperty(
