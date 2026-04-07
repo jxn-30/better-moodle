@@ -1,7 +1,7 @@
 {
     "name": "better-moodle",
     "description": "A userscript that improves moodle instances by cool features and design improvements.",
-    "version": "2.7.1",
+    "version": "2.7.2",
     "packageManager": "yarn@4.13.0",
     "type": "module",
     "private": true,
