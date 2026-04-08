@@ -28,6 +28,11 @@ Thanks for reading this contribution guide! 😊
     - [Build Pipeline](#build-pipeline)
     - [i18n](#i18n)
 
+## Looking for a place to start?
+
+Check out issues labeled [`good first issue`](https://github.com/jxn-30/better-moodle/issues?q=is%3Aopen+label%3A%22good+first+issue%22) for beginner-friendly tasks.
+These are specifically selected for new contributors.
+
 ## Development
 
 ### Contribution Workflow
