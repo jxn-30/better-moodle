@@ -115,7 +115,7 @@ export const setCachedCourseFilters = (filters: CourseFilter[]): void => {
  */
 export const clearCachedCourses = (): void => {
     try {
-        const cacheKey = PREFIX('navbar-dropdown-courses');
+        const cacheKey = PREFIX(CACHED_COURSES_KEY);
         localStorage.removeItem(cacheKey);
     } catch (e) {
         console.error('Error clearing cached courses:', e);

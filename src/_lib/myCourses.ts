@@ -1,12 +1,12 @@
+import { getDocument } from './network';
+import { require } from './require.js';
+import { SelectOption } from './Components';
 import {
     getCachedCourseFilter,
     getCachedCourseFilters,
     setCachedCourseFilters,
 } from './courseCache';
-import { getDocument } from './network';
-import { require } from './require.js';
-import { SelectOption } from './Components';
-import { isDashboard, isLoggedIn, PREFIX } from './helpers';
+import { isLoggedIn, PREFIX } from './helpers';
 
 export interface CourseFilter {
     classification: string;
@@ -120,16 +120,12 @@ export const onActiveFilterChanged = (
 const updateActiveFilterChannelName = PREFIX('myCourses-update-active-filter');
 
 // listen to changes to the filter to update our "activeFilter" property
-if (isDashboard) {
-    const channel = new BroadcastChannel(updateActiveFilterChannelName);
-    channel.addEventListener(
-        'message',
-        ({ data }: MessageEvent<CourseFilter>) => {
-            activeFilter = data;
-            activeFilterChangedHooks.forEach(hook => hook(data));
-        }
-    );
-}
+const channel = new BroadcastChannel(updateActiveFilterChannelName);
+channel.addEventListener('message', ({ data }: MessageEvent<CourseFilter>) => {
+    activeFilter = data;
+    activeFilterChangedHooks.forEach(hook => hook(data));
+});
+
 // send an update message if on the myCourses page
 if (window.location.pathname === '/my/courses.php') {
     void require([
