@@ -301,14 +301,12 @@ const onload = async () => {
     );
 
     filter.onChange(() => {
-        console.log('filter change - manual setting changed');
         clearCachedCourses(); // Clear cache to force fresh fetch
         loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
     });
 
     // Listen to filter changes (both from same page and other tabs)
-    onActiveFilterChanged(changedFilter => {
-        console.log('filter change - active', changedFilter);
+    onActiveFilterChanged(() => {
         if (filter.value === '_sync') {
             clearCachedCourses(); // Clear cache to force fresh fetch
             loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
