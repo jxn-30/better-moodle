@@ -22,6 +22,16 @@ Thanks for reading this contribution guide! 😊
     - [Calendars](#calendars)
         - [Semesterzeiten](#semesterzeiten)
         - [Events](#events)
+- [Architecture Overview](#architecture-overview)
+    - [`FeatureGroup`](#featuregroup)
+    - [`Feature`](#feature)
+    - [Build Pipeline](#build-pipeline)
+    - [i18n](#i18n)
+
+## Looking for a place to start?
+
+Check out issues labeled [`good first issue`](https://github.com/jxn-30/better-moodle/issues?q=is%3Aopen+label%3A%22good+first+issue%22) for beginner-friendly tasks.
+These are specifically selected for new contributors.
 
 ## Development
 
@@ -89,10 +99,14 @@ Please do not manually edit the `CHANGELOG.md` file as the Changelog is generate
 
 #### Adding a new `FeatureGroup`
 
-When adding a new `FeatureGroup`, it is important to add it in `src/settingsModal.tsx` to the `groups` constant.
-The position within the array determines the position of the fieldset within the settings.
+Each `FeatureGroup` needs a unique ID which will be used to identify the settings and the `Feature`s associated with it.
+In this guide, the ID will be referenced with `<id>`.
+`FeatureGroup`s SHOULD[^keyword] have explainative IDs (e.g. `navbarMarquee` for the `FeatureGroup` that contains features regarding a marquee in the navigation bar).
 
-It is also important to import and use the translations in `src/i18n/*/index.ts`, otherwise it will not be recognized as a `FeatureGroup`.
+1. Create `src/features/<id>/index.ts` and call `FeatureGroup.register()`.
+2. Create basic translations in `src/features/<id>/i18n/index.ts`. Export an object for each of the languages. Exports MUST[^keyword] satisfy the `FeatureGroupTranslation` type, defined in `#types/i18n`.
+3. Add the `<id>` in `featureGroupOrder` array of `configs/_global.json`. The order in this array is the order used in the settings modal.
+4. Import the translations in each language index file: `src/i18n/<lang>/index.ts`.
 
 #### Supporting a new moodle instance
 
@@ -128,6 +142,42 @@ If the event marks a semester, `<type>` is `semester` and the `@color` line may 
 #### Events
 
 TBD
+
+## Architecture Overview
+
+Better-Moodle V2 is built around two core abstractions:
+
+### `FeatureGroup`
+
+A `FeatureGroup` (`src/_lib/FeatureGroup.tsx`) bundles related features into a settings fieldset.
+Each group lives in its own directory under `src/features/`.
+[How-To: Adding a new `FeatureGroup`](#adding-a-new-featuregroup) explains on how to create a new `FeatureGroup`
+
+### `Feature`
+
+A `Feature` (`src/_lib/Feature.tsx`) is an individual behavior within a `FeatureGroup`.
+Features can define their own related settings.
+Features declare `loadPrerequisites` to control when their `onload` callback runs:
+
+- `null` / inherit from group: waits for DOM + Moodle's `M` object
+- `'dom-ready'`: waits for DOM only
+- `'immediate'`: runs at `document-start`
+
+### Build Pipeline
+
+Better-Moodle is built using [vite](https://vite.dev), extended by a number of plugins.
+Source is bundled and transformed using default vite tooling (esbuild + rollup for vite@7, oxc + rolldown for vite@8).
+Additional custom plugins ensure that only required translations are included in the final userscript and polyfills are generated and provided by an extra file, included via a `@require`-rule in the userscript header.
+Further Dead-Code-Elimination is done using [terser](https://terser.org/), during the build process.
+Before finalizing the built userscript, it is transformed using [prettier](https://prettier.io/) and [eslint](https://eslint.org/) to ensure maximum readability and satisfy the ESLint config used within Tampermonkey editor.
+
+The build-system is provided as-is and developers should not need to focus on it or understand it for contributions regarding userscript content.
+
+### i18n
+
+Translations live in `src/i18n/<lang>/index.ts`.
+For better readability, translations are split up in several files.
+Run `yarn i18n:once` to regenerate type definitions after adding new keys.
 
 [cc]: https://www.conventionalcommits.org/
 [rp]: https://github.com/googleapis/release-please/

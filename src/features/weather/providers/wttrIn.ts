@@ -35,7 +35,7 @@ interface WttrInResponse {
  * @returns weather information
  */
 export default (city: string): Promise<WeatherResponse> => {
-    const url = `https://wttr.in/${city}?format=j1&lang`; // the &lang param is required to produce a valid response
+    const url = `https://wttr.in/${city}?format=j1`; // the &lang param is required to produce a valid response
     return cachedRequest(
         url,
         FIVE_MINUTES,
