@@ -1,5 +1,5 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
-import { Course } from '#types/require.js/block/myoverview/repository.js';
+import { type Course } from '#types/require.js/block/myoverview/repository.js';
 import Feature from '#lib/Feature';
 import globalStyle from '#style/index.module.scss';
 import mobileTemplateRaw from './navbarDropdown/mobile.mustache?raw';
