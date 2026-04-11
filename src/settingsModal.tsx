@@ -15,6 +15,7 @@ import {
     debounce,
     htmlToElements,
     isNewInstallation,
+    isNightly,
     mdID,
     mdToHtml,
     rawGithubPath,
@@ -162,10 +163,12 @@ const SupportWrapper = (
         <div className="d-flex flex-row w-100 align-items-center justify-content-around">
             <span>
                 {LL.settings.modal.installedVersion()}: <br />
+                {isNightly ? '🌜️ ' : ''}
                 <code>{GM_info.script.version}</code>
             </span>
             <span>
                 {LL.settings.modal.latestVersion()}: <br />
+                {isNightly ? '🌜️ ' : ''}
                 {latestVersionEl}
             </span>
         </div>
