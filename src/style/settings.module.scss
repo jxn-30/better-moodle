@@ -99,20 +99,11 @@
     :local(#support-wrapper) {
         top: 0.5rem;
         right: 0.5rem;
+        position: unset !important;
 
-        @include mixins.media-down(lg) {
-            position: unset !important;
-
-            > div > span {
-                padding: 0.25rem 0.5rem;
-                text-align: center;
-            }
-        }
-
-        @include mixins.media-up(lg) {
-            > div > span {
-                margin: 0 0.5rem;
-            }
+        > div > span {
+            padding: 0.25rem 0.5rem;
+            text-align: center;
         }
     }
 

@@ -129,7 +129,7 @@ const getSupportHtml = () =>
     ).then(({ value }) => value);
 
 const SupportBtn = (
-    <button className="btn btn-link btn-sm">
+    <button className="btn btn-link btn-sm col-lg-3">
         <i className="fa fa-question-circle fa-fw"></i>
         {LL.support.title()}
     </button>
@@ -156,23 +156,26 @@ const latestVersionEl = (<code></code>) as HTMLElement;
 const SupportWrapper = (
     <div
         id={settingsStyle.supportWrapper}
-        className="position-absolute z-index-1 d-flex flex-row small card border-light mb-3"
+        className="d-flex flex-row small card border-light mb-3 flex-wrap flex-lg-nowrap"
     >
         {SupportBtn}
-        <div className="d-flex flex-row flex-lg-column align-items-end">
+        <div className="d-flex flex-row w-100 align-items-center justify-content-around">
             <span>
-                {LL.settings.modal.installedVersion()}:{' '}
+                {LL.settings.modal.installedVersion()}: <br />
                 <code>{GM_info.script.version}</code>
             </span>
             <span>
-                {LL.settings.modal.latestVersion()}: {latestVersionEl}
+                {LL.settings.modal.latestVersion()}: <br />
+                {latestVersionEl}
             </span>
         </div>
     </div>
 );
 
 const UpdateBtn = (
-    <button className="btn btn-primary btn-sm">{LL.update.btn()}</button>
+    <button className="btn btn-primary btn-sm col-lg-3">
+        {LL.update.btn()}
+    </button>
 );
 UpdateBtn.addEventListener('click', e => {
     e.preventDefault();
