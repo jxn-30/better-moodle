@@ -227,7 +227,7 @@ const checkForUpdates = () =>
         .then(spinner => latestVersionEl.replaceChildren(spinner))
         .then(() =>
             request(
-                `https://api.github.com/repos/${__GITHUB_USER__}/${__GITHUB_REPO__}/releases/latest`
+                `https://api.github.com/repos/${__GITHUB_USER__}/${__GITHUB_REPO__}/releases/${isNightly ? 'tags/nightly' : 'latest'}`
             )
         )
         .then(res => res.json())
