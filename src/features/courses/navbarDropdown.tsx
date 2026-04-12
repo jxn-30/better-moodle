@@ -8,16 +8,18 @@ import { require } from '#lib/require.js';
 import { SelectSetting } from '#lib/Settings/SelectSetting';
 import style from './navbarDropdown/style.module.scss';
 import {
-    clearCachedCourses,
-    fetchCourses,
-    getCachedCourses,
-} from '#lib/courseCache';
-import {
     type CourseFilter,
     getActiveFilter,
     getAvailableCourseFiltersAsOptions,
     onActiveFilterChanged,
 } from '#lib/myCourses';
+import {
+    fetchCourses,
+    getCachedCourses,
+    initCacheInvalidationListeners,
+    invalidateCachedCourses,
+    onCourseCacheInvalidated,
+} from '#lib/courseCache';
 import { getHtml, getLoadingSpinner, ready } from '#lib/DOM';
 import { putTemplate, render, renderCustomTemplate } from '#lib/templates';
 
@@ -255,6 +257,9 @@ const loadContent = ({
 const onload = async () => {
     if (!enabled.value) return;
 
+    // Initialize cache invalidation listeners on feature load
+    initCacheInvalidationListeners();
+
     await ready();
 
     const myCoursesElement = document.querySelector<HTMLLIElement>(
@@ -294,16 +299,20 @@ const onload = async () => {
     );
 
     filter.onChange(() => {
-        clearCachedCourses(); // Clear cache to force fresh fetch
+        invalidateCachedCourses();
         loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
     });
 
     // Listen to filter changes (both from same page and other tabs)
     onActiveFilterChanged(() => {
         if (filter.value === '_sync') {
-            clearCachedCourses(); // Clear cache to force fresh fetch
+            invalidateCachedCourses();
             loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
         }
+    });
+
+    onCourseCacheInvalidated(() => {
+        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
     });
 };
 

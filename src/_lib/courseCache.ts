@@ -5,6 +5,10 @@ import { TEN_MINUTES } from './times';
 import BlockMyOverviewRepository, {
     Course,
 } from '#types/require.js/block/myoverview/repository.js';
+import {
+    createFetchInterceptor,
+    createXHRInterceptor,
+} from './networkInterceptors';
 
 interface CachedCourseData {
     courses: Course[];
@@ -110,16 +114,31 @@ export const setCachedCourseFilters = (filters: CourseFilter[]): void => {
     }
 };
 
+type CacheInvalidationListener = () => void;
+const invalidationListeners: CacheInvalidationListener[] = [];
+
 /**
- * Clears the cached courses
+ * Registers a listener that is called when the course cache is invalidated
+ * @param listener - The function to call on invalidation
  */
-export const clearCachedCourses = (): void => {
+export const onCourseCacheInvalidated = (
+    listener: CacheInvalidationListener
+): void => {
+    invalidationListeners.push(listener);
+};
+
+/**
+ * Clears the cached courses and notifies invalidation listeners
+ */
+export const invalidateCachedCourses = (): void => {
     try {
         const cacheKey = PREFIX(CACHED_COURSES_KEY);
         localStorage.removeItem(cacheKey);
     } catch (e) {
         console.error('Error clearing cached courses:', e);
     }
+
+    invalidationListeners.forEach(listener => listener());
 };
 
 /**
@@ -147,7 +166,6 @@ export const fetchCourses = (
         })
         .then(({ courses }) => {
             if (!writeToCache) return courses;
-            console.log(`Fetched ${courses.length} courses`);
 
             setCachedCourses(courses);
             if (filter.value === '_sync') {
@@ -156,3 +174,41 @@ export const fetchCourses = (
 
             return courses;
         });
+
+/**
+ * Initializes cache invalidation listeners for course-related actions
+ */
+export const initCacheInvalidationListeners = (): void => {
+    // Hook into form submission for enroll/unenroll actions
+    document.addEventListener(
+        'submit',
+        (e: SubmitEvent) => {
+            const target = e.target;
+            const url = (
+                target instanceof HTMLFormElement ?
+                    target.action
+                :   '').toLowerCase();
+            if (url.includes('/enrol/')) {
+                invalidateCachedCourses();
+            }
+        },
+        true
+    );
+
+    // We have to use the page's actual window (unsafeWindow)
+    // otherwise we only hook the userscript's sandboxed window
+    if (!unsafeWindow) return;
+
+    // Set up network interceptors to detect course changes
+    const setupFetchInterceptor = createFetchInterceptor(
+        ['block_myoverview_hidden_course', 'myoverview'],
+        invalidateCachedCourses
+    );
+    setupFetchInterceptor(unsafeWindow);
+
+    const setupXHRInterceptor = createXHRInterceptor(
+        ['core_course_set_favourite_courses', 'block_myoverview_hidden_course'],
+        invalidateCachedCourses
+    );
+    setupXHRInterceptor(unsafeWindow);
+};
