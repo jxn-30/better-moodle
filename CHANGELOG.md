@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.2](https://github.com/jxn-30/better-moodle/compare/2.7.1...2.7.2) (2026-04-07)
+
+
+### Bug Fixes
+
+* **images:** do not zoom images in buttons ([8792f5e](https://github.com/jxn-30/better-moodle/commit/8792f5e2dd17752bb3c0b2ce02ed54ce268e8487))
+* **semesterzeiten:** do not include events before begin of semester ([23c8638](https://github.com/jxn-30/better-moodle/commit/23c863831078e46d6b0fd12713951710b71c4377))
+
 ## [2.7.1](https://github.com/jxn-30/better-moodle/compare/2.7.0...2.7.1) (2026-04-06)
 
 
