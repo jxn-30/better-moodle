@@ -1,7 +1,7 @@
 import { CourseFilter } from './myCourses';
 import { PREFIX } from './helpers';
 import { SelectSetting } from './Settings/SelectSetting';
-import { TEN_MINUTES } from './times';
+import { ONE_HOUR } from './times';
 import BlockMyOverviewRepository, {
     Course,
 } from '#types/require.js/block/myoverview/repository.js';
@@ -30,7 +30,7 @@ export const getCachedCourses = (): Course[] | null => {
         if (!cached) return null;
 
         const data = JSON.parse(cached) as CachedCourseData;
-        if (Date.now() - data.timestamp < TEN_MINUTES) {
+        if (Date.now() - data.timestamp < ONE_HOUR) {
             return data.courses;
         } else {
             localStorage.removeItem(cacheKey);
