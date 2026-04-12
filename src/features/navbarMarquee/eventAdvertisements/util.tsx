@@ -48,9 +48,11 @@ export const openEventModal = (event: Event) => {
                         <td>{event.location}</td>
                     </tr>
                 :   null}
-                <tr>
-                    <td colSpan={2}>{event.desc}</td>
-                </tr>
+                {event.desc ?
+                    <tr>
+                        <td colSpan={2}>{event.desc}</td>
+                    </tr>
+                :   null}
             </tbody>
         </table>
     );

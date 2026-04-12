@@ -435,7 +435,13 @@ const loadContent = (semesterIndex = 0) => {
                         <i className="icon fa fa-info-circle mr-0"></i>
                     </button>
                 ) as HTMLButtonElement;
-                infoBtn.addEventListener('click', () => openEventModal(event));
+                const modalContent =
+                    event.type.startsWith('ad-') ?
+                        event
+                    :   { ...event, desc: undefined };
+                infoBtn.addEventListener('click', () =>
+                    openEventModal(modalContent)
+                );
                 if (event.type.startsWith('holiday-')) {
                     tableBody.append(
                         <tr
