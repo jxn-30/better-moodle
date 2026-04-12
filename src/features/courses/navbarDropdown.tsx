@@ -19,7 +19,7 @@ import {
     onActiveFilterChanged,
 } from '#lib/myCourses';
 import { getHtml, getLoadingSpinner, ready } from '#lib/DOM';
-import { putTemplate, renderCustomTemplate } from '#lib/templates';
+import { putTemplate, render, renderCustomTemplate } from '#lib/templates';
 
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('myCourses.navbarDropdown')
@@ -84,7 +84,6 @@ const coursesToTemplateData = (
 
 /**
  * Renders dropdown templates and updates DOM
- * @param templates - The templates module from require.js
  * @param children - Template-ready course data
  * @param myCoursesText - Text label for the my courses link
  * @param myCoursesIsActive - Whether we're on the my courses page
@@ -93,11 +92,6 @@ const coursesToTemplateData = (
  * @param mobileElement - Mobile dropdown element
  */
 const renderDropdownTemplates = async (
-    templates: Awaited<
-        ReturnType<
-            typeof require<['core/templates', 'block_myoverview/repository']>
-        >
-    >[0],
     children: ReturnType<typeof coursesToTemplateData>,
     myCoursesText: string,
     myCoursesIsActive: boolean,
@@ -105,7 +99,7 @@ const renderDropdownTemplates = async (
     desktopElement: HTMLLIElement,
     mobileElement: HTMLDivElement | HTMLAnchorElement
 ) => {
-    const desktop = templates.renderForPromise('core/moremenu_children', {
+    const desktop = render('core/moremenu_children', {
         moremenuid: PREFIX('my_courses-navbar_dropdown-desktop'),
         classes: style.desktop,
         text: myCoursesText,
@@ -223,8 +217,8 @@ const loadContent = ({
         filter.value === '_sync' ?
             getActiveFilter()
         :   Promise.resolve(JSON.parse(filter.value) as CourseFilter),
-        require(['core/templates', 'block_myoverview/repository'] as const),
-    ]).then(async ([activeFilter, [templates, myCourses]]) => {
+        require(['block_myoverview/repository'] as const),
+    ]).then(async ([activeFilter, [myCourses]]) => {
         if (!activeFilter) {
             throw new Error(
                 "Couldn't find a filter to use for fetching courses."
@@ -244,7 +238,6 @@ const loadContent = ({
         );
 
         await renderDropdownTemplates(
-            templates,
             children,
             myCoursesText,
             myCoursesIsActive,
