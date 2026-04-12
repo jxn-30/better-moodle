@@ -18,12 +18,12 @@ runs:
           uses: ./.github/actions/setup
 
         - name: 🏗️ build Better-Moodle for ${{ inputs.config }}
-          if: ${{ !inputs.release }}
+          if: ${{ !inputs.release && !inputs.nightly }}
           run: yarn build ${{ inputs.config }}
           shell: bash
 
         - name: 🏗️ release-build Better-Moodle for ${{ inputs.config }}
-          if: ${{ inputs.release }}
+          if: ${{ inputs.release && !inputs.nightly }}
           run: yarn release-build ${{ inputs.config }}
           shell: bash
 
