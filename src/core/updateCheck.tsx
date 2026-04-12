@@ -1,0 +1,120 @@
+import { getLoadingSpinner } from '#lib/DOM';
+import { LL } from '#i18n';
+import { Modal } from '#lib/Modal';
+import { ONE_MINUTE } from '#lib/times';
+import { request } from '#lib/network';
+import { lt as semverLt } from '#lib/semver';
+import settingsStyle from '#style/settings.module.scss';
+import { updateNotification as updateNotificationSetting } from '#feats/general';
+import { changelogIdPrefix, getChangelogHtml } from '#core/changelog';
+import { htmlToElements, isNightly, mdID, mdToHtml } from '#lib/helpers';
+
+const latestVersionEl = (<code></code>) as HTMLElement;
+
+export const VersionBox = (
+    <div className="d-flex flex-row w-100 align-items-center justify-content-around">
+        <span>
+            {LL.settings.modal.installedVersion()}: <br />
+            {isNightly ? '🌜️ ' : ''}
+            <code>{GM_info.script.version}</code>
+        </span>
+        <span>
+            {LL.settings.modal.latestVersion()}: <br />
+            {isNightly ? '🌜️ ' : ''}
+            {latestVersionEl}
+        </span>
+    </div>
+);
+
+const UpdateAvailableBadge = (
+    <div className="count-container"></div>
+) as HTMLDivElement;
+
+const UpdateBtn = (
+    <button className="btn btn-primary btn-sm col-lg-3">
+        {LL.update.btn()}
+    </button>
+);
+UpdateBtn.addEventListener('click', e => {
+    e.preventDefault();
+
+    new Modal({
+        type: 'SAVE_CANCEL',
+        title: LL.update.title(),
+        body: getChangelogHtml().then(changelogHtml => {
+            const body = <></>;
+            body.append(
+                ...Array.from(htmlToElements(mdToHtml(LL.update.body()))),
+                ...Array.from(htmlToElements(changelogHtml))
+            );
+            const currentId = mdID(
+                `* ${GM_info.script.version}`,
+                changelogIdPrefix
+            );
+            body.querySelectorAll(
+                `[id^="${currentId}"], [id^="${currentId}"] ~ *`
+            ).forEach(el => el.remove());
+            return body;
+        }),
+        buttons: { save: LL.update.reload(), cancel: LL.update.close() },
+        removeOnClose: true,
+    })
+        .onSave(() => window.location.reload())
+        .on('bodyRendered', () => {
+            if (GM_info.script.downloadURL) {
+                open(GM_info.script.downloadURL, '_self');
+            }
+        })
+        .show();
+});
+
+let updateCheckRetryTimeout: ReturnType<(typeof window)['setTimeout']> | null;
+
+/**
+ * Checks if there is a newer version of Better-Moodle available.
+ * If yes, an update button is added to settings modal.
+ * The latest available version is shown in settings modal.
+ * If enabled, a red dot is appended to the settings trigger button.
+ * @returns void
+ */
+export const checkForUpdates = () =>
+    getLoadingSpinner('settings')
+        .then(spinner => latestVersionEl.replaceChildren(spinner))
+        .then(() =>
+            request(
+                `https://api.github.com/repos/${__GITHUB_USER__}/${__GITHUB_REPO__}/releases/${isNightly ? 'tags/nightly' : 'latest'}`
+            )
+        )
+        .then(res => res.json())
+        .then(({ tag_name: latestVersion }: { tag_name: string }) => {
+            if (!latestVersion) {
+                throw new Error(
+                    `It is unlikely that ${JSON.stringify(latestVersion)} is the latest version. Aborting update check, please try again in a minute.`
+                );
+            }
+
+            latestVersionEl.replaceChildren(latestVersion);
+
+            return semverLt(GM_info.script.version, latestVersion);
+        })
+        .then(updateAvailable => {
+            updateCheckRetryTimeout = null;
+            if (!updateAvailable) {
+                UpdateAvailableBadge.remove();
+                return;
+            }
+            document
+                .getElementById(settingsStyle.supportWrapper)
+                ?.append(UpdateBtn);
+            if (updateNotificationSetting.value) {
+                document
+                    .getElementById(settingsStyle.openSettingsBtn)
+                    ?.append(UpdateAvailableBadge);
+            } else UpdateAvailableBadge.remove();
+        })
+        .catch(() => {
+            updateCheckRetryTimeout ??= setTimeout(
+                () => void checkForUpdates(),
+                ONE_MINUTE
+            );
+        });
