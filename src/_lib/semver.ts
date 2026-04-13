@@ -17,6 +17,7 @@ export const lt = (version: string, other: string) => {
         (otherMajor === firstMajor && otherMinor > firstMinor) || // minor update
         (otherMajor === firstMajor && // patch update
             otherMinor === firstMinor &&
-            otherPatch > firstPatch)
+            otherPatch > firstPatch) ||
+        version < other // make normal string comparison for pre-release and build metadata
     );
 };

@@ -71,6 +71,28 @@ UpdateBtn.addEventListener('click', e => {
 let updateCheckRetryTimeout: ReturnType<(typeof window)['setTimeout']> | null;
 
 /**
+ * Fetches the latest version from GitHub-API
+ * @returns a promise containing the latest version
+ */
+export const getLatestVersion = (): Promise<string> =>
+    isNightly ?
+        request(
+            `https://api.github.com/repos/${__GITHUB_USER__}/${__GITHUB_REPO__}/releases/tags/nightly`
+        )
+            .then(res => res.json())
+            .then(({ name }: { name: string }) =>
+                name.replace(/^.*?v(?=\d+\.\d+\.\d+)/, '')
+            )
+    :   request(
+            `https://api.github.com/repos/${__GITHUB_USER__}/${__GITHUB_REPO__}/releases/latest`
+        )
+            .then(res => res.json())
+            .then(
+                ({ tag_name: latestVersion }: { tag_name: string }) =>
+                    latestVersion
+            );
+
+/**
  * Checks if there is a newer version of Better-Moodle available.
  * If yes, an update button is added to settings modal.
  * The latest available version is shown in settings modal.
@@ -80,13 +102,8 @@ let updateCheckRetryTimeout: ReturnType<(typeof window)['setTimeout']> | null;
 export const checkForUpdates = () =>
     getLoadingSpinner('settings')
         .then(spinner => latestVersionEl.replaceChildren(spinner))
-        .then(() =>
-            request(
-                `https://api.github.com/repos/${__GITHUB_USER__}/${__GITHUB_REPO__}/releases/${isNightly ? 'tags/nightly' : 'latest'}`
-            )
-        )
-        .then(res => res.json())
-        .then(({ tag_name: latestVersion }: { tag_name: string }) => {
+        .then(getLatestVersion)
+        .then(latestVersion => {
             if (!latestVersion) {
                 throw new Error(
                     `It is unlikely that ${JSON.stringify(latestVersion)} is the latest version. Aborting update check, please try again in a minute.`
