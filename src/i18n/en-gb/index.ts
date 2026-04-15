@@ -25,7 +25,7 @@ Uh, an update for Better-Moodle is ready for installation 👀
 
 If you haven't already done so, please follow the instructions of your userscript manager to install the update. A new tab may have been opened in the background. To complete the update, please reload Moodle once after the installation.
 
-To find out what has changed since your last update, here is the relevant extract from the changelog:
+{{|To find out what has changed since your last update, here is the relevant extract from the changelog:}}
 `.trim(),
     },
     support: {
@@ -81,5 +81,30 @@ These Browsers are officially supported (Better-Moodle Core-Developers recommend
         10: 'ten',
         11: 'eleven',
         12: 'twelve',
+    },
+    switchReleaseChannel: {
+        modal: { abort: 'Wechsel abbrechen', install: 'Installation beginnen' },
+        channels: {
+            stable: `
+Hallo!
+
+Du wechselst nun zurück zum Release-Channel \`stable\`!
+
+Das heißt: Du erhälst Updates, sobald sie als stabil genug angesehen werden. Manchmal kann es daher ein bisschen brauchen, bis neue Features und Bugfixes bei dir ankommen. Dafür ist es unwahrscheinlicher (wenn auch nicht ausgeschlossen), dass du dann auch nervige Bugs in Better-Moodle hast.
+
+Um den Wechsel zu vollziehen musst du einmal das Userscript neu installieren.
+Hierzu wirst du von deinem Userscript-Manager ein Popup erhalten, in dem du die Installation dann noch bestätigen musst.
+`,
+            nightly: `
+Hallo!
+
+Du wechselst nun zum Release-Channel \`nightly\`!
+
+Das heißt: Du erhälst Updates sobald sie geschrieben wurden. Zwar erhälst du neue Features und Bugfixes dann früher, aber du hast auch potentiell mehr Bugs in Better-Moodle. Wenn du einen neuen Bug durch ein Nightly-Update entdeckst, freuen wir uns natürlich über eine entsprechende Meldung.
+
+Um den Wechsel zu vollziehen musst du einmal das Userscript neu installieren.
+Hierzu wirst du von deinem Userscript-Manager ein Popup erhalten, in dem du die Installation dann noch bestätigen musst.
+`,
+        },
     },
 } as Translation;

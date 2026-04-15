@@ -8,6 +8,10 @@ export const updateNotification = new BooleanSetting(
     'updateNotification',
     true
 ).addAlias('general.updateNotification');
+export const releaseChannel = new SelectSetting('releaseChannel', 'stable', [
+    'stable',
+    'nightly',
+]).requireReload();
 const languageSetting = new SelectSetting('language', 'auto', [
     'auto',
     ...Array.from(languages.entries()).map(([locale, { name, flag }]) => ({
@@ -89,6 +93,7 @@ const updateAllStates = () => {
 export default FeatureGroup.register({
     settings: new Set([
         updateNotification,
+        releaseChannel,
         languageSetting,
         highlightNewSettings,
         newSettingsTooltip,

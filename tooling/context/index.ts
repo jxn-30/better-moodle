@@ -60,6 +60,8 @@ constants.setConstant('__MOODLE_URL__', config.moodleUrl);
 constants.setConstant('__FEATURE_GROUPS__', features.orderedFeatures);
 constants.setConstant('__USERSCRIPT_CONNECTS__', connects.list());
 constants.setConstant('__ICS_PARSER_DOMAIN__', urls.icsParserDomain);
+constants.setConstant('__STABLE_DOWNLOAD_URL__', urls.STABLE_DOWNLOAD_URL);
+constants.setConstant('__NIGHTLY_DOWNLOAD_URL__', urls.NIGHTLY_DOWNLOAD_URL);
 constants.setConstant('__MIN_SUPPORTED_BROWSERS__', browsers.minVersions);
 constants.setConstant('__UA_REGEX__', browsers.uaRegExp.source);
 constants.setConstant('__UA_REGEX_FLAGS__', browsers.uaRegExp.flags);

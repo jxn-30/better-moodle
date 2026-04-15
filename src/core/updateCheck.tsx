@@ -5,9 +5,12 @@ import { ONE_MINUTE } from '#lib/times';
 import { request } from '#lib/network';
 import { lt as semverLt } from '#lib/semver';
 import settingsStyle from '#style/settings.module.scss';
-import { updateNotification as updateNotificationSetting } from '#feats/general';
 import { changelogIdPrefix, getChangelogHtml } from '#core/changelog';
 import { htmlToElements, isNightly, mdID, mdToHtml } from '#lib/helpers';
+import {
+    releaseChannel as releaseChannelSetting,
+    updateNotification as updateNotificationSetting,
+} from '#feats/general';
 
 const latestVersionEl = (<code></code>) as HTMLElement;
 
@@ -38,35 +41,60 @@ const UpdateBtn = (
 UpdateBtn.addEventListener('click', e => {
     e.preventDefault();
 
+    showUpdateModal();
+});
+
+/**
+ * Shows the update modal and opens the installation URL to trigger the userscript manager
+ * @param changelog - wether to show the changelog since the last version
+ * @param downloadURL - the installation URL to use for update
+ * @returns the modal instance
+ */
+const showUpdateModal = (
+    changelog = true,
+    downloadURL = GM_info.script.downloadURL
+) =>
     new Modal({
         type: 'SAVE_CANCEL',
         title: LL.update.title(),
-        body: getChangelogHtml().then(changelogHtml => {
-            const body = <></>;
-            body.append(
-                ...Array.from(htmlToElements(mdToHtml(LL.update.body()))),
-                ...Array.from(htmlToElements(changelogHtml))
-            );
-            const currentId = mdID(
-                `* ${GM_info.script.version}`,
-                changelogIdPrefix
-            );
-            body.querySelectorAll(
-                `[id^="${currentId}"], [id^="${currentId}"] ~ *`
-            ).forEach(el => el.remove());
-            return body;
-        }),
+        body:
+            changelog ?
+                getChangelogHtml().then(changelogHtml => {
+                    const body = <></>;
+                    body.append(
+                        ...Array.from(
+                            htmlToElements(
+                                mdToHtml(LL.update.body(Number(!changelog)))
+                            )
+                        ),
+                        ...Array.from(htmlToElements(changelogHtml))
+                    );
+                    const currentId = mdID(
+                        `* ${GM_info.script.version}`,
+                        changelogIdPrefix
+                    );
+                    body.querySelectorAll(
+                        `[id^="${currentId}"], [id^="${currentId}"] ~ *`
+                    ).forEach(el => el.remove());
+                    return body;
+                })
+            :   <>
+                    {...Array.from(
+                        htmlToElements(
+                            mdToHtml(LL.update.body(Number(!changelog)))
+                        )
+                    )}
+                </>,
         buttons: { save: LL.update.reload(), cancel: LL.update.close() },
         removeOnClose: true,
     })
         .onSave(() => window.location.reload())
         .on('bodyRendered', () => {
-            if (GM_info.script.downloadURL) {
-                open(GM_info.script.downloadURL, '_self');
+            if (downloadURL) {
+                open(downloadURL, '_self');
             }
         })
         .show();
-});
 
 let updateCheckRetryTimeout: ReturnType<(typeof window)['setTimeout']> | null;
 
@@ -135,3 +163,24 @@ export const checkForUpdates = () =>
                 ONE_MINUTE
             );
         });
+
+releaseChannelSetting.onChange(() => {
+    const targetChannel = releaseChannelSetting.value as 'stable' | 'nightly';
+    const updateURLs = {
+        stable: __STABLE_DOWNLOAD_URL__,
+        nightly: __NIGHTLY_DOWNLOAD_URL__,
+    } as const;
+
+    new Modal({
+        type: 'SAVE_CANCEL',
+        title: 'replace me :)', // LL.switchReleaseChannel.modal.title(),
+        body: mdToHtml(LL.switchReleaseChannel.channels[targetChannel]()),
+        buttons: {
+            cancel: LL.switchReleaseChannel.modal.abort(),
+            save: LL.switchReleaseChannel.modal.install(),
+        },
+        removeOnClose: true,
+    })
+        .onSave(() => showUpdateModal(false, updateURLs[targetChannel]))
+        .show();
+});

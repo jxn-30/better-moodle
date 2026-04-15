@@ -26,6 +26,12 @@ export const versionDownloadUrl = (version: string, fileName: string) =>
 export const updateUrl = `${releaseDownloadUrl}/${metaFileName}`;
 export const downloadUrl = `${releaseDownloadUrl}/${scriptFileName}`;
 
+export const STABLE_DOWNLOAD_URL = versionDownloadUrl('latest', scriptFileName);
+export const NIGHTLY_DOWNLOAD_URL = versionDownloadUrl(
+    'nightly',
+    scriptFileName
+);
+
 export const match = `${config.moodleUrl}/*`;
 
 export const icsParserDomain = icsParserConfig.routes[0].pattern;
