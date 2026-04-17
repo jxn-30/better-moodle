@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.3](https://github.com/jxn-30/better-moodle/compare/2.7.2...2.7.3) (2026-04-17)
+
+
+### Bug Fixes
+
+* **semesterzeiten:** do not show weird descriptions in event modals ([8b4e4a9](https://github.com/jxn-30/better-moodle/commit/8b4e4a955a60817287b4091bdf78918e67a53b61))
+* **weather:** make wttr.in work again ([4b5f339](https://github.com/jxn-30/better-moodle/commit/4b5f3399e4e43156f402abff06b74b5192b2806e))
+
 ## [2.7.2](https://github.com/jxn-30/better-moodle/compare/2.7.1...2.7.2) (2026-04-07)
 
 
