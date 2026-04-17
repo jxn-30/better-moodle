@@ -165,6 +165,9 @@ export const checkForUpdates = () =>
         });
 
 releaseChannelSetting.onChange(() => {
+    // do not show the modal when change is triggered by the reset
+    if (releaseChannelSetting.isBeingReset) return;
+
     const targetChannel = releaseChannelSetting.value as 'stable' | 'nightly';
     const updateURLs = {
         stable: __STABLE_DOWNLOAD_URL__,
@@ -181,6 +184,7 @@ releaseChannelSetting.onChange(() => {
         },
         removeOnClose: true,
     })
+        .onCancel(() => releaseChannelSetting.reset())
         .onSave(() => showUpdateModal(false, updateURLs[targetChannel]))
         .show();
 });
