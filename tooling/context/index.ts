@@ -7,7 +7,7 @@ import * as requires from './requires';
 import * as subpaths from './subpaths';
 import * as urls from './urls';
 import fs from 'node:fs/promises';
-import { getUTCString } from '../utils/timestamp';
+import { version } from './version';
 import {
     authors,
     config,
@@ -16,17 +16,7 @@ import {
     polyfillsFileName,
     scriptFileName,
 } from './config';
-import {
-    version as baseVersion,
-    dependencies,
-    devDependencies,
-} from '../../package.json';
-
-// Adjust version if it is a nightly build
-const version =
-    args.isNightlyBuild ?
-        `${baseVersion}-nightly+${getUTCString()}`
-    :   baseVersion;
+import { dependencies, devDependencies } from '../../package.json';
 
 // Populate connects
 // Global connects
