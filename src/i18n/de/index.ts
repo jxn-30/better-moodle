@@ -93,7 +93,7 @@ Hallo!
 
 Du wechselst nun zurück zum Release-Channel \`stable\`!
 
-Das heißt: Du erhälst Updates, sobald sie als stabil genug angesehen werden. Manchmal kann es daher ein bisschen brauchen, bis neue Features und Bugfixes bei dir ankommen. Dafür ist es unwahrscheinlicher (wenn auch nicht ausgeschlossen), dass du dann auch nervige Bugs in Better-Moodle hast.
+Das heißt: Du erhältst Updates, sobald sie als stabil genug angesehen werden. Manchmal kann es daher ein bisschen brauchen, bis neue Features und Bugfixes bei dir ankommen. Dafür ist es unwahrscheinlicher (wenn auch nicht ausgeschlossen), dass du dann auch nervige Bugs in Better-Moodle hast.
 
 Um den Wechsel zu vollziehen musst du einmal das Userscript neu installieren.
 Hierzu wirst du von deinem Userscript-Manager ein Popup erhalten, in dem du die Installation dann noch bestätigen musst.
@@ -103,7 +103,7 @@ Hallo!
 
 Du wechselst nun zum Release-Channel \`nightly\`!
 
-Das heißt: Du erhälst Updates sobald sie geschrieben wurden. Zwar erhälst du neue Features und Bugfixes dann früher, aber du hast auch potentiell mehr Bugs in Better-Moodle. Wenn du einen neuen Bug durch ein Nightly-Update entdeckst, freuen wir uns natürlich über eine entsprechende Meldung.
+Das heißt: Du erhältst Updates sobald sie geschrieben wurden. Zwar erhältst du neue Features und Bugfixes dann früher, aber du hast auch potentiell mehr Bugs in Better-Moodle. Wenn du einen neuen Bug durch ein Nightly-Update entdeckst, freuen wir uns natürlich über eine entsprechende Meldung.
 
 Um den Wechsel zu vollziehen musst du einmal das Userscript neu installieren.
 Hierzu wirst du von deinem Userscript-Manager ein Popup erhalten, in dem du die Installation dann noch bestätigen musst.

@@ -46,7 +46,7 @@ UpdateBtn.addEventListener('click', e => {
 
 /**
  * Shows the update modal and opens the installation URL to trigger the userscript manager
- * @param changelog - wether to show the changelog since the last version
+ * @param changelog - whether to show the changelog since the last version
  * @param downloadURL - the installation URL to use for update
  * @returns the modal instance
  */
