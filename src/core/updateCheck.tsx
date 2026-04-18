@@ -102,15 +102,11 @@ let updateCheckRetryTimeout: ReturnType<(typeof window)['setTimeout']> | null;
  * Fetches the latest version from GitHub-API
  * @returns a promise containing the latest version
  */
-export const getLatestVersion = (): Promise<string> =>
+export const getLatestVersion = (): Promise<string | undefined | null> =>
     isNightly ?
-        request(
-            `https://api.github.com/repos/${__GITHUB_USER__}/${__GITHUB_REPO__}/releases/tags/nightly`
-        )
-            .then(res => res.json())
-            .then(({ name }: { name: string }) =>
-                name.replace(/^.*?v(?=\d+\.\d+\.\d+)/, '')
-            )
+        request(GM_info.script.updateURL)
+            .then(res => res.text())
+            .then(meta => /(?<=^\s*\/\/\s*@version\s*)\S.*?$/m.exec(meta)?.[0])
     :   request(
             `https://api.github.com/repos/${__GITHUB_USER__}/${__GITHUB_REPO__}/releases/latest`
         )
