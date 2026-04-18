@@ -83,27 +83,31 @@ These Browsers are officially supported (Better-Moodle Core-Developers recommend
         12: 'twelve',
     },
     switchReleaseChannel: {
-        modal: { abort: 'Wechsel abbrechen', install: 'Installation beginnen' },
+        modal: {
+            title: 'Switch to Release-Channel `{0}`',
+            abort: 'Abort switching',
+            install: 'Start installation',
+        },
         channels: {
             stable: `
-Hallo!
+Hello!
 
-Du wechselst nun zurück zum Release-Channel \`stable\`!
+You are now switching back to the \`stable\` release channel!
 
-Das heißt: Du erhälst Updates, sobald sie als stabil genug angesehen werden. Manchmal kann es daher ein bisschen brauchen, bis neue Features und Bugfixes bei dir ankommen. Dafür ist es unwahrscheinlicher (wenn auch nicht ausgeschlossen), dass du dann auch nervige Bugs in Better-Moodle hast.
+This means you will receive updates as soon as they are deemed stable enough. As a result, it may sometimes take a little while for new features and bug fixes to reach you. On the other hand, it is less likely (though not impossible) that you will encounter annoying bugs in Better-Moodle.
 
-Um den Wechsel zu vollziehen musst du einmal das Userscript neu installieren.
-Hierzu wirst du von deinem Userscript-Manager ein Popup erhalten, in dem du die Installation dann noch bestätigen musst.
+To complete the switch, you’ll need to reinstall the userscript once.
+To do this, you'll receive a pop-up from your userscript manager, in which you'll then need to confirm the installation.
 `,
             nightly: `
-Hallo!
+Hello!
 
-Du wechselst nun zum Release-Channel \`nightly\`!
+You are now switching back to the \`nightly\` release channel!
 
-Das heißt: Du erhälst Updates sobald sie geschrieben wurden. Zwar erhälst du neue Features und Bugfixes dann früher, aber du hast auch potentiell mehr Bugs in Better-Moodle. Wenn du einen neuen Bug durch ein Nightly-Update entdeckst, freuen wir uns natürlich über eine entsprechende Meldung.
+This means you will receive updates as soon as they are released. Whilst you will get new features and bug fixes sooner, you may also encounter more bugs in Better-Moodle. If you discover a new bug following a nightly update, we'd of course be grateful if you could report it to us.
 
-Um den Wechsel zu vollziehen musst du einmal das Userscript neu installieren.
-Hierzu wirst du von deinem Userscript-Manager ein Popup erhalten, in dem du die Installation dann noch bestätigen musst.
+To complete the switch, you’ll need to reinstall the userscript once.
+To do this, you'll receive a pop-up from your userscript manager, in which you'll then need to confirm the installation.
 `,
         },
     },

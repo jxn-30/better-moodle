@@ -169,14 +169,19 @@ releaseChannelSetting.onChange(() => {
     if (releaseChannelSetting.isBeingReset) return;
 
     const targetChannel = releaseChannelSetting.value as 'stable' | 'nightly';
-    const updateURLs = {
+    const installURLs = {
         stable: __STABLE_DOWNLOAD_URL__,
         nightly: __NIGHTLY_DOWNLOAD_URL__,
     } as const;
 
     new Modal({
         type: 'SAVE_CANCEL',
-        title: 'replace me :)', // LL.switchReleaseChannel.modal.title(),
+        title: mdToHtml(
+            LL.switchReleaseChannel.modal.title(targetChannel),
+            1,
+            '',
+            false
+        ),
         body: mdToHtml(LL.switchReleaseChannel.channels[targetChannel]()),
         buttons: {
             cancel: LL.switchReleaseChannel.modal.abort(),
@@ -185,6 +190,6 @@ releaseChannelSetting.onChange(() => {
         removeOnClose: true,
     })
         .onCancel(() => releaseChannelSetting.reset())
-        .onSave(() => showUpdateModal(false, updateURLs[targetChannel]))
+        .onSave(() => showUpdateModal(false, installURLs[targetChannel]))
         .show();
 });

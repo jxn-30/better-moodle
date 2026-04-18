@@ -82,7 +82,11 @@ Die offiziell unterstützten Browser (Das Better-Moodle Core-Team empfiehlt Fire
         12: 'zwölf',
     },
     switchReleaseChannel: {
-        modal: { abort: 'Wechsel abbrechen', install: 'Installation beginnen' },
+        modal: {
+            title: 'Zum Release-Channel `{0}` wechseln',
+            abort: 'Wechsel abbrechen',
+            install: 'Installation beginnen',
+        },
         channels: {
             stable: `
 Hallo!
