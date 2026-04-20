@@ -3,7 +3,7 @@ import Feature from '#lib/Feature';
 import { LLF } from '#i18n';
 import { marquee } from './index';
 import { mdToHtml } from '#lib/helpers';
-import { ONE_DAY } from '#lib/times';
+import { today as getToday, todayNow } from '#lib/temporal';
 
 const LL = LLF('navbarMarquee', 'christmasCountdown');
 
@@ -23,19 +23,17 @@ let timeout: ReturnType<typeof setTimeout>;
  */
 const updateCountdown = () => {
     if (!countdownSpanClone) return;
-    const now = new Date();
-    if (now.getDate() === 24 && now.getMonth() === 11) {
+    const today = getToday();
+    const thisYearChristmas = today.with({ day: 24, month: 12 });
+    if (today.equals(thisYearChristmas)) {
         countdownSpan.innerHTML = countdownSpanClone.innerHTML = LL.christmas();
         return;
     }
-    const christmas = new Date(now);
-    christmas.setDate(24);
-    christmas.setMonth(11);
-    if (now > christmas) {
-        christmas.setFullYear(christmas.getFullYear() + 1);
-    }
-    const tillThen = christmas.getTime() - now.getTime();
-    const daysTillThen = Math.floor(tillThen / ONE_DAY);
+    const nextChristmas =
+        Temporal.PlainDate.compare(today, thisYearChristmas) < 0 ?
+            thisYearChristmas
+        :   thisYearChristmas.add({ years: 1 });
+    const daysTillThen = today.until(nextChristmas).total('days');
     const text =
         short.value ?
             LL.short({ days: daysTillThen })
@@ -57,10 +55,10 @@ const reload = () => {
     if (enabled.value) {
         [[, countdownSpanClone]] = marquee.add(countdownSpan);
         updateCountdown();
-        const midnight = new Date();
-        midnight.setHours(0, 0, 0, 0);
-        midnight.setTime(midnight.getTime() + ONE_DAY);
-        timeout = setTimeout(updateCountdown, midnight.getTime() - Date.now());
+        const msTillMidnight = todayNow()
+            .until(getToday().add({ days: 1 }))
+            .total('milliseconds');
+        timeout = setTimeout(updateCountdown, msTillMidnight);
     } else {
         marquee.remove(countdownSpan);
     }
