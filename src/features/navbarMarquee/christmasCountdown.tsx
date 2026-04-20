@@ -3,7 +3,7 @@ import Feature from '#lib/Feature';
 import { LLF } from '#i18n';
 import { marquee } from './index';
 import { mdToHtml } from '#lib/helpers';
-import { today as getToday, todayNow } from '#lib/temporal';
+import { getToday, getTodayNow } from '#lib/temporal';
 
 const LL = LLF('navbarMarquee', 'christmasCountdown');
 
@@ -55,7 +55,7 @@ const reload = () => {
     if (enabled.value) {
         [[, countdownSpanClone]] = marquee.add(countdownSpan);
         updateCountdown();
-        const msTillMidnight = todayNow()
+        const msTillMidnight = getTodayNow()
             .until(getToday().add({ days: 1 }))
             .total('milliseconds');
         timeout = setTimeout(updateCountdown, msTillMidnight);
