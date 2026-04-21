@@ -48,8 +48,8 @@ const zoomImage = (e: MouseEvent) => {
 
     zoomCopiedImage = target.cloneNode(true) as HTMLImageElement;
 
-    // use a profile picture with a higher resolution (by replacing f1|f2 with f3)
     void moodleReady().then(() => {
+        // use a profile picture with a higher resolution (by replacing f1|f2 with f3)
         zoomCopiedImage.src = target.src = target.src.replace(
             new RegExp(
                 `(?<=/pluginfile.php/\\d+/user/icon/${M.cfg.theme}/f)\\d(?=$|\\?)`
