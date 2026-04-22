@@ -66,9 +66,9 @@
         "typesafe-i18n": "patch:typesafe-i18n@npm%3A5.27.1#~/.yarn/patches/typesafe-i18n-npm-5.27.1-37bc79b222.patch"
     },
     "devDependencies": {
-        "@actions/core": "3.0.0",
+        "@actions/core": "3.0.1",
         "@babel/compat-data": "7.29.0",
-        "@cloudflare/workers-types": "4.20260417.1",
+        "@cloudflare/workers-types": "4.20260422.1",
         "@commitlint/cli": "20.5.0",
         "@commitlint/config-conventional": "20.5.0",
         "@eslint/js": "10.0.1",
@@ -82,7 +82,7 @@
         "@types/node": "25.6.0",
         "@types/tampermonkey": "5.0.5",
         "@vitejs/plugin-legacy": "7.2.1",
-        "@vitest/coverage-v8": "4.1.4",
+        "@vitest/coverage-v8": "4.1.5",
         "babel-plugin-polyfill-corejs3": "0.14.2",
         "boxen": "8.0.1",
         "browserslist": "4.28.2",
@@ -111,20 +111,20 @@
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "11.2.1",
         "prettier": "3.8.3",
-        "puppeteer": "24.41.0",
+        "puppeteer": "24.42.0",
         "rrule": "2.8.1",
         "sass-embedded": "1.99.0",
         "terser": "5.46.1",
         "ts-json-schema-generator": "2.9.0",
         "ts-node": "10.9.2",
         "typescript": "6.0.3",
-        "typescript-eslint": "8.58.2",
+        "typescript-eslint": "8.59.0",
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
         "vite": "7.3.2",
         "vite-plugin-monkey": "7.1.9",
-        "vitest": "4.1.4",
-        "wrangler": "4.83.0"
+        "vitest": "4.1.5",
+        "wrangler": "4.84.1"
     },
     "engines": {
         "node": "^24.14.1"
