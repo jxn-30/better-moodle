@@ -34,6 +34,6 @@ export const en = {
     remaining: "It's **{days}** day{{s}} until Christmas Eve.",
     short: '🧑‍🎄‍: **{days}**',
     christmas: '🎄 Today is Christmas Eve. Merry Christmas! 🎄',
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };
