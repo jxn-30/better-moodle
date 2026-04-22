@@ -1,4 +1,7 @@
-:local(.zoom-enabled) #region-main img:not(.activityicon):not(.icon) {
+:local(.zoom-enabled)
+    #region-main
+    :not(btn):not(a.btn)
+    > img:not(.activityicon):not(.icon) {
     cursor: zoom-in;
 }
 

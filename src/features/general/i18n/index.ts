@@ -98,6 +98,6 @@ export const en = {
         prideLogo: prideLogo.en,
         cauNavbar: cauNavbar.en,
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

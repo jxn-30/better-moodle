@@ -18,6 +18,6 @@ export const en = {
                 "Tries to prevent the automatic download of files as often as possible (doesn't always work).",
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

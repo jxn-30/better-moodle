@@ -40,6 +40,6 @@ export const en = {
                 'Adds a block to the dashboard that shows the semester times.',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

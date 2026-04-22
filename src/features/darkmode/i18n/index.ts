@@ -65,6 +65,6 @@ export const en = {
             description: 'Set the sepia value of the dark mode.',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

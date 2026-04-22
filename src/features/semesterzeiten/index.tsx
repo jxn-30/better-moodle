@@ -388,7 +388,11 @@ const loadContent = (semesterIndex = 0) => {
             const switches = new Map<string, Set<SwitchComponent>>();
 
             const adEvents = extraEvents
-                .filter(event => new Date(event.start) < semesterEnd)
+                .filter(
+                    event =>
+                        new Date(event.end) >= semesterStart &&
+                        new Date(event.start) < semesterEnd
+                )
                 .map(event => ({
                     ...event,
                     type: `ad-${event.name.de.toLowerCase()}`,
@@ -431,7 +435,13 @@ const loadContent = (semesterIndex = 0) => {
                         <i className="icon fa fa-info-circle mr-0"></i>
                     </button>
                 ) as HTMLButtonElement;
-                infoBtn.addEventListener('click', () => openEventModal(event));
+                const modalContent =
+                    event.type.startsWith('ad-') ?
+                        event
+                    :   { ...event, desc: undefined };
+                infoBtn.addEventListener('click', () =>
+                    openEventModal(modalContent)
+                );
                 if (event.type.startsWith('holiday-')) {
                     tableBody.append(
                         <tr

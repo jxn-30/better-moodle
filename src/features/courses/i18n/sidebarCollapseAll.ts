@@ -18,6 +18,6 @@ export const en = {
                 'Collapses or expands all sections in the sidebar when one of the arrows in the sidebar is double-clicked.',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

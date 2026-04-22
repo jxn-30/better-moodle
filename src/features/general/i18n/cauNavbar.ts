@@ -36,6 +36,6 @@ export const en = {
             getHelp: 'get help',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

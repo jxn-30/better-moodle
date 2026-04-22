@@ -7,6 +7,9 @@ inputs:
     release:
         description: Wether to create a release build
         required: false
+    nightly:
+        description: Whether to create a nightly build
+        required: false
 
 runs:
     using: composite
@@ -15,13 +18,18 @@ runs:
           uses: ./.github/actions/setup
 
         - name: 🏗️ build Better-Moodle for ${{ inputs.config }}
-          if: ${{ !inputs.release }}
+          if: ${{ !inputs.release && !inputs.nightly }}
           run: yarn build ${{ inputs.config }}
           shell: bash
 
-        - name: 🏗️  release-build Better-Moodle for ${{ inputs.config }}
-          if: ${{ inputs.release }}
+        - name: 🏗️ release-build Better-Moodle for ${{ inputs.config }}
+          if: ${{ inputs.release && !inputs.nightly }}
           run: yarn release-build ${{ inputs.config }}
+          shell: bash
+
+        - name: 🌜️ nightly-build Better-Moodle for ${{ inputs.config }}
+          if: ${{ inputs.nightly }}
+          run: yarn release-build ${{ inputs.config }} --nightly
           shell: bash
 
         - name: 📤️ upload build
@@ -31,6 +39,13 @@ runs:
               # hardcoded since closed envs are not allowed in composite actions
               name: better-moodle-${{ inputs.config }}.user.js
               path: dist/better-moodle-${{ inputs.config }}.user.js
+
+        - name: 📤️ upload meta
+          uses: actions/upload-artifact@v7
+          with:
+              # hardcoded since closed envs are not allowed in composite actions
+              name: better-moodle-${{ inputs.config }}.meta.js
+              path: dist/better-moodle-${{ inputs.config }}.meta.js
 
         - name: 📤️ upload polyfill
           uses: actions/upload-artifact@v7

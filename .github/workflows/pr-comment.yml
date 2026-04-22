@@ -35,6 +35,10 @@ on:
         types:
             - completed
 
+concurrency:
+    group: pr-comment
+    cancel-in-progress: false
+
 # Write permission is needed to post/update the PR comment.
 # All other permissions stay at the default (read or none).
 permissions:
