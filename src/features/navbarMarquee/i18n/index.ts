@@ -35,6 +35,6 @@ export const en = {
         christmasCountdown: christmasCountdown.en,
         eventAdvertisements: eventAdvertisements.en,
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

@@ -13,6 +13,6 @@ export const en = {
     description:
         'These settings allow you to customise the dashboard a little.',
     features: { layout: layout.en },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

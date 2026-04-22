@@ -44,6 +44,6 @@ export const en = {
         sectionCourseIndex: sectionCourseIndex.en,
         sidebarCollapseAll: sidebarCollapseAll.en,
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

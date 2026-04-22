@@ -140,6 +140,6 @@ export const en = {
         cloudCover: 'Cloud cover',
         precipitation: 'Precipitation',
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };
