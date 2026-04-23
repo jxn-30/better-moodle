@@ -93,7 +93,7 @@
         "core-js": "3.49.0",
         "core-js-compat": "3.49.0",
         "esbuild": "0.28.0",
-        "esbuild-plugin-browserslist": "2.0.0",
+        "esbuild-plugin-browserslist": "3.0.2",
         "eslint": "10.2.1",
         "eslint-config-prettier": "10.1.8",
         "eslint-plugin-es-x": "9.6.0",
