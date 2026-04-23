@@ -33,5 +33,5 @@ export default function (): PluginOption {
         ecma: 2020,
         keep_classnames: true,
         keep_fnames: true,
-    });
+    }) as PluginOption;
 }
