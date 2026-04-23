@@ -23,9 +23,11 @@ declare const __MOODLE_URL__: string;
 declare const __FEATURE_GROUPS__: string[];
 declare const __USERSCRIPT_CONNECTS__: string[];
 declare const __ICS_PARSER_DOMAIN__: string;
+declare const __STABLE_DOWNLOAD_URL__: string;
+declare const __NIGHTLY_DOWNLOAD_URL__: string;
+declare const __MIN_SUPPORTED_BROWSERS__: Record<string, number>;
 declare const __UA_REGEX__: string;
 declare const __UA_REGEX_FLAGS__: string;
-declare const __MIN_SUPPORTED_BROWSERS__: Record<string, number>;
 
 // DarkReader is included via @require and thus globally available
 declare const DarkReader: DarkReader;

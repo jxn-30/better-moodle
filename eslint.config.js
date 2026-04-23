@@ -52,9 +52,11 @@ export default [
                 __FEATURE_GROUPS__: 'readonly',
                 __USERSCRIPT_CONNECTS__: 'readonly',
                 __ICS_PARSER_DOMAIN__: 'readonly',
+                __STABLE_DOWNLOAD_URL__: 'readonly',
+                __NIGHTLY_DOWNLOAD_URL__: 'readonly',
+                __MIN_SUPPORTED_BROWSERS__: 'readonly',
                 __UA_REGEX__: 'readonly',
                 __UA_REGEX_FLAGS__: 'readonly',
-                __MIN_SUPPORTED_BROWSERS__: 'readonly',
                 // DarkReader is included via @require
                 DarkReader: 'readonly',
                 // JSXElement is created via vite-env.d.ts

@@ -48,6 +48,13 @@
             "./src/fixes/*/index.ts",
             "./src/fixes/*/index.tsx"
         ],
+        "#core/*": [
+            "./src/core/*",
+            "./src/core/*.ts",
+            "./src/core/*.tsx",
+            "./src/core/*/index.ts",
+            "./src/core/*/index.tsx"
+        ],
         "#types/*": [
             "./types/*",
             "./types/*.d.ts",

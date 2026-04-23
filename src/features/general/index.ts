@@ -1,5 +1,6 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import FeatureGroup from '#lib/FeatureGroup';
+import { isNightly } from '#lib/helpers';
 import { languages } from '#i18n';
 import { SelectSetting } from '#lib/Settings/SelectSetting';
 import settingsStyle from '#style/settings.module.scss';
@@ -8,6 +9,13 @@ export const updateNotification = new BooleanSetting(
     'updateNotification',
     true
 ).addAlias('general.updateNotification');
+export const releaseChannel = new SelectSetting(
+    'releaseChannel',
+    isNightly ? 'nightly' : 'stable',
+    ['stable', 'nightly']
+).requireReload();
+// We reset the setting to ensure that it always shows the current release channel
+void releaseChannel.awaitReady().then(() => releaseChannel.reset());
 const languageSetting = new SelectSetting('language', 'auto', [
     'auto',
     ...Array.from(languages.entries()).map(([locale, { name, flag }]) => ({
@@ -89,6 +97,7 @@ const updateAllStates = () => {
 export default FeatureGroup.register({
     settings: new Set([
         updateNotification,
+        releaseChannel,
         languageSetting,
         highlightNewSettings,
         newSettingsTooltip,
