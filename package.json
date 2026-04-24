@@ -68,7 +68,7 @@
     "devDependencies": {
         "@actions/core": "3.0.1",
         "@babel/compat-data": "7.29.0",
-        "@cloudflare/workers-types": "4.20260422.1",
+        "@cloudflare/workers-types": "4.20260424.1",
         "@commitlint/cli": "20.5.0",
         "@commitlint/config-conventional": "20.5.0",
         "@eslint/js": "10.0.1",
@@ -114,7 +114,7 @@
         "puppeteer": "24.42.0",
         "rrule": "2.8.1",
         "sass-embedded": "1.99.0",
-        "terser": "5.46.1",
+        "terser": "5.46.2",
         "ts-json-schema-generator": "2.9.0",
         "ts-node": "10.9.2",
         "typescript": "6.0.3",
