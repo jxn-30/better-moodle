@@ -1266,10 +1266,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20260422.1":
-  version: 4.20260422.1
-  resolution: "@cloudflare/workers-types@npm:4.20260422.1"
-  checksum: 10c0/5e64f0a5eb68f29c07cf3ab8b21c9323a11034ef42d9fd20ba8bcfe9c9a2e8b420cad3675715dbb1dde54f1832894f0016dc95f4164ae2716e590cae5e4f5501
+"@cloudflare/workers-types@npm:4.20260424.1":
+  version: 4.20260424.1
+  resolution: "@cloudflare/workers-types@npm:4.20260424.1"
+  checksum: 10c0/82d25c277051927d3dc3fa0b21947b19c478cf71f70180af50a119cd3ac1740ae86aaf65ebad2144aa206a78c05427436d3847e44eb1108404df900e679ee08e
   languageName: node
   linkType: hard
 
@@ -4732,7 +4732,7 @@ __metadata:
   dependencies:
     "@actions/core": "npm:3.0.1"
     "@babel/compat-data": "npm:7.29.0"
-    "@cloudflare/workers-types": "npm:4.20260422.1"
+    "@cloudflare/workers-types": "npm:4.20260424.1"
     "@commitlint/cli": "npm:20.5.0"
     "@commitlint/config-conventional": "npm:20.5.0"
     "@eslint/js": "npm:10.0.1"
@@ -4781,7 +4781,7 @@ __metadata:
     puppeteer: "npm:24.42.0"
     rrule: "npm:2.8.1"
     sass-embedded: "npm:1.99.0"
-    terser: "npm:5.46.1"
+    terser: "npm:5.46.2"
     ts-json-schema-generator: "npm:2.9.0"
     ts-node: "npm:10.9.2"
     typesafe-i18n: "patch:typesafe-i18n@npm%3A5.27.1#~/.yarn/patches/typesafe-i18n-npm-5.27.1-37bc79b222.patch"
@@ -10589,9 +10589,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:5.46.1, terser@npm:^5.17.4":
-  version: 5.46.1
-  resolution: "terser@npm:5.46.1"
+"terser@npm:5.46.2, terser@npm:^5.17.4":
+  version: 5.46.2
+  resolution: "terser@npm:5.46.2"
   dependencies:
     "@jridgewell/source-map": "npm:^0.3.3"
     acorn: "npm:^8.15.0"
@@ -10599,7 +10599,7 @@ __metadata:
     source-map-support: "npm:~0.5.20"
   bin:
     terser: bin/terser
-  checksum: 10c0/45ba6566af976c518ff4e140250348d606761af822e23ea28d95b30fcf60fb69d3fabd93c6fafa4085d9fe31b67207e58b8480a64370b6cca07066c434101602
+  checksum: 10c0/476f1820160c42e6b2f611410115b00321c4666d421f12db87f13810f8789de45cb254e3ad5178650696d0ba6b706f5a0a239272255d6d1be95816c660f8cbbb
   languageName: node
   linkType: hard
 
