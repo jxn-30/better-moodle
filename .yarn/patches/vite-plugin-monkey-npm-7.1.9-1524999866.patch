@@ -1,0 +1,43 @@
+diff --git a/dist/node/index.mjs b/dist/node/index.mjs
+index f1bbc09f87d86ccea535502f860abc29f04e567a..93358c12bcc526e58d8129ddc93127dc584c1251 100644
+--- a/dist/node/index.mjs
++++ b/dist/node/index.mjs
+@@ -419,7 +419,7 @@ import { resolve } from "import-meta-resolve";
+ import fs from "fs/promises";
+ import path from "path";
+ import { pathToFileURL } from "url";
+-import { transformWithEsbuild } from "vite";
++import { transformWithOxc } from "vite";
+ import { DomUtils, ElementType, parseDocument } from "htmlparser2";
+ import crypto from "crypto";
+ var isFirstBoot = () => {
+@@ -436,7 +436,7 @@ var existFile = async (path6) => {
+   }
+ };
+ var miniCode = async (code, type = "js") => {
+-  return (await transformWithEsbuild(await code, "any_name." + type, {
++  return (await transformWithOxc(await code, "any_name." + type, {
+     minify: true,
+     sourcemap: false,
+     legalComments: "none"
+@@ -988,7 +988,7 @@ var buildBundleFactory = (getOption) => {
+       const buildResult = await build({
+         logLevel: "error",
+         configFile: false,
+-        esbuild: false,
++        oxc: false,
+         plugins: [
+           {
+             name: "monkey:mock",
+@@ -1185,11 +1185,6 @@ var configFactory = (getOption) => {
+             [option.clientAlias]: "vite-plugin-monkey/dist/client"
+           }
+         },
+-        esbuild: {
+-          supported: {
+-            "top-level-await": true
+-          }
+-        },
+         build: {
+           assetsInlineLimit: Number.MAX_SAFE_INTEGER,
+           chunkSizeWarningLimit: Number.MAX_SAFE_INTEGER,
