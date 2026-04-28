@@ -1,9 +1,9 @@
-import { datetimeToString } from '#lib/localeString';
 import { type Event } from '../eventAdvertisements';
 import { FIVE_MINUTES } from '#lib/times';
 import { Modal } from '#lib/Modal';
 import { BETTER_MOODLE_LANG, LLF } from '#i18n';
 import { cachedRequest, type CachedResponse, icsUrl } from '#lib/network';
+import { datetimeToString, dateToString } from '#lib/localeString';
 
 const LL = LLF('navbarMarquee', 'eventAdvertisements');
 
@@ -25,16 +25,25 @@ export const getEvents = () =>
  * @param event - the event to show details of.
  */
 export const openEventModal = (event: Event) => {
+    const startString =
+        event.startDateOnly ?
+            dateToString(new Date(event.start))
+        :   datetimeToString(new Date(event.start), true, false);
+    const endString =
+        event.endDateOnly ?
+            dateToString(new Date(event.end))
+        :   datetimeToString(new Date(event.end), true, false);
+
     const table = (
         <table className="table table-striped table-hover m-0">
             <tbody>
                 <tr>
                     <th>{LL.start()}:</th>
-                    <td>{datetimeToString(new Date(event.start))}</td>
+                    <td>{startString}</td>
                 </tr>
                 <tr>
                     <th>{LL.end()}:</th>
-                    <td>{datetimeToString(new Date(event.end))}</td>
+                    <td>{endString}</td>
                 </tr>
                 {event.rruleString ?
                     <tr>
