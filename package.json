@@ -121,7 +121,7 @@
         "typescript-eslint": "8.59.1",
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
-        "vite": "7.3.2",
+        "vite": "8.0.10",
         "vite-plugin-monkey": "7.1.9",
         "vitest": "4.1.5",
         "wrangler": "4.86.0"
