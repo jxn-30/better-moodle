@@ -127,7 +127,7 @@
         "wrangler": "4.86.0"
     },
     "engines": {
-        "node": "^24.14.1"
+        "node": "^24.15.0"
     },
     "browserslist": [
         "last 4 versions",
