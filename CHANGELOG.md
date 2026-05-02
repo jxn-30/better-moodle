@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.4](https://github.com/jxn-30/better-moodle/compare/2.7.3...2.7.4) (2026-05-02)
+
+
+### Bug Fixes
+
+* **events:** do not show a time if time is not necessary ([8703e8b](https://github.com/jxn-30/better-moodle/commit/8703e8ba967a2fe8bdc359188b46e65f38d36df2))
+
 ## [2.7.3](https://github.com/jxn-30/better-moodle/compare/2.7.2...2.7.3) (2026-04-17)
 
 
