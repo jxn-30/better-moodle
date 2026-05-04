@@ -1286,10 +1286,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20260501.1":
-  version: 4.20260501.1
-  resolution: "@cloudflare/workers-types@npm:4.20260501.1"
-  checksum: 10c0/f87bc7b4b753bbe6c19e1226125d2516e9f9143bfccd4c39c00a0fb86e4021e62f587c607173cf4bffb16270b6c160cdf128728e4dbcabb8f58a672a50f8923e
+"@cloudflare/workers-types@npm:4.20260504.1":
+  version: 4.20260504.1
+  resolution: "@cloudflare/workers-types@npm:4.20260504.1"
+  checksum: 10c0/164400b0785253362ce3624510a63d3bdb6e1cd7623dbca8fe4077a54b48d793c26111d580e796e99218a9b626e18c2fa9cb69a9c8e6eaf90c5eef0b113b377e
   languageName: node
   linkType: hard
 
@@ -4689,7 +4689,7 @@ __metadata:
   dependencies:
     "@actions/core": "npm:3.0.1"
     "@babel/compat-data": "npm:7.29.0"
-    "@cloudflare/workers-types": "npm:4.20260501.1"
+    "@cloudflare/workers-types": "npm:4.20260504.1"
     "@commitlint/cli": "npm:20.5.3"
     "@commitlint/config-conventional": "npm:20.5.3"
     "@eslint/js": "npm:10.0.1"
@@ -4724,12 +4724,12 @@ __metadata:
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-userscripts: "npm:0.5.6"
     fast-glob: "npm:3.3.3"
-    globals: "npm:17.5.0"
+    globals: "npm:17.6.0"
     jiti: "npm:2.6.1"
     jsdom: "npm:29.1.1"
     jsx-dom: "npm:8.1.6"
     mini-svg-data-uri: "npm:1.4.4"
-    node-ical: "npm:0.26.0"
+    node-ical: "npm:0.26.1"
     nodejs-file-downloader: "npm:4.13.0"
     postcss: "npm:8.5.13"
     postcss-inline-svg: "npm:6.0.0"
@@ -6732,10 +6732,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:17.5.0":
-  version: 17.5.0
-  resolution: "globals@npm:17.5.0"
-  checksum: 10c0/92828102ed2f5637907725f0478038bed02fc83e9fc89300bb753639ba7c022b6c02576fc772117302b431b204591db1f2fa909d26f3f0a9852cc856a941df3f
+"globals@npm:17.6.0":
+  version: 17.6.0
+  resolution: "globals@npm:17.6.0"
+  checksum: 10c0/cf94fb4329cc5c68cf81018fd68324f413181ee169f0235b0b33b82bc93fe7825a21beea951f83a80e8e4bbdad9c0c80515a145b5fd4b5cb52f2a80db899a93f
   languageName: node
   linkType: hard
 
@@ -8105,13 +8105,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-ical@npm:0.26.0":
-  version: 0.26.0
-  resolution: "node-ical@npm:0.26.0"
+"node-ical@npm:0.26.1":
+  version: 0.26.1
+  resolution: "node-ical@npm:0.26.1"
   dependencies:
-    rrule-temporal: "npm:^1.5.1"
+    rrule-temporal: "npm:^1.5.3"
     temporal-polyfill: "npm:^0.3.2"
-  checksum: 10c0/e801e3679cb78ef3c25232f46fd5548bcddb5704bfb88270558cefcdd9ccfc7010688f73cdbad6cb4c59816902da8f25c4023e7379504c75051e499f5c71fc66
+  checksum: 10c0/410d3c28c3175310ed8ba24abc4ff830f2f90573d86906bd97550b7cce5837e6d57b6a3594e59aa0e6e17d9e332594867c2c4a66f2dae8e519b94e370c027d16
   languageName: node
   linkType: hard
 
@@ -9421,7 +9421,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rrule-temporal@npm:^1.5.1":
+"rrule-temporal@npm:^1.5.3":
   version: 1.5.3
   resolution: "rrule-temporal@npm:1.5.3"
   dependencies:
