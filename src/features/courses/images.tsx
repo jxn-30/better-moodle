@@ -48,14 +48,27 @@ const zoomImage = (e: MouseEvent) => {
 
     zoomCopiedImage = target.cloneNode(true) as HTMLImageElement;
 
-    // use a profile picture with a higher resolution
     void moodleReady().then(() => {
+        // use a profile picture with a higher resolution (by replacing f1|f2 with f3)
         zoomCopiedImage.src = target.src = target.src.replace(
             new RegExp(
                 `(?<=/pluginfile.php/\\d+/user/icon/${M.cfg.theme}/f)\\d(?=$|\\?)`
             ),
             '3'
         );
+    });
+
+    // image files have small preview icons. Zooming into them will now load the original file
+    // by removing `?preview=tinyicon` from the URL
+    void moodleReady().then(() => {
+        const imgUrl = new URL(zoomCopiedImage.src);
+        if (
+            imgUrl.pathname.startsWith('/pluginfile.php/') &&
+            imgUrl.searchParams.get('preview') === 'tinyicon'
+        ) {
+            imgUrl.searchParams.delete('preview');
+            zoomCopiedImage.src = imgUrl.toString();
+        }
     });
 
     // remove additional styles that could produce weird results
