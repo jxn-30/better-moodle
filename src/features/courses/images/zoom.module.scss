@@ -1,6 +1,6 @@
 :local(.zoom-enabled)
     #region-main
-    :not(btn):not(a.btn)
+    :not(btn):not(a.btn):not([class*='availability-'])
     > img:not(.activityicon):not(.icon) {
     cursor: zoom-in;
 }
