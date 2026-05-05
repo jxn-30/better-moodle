@@ -25,7 +25,7 @@ Uh, an update for Better-Moodle is ready for installation 👀
 
 If you haven't already done so, please follow the instructions of your userscript manager to install the update. A new tab may have been opened in the background. To complete the update, please reload Moodle once after the installation.
 
-To find out what has changed since your last update, here is the relevant extract from the changelog:
+{{|To find out what has changed since your last update, here is the relevant extract from the changelog:}}
 `.trim(),
     },
     support: {
@@ -81,5 +81,34 @@ These Browsers are officially supported (Better-Moodle Core-Developers recommend
         10: 'ten',
         11: 'eleven',
         12: 'twelve',
+    },
+    switchReleaseChannel: {
+        modal: {
+            title: 'Switch to Release-Channel `{0}`',
+            abort: 'Abort switching',
+            install: 'Start installation',
+        },
+        channels: {
+            stable: `
+Hello!
+
+You are now switching back to the \`stable\` release channel!
+
+This means you will receive updates as soon as they are deemed stable enough. As a result, it may sometimes take a little while for new features and bug fixes to reach you. On the other hand, it is less likely (though not impossible) that you will encounter annoying bugs in Better-Moodle.
+
+To complete the switch, you’ll need to reinstall the userscript once.
+To do this, you'll receive a pop-up from your userscript manager, in which you'll then need to confirm the installation.
+`,
+            nightly: `
+Hello!
+
+You are now switching back to the \`nightly\` release channel!
+
+This means you will receive updates as soon as they are released. Whilst you will get new features and bug fixes sooner, you may also encounter more bugs in Better-Moodle. If you discover a new bug following a nightly update, we'd of course be grateful if you could report it to us.
+
+To complete the switch, you’ll need to reinstall the userscript once.
+To do this, you'll receive a pop-up from your userscript manager, in which you'll then need to confirm the installation.
+`,
+        },
     },
 } as Translation;

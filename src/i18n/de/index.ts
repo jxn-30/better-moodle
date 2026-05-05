@@ -25,7 +25,7 @@ Uiiii, ein Update für Better-Moodle ist bereit zur Installation 👀
 
 Falls noch nicht geschehen, befolge bitte die Anweisungen deines Userscript-Managers, um das Update zu installieren. Ggf. wurde ein neuer Tab im Hintergrund geöffnet. Um das Update abzuschließen, lade bitte Moodle nach der Installation einmal neu.
 
-Um zu erfahren, was sich seit deinem letzten Update getan hat, hier der relevante Auszug aus dem Changelog:
+{{|Um zu erfahren, was sich seit deinem letzten Update getan hat, hier der relevante Auszug aus dem Changelog:}}
 `.trim(),
     },
     support: {
@@ -80,5 +80,34 @@ Die offiziell unterstützten Browser (Das Better-Moodle Core-Team empfiehlt Fire
         10: 'zehn',
         11: 'elf',
         12: 'zwölf',
+    },
+    switchReleaseChannel: {
+        modal: {
+            title: 'Zum Release-Channel `{0}` wechseln',
+            abort: 'Wechsel abbrechen',
+            install: 'Installation beginnen',
+        },
+        channels: {
+            stable: `
+Hallo!
+
+Du wechselst nun zurück zum Release-Channel \`stable\`!
+
+Das heißt: Du erhältst Updates, sobald sie als stabil genug angesehen werden. Manchmal kann es daher ein bisschen brauchen, bis neue Features und Bugfixes bei dir ankommen. Dafür ist es unwahrscheinlicher (wenn auch nicht ausgeschlossen), dass du dann auch nervige Bugs in Better-Moodle hast.
+
+Um den Wechsel zu vollziehen musst du einmal das Userscript neu installieren.
+Hierzu wirst du von deinem Userscript-Manager ein Popup erhalten, in dem du die Installation dann noch bestätigen musst.
+`,
+            nightly: `
+Hallo!
+
+Du wechselst nun zum Release-Channel \`nightly\`!
+
+Das heißt: Du erhältst Updates sobald sie geschrieben wurden. Zwar erhältst du neue Features und Bugfixes dann früher, aber du hast auch potentiell mehr Bugs in Better-Moodle. Wenn du einen neuen Bug durch ein Nightly-Update entdeckst, freuen wir uns natürlich über eine entsprechende Meldung.
+
+Um den Wechsel zu vollziehen musst du einmal das Userscript neu installieren.
+Hierzu wirst du von deinem Userscript-Manager ein Popup erhalten, in dem du die Installation dann noch bestätigen musst.
+`,
+        },
     },
 } satisfies BaseTranslation;
