@@ -14,3 +14,14 @@
     // Replace mix-blend-mode: multiply with mix-blend-mode: hard-light
     mix-blend-mode: hard-light !important;
 }
+
+// The icons for availabilities are not improved by default
+.availability-item {
+    .availability-eye,
+    .availability-eye-disabled,
+    .availability-delete {
+        img {
+            filter: invert(1);
+        }
+    }
+}
