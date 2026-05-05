@@ -18,6 +18,6 @@ export const en = {
                 'Adds a title attribute to potentially truncated texts so that you can read the full text via mouse hover.',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

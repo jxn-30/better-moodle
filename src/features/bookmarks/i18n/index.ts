@@ -36,6 +36,6 @@ export const en = {
     empty: 'No bookmarks created yet.',
     savedNotification: 'Your bookmarks were saved successfully! 😊',
     modal: { title: 'Title', url: 'Adress' },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

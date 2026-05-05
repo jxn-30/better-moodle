@@ -314,6 +314,6 @@ export const en = {
         dwd: 'German Weather Service (DWD)',
         lhp: 'Cross-state flood portal (LHP)',
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

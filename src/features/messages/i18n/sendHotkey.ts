@@ -28,6 +28,6 @@ export const en = {
             },
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

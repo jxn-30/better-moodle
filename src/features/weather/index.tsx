@@ -17,7 +17,11 @@ import {
     unknownWeather,
     type WeatherCondition,
 } from './util/condition';
-import { NavbarItem, type NavbarItemComponent } from '#lib/Components';
+import {
+    NavbarItem,
+    type NavbarItemComponent,
+    type SelectOption,
+} from '#lib/Components';
 import { percent, timeToString } from '#lib/localeString';
 
 const LL = LLFG('weather');
@@ -71,9 +75,9 @@ const units = new SelectSetting('units', 'metric', [
     .addAlias('weatherDisplay.units')
     .disabledIf(enabled, '!=', true);
 
-const providerOptions = providersWithoutAPIKey.map(p => ({
+const providerOptions: SelectOption[] = providersWithoutAPIKey.map(p => ({
     key: p,
-    title: LL.providers[p]() as string,
+    title: LL.providers[p](),
 }));
 providersWithAPIKey.forEach(p =>
     providerOptions.push({

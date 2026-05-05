@@ -1,12 +1,12 @@
 import { BETTER_MOODLE_LANG } from '#i18n';
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
-import { datetimeToString } from '#lib/localeString';
 import Feature from '#lib/Feature';
 import { type Locales } from '../../i18n/i18n-types';
 import { marquee } from './index';
 import { ONE_DAY } from '#lib/times';
 import { SliderSetting } from '#lib/Settings/SliderSetting';
 import style from './eventAdvertisements.module.scss';
+import { datetimeToString, dateToString } from '#lib/localeString';
 import { getEvents, openEventModal } from './eventAdvertisements/util';
 
 const enabled = new BooleanSetting('enabled', true).addAlias(
@@ -47,10 +47,13 @@ const removeAll = () => {
  * @returns the created span
  */
 const createEventSpan = (event: Event) => {
+    const startString =
+        event.startDateOnly ?
+            dateToString(new Date(event.start))
+        :   datetimeToString(new Date(event.start), true, false);
     const span = (
         <span className={style.eventAdvertisement}>
-            {datetimeToString(new Date(event.start), true, false)}
-            {`: ${event.name[BETTER_MOODLE_LANG]}`}
+            {`${startString}: ${event.name[BETTER_MOODLE_LANG]}`}
         </span>
     ) as HTMLSpanElement;
 
