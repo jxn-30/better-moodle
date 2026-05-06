@@ -68,7 +68,7 @@
     "devDependencies": {
         "@actions/core": "3.0.1",
         "@babel/compat-data": "7.29.0",
-        "@cloudflare/workers-types": "4.20260504.1",
+        "@cloudflare/workers-types": "4.20260506.1",
         "@commitlint/cli": "20.5.3",
         "@commitlint/config-conventional": "20.5.3",
         "@eslint/js": "10.0.1",
@@ -102,12 +102,12 @@
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
         "globals": "17.6.0",
-        "jiti": "2.6.1",
+        "jiti": "2.7.0",
         "jsdom": "29.1.1",
         "mini-svg-data-uri": "1.4.4",
         "node-ical": "0.26.1",
         "nodejs-file-downloader": "4.13.0",
-        "postcss": "8.5.13",
+        "postcss": "8.5.14",
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "11.2.1",
         "prettier": "3.8.3",
@@ -118,13 +118,13 @@
         "ts-json-schema-generator": "2.9.0",
         "ts-node": "10.9.2",
         "typescript": "6.0.3",
-        "typescript-eslint": "8.59.1",
+        "typescript-eslint": "8.59.2",
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
         "vite": "7.3.2",
         "vite-plugin-monkey": "7.1.9",
         "vitest": "4.1.5",
-        "wrangler": "4.87.0"
+        "wrangler": "4.88.0"
     },
     "engines": {
         "node": "^24.15.0"
