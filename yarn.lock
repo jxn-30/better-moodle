@@ -99,14 +99,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/compat-data@npm:7.29.0":
-  version: 7.29.0
-  resolution: "@babel/compat-data@npm:7.29.0"
-  checksum: 10c0/08f348554989d23aa801bf1405aa34b15e841c0d52d79da7e524285c77a5f9d298e70e11d91cc578d8e2c9542efc586d50c5f5cf8e1915b254a9dcf786913a94
-  languageName: node
-  linkType: hard
-
-"@babel/compat-data@npm:^7.28.6, @babel/compat-data@npm:^7.29.3":
+"@babel/compat-data@npm:7.29.3, @babel/compat-data@npm:^7.28.6, @babel/compat-data@npm:^7.29.3":
   version: 7.29.3
   resolution: "@babel/compat-data@npm:7.29.3"
   checksum: 10c0/81bddd53ce1b1395576fbb7cb739631a976f6b421cd260e6cf2715a9691b9a0ec12ca5c4e1bb88088e60dc87875f6e4ef7fa8674f1dc96ae1bd7c357416605a7
@@ -4688,7 +4681,7 @@ __metadata:
   resolution: "better-moodle@workspace:."
   dependencies:
     "@actions/core": "npm:3.0.1"
-    "@babel/compat-data": "npm:7.29.0"
+    "@babel/compat-data": "npm:7.29.3"
     "@cloudflare/workers-types": "npm:4.20260506.1"
     "@commitlint/cli": "npm:20.5.3"
     "@commitlint/config-conventional": "npm:20.5.3"
@@ -4709,7 +4702,7 @@ __metadata:
     boxen: "npm:8.0.1"
     browserslist: "npm:4.28.2"
     browserslist-useragent-regexp: "npm:4.1.4"
-    caniuse-lite: "npm:1.0.30001791"
+    caniuse-lite: "npm:1.0.30001792"
     chalk: "npm:5.6.2"
     ci-info: "npm:4.4.0"
     core-js: "npm:3.49.0"
@@ -4935,10 +4928,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:1.0.30001791, caniuse-lite@npm:^1.0.30001782, caniuse-lite@npm:^1.0.30001787":
-  version: 1.0.30001791
-  resolution: "caniuse-lite@npm:1.0.30001791"
-  checksum: 10c0/53c8b5dad1c196a5e495405a7d2dc1db58aed9be02f60cf2a2e29d2c8d8cbb6c39beabf958d6aa191ab967ddcf49f22319452256b980bad1e271615acfe58940
+"caniuse-lite@npm:1.0.30001792, caniuse-lite@npm:^1.0.30001782, caniuse-lite@npm:^1.0.30001787":
+  version: 1.0.30001792
+  resolution: "caniuse-lite@npm:1.0.30001792"
+  checksum: 10c0/03bab64b123453e18e7c6747c32bb820be6d82ac78536c5c3704988aaeec411715a2045069fb569f872d73acf1ea64bf83508c9fdfa87b6d012236cde738e1be
   languageName: node
   linkType: hard
 
