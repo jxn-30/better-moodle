@@ -3,6 +3,7 @@
     "packages": {
         ".": {
             "package-name": "",
+            "include-commit-authors": true,
             "include-component-in-tag": false,
             "include-v-in-tag": false,
             "changelog-path": "CHANGELOG.md",
@@ -10,8 +11,7 @@
             "bump-minor-pre-major": false,
             "bump-patch-for-minor-pre-major": false,
             "draft": false,
-            "prerelease": false,
-            "extra-files": ["redesign.user.js"]
+            "prerelease": false
         }
     }
 }
