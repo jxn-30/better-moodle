@@ -71,7 +71,7 @@ jobs:
                   path: png/
 
             - name: 🚀 deploy icons
-              uses: cloudflare/wrangler-action@v3
+              uses: cloudflare/wrangler-action@v4
               with:
                   apiToken: ${{ secrets.ICONS_UPLOAD_CLOUDFLARE_API_TOKEN }}
                   accountId: ${{ secrets.ICONS_UPLOAD_CLOUDFLARE_ACCOUNT_ID }}
