@@ -134,6 +134,6 @@ export const en = {
             3: 'Weekend!',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

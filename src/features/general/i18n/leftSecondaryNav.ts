@@ -18,6 +18,6 @@ export const en = {
                 'Pulls the secondary navigation (e.g. below the course name) to the left instead of it being centered',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

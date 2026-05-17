@@ -16,6 +16,6 @@ export const en = {
             description: 'Allows the use of Markdown in messages.',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

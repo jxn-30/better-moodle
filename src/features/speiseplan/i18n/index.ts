@@ -88,6 +88,6 @@ Whoopsie, unfortunately something didn't work when reading out the menu :(. Some
                 'Which canteen / cafeteria would you like to see the menu from?',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

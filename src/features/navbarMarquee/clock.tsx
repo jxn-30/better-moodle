@@ -51,7 +51,7 @@ const fuzzyTranslations = LLF('navbarMarquee', 'clock').fuzzy;
  * @returns the fuzzy time string
  */
 const fuzzyTime = (now: Date): string => {
-    const fuzzyness = fuzzy.value as FUZZYNESS;
+    const fuzzyness: FUZZYNESS = fuzzy.value;
     if (fuzzyness === FUZZYNESS.off) return '';
     else if (
         fuzzyness === FUZZYNESS['5min'] ||
