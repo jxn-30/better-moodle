@@ -53,8 +53,14 @@ UpdateBtn.addEventListener('click', e => {
 const showUpdateModal = (
     changelog = true,
     downloadURL = GM_info.script.downloadURL
-) =>
-    new Modal({
+) => {
+    const bodyText = Array.from(
+        // the changelog ? 0 : 1 irritates on first sight but it's a small trick to choose whether
+        // the hint to the changelog below shall be shown
+        // turning it the other way round (using the numeric value of the boolean) woul not work unfortunately
+        htmlToElements(mdToHtml(LL.update.body(changelog ? 0 : 1)))
+    );
+    return new Modal({
         type: 'SAVE_CANCEL',
         title: LL.update.title(),
         body:
@@ -62,11 +68,7 @@ const showUpdateModal = (
                 getChangelogHtml().then(changelogHtml => {
                     const body = <></>;
                     body.append(
-                        ...Array.from(
-                            htmlToElements(
-                                mdToHtml(LL.update.body(Number(!changelog)))
-                            )
-                        ),
+                        ...bodyText,
                         ...Array.from(htmlToElements(changelogHtml))
                     );
                     const currentId = mdID(
@@ -78,13 +80,7 @@ const showUpdateModal = (
                     ).forEach(el => el.remove());
                     return body;
                 })
-            :   <>
-                    {...Array.from(
-                        htmlToElements(
-                            mdToHtml(LL.update.body(Number(!changelog)))
-                        )
-                    )}
-                </>,
+            :   <>{...bodyText}</>,
         buttons: { save: LL.update.reload(), cancel: LL.update.close() },
         removeOnClose: true,
     })
@@ -95,6 +91,7 @@ const showUpdateModal = (
             }
         })
         .show();
+};
 
 let updateCheckRetryTimeout: ReturnType<(typeof window)['setTimeout']> | null;
 

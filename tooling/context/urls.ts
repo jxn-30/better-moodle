@@ -20,6 +20,8 @@ export const versionDownloadURL = (
     if (versionTag === 'latest') {
         return `${githubUrl}/releases/latest/download/${fileName}`;
     }
+    // If this is a nightly build, automatically set nightly as the version tag.
+    // This may be improved in the future to make it more clear that this happens but it is considered sufficient for now.
     const tag = isNightlyBuild ? 'nightly' : versionTag;
     return `${githubUrl}/releases/download/${tag}/${fileName}`;
 };

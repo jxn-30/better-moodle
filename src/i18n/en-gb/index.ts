@@ -102,7 +102,7 @@ To do this, you'll receive a pop-up from your userscript manager, in which you'l
             nightly: `
 Hello!
 
-You are now switching back to the \`nightly\` release channel!
+You are now switching to the \`nightly\` release channel!
 
 This means you will receive updates as soon as they are released. Whilst you will get new features and bug fixes sooner, you may also encounter more bugs in Better-Moodle. If you discover a new bug following a nightly update, we'd of course be grateful if you could report it to us.
 
