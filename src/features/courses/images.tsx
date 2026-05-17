@@ -48,28 +48,35 @@ const zoomImage = (e: MouseEvent) => {
 
     zoomCopiedImage = target.cloneNode(true) as HTMLImageElement;
 
+    const modifiedUrl = new URL(target.src);
+
+    // use a profile picture with a higher resolution (by replacing f1|f2 with f3).
+    // this needs to be within a moodleReady as we use `M` global variable.
+    // profile pictures and their smaller version seen to always be squares,
+    // so we don't need to adjust zoom image size, however in other cases,
+    // this would have to be done after loading the new URL
     void moodleReady().then(() => {
-        // use a profile picture with a higher resolution (by replacing f1|f2 with f3)
-        zoomCopiedImage.src = target.src = target.src.replace(
-            new RegExp(
-                `(?<=/pluginfile.php/\\d+/user/icon/${M.cfg.theme}/f)\\d(?=$|\\?)`
-            ),
-            '3'
-        );
+        zoomCopiedImage.src = target.src = modifiedUrl
+            .toString()
+            .replace(
+                new RegExp(
+                    `(?<=/pluginfile.php/\\d+/user/icon/${M.cfg.theme}/f)\\d(?=$|\\?)`
+                ),
+                '3'
+            );
     });
 
     // image files have small preview icons. Zooming into them will now load the original file
     // by removing `?preview=tinyicon` from the URL
-    void moodleReady().then(() => {
-        const imgUrl = new URL(zoomCopiedImage.src);
-        if (
-            imgUrl.pathname.startsWith('/pluginfile.php/') &&
-            imgUrl.searchParams.get('preview') === 'tinyicon'
-        ) {
-            imgUrl.searchParams.delete('preview');
-            zoomCopiedImage.src = imgUrl.toString();
-        }
-    });
+    if (
+        modifiedUrl.pathname.startsWith('/pluginfile.php/') &&
+        modifiedUrl.searchParams.get('preview') === 'tinyicon'
+    ) {
+        modifiedUrl.searchParams.delete('preview');
+    }
+
+    // finally set the modified URL
+    zoomCopiedImage.src = modifiedUrl.toString();
 
     // remove additional styles that could produce weird results
     zoomCopiedImage.style.setProperty('margin', 'unset', 'important');
@@ -81,9 +88,20 @@ const zoomImage = (e: MouseEvent) => {
     zoomCopiedImage.removeAttribute('width');
     zoomCopiedImage.removeAttribute('height');
 
-    zoomCopiedImage.addEventListener('load', adjustZoomedImageSize, {
-        once: true,
-    });
+    /**
+     * Check which image the adjusting should use and abort if it is not the correct one.
+     * @param event - the loading event
+     */
+    const triggerAdjust = (event: Event) => {
+        const target = event.target;
+        if (!target || !(target instanceof HTMLImageElement)) return;
+        // if the loading has not been triggered by the latest URL, do not try to adjust
+        if (target.currentSrc !== zoomCopiedImage.src) return;
+        adjustZoomedImageSize();
+        // we don't need the listener anymore now.
+        zoomCopiedImage.removeEventListener('load', triggerAdjust);
+    };
+    zoomCopiedImage.addEventListener('load', triggerAdjust);
 
     zoomOverlay.append(zoomCopiedImage);
     document.body.append(zoomOverlay);
