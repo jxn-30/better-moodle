@@ -25,6 +25,8 @@ export const domID = (id: string) =>
         .replace(/["']/gu, '')
         .replace(/[^\w-]/gu, '-');
 
+export const isNightly = GM_info.script.version.includes('-nightly+');
+
 /**
  * Prefixes a given path with the GitHub URL (domain + user + repo).
  * @param path - the absolute path on GitHub beginning at the repos root
