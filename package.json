@@ -118,7 +118,7 @@
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "11.3.0",
         "prettier": "3.8.3",
-        "puppeteer": "24.43.1",
+        "puppeteer": "25.0.4",
         "rrule": "2.8.1",
         "sass-embedded": "1.99.0",
         "terser": "5.47.1",
