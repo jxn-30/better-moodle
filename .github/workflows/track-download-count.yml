@@ -67,7 +67,7 @@ jobs:
                       # create a regex to find the comment containing the history
                       findregex='(?<=<!-- download-count-'"$config"').*?(?=-->)';
                       # extract history from the correct comment
-                      list=$(echo "$body" | grep -oP "$findregex");
+                      list=$(echo "$body" | grep -oP "$findregex" || true);
                       # make history an empty array if it does not exist yet
                       if [[ -z "$list" ]]; then list="[]"; fi
                       # append list by current download count
@@ -98,7 +98,16 @@ jobs:
                   height=25
                   nodescript=$(echo "" \
                       "const asciichart = require('./meta/asciichart.js').default;" \
-                      "const plot = asciichart.plot($chartdata, {symbols: $symbolsjson, height: $height});" \
+                      "const data = $chartdata;" \
+                      "const symbols = $symbolsjson;" \
+                      "const height = $height;" \
+                      "const min = 0;" \
+                      "const maxVal = Math.max(...data.flat());" \
+                      "const max = maxVal + (height - maxVal % height);" \
+                      "const ratio = Math.abs(max - min) / height;" \
+                      "const pad = (str, length) => str.padStart((str.length + length) / 2, ' ').padEnd(length, ' ');" \
+                      "const format = x => pad(Math.max(0, Math.ceil(x - ratio / 2)).toFixed(0).padStart(4, ' ') + ' - ' + Math.floor(x + ratio / 2 - 1e-6).toFixed(0).padEnd(4, ' '), 2 * 4 + 3 + 2);" \
+                      "const plot = asciichart.plot(data, {symbols, height, min, max, format});" \
                       "console.log(plot);"
                   )
 

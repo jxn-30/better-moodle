@@ -206,6 +206,7 @@ export default abstract class Setting<
     /**
      * The form control element used in the settings modal
      * @returns the form control element
+     * @throws {Error} if the form control does not exist yet
      */
     get formControl() {
         if (!this.#formControl) throw new Error('Form control not ready');
