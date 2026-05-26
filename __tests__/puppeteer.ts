@@ -55,12 +55,16 @@ const launchBrowser = async () => {
         userDataDir,
         slowMo: 100,
         args: isCI ? ['--no-sandbox', '--disable-setuid-sandbox'] : undefined, // no sandbox can be used on Github runners
-        enableExtensions: [tampermonkeyDir],
+        enableExtensions: true,
         pipe: true,
         // dumpio: true,
     });
 
     console.debug('Launched a Browser!');
+
+    tampermonkeyID = await browser.installExtension(tampermonkeyDir);
+
+    console.debug(`Installed Tampermenkey (ID: ${tampermonkeyID})`);
 
     // if any unwanted page appears, close it
     void browser.on('targetcreated', target => {
@@ -82,7 +86,7 @@ const launchBrowser = async () => {
 
 /**
  * Inits a browser by launching it, enabling dev mode and allowing tampermonkey to execute userscripts
- * Closes the browser afterwards.
+ * @returns the browser instance
  */
 const initBrowser = async () => {
     const browser = await launchBrowser();
@@ -91,20 +95,6 @@ const initBrowser = async () => {
     const devmodePage = await browser.newPage();
     await devmodePage.goto('chrome://extensions/');
     await devmodePage.click('body >>> #devMode');
-    tampermonkeyID = await devmodePage.$$eval(
-        'body >>> extensions-item',
-        els =>
-            els.find(el =>
-                el.shadowRoot
-                    ?.getElementById('name')
-                    ?.textContent?.includes('Tampermonkey')
-            )?.id
-    );
-    if (!tampermonkeyID) {
-        throw new Error('Could not find the Extension-ID of Tampermonkey :(');
-    }
-
-    console.debug(`Found the tampermonkey extension ID: ${tampermonkeyID}`);
 
     // allow tampermonkey to run userscripts
     await devmodePage.goto(`chrome://extensions/?id=${tampermonkeyID}`);
@@ -152,27 +142,24 @@ const initBrowser = async () => {
 
     console.debug('Successfully installed Better-Moodle!');
 
-    // if we don't to this, the script seems not to be installed correctly? 🤷
+    // if we don't do this, the script seems not to be installed correctly? 🤷
     await browser
         .newPage()
         .then(page =>
             page.goto(`chrome-extension://${tampermonkeyID}/options.html`)
         );
 
-    await browser.close();
+    return browser;
 };
 
 const pageErrorOccured = vi.fn();
 
 beforeAll(async () => {
     console.time('beforeAll');
-    // initialising the browser and reopening it ensures that Tampermonkey knows that developer mode is enabled
-    await initBrowser();
-    console.debug('Browser initialised. Reopening.');
-    console.timeLog('beforeAll');
-    browser = await launchBrowser();
-
-    console.debug("Launched the Browser we're testing in.");
+    // initialising the browser
+    // reopening was required before but since tampermonkey 5.5.0, this is not needed anymore plus it may cause weird issues.
+    browser = await initBrowser();
+    console.debug('Browser initialised and opened');
     console.timeLog('beforeAll');
 
     // create a new page for the Moodle

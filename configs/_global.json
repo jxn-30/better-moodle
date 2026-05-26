@@ -19,7 +19,11 @@
     "enabledFrom": { "405": ["courses.sectionCourseIndex"] },
     "disabledFrom": { "402": ["courses.courseIndexDrawerControls"] },
     "connects": {
-        "": ["better-moodle.dev"],
+        "": [
+            "better-moodle.dev",
+            "github.com",
+            "release-assets.githubusercontent.com"
+        ],
         "nina": ["warnung.bund.de"],
         "weather": [
             "api.open-meteo.com",
