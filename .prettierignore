@@ -13,3 +13,6 @@ ics-parser/.wrangler/
 CHANGELOG.md
 
 speiseplan.json
+
+# Hopefully temporary (https://github.com/Poliklot/prettier-plugin-handlebars/issues/39)
+src/_lib/Drawer/Drawer.mustache

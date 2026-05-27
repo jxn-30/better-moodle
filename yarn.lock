@@ -3375,6 +3375,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@poliklot/prettier-plugin-handlebars@npm:0.2.12":
+  version: 0.2.12
+  resolution: "@poliklot/prettier-plugin-handlebars@npm:0.2.12"
+  peerDependencies:
+    prettier: ">=3.0.0"
+  bin:
+    hbs-prettier-init: dist/cli.js
+    prettier-plugin-handlebars: dist/cli.js
+  checksum: 10c0/229a9f3b9a4466388f677a0c9866bb4ffb71a9f4fd1ed31035240a659787057038f7a553ced13ede89a31c56735374b9a8453b9ffe8c98284f05f9eaaa4fb2fd
+  languageName: node
+  linkType: hard
+
 "@poppinss/colors@npm:^4.1.5":
   version: 4.1.6
   resolution: "@poppinss/colors@npm:4.1.6"
@@ -4695,6 +4707,7 @@ __metadata:
     "@commitlint/cli": "npm:21.0.1"
     "@commitlint/config-conventional": "npm:21.0.1"
     "@eslint/js": "npm:10.0.1"
+    "@poliklot/prettier-plugin-handlebars": "npm:0.2.12"
     "@prettier/plugin-xml": "npm:3.4.2"
     "@rollup/plugin-terser": "npm:1.0.0"
     "@tomjs/unzip-crx": "npm:1.1.3"

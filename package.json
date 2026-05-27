@@ -79,6 +79,7 @@
         "@commitlint/cli": "21.0.1",
         "@commitlint/config-conventional": "21.0.1",
         "@eslint/js": "10.0.1",
+        "@poliklot/prettier-plugin-handlebars": "0.2.12",
         "@prettier/plugin-xml": "3.4.2",
         "@rollup/plugin-terser": "1.0.0",
         "@tomjs/unzip-crx": "1.1.3",
