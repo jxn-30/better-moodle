@@ -467,7 +467,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.28.6, @babel/parser@npm:^7.29.0":
+"@babel/parser@npm:^7.28.6, @babel/parser@npm:^7.29.0, @babel/parser@npm:^7.29.3":
   version: 7.29.3
   resolution: "@babel/parser@npm:7.29.3"
   dependencies:
@@ -1744,14 +1744,14 @@ __metadata:
   linkType: hard
 
 "@csstools/css-syntax-patches-for-csstree@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "@csstools/css-syntax-patches-for-csstree@npm:1.1.3"
+  version: 1.1.4
+  resolution: "@csstools/css-syntax-patches-for-csstree@npm:1.1.4"
   peerDependencies:
     css-tree: ^3.2.1
   peerDependenciesMeta:
     css-tree:
       optional: true
-  checksum: 10c0/3b8a686710a46bb460f9d560d52ce0de315828e6d452002b692013e95fbf53669d7a71e28c9b6b1333fa9f37f058fad93e5db3b8516444907713cb9aad299ce1
+  checksum: 10c0/3872a7befb553c53249c87e964ac00f55d059f4574d2cc023e03e1dafc86a5ad19f6a6d05fa2c14fb192e6a4538a73158104cc2e32e0688f27fd841b9ba76568
   languageName: node
   linkType: hard
 
@@ -2838,14 +2838,14 @@ __metadata:
   linkType: hard
 
 "@exodus/bytes@npm:^1.11.0, @exodus/bytes@npm:^1.15.0, @exodus/bytes@npm:^1.6.0":
-  version: 1.15.0
-  resolution: "@exodus/bytes@npm:1.15.0"
+  version: 1.15.1
+  resolution: "@exodus/bytes@npm:1.15.1"
   peerDependencies:
     "@noble/hashes": ^1.8.0 || ^2.0.0
   peerDependenciesMeta:
     "@noble/hashes":
       optional: true
-  checksum: 10c0/b48aad9729653385d6ed055c28cfcf0b1b1481cf5d83f4375c12abd7988f1d20f69c80b5f95d4a1cc24d9abe32b9efc352a812d53884c26efea172aca8b6356d
+  checksum: 10c0/333056a6953bbf875d9f3b86c32314de29458d842e5f56f6ef8034b18c2d9660184550093d1bae5de0064043d5e23f54cc03148798d9d29cf5167ac03f2e9f8c
   languageName: node
   linkType: hard
 
@@ -3238,10 +3238,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oxc-project/types@npm:=0.127.0":
-  version: 0.127.0
-  resolution: "@oxc-project/types@npm:0.127.0"
-  checksum: 10c0/52c0947ac64a9ca119fe971f947e784a35ecd14a072fa3f542a58a5f6c42010b53f2bf92731e39b9899b83c990a9517bbd29d1e5a5b7b489e52616685c6a9278
+"@oxc-project/types@npm:=0.132.0":
+  version: 0.132.0
+  resolution: "@oxc-project/types@npm:0.132.0"
+  checksum: 10c0/d0ca5e98be0b873d69e4f0f743eb35026833603dac11db9d55f2b5438251b381b886dc556fe3175a17b673f8e2073c49bde88d7e6e702aa09298c22b8b5504e1
   languageName: node
   linkType: hard
 
@@ -3454,13 +3454,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-android-arm64@npm:1.0.0-rc.17":
-  version: 1.0.0-rc.17
-  resolution: "@rolldown/binding-android-arm64@npm:1.0.0-rc.17"
+"@rolldown/binding-android-arm64@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-android-arm64@npm:1.0.2"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-android-arm64@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-android-arm64@npm:1.0.2"
@@ -3471,10 +3472,16 @@ __metadata:
 "@rolldown/binding-darwin-arm64@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-darwin-arm64@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-darwin-arm64@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-darwin-arm64@npm:1.0.2"
+>>>>>>> main
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-darwin-arm64@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-darwin-arm64@npm:1.0.2"
@@ -3485,10 +3492,16 @@ __metadata:
 "@rolldown/binding-darwin-x64@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-darwin-x64@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-darwin-x64@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-darwin-x64@npm:1.0.2"
+>>>>>>> main
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-darwin-x64@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-darwin-x64@npm:1.0.2"
@@ -3499,10 +3512,16 @@ __metadata:
 "@rolldown/binding-freebsd-x64@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-freebsd-x64@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-freebsd-x64@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-freebsd-x64@npm:1.0.2"
+>>>>>>> main
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-freebsd-x64@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-freebsd-x64@npm:1.0.2"
@@ -3513,10 +3532,16 @@ __metadata:
 "@rolldown/binding-linux-arm-gnueabihf@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-linux-arm-gnueabihf@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-linux-arm-gnueabihf@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-arm-gnueabihf@npm:1.0.2"
+>>>>>>> main
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-linux-arm-gnueabihf@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-linux-arm-gnueabihf@npm:1.0.2"
@@ -3527,10 +3552,16 @@ __metadata:
 "@rolldown/binding-linux-arm64-gnu@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-linux-arm64-gnu@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-linux-arm64-gnu@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-arm64-gnu@npm:1.0.2"
+>>>>>>> main
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-linux-arm64-gnu@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-linux-arm64-gnu@npm:1.0.2"
@@ -3541,10 +3572,16 @@ __metadata:
 "@rolldown/binding-linux-arm64-musl@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-linux-arm64-musl@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-linux-arm64-musl@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-arm64-musl@npm:1.0.2"
+>>>>>>> main
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-linux-arm64-musl@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-linux-arm64-musl@npm:1.0.2"
@@ -3555,10 +3592,16 @@ __metadata:
 "@rolldown/binding-linux-ppc64-gnu@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-linux-ppc64-gnu@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-linux-ppc64-gnu@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-ppc64-gnu@npm:1.0.2"
+>>>>>>> main
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-linux-ppc64-gnu@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-linux-ppc64-gnu@npm:1.0.2"
@@ -3569,10 +3612,16 @@ __metadata:
 "@rolldown/binding-linux-s390x-gnu@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-linux-s390x-gnu@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-linux-s390x-gnu@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-s390x-gnu@npm:1.0.2"
+>>>>>>> main
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-linux-s390x-gnu@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-linux-s390x-gnu@npm:1.0.2"
@@ -3583,10 +3632,16 @@ __metadata:
 "@rolldown/binding-linux-x64-gnu@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-linux-x64-gnu@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-linux-x64-gnu@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-x64-gnu@npm:1.0.2"
+>>>>>>> main
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-linux-x64-gnu@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-linux-x64-gnu@npm:1.0.2"
@@ -3597,10 +3652,16 @@ __metadata:
 "@rolldown/binding-linux-x64-musl@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-linux-x64-musl@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-linux-x64-musl@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-x64-musl@npm:1.0.2"
+>>>>>>> main
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-linux-x64-musl@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-linux-x64-musl@npm:1.0.2"
@@ -3611,10 +3672,16 @@ __metadata:
 "@rolldown/binding-openharmony-arm64@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-openharmony-arm64@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-openharmony-arm64@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-openharmony-arm64@npm:1.0.2"
+>>>>>>> main
   conditions: os=openharmony & cpu=arm64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-openharmony-arm64@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-openharmony-arm64@npm:1.0.2"
@@ -3625,6 +3692,11 @@ __metadata:
 "@rolldown/binding-wasm32-wasi@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-wasm32-wasi@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-wasm32-wasi@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-wasm32-wasi@npm:1.0.2"
+>>>>>>> main
   dependencies:
     "@emnapi/core": "npm:1.10.0"
     "@emnapi/runtime": "npm:1.10.0"
@@ -3633,6 +3705,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-wasm32-wasi@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-wasm32-wasi@npm:1.0.2"
@@ -3647,10 +3720,16 @@ __metadata:
 "@rolldown/binding-win32-arm64-msvc@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-win32-arm64-msvc@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-win32-arm64-msvc@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-win32-arm64-msvc@npm:1.0.2"
+>>>>>>> main
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-win32-arm64-msvc@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-win32-arm64-msvc@npm:1.0.2"
@@ -3661,10 +3740,16 @@ __metadata:
 "@rolldown/binding-win32-x64-msvc@npm:1.0.0-rc.17":
   version: 1.0.0-rc.17
   resolution: "@rolldown/binding-win32-x64-msvc@npm:1.0.0-rc.17"
+=======
+"@rolldown/binding-win32-x64-msvc@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-win32-x64-msvc@npm:1.0.2"
+>>>>>>> main
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rolldown/binding-win32-x64-msvc@npm:1.0.2":
   version: 1.0.2
   resolution: "@rolldown/binding-win32-x64-msvc@npm:1.0.2"
@@ -3676,6 +3761,12 @@ __metadata:
   version: 1.0.0-rc.17
   resolution: "@rolldown/pluginutils@npm:1.0.0-rc.17"
   checksum: 10c0/5e840b20cc531910c093c1ca36e550952cf4936465a50d89f0a98fc9d0dfd7d319d06a10a5f4376209d89e9bf4d60af6cc8363ebf0dcc5e60842f7fef438b2f0
+=======
+"@rolldown/pluginutils@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "@rolldown/pluginutils@npm:1.0.1"
+  checksum: 10c0/99d9b06d90196823e4d8c841f258db7a16e5dbba5824a2962b05d907b79f1ba929d56f22dd744fd530936e568c865ee56a719dc31e57e13bc0a8eb4764a8d8dd
+>>>>>>> main
   languageName: node
   linkType: hard
 
@@ -3702,121 +3793,223 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-android-arm-eabi@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-android-arm-eabi@npm:4.60.3"
+=======
+"@rollup/rollup-android-arm-eabi@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-android-arm-eabi@npm:4.60.4"
+>>>>>>> main
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-android-arm64@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-android-arm64@npm:4.60.3"
+=======
+"@rollup/rollup-android-arm64@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-android-arm64@npm:4.60.4"
+>>>>>>> main
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-darwin-arm64@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-darwin-arm64@npm:4.60.3"
+=======
+"@rollup/rollup-darwin-arm64@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-darwin-arm64@npm:4.60.4"
+>>>>>>> main
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-darwin-x64@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-darwin-x64@npm:4.60.3"
+=======
+"@rollup/rollup-darwin-x64@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-darwin-x64@npm:4.60.4"
+>>>>>>> main
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-freebsd-arm64@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-freebsd-arm64@npm:4.60.3"
+=======
+"@rollup/rollup-freebsd-arm64@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-freebsd-arm64@npm:4.60.4"
+>>>>>>> main
   conditions: os=freebsd & cpu=arm64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-freebsd-x64@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-freebsd-x64@npm:4.60.3"
+=======
+"@rollup/rollup-freebsd-x64@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-freebsd-x64@npm:4.60.4"
+>>>>>>> main
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-arm-gnueabihf@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.60.3"
+=======
+"@rollup/rollup-linux-arm-gnueabihf@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=arm & libc=glibc
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-arm-musleabihf@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-arm-musleabihf@npm:4.60.3"
+=======
+"@rollup/rollup-linux-arm-musleabihf@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-arm-musleabihf@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=arm & libc=musl
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-arm64-gnu@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.60.3"
+=======
+"@rollup/rollup-linux-arm64-gnu@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-arm64-musl@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-arm64-musl@npm:4.60.3"
+=======
+"@rollup/rollup-linux-arm64-musl@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-loong64-gnu@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-loong64-gnu@npm:4.60.3"
+=======
+"@rollup/rollup-linux-loong64-gnu@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-loong64-gnu@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=loong64 & libc=glibc
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-loong64-musl@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-loong64-musl@npm:4.60.3"
+=======
+"@rollup/rollup-linux-loong64-musl@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-loong64-musl@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=loong64 & libc=musl
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-ppc64-gnu@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-ppc64-gnu@npm:4.60.3"
+=======
+"@rollup/rollup-linux-ppc64-gnu@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-ppc64-gnu@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-ppc64-musl@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-ppc64-musl@npm:4.60.3"
+=======
+"@rollup/rollup-linux-ppc64-musl@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-ppc64-musl@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=ppc64 & libc=musl
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-riscv64-gnu@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.60.3"
+=======
+"@rollup/rollup-linux-riscv64-gnu@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-riscv64-musl@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-riscv64-musl@npm:4.60.3"
+=======
+"@rollup/rollup-linux-riscv64-musl@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-riscv64-musl@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-s390x-gnu@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.60.3"
+=======
+"@rollup/rollup-linux-s390x-gnu@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
@@ -3828,51 +4021,93 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-x64-gnu@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-x64-gnu@npm:4.60.3"
+=======
+"@rollup/rollup-linux-x64-gnu@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-linux-x64-musl@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-linux-x64-musl@npm:4.60.3"
+=======
+"@rollup/rollup-linux-x64-musl@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-linux-x64-musl@npm:4.60.4"
+>>>>>>> main
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-openbsd-x64@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-openbsd-x64@npm:4.60.3"
+=======
+"@rollup/rollup-openbsd-x64@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-openbsd-x64@npm:4.60.4"
+>>>>>>> main
   conditions: os=openbsd & cpu=x64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-openharmony-arm64@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-openharmony-arm64@npm:4.60.3"
+=======
+"@rollup/rollup-openharmony-arm64@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-openharmony-arm64@npm:4.60.4"
+>>>>>>> main
   conditions: os=openharmony & cpu=arm64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-win32-arm64-msvc@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.60.3"
+=======
+"@rollup/rollup-win32-arm64-msvc@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.60.4"
+>>>>>>> main
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-win32-ia32-msvc@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.60.3"
+=======
+"@rollup/rollup-win32-ia32-msvc@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.60.4"
+>>>>>>> main
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-win32-x64-gnu@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-win32-x64-gnu@npm:4.60.3"
+=======
+"@rollup/rollup-win32-x64-gnu@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-win32-x64-gnu@npm:4.60.4"
+>>>>>>> main
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3884,9 +4119,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "@rollup/rollup-win32-x64-msvc@npm:4.60.3":
   version: 4.60.3
   resolution: "@rollup/rollup-win32-x64-msvc@npm:4.60.3"
+=======
+"@rollup/rollup-win32-x64-msvc@npm:4.60.4":
+  version: 4.60.4
+  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.60.4"
+>>>>>>> main
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3980,11 +4221,11 @@ __metadata:
   linkType: hard
 
 "@tybys/wasm-util@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "@tybys/wasm-util@npm:0.10.1"
+  version: 0.10.2
+  resolution: "@tybys/wasm-util@npm:0.10.2"
   dependencies:
     tslib: "npm:^2.4.0"
-  checksum: 10c0/b255094f293794c6d2289300c5fbcafbb5532a3aed3a5ffd2f8dc1828e639b88d75f6a376dd8f94347a44813fd7a7149d8463477a9a49525c8b2dcaa38c2d1e8
+  checksum: 10c0/26165bcd1fd7269f42d7fbe3de318f854a8968de8397e89fc9a423bb3e2da35a52150f382e6323b3367595beb16d9800a6f35971a5599daf76da1742ec3afc25
   languageName: node
   linkType: hard
 
@@ -4726,14 +4967,14 @@ __metadata:
   linkType: hard
 
 "bare-events@npm:^2.5.4, bare-events@npm:^2.7.0":
-  version: 2.8.2
-  resolution: "bare-events@npm:2.8.2"
+  version: 2.8.3
+  resolution: "bare-events@npm:2.8.3"
   peerDependencies:
     bare-abort-controller: "*"
   peerDependenciesMeta:
     bare-abort-controller:
       optional: true
-  checksum: 10c0/53fef240cf2cdcca62f78b6eead90ddb5a59b0929f414b13a63764c2b4f9de98ea8a578d033b04d64bb7b86dfbc402e937984e69950855cc3754c7b63da7db21
+  checksum: 10c0/af8a7afeefbe8cfe061f96ad67433922ecaf800706ade8af17ac706e1b8dcbd16da41fac50f605f0ce9a706175327b0d53baf3bbfafe49d294d7b53a1bd14343
   languageName: node
   linkType: hard
 
@@ -4793,20 +5034,24 @@ __metadata:
   linkType: hard
 
 "bare-url@npm:^2.2.2":
-  version: 2.4.2
-  resolution: "bare-url@npm:2.4.2"
+  version: 2.4.3
+  resolution: "bare-url@npm:2.4.3"
   dependencies:
     bare-path: "npm:^3.0.0"
-  checksum: 10c0/50d225755a0f312e4951ca71538e9401276f73e9a1fbc4419118ff0d1b9ec93fe8c03e1ddbc95672afdc2c9d0ced224a5fb2b15b241759b2649dca572a295c51
+  checksum: 10c0/c3286d1d4aa0c7a174995b1bd651083889303183537528c8847d3289f7d1689a8d3d35e803e664dc8996aefcb90ec66251e59c944850d53d775b50b1e18cc029
   languageName: node
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.10.12":
-  version: 2.10.25
-  resolution: "baseline-browser-mapping@npm:2.10.25"
+  version: 2.10.32
+  resolution: "baseline-browser-mapping@npm:2.10.32"
   bin:
     baseline-browser-mapping: dist/cli.cjs
+<<<<<<< dependencies/vite-8
   checksum: 10c0/3955a01d1ca9487b23805b89250465911c0aa7aa1bd7b6207ab64257c945ad50e37d2d6d33b559e47e20cf1d3b1930fc15115bfbc340e84fd33c238a01bdebb6
+=======
+  checksum: 10c0/408c93245bdf1e92ab0f891ebf9283ec60dbabfaac81bdc9a20d371565a2a496b0fb8028f7d628c3f66f90ee142670a81575cf1cbd5229f7b4b0d350db911085
+>>>>>>> main
   languageName: node
   linkType: hard
 
@@ -4830,7 +5075,11 @@ __metadata:
     "@types/mathjax": "npm:0.0.40"
     "@types/node": "npm:25.9.1"
     "@types/tampermonkey": "npm:5.0.5"
+<<<<<<< dependencies/vite-8
     "@vitejs/plugin-legacy": "npm:8.0.2"
+=======
+    "@vitejs/plugin-legacy": "npm:7.2.1"
+>>>>>>> main
     "@vitest/coverage-v8": "npm:4.1.7"
     babel-plugin-polyfill-corejs3: "npm:0.14.2"
     boxen: "npm:8.0.1"
@@ -4873,8 +5122,13 @@ __metadata:
     typescript-eslint: "npm:8.59.4"
     typescript-plugin-css-modules: "npm:5.2.0"
     userscript-meta: "npm:1.0.1"
+<<<<<<< dependencies/vite-8
     vite: "npm:8.0.14"
     vite-plugin-monkey: "npm:8.0.5"
+=======
+    vite: "npm:7.3.3"
+    vite-plugin-monkey: "npm:7.1.9"
+>>>>>>> main
     vitest: "npm:4.1.7"
     wrangler: "npm:4.94.0"
   languageName: unknown
@@ -4930,11 +5184,11 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^5.0.5":
-  version: 5.0.5
-  resolution: "brace-expansion@npm:5.0.5"
+  version: 5.0.6
+  resolution: "brace-expansion@npm:5.0.6"
   dependencies:
     balanced-match: "npm:^4.0.2"
-  checksum: 10c0/4d238e14ed4f5cc9c07285550a41cef23121ca08ba99fa9eb5b55b580dcb6bf868b8210aa10526bdc9f8dc97f33ca2a7259039c4cc131a93042beddb424c48e3
+  checksum: 10c0/8c919869b90f61d533b341d3340be5ee4413232ea89b8246cbc2f38eb014f1d8182785c98a006eaf6111d02dc9eeffefdc240d5ac158625b2ed084dccd4bbf9b
   languageName: node
   linkType: hard
 
@@ -5085,12 +5339,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:^4.0.0":
-  version: 4.0.3
-  resolution: "chokidar@npm:4.0.3"
+"chokidar@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "chokidar@npm:5.0.0"
   dependencies:
-    readdirp: "npm:^4.0.1"
-  checksum: 10c0/a58b9df05bb452f7d105d9e7229ac82fa873741c0c40ddcc7bb82f8a909fbe3f7814c9ebe9bc9a2bef9b737c0ec6e2d699d179048ef06ad3ec46315df0ebe6ad
+    readdirp: "npm:^5.0.0"
+  checksum: 10c0/42fc907cb2a7ff5c9e220f84dae75380a77997f851c2a5e7865a2cf9ae45dd407a23557208cdcdbf3ac8c93341135a1748e4c48c31855f3bfa095e5159b6bdec
   languageName: node
   linkType: hard
 
@@ -5728,9 +5982,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.328":
-  version: 1.5.349
-  resolution: "electron-to-chromium@npm:1.5.349"
-  checksum: 10c0/5acd94d9c70b91383f95bc9c04f39b6f92263ef2b232f4f0d4c71d17dcd3db49ef480cd025c379f6d58b534cf568ca5cb566b0f9be238f057b9a5773d76760ec
+  version: 1.5.361
+  resolution: "electron-to-chromium@npm:1.5.361"
+  checksum: 10c0/5e6e9c0c12ab82366eddf575c8b9114d5af710abad3b592141c56cfa0169471f3633dcc793420c303fad68dff21c8fb724b43cde7e66be947983fa3d6d5a7359
   languageName: node
   linkType: hard
 
@@ -5896,11 +6150,11 @@ __metadata:
   linkType: hard
 
 "es-object-atoms@npm:^1.0.0, es-object-atoms@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "es-object-atoms@npm:1.1.1"
+  version: 1.1.2
+  resolution: "es-object-atoms@npm:1.1.2"
   dependencies:
     es-errors: "npm:^1.3.0"
-  checksum: 10c0/65364812ca4daf48eb76e2a3b7a89b3f6a2e62a1c420766ce9f692665a29d94fe41fe88b65f24106f449859549711e4b40d9fb8002d862dfd7eb1c512d10be0c
+  checksum: 10c0/1772861f094f739d6f41b579cfb9a18579daffeb434552a370a5fbef50a32d22227e27b63fdbb757b7ddd429d1b42fe52ccae7966d9302a2ec221b6f1b41bbc4
   languageName: node
   linkType: hard
 
@@ -6436,9 +6690,9 @@ __metadata:
   linkType: hard
 
 "fast-uri@npm:^3.0.1":
-  version: 3.1.0
-  resolution: "fast-uri@npm:3.1.0"
-  checksum: 10c0/44364adca566f70f40d1e9b772c923138d47efeac2ae9732a872baafd77061f26b097ba2f68f0892885ad177becd065520412b8ffeec34b16c99433c5b9e2de7
+  version: 3.1.2
+  resolution: "fast-uri@npm:3.1.2"
+  checksum: 10c0/5b35641895959f3f7ab7a7b1b5542bded159346f25ec9f256817b206d50b64eda5828e90d605a2e2fc645c90519a7259c2bab2c942ee728c88b88e5be21b090d
   languageName: node
   linkType: hard
 
@@ -6610,9 +6864,9 @@ __metadata:
   linkType: hard
 
 "get-east-asian-width@npm:^1.0.0":
-  version: 1.5.0
-  resolution: "get-east-asian-width@npm:1.5.0"
-  checksum: 10c0/bff8bbc8d81790b9477f7aa55b1806b9f082a8dc1359fff7bd8b96939622c86b729685afc2bfeb22def1fc6ef1e5228e4d87dd4e6da60bc43a5edfb03c4ee167
+  version: 1.6.0
+  resolution: "get-east-asian-width@npm:1.6.0"
+  checksum: 10c0/7e72e9550fd49ca5b246f9af6bb2afc129c96412845ff6556b3274fd44817a381702ca17028efe9866b261a3d44254cbf21e6c90cf05b4b61675630af776d431
   languageName: node
   linkType: hard
 
@@ -6801,7 +7055,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hasown@npm:^2.0.2":
+"hasown@npm:^2.0.2, hasown@npm:^2.0.3":
   version: 2.0.3
   resolution: "hasown@npm:2.0.3"
   dependencies:
@@ -6932,7 +7186,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "import-meta-resolve@npm:^4.2.0":
+=======
+"import-meta-resolve@npm:^4.1.0":
+>>>>>>> main
   version: 4.2.0
   resolution: "import-meta-resolve@npm:4.2.0"
   checksum: 10c0/3ee8aeecb61d19b49d2703987f977e9d1c7d4ba47db615a570eaa02fe414f40dfa63f7b953e842cbe8470d26df6371332bfcf21b2fd92b0112f9fea80dde2c4c
@@ -7039,11 +7297,11 @@ __metadata:
   linkType: hard
 
 "is-core-module@npm:^2.16.1":
-  version: 2.16.1
-  resolution: "is-core-module@npm:2.16.1"
+  version: 2.16.2
+  resolution: "is-core-module@npm:2.16.2"
   dependencies:
-    hasown: "npm:^2.0.2"
-  checksum: 10c0/898443c14780a577e807618aaae2b6f745c8538eca5c7bc11388a3f2dc6de82b9902bcc7eb74f07be672b11bbe82dd6a6edded44a00cb3d8f933d0459905eedd
+    hasown: "npm:^2.0.3"
+  checksum: 10c0/14b4258390283709c15476d023ec173e27458d5d014ccdb8ed39d576e551c3fa45498b7c9fe178f1529c4cb2648ddd58852a6a62107a019f6e349529f277518a
   languageName: node
   linkType: hard
 
@@ -7768,9 +8026,9 @@ __metadata:
   linkType: hard
 
 "lru-cache@npm:^11.0.0, lru-cache@npm:^11.3.5":
-  version: 11.3.5
-  resolution: "lru-cache@npm:11.3.5"
-  checksum: 10c0/5b54ef7b88afb4bd25b7a778f1b2b1cde32d9770913e530da34ab203cf0442413bcaa6e372800cbab9562557a4480e4d8bf32e3a368bb5a91b12218eca085c66
+  version: 11.5.0
+  resolution: "lru-cache@npm:11.5.0"
+  checksum: 10c0/b92c2a7518128dec6b244bf3eb9fd79964d316cdeb12865ebfc2cebb4dfe9b24e3767a3923d71e6eb735f56b557fc55f08f150a53097d7805afb628c90158df4
   languageName: node
   linkType: hard
 
@@ -7783,7 +8041,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "magic-string@npm:^0.30.21":
+=======
+"magic-string@npm:^0.30.17, magic-string@npm:^0.30.21":
+>>>>>>> main
   version: 0.30.21
   resolution: "magic-string@npm:0.30.21"
   dependencies:
@@ -7793,13 +8055,13 @@ __metadata:
   linkType: hard
 
 "magicast@npm:^0.5.2":
-  version: 0.5.2
-  resolution: "magicast@npm:0.5.2"
+  version: 0.5.3
+  resolution: "magicast@npm:0.5.3"
   dependencies:
-    "@babel/parser": "npm:^7.29.0"
+    "@babel/parser": "npm:^7.29.3"
     "@babel/types": "npm:^7.29.0"
     source-map-js: "npm:^1.2.1"
-  checksum: 10c0/924af677643c5a0a7d6cdb3247c0eb96fa7611b2ba6a5e720d35d81c503d3d9f5948eb5227f80f90f82ea3e7d38cffd10bb988f3fc09020db428e14f26e960d7
+  checksum: 10c0/e288c027ae5f2a794a59148cb114f4b60f1d5c03090de6c60b4d187f12d1de9158779cd7c39cea391609f4f10cd7ea737929f25f7ce44f7a96ba96ec1a477e39
   languageName: node
   linkType: hard
 
@@ -7951,7 +8213,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
+"minimatch@npm:^3.1.1, minimatch@npm:^3.1.2, minimatch@npm:^3.1.5":
   version: 3.1.5
   resolution: "minimatch@npm:3.1.5"
   dependencies:
@@ -7960,6 +8222,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "minimatch@npm:~3.0.4":
   version: 3.0.8
   resolution: "minimatch@npm:3.0.8"
@@ -7969,6 +8232,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> main
 "minimist@npm:^1.2.6":
   version: 1.2.8
   resolution: "minimist@npm:1.2.8"
@@ -8013,7 +8278,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "nanoid@npm:^3.3.11, nanoid@npm:^3.3.12":
+=======
+"nanoid@npm:^3.3.12":
+>>>>>>> main
   version: 3.3.12
   resolution: "nanoid@npm:3.3.12"
   bin:
@@ -8081,9 +8350,9 @@ __metadata:
   linkType: hard
 
 "node-releases@npm:^2.0.36":
-  version: 2.0.38
-  resolution: "node-releases@npm:2.0.38"
-  checksum: 10c0/db9909234ed750c5b9d0075f83214cd16b76370b54eab50e3554f3ba939ba7ac39f3aca2ddf93471ae8553dbde2ea9354b0ae380c9cff1f8e53b55e414903413
+  version: 2.0.46
+  resolution: "node-releases@npm:2.0.46"
+  checksum: 10c0/04632591f97f15848adfb12b21fa013a6c19809afcf5db65fe88c95a36271c3f423e21110fd319ad5a9c5029ffe65eb81f3e4857e6af19622bc888d92a04ad22
   languageName: node
   linkType: hard
 
@@ -8127,9 +8396,9 @@ __metadata:
   linkType: hard
 
 "object-deep-merge@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "object-deep-merge@npm:2.0.0"
-  checksum: 10c0/69e8741131ad49fa8720fb96007a3c82dca1119b5d874151d2ecbcc3b44ccd46e8553c7a30b0abcba752c099ba361bbba97f33a68c9ae54c57eed7be116ffc97
+  version: 2.0.1
+  resolution: "object-deep-merge@npm:2.0.1"
+  checksum: 10c0/c20580c462a3579ccc49a51c04a131d956d1d22197a92ddb2ad13c6201f54351708df47225a639660c46495f5c913c52609a6bac68feb74ddc27cddfd9a0f287
   languageName: node
   linkType: hard
 
@@ -8856,16 +9125,16 @@ __metadata:
   linkType: hard
 
 "postcss-url@npm:^10.1.3":
-  version: 10.1.3
-  resolution: "postcss-url@npm:10.1.3"
+  version: 10.1.4
+  resolution: "postcss-url@npm:10.1.4"
   dependencies:
     make-dir: "npm:~3.1.0"
     mime: "npm:~2.5.2"
-    minimatch: "npm:~3.0.4"
+    minimatch: "npm:^3.1.5"
     xxhashjs: "npm:~0.2.2"
   peerDependencies:
     postcss: ^8.0.0
-  checksum: 10c0/8ac985e58d544ce986cdbe41ecbe1c179b5ca3f71cf97179d02d019817d4a80aa3758ec5c9cc8343f95583682addf448ba6bcbc2d4f4c01b4fb269e217c4ef24
+  checksum: 10c0/7bb5ac1b6ae6f7d99705408ee1cd1d6dca5b74922f8f1bd53fa076d3306df5f77215b15a3c93dde30569d305ec15df918cffdd2f4d5c120e6c19d78a7021f565
   languageName: node
   linkType: hard
 
@@ -8876,6 +9145,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "postcss@npm:8.5.15, postcss@npm:^8.0.0, postcss@npm:^8.4.35, postcss@npm:^8.5.15":
   version: 8.5.15
   resolution: "postcss@npm:8.5.15"
@@ -8890,11 +9160,16 @@ __metadata:
 "postcss@npm:^8.5.10":
   version: 8.5.14
   resolution: "postcss@npm:8.5.14"
+=======
+"postcss@npm:8.5.15, postcss@npm:^8.0.0, postcss@npm:^8.4.35, postcss@npm:^8.5.15, postcss@npm:^8.5.6":
+  version: 8.5.15
+  resolution: "postcss@npm:8.5.15"
+>>>>>>> main
   dependencies:
-    nanoid: "npm:^3.3.11"
+    nanoid: "npm:^3.3.12"
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
-  checksum: 10c0/48138207cf5ef5581be1bfe2cb65ccfe0ac75e43888ba045afc8ed6043d7b56aeb3b9a9fe5b353ff554be943cd0cc15d826ccb991525159175971e5ee8ab0237
+  checksum: 10c0/7f2e63ae22fbe43aace1bf652bd99da4e90737c64194d49e51ddc9cd0f9e51ff2861a7d734379b494deffa03a880a5c65eec70bc29ee9ebaa7136dde3eee8f31
   languageName: node
   linkType: hard
 
@@ -9019,10 +9294,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readdirp@npm:^4.0.1":
-  version: 4.1.2
-  resolution: "readdirp@npm:4.1.2"
-  checksum: 10c0/60a14f7619dec48c9c850255cd523e2717001b0e179dc7037cfa0895da7b9e9ab07532d324bfb118d73a710887d1e35f79c495fa91582784493e085d18c72c62
+"readdirp@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "readdirp@npm:5.0.0"
+  checksum: 10c0/faf1ec57cff2020f473128da3f8d2a57813cc3a08a36c38cae1c9af32c1579906cc50ba75578043b35bade77e945c098233665797cf9730ba3613a62d6e79219
   languageName: node
   linkType: hard
 
@@ -9211,27 +9486,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rolldown@npm:1.0.0-rc.17":
-  version: 1.0.0-rc.17
-  resolution: "rolldown@npm:1.0.0-rc.17"
+"rolldown@npm:1.0.2":
+  version: 1.0.2
+  resolution: "rolldown@npm:1.0.2"
   dependencies:
-    "@oxc-project/types": "npm:=0.127.0"
-    "@rolldown/binding-android-arm64": "npm:1.0.0-rc.17"
-    "@rolldown/binding-darwin-arm64": "npm:1.0.0-rc.17"
-    "@rolldown/binding-darwin-x64": "npm:1.0.0-rc.17"
-    "@rolldown/binding-freebsd-x64": "npm:1.0.0-rc.17"
-    "@rolldown/binding-linux-arm-gnueabihf": "npm:1.0.0-rc.17"
-    "@rolldown/binding-linux-arm64-gnu": "npm:1.0.0-rc.17"
-    "@rolldown/binding-linux-arm64-musl": "npm:1.0.0-rc.17"
-    "@rolldown/binding-linux-ppc64-gnu": "npm:1.0.0-rc.17"
-    "@rolldown/binding-linux-s390x-gnu": "npm:1.0.0-rc.17"
-    "@rolldown/binding-linux-x64-gnu": "npm:1.0.0-rc.17"
-    "@rolldown/binding-linux-x64-musl": "npm:1.0.0-rc.17"
-    "@rolldown/binding-openharmony-arm64": "npm:1.0.0-rc.17"
-    "@rolldown/binding-wasm32-wasi": "npm:1.0.0-rc.17"
-    "@rolldown/binding-win32-arm64-msvc": "npm:1.0.0-rc.17"
-    "@rolldown/binding-win32-x64-msvc": "npm:1.0.0-rc.17"
-    "@rolldown/pluginutils": "npm:1.0.0-rc.17"
+    "@oxc-project/types": "npm:=0.132.0"
+    "@rolldown/binding-android-arm64": "npm:1.0.2"
+    "@rolldown/binding-darwin-arm64": "npm:1.0.2"
+    "@rolldown/binding-darwin-x64": "npm:1.0.2"
+    "@rolldown/binding-freebsd-x64": "npm:1.0.2"
+    "@rolldown/binding-linux-arm-gnueabihf": "npm:1.0.2"
+    "@rolldown/binding-linux-arm64-gnu": "npm:1.0.2"
+    "@rolldown/binding-linux-arm64-musl": "npm:1.0.2"
+    "@rolldown/binding-linux-ppc64-gnu": "npm:1.0.2"
+    "@rolldown/binding-linux-s390x-gnu": "npm:1.0.2"
+    "@rolldown/binding-linux-x64-gnu": "npm:1.0.2"
+    "@rolldown/binding-linux-x64-musl": "npm:1.0.2"
+    "@rolldown/binding-openharmony-arm64": "npm:1.0.2"
+    "@rolldown/binding-wasm32-wasi": "npm:1.0.2"
+    "@rolldown/binding-win32-arm64-msvc": "npm:1.0.2"
+    "@rolldown/binding-win32-x64-msvc": "npm:1.0.2"
+    "@rolldown/pluginutils": "npm:^1.0.0"
   dependenciesMeta:
     "@rolldown/binding-android-arm64":
       optional: true
@@ -9264,11 +9539,12 @@ __metadata:
     "@rolldown/binding-win32-x64-msvc":
       optional: true
   bin:
-    rolldown: bin/cli.mjs
-  checksum: 10c0/bb99abc62ece4e34edd06d2b8eb9ffb7194dc2f0465a4329bb106cbde3006a10f1575e3580b198b793341109a2109581aed623c537c12b0c3a4ba0d72169b2fb
+    rolldown: ./bin/cli.mjs
+  checksum: 10c0/628327a6e3122c0b62880f1c87d54095394e5138a6af2e6e7b2f67ef4c4b11f1421db68c9a5bb4e1be161465a863ab4f68f15076ce895cd4bb3d0ba18a3b20b1
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "rolldown@npm:1.0.2":
   version: 1.0.2
   resolution: "rolldown@npm:1.0.2"
@@ -9356,6 +9632,37 @@ __metadata:
     "@rollup/rollup-win32-ia32-msvc": "npm:4.60.3"
     "@rollup/rollup-win32-x64-gnu": "npm:4.60.3"
     "@rollup/rollup-win32-x64-msvc": "npm:4.60.3"
+=======
+"rollup@npm:^4.43.0":
+  version: 4.60.4
+  resolution: "rollup@npm:4.60.4"
+  dependencies:
+    "@rollup/rollup-android-arm-eabi": "npm:4.60.4"
+    "@rollup/rollup-android-arm64": "npm:4.60.4"
+    "@rollup/rollup-darwin-arm64": "npm:4.60.4"
+    "@rollup/rollup-darwin-x64": "npm:4.60.4"
+    "@rollup/rollup-freebsd-arm64": "npm:4.60.4"
+    "@rollup/rollup-freebsd-x64": "npm:4.60.4"
+    "@rollup/rollup-linux-arm-gnueabihf": "npm:4.60.4"
+    "@rollup/rollup-linux-arm-musleabihf": "npm:4.60.4"
+    "@rollup/rollup-linux-arm64-gnu": "npm:4.60.4"
+    "@rollup/rollup-linux-arm64-musl": "npm:4.60.4"
+    "@rollup/rollup-linux-loong64-gnu": "npm:4.60.4"
+    "@rollup/rollup-linux-loong64-musl": "npm:4.60.4"
+    "@rollup/rollup-linux-ppc64-gnu": "npm:4.60.4"
+    "@rollup/rollup-linux-ppc64-musl": "npm:4.60.4"
+    "@rollup/rollup-linux-riscv64-gnu": "npm:4.60.4"
+    "@rollup/rollup-linux-riscv64-musl": "npm:4.60.4"
+    "@rollup/rollup-linux-s390x-gnu": "npm:4.60.4"
+    "@rollup/rollup-linux-x64-gnu": "npm:4.60.4"
+    "@rollup/rollup-linux-x64-musl": "npm:4.60.4"
+    "@rollup/rollup-openbsd-x64": "npm:4.60.4"
+    "@rollup/rollup-openharmony-arm64": "npm:4.60.4"
+    "@rollup/rollup-win32-arm64-msvc": "npm:4.60.4"
+    "@rollup/rollup-win32-ia32-msvc": "npm:4.60.4"
+    "@rollup/rollup-win32-x64-gnu": "npm:4.60.4"
+    "@rollup/rollup-win32-x64-msvc": "npm:4.60.4"
+>>>>>>> main
     "@types/estree": "npm:1.0.8"
     fsevents: "npm:~2.3.2"
   dependenciesMeta:
@@ -9413,7 +9720,11 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
+<<<<<<< dependencies/vite-8
   checksum: 10c0/72c9c768f3fabeaeff228b6364e6600c169d6c231a4324c47c34880fd8961aebacd974cf905ecc2db75e56c6491bdd676409a06aecf589791bf419cd41d06e76
+=======
+  checksum: 10c0/2734511579da220408eefb877b51281767d790652cee25da8fcd4936c947e3db14882b5edb1d0d5d5bf60f2a71a58ae7d5f7f46c11e3fdf33182538953886243
+>>>>>>> main
   languageName: node
   linkType: hard
 
@@ -9764,6 +10075,7 @@ __metadata:
   bin:
     sass: dist/bin/sass.js
   checksum: 10c0/62650f86a2530614720dd38a650ebcd7c1d5115c157e2ee9f1f7e0fa64c0dd7d7d47624e0b7f3dfe6e6c080e14f9e0b3231e5edb365b7292423f0e8fcc4a7ad8
+<<<<<<< dependencies/vite-8
   languageName: node
   linkType: hard
 
@@ -9787,9 +10099,17 @@ __metadata:
 "sass@npm:^1.70.0":
   version: 1.99.0
   resolution: "sass@npm:1.99.0"
+=======
+  languageName: node
+  linkType: hard
+
+"sass@npm:1.100.0, sass@npm:^1.70.0":
+  version: 1.100.0
+  resolution: "sass@npm:1.100.0"
+>>>>>>> main
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
-    chokidar: "npm:^4.0.0"
+    chokidar: "npm:^5.0.0"
     immutable: "npm:^5.1.5"
     source-map-js: "npm:>=0.6.2 <2.0.0"
   dependenciesMeta:
@@ -9797,7 +10117,7 @@ __metadata:
       optional: true
   bin:
     sass: sass.js
-  checksum: 10c0/83c54a8c6decb79fff50dd9500d7932cf1cb7c5d9be4bc42bd3d537402c37bbee062aea6efdbdf9fb0b8697b18177d60c72bf101872336b93b1c27a2dc3621e1
+  checksum: 10c0/e2aab47c87b69d2d4f8e48fa665138548069f56a7fd0fc4e15c9bde888b715798e49d33436e873918a8849ca3cc6c141a68618f58e2f3b2e6ec179cc309ca622
   languageName: node
   linkType: hard
 
@@ -10058,9 +10378,15 @@ __metadata:
   linkType: hard
 
 "smob@npm:^1.0.0":
+<<<<<<< dependencies/vite-8
   version: 1.6.1
   resolution: "smob@npm:1.6.1"
   checksum: 10c0/5de0da7dcedcb5fa94578dec24b3f7c4cbc3823dac5b92d293927357d924e494df4a31168e5e19bdec030c2675d2209044d189740e59bb268feb2b0d5c221a70
+=======
+  version: 1.6.2
+  resolution: "smob@npm:1.6.2"
+  checksum: 10c0/a9cad85a18bc8e3f33759b0608ba3fec53b1af8fa760b9d110c7bf87018f14f0ed0789d173bef647646c143c6d417c60ba47c30056731a051f79048f2f233446
+>>>>>>> main
   languageName: node
   linkType: hard
 
@@ -10366,15 +10692,15 @@ __metadata:
   linkType: hard
 
 "tar@npm:^7.5.4":
-  version: 7.5.13
-  resolution: "tar@npm:7.5.13"
+  version: 7.5.15
+  resolution: "tar@npm:7.5.15"
   dependencies:
     "@isaacs/fs-minipass": "npm:^4.0.0"
     chownr: "npm:^3.0.0"
     minipass: "npm:^7.1.2"
     minizlib: "npm:^3.1.0"
     yallist: "npm:^5.0.0"
-  checksum: 10c0/5c65b8084799bde7a791593a1c1a45d3d6ee98182e3700b24c247b7b8f8654df4191642abbdb07ff25043d45dcff35620827c3997b88ae6c12040f64bed5076b
+  checksum: 10c0/8f039edb1d12fdd7df6c6f9877d125afe9f3da3f5f9317df326fdd090d48793d6998cede1506a1471f3e3a250db270a89dace28005eb5e99c5a9132d704ac956
   languageName: node
   linkType: hard
 
@@ -10403,6 +10729,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "terser@npm:5.48.0":
   version: 5.48.0
   resolution: "terser@npm:5.48.0"
@@ -10420,6 +10747,11 @@ __metadata:
 "terser@npm:^5.17.4":
   version: 5.46.2
   resolution: "terser@npm:5.46.2"
+=======
+"terser@npm:5.48.0, terser@npm:^5.17.4":
+  version: 5.48.0
+  resolution: "terser@npm:5.48.0"
+>>>>>>> main
   dependencies:
     "@jridgewell/source-map": "npm:^0.3.3"
     acorn: "npm:^8.15.0"
@@ -10427,7 +10759,7 @@ __metadata:
     source-map-support: "npm:~0.5.20"
   bin:
     terser: bin/terser
-  checksum: 10c0/476f1820160c42e6b2f611410115b00321c4666d421f12db87f13810f8789de45cb254e3ad5178650696d0ba6b706f5a0a239272255d6d1be95816c660f8cbbb
+  checksum: 10c0/d6ee713ea09a2b83b461ccbf1b76bd673a5090b3076ec13db7edc6d6470ab940d21c87b8d1ad82523b7cf02d9be07393fcdd334bde8f589e9bc3804da6fc32d2
   languageName: node
   linkType: hard
 
@@ -10471,21 +10803,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tldts-core@npm:^7.0.29":
-  version: 7.0.29
-  resolution: "tldts-core@npm:7.0.29"
-  checksum: 10c0/14fbd1806c8eb04cd08951feeaf463b4f280a00bc343c2a33b72cad1c4e7881eda7f30629cefcf443486ea4adfe058529ecacdb0c167723e85935dedc15b8a9b
+"tldts-core@npm:^7.0.30":
+  version: 7.0.30
+  resolution: "tldts-core@npm:7.0.30"
+  checksum: 10c0/e3cd730e96b0e9c0332fcaab44d0257b668f9089644508e4f6f870d37bbf5c218243b7e83aa39690c87b386d1b0ad577772a5994969c4c81cc25a476f783ccd7
   languageName: node
   linkType: hard
 
 "tldts@npm:^7.0.5":
-  version: 7.0.29
-  resolution: "tldts@npm:7.0.29"
+  version: 7.0.30
+  resolution: "tldts@npm:7.0.30"
   dependencies:
-    tldts-core: "npm:^7.0.29"
+    tldts-core: "npm:^7.0.30"
   bin:
     tldts: bin/cli.js
-  checksum: 10c0/f2999cba3060a36af7c72f2b756a4c00edb0aa8b0885a368810a1c7ddc52aac6130cc63f2260821ed8cdda104b31434b896d9e9aafbb723ba985d6657160e6a5
+  checksum: 10c0/c36f7b480f09128303158e4738a82426c33e8da9f77d4fb57a2d5ef5896c803d7a3c1d53ade965712f9cb4946935139b6d192a18698665556ca504493c7c265e
   languageName: node
   linkType: hard
 
@@ -10976,7 +11308,74 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< dependencies/vite-8
 "vite@npm:8.0.14":
+  version: 8.0.14
+  resolution: "vite@npm:8.0.14"
+=======
+"vite@npm:7.3.3":
+  version: 7.3.3
+  resolution: "vite@npm:7.3.3"
+>>>>>>> main
+  dependencies:
+    fsevents: "npm:~2.3.3"
+    lightningcss: "npm:^1.32.0"
+    picomatch: "npm:^4.0.4"
+    postcss: "npm:^8.5.15"
+    rolldown: "npm:1.0.2"
+    tinyglobby: "npm:^0.2.16"
+  peerDependencies:
+    "@types/node": ^20.19.0 || >=22.12.0
+    "@vitejs/devtools": ^0.1.18
+    esbuild: ^0.27.0 || ^0.28.0
+    jiti: ">=1.21.0"
+    less: ^4.0.0
+    sass: ^1.70.0
+    sass-embedded: ^1.70.0
+    stylus: ">=0.54.8"
+    sugarss: ^5.0.0
+    terser: ^5.16.0
+    tsx: ^4.8.1
+    yaml: ^2.4.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    "@vitejs/devtools":
+      optional: true
+    esbuild:
+      optional: true
+    jiti:
+      optional: true
+    less:
+      optional: true
+    sass:
+      optional: true
+    sass-embedded:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+    tsx:
+      optional: true
+    yaml:
+      optional: true
+  bin:
+    vite: bin/vite.js
+<<<<<<< dependencies/vite-8
+  checksum: 10c0/1ff99b4daadc64aed5f9e40387ecf39fd3bca45c1a5c4fa4aa82197de901930f0507af8d75c54715e2744c99575913947efb625653a78ef6df3997c5613970bd
+=======
+  checksum: 10c0/44fed2591d5d0a9d1f6313e0a4330659b7f1eec57e542558f12a924c53b450a84b9fad6d57ac28ec739eca1cf5ff0f62e41b965e3806c47eefdbbe13b74ec9ae
+>>>>>>> main
+  languageName: node
+  linkType: hard
+
+"vite@npm:^6.0.0 || ^7.0.0 || ^8.0.0":
   version: 8.0.14
   resolution: "vite@npm:8.0.14"
   dependencies:
@@ -11030,63 +11429,6 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 10c0/1ff99b4daadc64aed5f9e40387ecf39fd3bca45c1a5c4fa4aa82197de901930f0507af8d75c54715e2744c99575913947efb625653a78ef6df3997c5613970bd
-  languageName: node
-  linkType: hard
-
-"vite@npm:^6.0.0 || ^7.0.0 || ^8.0.0":
-  version: 8.0.10
-  resolution: "vite@npm:8.0.10"
-  dependencies:
-    fsevents: "npm:~2.3.3"
-    lightningcss: "npm:^1.32.0"
-    picomatch: "npm:^4.0.4"
-    postcss: "npm:^8.5.10"
-    rolldown: "npm:1.0.0-rc.17"
-    tinyglobby: "npm:^0.2.16"
-  peerDependencies:
-    "@types/node": ^20.19.0 || >=22.12.0
-    "@vitejs/devtools": ^0.1.0
-    esbuild: ^0.27.0 || ^0.28.0
-    jiti: ">=1.21.0"
-    less: ^4.0.0
-    sass: ^1.70.0
-    sass-embedded: ^1.70.0
-    stylus: ">=0.54.8"
-    sugarss: ^5.0.0
-    terser: ^5.16.0
-    tsx: ^4.8.1
-    yaml: ^2.4.2
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    "@types/node":
-      optional: true
-    "@vitejs/devtools":
-      optional: true
-    esbuild:
-      optional: true
-    jiti:
-      optional: true
-    less:
-      optional: true
-    sass:
-      optional: true
-    sass-embedded:
-      optional: true
-    stylus:
-      optional: true
-    sugarss:
-      optional: true
-    terser:
-      optional: true
-    tsx:
-      optional: true
-    yaml:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 10c0/92188b82654f856dbe562a1b679de695bb6ca18c0f43c4c276f84a869fb78e22dedb7c2df83b5617d6afdca979c059d654b5f61a0936a45f49917f352b9325ca
   languageName: node
   linkType: hard
 
@@ -11419,8 +11761,13 @@ __metadata:
   linkType: hard
 
 "ws@npm:^8.20.0":
+<<<<<<< dependencies/vite-8
   version: 8.20.0
   resolution: "ws@npm:8.20.0"
+=======
+  version: 8.21.0
+  resolution: "ws@npm:8.21.0"
+>>>>>>> main
   peerDependencies:
     bufferutil: ^4.0.1
     utf-8-validate: ">=5.0.2"
@@ -11429,7 +11776,7 @@ __metadata:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: 10c0/956ac5f11738c914089b65878b9223692ace77337ba55379ae68e1ecbeae9b47a0c6eb9403688f609999a58c80d83d99865fe0029b229d308b08c1ef93d4ea14
+  checksum: 10c0/ef4a243476283fc49bc7550966c4af4aa0eef56273837211e700de3b664e08604a760cdddcb5ba43c049140e74ccfec5b0ee0bb439e08c2adf9138902fdde5f9
   languageName: node
   linkType: hard
 
