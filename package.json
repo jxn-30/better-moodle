@@ -129,7 +129,7 @@
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
         "vite": "8.0.14",
-        "vite-plugin-monkey": "8.0.5",
+        "vite-plugin-monkey": "patch:vite-plugin-monkey@npm%3A8.0.5#~/.yarn/patches/vite-plugin-monkey-npm-8.0.5-fd82b1ac48.patch",
         "vitest": "4.1.7",
         "wrangler": "4.94.0"
     },

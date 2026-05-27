@@ -97,7 +97,6 @@ export default function (config: FrameworkConfig, ctx: Context): PluginOption {
                             },
                             topLevelVar: false,
                             minifyInternalExports: false,
-                            keepNames: true,
                         },
                     },
                 },
