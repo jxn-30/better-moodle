@@ -29,6 +29,6 @@ export const en = {
             description: 'Opens the grades in a new tab by default.',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

@@ -10,6 +10,6 @@ export const en = {
     settings: {
         enabled: { name: 'xEyes for Better-Moodle', description: '👀' },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

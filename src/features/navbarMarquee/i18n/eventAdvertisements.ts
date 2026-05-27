@@ -36,6 +36,6 @@ export const en = {
     end: 'End',
     location: 'Location',
     rrule: 'Regularity',
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

@@ -63,6 +63,6 @@ export const en = {
             description: 'Shows a small icon next to links that lead to webex.',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

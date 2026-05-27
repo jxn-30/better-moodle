@@ -2,6 +2,7 @@ import { FeatureGroupID } from './FeatureGroup';
 import { FeatureID } from './Feature';
 import globalStyle from '#style/index.module.scss';
 import type { JSX } from 'jsx-dom';
+import type { LocalizedString } from 'typesafe-i18n';
 import { renderAsElements } from './templates';
 import { require } from '#lib/require.js';
 import { SettingTranslations } from './Setting';
@@ -214,7 +215,9 @@ export const TextInput = ({ id, value }: TextComponent['props']): TextInput =>
 // endregion
 
 // region Select
-export type SelectOption = string | { key: string; title: string };
+export type SelectOption =
+    | string
+    | { key: string; title: string | LocalizedString };
 export type SelectComponent<
     Group extends FeatureGroupID,
     Feat extends FeatureID<Group>,
