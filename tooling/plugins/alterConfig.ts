@@ -87,11 +87,7 @@ export default function (config: FrameworkConfig, ctx: Context): PluginOption {
                                     joinVars: false,
                                     sequences: false,
                                 },
-                                mangle: {
-                                    toplevel: false,
-                                    keepNames: true,
-                                    debug: false,
-                                },
+                                mangle: false,
                                 codegen: { removeWhitespace: true },
                             },
                             comments: {
