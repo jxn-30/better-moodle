@@ -1,11 +1,15 @@
 import globals from 'globals';
 import prettier from 'eslint-config-prettier/flat';
+import stylistic from '@stylistic/eslint-plugin';
 import userscripts from 'eslint-plugin-userscripts';
 
 export default [
     prettier,
     {
-        plugins: { userscripts: { rules: userscripts.rules } },
+        plugins: {
+            'userscripts': { rules: userscripts.rules },
+            '@stylistic': stylistic,
+        },
         languageOptions: {
             ecmaVersion: 'latest',
             sourceType: 'script',
@@ -50,7 +54,14 @@ export default [
             'no-undef': 1,
             'no-useless-call': 1,
             'no-useless-concat': 1,
+            'no-var': 1,
             'no-with': 1,
+            'prefer-const': 1,
+            '@stylistic/quotes': [
+                1,
+                'single',
+                { avoidEscape: true, allowTemplateLiterals: 'avoidEscape' },
+            ],
         },
     },
 ];
