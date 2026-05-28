@@ -88,10 +88,10 @@ export default function (config: FrameworkConfig, ctx: Context): PluginOption {
                                     sequences: false,
                                 },
                                 mangle: false,
-                                codegen: { removeWhitespace: true },
+                                codegen: { removeWhitespace: true }, // will have a comments option someday.
                             },
                             comments: {
-                                legal: false,
+                                legal: true,
                                 annotation: false,
                                 jsdoc: false,
                             },
