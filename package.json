@@ -75,10 +75,11 @@
     "devDependencies": {
         "@actions/core": "3.0.1",
         "@babel/compat-data": "7.29.3",
-        "@cloudflare/workers-types": "4.20260525.1",
+        "@cloudflare/workers-types": "4.20260527.1",
         "@commitlint/cli": "21.0.1",
         "@commitlint/config-conventional": "21.0.1",
         "@eslint/js": "10.0.1",
+        "@poliklot/prettier-plugin-handlebars": "0.2.12",
         "@prettier/plugin-xml": "3.4.2",
         "@rollup/plugin-terser": "1.0.0",
         "@stylistic/eslint-plugin": "5.10.0",
@@ -119,20 +120,20 @@
         "postcss-inline-svg": "6.0.0",
         "postcss-preset-env": "11.3.0",
         "prettier": "3.8.3",
-        "puppeteer": "25.0.4",
+        "puppeteer": "25.1.0",
         "rrule": "2.8.1",
         "sass-embedded": "1.100.0",
         "terser": "5.48.0",
         "ts-json-schema-generator": "2.9.0",
         "ts-node": "10.9.2",
         "typescript": "6.0.3",
-        "typescript-eslint": "8.59.4",
+        "typescript-eslint": "8.60.0",
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
         "vite": "8.0.14",
         "vite-plugin-monkey": "8.0.6",
         "vitest": "4.1.7",
-        "wrangler": "4.94.0"
+        "wrangler": "4.95.0"
     },
     "engines": {
         "node": "^24.15.0"
