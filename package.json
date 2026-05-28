@@ -64,7 +64,7 @@
         "#templates/*": "./src/templates/*",
         "#style/*": "./src/style/*",
         "#_configs/*": "./configs/*",
-        "#_/*": "./*"
+        "#/*": "./*"
     },
     "dependencies": {
         "@trim21/gm-fetch": "0.3.0",
