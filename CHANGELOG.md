@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.0](https://github.com/jxn-30/better-moodle/compare/2.7.5...2.8.0) (2026-05-30)
+
+
+### Features
+
+* **images:** zoom images will now enlarge tinyicon preview images ([#1080](https://github.com/jxn-30/better-moodle/issues/1080)) ([1667198](https://github.com/jxn-30/better-moodle/commit/1667198d66458d5eb1a00315149bfcd650fe42b4))
+* implement a system for nightly builds [#1072](https://github.com/jxn-30/better-moodle/issues/1072) ([#1077](https://github.com/jxn-30/better-moodle/issues/1077)) ([6bdd8b1](https://github.com/jxn-30/better-moodle/commit/6bdd8b12c32a8c74e38a52d36f05389acfb6f9e9))
+
 ## [2.7.5](https://github.com/jxn-30/better-moodle/compare/2.7.4...2.7.5) (2026-05-05)
 
 
