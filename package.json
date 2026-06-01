@@ -135,7 +135,7 @@
         "wrangler": "4.95.0"
     },
     "engines": {
-        "node": "^24.15.0"
+        "node": "^24.16.0"
     },
     "browserslist": [
         "last 4 versions",
