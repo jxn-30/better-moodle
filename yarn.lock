@@ -99,14 +99,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/compat-data@npm:7.29.3":
-  version: 7.29.3
-  resolution: "@babel/compat-data@npm:7.29.3"
-  checksum: 10c0/81bddd53ce1b1395576fbb7cb739631a976f6b421cd260e6cf2715a9691b9a0ec12ca5c4e1bb88088e60dc87875f6e4ef7fa8674f1dc96ae1bd7c357416605a7
-  languageName: node
-  linkType: hard
-
-"@babel/compat-data@npm:^7.28.6, @babel/compat-data@npm:^7.29.7":
+"@babel/compat-data@npm:7.29.7, @babel/compat-data@npm:^7.28.6, @babel/compat-data@npm:^7.29.7":
   version: 7.29.7
   resolution: "@babel/compat-data@npm:7.29.7"
   checksum: 10c0/47913f05e08a45a1c9df38c02b4b49e391005085b489432647a1abe112e5d9c75e3be8ea5972b7f6da4ec5d1339922ceb9ea02b8a25d4ed1cb8636e5261f344e
@@ -4618,7 +4611,7 @@ __metadata:
   resolution: "better-moodle@workspace:."
   dependencies:
     "@actions/core": "npm:3.0.1"
-    "@babel/compat-data": "npm:7.29.3"
+    "@babel/compat-data": "npm:7.29.7"
     "@cloudflare/workers-types": "npm:4.20260601.1"
     "@commitlint/cli": "npm:21.0.2"
     "@commitlint/config-conventional": "npm:21.0.2"
