@@ -65,6 +65,7 @@
             "matchPackageNames": ["eslint", "@eslint/js"]
         }
     ],
+    "minimumReleaseAge": "30 hours",
     "postUpdateOptions": ["yarnDedupeHighest"],
     "rangeStrategy": "pin",
     "reviewers": ["jxn-30"],
