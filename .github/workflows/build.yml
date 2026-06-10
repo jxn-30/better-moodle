@@ -47,7 +47,7 @@ jobs:
                     && sudo apt install gh -y
 
             - name: 📥️ checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v6.0.3
 
             - name: 🏗️ build Better-Moodle for ${{ matrix.config }}
               id: build
@@ -56,7 +56,7 @@ jobs:
                   config: ${{ matrix.config }}
 
             - name: 🦭 attest build provenance
-              uses: actions/attest-build-provenance@v4
+              uses: actions/attest-build-provenance@v4.1.0
               # Attestation requires the id-token permission which is only available
               # for internal branches (not fork PRs). This condition ensures we only
               # run it when we actually have that permission.
@@ -198,7 +198,7 @@ jobs:
                   EOF
 
             - name: 📤 upload PR summary artifact
-              uses: actions/upload-artifact@v7
+              uses: actions/upload-artifact@v7.0.1
               with:
                   name: pr-summary-build
                   path: pr-summary-data/
