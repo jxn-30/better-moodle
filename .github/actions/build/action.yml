@@ -8,7 +8,7 @@ inputs:
         description: Wether to create a release build
         required: false
     nightly:
-        description: Whether to create a nightly build
+        description: A pre-computed version string to use as the version for a nightly build
         required: false
 
 runs:
@@ -28,8 +28,8 @@ runs:
           shell: bash
 
         - name: 🌜️ nightly-build Better-Moodle for ${{ inputs.config }}
-          if: ${{ inputs.nightly }}
-          run: yarn release-build ${{ inputs.config }} --nightly
+          if: ${{ !inputs.release && inputs.nightly }}
+          run: yarn release-build ${{ inputs.config }} --nightly=${{ inputs.nightly }}
           shell: bash
 
         - name: 📤️ upload build
