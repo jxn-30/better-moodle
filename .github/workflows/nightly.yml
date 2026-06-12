@@ -40,7 +40,7 @@ jobs:
                       --jq '.[0].body // ""'
                   )
 
-                  targetversion=$(echo "$body" | grep -Po "(?<=^## \[).*?(?=\])")
+                  targetversion=$(echo "$body" | grep -Po "(?<=^## \[).*?(?=\])" || true)
 
                   if [[ -z "$targetversion" ]]; then
                     currentversion=$(cat package.json | jq -r '.version')
