@@ -69,9 +69,10 @@ const updateFunSettingsHiddenState = () =>
                 hideFunSettings.value
             )
         );
-const hideFunSettings = new BooleanSetting('hideFunSettings', true).onInput(
-    updateFunSettingsHiddenState
-);
+export const hideFunSettings = new BooleanSetting(
+    'hideFunSettings',
+    true
+).onInput(updateFunSettingsHiddenState);
 
 const features = new Set<string>([
     'fullWidth',
