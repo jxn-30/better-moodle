@@ -4,7 +4,6 @@ import { LLF } from '#i18n';
 import { marquee } from './index';
 import { mdToHtml } from '#lib/helpers';
 import { ONE_DAY } from '#lib/times';
-import { hideFunSettings } from '../general';
 
 const LL = LLF('navbarMarquee', 'christmasCountdown');
 
@@ -55,7 +54,7 @@ const updateCountdown = () => {
  */
 const reload = () => {
     if (timeout) clearTimeout(timeout);
-    if (enabled.value && !hideFunSettings.value) {
+    if (enabled.value) {
         [[, countdownSpanClone]] = marquee.add(countdownSpan);
         updateCountdown();
         const midnight = new Date();
@@ -67,7 +66,6 @@ const reload = () => {
     }
 };
 
-hideFunSettings.onInput(reload);
 enabled.onInput(reload);
 short.onInput(reload);
 
