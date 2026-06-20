@@ -15,7 +15,7 @@ import legacy, { detectPolyfills } from '@vitejs/plugin-legacy';
  */
 const getPolyfillsCode = (ctx: Context, raw: string) =>
     `
-${polyfillsCopyright(ctx)}
+${polyfillsCopyright(ctx, includedPolyfillsList())}
 (() => {${raw}})();
     `.trim();
 
