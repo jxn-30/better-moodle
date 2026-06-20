@@ -1,8 +1,8 @@
 import type { Context } from '../context';
 import createPlugin from './createPlugin';
-import legacy from '@vitejs/plugin-legacy';
 import type { PluginOption } from 'vite';
 import { polyfillsCopyright } from '../utils/copyright';
+import legacy, { detectPolyfills } from '@vitejs/plugin-legacy';
 
 // we need to make it an iife, otherwise global scope would be altered
 // this would cause e.g. that Moodles global `M` would not be useable without using
@@ -15,37 +15,11 @@ import { polyfillsCopyright } from '../utils/copyright';
  */
 const getPolyfillsCode = (ctx: Context, raw: string) =>
     `
-${polyfillsCopyright(ctx)}
+${polyfillsCopyright(ctx, includedPolyfillsList())}
 (() => {${raw}})();
     `.trim();
 
 const includedPolyfills = new Set<string>();
-
-/**
- * Processes imports to collect polyfill modules.
- * Mutates the state of included polyfills.
- * @param imports - An array of module paths to analyze.
- */
-const getPolyfillsFromImports = (imports: string[]) => {
-    includedPolyfills.clear();
-
-    imports
-        .filter(
-            mod => mod.includes('/core-js/modules/') && !mod.startsWith('\0')
-        )
-        .map(file => file.replace(/^.*(?=core-js\/modules\/)/, ''))
-        .filter((file, _, list) => {
-            if (
-                file.includes('es.') &&
-                list.includes(file.replace('es.', 'esnext.'))
-            ) {
-                return false;
-            }
-            return true;
-        })
-        .toSorted()
-        .forEach(polyfill => includedPolyfills.add(polyfill));
-};
 
 /**
  * Returns the sorted list of included polyfill modules.
@@ -84,17 +58,23 @@ export default function (ctx: Context): PluginOption {
          * @param _ - Vite build options
          * @param bundle - The bundle object containing chunks and assets.
          */
-        generateBundle(_, bundle) {
+        async generateBundle(_, bundle) {
             for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
                 if (
                     chunkOrAsset.type !== 'chunk' ||
-                    !fileName.startsWith('polyfills-') ||
-                    chunkOrAsset.name !== 'polyfills'
+                    !fileName.startsWith('core-') ||
+                    chunkOrAsset.name !== 'core'
                 ) {
                     continue;
                 }
 
-                getPolyfillsFromImports(chunkOrAsset.moduleIds);
+                await detectPolyfills(
+                    chunkOrAsset.code,
+                    ctx.browsers,
+                    {},
+                    includedPolyfills
+                );
+                return;
             }
         },
     });
