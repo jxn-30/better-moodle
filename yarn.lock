@@ -3251,20 +3251,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@poliklot/prettier-plugin-handlebars@npm:0.2.15":
-  version: 0.2.15
-  resolution: "@poliklot/prettier-plugin-handlebars@npm:0.2.15"
-  dependencies:
-    template-format-core: "npm:^0.1.1"
-  peerDependencies:
-    prettier: ">=3.0.0"
-  bin:
-    hbs-prettier-init: dist/cli.js
-    prettier-plugin-handlebars: dist/cli.js
-  checksum: 10c0/f3d202f48c76ae63c063f66ec83d446512673f14c3ce7ee8ea072b32ca19c68330c94ee9bdaaeeef01da2ce43c2aeebb873e3ca7ac9a1b098933a4b421b3a142
-  languageName: node
-  linkType: hard
-
 "@poppinss/colors@npm:^4.1.5":
   version: 4.1.6
   resolution: "@poppinss/colors@npm:4.1.6"
@@ -4499,7 +4485,6 @@ __metadata:
     "@commitlint/cli": "npm:21.0.2"
     "@commitlint/config-conventional": "npm:21.0.2"
     "@eslint/js": "npm:10.0.1"
-    "@poliklot/prettier-plugin-handlebars": "npm:0.2.15"
     "@prettier/plugin-xml": "npm:3.4.2"
     "@rollup/plugin-terser": "npm:1.0.0"
     "@tomjs/unzip-crx": "npm:1.1.3"
@@ -4542,6 +4527,7 @@ __metadata:
     postcss-inline-svg: "npm:6.0.0"
     postcss-preset-env: "npm:11.3.1"
     prettier: "npm:3.8.4"
+    prettier-plugin-mustache: "npm:0.1.3"
     puppeteer: "npm:25.1.0"
     rrule: "npm:2.8.1"
     sass-embedded: "npm:1.100.0"
@@ -8520,6 +8506,17 @@ __metadata:
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
   checksum: 10c0/b00d617431e7886c520a6f498a2e14c75ec58f6d93ba48c3b639cf241b54232d90daa05d83a9e9b9fef6baa63cb7e1e4602c2372fea5bc169668401eb127d0cd
+  languageName: node
+  linkType: hard
+
+"prettier-plugin-mustache@npm:0.1.3":
+  version: 0.1.3
+  resolution: "prettier-plugin-mustache@npm:0.1.3"
+  dependencies:
+    template-format-core: "npm:^0.1.1"
+  peerDependencies:
+    prettier: ">=3.0.0"
+  checksum: 10c0/63bcc740a1f1d848ae7164f4f8f72ecafc6e17b9a3be5b0cebd2b9b4026f9bb24d2886401b2b9e92ae700ebab2bd9da7ebd6d3bdacb9d7e24ad604990baaf4ba
   languageName: node
   linkType: hard
 

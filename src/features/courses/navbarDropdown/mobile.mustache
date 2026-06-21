@@ -1,41 +1,41 @@
-{{! There unfortunately is no standalone component for the mobile primary navigation item, so we need to copy it here}}
+{{! There unfortunately is no standalone component for the mobile primary navigation item, so we need to copy it here }}
 {{#includeTrigger}}
     <a
-        id="drop-down-{{ sort }}"
-        class="
-            list-group-item
-            list-group-item-action
-            icons-collapse-expand
-            collapsed
-            d-flex
-        "
-        href="#"
-        data-toggle="collapse"
-        data-target="#drop-down-menu-{{ sort }}"
-        aria-expanded="false"
-        aria-controls="drop-down-menu-{{ sort }}"
+    id="drop-down-{{ sort }}"
+    class="
+    list-group-item
+    list-group-item-action
+    icons-collapse-expand
+    collapsed
+    d-flex
+    "
+    href="#"
+    data-toggle="collapse"
+    data-target="#drop-down-menu-{{ sort }}"
+    aria-expanded="false"
+    aria-controls="drop-down-menu-{{ sort }}"
     >
-        {{{ text }}}
-        <span class="ml-auto expanded-icon icon-no-margin mx-2">
-            {{#pix}}
-                t/expanded, core
-            {{/pix}}
-            <span class="sr-only">
-                {{#str}}
-                    collapse, core
-                {{/str}}
-            </span>
-        </span>
-        <span class="ml-auto collapsed-icon icon-no-margin mx-2">
-            {{#pix}}
-                t/collapsed, core
-            {{/pix}}
-            <span class="sr-only">
-                {{#str}}
-                    expand, core
-                {{/str}}
-            </span>
-        </span>
+    {{{ text }}}
+    <span class="ml-auto expanded-icon icon-no-margin mx-2">
+    {{#pix}}
+        t/expanded, core
+    {{/pix}}
+    <span class="sr-only">
+    {{#str}}
+        collapse, core
+    {{/str}}
+    </span>
+    </span>
+    <span class="ml-auto collapsed-icon icon-no-margin mx-2">
+    {{#pix}}
+        t/collapsed, core
+    {{/pix}}
+    <span class="sr-only">
+    {{#str}}
+        expand, core
+    {{/str}}
+    </span>
+    </span>
     </a>
 {{/includeTrigger}}
 <div
@@ -43,8 +43,8 @@
     class="
         collapse
         {{#isopen}}
-            show
-        {{/isopen}}
+    show
+{{/isopen}}
         list-group-item
         p-0
         border-0
@@ -53,23 +53,23 @@
     aria-labelledby="drop-down-{{ sort }}"
 >
     {{#children}}
-        {{^divider}}
-            <a
-                class="
-                    ps-5
-                    {{^isactive}}
-                        bg-light
-                    {{/isactive}}
-                    {{#isactive}}
-                        active
-                    {{/isactive}}
-                    list-group-item
-                    list-group-item-action
-                "
-                href="{{{ url }}}"
-            >
-                {{{ text }}}
-            </a>
-        {{/divider}}
-    {{/children}}
+    {{^divider}}
+        <a
+        class="
+        ps-5
+        {{^isactive}}
+            bg-light
+        {{/isactive}}
+        {{#isactive}}
+            active
+        {{/isactive}}
+        list-group-item
+        list-group-item-action
+        "
+        href="{{{ url }}}"
+        >
+        {{{ text }}}
+        </a>
+    {{/divider}}
+{{/children}}
 </div>
