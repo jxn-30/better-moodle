@@ -16,7 +16,7 @@ const oxcJSXConfigs = {
 export type OXCJSXConfigs = typeof oxcJSXConfigs;
 
 /**
- * A plugin to alter the base vite config, such as build, esbuild and define
+ * A plugin to alter the base vite config, such as build, oxc and define
  * @param config - the framework config
  * @param ctx - the build context
  * @returns a plugin, altering the base vite config
