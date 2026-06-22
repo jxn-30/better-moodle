@@ -24,7 +24,7 @@ jobs:
             version: ${{ steps.version.outputs.version }}
         steps:
             - name: 📥️ Checkout
-              uses: actions/checkout@v6.0.3
+              uses: actions/checkout@v7.0.0
 
             - name: 🔢 Determine nightly version
               id: version
@@ -69,7 +69,7 @@ jobs:
             contents: read
         steps:
             - name: 📥️ Checkout
-              uses: actions/checkout@v6.0.3
+              uses: actions/checkout@v7.0.0
 
             - name: 🏗️ Build nightly for ${{ matrix.config }}
               id: build
@@ -94,7 +94,7 @@ jobs:
             contents: write
         steps:
             - name: 📥️ Checkout
-              uses: actions/checkout@v6.0.3
+              uses: actions/checkout@v7.0.0
               with:
                   # Full history needed so git describe can find the last stable tag
                   fetch-depth: 0
