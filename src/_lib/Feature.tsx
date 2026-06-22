@@ -1,10 +1,9 @@
 import { featurePrerequisitesReady } from './helpers';
-import Setting from './Setting';
-import type { Tag as FeatureTag } from './Setting';
 import FeatureGroup, {
     FeatureGroupID,
     FeatureGroupTranslations,
 } from './FeatureGroup';
+import Setting, { type Tag as FeatureTag } from './Setting';
 
 export type FeatureTranslations<
     Group extends FeatureGroupID,
@@ -53,6 +52,7 @@ export default abstract class Feature<
      * This registering workaround is necessary so that we can have readonly private id that is automatically generated from the filepath
      * @param args - the methods that are to be implemented
      * @param args.settings - the settings for this feature
+     * @param args.tags - the tags associated with this feature
      * @param args.loadPrerequisites - when this feature should be loaded
      * @returns a class that can be instantiated
      */
@@ -74,6 +74,11 @@ export default abstract class Feature<
         return class Feature extends this<Group, ID> {
             static readonly tags = featureTags;
 
+            /**
+             * Checks whether this feature has the requested tag.
+             * @param tag - the tag to check
+             * @returns whether the feature has the requested tag
+             */
             static hasTag(tag: FeatureTag) {
                 return this.tags.has(tag);
             }
@@ -114,6 +119,7 @@ export default abstract class Feature<
      * @param id - the id of this feature
      * @param group - the group this feature belongs to
      * @param settings - the settings of this group
+     * @param tags - the tags associated with this feature
      * @param methods - the methods that are to be implemented (init, onload, onunload)
      * @param loadPrerequisites - when the feature group should be loaded
      */

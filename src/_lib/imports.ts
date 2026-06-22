@@ -5,19 +5,20 @@ import featureImports from 'virtual:features';
 import 'virtual:fixes';
 /* eslint-enable */
 // normal imports
+import Feature from './Feature';
 import { isFeatureGroup } from '#i18n';
+import { Tag } from './Setting';
 import FeatureGroup, { FeatureGroupID } from './FeatureGroup'; // type import but we cannot use type modifier here
-import type Feature from './Feature';
-import type { Tag } from './Setting';
 
 type RegisteredFeature = (new (
     featureId: string,
     group: FeatureGroup<FeatureGroupID>
-) => Feature<FeatureGroupID>) & {
-    hasTag(tag: Tag): boolean;
-};
+) => Feature<FeatureGroupID>) & { hasTag(tag: Tag): boolean };
 
-const shouldHideFunFeatures = GM_getValue('settings.general.hideFunSettings', true);
+const shouldHideFunFeatures = GM_getValue(
+    'settings.general.hideFunSettings',
+    true
+);
 
 /**
  * inits a feature by instantiating the feature class and calling its init method
@@ -29,9 +30,9 @@ const initFeature = (
     group: FeatureGroup<FeatureGroupID>,
     featureId: string
 ) => {
-    const Feature = featureImports[
-        `${group.id}_${featureId}`
-    ] as RegisteredFeature | undefined;
+    const Feature = featureImports[`${group.id}_${featureId}`] as
+        | RegisteredFeature
+        | undefined;
     if (!Feature) return;
     if (shouldHideFunFeatures && Feature.hasTag('fun')) return;
     const feature = new Feature(featureId, group);
