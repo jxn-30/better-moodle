@@ -18,7 +18,7 @@ jobs:
             contents: read
         steps:
             - name: 📥️ checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7.0.0
 
             - name: 🎛️ setup
               uses: ./.github/actions/setup
@@ -74,7 +74,7 @@ jobs:
 
             - name: 📤 upload PR summary artifact
               if: github.event_name == 'pull_request'
-              uses: actions/upload-artifact@v7
+              uses: actions/upload-artifact@v7.0.1
               with:
                   # Artifact name must be unique per workflow run section.
                   # pr-comment.yml downloads all artifacts matching pr-summary-*.
@@ -95,7 +95,7 @@ jobs:
             pull-requests: read
         steps:
             - name: 📥️ checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7.0.0
 
             - name: 🎛️ setup
               uses: ./.github/actions/setup
@@ -143,7 +143,7 @@ jobs:
 
             - name: 📤 upload PR summary artifact
               if: ${{ github.event_name == 'pull_request' && always() }}
-              uses: actions/upload-artifact@v7
+              uses: actions/upload-artifact@v7.0.1
               with:
                   name: pr-summary-eslint
                   path: pr-summary-data/

@@ -51,13 +51,13 @@ jobs:
         name: 📜 Post PR summary comment
         steps:
             - name: 📥️ checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7.0.0
 
             # Download all artifacts whose names start with "pr-summary-".
             # Each check (prettier, eslint, build) uploads one such artifact,
             # so a single run of this workflow handles all sections at once.
             - name: 📦 download PR summary artifacts
-              uses: actions/download-artifact@v8
+              uses: actions/download-artifact@v8.0.1
               with:
                   # The run-id of the triggering workflow (check.yml or build.yml),
                   # not this workflow's own run-id.

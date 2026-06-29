@@ -15,7 +15,7 @@ jobs:
         name: 🖼️ Create icons
         steps:
             - name: 📥️ checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7.0.0
               with:
                   sparse-checkout: |
                       configs
@@ -27,7 +27,7 @@ jobs:
                   echo "NODE_VERSION=$(jq -r '.engines.node' package.json)"  >> $GITHUB_ENV
 
             - name: 🛠 setup Node.js
-              uses: actions/setup-node@v6
+              uses: actions/setup-node@v6.4.0
               with:
                   node-version: ${{ env.NODE_VERSION }}
 
@@ -65,13 +65,13 @@ jobs:
                     done
 
             - name: 📤 upload icons
-              uses: actions/upload-artifact@v7
+              uses: actions/upload-artifact@v7.0.1
               with:
                   name: icons
                   path: png/
 
             - name: 🚀 deploy icons
-              uses: cloudflare/wrangler-action@v4
+              uses: cloudflare/wrangler-action@v4.0.0
               with:
                   apiToken: ${{ secrets.ICONS_UPLOAD_CLOUDFLARE_API_TOKEN }}
                   accountId: ${{ secrets.ICONS_UPLOAD_CLOUDFLARE_ACCOUNT_ID }}

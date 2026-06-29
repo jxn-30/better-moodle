@@ -3,7 +3,7 @@ import { parseArgs } from 'node:util';
 const options = {
     'config': { type: 'string' },
     'release': { type: 'boolean', default: false },
-    'nightly': { type: 'boolean', default: false },
+    'nightly': { type: 'string', default: '' },
     'single-file': { type: 'boolean', default: false },
 } as const;
 
@@ -24,6 +24,8 @@ if (!args.config) {
 export const configFile = args.config;
 
 export const isReleaseBuild = args.release;
-export const isNightlyBuild = args.nightly;
+export const isNightlyBuild = args.nightly.length > 0;
+
+export const nightlyVersion = args.nightly;
 
 export const produceSingleFile = args['single-file'];
