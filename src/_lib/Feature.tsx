@@ -1,9 +1,9 @@
 import { featurePrerequisitesReady } from './helpers';
-import Setting from './Setting';
 import FeatureGroup, {
     FeatureGroupID,
     FeatureGroupTranslations,
 } from './FeatureGroup';
+import Setting, { type Tag as FeatureTag } from './Setting';
 
 export type FeatureTranslations<
     Group extends FeatureGroupID,
@@ -34,6 +34,8 @@ type FeatureMethods<
 export type FeatureLoadPrerequisites =
     null | 'none' | 'moodle-ready' | 'dom-ready' | 'moodle-and-dom-ready';
 
+type FeatureTags = Set<FeatureTag>;
+
 /**
  * A class that represents a single feature
  * cannot be instantiated directly but using the register method will return an instantiable version of this class
@@ -46,21 +48,37 @@ export default abstract class Feature<
      * This registering workaround is necessary so that we can have readonly private id that is automatically generated from the filepath
      * @param args - the methods that are to be implemented
      * @param args.settings - the settings for this feature
+     * @param args.tags - the tags associated with this feature
      * @param args.loadPrerequisites - when this feature should be loaded
      * @returns a class that can be instantiated
      */
     static register<Group extends FeatureGroupID, ID extends FeatureID<Group>>({
         settings,
+        tags,
         loadPrerequisites = null,
         ...methods
     }: {
         settings?: Set<Setting<Group, ID>>;
+        tags?: FeatureTags;
         loadPrerequisites?: FeatureLoadPrerequisites;
     } & FeatureMethods<Group, ID>) {
+        const featureTags = tags ?? new Set<FeatureTag>();
+
         /**
          * The instantiable version of the Feature class
          */
         return class Feature extends this<Group, ID> {
+            static readonly tags = featureTags;
+
+            /**
+             * Checks whether this feature has the requested tag.
+             * @param tag - the tag to check
+             * @returns whether the feature has the requested tag
+             */
+            static hasTag(tag: FeatureTag) {
+                return this.tags.has(tag);
+            }
+
             /**
              * The constructor for the Feature class
              * methods are not passed via constructor but via the register method
@@ -72,6 +90,7 @@ export default abstract class Feature<
                     id,
                     group,
                     settings ?? new Set<Setting<Group, ID>>(),
+                    featureTags,
                     methods,
                     loadPrerequisites
                 );
@@ -82,6 +101,7 @@ export default abstract class Feature<
     readonly #id: ID;
     readonly #group: FeatureGroup<Group>;
     readonly #settings: Set<Setting<Group, ID>>;
+    readonly #tags: FeatureTags;
     readonly #onload: FeatureMethods<Group, ID>['onload'];
     readonly #onunload: FeatureMethods<Group, ID>['onunload'];
 
@@ -95,6 +115,7 @@ export default abstract class Feature<
      * @param id - the id of this feature
      * @param group - the group this feature belongs to
      * @param settings - the settings of this group
+     * @param tags - the tags associated with this feature
      * @param methods - the methods that are to be implemented (init, onload, onunload)
      * @param loadPrerequisites - when the feature group should be loaded
      */
@@ -102,12 +123,14 @@ export default abstract class Feature<
         id: ID,
         group: FeatureGroup<Group>,
         settings: Set<Setting<Group, ID>>,
+        tags: FeatureTags,
         methods: FeatureMethods<Group, ID>,
         loadPrerequisites: FeatureLoadPrerequisites
     ) {
         this.#id = id;
         this.#group = group;
         this.#settings = settings;
+        this.#tags = tags;
         this.#onload = methods.onload;
         this.#onunload = methods.onunload;
         this.#loadPrerequisites = loadPrerequisites;
@@ -147,6 +170,23 @@ export default abstract class Feature<
      */
     get formGroups() {
         return this.#FormGroups;
+    }
+
+    /**
+     * The tags for this feature.
+     * @returns the tags for this feature
+     */
+    get tags() {
+        return this.#tags;
+    }
+
+    /**
+     * Does this feature have the requested tag?
+     * @param tag - the tag to check
+     * @returns whether the feature has the tag
+     */
+    hasTag(tag: FeatureTag) {
+        return this.#tags.has(tag);
     }
 
     /**
