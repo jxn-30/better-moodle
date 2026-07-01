@@ -79,7 +79,7 @@ jobs:
                   nightly: ${{ needs.compute-version.outputs.version }}
 
             - name: 🦭 Attest build provenance
-              uses: actions/attest-build-provenance@v4.1.0
+              uses: actions/attest-build-provenance@v4.1.1
               with:
                   subject-name: ${{ steps.build.outputs.script }}
                   subject-digest: sha256:${{ steps.build.outputs.digest }}
