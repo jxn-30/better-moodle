@@ -97,8 +97,8 @@ export const renderAsElement: RenderAsElement = (
     context,
     themeName
 ) =>
-    renderAsElements(templateName, context, themeName).then(
-        elements => elements.item(0)!
+    renderAsElements(templateName, context, themeName).then(elements =>
+        elements.item(0)!
     );
 
 /**

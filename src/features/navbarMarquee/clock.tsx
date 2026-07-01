@@ -8,12 +8,12 @@ import { timeToString } from '#lib/localeString';
 import { ONE_HOUR, ONE_MINUTE, ONE_SECOND } from '#lib/times';
 
 const enum FUZZYNESS {
-    off,
+    'off',
     '5min',
     '15min',
-    food,
-    day,
-    week,
+    'food',
+    'day',
+    'week',
 }
 
 type Fuzzyness = keyof typeof FUZZYNESS;
