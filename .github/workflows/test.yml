@@ -24,7 +24,7 @@ jobs:
             # pull-requests: write
         steps:
             - name: 📥 checkout
-              uses: actions/checkout@v6.0.3
+              uses: actions/checkout@v7.0.0
 
             - name: 🎛️ setup
               uses: ./.github/actions/setup
@@ -34,7 +34,7 @@ jobs:
 
             - name: 🧾 report coverage
               if: always()
-              uses: davelosert/vitest-coverage-report-action@v2.12.0
+              uses: davelosert/vitest-coverage-report-action@v2.12.1
               with:
                   comment-on: none
 
@@ -52,7 +52,7 @@ jobs:
             pull-requests: write
         steps:
             - name: 📥 checkout
-              uses: actions/checkout@v6.0.3
+              uses: actions/checkout@v7.0.0
 
             - name: 🏗️ build userscript
               uses: ./.github/actions/build
