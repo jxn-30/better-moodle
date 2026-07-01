@@ -6,5 +6,27 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        &:not(:has(.dropright > .dropdown-menu.show)) {
+            overflow-x: hidden;
+        }
+
+        &:has(.dropright > .dropdown-menu.show) {
+            overflow-y: visible;
+        }
+
+        :local(.courseindex-trigger) {
+            position: absolute;
+            right: 0;
+            height: 30.5px; // This is the height of each row in the dropdown
+            width: 30.5px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+
+            button:hover {
+                border-color: var(--primary);
+            }
+        }
     }
 }

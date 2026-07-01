@@ -4,6 +4,7 @@ import globalStyle from '#style/index.module.scss';
 import mobileTemplate from './navbarDropdown/mobile.mustache?raw';
 import { PREFIX } from '#lib/helpers';
 import { require } from '#lib/require.js';
+import type { Section } from '#types/require.js/core_courseformat/local/courseeditor/exporter';
 import { SelectSetting } from '#lib/Settings/SelectSetting';
 import style from './navbarDropdown/style.module.scss';
 import {
@@ -19,19 +20,203 @@ import { putTemplate, renderCustomTemplate } from '#lib/templates';
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('myCourses.navbarDropdown')
     .requireReload();
+const enableCourseindex = new BooleanSetting('courseindex', true)
+    .requireReload()
+    .disabledIf(enabled, '!=', true);
+const activitiesInCourseindex = new BooleanSetting(
+    'courseindexActivities',
+    false
+)
+    .requireReload()
+    .disabledIf(enabled, '!=', true)
+    .disabledIf(enableCourseindex, '!=', true);
 const filter = new SelectSetting(
     'filter',
     '_sync',
     getAvailableCourseFiltersAsOptions()
 )
     .addAlias('myCourses.navbarDropdownFilter')
-    .disabledIf(enabled, '==', false);
+    .disabledIf(enabled, '!=', true);
 const favouriteCoursesAtTop = new BooleanSetting('favouriteCoursesAtTop', true)
     .addAlias('myCourses.navbarDropdownFavouritesAtTop')
     .disabledIf(enabled, '!=', true);
 
 let desktopNavItem: HTMLLIElement;
 let mobileDropdown: HTMLDivElement;
+
+// const courseIndexSubmenuId = (courseId: number) =>
+//    PREFIX(`courses-navbar-dropdown-courseindex-${courseId}`);
+
+/**
+ * Creates a trigger to open the submenu containing the courseindex
+ * @param courseId - the id of the course
+ * @returns a trigger html element
+ */
+const createSubmenuTrigger = (courseId: number) => (
+    <div className={['btn-group dropright', style.courseindexTrigger]}>
+        <button
+            type="button"
+            className="btn btn-icon btn-sm"
+            dataset={{ course: courseId.toString(), toggle: 'dropdown' }}
+        >
+            <i className="icon fa-solid fa-fw fa-caret-right m-0"></i>
+        </button>
+    </div>
+);
+
+const courseIndexSubmenus = new Map<number, HTMLDivElement>();
+
+/**
+ * Creates (or gets if already created) the courseindex submenu of a course and fills it once courseindex is loaded
+ * @param courseId - the id of the course
+ * @returns the courseindex submenu of this course
+ */
+const getCourseIndexSubmenu = (courseId: number) =>
+    courseIndexSubmenus.getOrInsertComputed(courseId, () => {
+        const menu = (<div class="dropdown-menu"></div>) as HTMLDivElement;
+
+        void getLoadingSpinner(`navbarDropdown-courseindex-${courseId}`).then(
+            spinner => {
+                spinner.classList.add('text-center', 'd-block');
+                menu.append(spinner);
+            }
+        );
+
+        /**
+         * Creates the DOM items for a section and its activities
+         * @param section - the section to generate the items for
+         * @returns the dropdown items
+         */
+        const getItems = (section: Section) =>
+            activitiesInCourseindex.value ?
+                [
+                    (
+                        <a className="dropdown-item" href={section.sectionurl}>
+                            {section.title}
+                        </a>
+                    ) as HTMLAnchorElement,
+                    ...section.cms.map(
+                        cm =>
+                            (
+                                <a
+                                    className="dropdown-item"
+                                    style="text-indent: 1em;"
+                                    href={
+                                        cm.url ??
+                                        `${section.sectionurl}#${cm.anchor}`
+                                    }
+                                >
+                                    {cm.name}
+                                </a>
+                            ) as HTMLAnchorElement
+                    ),
+                ]
+            :   ((
+                    <a className="dropdown-item" href={section.sectionurl}>
+                        {section.title}
+                    </a>
+                ) as HTMLAnchorElement);
+
+        void loadCourseIndex(courseId)
+            .then(({ sections }) => sections.flatMap(getItems))
+            .then(items => menu.replaceChildren(...items));
+
+        return menu;
+    });
+
+/**
+ * Loads the courseindex of a specific course
+ * @param courseId - the id of the course
+ * @returns the courseindex of this course
+ */
+const loadCourseIndex = (courseId: number) =>
+    require(['core_courseformat/courseeditor'] as const).then(
+        // eslint-disable-next-line @typescript-eslint/unbound-method -- what does it even want to tell us here?
+        ([{ getCourseEditor }]) => {
+            const editor = getCourseEditor(courseId);
+            return editor
+                .getInitialStatePromise()
+                .then(() => editor.getExporter().course(editor.state));
+        }
+    );
+
+interface EnhanceDesktopDetails {
+    myCoursesIsActive: boolean;
+    myCoursesUrl: string;
+}
+
+/**
+ * Enhances the desktop dropdown by some additional features and adds event listeners etc.
+ * @param navItem - the navbar element that triggers and contains the dropdown
+ * @param details - details on how to enhance the dropdown
+ */
+const enhanceDesktopDropdown = (
+    navItem: HTMLLIElement,
+    details: EnhanceDesktopDetails
+) => {
+    // clicking on the dropdown toggle should open my courses page
+    if (!details.myCoursesIsActive) {
+        navItem
+            .querySelector<HTMLAnchorElement>('.dropdown-toggle')
+            ?.addEventListener('click', e => {
+                if (navItem.classList.contains('show')) {
+                    e.preventDefault();
+                    window.location.replace(details.myCoursesUrl);
+                }
+            });
+    }
+
+    // Do not execute the next alters if the setting is disabled
+    if (!enableCourseindex.value) return;
+
+    // create and append triggers for courseindex submenus
+    navItem
+        .querySelectorAll('.dropdown-item:has(> [data-course])')
+        .forEach(courseItem => {
+            const courseId = Number(
+                courseItem.querySelector<HTMLSpanElement>(
+                    ':scope > [data-course]'
+                )?.dataset.course ?? '-1'
+            );
+            if (courseId === -1) return;
+            const trigger = createSubmenuTrigger(courseId);
+            courseItem.before(trigger);
+        });
+
+    /**
+     * Close all courseindex submenus
+     * @returns void
+     */
+    const closeAllSubmenus = () =>
+        navItem
+            .querySelectorAll(`.${style.courseindexTrigger} > .dropdown-menu`)
+            .forEach(el => el.classList.remove('show'));
+
+    // create courseindex submenus on demand
+    navItem.addEventListener('click', (e: MouseEvent) => {
+        const target = e.target;
+        if (!(target instanceof HTMLElement)) return;
+        const btn = target.closest<HTMLButtonElement>('button[data-course]');
+        if (!btn) return;
+
+        const courseId = Number(btn.dataset.course ?? '-1');
+        if (courseId === -1) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const submenu = getCourseIndexSubmenu(courseId);
+        btn.after(submenu);
+        const wasHidden = !submenu.classList.contains('show');
+        closeAllSubmenus();
+        if (wasHidden) submenu.classList.add('show');
+    });
+
+    // close submenus when dropdown is hidden (unfortunately a jquery-event)
+    void require(['jquery'] as const).then(([jquery]) =>
+        jquery(navItem).on('hide.bs.dropdown', closeAllSubmenus)
+    );
+};
 
 /**
  * Loads the list of courses based on active filter
@@ -103,7 +288,7 @@ const loadContent = ({
                 url: course.viewurl,
                 title: `${course.shortname}\n${course.fullname}`,
                 text: getHtml(
-                    <>
+                    <span dataset={{ course: course.id.toString() }}>
                         {course.isfavourite ?
                             <i className="icon fa fa-star fa-fw"></i>
                         :   null}
@@ -111,7 +296,7 @@ const loadContent = ({
                             <strong>{course.shortname}</strong>
                         :   null}{' '}
                         <small>{course.fullname}</small>
-                    </>
+                    </span>
                 ),
             }));
 
@@ -167,17 +352,10 @@ const loadContent = ({
                 mobile.length === 2 ? mobile[1] : mobile[0];
             mobileDropdown = mobileDropdownEl;
 
-            // clicking on the dropdown toggle should open my courses page
-            if (!myCoursesIsActive) {
-                navItem
-                    .querySelector<HTMLAnchorElement>('.dropdown-toggle')
-                    ?.addEventListener('click', e => {
-                        if (navItem.classList.contains('show')) {
-                            e.preventDefault();
-                            window.location.replace(myCoursesUrl);
-                        }
-                    });
-            }
+            enhanceDesktopDropdown(navItem, {
+                myCoursesIsActive,
+                myCoursesUrl,
+            });
         });
 };
 
@@ -233,6 +411,12 @@ const onload = async () => {
 };
 
 export default Feature.register({
-    settings: new Set([enabled, filter, favouriteCoursesAtTop]),
+    settings: new Set([
+        enabled,
+        enableCourseindex,
+        activitiesInCourseindex,
+        filter,
+        favouriteCoursesAtTop,
+    ]),
     onload,
 });
