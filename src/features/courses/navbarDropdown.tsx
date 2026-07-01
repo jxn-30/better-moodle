@@ -7,6 +7,7 @@ import { require } from '#lib/require.js';
 import type { Section } from '#types/require.js/core_courseformat/local/courseeditor/exporter';
 import { SelectSetting } from '#lib/Settings/SelectSetting';
 import style from './navbarDropdown/style.module.scss';
+import styleVars from './navbarDropdown/vars.module.scss?json';
 import {
     type CourseFilter,
     getActiveFilter,
@@ -119,7 +120,8 @@ const getCourseIndexSubmenu = (courseId: number) =>
 
         void loadCourseIndex(courseId)
             .then(({ sections }) => sections.flatMap(getItems))
-            .then(items => menu.replaceChildren(...items));
+            .then(items => menu.replaceChildren(...items))
+            .then(() => repositionSubmenu(menu));
 
         return menu;
     });
@@ -144,6 +146,26 @@ interface EnhanceDesktopDetails {
     myCoursesIsActive: boolean;
     myCoursesUrl: string;
 }
+
+/**
+ * Repositions a submenu so that it looks great and uses screen space efficiently
+ * @param submenu - the submenu to reposition
+ */
+const repositionSubmenu = (submenu: HTMLDivElement) => {
+    // Increase the dropdown height if necessary
+    submenu.style.removeProperty('top');
+    const margin = styleVars.submenuMarginY as number;
+    const currentTop = submenu.getBoundingClientRect().top;
+    const targetTop = window.innerHeight - margin - submenu.scrollHeight;
+    const finalTop = Math.max(60 + margin, targetTop); // Navbar has a height of 60
+    submenu.style.setProperty('top', `${Math.min(finalTop - currentTop, 0)}px`);
+
+    // store the top position of the dropdown to configure correct maxheight
+    submenu.style.setProperty(
+        '--dropdown-top',
+        `${submenu.getBoundingClientRect().top}px`
+    );
+};
 
 /**
  * Enhances the desktop dropdown by some additional features and adds event listeners etc.
@@ -210,6 +232,8 @@ const enhanceDesktopDropdown = (
         const wasHidden = !submenu.classList.contains('show');
         closeAllSubmenus();
         if (wasHidden) submenu.classList.add('show');
+
+        repositionSubmenu(submenu);
     });
 
     // close submenus when dropdown is hidden (unfortunately a jquery-event)

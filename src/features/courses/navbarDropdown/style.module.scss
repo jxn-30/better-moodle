@@ -1,3 +1,5 @@
+@use './vars.module' as *;
+
 :local(.desktop) {
     + .dropdown-menu {
         max-width: 500px;
@@ -30,6 +32,13 @@
 
             &:has(.dropdown-menu.show) button {
                 box-shadow: 0 0 0 0.2rem var(--primary);
+            }
+
+            .dropdown-menu {
+                margin-bottom: $submenu-margin-y;
+                max-height: calc(
+                    100vh - var(--dropdown-top) - $submenu-margin-y
+                );
             }
         }
     }
