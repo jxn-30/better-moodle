@@ -21,14 +21,15 @@ import { putTemplate, renderCustomTemplate } from '#lib/templates';
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('myCourses.navbarDropdown')
     .requireReload();
-const enableCourseindex = new BooleanSetting('courseindex', true)
-    .requireReload()
-    .disabledIf(enabled, '!=', true);
+const enableCourseindex = new BooleanSetting('courseindex', true).disabledIf(
+    enabled,
+    '!=',
+    true
+);
 const activitiesInCourseindex = new BooleanSetting(
     'courseindexActivities',
     false
 )
-    .requireReload()
     .disabledIf(enabled, '!=', true)
     .disabledIf(enableCourseindex, '!=', true);
 const filter = new SelectSetting(
@@ -420,6 +421,14 @@ const onload = async () => {
         myCoursesText,
     });
 
+    enableCourseindex.onChange(() => {
+        courseIndexSubmenus.clear();
+        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
+    });
+    activitiesInCourseindex.onChange(() => {
+        courseIndexSubmenus.clear();
+        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
+    });
     favouriteCoursesAtTop.onChange(() =>
         loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText })
     );
