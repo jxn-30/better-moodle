@@ -7,6 +7,16 @@ export const de = {
             description:
                 'Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.',
         },
+        courseindex: {
+            name: 'Schnellzugriff für Abschnitte',
+            description:
+                'Ermöglicht es, über die Kurs-Dropdown auch direkt auf die Abschnitte des Kurses zuzugreifen (funktioniert derzeit nicht in der mobilen Ansicht)',
+        },
+        courseindexActivities: {
+            name: 'Schnellzugriff für Aktivitäten',
+            description:
+                'Ermöglicht es, über die Kurs-Dropdown auch direkt auf die Aktivitäten des Kurses zuzugreifen (funktioniert derzeit nicht in der mobilen Ansicht)',
+        },
         filter: {
             name: 'Filter der Kurs-Dropdown',
             description:
@@ -29,6 +39,16 @@ export const en = {
             name: 'Dropdown in the navigation bar',
             description:
                 'Converts the "My courses" link into a dropdown to allow quick direct access to all your courses.',
+        },
+        courseindex: {
+            name: 'Fast-Access for sections',
+            description:
+                'Allows accessing the course sections from within the dropdown (does not work on mobile view yet)',
+        },
+        courseindexActivities: {
+            name: 'Fast-Access for activities',
+            description:
+                'Allows accessing the course activities from within the dropdown (does not work on mobile view yet)',
         },
         filter: {
             name: 'Filter the course dropdown',
