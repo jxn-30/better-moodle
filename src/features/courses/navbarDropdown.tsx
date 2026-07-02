@@ -85,6 +85,15 @@ const getCourseIndexSubmenu = (courseId: number) =>
         );
 
         /**
+         * Unescapes HTML strings (e.g. &amp; becomes &)
+         * @param text - the string with escape sequences
+         * @returns the unescaped text
+         */
+        const unescape = (text: string) =>
+            new DOMParser().parseFromString(text, 'text/html').documentElement
+                .textContent;
+
+        /**
          * Creates the DOM items for a section and its activities
          * @param section - the section to generate the items for
          * @returns the dropdown items
@@ -94,7 +103,7 @@ const getCourseIndexSubmenu = (courseId: number) =>
                 [
                     (
                         <a className="dropdown-item" href={section.sectionurl}>
-                            {section.title}
+                            {unescape(section.title)}
                         </a>
                     ) as HTMLAnchorElement,
                     ...section.cms.map(
@@ -108,14 +117,14 @@ const getCourseIndexSubmenu = (courseId: number) =>
                                         `${section.sectionurl}#${cm.anchor}`
                                     }
                                 >
-                                    {cm.name}
+                                    {unescape(cm.name)}
                                 </a>
                             ) as HTMLAnchorElement
                     ),
                 ]
             :   ((
                     <a className="dropdown-item" href={section.sectionurl}>
-                        {section.title}
+                        {unescape(section.title)}
                     </a>
                 ) as HTMLAnchorElement);
 
