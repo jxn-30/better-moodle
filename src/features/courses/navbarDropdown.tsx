@@ -59,6 +59,9 @@ const createSubmenuTrigger = (courseId: number) => (
         <button
             type="button"
             className="btn btn-icon btn-sm"
+            aria-label="Open course index"
+            aria-expanded="false"
+            aria-haspopup="menu"
             dataset={{ course: courseId.toString(), toggle: 'dropdown' }}
         >
             <i className="icon fa-solid fa-fw fa-caret-right m-0"></i>
@@ -216,13 +219,16 @@ const enhanceDesktopDropdown = (
         });
 
     /**
-     * Close all courseindex submenus
-     * @returns void
+     * Closes all courseindex submenus
      */
-    const closeAllSubmenus = () =>
+    const closeAllSubmenus = () => {
         navItem
             .querySelectorAll(`.${style.courseindexTrigger} > .dropdown-menu`)
             .forEach(el => el.classList.remove('show'));
+        navItem
+            .querySelectorAll<HTMLButtonElement>('button[data-course]')
+            .forEach(btn => btn.setAttribute('aria-expanded', 'false'));
+    };
 
     // create courseindex submenus on demand
     navItem.addEventListener('click', (e: MouseEvent) => {
@@ -242,6 +248,7 @@ const enhanceDesktopDropdown = (
         const wasHidden = !submenu.classList.contains('show');
         closeAllSubmenus();
         if (wasHidden) submenu.classList.add('show');
+        btn.setAttribute('aria-expanded', wasHidden ? 'true' : 'false');
 
         repositionSubmenu(submenu);
     });
