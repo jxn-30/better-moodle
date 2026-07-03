@@ -1,13 +1,18 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import Feature from '#lib/Feature';
+import { FIFTEEN_SECONDS } from '#lib/times';
 import globalStyle from '#style/index.module.scss';
+import { LLF } from '#i18n';
 import mobileTemplate from './navbarDropdown/mobile.mustache?raw';
 import { PREFIX } from '#lib/helpers';
 import { require } from '#lib/require.js';
-import type { Section } from '#types/require.js/core_courseformat/local/courseeditor/exporter';
 import { SelectSetting } from '#lib/Settings/SelectSetting';
 import style from './navbarDropdown/style.module.scss';
 import styleVars from './navbarDropdown/vars.module.scss?json';
+import type {
+    Course,
+    Section,
+} from '#types/require.js/core_courseformat/local/courseeditor/exporter';
 import {
     type CourseFilter,
     getActiveFilter,
@@ -17,6 +22,8 @@ import {
 } from '#lib/myCourses';
 import { getHtml, getLoadingSpinner, ready } from '#lib/DOM';
 import { putTemplate, renderCustomTemplate } from '#lib/templates';
+
+const LL = LLF('courses', 'navbarDropdown');
 
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('myCourses.navbarDropdown')
@@ -77,7 +84,7 @@ const courseIndexSubmenus = new Map<number, HTMLDivElement>();
  * @returns the courseindex submenu of this course
  */
 const getCourseIndexSubmenu = (courseId: number) =>
-    courseIndexSubmenus.getOrInsertComputed(courseId, () => {
+    courseIndexSubmenus.getOrInsertComputed(courseId, (courseId: number) => {
         const menu = (<div class="dropdown-menu"></div>) as HTMLDivElement;
 
         void getLoadingSpinner(`navbarDropdown-courseindex-${courseId}`).then(
@@ -134,7 +141,15 @@ const getCourseIndexSubmenu = (courseId: number) =>
         void loadCourseIndex(courseId)
             .then(({ sections }) => sections.flatMap(getItems))
             .then(items => menu.replaceChildren(...items))
-            .then(() => repositionSubmenu(menu));
+            .then(() => repositionSubmenu(menu))
+            .catch(() => {
+                menu.replaceChildren(
+                    <span className="dropdown-item text-danger">
+                        🦄 {LL.courseindex.error()}
+                    </span>
+                );
+                courseIndexSubmenus.delete(courseId);
+            });
 
         return menu;
     });
@@ -149,9 +164,15 @@ const loadCourseIndex = (courseId: number) =>
         // eslint-disable-next-line @typescript-eslint/unbound-method -- what does it even want to tell us here?
         ([{ getCourseEditor }]) => {
             const editor = getCourseEditor(courseId);
-            return editor
+            const { resolve, reject, promise } =
+                Promise.withResolvers<Course>();
+            // As the whole moodle-thing doesn't throw (but also doesn't resolve) on error, just add a timeout to 15s
+            setTimeout(() => reject(), FIFTEEN_SECONDS);
+            void editor
                 .getInitialStatePromise()
-                .then(() => editor.getExporter().course(editor.state));
+                .then(() => editor.getExporter().course(editor.state))
+                .then(index => resolve(index));
+            return promise;
         }
     );
 

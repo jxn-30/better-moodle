@@ -31,6 +31,9 @@ export const de = {
                 'Favorisierte Kurse werden immer oben in der Kurs-Dropdown angezeigt, anstelle an der normalen Stelle bei alphabetischer Sortierung.',
         },
     },
+    courseindex: {
+        error: 'Der Kursindex konnte nicht geladen werden. Leider können wir es nicht nochmal versuchen, wenn du die Seite nicht neu lädst. :(',
+    },
 } satisfies FeatureTranslation;
 
 export const en = {
@@ -61,6 +64,9 @@ export const en = {
             description:
                 'Favourite courses are always displayed at the top of the course dropdown instead of in the normal position when sorted alphabetically.',
         },
+    },
+    courseindex: {
+        error: 'Courseindex could not be loaded. Unfortunately retrying without a page reload is not yet possible. :(',
     },
 } satisfies typeof de;
 

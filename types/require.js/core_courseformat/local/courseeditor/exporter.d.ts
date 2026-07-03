@@ -14,7 +14,7 @@ export interface Section {
     cms: { name: string; visible: boolean; anchor: string; url?: string }[];
 }
 
-interface Course {
+export interface Course {
     editmode: boolean;
     hassections: boolean;
     highlighted: string;
