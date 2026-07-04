@@ -216,8 +216,7 @@ export const TextInput = ({ id, value }: TextComponent['props']): TextInput =>
 
 // region Select
 export type SelectOption =
-    | string
-    | { key: string; title: string | LocalizedString };
+    string | { key: string; title: string | LocalizedString };
 export type SelectComponent<
     Group extends FeatureGroupID,
     Feat extends FeatureID<Group>,
