@@ -8,9 +8,6 @@ const enabled = new BooleanSetting('enabled', true);
  * Converts the links into anchor-links or back to normal links.
  */
 const reload = async () => {
-    // we want this feature to only be active on the course main page
-    if (window.location.pathname !== '/course/view.php') return;
-
     // let's wait for the DOM to be ready and for the courseindex to be loaded
     // DOM needs to be ready for the latter one, so no explicit check is required here.
     await mdlJSComplete('core_courseformat/placeholder:loadcourseindex');
@@ -19,6 +16,12 @@ const reload = async () => {
         '.courseindex-section .courseindex-section-title .courseindex-link';
 
     if (enabled.value) {
+        const courseLink = document.querySelector<HTMLAnchorElement>(
+            '.breadcrumb-item:first-child a'
+        );
+        if (!courseLink && window.location.pathname !== '/course/view.php') {
+            return;
+        }
         document
             .querySelectorAll<HTMLAnchorElement>(linkSelector)
             .forEach(link => {
@@ -27,7 +30,7 @@ const reload = async () => {
                 )?.dataset.number;
                 if (!sectionNumber) return;
                 link.dataset.originalLink = link.href;
-                link.href = `#section-${sectionNumber}`;
+                link.href = `${courseLink?.href ?? ''}#section-${sectionNumber}`;
             });
     } else {
         document
