@@ -75,7 +75,7 @@
     "devDependencies": {
         "@actions/core": "3.0.1",
         "@babel/compat-data": "8.0.0",
-        "@cloudflare/workers-types": "4.20260702.1",
+        "@cloudflare/workers-types": "5.20260707.1",
         "@commitlint/cli": "21.2.0",
         "@commitlint/config-conventional": "21.2.0",
         "@eslint/js": "10.0.1",
