@@ -33,7 +33,9 @@ const reload = async () => {
         document
             .querySelectorAll<HTMLAnchorElement>(linkSelector)
             .forEach(link => {
-                link.href = link.dataset.originalLink ?? '';
+                if (!link.dataset.originalLink) return;
+                link.href = link.dataset.originalLink;
+                link.removeAttribute('data-original-link');
             });
     }
 };
