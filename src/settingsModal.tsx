@@ -393,6 +393,7 @@ if (
             return new Tooltip(SettingsBtnIcon, {
                 trigger: 'manual',
                 title: LL.settings.newBadge(),
+                placement: 'bottom', // Moodle >= 500
                 template: (
                     (
                         <div className="tooltip" role="tooltip">
@@ -411,9 +412,12 @@ if (
             });
         })
         .then(tooltip => {
-            tooltip
-                .getTipElement()
-                .addEventListener('click', () => SettingsBtn.click());
+            // With Moodle 500, the lib has been rewritten to get rid of jQuery :)
+            const tip =
+                __MOODLE_VERSION__ >= 500 ?
+                    tooltip._getTipElement()
+                :   tooltip.getTipElement();
+            tip.addEventListener('click', () => SettingsBtn.click());
             tooltip.show();
             tooltip.update();
             newSettingsTooltip = tooltip;
@@ -426,6 +430,7 @@ if (
          * Hides the "New!"-Tooltip
          */
         const hide = () => {
+            if (__MOODLE_VERSION__ >= 500) return;
             newSettingsTooltip?.hide();
         };
         /**
@@ -449,8 +454,12 @@ if (
         SettingsBtn.addEventListener('mouseleave', hide);
         SettingsBtn.addEventListener('focusin', show);
         SettingsBtn.addEventListener('focusout', hide);
-        newSettingsTooltip.getTipElement().addEventListener('mouseenter', show);
-        newSettingsTooltip.getTipElement().addEventListener('mouseleave', hide);
+        const tip =
+            __MOODLE_VERSION__ >= 500 ?
+                newSettingsTooltip._getTipElement()
+            :   newSettingsTooltip.getTipElement();
+        tip.addEventListener('mouseenter', show);
+        tip.addEventListener('mouseleave', hide);
     });
 }
 // endregion
