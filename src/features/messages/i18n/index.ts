@@ -16,6 +16,6 @@ export const en = {
         markdownSupport: markdownSupport.en,
         sendHotkey: sendHotkey.en,
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

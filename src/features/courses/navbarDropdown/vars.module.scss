@@ -1,0 +1,7 @@
+@use '/src/style/functions' as fn;
+
+$submenu-margin-y: 10px;
+
+:export {
+    submenu-margin-y: fn.strip-unit($submenu-margin-y);
+}

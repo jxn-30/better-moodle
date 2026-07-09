@@ -92,11 +92,7 @@ const generateScopedName =
     };
 
 type JSValue =
-    | boolean
-    | number
-    | string
-    | JSValue[]
-    | { [key: string | number]: JSValue };
+    boolean | number | string | JSValue[] | { [key: string | number]: JSValue };
 
 /**
  * Converts a sass value to its corresponding JS value

@@ -18,6 +18,6 @@ export const en = {
                 'Manipulates the links to the sections in the left sidebar so that it scrolls within the main course page instead of opening the section page.',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

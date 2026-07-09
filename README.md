@@ -44,6 +44,7 @@ _Bilder in dieser Beschreibung enthalten teilweise verschwommene Elemente, um de
     2. Alternatively support the free internet and just use Firefox
 3. Reload Moodle once and enjoy a better Moodle 🎉
 4. If required, customize Better-Moodle via the gears icon at the top right of Moodle, next to your profile picture
+
  </details>
 
 ### Unterstützte Browser
