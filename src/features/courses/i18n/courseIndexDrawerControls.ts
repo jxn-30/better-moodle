@@ -18,6 +18,6 @@ export const en = {
                 'Adds controls to collapse/expand all sections in the sidebar at once.',
         },
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };

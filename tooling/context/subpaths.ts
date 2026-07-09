@@ -18,7 +18,7 @@ export const resolve = (path: string) =>
 export const toPOSIX = (pathStr: string) =>
     pathStr.replaceAll(path.sep, path.posix.sep);
 
-export const root = path.dirname(resolve('#_/package.json'));
+export const root = path.dirname(resolve('#/package.json'));
 
 export const configsBase = path.dirname(resolve('#_configs/_config.d.ts'));
 export const featureBase = path.dirname(

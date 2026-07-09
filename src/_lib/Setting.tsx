@@ -66,6 +66,8 @@ export default abstract class Setting<
     #requiresReload = false;
     #syncListener: ReturnType<typeof GM_addValueChangeListener> | null = null;
 
+    #isBeingReset = false;
+
     protected migrator: Migrator<Type> | null = null;
 
     /**
@@ -204,6 +206,7 @@ export default abstract class Setting<
     /**
      * The form control element used in the settings modal
      * @returns the form control element
+     * @throws {Error} if the form control does not exist yet
      */
     get formControl() {
         if (!this.#formControl) throw new Error('Form control not ready');
@@ -392,15 +395,25 @@ export default abstract class Setting<
     }
 
     /**
+     * Indicates if the setting is currently being reset
+     * @returns the current resetting state
+     */
+    get isBeingReset() {
+        return this.#isBeingReset;
+    }
+
+    /**
      * Resets the setting to its default value
      */
     reset() {
+        this.#isBeingReset = true;
         this.savedValue = this.#default;
         if (this.#formControl) {
             this.#formControl.value = this.savedValue;
             this.#formControl.dispatchEvent(new Event('input'));
             this.#formControl.dispatchEvent(new Event('change'));
         }
+        this.#isBeingReset = false;
     }
 
     /**
@@ -425,6 +438,8 @@ export default abstract class Setting<
         this.onChange(() => {
             // we don't want to show or set if the value stays the same (e.g. after an undo operation)
             if (this.#unsavedValue === this.savedValue) return;
+            // also do not show or set if the change is triggered by a reset
+            if (this.#isBeingReset) return;
             // show a toast notification
             void toast(
                 mdToHtml(LL.settings.requireReload({ name: this.title })),

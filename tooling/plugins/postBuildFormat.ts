@@ -91,7 +91,7 @@ export default function (ctx: Context): PluginOption {
                     requireReplacements.set(
                         fileName,
                         ctx.userscript.require.getUrl(
-                            ctx.urls.versionDownloadUrl(ctx.version, fileName),
+                            ctx.urls.versionDownloadURL(fileName, ctx.version),
                             ctx.args.isReleaseBuild ? code : false
                         )
                     )

@@ -8,12 +8,12 @@ import { timeToString } from '#lib/localeString';
 import { ONE_HOUR, ONE_MINUTE, ONE_SECOND } from '#lib/times';
 
 const enum FUZZYNESS {
-    off,
+    'off',
     '5min',
     '15min',
-    food,
-    day,
-    week,
+    'food',
+    'day',
+    'week',
 }
 
 type Fuzzyness = keyof typeof FUZZYNESS;
@@ -51,7 +51,7 @@ const fuzzyTranslations = LLF('navbarMarquee', 'clock').fuzzy;
  * @returns the fuzzy time string
  */
 const fuzzyTime = (now: Date): string => {
-    const fuzzyness = fuzzy.value as FUZZYNESS;
+    const fuzzyness: FUZZYNESS = fuzzy.value;
     if (fuzzyness === FUZZYNESS.off) return '';
     else if (
         fuzzyness === FUZZYNESS['5min'] ||

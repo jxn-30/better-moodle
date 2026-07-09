@@ -4,6 +4,7 @@
 import BlockMyOverviewRepository from './require.js/block/myoverview/repository';
 import BlockMyOverviewSelectors from './require.js/block/myoverview/selectors';
 import CoreConfig from './require.js/core/config';
+import CoreCourseformatCourseeditor from './require.js/core_courseformat/courseeditor.d.ts';
 import CoreCustomInteractionEvents from './require.js/core/custom_interaction_events';
 import CoreFiltersEvents from './require.js/core_filters/event';
 import CoreFormAutocomplete from './require.js/core/form-autocomplete';
@@ -47,6 +48,8 @@ interface ModuleMap {
     'core/str': CoreStr;
     'core/templates': CoreTemplates;
     'core/toast': CoreToast;
+
+    'core_courseformat/courseeditor': CoreCourseformatCourseeditor;
 
     'core_filters/events': CoreFiltersEvents;
 

@@ -1,0 +1,162 @@
+name: Update download counts
+
+on:
+    schedule:
+        - cron: '0 0 * * *' # nightly at midnight UTC
+
+permissions: {}
+
+jobs:
+    update-download-counts:
+        name: 📊 Update download counts on latest release
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        steps:
+            - name: 📥️ Checkout
+              uses: actions/checkout@v7.0.0
+              with:
+                  sparse-checkout: |
+                      package.json
+                      meta/asciichart.js
+
+            - name: 🔎 get Node version
+              run: |
+                  NODE_VERSION=$(jq -r '.engines.node | sub("^[^0-9]*v?"; "")' package.json)
+                  echo "NODE_VERSION=$NODE_VERSION"  >> $GITHUB_ENV
+              shell: bash
+
+            - name: 🛠 Setup Node.js
+              uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+
+            - name: 📊 Fetch download counts & update release
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: |
+                  #!/bin/bash
+
+                  # define symbols for the different chart lines
+                  symbols=$(echo "[" \
+                  '["┼","┤","╶","╴","─","╰","╭","╮","╯","│"],' \
+                  '["╬","╣","╶","╴","═","╚","╔","╗","╝","║"],' \
+                  '["╋","┫","╺","╸","━","┗","┏","┓","┛","│"] ' \
+                  "]"
+                  )
+                  symbolscount=$(echo "$symbols" | jq "length")
+
+                  # get tag, body and downloads count of latest release
+                  release=$(gh release view --json tagName,body,assets)
+                  tag=$(echo "$release" | jq -r .tagName)
+                  body=$(echo "$release" | jq -r .body)
+                  # this writes config,count in a CSV-Style, which makes it easier to process in the loop
+                  downloads=$(echo "$release" | jq -r ".assets[] | select(.name | endswith(\".user.js\")) | [(.name | sub(\"^better-moodle-|\\\\.user\\\\.js$\"; \"\"; \"g\")), .downloadCount] | join(\",\")")
+
+                  chartdata="[]" # this tracks the chart data in a 2D-JSON-Array, passed as an argument to asciichart
+                  chartlegend="" # a manually constructed legend, showing the line style of each configuration
+
+                  idx=0
+
+                  # iterate over each of the configs and their respective download count
+                  # 1. update the body by updating the download count history comment
+                  # 2. append history of this config to the chart data
+                  # 3. extend the chart legend
+                  # 4. increment index
+                  while IFS="," read -r config count; do
+                      # create a regex to find the comment containing the history
+                      findregex='(?<=<!-- download-count-'"$config"').*?(?=-->)';
+                      # extract history from the correct comment
+                      list=$(echo "$body" | grep -oP "$findregex" || true);
+                      # make history an empty array if it does not exist yet
+                      if [[ -z "$list" ]]; then list="[]"; fi
+                      # append list by current download count
+                      list=$(echo "$list" | jq -cr ". + [$count]");
+
+                      # create a sed expression to remove the config comment
+                      sedexpr='s/<!-- download-count-'"$config"'.*?-->//';
+                      # remove config comment
+                      body=$(echo "$body" | sed --regexp-extended "$sedexpr");
+                      # append newly created config comment
+                      body=$(echo "$body"$'\n''<!-- download-count-'"$config"' '"$list"' -->')
+
+                      # append the chart data by the history of this config
+                      chartdata=$(echo "$chartdata" | jq -cr ". + [$list]")
+
+                      # append the chart legend by the line style and the config name
+                      symbol=$(echo "$symbols" | jq -r ".[$idx % $symbolscount][4]")
+                      chartlegend="$chartlegend| $symbol$symbol$config$symbol$symbol $list"$'\n'
+
+                      # increase index by one
+                      idx=$(( idx + 1 ))
+                  done <<<$(echo "$downloads") # this funny expression is needed so that the outer variables can be updated
+
+                  # create raw json for symbols and data
+                  symbolsjson=$(echo "$symbols" | jq -cr .)
+                  chartdatajson=$(echo "$chartdata" | jq -cr .)
+                  # create a small node script that will call asciichart and write the chart to stdout
+                  height=25
+                  nodescript=$(echo "" \
+                      "const asciichart = require('./meta/asciichart.js').default;" \
+                      "const data = $chartdata;" \
+                      "const symbols = $symbolsjson;" \
+                      "const height = $height;" \
+                      "const min = 0;" \
+                      "const maxVal = Math.max(...data.flat());" \
+                      "const max = maxVal + (height - maxVal % height);" \
+                      "const ratio = Math.abs(max - min) / height;" \
+                      "const pad = (str, length) => str.padStart((str.length + length) / 2, ' ').padEnd(length, ' ');" \
+                      "const format = x => pad(Math.max(0, Math.ceil(x - ratio / 2)).toFixed(0).padStart(4, ' ') + ' - ' + Math.floor(x + ratio / 2 - 1e-6).toFixed(0).padEnd(4, ' '), 2 * 4 + 3 + 2);" \
+                      "const plot = asciichart.plot(data, {symbols, height, min, max, format});" \
+                      "console.log(plot);"
+                  )
+
+                  # save the chart from stdout to a variable
+                  chart=$(node --eval="$nodescript")
+
+                  # define the start and end of the Chart-Codeblock
+                  chartblockstart='```chart'
+                  chartblockend='```'
+
+                  # if the body does not have the Chart-Codeblock yet, append it!
+                  if [[ "$body" = *"$chartblockstart"* ]]; then
+                      :
+                  else
+                      body=$(echo "$body"$'\n'"$chartblockstart$chartblockend")
+                  fi
+
+                  # construct the new chart block content
+                  # we cannot use the nicer-looking $() way with \ as for symbols, as otherwise random spaces will spawn unfortunately
+                  chartblockcontent="$chartblockstart"$'\n'"# History of download counts for each instance (updated daily)"$'\n\n'"$chart"$'\n\n'"$chartlegend""$chartblockend"
+
+
+                  # replace the existing codeblock with the new one
+                  newbody=""
+                  copy=true
+
+                  # do this by iterating over each line and copy it to the new body if we're not within the codeblock
+                  while IFS="" read -r line; do
+                      # if we are at the start of the codeblock, stop copying
+                      if [[ "$line" = *"$chartblockstart"* ]]; then
+                          copy=false
+
+                          # append the new codeblock
+                          newbody=$(echo "$newbody"$'\n'"$chartblockcontent")
+
+                          # continue the loop without executing the other IFs
+                          continue
+                      fi
+
+                      # copy the line if we're in copy-mode
+                      if [[ "$copy" == true ]]; then
+                          newbody=$(echo "$newbody"$'\n'"$line")
+                      fi
+
+                      # re-enter copy-mode if the codeblock ends
+                      if [[ "$line" = *"$chartblockend"* ]]; then
+                          copy=true
+                      fi
+                  done <<<$(echo "$body") # again this funny expression to use the variable for iterating
+
+                  # now update the body of the release
+                  gh release edit "$tag" --notes "$newbody"

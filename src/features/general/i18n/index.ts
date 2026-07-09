@@ -17,6 +17,15 @@ export const de = {
             description:
                 'Zeigt einen kleinen roten Punkt bei den Zahnrädern in der Navigationsleiste an, wenn es ein Update für Better-Moodle gibt.',
         },
+        'releaseChannel': {
+            name: 'Release-Kanal',
+            description:
+                'Wähle hier, ob du die normalen, stabilen, Updates erhalten möchtest oder lieber Features und Bugfixes schneller, dafür potentiell instabiler, haben möchtest.',
+            options: {
+                stable: 'Stabile Updates',
+                nightly: 'Nightly Updates (potentiell instabil)',
+            },
+        },
         'language': {
             name: 'Better-Moodle Sprache',
             description: 'Wähle die Sprache von Better-Moodle aus.',
@@ -64,6 +73,15 @@ export const en = {
             description:
                 'Displays a small red dot by the cogs in the navigation bar when there is an update for Better-Moodle.',
         },
+        'releaseChannel': {
+            name: 'Release-Channel',
+            description:
+                "Choose here whether you want to receive the standard, stable updates, or whether you'd prefer to get new features and bug fixes more quickly, even if this means they might be less stable.",
+            options: {
+                stable: 'Stable updates',
+                nightly: 'Nightly updates (potentially unstable)',
+            },
+        },
         'language': {
             name: 'Better-Moodle Language',
             description: 'Choose the language of Better-Moodle.',
@@ -98,6 +116,6 @@ export const en = {
         prideLogo: prideLogo.en,
         cauNavbar: cauNavbar.en,
     },
-} as typeof de;
+} satisfies typeof de;
 
 export default { de, en };
