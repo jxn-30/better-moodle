@@ -7,13 +7,14 @@ import 'virtual:fixes';
 // normal imports
 import Feature from './Feature';
 import { isFeatureGroup } from '#i18n';
-import { Tag } from './Setting';
 import FeatureGroup, { FeatureGroupID } from './FeatureGroup'; // type import but we cannot use type modifier here
 
 type RegisteredFeature = (new (
     featureId: string,
     group: FeatureGroup<FeatureGroupID>
-) => Feature<FeatureGroupID>) & { hasTag(tag: Tag): boolean };
+) => Feature<FeatureGroupID>) & {
+    shouldDisableIfFunSettingsAreHidden(): boolean;
+};
 
 const shouldHideFunFeatures = GM_getValue(
     'settings.general.hideFunSettings',
@@ -31,10 +32,14 @@ const initFeature = (
     featureId: string
 ) => {
     const Feature = featureImports[`${group.id}_${featureId}`] as
-        | RegisteredFeature
-        | undefined;
+        RegisteredFeature | undefined;
     if (!Feature) return;
-    if (shouldHideFunFeatures && Feature.hasTag('fun')) return;
+    if (
+        shouldHideFunFeatures &&
+        Feature.shouldDisableIfFunSettingsAreHidden()
+    ) {
+        return;
+    }
     const feature = new Feature(featureId, group);
     return feature;
 };

@@ -3,7 +3,7 @@ import FeatureGroup, {
     FeatureGroupID,
     FeatureGroupTranslations,
 } from './FeatureGroup';
-import Setting, { type Tag as FeatureTag } from './Setting';
+import Setting, { type Tag as SettingTag } from './Setting';
 
 export type FeatureTranslations<
     Group extends FeatureGroupID,
@@ -34,8 +34,6 @@ type FeatureMethods<
 export type FeatureLoadPrerequisites =
     null | 'none' | 'moodle-ready' | 'dom-ready' | 'moodle-and-dom-ready';
 
-type FeatureTags = Set<FeatureTag>;
-
 /**
  * A class that represents a single feature
  * cannot be instantiated directly but using the register method will return an instantiable version of this class
@@ -48,35 +46,30 @@ export default abstract class Feature<
      * This registering workaround is necessary so that we can have readonly private id that is automatically generated from the filepath
      * @param args - the methods that are to be implemented
      * @param args.settings - the settings for this feature
-     * @param args.tags - the tags associated with this feature
+     * @param args.disableIfFunSettingsAreHidden - whether this whole feature should stay unloaded when fun settings are hidden
      * @param args.loadPrerequisites - when this feature should be loaded
      * @returns a class that can be instantiated
      */
     static register<Group extends FeatureGroupID, ID extends FeatureID<Group>>({
         settings,
-        tags,
+        disableIfFunSettingsAreHidden = false,
         loadPrerequisites = null,
         ...methods
     }: {
         settings?: Set<Setting<Group, ID>>;
-        tags?: FeatureTags;
+        disableIfFunSettingsAreHidden?: boolean;
         loadPrerequisites?: FeatureLoadPrerequisites;
     } & FeatureMethods<Group, ID>) {
-        const featureTags = tags ?? new Set<FeatureTag>();
-
         /**
          * The instantiable version of the Feature class
          */
         return class Feature extends this<Group, ID> {
-            static readonly tags = featureTags;
-
             /**
-             * Checks whether this feature has the requested tag.
-             * @param tag - the tag to check
-             * @returns whether the feature has the requested tag
+             * Checks whether this feature should be disabled if fun settings are hidden.
+             * @returns whether the feature should be disabled
              */
-            static hasTag(tag: FeatureTag) {
-                return this.tags.has(tag);
+            static shouldDisableIfFunSettingsAreHidden() {
+                return disableIfFunSettingsAreHidden;
             }
 
             /**
@@ -90,7 +83,6 @@ export default abstract class Feature<
                     id,
                     group,
                     settings ?? new Set<Setting<Group, ID>>(),
-                    featureTags,
                     methods,
                     loadPrerequisites
                 );
@@ -101,7 +93,6 @@ export default abstract class Feature<
     readonly #id: ID;
     readonly #group: FeatureGroup<Group>;
     readonly #settings: Set<Setting<Group, ID>>;
-    readonly #tags: FeatureTags;
     readonly #onload: FeatureMethods<Group, ID>['onload'];
     readonly #onunload: FeatureMethods<Group, ID>['onunload'];
 
@@ -115,7 +106,6 @@ export default abstract class Feature<
      * @param id - the id of this feature
      * @param group - the group this feature belongs to
      * @param settings - the settings of this group
-     * @param tags - the tags associated with this feature
      * @param methods - the methods that are to be implemented (init, onload, onunload)
      * @param loadPrerequisites - when the feature group should be loaded
      */
@@ -123,14 +113,12 @@ export default abstract class Feature<
         id: ID,
         group: FeatureGroup<Group>,
         settings: Set<Setting<Group, ID>>,
-        tags: FeatureTags,
         methods: FeatureMethods<Group, ID>,
         loadPrerequisites: FeatureLoadPrerequisites
     ) {
         this.#id = id;
         this.#group = group;
         this.#settings = settings;
-        this.#tags = tags;
         this.#onload = methods.onload;
         this.#onunload = methods.onunload;
         this.#loadPrerequisites = loadPrerequisites;
@@ -173,20 +161,12 @@ export default abstract class Feature<
     }
 
     /**
-     * The tags for this feature.
-     * @returns the tags for this feature
-     */
-    get tags() {
-        return this.#tags;
-    }
-
-    /**
-     * Does this feature have the requested tag?
+     * Does this feature have a setting with the requested tag?
      * @param tag - the tag to check
-     * @returns whether the feature has the tag
+     * @returns whether the feature has a setting with the tag
      */
-    hasTag(tag: FeatureTag) {
-        return this.#tags.has(tag);
+    hasTag(tag: SettingTag) {
+        return Array.from(this.#settings).some(setting => setting.hasTag(tag));
     }
 
     /**

@@ -249,7 +249,9 @@ export default abstract class Setting<
      * @returns the current value of this setting
      */
     get value(): Type {
-        return this.#formControl?.value ?? this.savedValue;
+        return this.#shouldUseDefaultBecauseFunSettingsAreHidden() ?
+                this.#default
+            :   (this.#formControl?.value ?? this.savedValue);
     }
 
     /**
@@ -527,5 +529,25 @@ export default abstract class Setting<
     addTag(tag: Tag) {
         this.#tags.add(tag);
         return this;
+    }
+
+    /**
+     * Checks whether this setting has the requested tag.
+     * @param tag - the tag to check
+     * @returns whether the setting has the tag
+     */
+    hasTag(tag: Tag) {
+        return this.#tags.has(tag);
+    }
+
+    /**
+     * Checks whether the setting should behave like its default value because fun settings are hidden.
+     * @returns whether the default value should be used
+     */
+    #shouldUseDefaultBecauseFunSettingsAreHidden() {
+        return (
+            this.hasTag('fun') &&
+            GM_getValue('settings.general.hideFunSettings', true)
+        );
     }
 }
