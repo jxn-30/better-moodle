@@ -51,7 +51,7 @@ jobs:
         name: 📜 Post PR summary comment
         steps:
             - name: 📥️ checkout
-              uses: actions/checkout@v6.0.3
+              uses: actions/checkout@v7.0.0
 
             # Download all artifacts whose names start with "pr-summary-".
             # Each check (prettier, eslint, build) uploads one such artifact,

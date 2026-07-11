@@ -5,12 +5,14 @@ interface TooltipConfig {
     trigger?: string;
     title?: string;
     template?: string;
+    placement?: 'top' | 'right' | 'bottom' | 'left'; // Moodle >= 500
 }
 
 export class ThemeBoostBootstrapTooltipClass {
     constructor(element: HTMLElement, config: TooltipConfig);
 
-    getTipElement(): HTMLElement;
+    getTipElement(): HTMLElement; // Moodle < 500
+    _getTipElement(): HTMLElement; // Moodle >= 500
     show(): void;
     hide(): void;
     update(): void;

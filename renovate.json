@@ -23,21 +23,6 @@
             "matchUpdateTypes": ["minor", "patch"]
         },
         {
-            "schedule": ["before 3am on thursday"],
-            "groupName": "Polyfill maintenance",
-            "lockFileMaintenance": { "enabled": true },
-            "groupSlug": "polyfill-maintenance",
-            "matchPackageNames": [
-                "@babel/*",
-                "babel-plugin-polyfill-corejs3",
-                "browserslist",
-                "caniuse-lite",
-                "core-js",
-                "core-js-compat"
-            ],
-            "matchUpdateTypes": ["minor", "patch"]
-        },
-        {
             "extends": ["schedule:monthly"],
             "groupName": "yarn",
             "lockFileMaintenance": { "enabled": true },
@@ -54,21 +39,12 @@
             "matchManagers": ["npm", "nvm"],
             "rangeStrategy": "bump",
             "separateMajorMinor": false
-        },
-        {
-            "matchPackageNames": ["darkreader"],
-            "matchNewValue": "4.9.108",
-            "enabled": false
-        },
-        {
-            "groupName": "eslint-maintenance",
-            "matchPackageNames": ["eslint", "@eslint/js"]
         }
     ],
     "minimumReleaseAge": "30 hours",
     "postUpdateOptions": ["yarnDedupeHighest"],
     "rangeStrategy": "pin",
     "reviewers": ["jxn-30"],
-    "schedule": ["before 3am on Monday, Wednesday and Friday"],
+    "schedule": ["before 3am on Wednesday"],
     "timezone": "Europe/Berlin"
 }
