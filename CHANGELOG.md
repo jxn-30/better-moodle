@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.9.0](https://github.com/jxn-30/better-moodle/compare/2.8.0...2.9.0) (2026-07-12)
+
+
+### Features
+
+* **navbarDropdown:** allow accessing sections and activities ([#1148](https://github.com/jxn-30/better-moodle/issues/1148)) ([74c049c](https://github.com/jxn-30/better-moodle/commit/74c049cc2c045b7082b5a91894d70a267877000c))
+* **sectionCourseIndex:** allow sectionCourseIndex to work on pages other than the courses main page ([#1154](https://github.com/jxn-30/better-moodle/issues/1154)) ([df524ea](https://github.com/jxn-30/better-moodle/commit/df524ea769efedf500dc5082e6acba63aebab102))
+
+
+### Bug Fixes
+
+* **sectionCourseIndex:** fix empty links when feature is disabled ([#1153](https://github.com/jxn-30/better-moodle/issues/1153)) ([106cdb2](https://github.com/jxn-30/better-moodle/commit/106cdb22c7baea00802868a4df9e827a6aa0f22a))
+* **settings:** enhance compatibility with moodle 502 ([281439d](https://github.com/jxn-30/better-moodle/commit/281439d6e90a41ea35a9248a3d84b153ce5d1360))
+
 ## [2.8.0](https://github.com/jxn-30/better-moodle/compare/2.7.5...2.8.0) (2026-06-11)
 
 
