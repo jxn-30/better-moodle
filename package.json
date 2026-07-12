@@ -131,7 +131,7 @@
         "typescript-plugin-css-modules": "5.2.0",
         "userscript-meta": "1.0.1",
         "vite": "7.3.6",
-        "vite-plugin-monkey": "7.1.9",
+        "vite-plugin-monkey": "8.0.6",
         "vitest": "4.1.10",
         "wrangler": "4.107.0"
     },
