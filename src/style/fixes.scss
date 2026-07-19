@@ -1,6 +1,7 @@
 // For some reason that I don't know yet, this explicit @use is required.
 // In any other files/cases the globally injected @use via vite config is enough.
 @use 'global:constants.scss' as global;
+@use 'mixins';
 
 // This file provides global style fixes and improvements applied to the moodle
 
@@ -42,9 +43,24 @@
     z-index: 1053;
 }
 
-.drawer-toggles .drawer-toggler .btn .icon.fa-fw {
-    // Reset width to .icon default to maintain consistent toggler sizes
-    width: 16px;
+.drawer-toggles .drawer-toggler {
+    // Show multiple togglers below each other
+    @for $n from 2 through 2 {
+        &:nth-child(#{$n}) {
+            $offset: calc(($n - 1) * (40px + 1rem));
+
+            top: calc(60px + 1rem + $offset);
+
+            @include mixins.media-down(md) {
+                top: calc(99vh - (60px * 2.5) - $offset);
+            }
+        }
+    }
+
+    .btn .icon.fa-fw {
+        // Reset width to .icon default to maintain consistent toggler sizes
+        width: 16px;
+    }
 }
 
 body:not(.limitedwidth) .secondary-navigation .navigation .nav-tabs {
