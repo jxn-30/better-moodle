@@ -40,6 +40,11 @@
         }
     }
 
+    ::-moz-range-thumb,
+    ::-webkit-slider-thumb {
+        cursor: pointer;
+    }
+
     // style to show a bubble with current range input value
     input[type='range'] + output {
         position: absolute;
