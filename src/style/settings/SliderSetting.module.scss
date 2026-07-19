@@ -55,6 +55,11 @@
         // position the label correctly
         left: calc(1% * var(--percentage));
         transform: translateX(calc(-1% * var(--percentage)));
+
+        // With bootstrap 5, the output suddenly appears at a wrong position
+        @if global.$MOODLE_VERSION >= 500 {
+            bottom: 0;
+        }
     }
 
     // adds transparency to tick-mark labels of disabled range inputs
