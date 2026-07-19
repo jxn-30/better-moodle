@@ -27,11 +27,11 @@
             align-items: center;
 
             button:hover {
-                border-color: var(--primary);
+                border-color: var(--bs-primary);
             }
 
             &:has(.dropdown-menu.show) button {
-                box-shadow: 0 0 0 0.2rem var(--primary);
+                box-shadow: 0 0 0 0.2rem var(--bs-primary);
             }
 
             .dropdown-menu {

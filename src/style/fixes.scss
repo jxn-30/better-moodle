@@ -1,4 +1,16 @@
+// For some reason that I don't know yet, this explicit @use is required.
+// In any other files/cases the globally injected @use via vite config is enough.
+@use 'global:constants.scss' as global;
+
 // This file provides global style fixes and improvements applied to the moodle
+
+// Old variable names before Bootstrap 5
+@if global.$MOODLE_VERSION < 500 {
+    :root {
+        --bs-primary: var(--primary);
+        --bs-gray: var(--gray);
+    }
+}
 
 #page-login-index {
     // disable the weird scroll behaviour on login page (background image shall not be moved)

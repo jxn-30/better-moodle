@@ -46,7 +46,7 @@
         text-align: center;
         white-space: nowrap;
         padding: 2px;
-        background-color: var(--primary);
+        background-color: var(--bs-primary);
         color: white;
         border-radius: 4px;
         font-weight: bold;
@@ -59,6 +59,10 @@
 
     // adds transparency to tick-mark labels of disabled range inputs
     input:disabled[type='range'] + output {
-        background-color: color-mix(in srgb, var(--primary) 50%, transparent);
+        background-color: color-mix(
+            in srgb,
+            var(--bs-primary) 50%,
+            transparent
+        );
     }
 }
