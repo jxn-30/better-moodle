@@ -219,6 +219,17 @@ export default class Drawer {
                 ?.classList.add('w-100', 'd-flex');
         }
 
+        const tooltipDataset: Record<string, string> =
+            __MOODLE_VERSION__ >= 500 ?
+                {
+                    bsToggle: 'tooltip',
+                    bsPlacement: this.#oppositeSide, // this is placement of tooltip
+                }
+            :   {
+                    toggle: 'tooltip',
+                    placement: this.#oppositeSide, // this is placement of tooltip
+                };
+
         document.querySelector('#page .drawer-toggles')?.append(
             <div
                 className={`drawer-toggler drawer-${this.#side}-toggle ml-auto d-print-none`}
@@ -229,8 +240,7 @@ export default class Drawer {
                         toggler: 'drawers',
                         action: 'toggle',
                         target: this.#id,
-                        toggle: 'tooltip',
-                        placement: this.#oppositeSide, // this is placement of tooltip
+                        ...tooltipDataset,
                     }}
                     title={this.#toggleTitle}
                 >

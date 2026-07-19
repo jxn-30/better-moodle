@@ -1,11 +1,14 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import Feature from '#lib/Feature';
+import { LLF } from '#i18n';
 import Drawer, { Side } from '#lib/Drawer';
 import initCourseSidebar, {
     coursesSidebarEnabled,
     favouriteCoursesAtTop,
 } from './layout/courseSidebar';
 import { isDashboard, isLoggedIn } from '#lib/helpers';
+
+const LL = LLF('dashboard', 'layout');
 
 const timelineSidebarEnabled = new BooleanSetting(
     'timelineSidebar',
@@ -38,6 +41,7 @@ const onload = async () => {
             .setAlias('dashboard-right')
             .setSide(Side.Right)
             .setIcon('calendar')
+            .setToggleTitle(LL.sidebars._open(LL.sidebars.timeline()))
             .create()
             .then(drawer =>
                 drawer.setContent(

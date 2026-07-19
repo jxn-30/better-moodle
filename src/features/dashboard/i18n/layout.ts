@@ -23,6 +23,11 @@ export const de = {
         sync: 'Mit Auswahl auf "Meine Kurse"-Seite synchronisieren',
         empty: 'Keine Kurse im aktuellen Filter vorhanden.',
     },
+    sidebars: {
+        _open: 'Leiste öffnen: {0:string}',
+        courses: 'Kursliste',
+        timeline: 'Zeitleiste und aktuelle Termine',
+    },
 } satisfies FeatureTranslation;
 
 export const en = {
@@ -47,6 +52,11 @@ export const en = {
         title: 'My Courses',
         sync: 'Sync with current filter on "My courses"-Page',
         empty: 'There are no courses matching the currently selected filter.',
+    },
+    sidebars: {
+        _open: 'Open {0:string}',
+        courses: 'Courses',
+        timeline: 'Timeline and upcoming events',
     },
 } satisfies typeof de;
 
