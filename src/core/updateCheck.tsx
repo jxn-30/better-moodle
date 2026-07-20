@@ -158,8 +158,13 @@ export const checkForUpdates = () =>
         });
 
 releaseChannelSetting.onChange(() => {
-    // do not show the modal when change is triggered by the reset
-    if (releaseChannelSetting.isBeingReset) return;
+    // do not show the modal when change is triggered by the reset or undo
+    if (
+        releaseChannelSetting.isBeingReset ||
+        releaseChannelSetting.isBeingUndone
+    ) {
+        return;
+    }
 
     const targetChannel = releaseChannelSetting.value as 'stable' | 'nightly';
     const installURLs = {

@@ -67,6 +67,7 @@ export default abstract class Setting<
     #syncListener: ReturnType<typeof GM_addValueChangeListener> | null = null;
 
     #isBeingReset = false;
+    #isBeingUndone = false;
 
     protected migrator: Migrator<Type> | null = null;
 
@@ -403,6 +404,14 @@ export default abstract class Setting<
     }
 
     /**
+     * Indicates if the setting is currently being undone
+     * @returns the current undoing state
+     */
+    get isBeingUndone() {
+        return this.#isBeingUndone;
+    }
+
+    /**
      * Resets the setting to its default value
      */
     reset() {
@@ -420,12 +429,14 @@ export default abstract class Setting<
      * Undoes the last change to the setting
      */
     undo() {
+        this.#isBeingUndone = true;
         this.#unsavedValue = this.savedValue;
         if (this.#formControl) {
             this.#formControl.value = this.savedValue;
             this.#formControl.dispatchEvent(new Event('input'));
             this.#formControl.dispatchEvent(new Event('change'));
         }
+        this.#isBeingUndone = false;
     }
 
     /**
@@ -438,8 +449,8 @@ export default abstract class Setting<
         this.onChange(() => {
             // we don't want to show or set if the value stays the same (e.g. after an undo operation)
             if (this.#unsavedValue === this.savedValue) return;
-            // also do not show or set if the change is triggered by a reset
-            if (this.#isBeingReset) return;
+            // also do not show or set if the change is triggered by a reset or undo
+            if (this.#isBeingReset || this.#isBeingUndone) return;
             // show a toast notification
             void toast(
                 mdToHtml(LL.settings.requireReload({ name: this.title })),
