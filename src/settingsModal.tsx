@@ -2,15 +2,14 @@ import awaitImports from '#lib/imports';
 import { ChangelogBtn } from '#core/changelog';
 import globalStyle from '#style/index.module.scss';
 import { Modal } from '#lib/Modal';
-import { require } from '#lib/require.js';
 import settingsStyle from '#style/settings.module.scss';
 import { STORAGE_V2_SEEN_SETTINGS_KEY } from './migrateStorage';
 import TempStorage from '#lib/TempStorage';
-import type { ThemeBoostBootstrapTooltipClass } from '#types/require.js/theme_boost/bootstrap/tooltip.d.ts';
 import toast from '#lib/toast';
 import { BETTER_MOODLE_LANG, LL } from '#i18n';
 import { cachedRequest, NETWORK_CACHE_KEY } from '#lib/network';
 import { checkForUpdates, VersionBox } from '#core/updateCheck';
+import { createTooltip, type Tooltip } from '#lib/Tooltip';
 import {
     debounce,
     isNewInstallation,
@@ -380,48 +379,41 @@ GM_setValue(
 );
 
 // "New!"-Tooltip if there are unseen settings or no settings ever seen
-let newSettingsTooltip: ThemeBoostBootstrapTooltipClass | null;
+let newSettingsTooltip: Tooltip | null;
 if (
     isNewInstallation ||
     seenSettings.length === 0 ||
     (newSettingsTooltipSetting.value &&
         featureGroups.values().some(group => group.hasNewSetting))
 ) {
-    void require(['theme_boost/bootstrap/tooltip'] as const)
-        .then(([Tooltip]) => {
-            SettingsBtnIcon.title = LL.settings.newBadge();
-            return new Tooltip(SettingsBtnIcon, {
-                trigger: 'manual',
-                title: LL.settings.newBadge(),
-                placement: 'bottom', // Moodle >= 500
-                template: (
-                    (
-                        <div className="tooltip" role="tooltip">
-                            <div className="arrow"></div>
-                            <div
-                                className={[
-                                    'tooltip-inner badge bg-success text-uppercase',
-                                    globalStyle.shining,
-                                    globalStyle.sparkling,
-                                    settingsStyle.newSettingBadge,
-                                ]}
-                            ></div>
-                        </div>
-                    ) as HTMLDivElement
-                ).outerHTML,
-            });
-        })
-        .then(tooltip => {
-            // With Moodle 500, the lib has been rewritten to get rid of jQuery :)
-            const tip =
-                __MOODLE_VERSION__ >= 500 ?
-                    tooltip._getTipElement()
-                :   tooltip.getTipElement();
-            tip.addEventListener('click', () => SettingsBtn.click());
-            tooltip.show();
-            tooltip.update();
-            newSettingsTooltip = tooltip;
-        });
+    SettingsBtnIcon.title = LL.settings.newBadge();
+    void createTooltip(SettingsBtnIcon, {
+        trigger: 'manual',
+        title: LL.settings.newBadge(),
+        placement: 'bottom', // Moodle >= 500
+        template: (
+            (
+                <div className="tooltip" role="tooltip">
+                    <div className="arrow"></div>
+                    <div
+                        className={[
+                            'tooltip-inner badge bg-success text-uppercase',
+                            globalStyle.shining,
+                            globalStyle.sparkling,
+                            settingsStyle.newSettingBadge,
+                        ]}
+                    ></div>
+                </div>
+            ) as HTMLDivElement
+        ).outerHTML,
+    }).then(tooltip => {
+        tooltip
+            .getTipElement()
+            .addEventListener('click', () => SettingsBtn.click());
+        tooltip.show();
+        tooltip.update();
+        newSettingsTooltip = tooltip;
+    });
     let listenersAttached = false;
     void settingsModal.onShown(() => {
         if (!newSettingsTooltip || listenersAttached) return;
@@ -454,10 +446,7 @@ if (
         SettingsBtn.addEventListener('mouseleave', hide);
         SettingsBtn.addEventListener('focusin', show);
         SettingsBtn.addEventListener('focusout', hide);
-        const tip =
-            __MOODLE_VERSION__ >= 500 ?
-                newSettingsTooltip._getTipElement()
-            :   newSettingsTooltip.getTipElement();
+        const tip = newSettingsTooltip.getTipElement();
         tip.addEventListener('mouseenter', show);
         tip.addEventListener('mouseleave', hide);
     });

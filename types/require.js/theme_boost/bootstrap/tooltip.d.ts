@@ -1,7 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
 // Relevant / used properties only
-interface TooltipConfig {
+export interface TooltipConfig {
     trigger?: string;
     title?: string;
     template?: string;
