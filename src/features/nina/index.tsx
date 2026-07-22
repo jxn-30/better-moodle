@@ -1,4 +1,5 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import { createTooltip } from '#lib/Tooltip';
 import { datetimeToString } from '#lib/localeString';
 import FeatureGroup from '#lib/FeatureGroup';
 import { getHtml } from '#lib/DOM';
@@ -197,20 +198,18 @@ const showAlertDetailsModal = (alertId: string) => {
 
             // Title
             const severity = getAlertInfoAttribute(alert, 'severity')!;
+            const severitySpan = (
+                <span>{isCancel ? '✖️' : getSeverityEmoji(severity)}</span>
+            ) as HTMLSpanElement;
+            void createTooltip(severitySpan, {
+                title:
+                    isCancel ?
+                        LL.msgType.cancel()
+                    :   getSeverityLabel(severity, provider),
+            });
             alertTitleElem.append(
                 <>
-                    <span
-                        dataset={{
-                            originalTitle:
-                                isCancel ?
-                                    LL.msgType.cancel()
-                                :   getSeverityLabel(severity, provider),
-                            toggle: 'tooltip',
-                        }}
-                    >
-                        {isCancel ? '✖️' : getSeverityEmoji(severity)}
-                    </span>{' '}
-                    <span>{getAlertTitle(alert)}</span>
+                    {severitySpan} <span>{getAlertTitle(alert)}</span>
                 </>
             );
 
@@ -603,24 +602,19 @@ const requestAlerts = () =>
                     :   null;
 
                 const seen = alertCache[alertId].seen;
+                const severitySpan = (
+                    <span>{isCancel ? '✖️' : getSeverityEmoji(severity)}</span>
+                ) as HTMLSpanElement;
+                void createTooltip(severitySpan, {
+                    title:
+                        isCancel ?
+                            LL.msgType.cancel()
+                        :   getSeverityLabel(severity, provider),
+                });
                 return (
                     <div className={`card p-3 ${!seen ? style.unseen : ''}`}>
                         <h5>
-                            <span
-                                dataset={{
-                                    originalTitle:
-                                        isCancel ?
-                                            LL.msgType.cancel()
-                                        :   getSeverityLabel(
-                                                severity,
-                                                provider
-                                            ),
-                                    toggle: 'tooltip',
-                                }}
-                            >
-                                {isCancel ? '✖️' : getSeverityEmoji(severity)}
-                            </span>{' '}
-                            {getAlertTitle(alert)}
+                            {severitySpan} {getAlertTitle(alert)}
                             {duration}
                         </h5>
                         <span className="small text-muted">
