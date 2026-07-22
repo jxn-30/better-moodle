@@ -457,7 +457,7 @@ const reload = () => {
             </NavbarItem>
         ) as NavbarItemComponent;
         if (!(navbarItem instanceof HTMLLIElement)) {
-            navbarItem.put();
+            void navbarItem.put();
         }
         void renderDropdown();
     } else {

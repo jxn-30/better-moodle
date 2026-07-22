@@ -51,7 +51,7 @@ const SettingsBtn = (
 ) as NavbarItemComponent;
 
 // append the Button to the navbar
-SettingsBtn.put();
+void SettingsBtn.put();
 // endregion
 
 // region support button and information
