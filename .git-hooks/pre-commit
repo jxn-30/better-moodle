@@ -16,10 +16,14 @@ git stash push --include-untracked --keep-index
 
 # Run ESLint & Prettier checks
 echo "[Better-Moodle Pre-Commit]: Running lint:check"
-yarn lint:check
+eslint_cache=$(mktemp)
+yarn lint:check --cache-location="$eslint_cache"
+rm "$eslint_cache"
 
 echo "[Better-Moodle Pre-Commit]: Running prettier:check"
-yarn prettier:check
+prettier_cache="$(mktemp).json"
+yarn prettier:check --cache-location="$prettier_cache"
+rm "$prettier_cache"
 
 # Check if the JSON schemas are in sync with their TS-Definitions
 echo "[Better-Moodle Pre-Commit]: Checking for up-to-date JSON schemas"
