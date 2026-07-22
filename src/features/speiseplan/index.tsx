@@ -1,5 +1,6 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import { canteens } from 'virtual:speiseplan-canteens';
+import { createTooltip } from '#lib/Tooltip';
 import FeatureGroup from '#lib/FeatureGroup';
 import globalStyle from '#style/index.module.scss';
 import type { Locales } from '../../i18n/i18n-types';
@@ -258,6 +259,20 @@ const Day = ({
         </tr>
     );
 
+    void createTooltip(co2InfoLink, {
+        placement: 'auto',
+        html: true,
+        title: co2InfoLink.href,
+    });
+
+    const pricesIcon = (
+        <i className="icon fa fa-info-circle text-info fa-fw"></i>
+    ) as HTMLElement;
+    void createTooltip(pricesIcon, {
+        placement: 'auto',
+        title: speiseplan.prices.join(' / '),
+    });
+
     return (
         <FieldSet
             title={dateToString(day, false, true, getLang())}
@@ -278,14 +293,7 @@ const Day = ({
                         <th>
                             {sLL().table.price()}
                             &nbsp;
-                            <i
-                                className="icon fa fa-info-circle text-info fa-fw"
-                                dataset={{
-                                    toggle: 'tooltip',
-                                    placement: 'auto',
-                                }}
-                                title={speiseplan.prices.join(' / ')}
-                            ></i>
+                            {pricesIcon}
                         </th>
                     </tr>
                 </thead>
@@ -321,11 +329,7 @@ const getCurrentSpeiseplan = () => {
             href={co2InfoLink}
             target="_blank"
         >
-            <i
-                className="icon fa fa-info-circle text-info fa-fw"
-                dataset={{ toggle: 'tooltip', placement: 'auto', html: 'true' }}
-                title={co2InfoLink}
-            ></i>
+            <i className="icon fa fa-info-circle text-info fa-fw"></i>
         </a>
     ) as HTMLAnchorElement;
 

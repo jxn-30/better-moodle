@@ -6,7 +6,7 @@ export interface TooltipConfig {
     title?: string;
     template?: string;
     html?: boolean;
-    placement?: 'top' | 'right' | 'bottom' | 'left'; // Moodle >= 500
+    placement?: 'top' | 'right' | 'bottom' | 'left' | 'auto'; // Moodle >= 500
 }
 
 export default class ThemeBoostBootstrapTooltipClass {
