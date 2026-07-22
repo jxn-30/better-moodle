@@ -67,7 +67,7 @@ interface NavbarItemProps extends HTMLDiv {
     order: number;
 }
 export interface NavbarItemComponent extends HTMLDivElement {
-    put(): void;
+    put(): Promise<void>;
 }
 
 /**
@@ -95,7 +95,7 @@ export const NavbarItem = ({
     Object.defineProperty(item, 'put', {
         /**
          * Appends the element to the navbar
-         * @returns void
+         * @returns a promise that resolves when appended
          */
         value: () =>
             ready().then(() =>

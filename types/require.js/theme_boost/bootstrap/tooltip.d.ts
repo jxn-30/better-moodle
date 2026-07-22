@@ -5,11 +5,15 @@ export interface TooltipConfig {
     trigger?: string;
     title?: string;
     template?: string;
+    html?: boolean;
     placement?: 'top' | 'right' | 'bottom' | 'left'; // Moodle >= 500
 }
 
-export class ThemeBoostBootstrapTooltipClass {
-    constructor(element: HTMLElement, config: TooltipConfig);
+export default class ThemeBoostBootstrapTooltipClass {
+    constructor(
+        element: HTMLElement,
+        confi?: TooltipConfig
+    ): ThemeBoostBootstrapTooltipClass;
 
     getTipElement(): HTMLElement; // Moodle < 500
     _getTipElement(): HTMLElement; // Moodle >= 500
@@ -17,12 +21,10 @@ export class ThemeBoostBootstrapTooltipClass {
     hide(): void;
     update(): void;
     dispose(): void;
+
+    setContent(content: Record<string, string | Element>): void; // Maybe Moodle >= 500?
+
+    static getInstance(
+        element: string | Element
+    ): ThemeBoostBootstrapTooltipClass | null | undefined;
 }
-
-// Eh, this seems pretty hacky?
-// well, it's the only way we achieved working types tbh
-type ThemeBoostBootstrapTooltip = new (
-    ...args: ConstructorParameters<typeof ThemeBoostBootstrapTooltipClass>
-) => ThemeBoostBootstrapTooltipClass;
-
-export default ThemeBoostBootstrapTooltip;

@@ -1,10 +1,5 @@
 import { require } from '#lib/require.js';
-import type {
-    ThemeBoostBootstrapTooltipClass,
-    TooltipConfig,
-} from '#types/require.js/theme_boost/bootstrap/tooltip.d.ts';
-
-export type Tooltip = ThemeBoostBootstrapTooltipClass;
+import type { TooltipConfig } from '#types/require.js/theme_boost/bootstrap/tooltip.d.ts';
 
 /**
  * Creates a tooltip and ensures moodle compatibility
@@ -21,3 +16,14 @@ export const createTooltip = (element: HTMLElement, config: TooltipConfig) =>
         }
         return tooltip;
     });
+
+/**
+ * Updates a tooltips content
+ * @param element - the element the tooltip is attached to
+ * @param content - the new content
+ * @returns void
+ */
+export const setTooltipContent = (element: HTMLElement, content: string) =>
+    __MOODLE_VERSION__ >= 500 ?
+        (element.dataset.bsOriginalTitle = content)
+    :   (element.dataset.originalTitle = content);

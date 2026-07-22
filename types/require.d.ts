@@ -57,7 +57,7 @@ interface ModuleMap {
 
     'jquery': JQueryStatic;
 
-    'theme_boost/bootstrap/tooltip': ThemeBoostBootstrapTooltip;
+    'theme_boost/bootstrap/tooltip': typeof ThemeBoostBootstrapTooltip;
 
     'theme_boost/drawer': ThemeBoostDrawer;
     'theme_boost/drawers': typeof ThemeBoostDrawers;

@@ -1,5 +1,6 @@
 import awaitImports from '#lib/imports';
 import { ChangelogBtn } from '#core/changelog';
+import { createTooltip } from '#lib/Tooltip';
 import globalStyle from '#style/index.module.scss';
 import { Modal } from '#lib/Modal';
 import settingsStyle from '#style/settings.module.scss';
@@ -9,7 +10,6 @@ import toast from '#lib/toast';
 import { BETTER_MOODLE_LANG, LL } from '#i18n';
 import { cachedRequest, NETWORK_CACHE_KEY } from '#lib/network';
 import { checkForUpdates, VersionBox } from '#core/updateCheck';
-import { createTooltip, type Tooltip } from '#lib/Tooltip';
 import {
     debounce,
     isNewInstallation,
@@ -379,7 +379,7 @@ GM_setValue(
 );
 
 // "New!"-Tooltip if there are unseen settings or no settings ever seen
-let newSettingsTooltip: Tooltip | null;
+let newSettingsTooltip: Awaited<ReturnType<typeof createTooltip>> | null;
 if (
     isNewInstallation ||
     seenSettings.length === 0 ||
