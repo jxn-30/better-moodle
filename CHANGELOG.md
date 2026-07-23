@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.9.1](https://github.com/jxn-30/better-moodle/compare/2.9.0...2.9.1) (2026-07-23)
+
+
+### Bug Fixes
+
+* **drawers:** do not show multiple buttons on same position ([42cd6c1](https://github.com/jxn-30/better-moodle/commit/42cd6c1350d949cd0b8e726a85465d4f5725c016))
+* **drawers:** fix tooltips on buttons for opening ([7a33fa6](https://github.com/jxn-30/better-moodle/commit/7a33fa604dcabba0d2aad72d0bb1ef107fc9a383))
+* **drawers:** fix tooltips on moodle &gt;= 500 ([8dfc447](https://github.com/jxn-30/better-moodle/commit/8dfc447abe91d3b3e9caa98afa447a8a669401b0))
+* **nina:** fix tooltips on moodle &gt;= 500 ([82b5c8d](https://github.com/jxn-30/better-moodle/commit/82b5c8d6a24c59ff0fa4a0729229d8eb02515d62))
+* **semesterzeiten:** fix tooltips on moodle &gt;= 500 ([0bfe7f9](https://github.com/jxn-30/better-moodle/commit/0bfe7f92abbebd04a96adc462da51f6cef01adef))
+* set correct cursor for sliders ([efc477e](https://github.com/jxn-30/better-moodle/commit/efc477ea7a0d5eeb071221f10086e841073685e6))
+* **settings:** do not trigger channel modal on cancel ([3f88a82](https://github.com/jxn-30/better-moodle/commit/3f88a824c8c659a799fb29d01471bd008dd1e258))
+* **speiseplan:** fix tooltips on moodle &gt;= 500 ([4b0a520](https://github.com/jxn-30/better-moodle/commit/4b0a52068aa029692bb3bf2ddd211acf196e1d1e))
+* **weather:** make tooltip work on moodle 502 ([71ca45a](https://github.com/jxn-30/better-moodle/commit/71ca45a0402953324233cd94c201ea7a3456b92a))
+
 ## [2.9.0](https://github.com/jxn-30/better-moodle/compare/2.8.0...2.9.0) (2026-07-12)
 
 
