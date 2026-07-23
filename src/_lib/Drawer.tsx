@@ -1,3 +1,4 @@
+import { createTooltip } from '#lib/Tooltip';
 import DrawerTemplate from './Drawer/Drawer.mustache?raw';
 import { getHtml } from '#lib/DOM';
 import { PREFIX } from '#lib/helpers';
@@ -219,38 +220,35 @@ export default class Drawer {
                 ?.classList.add('w-100', 'd-flex');
         }
 
-        const tooltipDataset: Record<string, string> =
-            __MOODLE_VERSION__ >= 500 ?
-                {
-                    bsToggle: 'tooltip',
-                    bsPlacement: this.#oppositeSide, // this is placement of tooltip
-                }
-            :   {
-                    toggle: 'tooltip',
-                    placement: this.#oppositeSide, // this is placement of tooltip
-                };
-
-        document.querySelector('#page .drawer-toggles')?.append(
-            <div
-                className={`drawer-toggler drawer-${this.#side}-toggle ml-auto d-print-none`}
+        const toggleBtn = (
+            <button
+                className="btn icon-no-margin"
+                dataset={{
+                    toggler: 'drawers',
+                    action: 'toggle',
+                    target: this.#id,
+                }}
             >
-                <button
-                    className="btn icon-no-margin"
-                    dataset={{
-                        toggler: 'drawers',
-                        action: 'toggle',
-                        target: this.#id,
-                        ...tooltipDataset,
-                    }}
-                    title={this.#toggleTitle}
+                <span className="sr-only">{this.#toggleTitle}</span>
+                <span>
+                    <i className={`icon fa fa-fw fa-${this.#icon}`}></i>
+                </span>
+            </button>
+        ) as HTMLButtonElement;
+        void createTooltip(toggleBtn, {
+            placement: this.#oppositeSide,
+            title: this.#toggleTitle,
+        });
+
+        document
+            .querySelector('#page .drawer-toggles')
+            ?.append(
+                <div
+                    className={`drawer-toggler drawer-${this.#side}-toggle ml-auto d-print-none`}
                 >
-                    <span className="sr-only">{this.#toggleTitle}</span>
-                    <span>
-                        <i className={`icon fa fa-fw fa-${this.#icon}`}></i>
-                    </span>
-                </button>
-            </div>
-        );
+                    {toggleBtn}
+                </div>
+            );
         Drawer.init();
         this.#instance = Drawers.getDrawerInstanceForNode(element);
         if (GM_getValue(this.#storageKey, false)) {
