@@ -1,0 +1,16 @@
+{
+    "$schema": "_schema.json",
+    "uniName": "HSNR",
+    "namespace": "https://hs-niederrhein.de",
+    "description": {
+        "": "Improves HSNR-Moodle by cool features and design improvements.",
+        "de": "Verbessert das HSNR-Moodle durch coole Features und Designverbesserungen."
+    },
+    "github": { "user": "jxn-30", "repo": "better-moodle", "branch": "main" },
+    "icon": "https://moodle.hsnr.de/pluginfile.php/1/theme_boost_union/logocompact/1/1782998357/hsnr-logo_bc_rgb.svg",
+    "moodleUrl": "https://moodle.hsnr.de",
+    "moodleVersion": 405,
+    "connects": [],
+    "fixes": [],
+    "includeNonDefaultFeatures": []
+}
