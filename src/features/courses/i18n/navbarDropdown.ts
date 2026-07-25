@@ -7,6 +7,16 @@ export const de = {
             description:
                 'Funktioniert den "Meine Kurse"-Link in eine Dropdown um, um einen schnellen Direktzugriff auf alle eigenen Kurse zu ermöglichen.',
         },
+        courseindex: {
+            name: 'Schnellzugriff für Abschnitte',
+            description:
+                'Ermöglicht es, über die Kurs-Dropdown auch direkt auf die Abschnitte des Kurses zuzugreifen (funktioniert derzeit nicht in der mobilen Ansicht)',
+        },
+        courseindexActivities: {
+            name: 'Schnellzugriff für Aktivitäten',
+            description:
+                'Ermöglicht es, über die Kurs-Dropdown auch direkt auf die Aktivitäten des Kurses zuzugreifen (funktioniert derzeit nicht in der mobilen Ansicht)',
+        },
         filter: {
             name: 'Filter der Kurs-Dropdown',
             description:
@@ -21,6 +31,9 @@ export const de = {
                 'Favorisierte Kurse werden immer oben in der Kurs-Dropdown angezeigt, anstelle an der normalen Stelle bei alphabetischer Sortierung.',
         },
     },
+    courseindex: {
+        error: 'Der Kursindex konnte nicht geladen werden. Leider können wir es nicht nochmal versuchen, wenn du die Seite nicht neu lädst. :(',
+    },
 } satisfies FeatureTranslation;
 
 export const en = {
@@ -29,6 +42,16 @@ export const en = {
             name: 'Dropdown in the navigation bar',
             description:
                 'Converts the "My courses" link into a dropdown to allow quick direct access to all your courses.',
+        },
+        courseindex: {
+            name: 'Fast-Access for sections',
+            description:
+                'Allows accessing the course sections from within the dropdown (does not work on mobile view yet)',
+        },
+        courseindexActivities: {
+            name: 'Fast-Access for activities',
+            description:
+                'Allows accessing the course activities from within the dropdown (does not work on mobile view yet)',
         },
         filter: {
             name: 'Filter the course dropdown',
@@ -41,6 +64,9 @@ export const en = {
             description:
                 'Favourite courses are always displayed at the top of the course dropdown instead of in the normal position when sorted alphabetically.',
         },
+    },
+    courseindex: {
+        error: 'Courseindex could not be loaded. Unfortunately retrying without a page reload is not yet possible. :(',
     },
 } satisfies typeof de;
 

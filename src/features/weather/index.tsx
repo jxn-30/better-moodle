@@ -13,6 +13,10 @@ import visualCrossing from './providers/visualCrossing';
 import wttrIn from './providers/wttrIn';
 import { BETTER_MOODLE_LANG, LLFG } from '#i18n';
 import {
+    createTooltip,
+    setTooltipContent as updateTooltipContent,
+} from '#lib/Tooltip';
+import {
     getWeatherEmoji,
     unknownWeather,
     type WeatherCondition,
@@ -137,7 +141,7 @@ const setTooltipContent = (
     tooltipContent.innerHTML = '';
     tooltipContent.append(content);
 
-    navbarItem.dataset.originalTitle = getHtml(tooltip);
+    updateTooltipContent(navbarItem, getHtml(tooltip));
 };
 
 let navbarItem: NavbarItemComponent;
@@ -391,14 +395,10 @@ const reload = () => {
     }
 
     navbarItem ??= (
-        <NavbarItem
-            order={800}
-            dataset={{ toggle: 'tooltip', placement: 'bottom', html: 'true' }}
-        >
-            {navbarText}
-        </NavbarItem>
+        <NavbarItem order={800}>{navbarText}</NavbarItem>
     ) as NavbarItemComponent;
-    navbarItem.put();
+    void navbarItem.put();
+    void createTooltip(navbarItem, { placement: 'bottom', html: true });
 
     void updateWeather();
 };

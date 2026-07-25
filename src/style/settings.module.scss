@@ -111,7 +111,7 @@
         &:has(input[disabled], select[disabled]) {
             .col-form-label label {
                 // disabled settings should have a grayed out label (similar to text-muted class)
-                color: var(--gray);
+                color: var(--bs-gray);
             }
 
             :local(.hide-disabled-settings) & {

@@ -287,6 +287,7 @@ const initCourseSidebar = async () => {
         .setAlias('dashboard-left')
         .setSide(Side.Left)
         .setIcon('graduation-cap')
+        .setToggleTitle(LL.sidebars._open(LL.sidebars.courses()))
         .create();
 
     // we set the heading here and not before creating as we need to interact with the content

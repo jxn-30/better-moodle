@@ -49,6 +49,7 @@ export const GithubLink = ({
         className={[
             // @ts-expect-error - className may not be iterable according to types
             className,
+            // @ts-expect-error - TS7 throws an error here for some reason
             { [globalStyle.noExternalLinkIcon]: !externalIcon },
         ]}
         {...props}
@@ -66,7 +67,7 @@ interface NavbarItemProps extends HTMLDiv {
     order: number;
 }
 export interface NavbarItemComponent extends HTMLDivElement {
-    put(): void;
+    put(): Promise<void>;
 }
 
 /**
@@ -94,7 +95,7 @@ export const NavbarItem = ({
     Object.defineProperty(item, 'put', {
         /**
          * Appends the element to the navbar
-         * @returns void
+         * @returns a promise that resolves when appended
          */
         value: () =>
             ready().then(() =>
@@ -355,6 +356,7 @@ export type AutoCompleteComponent<
 >;
 type AutoComplete<
     Group extends FeatureGroupID,
+    // @ts-expect-error - We keep this as otherwise, Settings types would fail
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Feat extends FeatureID<Group>,
 > = HTMLSelectElement & { value: string[]; initialized: boolean };

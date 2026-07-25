@@ -1,11 +1,18 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import Feature from '#lib/Feature';
+import { FIFTEEN_SECONDS } from '#lib/times';
 import globalStyle from '#style/index.module.scss';
+import { LLF } from '#i18n';
 import mobileTemplate from './navbarDropdown/mobile.mustache?raw';
 import { PREFIX } from '#lib/helpers';
 import { require } from '#lib/require.js';
 import { SelectSetting } from '#lib/Settings/SelectSetting';
 import style from './navbarDropdown/style.module.scss';
+import styleVars from './navbarDropdown/vars.module.scss?json';
+import type {
+    Course,
+    Section,
+} from '#types/require.js/core_courseformat/local/courseeditor/exporter';
 import {
     type CourseFilter,
     getActiveFilter,
@@ -16,22 +23,262 @@ import {
 import { getHtml, getLoadingSpinner, ready } from '#lib/DOM';
 import { putTemplate, renderCustomTemplate } from '#lib/templates';
 
+const LL = LLF('courses', 'navbarDropdown');
+
 const enabled = new BooleanSetting('enabled', true)
     .addAlias('myCourses.navbarDropdown')
     .requireReload();
+const enableCourseindex = new BooleanSetting('courseindex', true).disabledIf(
+    enabled,
+    '!=',
+    true
+);
+const activitiesInCourseindex = new BooleanSetting(
+    'courseindexActivities',
+    false
+)
+    .disabledIf(enabled, '!=', true)
+    .disabledIf(enableCourseindex, '!=', true);
 const filter = new SelectSetting(
     'filter',
     '_sync',
     getAvailableCourseFiltersAsOptions()
 )
     .addAlias('myCourses.navbarDropdownFilter')
-    .disabledIf(enabled, '==', false);
+    .disabledIf(enabled, '!=', true);
 const favouriteCoursesAtTop = new BooleanSetting('favouriteCoursesAtTop', true)
     .addAlias('myCourses.navbarDropdownFavouritesAtTop')
     .disabledIf(enabled, '!=', true);
 
 let desktopNavItem: HTMLLIElement;
 let mobileDropdown: HTMLDivElement;
+
+// const courseIndexSubmenuId = (courseId: number) =>
+//    PREFIX(`courses-navbar-dropdown-courseindex-${courseId}`);
+
+/**
+ * Creates a trigger to open the submenu containing the courseindex
+ * @param courseId - the id of the course
+ * @returns a trigger html element
+ */
+const createSubmenuTrigger = (courseId: number) => (
+    <div className={['btn-group dropright', style.courseindexTrigger]}>
+        <button
+            type="button"
+            className="btn btn-icon btn-sm"
+            aria-label="Open course index"
+            aria-expanded="false"
+            aria-haspopup="menu"
+            dataset={{ course: courseId.toString(), toggle: 'dropdown' }}
+        >
+            <i className="icon fa-solid fa-fw fa-caret-right m-0"></i>
+        </button>
+    </div>
+);
+
+const courseIndexSubmenus = new Map<number, HTMLDivElement>();
+
+/**
+ * Creates (or gets if already created) the courseindex submenu of a course and fills it once courseindex is loaded
+ * @param courseId - the id of the course
+ * @returns the courseindex submenu of this course
+ */
+const getCourseIndexSubmenu = (courseId: number) =>
+    courseIndexSubmenus.getOrInsertComputed(courseId, (courseId: number) => {
+        const menu = (<div class="dropdown-menu"></div>) as HTMLDivElement;
+
+        void getLoadingSpinner(`navbarDropdown-courseindex-${courseId}`).then(
+            spinner => {
+                spinner.classList.add('text-center', 'd-block');
+                menu.append(spinner);
+            }
+        );
+
+        /**
+         * Unescapes HTML strings (e.g. &amp; becomes &)
+         * @param text - the string with escape sequences
+         * @returns the unescaped text
+         */
+        const unescape = (text: string) =>
+            new DOMParser().parseFromString(text, 'text/html').documentElement
+                .textContent;
+
+        /**
+         * Creates the DOM items for a section and its activities
+         * @param section - the section to generate the items for
+         * @returns the dropdown items
+         */
+        const getItems = (section: Section) =>
+            activitiesInCourseindex.value ?
+                [
+                    (
+                        <a className="dropdown-item" href={section.sectionurl}>
+                            {unescape(section.title)}
+                        </a>
+                    ) as HTMLAnchorElement,
+                    ...section.cms.map(
+                        cm =>
+                            (
+                                <a
+                                    className="dropdown-item"
+                                    style="text-indent: 1em;"
+                                    href={
+                                        cm.url ??
+                                        `${section.sectionurl}#${cm.anchor}`
+                                    }
+                                >
+                                    {unescape(cm.name)}
+                                </a>
+                            ) as HTMLAnchorElement
+                    ),
+                ]
+            :   ((
+                    <a className="dropdown-item" href={section.sectionurl}>
+                        {unescape(section.title)}
+                    </a>
+                ) as HTMLAnchorElement);
+
+        void loadCourseIndex(courseId)
+            .then(({ sections }) => sections.flatMap(getItems))
+            .then(items => menu.replaceChildren(...items))
+            .then(() => repositionSubmenu(menu))
+            .catch(() => {
+                menu.replaceChildren(
+                    <span className="dropdown-item text-danger">
+                        🦄 {LL.courseindex.error()}
+                    </span>
+                );
+                courseIndexSubmenus.delete(courseId);
+            });
+
+        return menu;
+    });
+
+/**
+ * Loads the courseindex of a specific course
+ * @param courseId - the id of the course
+ * @returns the courseindex of this course
+ */
+const loadCourseIndex = (courseId: number) =>
+    require(['core_courseformat/courseeditor'] as const).then(
+        // eslint-disable-next-line @typescript-eslint/unbound-method -- what does it even want to tell us here?
+        ([{ getCourseEditor }]) => {
+            const editor = getCourseEditor(courseId);
+            const { resolve, reject, promise } =
+                Promise.withResolvers<Course>();
+            // As the whole moodle-thing doesn't throw (but also doesn't resolve) on error, just add a timeout to 15s
+            setTimeout(() => reject(), FIFTEEN_SECONDS);
+            void editor
+                .getInitialStatePromise()
+                .then(() => editor.getExporter().course(editor.state))
+                .then(index => resolve(index));
+            return promise;
+        }
+    );
+
+interface EnhanceDesktopDetails {
+    myCoursesIsActive: boolean;
+    myCoursesUrl: string;
+}
+
+/**
+ * Repositions a submenu so that it looks great and uses screen space efficiently
+ * @param submenu - the submenu to reposition
+ */
+const repositionSubmenu = (submenu: HTMLDivElement) => {
+    // Increase the dropdown height if necessary
+    submenu.style.removeProperty('top');
+    const margin = styleVars.submenuMarginY as number;
+    const currentTop = submenu.getBoundingClientRect().top;
+    const targetTop = window.innerHeight - margin - submenu.scrollHeight;
+    const finalTop = Math.max(60 + margin, targetTop); // Navbar has a height of 60
+    submenu.style.setProperty('top', `${Math.min(finalTop - currentTop, 0)}px`);
+
+    // store the top position of the dropdown to configure correct maxheight
+    submenu.style.setProperty(
+        '--dropdown-top',
+        `${submenu.getBoundingClientRect().top}px`
+    );
+};
+
+/**
+ * Enhances the desktop dropdown by some additional features and adds event listeners etc.
+ * @param navItem - the navbar element that triggers and contains the dropdown
+ * @param details - details on how to enhance the dropdown
+ */
+const enhanceDesktopDropdown = (
+    navItem: HTMLLIElement,
+    details: EnhanceDesktopDetails
+) => {
+    // clicking on the dropdown toggle should open my courses page
+    if (!details.myCoursesIsActive) {
+        navItem
+            .querySelector<HTMLAnchorElement>('.dropdown-toggle')
+            ?.addEventListener('click', e => {
+                if (navItem.classList.contains('show')) {
+                    e.preventDefault();
+                    window.location.replace(details.myCoursesUrl);
+                }
+            });
+    }
+
+    // Do not execute the next alters if the setting is disabled
+    if (!enableCourseindex.value) return;
+
+    // create and append triggers for courseindex submenus
+    navItem
+        .querySelectorAll('.dropdown-item:has(> [data-course])')
+        .forEach(courseItem => {
+            const courseId = Number(
+                courseItem.querySelector<HTMLSpanElement>(
+                    ':scope > [data-course]'
+                )?.dataset.course ?? '-1'
+            );
+            if (courseId === -1) return;
+            const trigger = createSubmenuTrigger(courseId);
+            courseItem.before(trigger);
+        });
+
+    /**
+     * Closes all courseindex submenus
+     */
+    const closeAllSubmenus = () => {
+        navItem
+            .querySelectorAll(`.${style.courseindexTrigger} > .dropdown-menu`)
+            .forEach(el => el.classList.remove('show'));
+        navItem
+            .querySelectorAll<HTMLButtonElement>('button[data-course]')
+            .forEach(btn => btn.setAttribute('aria-expanded', 'false'));
+    };
+
+    // create courseindex submenus on demand
+    navItem.addEventListener('click', (e: MouseEvent) => {
+        const target = e.target;
+        if (!(target instanceof HTMLElement)) return;
+        const btn = target.closest<HTMLButtonElement>('button[data-course]');
+        if (!btn) return;
+
+        const courseId = Number(btn.dataset.course ?? '-1');
+        if (courseId === -1) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const submenu = getCourseIndexSubmenu(courseId);
+        btn.after(submenu);
+        const wasHidden = !submenu.classList.contains('show');
+        closeAllSubmenus();
+        if (wasHidden) submenu.classList.add('show');
+        btn.setAttribute('aria-expanded', wasHidden ? 'true' : 'false');
+
+        repositionSubmenu(submenu);
+    });
+
+    // close submenus when dropdown is hidden (unfortunately a jquery-event)
+    void require(['jquery'] as const).then(([jquery]) =>
+        jquery(navItem).on('hide.bs.dropdown', closeAllSubmenus)
+    );
+};
 
 /**
  * Loads the list of courses based on active filter
@@ -103,7 +350,7 @@ const loadContent = ({
                 url: course.viewurl,
                 title: `${course.shortname}\n${course.fullname}`,
                 text: getHtml(
-                    <>
+                    <span dataset={{ course: course.id.toString() }}>
                         {course.isfavourite ?
                             <i className="icon fa fa-star fa-fw"></i>
                         :   null}
@@ -111,7 +358,7 @@ const loadContent = ({
                             <strong>{course.shortname}</strong>
                         :   null}{' '}
                         <small>{course.fullname}</small>
-                    </>
+                    </span>
                 ),
             }));
 
@@ -167,17 +414,10 @@ const loadContent = ({
                 mobile.length === 2 ? mobile[1] : mobile[0];
             mobileDropdown = mobileDropdownEl;
 
-            // clicking on the dropdown toggle should open my courses page
-            if (!myCoursesIsActive) {
-                navItem
-                    .querySelector<HTMLAnchorElement>('.dropdown-toggle')
-                    ?.addEventListener('click', e => {
-                        if (navItem.classList.contains('show')) {
-                            e.preventDefault();
-                            window.location.replace(myCoursesUrl);
-                        }
-                    });
-            }
+            enhanceDesktopDropdown(navItem, {
+                myCoursesIsActive,
+                myCoursesUrl,
+            });
         });
 };
 
@@ -218,6 +458,14 @@ const onload = async () => {
         myCoursesText,
     });
 
+    enableCourseindex.onChange(() => {
+        courseIndexSubmenus.clear();
+        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
+    });
+    activitiesInCourseindex.onChange(() => {
+        courseIndexSubmenus.clear();
+        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
+    });
     favouriteCoursesAtTop.onChange(() =>
         loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText })
     );
@@ -233,6 +481,12 @@ const onload = async () => {
 };
 
 export default Feature.register({
-    settings: new Set([enabled, filter, favouriteCoursesAtTop]),
+    settings: new Set([
+        enabled,
+        enableCourseindex,
+        activitiesInCourseindex,
+        filter,
+        favouriteCoursesAtTop,
+    ]),
     onload,
 });
