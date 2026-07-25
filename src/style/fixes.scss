@@ -46,7 +46,8 @@
 .drawer-toggles .drawer-toggler {
     // Show multiple togglers below each other
     @for $n from 2 through 2 {
-        &:nth-child(#{$n}) {
+        &:nth-child(#{$n} of .drawer-left-toggle),
+        &:nth-child(#{$n} of .drawer-right-toggle) {
             $offset: calc(($n - 1) * (40px + 1rem));
 
             top: calc(60px + 1rem + $offset);
