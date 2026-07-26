@@ -30,6 +30,7 @@ jobs:
             # stats: ${{ toJSON(steps.output.outputs) }}
             line_uzl: ${{ steps.output.outputs.build_uzl }}
             line_cau: ${{ steps.output.outputs.build_cau }}
+            line_hsnr: ${{ steps.output.outputs.build_hsnr }}
             # line_sandbox405: ${{ steps.output.outputs.build_sandbox405 }}
             # line_moodlemootdach: ${{ steps.output.outputs.build_moodlemootdach }}
         steps:
@@ -195,6 +196,7 @@ jobs:
                   | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
                   ${{ needs.build.outputs.line_uzl }}
                   ${{ needs.build.outputs.line_cau }}
+                  ${{ needs.build.outputs.line_hsnr }}
                   EOF
 
             - name: 📤 upload PR summary artifact
