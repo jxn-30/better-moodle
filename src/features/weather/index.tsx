@@ -33,6 +33,13 @@ const LL = LLFG('weather');
 const CITY =
     __UNI__ === 'cau' ?
         { display: 'Kiel', name: 'kiel', lat: 54.3388, lon: 10.1225 }
+    : __UNI__ === 'hsnr' ?
+        {
+            display: 'Mönchengladbach',
+            name: 'moenchengladbach',
+            lat: 51.1912,
+            lon: 6.4417,
+        }
     :   { display: 'Lübeck', name: 'luebeck', lat: 53.8655, lon: 10.6866 };
 
 export interface Weather {
