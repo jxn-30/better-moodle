@@ -36,7 +36,8 @@ export const scriptCopyright = (ctx: Context) =>
 /**
  * Creates a unicode box containing the polyfills copyright text as a multiline-js comment.
  * @param ctx - The Vite plugin context object containing copyright information.
+ * @param polyfills - The list of polyfills included.
  * @returns A unicode box string formatted as a multiline-js comment with the copyright text.
  */
-export const polyfillsCopyright = (ctx: Context) =>
-    copyrightBox(ctx.copyright.polyfills);
+export const polyfillsCopyright = (ctx: Context, polyfills: string[]) =>
+    copyrightBox(ctx.copyright.polyfills(polyfills));

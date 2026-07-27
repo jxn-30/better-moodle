@@ -12,15 +12,13 @@ import scssPlugin from './plugins/scss';
 import terserPlugin from './plugins/terser';
 import userscriptPlugin from './plugins/userscript';
 import virtualFilesPlugin from './plugins/virtualFiles';
-import alterConfigPlugin, {
-    type ESBuildJSXConfigs,
-} from './plugins/alterConfig';
+import alterConfigPlugin, { type OXCJSXConfigs } from './plugins/alterConfig';
 import { type Context, BuildContext as ctx } from './context';
 
 type StringOrContextString = string | ((ctx: Context) => string);
 
 export interface FrameworkConfig {
-    jsx?: false | keyof ESBuildJSXConfigs;
+    jsx?: false | keyof OXCJSXConfigs;
     env?: Record<`VITE_${string}`, StringOrContextString>;
     virtualFiles?: Record<string, StringOrContextString>;
     performanceStops: Map<string, bigint>;
