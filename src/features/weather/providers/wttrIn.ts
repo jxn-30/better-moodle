@@ -62,9 +62,12 @@ export default (city: string): Promise<WeatherResponse> => {
                 meta: {
                     providerURL: `https://wttr.in/${city}`,
                     requestURL: url,
-                    time: new Date(
-                        `${weather.localObsDateTime.slice(0, 10)} ${weather.observation_time} +00:00`
-                    ).toISOString(),
+                    time:
+                        weather.localObsDateTime ?
+                            new Date(
+                                `${weather.localObsDateTime.slice(0, 10)} ${weather.observation_time} +00:00`
+                            ).toISOString()
+                        :   new Date(0).toISOString(),
                 },
             } satisfies Weather;
         }

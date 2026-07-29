@@ -271,6 +271,7 @@ const updateWeather = async () => {
     }
 
     const date = new Date(weather.meta.time);
+    const timeString = date.getTime() ? timeToString(date, false) : '';
 
     const weatherSummary = `${weatherEmoji} ${LL.conditions[weather.condition]()}`;
 
@@ -297,7 +298,7 @@ const updateWeather = async () => {
             <br />
             <small>
                 {LL.providers[provider.value]()}&nbsp;⋅&nbsp;
-                {timeToString(date, false)}
+                {timeString}
             </small>
         </>
     );
@@ -383,7 +384,7 @@ const updateWeather = async () => {
                 {LL.providers[provider.value]()}
             </a>
             {' ⋅ '}
-            {timeToString(date, false)}
+            {timeString}
             {' ⋅ '}
             <a href={weather.meta.requestURL} target="_blank">
                 {LL.modal.raw()}
