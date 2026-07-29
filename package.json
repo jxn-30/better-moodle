@@ -97,7 +97,7 @@
         "browserslist": "4.28.7",
         "browserslist-useragent-regexp": "4.1.4",
         "caniuse-lite": "1.0.30001806",
-        "chalk": "5.6.2",
+        "chalk": "6.0.0",
         "ci-info": "4.4.0",
         "core-js": "3.49.0",
         "core-js-compat": "3.49.0",
