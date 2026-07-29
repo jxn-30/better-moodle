@@ -26,12 +26,7 @@ export const request = async (url: string, init?: RequestInit) => {
 export const NETWORK_CACHE_KEY = '_network_cache';
 
 type NetworkMethod =
-    | 'arrayBuffer'
-    | 'blob'
-    | 'bytes'
-    | 'formData'
-    | 'json'
-    | 'text';
+    'arrayBuffer' | 'blob' | 'bytes' | 'formData' | 'json' | 'text';
 export type NetworkResponseType<Method extends NetworkMethod> = Awaited<
     ReturnType<Body[Method]>
 >;

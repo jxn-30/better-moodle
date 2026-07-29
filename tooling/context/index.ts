@@ -65,13 +65,26 @@ Licensed under the MIT License (MIT).
 Source-Code: ${urls.githubUrl}
 `.trim();
 
-const polyfillsCopyright = `
+/**
+ * Creates the polyfill copyright
+ * @param polyfills - the list of polyfills included
+ * @returns a copyright content string
+ */
+const polyfillsCopyright = (polyfills: string[]) =>
+    `
 This is Polyfills for Better-Moodle; Version ${version}; Built for ${config.uniName} (${config.moodleUrl}).
 Polyfills are provided by core-js@${devDependencies['core-js']}. Copyright (c) to the maintainers and contributors.
 Better-Moodle Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30), Yorik (@YorikHansen) and contributors.
 All rights reserved.
 Licensed under the MIT License (MIT).
 Source-Code: ${urls.githubUrl}
+
+Included Polyfills:
+${polyfills
+    .values()
+    .map(p => `* ${p}`)
+    .toArray()
+    .join('\n')}
 `.trim();
 
 export const BuildContext = {

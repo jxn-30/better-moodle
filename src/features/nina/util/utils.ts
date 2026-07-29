@@ -13,10 +13,7 @@ export const arsToCountyLevel = (ars: string) =>
 
 export type providerType = 'mow' | 'kat' | 'biw' | 'pol' | 'dwd' | 'lhp';
 export type providerCategoryType =
-    | 'civilProtection'
-    | 'police'
-    | 'weather'
-    | 'flood';
+    'civilProtection' | 'police' | 'weather' | 'flood';
 /**
  * Get the provider ID from the alert ID.
  * @param alertId - The alert ID to extract the provider ID from.

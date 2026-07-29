@@ -40,13 +40,18 @@
         }
     }
 
+    ::-moz-range-thumb,
+    ::-webkit-slider-thumb {
+        cursor: pointer;
+    }
+
     // style to show a bubble with current range input value
     input[type='range'] + output {
         position: absolute;
         text-align: center;
         white-space: nowrap;
         padding: 2px;
-        background-color: var(--primary);
+        background-color: var(--bs-primary);
         color: white;
         border-radius: 4px;
         font-weight: bold;
@@ -55,10 +60,19 @@
         // position the label correctly
         left: calc(1% * var(--percentage));
         transform: translateX(calc(-1% * var(--percentage)));
+
+        // With bootstrap 5, the output suddenly appears at a wrong position
+        @if global.$MOODLE_VERSION >= 500 {
+            bottom: 0;
+        }
     }
 
     // adds transparency to tick-mark labels of disabled range inputs
     input:disabled[type='range'] + output {
-        background-color: color-mix(in srgb, var(--primary) 50%, transparent);
+        background-color: color-mix(
+            in srgb,
+            var(--bs-primary) 50%,
+            transparent
+        );
     }
 }

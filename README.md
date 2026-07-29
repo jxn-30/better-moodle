@@ -44,6 +44,7 @@ _Bilder in dieser Beschreibung enthalten teilweise verschwommene Elemente, um de
     2. Alternatively support the free internet and just use Firefox
 3. Reload Moodle once and enjoy a better Moodle 🎉
 4. If required, customize Better-Moodle via the gears icon at the top right of Moodle, next to your profile picture
+
  </details>
 
 ### Unterstützte Browser
@@ -112,10 +113,11 @@ Es gibt ganz viele, ganz tolle Menschen, die gerne programmieren und so breitet 
 
 🇬🇧 There are a lot of really great people who like programming and so Better-Moodle is spreading to other universities over time. We know from these universities that Better-Moodle is developed and tested by volunteer students:
 
-| Hochschule / University                                | Gepflegt von / Maintained by | Download                                  |                                                   |
-| :----------------------------------------------------- | :--------------------------- | :---------------------------------------- | :-----------------------------------------------: |
-| **Original** [Universität zu Lübeck (UzL)][moodle uzl] | [@jxn-30][@jxn-30]           | [better-moodle-uzl.user.js][download uzl] | ![GitHub Downloads latest release][downloads uzl] |
-| [CAU Kiel][moodle cau]                                 | [@YorikHansen][@YorikHansen] | [better-moodle-cau.user.js][download cau] | ![GitHub Downloads latest release][downloads cau] |
+| Hochschule / University                                | Gepflegt von / Maintained by | Download                                    |                                                    |
+| :----------------------------------------------------- | :--------------------------- | :------------------------------------------ | :------------------------------------------------: |
+| **Original** [Universität zu Lübeck (UzL)][moodle uzl] | [@jxn-30][@jxn-30]           | [better-moodle-uzl.user.js][download uzl]   | ![GitHub Downloads latest release][downloads uzl]  |
+| [CAU Kiel][moodle cau]                                 | [@YorikHansen][@YorikHansen] | [better-moodle-cau.user.js][download cau]   | ![GitHub Downloads latest release][downloads cau]  |
+| [HSNR][moodle hsnr]                                    | [@3xyz7][@3xyz7]             | [better-moodle-hsnr.user.js][download hsnr] | ![GitHub Downloads latest release][downloads hsnr] |
 
 ## Features
 
@@ -167,12 +169,16 @@ Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar s
 [changelog]: https://github.com/jxn-30/better-moodle/blob/main/CHANGELOG.md
 [moodle uzl]: https://moodle.uni-luebeck.de
 [moodle cau]: https://elearn.informatik.uni-kiel.de/
+[moodle hsnr]: https://moodle.hsnr.de
 [download uzl]: https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle-uzl.user.js
 [downloads uzl]: https://img.shields.io/github/downloads/jxn-30/better-moodle/latest/better-moodle-uzl.user.js?style=for-the-badge&label=Downloads&color=004b5a
 [download cau]: https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle-cau.user.js
 [downloads cau]: https://img.shields.io/github/downloads/jxn-30/better-moodle/latest/better-moodle-cau.user.js?style=for-the-badge&label=Downloads&color=004b5a
+[download hsnr]: https://github.com/jxn-30/better-moodle/releases/latest/download/better-moodle-hsnr.user.js
+[downloads hsnr]: https://img.shields.io/github/downloads/jxn-30/better-moodle/latest/better-moodle-hsnr.user.js?style=for-the-badge&label=Downloads&color=004b5a
 [@jxn-30]: https://github.com/jxn-30
 [@YorikHansen]: https://github.com/YorikHansen
+[@3xyz7]: https://github.com/3xyz7
 [contributing.md]: ./CONTRIBUTING.md
 [support de]: ./support/de.md
 [support en]: ./support/en-gb.md

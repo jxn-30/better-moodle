@@ -75,8 +75,7 @@ export default abstract class FeatureGroup<ID extends FeatureGroupID> {
                 if (!features) return;
                 const formGroups = new Set<Element>();
                 let inheritedPrerequisites:
-                    | FeatureLoadPrerequisites
-                    | undefined = undefined;
+                    FeatureLoadPrerequisites | undefined = undefined;
                 if (featuresInheritPrerequisites) {
                     inheritedPrerequisites = this.#loadPrerequisites;
                 }

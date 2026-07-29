@@ -1,4 +1,5 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import { createTooltip } from '#lib/Tooltip';
 import { datetimeToString } from '#lib/localeString';
 import FeatureGroup from '#lib/FeatureGroup';
 import { getHtml } from '#lib/DOM';
@@ -42,8 +43,15 @@ const LOCK_NAME = 'better-moodle-nina-cache';
 const API_BASE = 'https://warnung.bund.de/api31';
 
 // The amtliche Regionalschlüssel has been extracted from https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json
-const ARS = __UNI__ === 'cau' ? '010020000000' : '010030000000';
-const MUNICIPALTY = __UNI__ === 'cau' ? 'Kiel' : 'Lübeck';
+const ARS =
+    __UNI__ === 'cau' ? '010020000000'
+    : __UNI__ === 'hsnr' ? '051160000000'
+    : '010030000000';
+
+const MUNICIPALTY =
+    __UNI__ === 'cau' ? 'Kiel'
+    : __UNI__ === 'hsnr' ? 'Mönchengladbach'
+    : 'Lübeck';
 
 // Define Settings
 const civilWarningsSetting = new SliderSetting('civilWarnings', 2, {
@@ -197,20 +205,18 @@ const showAlertDetailsModal = (alertId: string) => {
 
             // Title
             const severity = getAlertInfoAttribute(alert, 'severity')!;
+            const severitySpan = (
+                <span>{isCancel ? '✖️' : getSeverityEmoji(severity)}</span>
+            ) as HTMLSpanElement;
+            void createTooltip(severitySpan, {
+                title:
+                    isCancel ?
+                        LL.msgType.cancel()
+                    :   getSeverityLabel(severity, provider),
+            });
             alertTitleElem.append(
                 <>
-                    <span
-                        dataset={{
-                            originalTitle:
-                                isCancel ?
-                                    LL.msgType.cancel()
-                                :   getSeverityLabel(severity, provider),
-                            toggle: 'tooltip',
-                        }}
-                    >
-                        {isCancel ? '✖️' : getSeverityEmoji(severity)}
-                    </span>{' '}
-                    <span>{getAlertTitle(alert)}</span>
+                    {severitySpan} <span>{getAlertTitle(alert)}</span>
                 </>
             );
 
@@ -603,24 +609,19 @@ const requestAlerts = () =>
                     :   null;
 
                 const seen = alertCache[alertId].seen;
+                const severitySpan = (
+                    <span>{isCancel ? '✖️' : getSeverityEmoji(severity)}</span>
+                ) as HTMLSpanElement;
+                void createTooltip(severitySpan, {
+                    title:
+                        isCancel ?
+                            LL.msgType.cancel()
+                        :   getSeverityLabel(severity, provider),
+                });
                 return (
                     <div className={`card p-3 ${!seen ? style.unseen : ''}`}>
                         <h5>
-                            <span
-                                dataset={{
-                                    originalTitle:
-                                        isCancel ?
-                                            LL.msgType.cancel()
-                                        :   getSeverityLabel(
-                                                severity,
-                                                provider
-                                            ),
-                                    toggle: 'tooltip',
-                                }}
-                            >
-                                {isCancel ? '✖️' : getSeverityEmoji(severity)}
-                            </span>{' '}
-                            {getAlertTitle(alert)}
+                            {severitySpan} {getAlertTitle(alert)}
                             {duration}
                         </h5>
                         <span className="small text-muted">

@@ -32,11 +32,7 @@ type FeatureMethods<
  * - `moodle-and-dom-ready` - Load once both M object and DOM are ready
  */
 export type FeatureLoadPrerequisites =
-    | null
-    | 'none'
-    | 'moodle-ready'
-    | 'dom-ready'
-    | 'moodle-and-dom-ready';
+    null | 'none' | 'moodle-ready' | 'dom-ready' | 'moodle-and-dom-ready';
 
 /**
  * A class that represents a single feature

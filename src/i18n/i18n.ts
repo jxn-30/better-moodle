@@ -59,11 +59,11 @@ export const LLFG = <FeatureGroup extends keyof I18nObject['features']>(
  */
 export const LLF = <
     FeatureGroup extends keyof I18nObject['features'],
-    Feature extends I18nObject['features'][FeatureGroup] extends (
+    Feature extends (I18nObject['features'][FeatureGroup] extends (
         { features: unknown }
     ) ?
         keyof I18nObject['features'][FeatureGroup]['features']
-    :   never,
+    :   never),
 >(
     featureGroup: FeatureGroup,
     feature: Feature

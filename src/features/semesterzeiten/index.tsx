@@ -1,5 +1,6 @@
 import Block from '#lib/Block';
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
+import { createTooltip } from '#lib/Tooltip';
 import FeatureGroup from '#lib/FeatureGroup';
 import { type Locales } from '../../i18n/i18n-types';
 import style from './style.module.scss';
@@ -272,7 +273,7 @@ const loadProgressBar = (
                     html: 'true',
                 }}
             ></div>
-        );
+        ) as HTMLDivElement;
 
         currentEvents.forEach(event => {
             const { start, end } = getEventDates(event);
@@ -302,7 +303,11 @@ const loadProgressBar = (
             );
         });
 
-        bar.dataset.originalTitle = getHtml(title);
+        void createTooltip(bar, {
+            placement: 'bottom',
+            html: true,
+            title: getHtml(title),
+        });
 
         progressBar.append(bar);
     });

@@ -89,9 +89,7 @@ interface ConfigWithExcludedFeatures extends BaseConfig {
 }
 
 export type Config =
-    | BaseConfig
-    | ConfigWithExplicitFeatures
-    | ConfigWithExcludedFeatures;
+    BaseConfig | ConfigWithExplicitFeatures | ConfigWithExcludedFeatures;
 
 /**
  * This is the configuration file for Better-Moodle.
