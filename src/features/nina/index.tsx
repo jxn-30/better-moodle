@@ -513,9 +513,9 @@ alertsModalReloadButton.addEventListener('click', () => {
 document.addEventListener('click', e => {
     const target = (e.target as HTMLElement).closest('[data-alert]');
     if (target && target instanceof HTMLElement) {
-        e.preventDefault();
         const alertId = target.dataset?.alert;
         if (alertId) {
+            e.preventDefault();
             showAlertDetailsModal(alertId);
         }
     }
@@ -631,12 +631,16 @@ const requestAlerts = () =>
                         <br />
                         <p>{shortDescription}</p>
                         <div className="small">
+                            <a href="#alert-modal" dataset={{ alert: alertId }}>
+                                <i class="icon fa fa-info-circle mr-1"></i>
+                                {LL.modal.showMore()}
+                            </a>
+                            {' ⋅ '}
                             <a
                                 href={`https://warnung.bund.de/meldungen/${alertId}/`}
-                                dataset={{ alert: alertId }}
                                 target="_blank"
                             >
-                                {LL.modal.showMore()}
+                                {LL.modal.bbkLink()}
                             </a>
                         </div>
                     </div>
