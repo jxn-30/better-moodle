@@ -6,6 +6,11 @@ import { type Plugin, type PluginOption } from 'vite';
 const VIRTUAL_PUBLIC_ID = 'virtual:userscript-framework/i18n-undefined';
 const VIRTUAL_RESOLVED_ID = `\0${VIRTUAL_PUBLIC_ID}`;
 
+const INDEX_REGEX =
+    /src\/features\/(?<featureGroup>[^/]+)\/i18n(\/index(\.tsx?)?)?$/;
+const FEAT_REGEX =
+    /src\/features\/(?<featureGroup>[^/]+)\/i18n\/(?<feature>[^/]+)(\.tsx?)?$/;
+
 /**
  * Create a function that resolves module imports for i18n files.
  * The returned function checks if the requested module is a virtual i18n module
@@ -30,10 +35,8 @@ const resolveId =
         const sourcePath = path.resolve(path.dirname(importer), source);
 
         // Trying to load index translations? Only if the group is enabled!
-        const indexRegex =
-            /src\/features\/(?<featureGroup>[^/]+)\/i18n(\/index(\.tsx?)?)?$/;
         let indexMatch;
-        if ((indexMatch = indexRegex.exec(sourcePath))) {
+        if ((indexMatch = INDEX_REGEX.exec(sourcePath))) {
             const { featureGroup } = indexMatch.groups!;
             // dirname (/.../<feature>/i18n) -> dirname (/.../<feature>) -> basename (<feature>)
             // const featureGroup = path.basename(path.dirname(path.dirname(sourcePath)));
@@ -46,16 +49,13 @@ const resolveId =
         }
 
         // Loading from an translation index file
-        if (indexRegex.test(importer)) {
+        if (INDEX_REGEX.test(importer)) {
             // If the translation is not within an i18n folder, include it.
             // Used e.g. for weather condition translations
             // Improvements for this are still tbd
             if (!sourcePath.includes('i18n')) return undefined;
 
-            const match =
-                /src\/features\/(?<featureGroup>[^/]+)\/i18n\/(?<feature>[^/]+)(\.tsx?)?$/.exec(
-                    sourcePath
-                );
+            const match = FEAT_REGEX.exec(sourcePath);
 
             const regexGroups = match?.groups;
 
