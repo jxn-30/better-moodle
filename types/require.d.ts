@@ -18,6 +18,7 @@ import CoreStr from './require.js/core/str';
 import CoreTemplates from './require.js/core/templates';
 import CoreToast from './require.js/core/toast';
 import CoreUserRepository from './require.js/core_user/repository';
+import FilterMathjaxLoader from './require.js/filter_mathjaxloader/loader';
 import InitEmojiAutoComplete from './require.js/core/emoji/auto_complete';
 import InitEmojiPicker from './require.js/core/emoji/picker';
 import JQueryStatic from '@types/jquery';
@@ -54,6 +55,8 @@ interface ModuleMap {
     'core_filters/events': CoreFiltersEvents;
 
     'core_user/repository': CoreUserRepository;
+
+    'filter_mathjaxloader/loader': FilterMathjaxLoader;
 
     'jquery': JQueryStatic;
 

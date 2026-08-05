@@ -17,14 +17,18 @@ const enabled = new BooleanSetting('markdownSupport', true).addAlias(
  * @returns A promise that resolves to Moodles MathJax instance
  */
 const mathJaxReady = (): Promise<(typeof window)['MathJax']> =>
-    new Promise<(typeof window)['MathJax']>(resolve => {
-        const interval = setInterval(() => {
-            if (unsafeWindow.MathJax) {
-                clearInterval(interval);
-                resolve(unsafeWindow.MathJax);
-            }
-        }, 10);
-    });
+    __MOODLE_VERSION__ >= 500 ?
+        require(['filter_mathjaxloader/loader'] as const)
+            .then(([loader]) => loader.loadMathJax())
+            .then(() => unsafeWindow.MathJax)
+    :   new Promise<(typeof window)['MathJax']>(resolve => {
+            const interval = setInterval(() => {
+                if (unsafeWindow.MathJax) {
+                    clearInterval(interval);
+                    resolve(unsafeWindow.MathJax);
+                }
+            }, 10);
+        });
 
 /**
  * Parses the markdown in the input field and returns the HTML
