@@ -1,7 +1,7 @@
-import { type Context } from './tooling/context';
-import { createImportExport } from './tooling/utils/importBuilder';
+import { type Context } from './tooling/context/index.ts';
+import { createImportExport } from './tooling/utils/importBuilder.ts';
 import { defineConfig } from 'vite';
-import UserscriptFrameworkPlugin from './tooling/framework';
+import UserscriptFrameworkPlugin from './tooling/framework.ts';
 
 const performanceStops = new Map<string, bigint>();
 /**

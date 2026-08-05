@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import { isCI } from 'ci-info';
 import { join } from 'node:path';
-import { scriptFileName } from './tooling/context/config';
-import viteConfig from './vite.config';
+import { scriptFileName } from './tooling/context/config.ts';
+import viteConfig from './vite.config.ts';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
 const extendedEnv = { VITEST_USERSCRIPT: 'true' };
@@ -33,7 +33,11 @@ export default mergeConfig(
             testTimeout: isCI ? 30_000 : 300_000_000, // 30s on CI, 5 million minutes locally
             hookTimeout: 60_000, // 60s should be enough. 30s also works but is a little optimistic sometimes
             provide: {
-                userscriptFile: join(__dirname, 'dist', scriptFileName),
+                userscriptFile: join(
+                    import.meta.dirname,
+                    'dist',
+                    scriptFileName
+                ),
             },
         },
     })

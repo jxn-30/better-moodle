@@ -1,13 +1,14 @@
-import * as args from './args';
-import * as browsers from './browsers';
-import * as connects from './connects';
-import * as constants from './constants';
-import * as features from './features';
-import * as requires from './requires';
-import * as subpaths from './subpaths';
-import * as urls from './urls';
+import * as args from './args.ts';
+import * as browsers from './browsers.ts';
+import * as connects from './connects.ts';
+import * as constants from './constants.ts';
+import * as features from './features.ts';
+import * as requires from './requires.ts';
+import * as subpaths from './subpaths.ts';
+import * as urls from './urls.ts';
 import fs from 'node:fs/promises';
-import { version } from './version';
+import packageJSON from '../../package.json' with { type: 'json' };
+import { version } from './version.ts';
 import {
     authors,
     config,
@@ -15,8 +16,7 @@ import {
     metaFileName,
     polyfillsFileName,
     scriptFileName,
-} from './config';
-import { dependencies, devDependencies } from '../../package.json';
+} from './config.ts';
 
 // Populate connects
 // Global connects
@@ -32,7 +32,7 @@ Object.entries(globalConfig.connects).forEach(([feature, connectArray]) => {
 // For features
 if (features.isEnabled('darkmode')) {
     requires.add(
-        `https://unpkg.com/darkreader@${dependencies.darkreader}/darkreader.js`,
+        `https://unpkg.com/darkreader@${packageJSON.dependencies.darkreader}/darkreader.js`,
         await fs.readFile(subpaths.resolve('darkreader'))
     );
 }
@@ -73,7 +73,7 @@ Source-Code: ${urls.githubUrl}
 const polyfillsCopyright = (polyfills: string[]) =>
     `
 This is Polyfills for Better-Moodle; Version ${version}; Built for ${config.uniName} (${config.moodleUrl}).
-Polyfills are provided by core-js@${devDependencies['core-js']}. Copyright (c) to the maintainers and contributors.
+Polyfills are provided by core-js@${packageJSON.devDependencies['core-js']}. Copyright (c) to the maintainers and contributors.
 Better-Moodle Copyright (c) 2023-${new Date().getFullYear()} Jan (@jxn-30), Yorik (@YorikHansen) and contributors.
 All rights reserved.
 Licensed under the MIT License (MIT).

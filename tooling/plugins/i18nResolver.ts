@@ -1,5 +1,5 @@
-import { type Context } from '../context';
-import createPlugin from './createPlugin';
+import { type Context } from '../context/index.ts';
+import createPlugin from './createPlugin.ts';
 import path from 'node:path';
 import { type Plugin, type PluginOption } from 'vite';
 

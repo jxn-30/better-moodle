@@ -22,6 +22,7 @@
         "noUnusedParameters": true,
         "noImplicitReturns": true,
         "skipLibCheck": true,
+        "allowImportingTsExtensions": true,
         "jsx": "preserve",
         "jsxImportSource": "jsx-dom",
         "plugins": [

@@ -1,7 +1,7 @@
-import type { Context } from '../context';
-import createPlugin from './createPlugin';
+import type { Context } from '../context/index.ts';
+import createPlugin from './createPlugin.ts';
 import type { PluginOption } from 'vite';
-import { polyfillsCopyright } from '../utils/copyright';
+import { polyfillsCopyright } from '../utils/copyright.ts';
 import legacy, { detectPolyfills } from '@vitejs/plugin-legacy';
 
 // we need to make it an iife, otherwise global scope would be altered

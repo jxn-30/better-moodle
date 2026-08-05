@@ -1,4 +1,4 @@
-import createPlugin from './createPlugin';
+import createPlugin from './createPlugin.ts';
 import { type PluginOption } from 'vite';
 
 /**
