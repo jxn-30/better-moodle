@@ -101,7 +101,6 @@
         "ci-info": "4.4.0",
         "core-js": "3.49.0",
         "core-js-compat": "3.49.0",
-        "esbuild": "0.28.1",
         "esbuild-plugin-browserslist": "4.0.0",
         "eslint": "10.8.0",
         "eslint-config-prettier": "10.1.8",
