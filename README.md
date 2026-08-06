@@ -117,7 +117,7 @@ Es gibt ganz viele, ganz tolle Menschen, die gerne programmieren und so breitet 
 | :----------------------------------------------------- | :--------------------------- | :------------------------------------------ | :------------------------------------------------: |
 | **Original** [Universität zu Lübeck (UzL)][moodle uzl] | [@jxn-30][@jxn-30]           | [better-moodle-uzl.user.js][download uzl]   | ![GitHub Downloads latest release][downloads uzl]  |
 | [CAU Kiel][moodle cau]                                 | [@YorikHansen][@YorikHansen] | [better-moodle-cau.user.js][download cau]   | ![GitHub Downloads latest release][downloads cau]  |
-| [HSNR][moodle hsnr]                                    | [@3xyz7][@3xyz7]             | [better-moodle-hsnr.user.js][download hsnr] | ![GitHub Downloads latest release][downloads hsnr] |
+| [Hochschule Niederrhein (HSNR)][moodle hsnr]           | [@3xyz7][@3xyz7]             | [better-moodle-hsnr.user.js][download hsnr] | ![GitHub Downloads latest release][downloads hsnr] |
 
 ## Features
 
