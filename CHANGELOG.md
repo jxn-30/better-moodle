@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.10.1](https://github.com/jxn-30/better-moodle/compare/2.10.0...2.10.1) (2026-08-08)
+
+
+### Bug Fixes
+
+* **hsnr:** swap login JPG logo to SVG and set default pride logo rotation to 135° ([#1174](https://github.com/jxn-30/better-moodle/issues/1174)) ([0d6a13e](https://github.com/jxn-30/better-moodle/commit/0d6a13e3e3095b8a4c4c3f4e746395142162e769))
+* make use of mathjaxloader helper in &gt;= 500 ([a5bcc1b](https://github.com/jxn-30/better-moodle/commit/a5bcc1b25611475a2106e068041c20cc544bd470))
+* **nina:** fix accessibility of more info links ([52d07cf](https://github.com/jxn-30/better-moodle/commit/52d07cf6c8d9bb1bc029748753528ef37244bd71))
+
 ## [2.10.0](https://github.com/jxn-30/better-moodle/compare/2.9.1...2.10.0) (2026-07-29)
 
 
