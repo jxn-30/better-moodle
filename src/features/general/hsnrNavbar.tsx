@@ -1,38 +1,54 @@
 import { BooleanSetting } from '#lib/Settings/BooleanSetting';
 import Feature from '#lib/Feature';
-import { LLF } from '#i18n';
+import { FeatureTranslation } from '#types/i18n';
+import { getString } from '#lib/moodleStrings';
 import { ready } from '#lib/DOM';
 
-const LL = LLF('general', 'hsnrNavbar');
 const enabled = new BooleanSetting('enabled', true);
 
 const MOVED_ATTR = 'data-bm-moved-request';
 
 /**
- * Moves the "New course request" link from the primary navigation into the Support dropdown (desktop & mobile drawer).
+ * Builds an anchor element for navbar/drawer insertions.
+ * @param href - The target URL for the link.
+ * @param text - The visible label text.
+ * @param className - The CSS classes applied to the link.
+ * @returns The created HTML anchor element.
+ */
+const buildLink = (href: string, text: string, className: string) => {
+    const link = document.createElement('a');
+    link.href = href;
+    link.textContent = text;
+    link.className = className;
+    link.setAttribute(MOVED_ATTR, 'true');
+    return link;
+};
+
+/**
+ * Moves "New course request" to Support menu.
  */
 const reload = async () => {
     await ready();
 
-    // 1. Find ALL instances of "New course request" links (Desktop & Mobile Drawer)
     const requestLinks = document.querySelectorAll<HTMLAnchorElement>(
         'a[href*="/course/request.php"]'
     );
 
-    // --- FEATURE DISABLED: Restore original layout ---
+    // --- FEATURE DISABLED: restore original layout ---
     if (!enabled.value) {
         requestLinks.forEach(link => {
             const parent = link.closest('li, .list-group-item');
-            if (parent instanceof HTMLElement) {
-                parent.style.display = '';
-            }
+            if (parent instanceof HTMLElement) parent.style.display = '';
         });
         document.querySelectorAll(`[${MOVED_ATTR}]`).forEach(el => el.remove());
         return;
     }
 
-    // --- FEATURE ENABLED: Move into Support menus ---
     if (!requestLinks.length) return;
+
+    // Fetch string directly from Moodle core as default
+    const linkText = await getString('requestcourse', 'core');
+    const desktopLink = requestLinks[0];
 
     // A. DESKTOP SUPPORT DROPDOWN
     const desktopSupportContainer = document.querySelector(
@@ -43,27 +59,18 @@ const reload = async () => {
         desktopSupportContainer &&
         !desktopSupportContainer.querySelector(`[${MOVED_ATTR}]`)
     ) {
-        const desktopLink = requestLinks[0];
-        const isActive = desktopLink?.classList.contains('active');
-        const linkText = desktopLink?.textContent?.trim() || LL.courseRequest();
-
-        const desktopItem = (
-            <a
-                className={`dropdown-item ${isActive ? 'active' : ''}`}
-                role="menuitem"
-                href={desktopLink?.href || '/course/request.php'}
-                data-disableactive="true"
-                tabIndex={-1}
-                aria-current={
-                    desktopLink?.getAttribute('aria-current') === 'true' ?
-                        'true'
-                    :   undefined
-                }
-                {...{ [MOVED_ATTR]: 'true' }}
-            >
-                {linkText}
-            </a>
-        ) as unknown as HTMLAnchorElement;
+        const isActive = desktopLink?.classList.contains('active') ?? false;
+        const desktopItem = buildLink(
+            desktopLink?.href || '/course/request.php',
+            linkText,
+            `dropdown-item ${isActive ? 'active' : ''}`
+        );
+        desktopItem.setAttribute('role', 'menuitem');
+        desktopItem.setAttribute('data-disableactive', 'true');
+        desktopItem.tabIndex = -1;
+        if (desktopLink?.getAttribute('aria-current') === 'true') {
+            desktopItem.setAttribute('aria-current', 'true');
+        }
 
         desktopSupportContainer.prepend(desktopItem);
     }
@@ -77,27 +84,17 @@ const reload = async () => {
         mobileSupportContainer &&
         !mobileSupportContainer.querySelector(`[${MOVED_ATTR}]`)
     ) {
-        const mobileLink = requestLinks[0];
-        const linkText = mobileLink?.textContent?.trim() || LL.courseRequest();
-
-        const mobileItem = (
-            <a
-                className="list-group-item list-group-item-action"
-                href={mobileLink?.href || '/course/request.php'}
-                {...{ [MOVED_ATTR]: 'true' }}
-            >
-                {linkText}
-            </a>
-        ) as unknown as HTMLAnchorElement;
-
+        const mobileItem = buildLink(
+            desktopLink?.href || '/course/request.php',
+            linkText,
+            'list-group-item list-group-item-action'
+        );
         mobileSupportContainer.prepend(mobileItem);
     }
 
     // C. HIDE ALL ORIGINAL LINKS/CONTAINERS
     requestLinks.forEach(link => {
-        // Do not hide items we injected ourselves!
         if (link.hasAttribute(MOVED_ATTR)) return;
-
         const parentContainer = link.closest(
             'li, .list-group-item, [role="listitem"]'
         );
@@ -110,6 +107,26 @@ const reload = async () => {
 };
 
 enabled.onInput(() => void reload());
+
+export const de = {
+    settings: {
+        enabled: {
+            name: 'Kursanfrage im Support-Menü',
+            description:
+                'Verschiebt den "neuer Kursantrag"-Link aus der Hauptnavigation in das Support-Dropdown.',
+        },
+    },
+} satisfies FeatureTranslation;
+
+export const en = {
+    settings: {
+        enabled: {
+            name: 'Course request in Support menu',
+            description:
+                'Moves the "New course request" link from the primary navigation into the Support dropdown.',
+        },
+    },
+} satisfies typeof de;
 
 export default Feature.register({
     settings: new Set([enabled]),

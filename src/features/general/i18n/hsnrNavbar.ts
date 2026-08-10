@@ -1,22 +1,23 @@
-export default {
-    de: {
-        settings: {
-            enabled: {
-                name: 'Kursanfrage im Support-Menü',
-                description:
-                    'Verschiebt den "neuer Kursantrag"-Link aus der Hauptnavigation in das Support-Dropdown.',
-            },
+import { FeatureTranslation } from '#types/i18n';
+
+export const de = {
+    settings: {
+        enabled: {
+            name: 'Kursanfrage im Support-Menü',
+            description:
+                'Verschiebt den "neuer Kursantrag"-Link aus der Hauptnavigation in das Support-Dropdown.',
         },
-        courseRequest: 'neuer Kursantrag',
     },
-    en: {
-        settings: {
-            enabled: {
-                name: 'Course request in Support menu',
-                description:
-                    'Moves the "New course request" link from the primary navigation into the Support dropdown.',
-            },
+} satisfies FeatureTranslation;
+
+export const en = {
+    settings: {
+        enabled: {
+            name: 'Course request in Support menu',
+            description:
+                'Moves the "New course request" link from the primary navigation into the Support dropdown.',
         },
-        courseRequest: 'New course request',
     },
-};
+} satisfies typeof de;
+
+export default { de, en };
