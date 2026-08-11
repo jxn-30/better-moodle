@@ -19,7 +19,7 @@
         "build:cau": "yarn build cau \"$@\"",
         "preview": "vite preview",
         "test:src": "vitest run --coverage -- --config=${0}",
-        "test:userscript": "vitest run --config vitest.userscript.config.ts -- --config=${0}",
+        "test:userscript": "puppeteer browsers install chrome && vitest run --config vitest.userscript.config.ts -- --config=${0}",
         "i18n:watch": "typesafe-i18n",
         "i18n:once": "typesafe-i18n --no-watch",
         "config:scheme": "ts-json-schema-generator --path 'configs/_config.d.ts' --type 'Config' --out configs/_schema.json; ts-json-schema-generator --path 'configs/_global.json.d.ts' --type 'GlobalConfig' --out configs/_globalSchema.json; yarn prettier --write configs/*.json",
