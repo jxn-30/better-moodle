@@ -1313,10 +1313,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:5.20260801.1":
-  version: 5.20260801.1
-  resolution: "@cloudflare/workers-types@npm:5.20260801.1"
-  checksum: 10c0/5497322d61ca7467989fc99f50c5df37386eec13e2ac3d52c96e555acd5468442b8ba4e4b8312143ea924e7db9615fffdb299a87b723a3fc4ae45683e61dde8b
+"@cloudflare/workers-types@npm:5.20260804.1":
+  version: 5.20260804.1
+  resolution: "@cloudflare/workers-types@npm:5.20260804.1"
+  checksum: 10c0/808f27607214960e7a84f1d013c7ac856e8fe5b1014df4cf7da44a7d57f1bb464d62b0044b3cea64be8384719b033f8f50c3a2af86c2feb34074352b9e7122dd
   languageName: node
   linkType: hard
 
@@ -3066,9 +3066,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@puppeteer/browsers@npm:3.0.6":
-  version: 3.0.6
-  resolution: "@puppeteer/browsers@npm:3.0.6"
+"@puppeteer/browsers@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@puppeteer/browsers@npm:3.1.0"
   dependencies:
     modern-tar: "npm:^0.7.6"
     yargs: "npm:^18.0.0"
@@ -3082,7 +3082,7 @@ __metadata:
       optional: true
   bin:
     browsers: lib/main-cli.js
-  checksum: 10c0/145c9136b6a4a2de0a1a6413ab92eb791384a8d103dea253a487eacaaabc66927205dbe843f899dfb961fb0fddc164e17ad6fbad83bc40ff39513a0a0b51172a
+  checksum: 10c0/cab18c02f6e77a8d261a08a062c3cebd1227666d425f3731bc91cd001331beeaf165046bc20d3d25dc1eaf5869a6d9f4f8fc5d3d76f1dace28d79b616846291f
   languageName: node
   linkType: hard
 
@@ -4457,7 +4457,7 @@ __metadata:
   dependencies:
     "@actions/core": "npm:3.0.1"
     "@babel/compat-data": "npm:8.0.0"
-    "@cloudflare/workers-types": "npm:5.20260801.1"
+    "@cloudflare/workers-types": "npm:5.20260804.1"
     "@commitlint/cli": "npm:21.2.1"
     "@commitlint/config-conventional": "npm:21.2.0"
     "@eslint/js": "npm:10.0.1"
@@ -4482,8 +4482,8 @@ __metadata:
     caniuse-lite: "npm:1.0.30001806"
     chalk: "npm:6.0.0"
     ci-info: "npm:4.4.0"
-    core-js: "npm:3.49.0"
-    core-js-compat: "npm:3.49.0"
+    core-js: "npm:3.50.0"
+    core-js-compat: "npm:3.50.0"
     darkreader: "npm:4.9.128"
     esbuild-plugin-browserslist: "npm:4.0.0"
     eslint: "npm:10.8.0"
@@ -4505,10 +4505,10 @@ __metadata:
     postcss-preset-env: "npm:11.3.2"
     prettier: "npm:3.9.6"
     prettier-plugin-mustache: "npm:0.1.5"
-    puppeteer: "npm:25.4.0"
+    puppeteer: "npm:25.5.0"
     rrule: "npm:2.8.1"
     sass-embedded: "npm:1.100.0"
-    terser: "npm:5.49.0"
+    terser: "npm:5.49.2"
     ts-json-schema-generator: "npm:2.9.0"
     ts-node: "npm:10.9.2"
     typesafe-i18n: "patch:typesafe-i18n@npm%3A5.27.1#~/.yarn/patches/typesafe-i18n-npm-5.27.1-37bc79b222.patch"
@@ -4890,16 +4890,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js-compat@npm:3.49.0":
-  version: 3.49.0
-  resolution: "core-js-compat@npm:3.49.0"
-  dependencies:
-    browserslist: "npm:^4.28.1"
-  checksum: 10c0/546e64b7ce45f724825bc13c1347f35c0459a6e71c0dcccff3ec21fbff463f5b0b97fc1220e6d90302153863489301793276fe2bf96f46001ff555ead4140308
-  languageName: node
-  linkType: hard
-
-"core-js-compat@npm:^3.48.0":
+"core-js-compat@npm:3.50.0, core-js-compat@npm:^3.48.0":
   version: 3.50.0
   resolution: "core-js-compat@npm:3.50.0"
   dependencies:
@@ -4908,14 +4899,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:3.49.0":
-  version: 3.49.0
-  resolution: "core-js@npm:3.49.0"
-  checksum: 10c0/2e42edb47eda38fd5368380131623c8aa5d4a6b42164125b17744bdc08fa5ebbbdd06b4b4aa6ca3663470a560b0f2fba48e18f142dfe264b0039df85bc625694
-  languageName: node
-  linkType: hard
-
-"core-js@npm:^3.49.0":
+"core-js@npm:3.50.0, core-js@npm:^3.49.0":
   version: 3.50.0
   resolution: "core-js@npm:3.50.0"
   checksum: 10c0/1bfcfb1dbdf45b0b1428a9fdcb03697d1fc52c7e9bc336f804a86ff2c2705a301dca7d9d6636d09d49d60298183273b9321681baeaf330c78db5393bc73f3f6a
@@ -8544,33 +8528,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:25.4.0":
-  version: 25.4.0
-  resolution: "puppeteer-core@npm:25.4.0"
+"puppeteer-core@npm:25.5.0":
+  version: 25.5.0
+  resolution: "puppeteer-core@npm:25.5.0"
   dependencies:
-    "@puppeteer/browsers": "npm:3.0.6"
+    "@puppeteer/browsers": "npm:3.1.0"
     chromium-bidi: "npm:17.0.2"
     devtools-protocol: "npm:0.0.1653615"
     typed-query-selector: "npm:^2.12.2"
     webdriver-bidi-protocol: "npm:0.4.2"
     ws: "npm:^8.21.1"
-  checksum: 10c0/4200034170123221354d372ed6ef50e2feb8ee5841bd77d479ec85a85c388ab8991162a269c49ddae38c6feb3e1ddec1d63406fef2f9908ac2e11b4636b7f6ea
+  checksum: 10c0/137132e4977ac9aa77c6ddbfb12a9412f3c67a312381800b85a602cabbe3a3659fe41c64ee8c5ab42d3793ba8933987145e7ba06d85999cae406446b3fcb077a
   languageName: node
   linkType: hard
 
-"puppeteer@npm:25.4.0":
-  version: 25.4.0
-  resolution: "puppeteer@npm:25.4.0"
+"puppeteer@npm:25.5.0":
+  version: 25.5.0
+  resolution: "puppeteer@npm:25.5.0"
   dependencies:
-    "@puppeteer/browsers": "npm:3.0.6"
+    "@puppeteer/browsers": "npm:3.1.0"
     chromium-bidi: "npm:17.0.2"
     devtools-protocol: "npm:0.0.1653615"
     lilconfig: "npm:^3.1.3"
-    puppeteer-core: "npm:25.4.0"
+    puppeteer-core: "npm:25.5.0"
     typed-query-selector: "npm:^2.12.2"
   bin:
     puppeteer: lib/puppeteer/node/cli.js
-  checksum: 10c0/eb54294e2d93905c0d3905277381019d18e0d4eb5211ec59c5451336f75dada5a8a389c6923d07703376d5b039140f5891c37111aa0a399a285522574c0254cf
+  checksum: 10c0/c331e7ecb1f6c3f675490ba793307b5f6f7c7c0ef748f65717fe01bae0b9804d29c39c2cffc00f2857e4ed6939f5f916bf917bd465b260675c0ddc114f87def7
   languageName: node
   linkType: hard
 
@@ -9847,21 +9831,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:5.49.0":
-  version: 5.49.0
-  resolution: "terser@npm:5.49.0"
-  dependencies:
-    "@jridgewell/source-map": "npm:^0.3.3"
-    acorn: "npm:^8.15.0"
-    commander: "npm:^2.20.0"
-    source-map-support: "npm:~0.5.20"
-  bin:
-    terser: bin/terser
-  checksum: 10c0/c1f628a7a6226f7283db92ce43247306d612b80a60a075d97e1f5539a032beee05c87f889eacff2ffabd2fa9ac6bd1c147e5eb49c6546c9b174ed241d5f056a7
-  languageName: node
-  linkType: hard
-
-"terser@npm:^5.17.4":
+"terser@npm:5.49.2, terser@npm:^5.17.4":
   version: 5.49.2
   resolution: "terser@npm:5.49.2"
   dependencies:
