@@ -1,3 +1,4 @@
+import { getString } from '#lib/moodleStrings';
 import { ready } from '#lib/DOM';
 
 const MY_COURSES_URL = 'https://moodle.hsnr.de/my/courses.php';
@@ -6,15 +7,18 @@ const MY_COURSES_URL = 'https://moodle.hsnr.de/my/courses.php';
  * Injects a "My courses" tab after the Dashboard tab in both primary top navigation
  * and mobile drawer navigation.
  */
-void ready().then(() => {
+void (async () => {
+    await ready();
+
     // Prevent duplicate injection
     if (document.querySelector('li[data-key="mycourses"]')) {
         return;
     }
 
     const isCurrentPage = window.location.pathname.includes('/my/courses.php');
-    const langIsGerman = document.documentElement.lang.startsWith('de');
-    const tabLabel = langIsGerman ? 'Meine Kurse' : 'My courses';
+
+    // Fetch native string directly from Moodle core
+    const tabLabel = await getString('mycourses', 'core');
 
     // 1. Primary Top Navigation
     const dashboardNavItem = document.querySelector<HTMLLIElement>(
@@ -61,4 +65,4 @@ void ready().then(() => {
             dashboardDrawerItem.after(drawerLink);
         }
     }
-});
+})();
