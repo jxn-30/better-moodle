@@ -25,24 +25,21 @@ void (async () => {
         'li[data-key="myhome"]'
     );
     if (dashboardNavItem?.parentNode) {
-        const myCoursesLi = document.createElement('li');
-        myCoursesLi.className = 'nav-item';
-        myCoursesLi.setAttribute('data-key', 'mycourses');
-        myCoursesLi.setAttribute('role', 'none');
+        const myCoursesLi = (
+            <li className="nav-item" data-key="mycourses" role="none">
+                <a
+                    className={`nav-link ${isCurrentPage ? 'active' : ''}`}
+                    href={MY_COURSES_URL}
+                    role="menuitem"
+                    data-disableactive="true"
+                    aria-current={isCurrentPage ? 'true' : undefined}
+                    tabIndex={isCurrentPage ? undefined : -1}
+                >
+                    {tabLabel}
+                </a>
+            </li>
+        ) as unknown as HTMLElement;
 
-        const link = document.createElement('a');
-        link.className = `nav-link ${isCurrentPage ? 'active' : ''}`;
-        link.href = MY_COURSES_URL;
-        link.textContent = tabLabel;
-        link.setAttribute('role', 'menuitem');
-        link.setAttribute('data-disableactive', 'true');
-        if (isCurrentPage) {
-            link.setAttribute('aria-current', 'true');
-        } else {
-            link.setAttribute('tabindex', '-1');
-        }
-
-        myCoursesLi.appendChild(link);
         dashboardNavItem.after(myCoursesLi);
     }
 
@@ -54,13 +51,17 @@ void (async () => {
         const dashboardDrawerItem =
             drawerList.querySelector<HTMLAnchorElement>('a[href*="/my/"]');
         if (dashboardDrawerItem) {
-            const drawerLink = document.createElement('a');
-            drawerLink.href = MY_COURSES_URL;
-            drawerLink.className = `list-group-item list-group-item-action ${isCurrentPage ? 'active' : ''}`;
-            drawerLink.textContent = tabLabel;
-            if (isCurrentPage) {
-                drawerLink.setAttribute('aria-current', 'true');
-            }
+            const drawerLink = (
+                <a
+                    href={MY_COURSES_URL}
+                    className={`list-group-item list-group-item-action ${
+                        isCurrentPage ? 'active' : ''
+                    }`}
+                    aria-current={isCurrentPage ? 'true' : undefined}
+                >
+                    {tabLabel}
+                </a>
+            ) as unknown as HTMLElement;
 
             dashboardDrawerItem.after(drawerLink);
         }
