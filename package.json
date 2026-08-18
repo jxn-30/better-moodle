@@ -105,7 +105,7 @@
         "eslint": "10.8.0",
         "eslint-config-prettier": "10.1.8",
         "eslint-plugin-es-x": "10.0.0",
-        "eslint-plugin-jsdoc": "63.3.3",
+        "eslint-plugin-jsdoc": "64.1.0",
         "eslint-plugin-jsx-a11y": "6.10.2",
         "eslint-plugin-userscripts": "0.5.6",
         "fast-glob": "3.3.3",
