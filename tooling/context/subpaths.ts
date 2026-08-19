@@ -25,3 +25,10 @@ export const featureBase = path.dirname(
     path.dirname(resolve('#feats/general/index.ts'))
 );
 export const styleBase = path.dirname(resolve('#style/index.module.scss'));
+
+export const inlangPath = path.dirname(
+    resolve('#/src/i18n/project.inlang/settings.json')
+);
+export const paraglidePath = path.dirname(
+    resolve('#/src/i18n/paraglide/runtime.js')
+);

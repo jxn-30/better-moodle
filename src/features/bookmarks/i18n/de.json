@@ -1,0 +1,16 @@
+{
+    "bookmarks_name": "Lesezeichen",
+    "bookmarks_description": "Wer nutzt schon den Lesezeichenmanager des Browsers? Der hier in Better-Moodle eingebaute ist einfach viel cooler!",
+
+    "bookmarks_settings_enabled_name": "Lesezeichenmanager aktivieren",
+    "bookmarks_settings_enabled_description": "Aktiviert einen Lesezeichenmanager, um Lesezeichen direkt im Moodle zu haben.",
+
+    "bookmarks_bookmarks": "Lesezeichen",
+    "bookmarks_add": "Lesezeichen hinzufügen",
+    "bookmarks_edit": "Lesezeichen bearbeiten",
+    "bookmarks_empty": "Es sind noch keine Lesezeichen angelegt.",
+    "bookmarks_savedNotification": "Deine Lesezeichen wurden erfolgreich gespeichert! 😊",
+
+    "bookmarks_modal_title": "Bezeichnung",
+    "bookmarks_modal_url": "Adresse"
+}

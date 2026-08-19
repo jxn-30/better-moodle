@@ -17,6 +17,8 @@ export default [
             'ics-parser', // TODO: see how we can include this in linting but without monkey
             'coverage',
             'meta', // TODO: see how we can include this in linting but without monkey
+            'src/i18n/paraglide',
+            'src/i18n/project.inlang',
         ],
     },
     js.configs.recommended,

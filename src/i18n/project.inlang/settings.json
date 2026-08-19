@@ -1,0 +1,12 @@
+{
+    "$schema": "https://inlang.com/schema/project-settings",
+    "baseLocale": "de",
+    "locales": ["de", "en-gb"],
+    "modules": [
+        "https://cdn.jsdelivr.net/npm/@inlang/plugin-message-format/dist/index.js",
+        "https://cdn.jsdelivr.net/npm/@inlang/plugin-m-function-matcher/dist/index.js"
+    ],
+    "plugin.inlang.messageFormat": {
+        "pathPattern": ["../features/bookmarks/i18n/{locale}.json"]
+    }
+}
