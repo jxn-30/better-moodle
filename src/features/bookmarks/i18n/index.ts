@@ -11,12 +11,6 @@ export const de = {
                 'Aktiviert einen Lesezeichenmanager, um Lesezeichen direkt im Moodle zu haben.',
         },
     },
-    bookmarks: 'Lesezeichen',
-    add: 'Lesezeichen hinzufügen',
-    edit: 'Lesezeichen bearbeiten',
-    empty: 'Es sind noch keine Lesezeichen angelegt.',
-    savedNotification: 'Deine Lesezeichen wurden erfolgreich gespeichert! 😊',
-    modal: { title: 'Bezeichnung', url: 'Adresse' },
 } satisfies FeatureGroupTranslation;
 
 export const en = {
@@ -30,12 +24,6 @@ export const en = {
                 'Enables a bookmarks manager to allow bookmarks within Moodle.',
         },
     },
-    bookmarks: 'Bookmarks',
-    add: 'Add bookmark',
-    edit: 'Edit bookmarks',
-    empty: 'No bookmarks created yet.',
-    savedNotification: 'Your bookmarks were saved successfully! 😊',
-    modal: { title: 'Title', url: 'Adress' },
 } satisfies typeof de;
 
 export default { de, en };
