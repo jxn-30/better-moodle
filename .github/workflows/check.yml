@@ -101,7 +101,9 @@ jobs:
               uses: ./.github/actions/setup
 
             - name: 🌐 create i18n types
-              run: yarn i18n:once
+              run: |
+                  yarn i18n:once
+                  yarn i18n:new
 
             - name: 🚨 run eslint
               run: yarn lint:fix -o .eslint-report.json --format json
