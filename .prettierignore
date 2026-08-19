@@ -4,6 +4,8 @@ node_modules/
 dist/
 src/style/**/*.d.ts
 src/features/**/*.scss.d.ts
+src/i18n/paraglide
+
 .release-please-manifest.json
 
 redesign.user.js

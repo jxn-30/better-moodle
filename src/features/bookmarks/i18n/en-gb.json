@@ -1,0 +1,16 @@
+{
+    "bookmarks_name": "Bookmarks",
+    "bookmarks_description": "Who even uses the bookmarks feature of their browser? The one integrated in Better-Moodle is way cooler!",
+
+    "bookmarks_settings_enabled_name": "Enable bookmarks manager",
+    "bookmarks_settings_enabled_description": "Enables a bookmarks manager to allow bookmarks within Moodle.",
+
+    "bookmarks_bookmarks": "Bookmarks",
+    "bookmarks_add": "Add bookmark",
+    "bookmarks_edit": "Edit bookmarks",
+    "bookmarks_empty": "No bookmarks created yet.",
+    "bookmarks_savedNotification": "Your bookmarks were saved successfully! 😊",
+
+    "bookmarks_modal_title": "Title",
+    "bookmarks_modal_url": "Adress"
+}

@@ -6,6 +6,7 @@ import importFeaturesPlugin from './plugins/importFeatures.ts';
 import importFixesPlugin from './plugins/importFixes.ts';
 import legacyPlugin from './plugins/legacy.ts';
 import mustacheMinifyPlugin from './plugins/mustacheLoader.ts';
+import paraglidePlugin from './plugins/paraglide.ts';
 import type { PluginOption } from 'vite';
 import postBuildFormatPlugin from './plugins/postBuildFormat.ts';
 import scssPlugin from './plugins/scss.ts';
@@ -46,6 +47,7 @@ export default function (config: FrameworkConfig): PluginOption {
     return [
         alterConfigPlugin(config, ctx),
 
+        paraglidePlugin(ctx),
         i18nResolverPlugin(ctx),
         scssPlugin(ctx),
 
