@@ -1,7 +1,7 @@
 import type Config from '#_configs/_config.d.ts';
-import { configFile } from './args';
-import { configsBase } from './subpaths';
-import globalConfig from '#_configs/_global.json';
+import { configFile } from './args.ts';
+import { configsBase } from './subpaths.ts';
+import globalConfig from '#_configs/_global.json' with { type: 'json' };
 
 // Subpath imports seem not to work when imported from node_modules.
 // Vite stores temp files in node_modules, thus this import magically happens from within node_modules.

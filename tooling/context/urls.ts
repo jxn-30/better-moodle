@@ -1,7 +1,7 @@
-import { tag as currentTag } from './version';
-import icsParserConfig from '../../ics-parser/wrangler.json';
-import { config, metaFileName, scriptFileName } from './config';
-import { configFile, isNightlyBuild } from './args';
+import { tag as currentTag } from './version.ts';
+import icsParserConfig from '../../ics-parser/wrangler.json' with { type: 'json' };
+import { config, metaFileName, scriptFileName } from './config.ts';
+import { configFile, isNightlyBuild } from './args.ts';
 
 export const githubUrl = `https://github.com/${config.github.user}/${config.github.repo}`;
 export const homepage = `${githubUrl}${config.github.branch ? `/tree/${config.github.branch}` : ''}`;

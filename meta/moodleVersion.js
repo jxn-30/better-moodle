@@ -35,6 +35,17 @@ const comparisons = {
             require(['core/task_indicator'], () => resolve(true), () =>
                 resolve(false))
         ),
+    501: () =>
+        new Promise(
+            resolve =>
+                require(['mod_lti/contentitem'], ({ init }) =>
+                    resolve(init.length === 4)) // this has been backportet to 405 but not to 500
+        ),
+    502: () =>
+        new Promise(resolve =>
+            require(['core/deprecated'], () => resolve(true), () =>
+                resolve(false))
+        ),
 };
 
 (async () => {

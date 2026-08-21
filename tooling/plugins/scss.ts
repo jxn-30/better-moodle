@@ -1,6 +1,6 @@
 import * as sass from 'sass-embedded';
-import { type Context } from '../context';
-import createPlugin from './createPlugin';
+import { type Context } from '../context/index.ts';
+import createPlugin from './createPlugin.ts';
 import { type Importer } from 'sass-embedded';
 import path from 'node:path';
 import { type PluginOption, type UserConfig } from 'vite';

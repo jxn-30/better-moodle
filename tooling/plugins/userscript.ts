@@ -1,7 +1,7 @@
-import { type Context } from '../context';
+import { type Context } from '../context/index.ts';
 import monkey from 'vite-plugin-monkey';
 import { type PluginOption } from 'vite';
-import { scriptCopyright } from '../utils/copyright';
+import { scriptCopyright } from '../utils/copyright.ts';
 
 /**
  * A userscript plugin that makes the output being a userscript

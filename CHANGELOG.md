@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.10.1](https://github.com/jxn-30/better-moodle/compare/2.10.0...2.10.1) (2026-08-10)
+
+
+### Bug Fixes
+
+* **hsnr:** swap login JPG logo to SVG and set default pride logo rotation to 135° ([#1174](https://github.com/jxn-30/better-moodle/issues/1174)) ([0d6a13e](https://github.com/jxn-30/better-moodle/commit/0d6a13e3e3095b8a4c4c3f4e746395142162e769))
+* make use of mathjaxloader helper in &gt;= 500 ([a5bcc1b](https://github.com/jxn-30/better-moodle/commit/a5bcc1b25611475a2106e068041c20cc544bd470))
+* **nina:** fix accessibility of more info links ([52d07cf](https://github.com/jxn-30/better-moodle/commit/52d07cf6c8d9bb1bc029748753528ef37244bd71))
+
+## [2.10.0](https://github.com/jxn-30/better-moodle/compare/2.9.1...2.10.0) (2026-07-29)
+
+
+### Features
+
+* **config:** add support for HSNR Moodle instance ([#1164](https://github.com/jxn-30/better-moodle/issues/1164)) ([f0c4fe4](https://github.com/jxn-30/better-moodle/commit/f0c4fe4ac047759923026426cbebc7bc09fc281a))
+* **deps:** upgrade vite to v8 ([#1065](https://github.com/jxn-30/better-moodle/issues/1065)) ([666b8ca](https://github.com/jxn-30/better-moodle/commit/666b8ca2e9779aadfc8371e0e7a92b05aeb7766a))
+
+
+### Bug Fixes
+
+* **drawers:** fix drawer toggle positions ([aafcc8f](https://github.com/jxn-30/better-moodle/commit/aafcc8f93bfb5837da6a86b38787cfdf00cd6d6d))
+* **weather:** do not crash with wttr.in missing localObsDateTime [#1160](https://github.com/jxn-30/better-moodle/issues/1160) ([0fe391b](https://github.com/jxn-30/better-moodle/commit/0fe391b74597be2e7764fb906269bf1fa205cba1))
+
 ## [2.9.1](https://github.com/jxn-30/better-moodle/compare/2.9.0...2.9.1) (2026-07-23)
 
 

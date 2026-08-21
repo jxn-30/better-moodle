@@ -18,7 +18,7 @@ const flagSetting = new SelectSetting('flag', flags[0], [
 );
 const rotationSetting = new SelectSetting(
     'rotation',
-    __UNI__ === 'cau' ? rotations[1] : rotations[0],
+    __UNI__ === 'cau' || __UNI__ === 'hsnr' ? rotations[1] : rotations[0],
     rotations
 )
     .addAlias('general.prideLogoRotated', rotated => rotations[Number(rotated)])

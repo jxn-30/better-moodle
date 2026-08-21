@@ -1,5 +1,5 @@
 import boxen from 'boxen';
-import { type Context } from '../context';
+import { type Context } from '../context/index.ts';
 
 /**
  * Creates a unicode box as a multiline-js comment.

@@ -1,8 +1,8 @@
-import { type Context } from '../context';
-import createPlugin from './createPlugin';
-import type { FrameworkConfig } from '../framework';
+import { type Context } from '../context/index.ts';
+import createPlugin from './createPlugin.ts';
+import type { FrameworkConfig } from '../framework.ts';
 import fs from 'node:fs/promises';
-import { includedPolyfillsList } from './legacy';
+import { includedPolyfillsList } from './legacy.ts';
 import path from 'node:path';
 import { type PluginOption } from 'vite';
 

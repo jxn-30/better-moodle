@@ -1,6 +1,6 @@
 import * as prettier from 'prettier';
-import { type Context } from '../context';
-import createPlugin from './createPlugin';
+import { type Context } from '../context/index.ts';
+import createPlugin from './createPlugin.ts';
 import { ESLint } from 'eslint';
 import { type PluginOption } from 'vite';
 

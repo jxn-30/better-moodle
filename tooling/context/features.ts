@@ -1,8 +1,8 @@
-import { featureBase } from './subpaths';
+import { featureBase } from './subpaths.ts';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { styleText } from 'node:util';
-import { config, globalConfig } from './config';
+import { config, globalConfig } from './config.ts';
 
 const groupsInGlobalConfig = new Set(globalConfig.featureGroupOrder);
 const defaultDisabled = new Set(globalConfig.defaultDisabled);

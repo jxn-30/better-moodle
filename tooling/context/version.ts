@@ -1,6 +1,6 @@
-import { version as baseVersion } from '../../package.json';
-import { isNightlyBuild, nightlyVersion } from './args';
+import packageJSON from '../../package.json' with { type: 'json' };
+import { isNightlyBuild, nightlyVersion } from './args.ts';
 
-export const version = isNightlyBuild ? nightlyVersion : baseVersion;
+export const version = isNightlyBuild ? nightlyVersion : packageJSON.version;
 
 export const tag = isNightlyBuild ? 'nightly' : 'latest';

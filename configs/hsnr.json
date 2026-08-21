@@ -11,6 +11,6 @@
     "moodleUrl": "https://moodle.hsnr.de",
     "moodleVersion": 405,
     "connects": [],
-    "fixes": [],
+    "fixes": ["hsnr/loginlogo"],
     "includeNonDefaultFeatures": []
 }
