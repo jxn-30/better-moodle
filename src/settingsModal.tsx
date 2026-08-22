@@ -422,7 +422,7 @@ if (
          * Hides the "New!"-Tooltip
          */
         const hide = () => {
-            if (__MOODLE_VERSION__ >= 500) return;
+            if (__MOODLE__.GT500) return;
             newSettingsTooltip?.hide();
         };
         /**

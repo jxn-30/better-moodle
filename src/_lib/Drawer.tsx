@@ -187,7 +187,7 @@ export default class Drawer {
             // Moodle 403 introduced a special wrapper element.
             // For < 403 we want to create this on our own, so will be undefined until >= 403
             drawerheading:
-                __MOODLE_VERSION__ > 403 ? getHtml(this.#heading) : undefined,
+                __MOODLE__.GT403 ? getHtml(this.#heading) : undefined,
         });
     }
 
@@ -204,7 +204,7 @@ export default class Drawer {
         ]);
 
         // Moodle 4.3 introduced `.drawerheadercontent` field
-        if (__MOODLE_VERSION__ < 403) {
+        if (__MOODLE__.LT403) {
             element
                 .querySelector('.drawerheader')
                 ?.append(
@@ -295,7 +295,7 @@ export default class Drawer {
 // https://github.com/moodle/moodle/commit/b594536ef075b3d0b0f6ce88bbd2c99ff7d7c759#diff-89175b8a70ee4325c556c8ff0f3e576b01547af8a9214af70d600d577ba5ef8dR592-R610
 // This interfers with our fullwidth feature, thus we need a trick to hide only if there is a real overlap, without the 20px radius
 // It is not nice to treat the sidebar like this instead of respecting their sensibility, however in this case, user experience is affected too much
-if (__MOODLE_VERSION__ >= 403) {
+if (__MOODLE__.GT403) {
     void require(['theme_boost/drawers'] as const).then(([Drawers]) => {
         // threshold definition is within .then to allow inlining it
         const THRESHOLD = 20;

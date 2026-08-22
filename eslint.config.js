@@ -47,7 +47,7 @@ export default [
                 __VERSION__: 'readonly',
                 __PREFIX__: 'readonly',
                 __UNI__: 'readonly',
-                __MOODLE_VERSION__: 'readonly',
+                __MOODLE__: 'readonly',
                 __MOODLE_URL__: 'readonly',
                 __FEATURE_GROUPS__: 'readonly',
                 __USERSCRIPT_CONNECTS__: 'readonly',

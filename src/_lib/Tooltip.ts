@@ -11,7 +11,7 @@ export const createTooltip = (element: HTMLElement, config: TooltipConfig) =>
     require(['theme_boost/bootstrap/tooltip'] as const).then(([Tooltip]) => {
         const tooltip = new Tooltip(element, config);
         // With Moodle 500, the lib has been rewritten to get rid of jQuery :)
-        if (__MOODLE_VERSION__ >= 500) {
+        if (__MOODLE__.GTE500) {
             tooltip.getTipElement = tooltip._getTipElement.bind(tooltip);
         }
         return tooltip;
@@ -24,6 +24,6 @@ export const createTooltip = (element: HTMLElement, config: TooltipConfig) =>
  * @returns void
  */
 export const setTooltipContent = (element: HTMLElement, content: string) =>
-    __MOODLE_VERSION__ >= 500 ?
+    __MOODLE__.GTE500 ?
         (element.dataset.bsOriginalTitle = content)
     :   (element.dataset.originalTitle = content);

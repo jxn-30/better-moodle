@@ -1,3 +1,4 @@
+import './moodleVersion.ts';
 import * as args from './args.ts';
 import * as browsers from './browsers.ts';
 import * as connects from './connects.ts';

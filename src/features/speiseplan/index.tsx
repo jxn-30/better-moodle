@@ -64,7 +64,7 @@ if (__UNI__ === 'cau') {
 
 // Moodle 405 introduced FA 6
 const foodIcons =
-    __MOODLE_VERSION__ >= 405 ?
+    __MOODLE__.GTE405 ?
         [
             '\uf094', // lemon
             '\uf578', // fish

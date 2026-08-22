@@ -91,7 +91,7 @@ export class Modal extends CanBeReady {
     async #create() {
         const { promise, resolve } = Promise.withResolvers<MoodleModal>();
 
-        if (__MOODLE_VERSION__ < 403) {
+        if (__MOODLE__.LT403) {
             // legacy modal factory
             void require([
                 'core/modal_factory',

@@ -10,8 +10,6 @@
 
 /* global jsxDom:readonly */
 
-type MoodleVersion = typeof import('#configs/_config').MoodleVersion;
-
 // constants defined in the config file
 declare const __GITHUB_USER__: string;
 declare const __GITHUB_REPO__: string;
@@ -20,7 +18,7 @@ declare const __GITHUB_BRANCH__: string;
 declare const __VERSION__: string;
 declare const __PREFIX__: string;
 declare const __UNI__: string;
-declare const __MOODLE_VERSION__: MoodleVersion;
+declare const __MOODLE__: import('../tooling/context/moodleVersion.ts').Comparisons;
 declare const __MOODLE_URL__: string;
 declare const __FEATURE_GROUPS__: string[];
 declare const __USERSCRIPT_CONNECTS__: string[];

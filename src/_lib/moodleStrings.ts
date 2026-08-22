@@ -15,7 +15,7 @@ export const getString = (
     param?: string | Record<string, unknown>,
     lang?: string
 ) =>
-    __MOODLE_VERSION__ >= 403 ?
+    __MOODLE__.GTE403 ?
         require(['core/str'] as const).then(([{ getString }]) =>
             getString(key, component, param, lang)
         )
@@ -32,7 +32,7 @@ export const getString = (
  * @returns a promise that resolves to the requested translations
  */
 export const getStrings = (reqs: StringRequest[]) =>
-    __MOODLE_VERSION__ >= 403 ?
+    __MOODLE__.GTE403 ?
         require(['core/str'] as const).then(([{ getStrings }]) =>
             getStrings(reqs)
         )

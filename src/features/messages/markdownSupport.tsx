@@ -17,7 +17,7 @@ const enabled = new BooleanSetting('markdownSupport', true).addAlias(
  * @returns A promise that resolves to Moodles MathJax instance
  */
 const mathJaxReady = (): Promise<(typeof window)['MathJax']> =>
-    __MOODLE_VERSION__ >= 500 ?
+    __MOODLE__.GTE500 ?
         require(['filter_mathjaxloader/loader'] as const)
             .then(([loader]) => loader.loadMathJax())
             .then(() => unsafeWindow.MathJax)
