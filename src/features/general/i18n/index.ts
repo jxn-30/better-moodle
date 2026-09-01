@@ -3,6 +3,7 @@ import externalLinks from './externalLinks';
 import type { FeatureGroupTranslation } from '#types/i18n';
 import fullWidth from './fullWidth';
 import googlyEyes from './googlyEyes';
+import hsnrNavbar from './hsnrNavbar';
 import leftSecondaryNav from './leftSecondaryNav';
 import prideLogo from './prideLogo';
 import truncatedTexts from './truncatedTexts';
@@ -60,6 +61,7 @@ export const de = {
         leftSecondaryNav: leftSecondaryNav.de,
         prideLogo: prideLogo.de,
         cauNavbar: cauNavbar.de,
+        hsnrNavbar: hsnrNavbar.de,
     },
 } satisfies FeatureGroupTranslation;
 
@@ -115,6 +117,7 @@ export const en = {
         leftSecondaryNav: leftSecondaryNav.en,
         prideLogo: prideLogo.en,
         cauNavbar: cauNavbar.en,
+        hsnrNavbar: hsnrNavbar.en,
     },
 } satisfies typeof de;
 
