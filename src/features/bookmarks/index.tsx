@@ -41,7 +41,7 @@ const bookmarks = GM_getValue<Bookmarks>(storageKey, []).map(bookmark => ({
  */
 const saveBookmarks = () => {
     GM_setValue(storageKey, bookmarks);
-    void toast(LL.bookmarks_savedNotification(), {
+    void toast(LL['bookmarks:savedNotification'](), {
         type: 'success',
         autohide: true,
         closeButton: true,
@@ -230,12 +230,12 @@ const openAddModal = () => {
     ) as EditRowElement;
     new Modal({
         type: 'SAVE_CANCEL',
-        title: LL.bookmarks_add(),
+        title: LL['bookmarks:add'](),
         body: (
             <form className={['mform', style.form, style.editForm]}>
                 <div className="fcontainer">
-                    <b>{LL.bookmarks_modal_title()}</b>
-                    <b>{LL.bookmarks_modal_url()}</b>
+                    <b>{LL['bookmarks:modal.title']()}</b>
+                    <b>{LL['bookmarks:modal.url']()}</b>
                     {input}
                 </div>
             </form>
@@ -266,8 +266,8 @@ const openEditModal = () => {
 
     const container = (
         <div className="fcontainer">
-            <b>{LL.bookmarks_modal_title()}</b>
-            <b>{LL.bookmarks_modal_url()}</b>
+            <b>{LL['bookmarks:modal.title']()}</b>
+            <b>{LL['bookmarks:modal.url']()}</b>
             <div className="d-none d-sm-block"></div>
             {...Array.from(inputs.values())}
         </div>
@@ -332,7 +332,7 @@ const openEditModal = () => {
 
     new Modal({
         type: 'SAVE_CANCEL',
-        title: LL.bookmarks_edit(),
+        title: LL['bookmarks:edit'](),
         body: (
             <form className={['mform', style.form]}>
                 {container}
@@ -368,7 +368,7 @@ const preprocessBookmarkIcon: (elements: [HTMLLIElement]) => void = ([
     item.style.setProperty('order', `${order}`);
     item.style.setProperty(
         '--empty-text',
-        JSON.stringify(LL.bookmarks_empty())
+        JSON.stringify(LL['bookmarks:empty']())
     );
 };
 
@@ -378,7 +378,7 @@ const preprocessBookmarkIcon: (elements: [HTMLLIElement]) => void = ([
  */
 const renderDropdown = () =>
     render('core/custom_menu_item', {
-        title: LL.bookmarks_bookmarks(),
+        title: LL['bookmarks:bookmarks'](),
         text: getHtml(navbarItemTemplate),
         haschildren: true,
         children: [
@@ -389,13 +389,13 @@ const renderDropdown = () =>
             { divider: true },
             {
                 url: '#addBookmark',
-                title: LL.bookmarks_add(),
-                text: LL.bookmarks_add(),
+                title: LL['bookmarks:add'](),
+                text: LL['bookmarks:add'](),
             },
             {
                 url: '#editBookmarks',
-                title: LL.bookmarks_edit(),
-                text: LL.bookmarks_edit(),
+                title: LL['bookmarks:edit'](),
+                text: LL['bookmarks:edit'](),
             },
         ],
     })

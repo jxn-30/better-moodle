@@ -19,6 +19,7 @@ export default [
             'meta', // TODO: see how we can include this in linting but without monkey
             'src/i18n/paraglide',
             'src/i18n/project.inlang',
+            'src/i18n/plugins/*/dist',
         ],
     },
     js.configs.recommended,

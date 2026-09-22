@@ -2780,17 +2780,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inlang/paraglide-js@npm:2.23.2":
-  version: 2.23.2
-  resolution: "@inlang/paraglide-js@npm:2.23.2"
+"@inlang/cli@npm:3.3.6":
+  version: 3.3.6
+  resolution: "@inlang/cli@npm:3.3.6"
+  dependencies:
+    "@inlang/sdk": "npm:3.0.5"
+    esbuild-wasm: "npm:^0.19.2"
+  bin:
+    inlang: bin/run.js
+  checksum: 10c0/13c12c241a3e3a68c3926227dad78d5cc4b32d9a86b25d971d1c99ba0d41ae5924d9a29ac42aca245dfd104c1f660a5f819b9f3aa2f761336a2e62876aaed105
+  languageName: node
+  linkType: hard
+
+"@inlang/paraglide-js@npm:2.25.2":
+  version: 2.25.2
+  resolution: "@inlang/paraglide-js@npm:2.25.2"
   dependencies:
     "@inlang/recommend-sherlock": "npm:^0.2.1"
-    "@inlang/sdk": "npm:^2.10.0"
+    "@inlang/sdk": "npm:^3.0.5"
     commander: "npm:11.1.0"
     consola: "npm:3.4.0"
+    jiti: "npm:^2.7.0"
     json5: "npm:2.2.3"
     unplugin: "npm:^2.1.2"
     urlpattern-polyfill: "npm:^10.0.0"
+    valibot: "npm:^1.4.2"
   peerDependencies:
     typescript: ">=5.6"
     vite: ">=5.0.0"
@@ -2801,7 +2815,17 @@ __metadata:
       optional: true
   bin:
     paraglide-js: bin/run.js
-  checksum: 10c0/05e738482f705af7a33089d3689b386b827f13228e35f5486a09cc17d3b1edc88a5784309f68fda0becaa741884c5eb40f240a50f6544860e434e2787fd78d52
+  checksum: 10c0/98add9bb1cf500f3c777753f15f98513957850024b56dd9ee6708f6accde1ee82778f69bb37c8929a32f0a522564cead806dc552c2c329bc6c5c9a6dea0225d7
+  languageName: node
+  linkType: hard
+
+"@inlang/plugin-i18next@npm:6.2.9":
+  version: 6.2.9
+  resolution: "@inlang/plugin-i18next@npm:6.2.9"
+  dependencies:
+    "@inlang/sdk": "npm:3.0.5"
+    "@sinclair/typebox": "npm:0.31.28"
+  checksum: 10c0/73b9ee0a9f13666f6f2ec45f25697a8fcd98db81296768da1f267deadfa8092adf244a0713b3fec41d8dad57cb26b45c5d161045c28fea52e3a4f1b1c173c154
   languageName: node
   linkType: hard
 
@@ -2814,16 +2838,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inlang/sdk@npm:^2.10.0":
-  version: 2.10.2
-  resolution: "@inlang/sdk@npm:2.10.2"
+"@inlang/sdk@npm:3.0.5, @inlang/sdk@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "@inlang/sdk@npm:3.0.5"
   dependencies:
-    "@lix-js/sdk": "npm:0.4.10"
+    "@lix-js/sdk": "npm:0.16.1"
     "@sinclair/typebox": "npm:^0.31.17"
     kysely: "npm:^0.28.12"
-    sqlite-wasm-kysely: "npm:0.3.0"
     uuid: "npm:^14.0.0"
-  checksum: 10c0/997e1c32ac129ee8bd0368d2fe7182c3bad155b22793edd2efaa9d65bd34c3e9e7e8e43856235f5c9ea1f6474bb88b5eac639d96bcf66e571c3baf57c2b51738
+  checksum: 10c0/400ec28e038f474d353ec3d94089d7c0c3955358db517b5e8c236ad5d7147de148e95f12dba4599023ad87676c51499e663c76f3dfa712d178d523573ff8a6ba
   languageName: node
   linkType: hard
 
@@ -2900,25 +2923,53 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lix-js/sdk@npm:0.4.10":
-  version: 0.4.10
-  resolution: "@lix-js/sdk@npm:0.4.10"
-  dependencies:
-    "@lix-js/server-protocol-schema": "npm:0.1.1"
-    dedent: "npm:1.5.1"
-    human-id: "npm:^4.1.1"
-    js-sha256: "npm:^0.11.0"
-    kysely: "npm:^0.28.12"
-    sqlite-wasm-kysely: "npm:0.3.0"
-    uuid: "npm:^14.0.0"
-  checksum: 10c0/d28421159d58c3ae872bf978aa5bcd98dfb5d614f805910d2e9ffcbac4fb4cfcae87fe2b8c1270fb3fa95e0d73809b65dfbfe9e64a5527819aa9b0d74a5fe8ac
+"@lix-js/sdk-darwin-arm64@npm:0.16.1":
+  version: 0.16.1
+  resolution: "@lix-js/sdk-darwin-arm64@npm:0.16.1"
+  conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@lix-js/server-protocol-schema@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@lix-js/server-protocol-schema@npm:0.1.1"
-  checksum: 10c0/b6d5f557b3fd0764d0ad17312fbbfc379472dce48e6ba36a4aa1171d691b4f19eb43193f46db6ec57af50ee9dbf5be5b1f4c5c4603cc504d640cf19e4633214b
+"@lix-js/sdk-linux-arm64@npm:0.16.1":
+  version: 0.16.1
+  resolution: "@lix-js/sdk-linux-arm64@npm:0.16.1"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@lix-js/sdk-linux-x64@npm:0.16.1":
+  version: 0.16.1
+  resolution: "@lix-js/sdk-linux-x64@npm:0.16.1"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@lix-js/sdk-win32-x64@npm:0.16.1":
+  version: 0.16.1
+  resolution: "@lix-js/sdk-win32-x64@npm:0.16.1"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@lix-js/sdk@npm:0.16.1":
+  version: 0.16.1
+  resolution: "@lix-js/sdk@npm:0.16.1"
+  dependencies:
+    "@lix-js/sdk-darwin-arm64": "npm:0.16.1"
+    "@lix-js/sdk-linux-arm64": "npm:0.16.1"
+    "@lix-js/sdk-linux-x64": "npm:0.16.1"
+    "@lix-js/sdk-win32-x64": "npm:0.16.1"
+    fflate: "npm:^0.8.3"
+  dependenciesMeta:
+    "@lix-js/sdk-darwin-arm64":
+      optional: true
+    "@lix-js/sdk-linux-arm64":
+      optional: true
+    "@lix-js/sdk-linux-x64":
+      optional: true
+    "@lix-js/sdk-win32-x64":
+      optional: true
+  checksum: 10c0/6d970aec6a4cc04f6f4b94612e38cd229cb61e5fa3c45c4360e63e22d121463b3bcff8739d4c894ae5a9b7a20e14b44121798576a81d92d85088da7d7e912edd
   languageName: node
   linkType: hard
 
@@ -3481,6 +3532,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sinclair/typebox@npm:0.31.28":
+  version: 0.31.28
+  resolution: "@sinclair/typebox@npm:0.31.28"
+  checksum: 10c0/b3125e370e040738cc42c1ca5210bab44cdfc220b156ccd876f5fa1697ff6fe3ea110190c135e268e41d203d6481750b350add33e79b9874da68dc3a4d601f5a
+  languageName: node
+  linkType: hard
+
 "@sinclair/typebox@npm:^0.31.17":
   version: 0.31.30
   resolution: "@sinclair/typebox@npm:0.31.30"
@@ -3506,15 +3564,6 @@ __metadata:
   version: 1.2.23
   resolution: "@speed-highlight/core@npm:1.2.23"
   checksum: 10c0/94a55c67fb0c3978e0574d4c2c130d7fce1ae7ad9ef00c0a33ddcc420533305d620dde9ad64d117c9523ba6ad38829b3be4c374957663e4ba829f607d0dbbfef
-  languageName: node
-  linkType: hard
-
-"@sqlite.org/sqlite-wasm@npm:^3.48.0-build2":
-  version: 3.48.0-build4
-  resolution: "@sqlite.org/sqlite-wasm@npm:3.48.0-build4"
-  bin:
-    sqlite-wasm: bin/index.js
-  checksum: 10c0/82adb0c24fcc2e3c844bb1dd055d07879add7daa39963a0d75f01f186f5a182d20fb75f6cf046b54f136af8a2495516da4a2d8f34d2195cd30161209ab965760
   languageName: node
   linkType: hard
 
@@ -4553,7 +4602,10 @@ __metadata:
     "@commitlint/cli": "npm:21.2.1"
     "@commitlint/config-conventional": "npm:21.2.0"
     "@eslint/js": "npm:10.0.1"
-    "@inlang/paraglide-js": "npm:2.23.2"
+    "@inlang/cli": "npm:3.3.6"
+    "@inlang/paraglide-js": "npm:2.25.2"
+    "@inlang/plugin-i18next": "npm:6.2.9"
+    "@inlang/sdk": "npm:3.0.5"
     "@prettier/plugin-xml": "npm:3.4.2"
     "@rollup/plugin-terser": "npm:1.0.0"
     "@stylistic/eslint-plugin": "npm:5.10.0"
@@ -5267,18 +5319,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dedent@npm:1.5.1":
-  version: 1.5.1
-  resolution: "dedent@npm:1.5.1"
-  peerDependencies:
-    babel-plugin-macros: ^3.1.0
-  peerDependenciesMeta:
-    babel-plugin-macros:
-      optional: true
-  checksum: 10c0/f8612cd5b00aab58b18bb95572dca08dc2d49720bfa7201a444c3dae430291e8a06d4928614a6ec8764d713927f44bce9c990d3b8238fca2f430990ddc17c070
-  languageName: node
-  linkType: hard
-
 "deep-is@npm:^0.1.3":
   version: 0.1.4
   resolution: "deep-is@npm:0.1.4"
@@ -5708,6 +5748,15 @@ __metadata:
     browserslist: ^4.28.2
     esbuild: ~0.28.0
   checksum: 10c0/f798ad33df47ce1b738408c8c1c7b75e9f0e65e9bd56afa45342a2a9313981939a20afb3349a85bca86e8187f3a817a9f0b508def8a9033750c158133de7df8f
+  languageName: node
+  linkType: hard
+
+"esbuild-wasm@npm:^0.19.2":
+  version: 0.19.12
+  resolution: "esbuild-wasm@npm:0.19.12"
+  bin:
+    esbuild: bin/esbuild
+  checksum: 10c0/a4a17a48e68996a1ac951ffc3e22924db9cacc07f5cf0cc22f5a7817114a85d74549167ecbf99f260f96df9329c2849b276177b143c6624a763fc4eba84936ae
   languageName: node
   linkType: hard
 
@@ -6143,6 +6192,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fflate@npm:^0.8.3":
+  version: 0.8.3
+  resolution: "fflate@npm:0.8.3"
+  checksum: 10c0/eab181ca37f5348ae76d4b6f840e0026e30220e33153289ac942222d8b9638237d486507dbcc09878d724095bd354993a2ee48bbee99c8f2c6440d4448719aa7
+  languageName: node
+  linkType: hard
+
 "file-entry-cache@npm:^8.0.0":
   version: 8.0.0
   resolution: "file-entry-cache@npm:8.0.0"
@@ -6535,15 +6591,6 @@ __metadata:
     agent-base: "npm:6"
     debug: "npm:4"
   checksum: 10c0/6dd639f03434003577c62b27cafdb864784ef19b2de430d8ae2a1d45e31c4fd60719e5637b44db1a88a046934307da7089e03d6089ec3ddacc1189d8de8897d1
-  languageName: node
-  linkType: hard
-
-"human-id@npm:^4.1.1":
-  version: 4.2.0
-  resolution: "human-id@npm:4.2.0"
-  bin:
-    human-id: dist/cli.js
-  checksum: 10c0/80071f3b785b2e91080b5f9aa2d079c2e9a464e009ea12c035255b61d1b70beefe7eda42209dff9c1bb9a9fa58e50ada38c1b314ba3a23266a72cd5e9a453e1f
   languageName: node
   linkType: hard
 
@@ -7039,19 +7086,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:2.7.0":
+"jiti@npm:2.7.0, jiti@npm:^2.7.0":
   version: 2.7.0
   resolution: "jiti@npm:2.7.0"
   bin:
     jiti: lib/jiti-cli.mjs
   checksum: 10c0/1b1e2310a490dce1aeea3da5f5dfe18273516c20ce48be2e98eb8ea452d5f3dcc8fd0cfd6d28b4052a24c5dbab6e3089b2d7e79f0bce7915b10d750929563c42
-  languageName: node
-  linkType: hard
-
-"js-sha256@npm:^0.11.0":
-  version: 0.11.1
-  resolution: "js-sha256@npm:0.11.1"
-  checksum: 10c0/ef8e294b6f38f218e4834cb653471dd1a76808cea93dc66eaffcb04124116bc36d6cebc4e8866753e184ab4e57892b6ef21918e8ab0450179a7e093ea962d974
   languageName: node
   linkType: hard
 
@@ -9714,17 +9754,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sqlite-wasm-kysely@npm:0.3.0":
-  version: 0.3.0
-  resolution: "sqlite-wasm-kysely@npm:0.3.0"
-  dependencies:
-    "@sqlite.org/sqlite-wasm": "npm:^3.48.0-build2"
-  peerDependencies:
-    kysely: "*"
-  checksum: 10c0/3f601ee93dbcaa4f9f6616bf8980197f59f4bb9d8b83e8d49d855863e4e482d09bf09686b298522db00fb9aad99399aa0d28d9074d7b6bac097f108fe4546467
-  languageName: node
-  linkType: hard
-
 "stackback@npm:0.0.2":
   version: 0.0.2
   resolution: "stackback@npm:0.0.2"
@@ -10541,6 +10570,18 @@ __metadata:
   version: 3.0.1
   resolution: "v8-compile-cache-lib@npm:3.0.1"
   checksum: 10c0/bdc36fb8095d3b41df197f5fb6f11e3a26adf4059df3213e3baa93810d8f0cc76f9a74aaefc18b73e91fe7e19154ed6f134eda6fded2e0f1c8d2272ed2d2d391
+  languageName: node
+  linkType: hard
+
+"valibot@npm:^1.4.2":
+  version: 1.4.2
+  resolution: "valibot@npm:1.4.2"
+  peerDependencies:
+    typescript: ">=5"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/71b861de928fd5533b03fc4d84c619c07602f176d2bc6b12c5c80b2a6e889574c4126c843dd0771ce450bbb29566ca6df13d5b538ce5e4c39c2fccfb7623cf4e
   languageName: node
   linkType: hard
 

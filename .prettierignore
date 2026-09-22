@@ -15,3 +15,5 @@ ics-parser/.wrangler/
 CHANGELOG.md
 
 speiseplan.json
+
+src/i18n/project.inlang/cache
