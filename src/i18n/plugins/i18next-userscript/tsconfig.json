@@ -1,0 +1,26 @@
+{
+    "include": ["src/**/*"],
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "dist",
+        "sourceMap": false,
+        "module": "System",
+        "target": "ES2022",
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "declaration": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "checkJs": true,
+        "verbatimModuleSyntax": true,
+        "noUncheckedIndexedAccess": true,
+        "declarationMap": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitOverride": true,
+        "allowUnreachableCode": false
+    }
+}

@@ -14,13 +14,13 @@ export default function (ctx: Context): PluginOption[] {
 
     const paraglidePlugin = paraglideVitePlugin({
         project: PROJECT_DIR,
-        outdir: OUT_DIR,
+        // outdir: OUT_DIR,
         // We implement a custom getLocale() so we need no strategy in here.
-        strategy: [],
-        outputStructure: 'message-modules',
-        emitTsDeclarations: true,
-        isServer: 'false',
-        disableAsyncLocalStorage: true,
+        // strategy: [],
+        // outputStructure: 'message-modules',
+        // emitTsDeclarations: true,
+        // isServer: 'false',
+        // disableAsyncLocalStorage: true,
     });
 
     const runtimeResolver = createPlugin('i18n-runtime-resolver', {
