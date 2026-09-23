@@ -36,9 +36,7 @@ const enableCourseindex = new BooleanSetting('courseindex', true).disabledIf(
 const activitiesInCourseindex = new BooleanSetting(
     'courseindexActivities',
     false
-)
-    .disabledIf(enabled, '!=', true)
-    .disabledIf(enableCourseindex, '!=', true);
+).disabledIf(enableCourseindex, '!=', true);
 const filter = new SelectSetting(
     'filter',
     '_sync',

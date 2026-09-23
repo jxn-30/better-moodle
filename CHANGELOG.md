@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.10.2](https://github.com/jxn-30/better-moodle/compare/2.10.1...2.10.2) (2026-09-03)
+
+
+### Bug Fixes
+
+* **courses:** fix image zoom for images with a min size ([711c707](https://github.com/jxn-30/better-moodle/commit/711c70719b7229d66ea8da03c3050eb7634f9d63))
+* **settings:** fix disabled states not bubbling ([4270b28](https://github.com/jxn-30/better-moodle/commit/4270b28d90dd6f2962acfa8f790b9f12d5e9a936))
+
 ## [2.10.1](https://github.com/jxn-30/better-moodle/compare/2.10.0...2.10.1) (2026-08-10)
 
 

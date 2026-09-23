@@ -82,7 +82,9 @@ const zoomImage = (e: MouseEvent) => {
     zoomCopiedImage.style.setProperty('margin', 'unset', 'important');
     zoomCopiedImage.style.setProperty('width', 'unset', 'important');
     zoomCopiedImage.style.setProperty('height', 'unset', 'important');
+    zoomCopiedImage.style.setProperty('min-width', 'unset', 'important');
     zoomCopiedImage.style.setProperty('max-width', 'unset', 'important');
+    zoomCopiedImage.style.setProperty('min-height', 'unset', 'important');
     zoomCopiedImage.style.setProperty('max-height', 'unset', 'important');
     zoomCopiedImage.style.setProperty('display', 'block');
     zoomCopiedImage.removeAttribute('width');

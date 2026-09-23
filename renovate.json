@@ -41,7 +41,7 @@
             "separateMajorMinor": false
         }
     ],
-    "minimumReleaseAge": "30 hours",
+    "minimumReleaseAge": "1 week",
     "postUpdateOptions": ["yarnDedupeHighest"],
     "rangeStrategy": "pin",
     "reviewers": ["jxn-30"],
