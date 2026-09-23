@@ -53,9 +53,6 @@ const favouriteCoursesAtTop = new BooleanSetting('favouriteCoursesAtTop', true)
 let desktopNavItem: HTMLLIElement;
 let mobileDropdown: HTMLDivElement;
 
-// const courseIndexSubmenuId = (courseId: number) =>
-//    PREFIX(`courses-navbar-dropdown-courseindex-${courseId}`);
-
 /**
  * Creates a trigger to open the submenu containing the courseindex
  * @param courseId - the id of the course
@@ -85,7 +82,7 @@ const courseIndexSubmenus = new Map<number, HTMLDivElement>();
  */
 const getCourseIndexSubmenu = (courseId: number) =>
     courseIndexSubmenus.getOrInsertComputed(courseId, (courseId: number) => {
-        const menu = (<div class="dropdown-menu"></div>) as HTMLDivElement;
+        const menu = (<div className="dropdown-menu"></div>) as HTMLDivElement;
 
         void getLoadingSpinner(`navbarDropdown-courseindex-${courseId}`).then(
             spinner => {
@@ -104,39 +101,17 @@ const getCourseIndexSubmenu = (courseId: number) =>
                 .textContent;
 
         /**
-         * Creates the DOM items for a section and its activities
-         * @param section - the section to generate the items for
-         * @returns the dropdown items
+         * Creates the DOM items for a section (headings only)
+         * @param section - the section to generate the item for
+         * @returns the dropdown item
          */
-        const getItems = (section: Section) =>
-            activitiesInCourseindex.value ?
-                [
-                    (
-                        <a className="dropdown-item" href={section.sectionurl}>
-                            {unescape(section.title)}
-                        </a>
-                    ) as HTMLAnchorElement,
-                    ...section.cms.map(
-                        cm =>
-                            (
-                                <a
-                                    className="dropdown-item"
-                                    style="text-indent: 1em;"
-                                    href={
-                                        cm.url ??
-                                        `${section.sectionurl}#${cm.anchor}`
-                                    }
-                                >
-                                    {unescape(cm.name)}
-                                </a>
-                            ) as HTMLAnchorElement
-                    ),
-                ]
-            :   ((
-                    <a className="dropdown-item" href={section.sectionurl}>
-                        {unescape(section.title)}
-                    </a>
-                ) as HTMLAnchorElement);
+        const getItems = (section: Section) => [
+            (
+                <a className="dropdown-item" href={section.sectionurl}>
+                    {unescape(section.title)}
+                </a>
+            ) as HTMLAnchorElement,
+        ];
 
         void loadCourseIndex(courseId)
             .then(({ sections }) => sections.flatMap(getItems))
@@ -422,62 +397,74 @@ const loadContent = ({
 };
 
 /**
- * Creates the dropdown and fills it with content.
- * Updates dropdown content on change of filter value
+ * Loads and initializes the navbar dropdown feature when ready.
  */
 const onload = async () => {
     if (!enabled.value) return;
 
     await ready();
 
-    const myCoursesElement = document.querySelector<HTMLLIElement>(
-        '.primary-navigation .nav-item[data-key="mycourses"]'
-    );
-    const myCoursesLink = myCoursesElement?.querySelector<HTMLAnchorElement>(
-        ':scope > a.nav-link'
-    );
-    if (!myCoursesElement || !myCoursesLink) return;
+    /**
+     * Initializes the dropdown menu on the "My courses" navigation item.
+     * @returns True if the item was found and initialized, false otherwise.
+     */
+    const init = () => {
+        const myCoursesElement = document.querySelector<HTMLLIElement>(
+            'li[data-key="mycourses"]'
+        );
+        const myCoursesLink =
+            myCoursesElement?.querySelector<HTMLAnchorElement>(
+                ':scope > a.nav-link'
+            );
+        if (!myCoursesElement || !myCoursesLink) return false;
 
-    const myCoursesIsActive = myCoursesLink.classList.contains('active');
-    const myCoursesUrl = myCoursesLink.href;
-    const myCoursesText = myCoursesLink.textContent?.trim() ?? '';
+        const myCoursesIsActive = myCoursesLink.classList.contains('active');
+        const myCoursesUrl = myCoursesLink.href;
+        const myCoursesText = myCoursesLink.textContent?.trim() ?? '';
 
-    const mobileMyCoursesLink = document.querySelector<HTMLAnchorElement>(
-        `#theme_boost-drawers-primary .list-group-item[href="${myCoursesLink.href}"]`
-    );
+        const mobileMyCoursesLink = document.querySelector<HTMLAnchorElement>(
+            `#theme_boost-drawers-primary .list-group-item[href="${myCoursesLink.href}"]`
+        );
 
-    if (!mobileMyCoursesLink) return;
+        myCoursesLink.classList.add(globalStyle.awaitsDropdown);
 
-    myCoursesLink.classList.add(globalStyle.awaitsDropdown);
+        loadContent({
+            desktopElement: myCoursesElement,
+            mobileElement: mobileMyCoursesLink ?? undefined,
+            myCoursesIsActive,
+            myCoursesUrl,
+            myCoursesText,
+        });
 
-    loadContent({
-        desktopElement: myCoursesElement,
-        mobileElement: mobileMyCoursesLink,
-        myCoursesIsActive,
-        myCoursesUrl,
-        myCoursesText,
-    });
-
-    enableCourseindex.onChange(() => {
-        courseIndexSubmenus.clear();
-        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
-    });
-    activitiesInCourseindex.onChange(() => {
-        courseIndexSubmenus.clear();
-        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
-    });
-    favouriteCoursesAtTop.onChange(() =>
-        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText })
-    );
-    filter.onChange(() =>
-        loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText })
-    );
-
-    onActiveFilterChanged(() => {
-        if (filter.value === '_sync') {
+        enableCourseindex.onChange(() => {
+            courseIndexSubmenus.clear();
             loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
-        }
-    });
+        });
+        activitiesInCourseindex.onChange(() => {
+            courseIndexSubmenus.clear();
+            loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
+        });
+        favouriteCoursesAtTop.onChange(() =>
+            loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText })
+        );
+        filter.onChange(() =>
+            loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText })
+        );
+
+        onActiveFilterChanged(() => {
+            if (filter.value === '_sync') {
+                loadContent({ myCoursesIsActive, myCoursesUrl, myCoursesText });
+            }
+        });
+
+        return true;
+    };
+
+    if (!init()) {
+        window.addEventListener('better-moodle:mycourses-ready', () => init(), {
+            once: true,
+        });
+    }
 };
 
 export default Feature.register({
