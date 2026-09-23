@@ -111,7 +111,7 @@ jobs:
               id: annotations
               uses: ataylorme/eslint-annotate-action@4.0.0
               with:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
                   report-json: .eslint-report.json
                   only-pr-files: false
                   fail-on-warning: false
