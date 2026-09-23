@@ -57,7 +57,7 @@ let mobileDropdown: HTMLDivElement;
  * @returns a trigger html element
  */
 const createSubmenuTrigger = (courseId: number) => (
-    <div className={['btn-group dropright', style.courseindexTrigger]}>
+    <div className={`btn-group dropright ${style.courseindexTrigger}`}>
         <button
             type="button"
             className="btn btn-icon btn-sm"
