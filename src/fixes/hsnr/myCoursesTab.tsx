@@ -66,4 +66,7 @@ void (async () => {
             dashboardDrawerItem.after(drawerLink);
         }
     }
+
+    // Notify navbarDropdown that the "My courses" tab is now ready in the DOM
+    window.dispatchEvent(new CustomEvent('better-moodle:mycourses-ready'));
 })();
