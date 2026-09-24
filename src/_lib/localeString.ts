@@ -1,4 +1,5 @@
 import { BETTER_MOODLE_LANG } from '#i18n';
+import { getToday } from '#lib/temporal';
 
 /**
  * Returns a DateTimeFormatOptions for a date
@@ -27,6 +28,10 @@ const timeFormat = (seconds: boolean) =>
         second: seconds ? '2-digit' : undefined,
     }) as const;
 
+type DateWithOptionalTime = Date | Temporal.PlainDate | Temporal.PlainDateTime;
+type DateWithOptionalDate = Date | Temporal.PlainTime | Temporal.PlainDateTime;
+type DateTime = Date | Temporal.PlainDateTime;
+
 /**
  * Returns the localized string representation of a date
  * @param date - the date to localize
@@ -36,11 +41,11 @@ const timeFormat = (seconds: boolean) =>
  * @returns the day as a localized string
  */
 export const dateToString = (
-    date = new Date(),
+    date: DateWithOptionalTime = getToday(),
     year = true,
     weekday = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) => date.toLocaleDateString(lang, dateFormat({ year, weekday }));
+) => new Intl.DateTimeFormat(lang, dateFormat({ year, weekday })).format(date);
 
 /**
  * Returns the localized string representation of a time
@@ -50,10 +55,10 @@ export const dateToString = (
  * @returns the time as a localized string
  */
 export const timeToString = (
-    date: Date,
+    date: DateWithOptionalDate,
     seconds = true,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
-) => date.toLocaleTimeString(lang, timeFormat(seconds));
+) => new Intl.DateTimeFormat(lang, timeFormat(seconds)).format(date);
 
 /**
  * Returns the localized string representation of a datetime
@@ -65,16 +70,16 @@ export const timeToString = (
  * @returns the datetime as a localized string
  */
 export const datetimeToString = (
-    date: Date,
+    date: DateTime,
     year = true,
     weekday = true,
     seconds = false,
     lang: Intl.LocalesArgument = BETTER_MOODLE_LANG
 ) =>
-    date.toLocaleString(lang, {
+    new Intl.DateTimeFormat(lang, {
         ...dateFormat({ year, weekday }),
         ...timeFormat(seconds),
-    });
+    }).format(date);
 
 /**
  * Turns a number into a localized string

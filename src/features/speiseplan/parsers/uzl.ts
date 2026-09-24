@@ -1,15 +1,16 @@
 import { BETTER_MOODLE_LANG } from '#i18n';
 import { getDocument } from '#lib/network';
+import { getToday } from '#lib/temporal';
 import type Parser from './index';
+import { TEN_MINUTES } from '#lib/times';
 import type { Dish, DishType } from '../speiseplan';
-import { ONE_DAY, TEN_MINUTES } from '#lib/times';
 
 const prices = {
     'de': ['Studierende', 'Hochschulangehörige', 'Externe'],
     'en-gb': ['Students', 'University members', 'Guests'],
 };
 
-const todayTreshhold = new Date(Date.now() - ONE_DAY);
+const today = getToday();
 
 /**
  * Extracts the dishes from a day table
@@ -80,14 +81,16 @@ const getDishes = (dayEl: HTMLDivElement) => {
  */
 const parse: Parser = (url: string) =>
     getDocument(url, TEN_MINUTES).then(({ lastUpdate, value: doc }) => {
-        const dishes = new Map<Date, Set<Dish>>();
+        const dishes = new Map<Temporal.PlainDate, Set<Dish>>();
 
         doc.querySelectorAll<HTMLDivElement>(
             '.mensatag .tag_headline[data-day]'
         ).forEach(dayEl => {
-            const day = new Date(dayEl.dataset.day ?? '');
-            // invalid date or day is in the past
-            if (isNaN(day.getTime()) || day < todayTreshhold) return;
+            const dayString = dayEl.dataset.day;
+            if (!dayString) return;
+            const day = Temporal.PlainDate.from(dayString);
+            // day is in the past
+            if (Temporal.PlainDate.compare(day, today) < 0) return;
             const dayDishes = getDishes(dayEl);
             if (dayDishes.size > 0) {
                 dishes.set(day, dayDishes);
