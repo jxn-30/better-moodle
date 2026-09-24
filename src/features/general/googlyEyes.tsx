@@ -122,6 +122,7 @@ enabled.onInput(updateEyesStatus);
 
 export default Feature.register({
     settings: new Set([enabled]),
+    disableIfFunSettingsAreHidden: true,
     onload: updateEyesStatus,
     onunload: updateEyesStatus,
 });
