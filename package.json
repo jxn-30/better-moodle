@@ -22,7 +22,7 @@
         "test:userscript": "puppeteer browsers install chrome && vitest run --config vitest.userscript.config.ts -- --config=${0}",
         "i18n:watch": "typesafe-i18n",
         "i18n:once": "typesafe-i18n --no-watch",
-        "i18n:build": "yarn inlang plugin build --entry ./src/i18n/plugins/i18next-userscript/src/index.ts --outdir ./src/i18n/plugins/i18next-userscript/dist && yarn paraglide-js compile --project ./src/i18n/project.inlang",
+        "i18n:build": "yarn inlang plugin build --entry ./tooling/i18n/i18next-userscript/src/index.ts --outdir ./tooling/i18n/i18next-userscript/dist && yarn paraglide-js compile --project ./tooling/i18n/project.inlang",
         "config:scheme": "ts-json-schema-generator --path 'configs/_config.d.ts' --type 'Config' --out configs/_schema.json; ts-json-schema-generator --path 'configs/_global.json.d.ts' --type 'GlobalConfig' --out configs/_globalSchema.json; yarn prettier --write configs/*.json",
         "ics-parser:dev": "wrangler dev --config=ics-parser/wrangler.json --ip=127.0.0.1",
         "ci": "yarn lint:fix && yarn prettier:write && yarn build ${0} \"$@\""

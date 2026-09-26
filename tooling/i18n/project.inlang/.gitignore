@@ -1,0 +1,5 @@
+# everything is ignored except settings.json, gitignore and paraglide config
+*
+!settings.json
+!.gitignore
+!paraglide.config.ts

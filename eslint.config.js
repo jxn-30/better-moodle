@@ -18,8 +18,8 @@ export default [
             'coverage',
             'meta', // TODO: see how we can include this in linting but without monkey
             'src/i18n/paraglide',
-            'src/i18n/project.inlang',
-            'src/i18n/plugins/*/dist',
+            'tooling/i18n/project.inlang',
+            'tooling/i18n/*/dist',
         ],
     },
     js.configs.recommended,
