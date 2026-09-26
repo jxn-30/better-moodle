@@ -103,7 +103,7 @@ jobs:
             - name: 🌐 create i18n types
               run: |
                   yarn i18n:once
-                  yarn i18n:new
+                  yarn i18n:build
 
             - name: 🚨 run eslint
               run: yarn lint:fix -o .eslint-report.json --format json
