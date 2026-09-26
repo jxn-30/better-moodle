@@ -1,7 +1,14 @@
 // TODO: Make sure we don't need this anymore
 /* eslint-disable */
 
+import { glob } from 'node:fs/promises';
 import plugin from '@inlang/plugin-i18next';
+
+const featureDirs = glob('./src/features/*', { withFileTypes: true });
+const featureArray = await Array.fromAsync(featureDirs);
+const featureObjectArray = featureArray
+    .filter(el => el.isDirectory())
+    .map(el => [el.name, `../../src/features/${el.name}/i18n/{locale}.json`]);
 
 const i18nextUserscriptPlugin: typeof plugin = {
     ...plugin,
@@ -11,10 +18,7 @@ const i18nextUserscriptPlugin: typeof plugin = {
      */
     toBeImportedFiles: async ({ settings }) => {
         settings[plugin.key] = {
-            pathPattern: {
-                // TODO: Make these dynamic
-                bookmarks: '../../src/features/bookmarks/i18n/{locale}.json',
-            },
+            pathPattern: Object.fromEntries(featureObjectArray),
         };
         return plugin.toBeImportedFiles!({ settings });
     },
