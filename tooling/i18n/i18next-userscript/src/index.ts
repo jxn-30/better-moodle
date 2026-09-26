@@ -9,11 +9,11 @@ const i18nextUserscriptPlugin: typeof plugin = {
      * @param root0
      * @param root0.settings
      */
-    toBeImportedFiles: ({ settings }) => {
+    toBeImportedFiles: async ({ settings }) => {
         settings[plugin.key] = {
             pathPattern: {
                 // TODO: Make these dynamic
-                bookmarks: '../features/bookmarks/i18n/{locale}.json',
+                bookmarks: '../../src/features/bookmarks/i18n/{locale}.json',
             },
         };
         return plugin.toBeImportedFiles!({ settings });

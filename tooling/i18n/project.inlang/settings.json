@@ -2,5 +2,5 @@
     "$schema": "https://inlang.com/schema/project-settings",
     "baseLocale": "de",
     "locales": ["de", "en-gb"],
-    "modules": ["./plugins/i18next-userscript/dist/index.js"]
+    "modules": ["./i18next-userscript/dist/index.js"]
 }

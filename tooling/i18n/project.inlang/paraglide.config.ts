@@ -6,7 +6,9 @@ export default defineConfig({
     // We implement a custom getLocale() so we need no strategy in here.
     strategy: [],
     isServer: 'false',
-    additionalFiles: {},
+    additionalFiles: {
+        '.gitkeep': '', // This is needed for the subpath creation to work
+    },
     emitPrettierIgnore: true,
     emitReadme: true,
     emitTsDeclarations: true,
