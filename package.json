@@ -93,7 +93,7 @@
         "@vitejs/plugin-legacy": "8.2.3",
         "@vitest/coverage-v8": "4.1.11",
         "babel-plugin-polyfill-corejs3": "1.0.0",
-        "boxen": "8.0.1",
+        "boxen": "9.0.0",
         "browserslist": "4.29.0",
         "browserslist-useragent-regexp": "4.1.4",
         "caniuse-lite": "1.0.30001810",
