@@ -1,0 +1,21 @@
+@use './mixins' as *;
+
+@svg-load zoom url(../icons/zoom.svg) {
+}
+
+a[href*='zoom.us'],
+a[href^='zoommtg://'],
+a[data-better-moodle-zoom] {
+    @include insert-svg('before', svg-inline(zoom));
+
+    &::before {
+        width: 38px !important;
+        height: 16px !important;
+        background-size: contain !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        display: inline-block !important;
+        vertical-align: middle !important;
+        margin-right: 6px !important;
+    }
+}

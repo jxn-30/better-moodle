@@ -6,6 +6,7 @@ import mattermostCSS from './style/mattermost.scss?inline';
 import phoneStyleEl from './style/phone.scss?style';
 import type Setting from '#lib/Setting';
 import webexCSS from './style/webex.scss?inline';
+import zoomCSS from './style/zoom.scss?inline';
 
 const settings = new Set<Setting>();
 
@@ -31,6 +32,13 @@ if (__UNI__ === 'uzl') {
     settings.add(webex);
 }
 
+let zoom: BooleanSetting;
+// Zoom is only used on HSNR-Moodle
+if (__UNI__ === 'hsnr') {
+    zoom = new BooleanSetting('zoom', true).onInput(() => onload());
+    settings.add(zoom);
+}
+
 const mail = new BooleanSetting('mail', true).onInput(() => onload());
 const phone = new BooleanSetting('phone', true).onInput(() => onload());
 settings.add(mail).add(phone);
@@ -38,9 +46,61 @@ settings.add(mail).add(phone);
 let externalStyle: HTMLElement;
 let mattermostStyle: HTMLElement;
 let webexStyle: HTMLElement;
+let zoomStyle: HTMLElement;
+let zoomObserver: MutationObserver | null = null;
 
 /**
- * Adds the event listener that handles the mouseover event
+ * Scans Moodle URL activity links and marks those pointing to Zoom redirects
+ */
+const markZoomRedirects = () => {
+    const urlLinks = document.querySelectorAll<HTMLAnchorElement>(
+        'a[href*="/mod/url/view.php"]:not([data-better-moodle-zoom])'
+    );
+
+    urlLinks.forEach(link => {
+        const onClickAttr = link.getAttribute('onclick') ?? '';
+        const linkText = link.textContent?.toLowerCase() ?? '';
+        const linkTitle = link.getAttribute('title')?.toLowerCase() ?? '';
+
+        // 1. Check direct attributes and link text
+        const matchesDirectly =
+            onClickAttr.toLowerCase().includes('zoom') ||
+            linkText.includes('zoom') ||
+            linkTitle.includes('zoom');
+
+        if (matchesDirectly) {
+            link.setAttribute('data-better-moodle-zoom', 'true');
+            return;
+        }
+
+        // 2. Check ONLY the immediate activity card / description (excluding other activities)
+        const activityCard = link.closest(
+            '.activity-item, li.modtype_url, .activityinstance, .activity-grid'
+        );
+
+        if (activityCard) {
+            // Get text from activity title & activity description ONLY
+            const activityName =
+                activityCard
+                    .querySelector('.activityname, .instancename')
+                    ?.textContent?.toLowerCase() ?? '';
+            const activityDesc =
+                activityCard
+                    .querySelector('.contentafterlink, .activity-description')
+                    ?.textContent?.toLowerCase() ?? '';
+
+            if (
+                activityName.includes('zoom') ||
+                activityDesc.includes('zoom')
+            ) {
+                link.setAttribute('data-better-moodle-zoom', 'true');
+            }
+        }
+    });
+};
+
+/**
+ * Handles injecting and removing feature styles and dynamic listeners
  */
 const onload = () => {
     // external
@@ -67,6 +127,33 @@ const onload = () => {
         if (webexStyle) document.head.append(webexStyle);
         else webexStyle = GM_addStyle(webexCSS);
     } else webexStyle?.remove();
+
+    // zoom
+    if (zoom?.value) {
+        if (zoomStyle) document.head.append(zoomStyle);
+        else zoomStyle = GM_addStyle(zoomCSS);
+
+        // Run initial scan
+        markZoomRedirects();
+
+        // Observe DOM updates for dynamically loaded sections
+        if (!zoomObserver) {
+            zoomObserver = new MutationObserver(() => markZoomRedirects());
+            zoomObserver.observe(document.body, {
+                childList: true,
+                subtree: true,
+            });
+        }
+    } else {
+        zoomStyle?.remove();
+        if (zoomObserver) {
+            zoomObserver.disconnect();
+            zoomObserver = null;
+        }
+        document
+            .querySelectorAll('[data-better-moodle-zoom]')
+            .forEach(el => el.removeAttribute('data-better-moodle-zoom'));
+    }
 };
 
 export default FeatureGroup.register({ settings, onload });
