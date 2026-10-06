@@ -62,39 +62,48 @@ const markZoomRedirects = () => {
         const linkText = link.textContent?.toLowerCase() ?? '';
         const linkTitle = link.getAttribute('title')?.toLowerCase() ?? '';
 
-        // 1. Check direct attributes and link text
-        const matchesDirectly =
+        // 1. Direct check on link properties
+        let isZoom =
             onClickAttr.toLowerCase().includes('zoom') ||
             linkText.includes('zoom') ||
             linkTitle.includes('zoom');
 
-        if (matchesDirectly) {
-            link.setAttribute('data-better-moodle-zoom', 'true');
-            return;
-        }
-
-        // 2. Check ONLY the immediate activity card / description (excluding other activities)
+        // 2. Check the parent activity card (wrapper, description, and attributes)
         const activityCard = link.closest(
-            '.activity-item, li.modtype_url, .activityinstance, .activity-grid'
+            '.activity, .activity-item, li.modtype_url, [data-activityname]'
         );
 
-        if (activityCard) {
-            // Get text from activity title & activity description ONLY
-            const activityName =
-                activityCard
-                    .querySelector('.activityname, .instancename')
-                    ?.textContent?.toLowerCase() ?? '';
-            const activityDesc =
-                activityCard
-                    .querySelector('.contentafterlink, .activity-description')
-                    ?.textContent?.toLowerCase() ?? '';
+        if (activityCard && !isZoom) {
+            const dataActivityName =
+                activityCard.getAttribute('data-activityname')?.toLowerCase() ??
+                '';
+            const cardText = activityCard.textContent?.toLowerCase() ?? '';
 
-            if (
-                activityName.includes('zoom') ||
-                activityDesc.includes('zoom')
-            ) {
-                link.setAttribute('data-better-moodle-zoom', 'true');
+            // Match if activity name or description mentions Zoom, meeting IDs, or passcodes
+            isZoom =
+                dataActivityName.includes('zoom') ||
+                cardText.includes('zoom') ||
+                cardText.includes('kenncode') ||
+                cardText.includes('passwort') ||
+                cardText.includes('passcode') ||
+                cardText.includes('meeting-id');
+        }
+
+        // 3. Check immediately preceding text/label block in the course list
+        if (!isZoom) {
+            const activityLi = link.closest('li.activity');
+            const prevSibling = activityLi?.previousElementSibling;
+
+            if (prevSibling?.classList.contains('modtype_label')) {
+                const prevText = prevSibling.textContent?.toLowerCase() ?? '';
+                if (prevText.includes('zoom')) {
+                    isZoom = true;
+                }
             }
+        }
+
+        if (isZoom) {
+            link.setAttribute('data-better-moodle-zoom', 'true');
         }
     });
 };
