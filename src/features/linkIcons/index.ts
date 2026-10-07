@@ -33,8 +33,8 @@ if (__UNI__ === 'uzl') {
 }
 
 let zoom: BooleanSetting;
-// Zoom is only used on HSNR-Moodle
-if (__UNI__ === 'hsnr') {
+// Zoom is used on HSNR and CAU Moodle
+if (__UNI__ === 'hsnr' || __UNI__ === 'cau') {
     zoom = new BooleanSetting('zoom', true).onInput(() => onload());
     settings.add(zoom);
 }
