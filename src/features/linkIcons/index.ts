@@ -54,16 +54,20 @@ let zoomObserver: MutationObserver | null = null;
  */
 const markZoomRedirects = () => {
     const urlLinks = document.querySelectorAll<HTMLAnchorElement>(
-        'a[href*="/mod/url/view.php"]:not([data-better-moodle-zoom])'
+        'a[href*="/mod/url/view.php"]:not([data-better-moodle-zoom]), a[href*="zoom-x.de"]:not([data-better-moodle-zoom]), a[href*="zoom.us"]:not([data-better-moodle-zoom]), a[href^="zoommtg://"]:not([data-better-moodle-zoom])'
     );
 
     urlLinks.forEach(link => {
+        const href = link.href.toLowerCase();
         const onClickAttr = link.getAttribute('onclick') ?? '';
         const linkText = link.textContent?.toLowerCase() ?? '';
         const linkTitle = link.getAttribute('title')?.toLowerCase() ?? '';
 
-        // 1. Direct check on link properties
+        // 1. Direct check on link properties or href domains
         let isZoom =
+            href.includes('zoom-x.de') ||
+            href.includes('zoom.us') ||
+            href.startsWith('zoommtg://') ||
             onClickAttr.toLowerCase().includes('zoom') ||
             linkText.includes('zoom') ||
             linkTitle.includes('zoom');
