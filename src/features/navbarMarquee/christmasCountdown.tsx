@@ -71,6 +71,7 @@ short.onInput(reload);
 
 export default Feature.register({
     settings: new Set([enabled, short]),
+    disableIfFunSettingsAreHidden: true,
     onload: reload,
     onunload: reload,
 });
