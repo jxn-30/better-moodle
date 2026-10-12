@@ -5,17 +5,16 @@
 
 a[href*='zoom.us'],
 a[href^='zoommtg://'],
+a[href*='zoom-x.de'],
 a[data-better-moodle-zoom] {
     @include insert-svg('before', svg-inline(zoom));
 
     &::before {
-        width: 38px !important;
+        width: 38px !important; /* Make it wider so the wordmark is readable */
         height: 16px !important;
-        background-size: contain !important;
-        background-repeat: no-repeat !important;
-        background-position: center !important;
         display: inline-block !important;
         vertical-align: middle !important;
-        margin-right: 6px !important;
+        background-size: contain !important;
+        background-repeat: no-repeat !important;
     }
 }
