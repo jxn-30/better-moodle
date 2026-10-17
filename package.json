@@ -132,7 +132,7 @@
         "userscript-meta": "1.0.1",
         "vite": "8.3.3",
         "vite-plugin-monkey": "8.1.1",
-        "vitest": "4.1.11",
+        "vitest": "5.0.3",
         "wrangler": "4.148.0"
     },
     "engines": {
