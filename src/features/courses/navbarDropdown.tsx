@@ -106,18 +106,36 @@ function unescapeText(this: void, text: string) {
 }
 
 /**
- * Maps a section to its list of item nodes.
- * @param section - The section payload containing URL and title.
- * @returns Array of anchor elements representing the section link.
+ * Maps a section and optionally its inner activities to dropdown item nodes.
+ * @param section - The section payload containing URL, title, and activities (cms).
+ * @returns Array of anchor elements representing the section link and its activities.
  */
 function getSectionItems(this: void, section: Section) {
-    return [
+    const items: HTMLAnchorElement[] = [
         (
             <a className="dropdown-item" href={section.sectionurl}>
                 {unescapeText(section.title)}
             </a>
         ) as HTMLAnchorElement,
     ];
+
+    if (activitiesInCourseindex.value && section.cms) {
+        for (const cm of section.cms) {
+            items.push(
+                (
+                    <a
+                        className="dropdown-item"
+                        style={{ textIndent: '1em' }}
+                        href={cm.url ?? `${section.sectionurl}#${cm.anchor}`}
+                    >
+                        {unescapeText(cm.name)}
+                    </a>
+                ) as HTMLAnchorElement
+            );
+        }
+    }
+
+    return items;
 }
 
 /**
