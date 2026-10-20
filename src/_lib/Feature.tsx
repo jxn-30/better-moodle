@@ -1,9 +1,9 @@
 import { featurePrerequisitesReady } from './helpers';
-import Setting from './Setting';
 import FeatureGroup, {
     FeatureGroupID,
     FeatureGroupTranslations,
 } from './FeatureGroup';
+import Setting, { type Tag as SettingTag } from './Setting';
 
 export type FeatureTranslations<
     Group extends FeatureGroupID,
@@ -46,21 +46,32 @@ export default abstract class Feature<
      * This registering workaround is necessary so that we can have readonly private id that is automatically generated from the filepath
      * @param args - the methods that are to be implemented
      * @param args.settings - the settings for this feature
+     * @param args.disableIfFunSettingsAreHidden - whether this whole feature should stay unloaded when fun settings are hidden
      * @param args.loadPrerequisites - when this feature should be loaded
      * @returns a class that can be instantiated
      */
     static register<Group extends FeatureGroupID, ID extends FeatureID<Group>>({
         settings,
+        disableIfFunSettingsAreHidden = false,
         loadPrerequisites = null,
         ...methods
     }: {
         settings?: Set<Setting<Group, ID>>;
+        disableIfFunSettingsAreHidden?: boolean;
         loadPrerequisites?: FeatureLoadPrerequisites;
     } & FeatureMethods<Group, ID>) {
         /**
          * The instantiable version of the Feature class
          */
         return class Feature extends this<Group, ID> {
+            /**
+             * Checks whether this feature should be disabled if fun settings are hidden.
+             * @returns whether the feature should be disabled
+             */
+            static shouldDisableIfFunSettingsAreHidden() {
+                return disableIfFunSettingsAreHidden;
+            }
+
             /**
              * The constructor for the Feature class
              * methods are not passed via constructor but via the register method
@@ -147,6 +158,15 @@ export default abstract class Feature<
      */
     get formGroups() {
         return this.#FormGroups;
+    }
+
+    /**
+     * Does this feature have a setting with the requested tag?
+     * @param tag - the tag to check
+     * @returns whether the feature has a setting with the tag
+     */
+    hasTag(tag: SettingTag) {
+        return Array.from(this.#settings).some(setting => setting.hasTag(tag));
     }
 
     /**
