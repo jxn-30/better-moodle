@@ -159,11 +159,13 @@ Aktuell überarbeiten wir die Bilder in dieser Datei. Bis die neuen verfügbar s
 
 ## Verlauf der GitHub Stars
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=jxn-30%2Fbetter-moodle&type=Date&theme=dark" />
-  <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=jxn-30%2Fbetter-moodle&type=Date" />
-  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=jxn-30%2Fbetter-moodle&type=Date" />
-</picture>
+<a href="https://www.star-history.com/?repos=jxn-30%2Fbetter-moodle&type=date&releases=&legend=bottom-right">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=jxn-30/better-moodle&type=date&theme=dark&legend=bottom-right" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=jxn-30/better-moodle&type=date&legend=bottom-right" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=jxn-30/better-moodle&type=date&legend=bottom-right" />
+ </picture>
+</a>
 
 [latest release]: https://github.com/jxn-30/better-moodle/releases/latest
 [changelog]: https://github.com/jxn-30/better-moodle/blob/main/CHANGELOG.md

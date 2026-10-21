@@ -74,7 +74,7 @@ jobs:
 
             - name: 📤 upload PR summary artifact
               if: github.event_name == 'pull_request'
-              uses: actions/upload-artifact@v7.0.1
+              uses: actions/upload-artifact@v7.0.2
               with:
                   # Artifact name must be unique per workflow run section.
                   # pr-comment.yml downloads all artifacts matching pr-summary-*.
@@ -92,7 +92,7 @@ jobs:
         permissions:
             contents: read
             checks: write
-            pull-requests: read
+            pull-requests: write
         steps:
             - name: 📥️ checkout
               uses: actions/checkout@v7.0.1
@@ -109,9 +109,9 @@ jobs:
 
             - name: 🖨  create annotations
               id: annotations
-              uses: ataylorme/eslint-annotate-action@3.0.0
+              uses: ataylorme/eslint-annotate-action@4.0.0
               with:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
                   report-json: .eslint-report.json
                   only-pr-files: false
                   fail-on-warning: false
@@ -143,7 +143,7 @@ jobs:
 
             - name: 📤 upload PR summary artifact
               if: ${{ github.event_name == 'pull_request' && always() }}
-              uses: actions/upload-artifact@v7.0.1
+              uses: actions/upload-artifact@v7.0.2
               with:
                   name: pr-summary-eslint
                   path: pr-summary-data/

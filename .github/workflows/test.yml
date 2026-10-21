@@ -34,7 +34,7 @@ jobs:
 
             - name: 🧾 report coverage
               if: always()
-              uses: davelosert/vitest-coverage-report-action@v2.12.2
+              uses: davelosert/vitest-coverage-report-action@v2.13.0
               with:
                   comment-on: none
 

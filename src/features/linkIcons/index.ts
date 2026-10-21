@@ -6,6 +6,7 @@ import mattermostCSS from './style/mattermost.scss?inline';
 import phoneStyleEl from './style/phone.scss?style';
 import type Setting from '#lib/Setting';
 import webexCSS from './style/webex.scss?inline';
+import zoomCSS from './style/zoom.scss?inline';
 
 const settings = new Set<Setting>();
 
@@ -31,6 +32,13 @@ if (__UNI__ === 'uzl') {
     settings.add(webex);
 }
 
+let zoom: BooleanSetting;
+// Zoom is used on HSNR and CAU Moodle
+if (__UNI__ === 'hsnr' || __UNI__ === 'cau') {
+    zoom = new BooleanSetting('zoom', true).onInput(() => onload());
+    settings.add(zoom);
+}
+
 const mail = new BooleanSetting('mail', true).onInput(() => onload());
 const phone = new BooleanSetting('phone', true).onInput(() => onload());
 settings.add(mail).add(phone);
@@ -38,9 +46,74 @@ settings.add(mail).add(phone);
 let externalStyle: HTMLElement;
 let mattermostStyle: HTMLElement;
 let webexStyle: HTMLElement;
+let zoomStyle: HTMLElement;
+let zoomObserver: MutationObserver | null = null;
 
 /**
- * Adds the event listener that handles the mouseover event
+ * Scans Moodle URL activity links and marks those pointing to Zoom redirects
+ */
+const markZoomRedirects = () => {
+    const urlLinks = document.querySelectorAll<HTMLAnchorElement>(
+        'a[href*="/mod/url/view.php"]:not([data-better-moodle-zoom]), a[href*="zoom-x.de"]:not([data-better-moodle-zoom]), a[href*="zoom.us"]:not([data-better-moodle-zoom]), a[href^="zoommtg://"]:not([data-better-moodle-zoom])'
+    );
+
+    urlLinks.forEach(link => {
+        const href = link.href.toLowerCase();
+        const onClickAttr = link.getAttribute('onclick') ?? '';
+        const linkText = link.textContent?.toLowerCase() ?? '';
+        const linkTitle = link.getAttribute('title')?.toLowerCase() ?? '';
+
+        // 1. Direct check on link properties or href domains
+        let isZoom =
+            href.includes('zoom-x.de') ||
+            href.includes('zoom.us') ||
+            href.startsWith('zoommtg://') ||
+            onClickAttr.toLowerCase().includes('zoom') ||
+            linkText.includes('zoom') ||
+            linkTitle.includes('zoom');
+
+        // 2. Check the parent activity card (wrapper, description, and attributes)
+        const activityCard = link.closest(
+            '.activity, .activity-item, li.modtype_url, [data-activityname]'
+        );
+
+        if (activityCard && !isZoom) {
+            const dataActivityName =
+                activityCard.getAttribute('data-activityname')?.toLowerCase() ??
+                '';
+            const cardText = activityCard.textContent?.toLowerCase() ?? '';
+
+            // Match if activity name or description mentions Zoom, meeting IDs, or passcodes
+            isZoom =
+                dataActivityName.includes('zoom') ||
+                cardText.includes('zoom') ||
+                cardText.includes('kenncode') ||
+                cardText.includes('passwort') ||
+                cardText.includes('passcode') ||
+                cardText.includes('meeting-id');
+        }
+
+        // 3. Check immediately preceding text/label block in the course list
+        if (!isZoom) {
+            const activityLi = link.closest('li.activity');
+            const prevSibling = activityLi?.previousElementSibling;
+
+            if (prevSibling?.classList.contains('modtype_label')) {
+                const prevText = prevSibling.textContent?.toLowerCase() ?? '';
+                if (prevText.includes('zoom')) {
+                    isZoom = true;
+                }
+            }
+        }
+
+        if (isZoom) {
+            link.setAttribute('data-better-moodle-zoom', 'true');
+        }
+    });
+};
+
+/**
+ * Handles injecting and removing feature styles and dynamic listeners
  */
 const onload = () => {
     // external
@@ -67,6 +140,33 @@ const onload = () => {
         if (webexStyle) document.head.append(webexStyle);
         else webexStyle = GM_addStyle(webexCSS);
     } else webexStyle?.remove();
+
+    // zoom
+    if (zoom?.value) {
+        if (zoomStyle) document.head.append(zoomStyle);
+        else zoomStyle = GM_addStyle(zoomCSS);
+
+        // Run initial scan
+        markZoomRedirects();
+
+        // Observe DOM updates for dynamically loaded sections
+        if (!zoomObserver) {
+            zoomObserver = new MutationObserver(() => markZoomRedirects());
+            zoomObserver.observe(document.body, {
+                childList: true,
+                subtree: true,
+            });
+        }
+    } else {
+        zoomStyle?.remove();
+        if (zoomObserver) {
+            zoomObserver.disconnect();
+            zoomObserver = null;
+        }
+        document
+            .querySelectorAll('[data-better-moodle-zoom]')
+            .forEach(el => el.removeAttribute('data-better-moodle-zoom'));
+    }
 };
 
 export default FeatureGroup.register({ settings, onload });

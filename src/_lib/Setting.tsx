@@ -22,7 +22,7 @@ export type SettingTranslations<
     'settings' extends keyof T ? T['settings'][keyof T['settings']]
     :   Record<string, never>;
 
-type ComparisonCondition = '==' | '!=' | '>' | '<';
+type ComparisonCondition = '==' | '!=';
 
 const tags = { fun: '🎡' } as const;
 
@@ -31,6 +31,9 @@ export type Tag = keyof Tags;
 
 type OldType = string | number | boolean;
 type Migrator<Type> = (oldValue: OldType) => Type;
+
+const DISABLE_EVENT = 'disabled';
+const ENABLE_EVENT = 'enabled';
 
 /**
  * Create a span element for a tag
@@ -96,8 +99,7 @@ export default abstract class Setting<
                 ...params,
             });
 
-            this.#formControl.addEventListener(
-                'change',
+            this.onChange(
                 () => (this.#unsavedValue = this.#formControl!.value)
             );
 
@@ -412,6 +414,15 @@ export default abstract class Setting<
     }
 
     /**
+     * Indicates if the setting is currently disabled
+     * @returns the current disabled state
+     */
+    get isDisabled() {
+        if (!this.instanceIsReady) return true;
+        return this.formControl.disabled;
+    }
+
+    /**
      * Resets the setting to its default value
      */
     reset() {
@@ -468,10 +479,7 @@ export default abstract class Setting<
      * @returns the setting itself
      */
     onChange(listener: EventListener) {
-        void this.callWhenReady(() =>
-            this.formControl.addEventListener('change', listener)
-        );
-        return this;
+        return this.on('change', listener);
     }
 
     /**
@@ -480,8 +488,18 @@ export default abstract class Setting<
      * @returns the setting itself
      */
     onInput(listener: EventListener) {
+        return this.on('input', listener);
+    }
+
+    /**
+     * Adds an event listener to an arbitrary event.
+     * @param event - the event to add the listener to
+     * @param listener - the event listener
+     * @returns the setting itself
+     */
+    on(event: string, listener: EventListener) {
         void this.callWhenReady(() =>
-            this.formControl.addEventListener('input', listener)
+            this.formControl.addEventListener(event, listener)
         );
         return this;
     }
@@ -500,6 +518,13 @@ export default abstract class Setting<
     ) {
         const uuid = crypto.randomUUID();
 
+        const comparisonFunction = {
+            /* eslint-disable jsdoc/require-jsdoc */
+            '==': () => otherSetting.value === comparisonValue,
+            '!=': () => otherSetting.value !== comparisonValue,
+            /* eslint-enable jsdoc/require-jsdoc */
+        }[condition];
+
         /**
          * Check if the setting should be disabled.
          * Disabled if the condition is met.
@@ -507,24 +532,24 @@ export default abstract class Setting<
         const check = () => {
             if (!this.#formControl) return;
 
-            const currentValue = otherSetting.value;
-            let isDisabled = false;
-            switch (condition) {
-                case '==':
-                    isDisabled = currentValue === comparisonValue;
-                    break;
-                case '!=':
-                    isDisabled = currentValue !== comparisonValue;
-                    break;
-            }
+            const isDisabled =
+                otherSetting.isDisabled ? true : comparisonFunction();
+
             this.#conditionalDisabledStates.set(uuid, isDisabled);
 
-            this.#formControl.disabled = Array.from(
+            const disabledState = Array.from(
                 this.#conditionalDisabledStates.values()
             ).some(s => s);
+            this.#formControl.disabled = disabledState;
+
+            this.#formControl.dispatchEvent(
+                new Event(disabledState ? DISABLE_EVENT : ENABLE_EVENT)
+            );
         };
 
         otherSetting.onChange(check);
+        otherSetting.on(DISABLE_EVENT, check);
+        otherSetting.on(ENABLE_EVENT, check);
         void this.callWhenReady(() => otherSetting.callWhenReady(check));
 
         return this;
