@@ -4,6 +4,7 @@ import FeatureGroup from '#lib/FeatureGroup';
 import mailCSS from './style/mail.scss?inline';
 import mattermostCSS from './style/mattermost.scss?inline';
 import phoneCSS from './style/phone.scss?inline';
+import { ready } from '#lib/DOM.ts';
 import type Setting from '#lib/Setting';
 import webexCSS from './style/webex.scss?inline';
 import {
@@ -13,7 +14,7 @@ import {
 
 interface LinkIconElement {
     setting: BooleanSetting;
-    matches: (url: string) => boolean;
+    matches: (url: URL) => boolean;
     css: string;
     styleElem?: HTMLElement;
 }
@@ -32,8 +33,7 @@ if (__UNI__ !== 'uzl') {
          * @param url - The URL to check.
          * @returns Whether the URL is external to the current Moodle instance.
          */
-        matches: url =>
-            !url.startsWith(__MOODLE_URL__) && /^https?:\/\//.test(url),
+        matches: url => !url.href.startsWith(__MOODLE_URL__),
         css: externalCSS,
     });
 }
@@ -50,8 +50,8 @@ if (__UNI__ === 'cau') {
          * @returns Whether the URL points to a supported Mattermost instance.
          */
         matches: url =>
-            url.startsWith('https://wetalk.informatik.uni-kiel.de') ||
-            url.startsWith('https://dill.theorie.informatik.uni-kiel.de'),
+            url.hostname === 'wetalk.informatik.uni-kiel.de' ||
+            url.hostname === 'dill.theorie.informatik.uni-kiel.de',
         css: mattermostCSS,
     });
 }
@@ -66,8 +66,8 @@ if (__UNI__ === 'uzl') {
          * @returns Whether the URL points to a supported Webex service..
          */
         matches: url =>
-            url.startsWith('webexteams://') ||
-            url.startsWith('https://uni-luebeck.webex.com'),
+            url.protocol === 'webexteams://' ||
+            url.hostname === 'uni-luebeck.webex.com',
         css: webexCSS,
     });
 }
@@ -79,7 +79,7 @@ linkIcons.push({
      * @param url - The URL to check.
      * @returns Whether the URL uses the mailto: scheme.
      */
-    matches: url => url.startsWith('mailto:'),
+    matches: url => url.protocol === 'mailto:',
     css: mailCSS,
 });
 linkIcons.push({
@@ -89,18 +89,15 @@ linkIcons.push({
      * @param url - The URL to check.
      * @returns Whether the URL uses the tel: scheme.
      */
-    matches: url => url.startsWith('tel:'),
+    matches: url => url.protocol === 'tel:',
     css: phoneCSS,
 });
 
 linkIcons.forEach(linkIcon => settings.add(linkIcon.setting));
 
-/**
- * Adds the event listener that handles the mouseover event
- */
-const onload = () => {
-    if (__MOODLE_APP_ENABLED__) {
-        void callRestFunction<ModUrlGetUrlsCoursesResponse>(
+if (__MOODLE_APP_ENABLED__) {
+    void ready().then(() =>
+        callRestFunction<ModUrlGetUrlsCoursesResponse>(
             'mod_url_get_urls_by_courses',
             { 'courseids[0]': M.cfg.courseId }
         ).then(x =>
@@ -108,7 +105,11 @@ const onload = () => {
                 .reduce(
                     (acc, curr) => {
                         linkIcons.forEach((linkIcon, idx) => {
-                            if (linkIcon.matches(curr.externalurl)) {
+                            if (
+                                linkIcon.matches(
+                                    new URL(curr.externalurl, __MOODLE_URL__)
+                                )
+                            ) {
                                 acc[idx].push(`#module-${curr.coursemodule}`);
                             }
                         });
@@ -128,11 +129,15 @@ const onload = () => {
                         );
                     }
                 })
-        );
-    }
+        )
+    );
+}
 
+/**
+ * Adds the event listener that handles the mouseover event
+ */
+const onload = () => {
     linkIcons.forEach(linkIcon => {
-        console.log(linkIcon.css);
         if (linkIcon.setting?.value) {
             if (linkIcon.styleElem) document.head.append(linkIcon.styleElem);
             else linkIcon.styleElem = GM_addStyle(linkIcon.css);
