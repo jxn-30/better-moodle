@@ -1,5 +1,6 @@
 @use './mixins' as *;
 
+.modtype_url:where([--mod_url-ids--]) .activityname a .instancename,
 a[href^='tel:']:not(:has(.fa-phone)) {
     @include insert('before', '\f095');
 }

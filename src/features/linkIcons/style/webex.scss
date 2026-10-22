@@ -7,3 +7,9 @@ a[href^='webexteams://'],
 a[href^='https://uni-luebeck.webex.com'] {
     @include insert-svg('before', svg-inline(webex));
 }
+
+.modtype_url:where([--mod_url-ids--]) .activityicon {
+    @include hide-original-image();
+    background-image: svg-inline(webex);
+    filter: none;
+}

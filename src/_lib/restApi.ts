@@ -65,3 +65,29 @@ function isMoodleErrorResponse(data: unknown): data is MoodleErrorResponse {
         typeof data.message === 'string'
     );
 }
+
+interface ModUrlGetUrlsCoursesResponseUrl {
+    course: number;
+    coursemodule: number;
+    externalurl: string;
+    name: string;
+
+    // display: number; // TODO: what does it mean?
+    // displayoptions: string; // TODO: what does it mean?
+    // groupingid: number;
+    // groupmode: number;
+    // id: number;
+    // intro: string;
+    // introfiles: unknown[];
+    // introformat: number;
+    // lang: string; // TODO: it seems to be empty o.O
+    // parameters: string;
+    // section: number;
+    // timemodified: string;
+    // visible: boolean;
+}
+
+export interface ModUrlGetUrlsCoursesResponse {
+    urls: ModUrlGetUrlsCoursesResponseUrl[];
+    warnings: unknown[];
+}

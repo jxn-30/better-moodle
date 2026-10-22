@@ -7,3 +7,8 @@ a[href^='https://wetalk.informatik.uni-kiel.de'],
 a[href^='https://dill.theorie.informatik.uni-kiel.de'] {
     @include insert-svg-mask('before', svg-inline(mattermost));
 }
+
+.modtype_url:where([--mod_url-ids--]) .activityicon {
+    @include hide-original-image();
+    background-image: svg-inline(mattermost);
+}

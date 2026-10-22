@@ -1,8 +1,9 @@
 @use './mixins' as *;
 
-a:not([href^='#{global.$MOODLE_URL}']) {
-    &[href^='https://'],
-    &[href^='http://'] {
-        @include insert('after', '');
-    }
+.modtype_url:where([--mod_url-ids--]) .activityname a .instancename,
+a:not([href^='#{global.$MOODLE_URL}']):where(
+        [href^='https://'],
+        [href^='http://']
+    ) {
+    @include insert('after', '');
 }
