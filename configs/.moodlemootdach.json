@@ -10,5 +10,7 @@
     "icon": "https://moodlemootdach.org/pluginfile.php/1/core_admin/logocompact/300x300/1754896589/moodlemootdach_logo_klein_2025.png",
     "moodleUrl": "https://moodlemootdach.org",
     "moodleVersion": 405,
-    "excludeFeatures": ["dashboard", "nina"]
+    "moodleAppEnabled": false,
+    "excludeFeatures": ["dashboard", "nina"],
+    "connects": []
 }

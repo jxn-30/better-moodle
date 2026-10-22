@@ -47,6 +47,7 @@ constants.setConstant('__PREFIX__', globalConfig.prefix);
 constants.setConstant('__UNI__', args.configFile);
 constants.setConstant('__MOODLE_VERSION__', config.moodleVersion);
 constants.setConstant('__MOODLE_URL__', config.moodleUrl);
+constants.setConstant('__MOODLE_APP_ENABLED__', config.moodleAppEnabled);
 constants.setConstant('__FEATURE_GROUPS__', features.orderedFeatures);
 constants.setConstant('__USERSCRIPT_CONNECTS__', connects.list());
 constants.setConstant('__ICS_PARSER_DOMAIN__', urls.icsParserDomain);

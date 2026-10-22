@@ -59,6 +59,10 @@ interface BaseConfig {
      * List the IDs of these features or feature groups here.
      */
     includeNonDefaultFeatures?: string[];
+    /**
+     * Does this instance of moodle allow the use of the moodle app. If so, Better-Moodle can call some API functions that would otherwise not be available.
+     */
+    moodleAppEnabled: boolean;
 }
 
 interface ConfigWithExplicitFeatures extends BaseConfig {

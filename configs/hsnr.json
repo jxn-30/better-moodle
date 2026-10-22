@@ -10,6 +10,7 @@
     "icon": "https://moodle.hsnr.de/pluginfile.php/1/theme_boost_union/logocompact/1/1782998357/hsnr-logo_bc_rgb.svg",
     "moodleUrl": "https://moodle.hsnr.de",
     "moodleVersion": 405,
+    "moodleAppEnabled": false,
     "connects": [],
     "fixes": ["hsnr/loginlogo"],
     "includeNonDefaultFeatures": []

@@ -61,6 +61,10 @@
                             "items": { "type": "string" },
                             "type": "array"
                         },
+                        "moodleAppEnabled": {
+                            "description": "Does this instance of moodle allow the use of the moodle app. If so, Better-Moodle can call some API functions that would otherwise not be available.",
+                            "type": "boolean"
+                        },
                         "moodleUrl": {
                             "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
                             "type": "string"
@@ -87,7 +91,8 @@
                         "icon",
                         "moodleUrl",
                         "moodleVersion",
-                        "connects"
+                        "connects",
+                        "moodleAppEnabled"
                     ],
                     "type": "object"
                 },
@@ -153,6 +158,10 @@
                             "items": { "type": "string" },
                             "type": "array"
                         },
+                        "moodleAppEnabled": {
+                            "description": "Does this instance of moodle allow the use of the moodle app. If so, Better-Moodle can call some API functions that would otherwise not be available.",
+                            "type": "boolean"
+                        },
                         "moodleUrl": {
                             "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
                             "type": "string"
@@ -177,6 +186,7 @@
                         "github",
                         "icon",
                         "includeFeatures",
+                        "moodleAppEnabled",
                         "moodleUrl",
                         "moodleVersion",
                         "namespace",
@@ -246,6 +256,10 @@
                             "items": { "type": "string" },
                             "type": "array"
                         },
+                        "moodleAppEnabled": {
+                            "description": "Does this instance of moodle allow the use of the moodle app. If so, Better-Moodle can call some API functions that would otherwise not be available.",
+                            "type": "boolean"
+                        },
                         "moodleUrl": {
                             "description": "The URL this Moodle is accessible at. This is used to generate the `@match` property in the userscript metadata.",
                             "type": "string"
@@ -270,6 +284,7 @@
                         "excludeFeatures",
                         "github",
                         "icon",
+                        "moodleAppEnabled",
                         "moodleUrl",
                         "moodleVersion",
                         "namespace",
