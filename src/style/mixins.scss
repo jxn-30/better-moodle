@@ -62,3 +62,8 @@
         @content;
     }
 }
+
+@mixin hide-original-image() {
+    object-position: -100vw -100vh; // -100% -100% does not work.
+    // This might not be large enough in certain edge cases, but should usually work
+}

@@ -1,4 +1,5 @@
 @use '/src/style/mixins';
+@forward '/src/style/mixins';
 
 @mixin _insert-before {
     // If is has no children and is not empty (=> text only)

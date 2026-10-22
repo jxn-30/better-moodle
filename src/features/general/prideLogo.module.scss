@@ -129,8 +129,8 @@ $flags: (
 );
 
 img:local(.pride-logo) {
+    @include mixins.hide-original-image();
     filter: brightness(0.8) contrast(1.5);
-    object-position: -99999px -99999px; // hide original image
     mask: var(--pride-logo-mask-image) no-repeat content-box center/contain
         alpha;
 
