@@ -91,7 +91,8 @@
         "@types/tampermonkey": "5.5.0",
         "@typescript/native": "npm:typescript@7.0.2",
         "@vitejs/plugin-legacy": "8.2.3",
-        "@vitest/coverage-v8": "4.1.11",
+        "@vitest/coverage-v8": "5.0.5",
+        "@vitest/utils": "5.0.5",
         "babel-plugin-polyfill-corejs3": "1.0.0",
         "boxen": "9.0.0",
         "browserslist": "4.29.3",
@@ -132,7 +133,7 @@
         "userscript-meta": "1.0.1",
         "vite": "8.3.4",
         "vite-plugin-monkey": "8.1.1",
-        "vitest": "4.1.11",
+        "vitest": "5.0.5",
         "wrangler": "4.150.0"
     },
     "engines": {
