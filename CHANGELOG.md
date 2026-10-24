@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.11.0](https://github.com/jxn-30/better-moodle/compare/2.10.2...2.11.0) (2026-10-24)
+
+
+### Features
+
+* **linkIcons:** add Zoom redirect link detection and icon styling for HSNR and CAU moodle ([#1199](https://github.com/jxn-30/better-moodle/issues/1199)) ([9112a7f](https://github.com/jxn-30/better-moodle/commit/9112a7f5bdedd857bd6f9e1b7f009194bf140c2c))
+
+
+### Bug Fixes
+
+* **clock:** fix english text for eight ([3b50c96](https://github.com/jxn-30/better-moodle/commit/3b50c9687b415f048e4316190522695e7c118682))
+
 ## [2.10.2](https://github.com/jxn-30/better-moodle/compare/2.10.1...2.10.2) (2026-09-03)
 
 
