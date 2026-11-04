@@ -7,6 +7,7 @@ import phoneStyleEl from './style/phone.scss?style';
 import type Setting from '#lib/Setting';
 import webexCSS from './style/webex.scss?inline';
 import zoomCSS from './style/zoom.scss?inline';
+import zulipCSS from './style/zulip.scss?inline';
 
 const settings = new Set<Setting>();
 
@@ -39,6 +40,13 @@ if (__UNI__ === 'hsnr' || __UNI__ === 'cau') {
     settings.add(zoom);
 }
 
+let zulip: BooleanSetting;
+// Zulip is used on HSNR Moodle
+if (__UNI__ === 'hsnr') {
+    zulip = new BooleanSetting('zulip', true).onInput(() => onload());
+    settings.add(zulip);
+}
+
 const mail = new BooleanSetting('mail', true).onInput(() => onload());
 const phone = new BooleanSetting('phone', true).onInput(() => onload());
 settings.add(mail).add(phone);
@@ -48,6 +56,7 @@ let mattermostStyle: HTMLElement;
 let webexStyle: HTMLElement;
 let zoomStyle: HTMLElement;
 let zoomObserver: MutationObserver | null = null;
+let zulipStyle: HTMLElement;
 
 /**
  * Scans Moodle URL activity links and marks those pointing to Zoom redirects
@@ -167,6 +176,12 @@ const onload = () => {
             .querySelectorAll('[data-better-moodle-zoom]')
             .forEach(el => el.removeAttribute('data-better-moodle-zoom'));
     }
+
+    // zulip
+    if (zulip?.value) {
+        if (zulipStyle) document.head.append(zulipStyle);
+        else zulipStyle = GM_addStyle(zulipCSS);
+    } else zulipStyle?.remove();
 };
 
 export default FeatureGroup.register({ settings, onload });
