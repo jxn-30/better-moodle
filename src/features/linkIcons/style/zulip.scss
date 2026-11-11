@@ -1,0 +1,8 @@
+@use './mixins' as *;
+
+@svg-load zulip url(../icons/zulip.svg) {
+}
+
+a[href*='chat.ide3.de'] {
+    @include insert-svg('before', svg-inline(zulip));
+}
