@@ -16,7 +16,7 @@ export interface DishType {
 
 export interface Speiseplan {
     timestamp: number;
-    dishes: Map<Date, Set<Dish>>;
+    dishes: Map<Temporal.PlainDate, Set<Dish>>;
     prices: string[];
     allergenes: Map<string, string>;
     additives: Map<string, string>;

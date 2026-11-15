@@ -100,21 +100,21 @@ jobs:
                   fetch-depth: 0
 
             - name: 📦 Download all nightly build artifacts
-              uses: actions/download-artifact@v8.0.1
+              uses: actions/download-artifact@v8.0.2
               with:
                   pattern: better-moodle-*.user.js
                   path: dist/
                   merge-multiple: true
 
             - name: 📦 Download all nightly meta artifacts
-              uses: actions/download-artifact@v8.0.1
+              uses: actions/download-artifact@v8.0.2
               with:
                   pattern: better-moodle-*.meta.js
                   path: dist/
                   merge-multiple: true
 
             - name: 📦 Download all nightly polyfill artifacts
-              uses: actions/download-artifact@v8.0.1
+              uses: actions/download-artifact@v8.0.2
               with:
                   pattern: better-moodle-*-polyfills.js
                   path: dist/
