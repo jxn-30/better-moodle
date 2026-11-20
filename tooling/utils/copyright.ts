@@ -22,7 +22,7 @@ const copyrightBox = (content: string) =>
         padding: 1,
         width: Math.min(
             120, // The prettier max width for built file
-            Math.max(...content.split(/\n/).map(l => l.length)) + 8 // Max line width + padding + border
+            Math.max(...content.split(/\n/).map(l => l.length)) + 8 + 1 // Max line width + padding + border + 1
         ),
     }).toString();
 

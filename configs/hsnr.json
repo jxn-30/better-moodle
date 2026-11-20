@@ -11,6 +11,6 @@
     "moodleUrl": "https://moodle.hsnr.de",
     "moodleVersion": 405,
     "connects": ["mocca.stw-d.de", "stw-d.de"],
-    "fixes": [],
-    "includeNonDefaultFeatures": ["speiseplan"]
+    "fixes": ["hsnr/loginlogo", "hsnr/myCoursesTab"],
+    "includeNonDefaultFeatures": ["general.hsnrNavbar", "speiseplan"]
 }

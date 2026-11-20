@@ -86,6 +86,10 @@ if (__UNI__ === 'cau') {
     features.add('cauNavbar');
 }
 
+if (__UNI__ === 'hsnr') {
+    features.add('hsnrNavbar');
+}
+
 /**
  * Updates the hidden state of all settings.
  */

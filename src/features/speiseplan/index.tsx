@@ -14,6 +14,7 @@ import { currency, dateToString, timeToString, unit } from '#lib/localeString';
 import type { Dish, Speiseplan } from './speiseplan';
 import { domID, htmlToElements, mdToHtml } from '#lib/helpers';
 import { getHtml, getLoadingSpinner, ready } from '#lib/DOM';
+import { getToday, getTodayNow } from '#lib/temporal';
 
 const LL = LLFG('speiseplan');
 
@@ -152,7 +153,7 @@ const getCanteenUrls = () => {
 
 interface DayProps {
     speiseplan: Speiseplan;
-    day: Date;
+    day: Temporal.PlainDate;
     dishes: Set<Dish>;
     expanded: boolean;
     co2InfoLink: HTMLAnchorElement;
@@ -415,7 +416,7 @@ const getCurrentSpeiseplan = () => {
         return () => filtersFieldset.appendToContainer(filtersElement);
     };
 
-    let firstDay: Date | undefined;
+    let firstDay: Temporal.PlainDate | undefined;
 
     /**
      * Gets the index of the day to expand
@@ -423,8 +424,9 @@ const getCurrentSpeiseplan = () => {
      */
     const getExpandedDay = () =>
         Number(
-            new Date().toDateString() === firstDay?.toDateString() &&
-                new Date().getHours() >= currentCanteen().closingHour
+            firstDay &&
+                getToday().equals(firstDay) &&
+                getTodayNow().hour >= currentCanteen().closingHour
         );
 
     const nextWeekPromise =

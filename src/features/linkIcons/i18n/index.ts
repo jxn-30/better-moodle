@@ -30,6 +30,16 @@ export const de = {
             description:
                 'Zeigt ein kleines Icon an, wenn ein Link zu Webex führt.',
         },
+        zoom: {
+            name: 'Zoom',
+            description:
+                'Zeigt ein kleines Icon an, wenn ein Link zu Zoom führt.',
+        },
+        zulip: {
+            name: 'Zulip',
+            description:
+                'Zeigt ein kleines Icon an, wenn ein Link zu Zulip-Chats führt.',
+        },
     },
 } satisfies FeatureGroupTranslation;
 
@@ -61,6 +71,15 @@ export const en = {
         webex: {
             name: 'Webex',
             description: 'Shows a small icon next to links that lead to webex.',
+        },
+        zoom: {
+            name: 'Zoom',
+            description: 'Shows a small icon next to links that lead to Zoom.',
+        },
+        zulip: {
+            name: 'Zulip',
+            description:
+                'Shows a small icon next to links that lead to Zulip chats.',
         },
     },
 } satisfies typeof de;

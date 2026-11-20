@@ -1,7 +1,8 @@
 import { getDocument } from '#lib/network';
+import { getToday } from '#lib/temporal';
 import type Parser from './index';
+import { TEN_MINUTES } from '#lib/times';
 import type { Dish, DishType } from '../speiseplan';
-import { ONE_DAY, TEN_MINUTES } from '#lib/times';
 
 const prices = {
     'de': ['Studierende', 'Nicht Studierende'],
@@ -290,12 +291,20 @@ function getTypesMap(
  * @param dateStr - The date string to parse, e.g. "06.08.2026".
  * @returns The parsed Date, or null if the string doesn't match the expected format.
  */
-function parseGermanDate(dateStr: string): Date | null {
+function parseGermanDate(dateStr: string): Temporal.PlainDate | null {
     const match = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(dateStr.trim());
     if (!match) return null;
 
     const [, day, month, year] = match;
-    return new Date(Number(year), Number(month) - 1, Number(day));
+    try {
+        return Temporal.PlainDate.from({
+            year: Number(year),
+            month: Number(month),
+            day: Number(day),
+        });
+    } catch {
+        return null;
+    }
 }
 
 /**
@@ -448,8 +457,8 @@ function getDishesForDay(
  */
 const parse: Parser = (url: string, lang: 'de' | 'en-gb') =>
     getDocument(url, TEN_MINUTES).then(async ({ lastUpdate, value: doc }) => {
-        const todayThreshold = new Date(Date.now() - ONE_DAY);
-        const dishes = new Map<Date, Set<Dish>>();
+        const today = getToday();
+        const dishes = new Map<Temporal.PlainDate, Set<Dish>>();
 
         const currentLegend = legend[lang];
         const allergenes = new Map<string, string>();
@@ -497,15 +506,9 @@ const parse: Parser = (url: string, lang: 'de' | 'en-gb') =>
             }
 
             const dayDate = parseGermanDate(dateStr);
-            if (
-                !dayDate ||
-                isNaN(dayDate.getTime()) ||
-                dayDate < todayThreshold
-            ) {
+            if (!dayDate || Temporal.PlainDate.compare(dayDate, today) < 0) {
                 continue;
             }
-
-            dayDate.setHours(0, 0, 0, 0);
 
             // Get dishes for this day, with counters numbered starting from 1 for each day's menuitems
             const dayDishes = getDishesForDay(
