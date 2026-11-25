@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.11.0](https://github.com/jxn-30/better-moodle/compare/2.10.2...2.11.0) (2026-11-21)
+
+
+### Features
+
+* **general:** add 'my courses' tab to menu bar and move 'new course request' link to support dropdown menu for HSNR moodle ([#1177](https://github.com/jxn-30/better-moodle/issues/1177)) ([8e2ec87](https://github.com/jxn-30/better-moodle/commit/8e2ec8792659363682e0504bf2c8c4109efb4d2f))
+* **linkIcons:** add Zoom redirect link detection and icon styling for HSNR and CAU moodle ([#1199](https://github.com/jxn-30/better-moodle/issues/1199)) ([9112a7f](https://github.com/jxn-30/better-moodle/commit/9112a7f5bdedd857bd6f9e1b7f009194bf140c2c))
+* **linkIcons:** add Zulip chat link icon for HSNR ([#1211](https://github.com/jxn-30/better-moodle/issues/1211)) ([48af5e3](https://github.com/jxn-30/better-moodle/commit/48af5e31e42ef3ff0423a7922c0d2bbd78dec598))
+
+
+### Bug Fixes
+
+* **clock:** fix english text for eight ([3b50c96](https://github.com/jxn-30/better-moodle/commit/3b50c9687b415f048e4316190522695e7c118682))
+
 ## [2.10.2](https://github.com/jxn-30/better-moodle/compare/2.10.1...2.10.2) (2026-09-03)
 
 
