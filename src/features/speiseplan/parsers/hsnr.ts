@@ -106,6 +106,7 @@ const additiveFilenameFixes: Record<string, string> = {
     '17': AdditiveKey.Phosphates, // 17.png in additives displays "6"
     '18': AdditiveKey.Sweeteners, // 18.png in additives displays "24"
     '21': AdditiveKey.SugarAndSweeteners, // 21.png in additives displays "11"
+    '28': AdditiveKey.Sulphited, // 28.png in additives displays "5"
 };
 
 /**
