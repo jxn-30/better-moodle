@@ -3,6 +3,8 @@
 @use 'sass:string';
 @use 'sass:color';
 
+$counter-color: #588157;
+
 $location-colors: (
     'Mensa': #6e894a,
     'Canteen': #6e894a,
@@ -25,7 +27,7 @@ $co2-star: '\f005';
 :local(.dish-img) {
     @include mixins.darkmode {
         $stroke-pos: 0.5px;
-        $stroke-neg: -1 * $stroke-pos;
+        $stroke-neg: -0.5px;
         --stroke-color: color-mix(in srgb, currentColor 20%, transparent);
         filter: drop-shadow($stroke-pos 0 0 var(--stroke-color))
             drop-shadow($stroke-neg 0 0 var(--stroke-color))
@@ -85,6 +87,12 @@ $co2-star: '\f005';
                     color: white;
                 }
             }
+        }
+
+        &[data-location^='Theke']::before,
+        &[data-location^='Counter']::before {
+            background-color: $counter-color;
+            color: white;
         }
 
         .dish-additives {

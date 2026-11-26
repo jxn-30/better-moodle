@@ -132,15 +132,21 @@ const currentCanteen = () => canteens.get(canteen.value)!;
 
 /**
  * Gets the speiseplan URLs to parse from
- * @returns an URL for this and next week
+ * @returns an URL for this and (optionally) next week
  */
 const getCanteenUrls = () => {
     const lang = getLang();
+    const canteen = currentCanteen();
 
-    const {
-        url: { [lang]: url },
-        urlNextWeek: { [lang]: urlNextWeek },
-    } = currentCanteen();
+    const url = canteen.url[lang] ?? canteen.url.de;
+
+    const rawNextWeek =
+        canteen.urlNextWeek ?
+            (canteen.urlNextWeek?.[lang] ?? canteen.urlNextWeek?.de)
+        :   undefined;
+
+    // Don't return urlNextWeek if it's the exact same as url
+    const urlNextWeek = rawNextWeek !== url ? rawNextWeek : undefined;
 
     return { url, urlNextWeek };
 };
@@ -229,15 +235,22 @@ const Day = ({
                     </>
                 :   ''}
             </td>
-            <td
-                className="co2-score"
-                dataset={{ stars: dish.co2 ? dish.co2.stars.toString() : '0' }}
-            >
-                <span></span>
-                {dish.co2 && dish.co2.emission ?
-                    unit(dish.co2.emission, 'gram', 'long', lang)
-                :   ''}
-            </td>
+            {(
+                currentCanteen().hasCO2 !== false &&
+                Array.from(dishes).some(d => Boolean(d.co2))
+            ) ?
+                <td
+                    className="co2-score"
+                    dataset={{
+                        stars: dish.co2 ? dish.co2.stars.toString() : '0',
+                    }}
+                >
+                    <span></span>
+                    {dish.co2 && dish.co2.emission ?
+                        unit(dish.co2.emission, 'gram', 'long', lang)
+                    :   ''}
+                </td>
+            :   null}
             <td className="dish-types">
                 {...dish.types.map(t => {
                     const dishType = speiseplan.types.get(t);
@@ -283,13 +296,18 @@ const Day = ({
                 <thead>
                     <tr>
                         <th>{sLL().table.dish()}</th>
-                        <th>
-                            <span className="d-flex">
-                                {sLL().table.co2score()}
-                                &nbsp;
-                                {co2InfoLink}
-                            </span>
-                        </th>
+                        {(
+                            currentCanteen().hasCO2 !== false &&
+                            Array.from(dishes).some(d => Boolean(d.co2))
+                        ) ?
+                            <th>
+                                <span className="d-flex">
+                                    {sLL().table.co2score()}
+                                    &nbsp;
+                                    {co2InfoLink}
+                                </span>
+                            </th>
+                        :   null}
                         <th>{sLL().table.types()}</th>
                         <th>
                             {sLL().table.price()}
@@ -411,7 +429,10 @@ const getCurrentSpeiseplan = () => {
                 getTodayNow().hour >= currentCanteen().closingHour
         );
 
-    return Promise.all([parse(url), parse(urlNextWeek)])
+    const nextWeekPromise =
+        urlNextWeek ? parse(urlNextWeek, lang) : Promise.resolve(undefined);
+
+    return Promise.all([parse(url, lang), nextWeekPromise])
         .then(([thisWeek, nextWeek]) => {
             footerTimeSpan.textContent = timeToString(
                 new Date(thisWeek.timestamp)
@@ -420,19 +441,25 @@ const getCurrentSpeiseplan = () => {
             firstDay = thisWeek.dishes.keys().next().value;
 
             const speiseplan = thisWeek;
-            speiseplan.dishes = new Map([
-                ...thisWeek.dishes,
-                ...nextWeek.dishes,
-            ]);
-            speiseplan.allergenes = new Map([
-                ...thisWeek.allergenes,
-                ...nextWeek.allergenes,
-            ]);
-            speiseplan.additives = new Map([
-                ...thisWeek.additives,
-                ...nextWeek.additives,
-            ]);
-            speiseplan.types = new Map([...thisWeek.types, ...nextWeek.types]);
+            // Only merge nextWeek entries if nextWeek exists
+            if (nextWeek) {
+                speiseplan.dishes = new Map([
+                    ...thisWeek.dishes,
+                    ...nextWeek.dishes,
+                ]);
+                speiseplan.allergenes = new Map([
+                    ...thisWeek.allergenes,
+                    ...nextWeek.allergenes,
+                ]);
+                speiseplan.additives = new Map([
+                    ...thisWeek.additives,
+                    ...nextWeek.additives,
+                ]);
+                speiseplan.types = new Map([
+                    ...thisWeek.types,
+                    ...nextWeek.types,
+                ]);
+            }
 
             return speiseplan;
         })

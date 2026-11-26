@@ -4,6 +4,13 @@ export const de = {
     name: 'Speiseplan der Mensa',
     description: 'Der Speiseplan deiner Lieblingsmensa direkt in Moodle.',
     close: 'Schließen',
+    counters: {
+        1: 'Theke 1',
+        2: 'Theke 2',
+        3: 'Theke 3',
+        4: 'Theke 4',
+        5: 'Theke 5',
+    },
     table: {
         dish: 'Gericht',
         co2score: 'CO₂\xa0Score',
@@ -50,6 +57,13 @@ export const en = {
     name: 'Menu of the canteen',
     description: 'The menu of your favourite canteen within Moodle.',
     close: 'Close',
+    counters: {
+        1: 'Counter 1',
+        2: 'Counter 2',
+        3: 'Counter 3',
+        4: 'Counter 4',
+        5: 'Counter 5',
+    },
     table: {
         dish: 'Dish',
         co2score: 'CO₂\xa0Score',
